@@ -16,7 +16,7 @@ namespace AvaloniaWebView.Shared.Handlers;
 //}
 
 
-public class ViewHandler<TVirtualView, TPlatformView> : ViewHandler where TVirtualView : Visual
+public class ViewHandler<TVirtualView, TPlatformView> : ViewHandler 
 {
     protected ViewHandler() 
     {

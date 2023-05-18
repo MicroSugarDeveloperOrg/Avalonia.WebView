@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace AvaloniaWebView.Shared;
 public interface IPropertyMapper<TVirtualView, TViewHandler> : IPropertyMapper where TVirtualView : INotifyPropertyChanged
