@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<Nullable>annotations</Nullable>
+		<UseWindowsForms>true</UseWindowsForms>
+		<DefineConstants>$(DefineConstants);WEBVIEW2_WINFORMS</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Microsoft.Web.WebView2.Core\Microsoft.Web.WebView2.Core.csproj" />
+	</ItemGroup>
+
+</Project>

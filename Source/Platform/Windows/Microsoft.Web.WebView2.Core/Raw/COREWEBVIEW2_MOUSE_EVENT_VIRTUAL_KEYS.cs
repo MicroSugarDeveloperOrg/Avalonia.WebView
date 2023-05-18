@@ -1,0 +1,25 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Microsoft.Web.WebView2.Core.Raw.COREWEBVIEW2_MOUSE_EVENT_VIRTUAL_KEYS
+// Assembly: Microsoft.Web.WebView2.Core, Version=1.0.1829.0, Culture=neutral, PublicKeyToken=2a8ab48044d2601e
+// MVID: 73C692F1-1008-4DC6-8409-9A1670DD4F06
+// Assembly location: C:\Users\MicroSugar\Desktop\webview\Microsoft.Web.WebView2.Core.dll
+
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+namespace Microsoft.Web.WebView2.Core.Raw
+{
+  [CompilerGenerated]
+  [TypeIdentifier("26D34152-879F-4065-BEA2-3DAA2CFADFB8", "Microsoft.Web.WebView2.Core.Raw.COREWEBVIEW2_MOUSE_EVENT_VIRTUAL_KEYS")]
+  public enum COREWEBVIEW2_MOUSE_EVENT_VIRTUAL_KEYS
+  {
+    COREWEBVIEW2_MOUSE_EVENT_VIRTUAL_KEYS_NONE = 0,
+    COREWEBVIEW2_MOUSE_EVENT_VIRTUAL_KEYS_LEFT_BUTTON = 1,
+    COREWEBVIEW2_MOUSE_EVENT_VIRTUAL_KEYS_RIGHT_BUTTON = 2,
+    COREWEBVIEW2_MOUSE_EVENT_VIRTUAL_KEYS_SHIFT = 4,
+    COREWEBVIEW2_MOUSE_EVENT_VIRTUAL_KEYS_CONTROL = 8,
+    COREWEBVIEW2_MOUSE_EVENT_VIRTUAL_KEYS_MIDDLE_BUTTON = 16, // 0x00000010
+    COREWEBVIEW2_MOUSE_EVENT_VIRTUAL_KEYS_X_BUTTON1 = 32, // 0x00000020
+    COREWEBVIEW2_MOUSE_EVENT_VIRTUAL_KEYS_X_BUTTON2 = 64, // 0x00000040
+  }
+}

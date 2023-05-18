@@ -20,13 +20,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Build", ".Build", "{D24E6A
 		Packages\webview@avalonia-logo.png = Packages\webview@avalonia-logo.png
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebView", "Source\Sample\SampleWebView\SampleWebView\SampleWebView.csproj", "{4661D90C-C373-4E13-B3C1-E6604281A20C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebView", "Source\Sample\SampleWebView\SampleWebView\SampleWebView.csproj", "{4661D90C-C373-4E13-B3C1-E6604281A20C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebView.Android", "Source\Sample\SampleWebView\SampleWebView.Android\SampleWebView.Android.csproj", "{30D99F05-3765-4E22-9616-908C49C67413}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebView.Android", "Source\Sample\SampleWebView\SampleWebView.Android\SampleWebView.Android.csproj", "{30D99F05-3765-4E22-9616-908C49C67413}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebView.Desktop", "Source\Sample\SampleWebView\SampleWebView.Desktop\SampleWebView.Desktop.csproj", "{9CA20CDF-9900-4CC7-8C15-1226DAD84768}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebView.Desktop", "Source\Sample\SampleWebView\SampleWebView.Desktop\SampleWebView.Desktop.csproj", "{9CA20CDF-9900-4CC7-8C15-1226DAD84768}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebView.iOS", "Source\Sample\SampleWebView\SampleWebView.iOS\SampleWebView.iOS.csproj", "{06C080F5-3184-45D8-8CFB-FE796A0E3262}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebView.iOS", "Source\Sample\SampleWebView\SampleWebView.iOS\SampleWebView.iOS.csproj", "{06C080F5-3184-45D8-8CFB-FE796A0E3262}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{0341CDF7-F1AA-498A-825F-84FBA22D4CB4}"
 EndProject
@@ -34,13 +34,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleWebView", "SampleWebV
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleBlazorWebView", "SampleBlazorWebView", "{30565A8D-5256-4118-8BD2-D3ADFAAE5D4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleBlazorWebView", "Source\Sample\SampleBlazorWebView\SampleBlazorWebView\SampleBlazorWebView.csproj", "{9F2713ED-C926-41A2-AB24-F543DC6E97B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleBlazorWebView", "Source\Sample\SampleBlazorWebView\SampleBlazorWebView\SampleBlazorWebView.csproj", "{9F2713ED-C926-41A2-AB24-F543DC6E97B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleBlazorWebView.Android", "Source\Sample\SampleBlazorWebView\SampleBlazorWebView.Android\SampleBlazorWebView.Android.csproj", "{235E8B67-14F5-4F50-9F7D-8857B5B68380}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleBlazorWebView.Android", "Source\Sample\SampleBlazorWebView\SampleBlazorWebView.Android\SampleBlazorWebView.Android.csproj", "{235E8B67-14F5-4F50-9F7D-8857B5B68380}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleBlazorWebView.Desktop", "Source\Sample\SampleBlazorWebView\SampleBlazorWebView.Desktop\SampleBlazorWebView.Desktop.csproj", "{5F3C998C-DC4D-4FE6-97F4-38B39F6BBA5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleBlazorWebView.Desktop", "Source\Sample\SampleBlazorWebView\SampleBlazorWebView.Desktop\SampleBlazorWebView.Desktop.csproj", "{5F3C998C-DC4D-4FE6-97F4-38B39F6BBA5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleBlazorWebView.iOS", "Source\Sample\SampleBlazorWebView\SampleBlazorWebView.iOS\SampleBlazorWebView.iOS.csproj", "{67A7794F-2A3A-4A7B-B42A-9B49DA227AF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleBlazorWebView.iOS", "Source\Sample\SampleBlazorWebView\SampleBlazorWebView.iOS\SampleBlazorWebView.iOS.csproj", "{67A7794F-2A3A-4A7B-B42A-9B49DA227AF3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform", "Platform", "{070755E7-E85D-4C99-A7A7-CFE543054D7C}"
 EndProject
@@ -53,6 +53,20 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mac", "Mac", "{69A9B177-4720-4495-A6BA-028141036014}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{B3C57F7C-EFD6-4E43-A557-2DC448FE5AEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.WebView.Windows", "Source\Platform\Windows\Avalonia.WebView.Windows\Avalonia.WebView.Windows.csproj", "{330C8AF8-47C7-4C4E-ADF7-F186D892AA47}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Web.WebView2.Core", "Source\Platform\Windows\Microsoft.Web.WebView2.Core\Microsoft.Web.WebView2.Core.csproj", "{68A24AE6-B95D-412A-98E4-B84BC42A52C3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Web.WebView2.WinForms", "Source\Platform\Windows\Microsoft.Web.WebView2.WinForms\Microsoft.Web.WebView2.WinForms.csproj", "{694D0ADA-2ED3-4A89-84C7-43E685502F99}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Web.WebView2.Wpf", "Source\Platform\Windows\Microsoft.Web.WebView2.Wpf\Microsoft.Web.WebView2.Wpf.csproj", "{80630AA2-4003-4D20-A768-A032DD4463E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.WebView", "Source\Avalonia.WebView\Avalonia.WebView.csproj", "{F7830EE5-7C91-4AD4-8A10-32A8B01A7637}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebView.Core", "Source\WebView.Core\WebView.Core.csproj", "{3903CFAE-3430-4DDF-AB82-BC2DC5148909}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaWebView.Shared", "Source\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj", "{2A2FA36D-BCB3-4C99-86FE-A534FB211EF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -100,6 +114,34 @@ Global
 		{67A7794F-2A3A-4A7B-B42A-9B49DA227AF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67A7794F-2A3A-4A7B-B42A-9B49DA227AF3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{67A7794F-2A3A-4A7B-B42A-9B49DA227AF3}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{330C8AF8-47C7-4C4E-ADF7-F186D892AA47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{330C8AF8-47C7-4C4E-ADF7-F186D892AA47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{330C8AF8-47C7-4C4E-ADF7-F186D892AA47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{330C8AF8-47C7-4C4E-ADF7-F186D892AA47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68A24AE6-B95D-412A-98E4-B84BC42A52C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68A24AE6-B95D-412A-98E4-B84BC42A52C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68A24AE6-B95D-412A-98E4-B84BC42A52C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68A24AE6-B95D-412A-98E4-B84BC42A52C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{694D0ADA-2ED3-4A89-84C7-43E685502F99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{694D0ADA-2ED3-4A89-84C7-43E685502F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{694D0ADA-2ED3-4A89-84C7-43E685502F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{694D0ADA-2ED3-4A89-84C7-43E685502F99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80630AA2-4003-4D20-A768-A032DD4463E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80630AA2-4003-4D20-A768-A032DD4463E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80630AA2-4003-4D20-A768-A032DD4463E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80630AA2-4003-4D20-A768-A032DD4463E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7830EE5-7C91-4AD4-8A10-32A8B01A7637}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7830EE5-7C91-4AD4-8A10-32A8B01A7637}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7830EE5-7C91-4AD4-8A10-32A8B01A7637}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7830EE5-7C91-4AD4-8A10-32A8B01A7637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3903CFAE-3430-4DDF-AB82-BC2DC5148909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3903CFAE-3430-4DDF-AB82-BC2DC5148909}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3903CFAE-3430-4DDF-AB82-BC2DC5148909}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3903CFAE-3430-4DDF-AB82-BC2DC5148909}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A2FA36D-BCB3-4C99-86FE-A534FB211EF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A2FA36D-BCB3-4C99-86FE-A534FB211EF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A2FA36D-BCB3-4C99-86FE-A534FB211EF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A2FA36D-BCB3-4C99-86FE-A534FB211EF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -120,6 +162,10 @@ Global
 		{46299C4E-04B1-4205-AC04-EF86ED23FFF2} = {070755E7-E85D-4C99-A7A7-CFE543054D7C}
 		{69A9B177-4720-4495-A6BA-028141036014} = {070755E7-E85D-4C99-A7A7-CFE543054D7C}
 		{B3C57F7C-EFD6-4E43-A557-2DC448FE5AEB} = {070755E7-E85D-4C99-A7A7-CFE543054D7C}
+		{330C8AF8-47C7-4C4E-ADF7-F186D892AA47} = {B3C57F7C-EFD6-4E43-A557-2DC448FE5AEB}
+		{68A24AE6-B95D-412A-98E4-B84BC42A52C3} = {B3C57F7C-EFD6-4E43-A557-2DC448FE5AEB}
+		{694D0ADA-2ED3-4A89-84C7-43E685502F99} = {B3C57F7C-EFD6-4E43-A557-2DC448FE5AEB}
+		{80630AA2-4003-4D20-A768-A032DD4463E8} = {B3C57F7C-EFD6-4E43-A557-2DC448FE5AEB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0921EC9A-CD2A-4912-BC79-11B67BBCBDF5}
