@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Project>
+	<!-- Define NETSTANDARD2_1_OR_GREATER for .NET Standard 2.1 targets and above -->
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net7.0'">
+		<DefineConstants>NETSTANDARD2_1_OR_GREATER</DefineConstants>
+	</PropertyGroup>
+
+	<!-- Configure trimming for projects on .NET 6 and above -->
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net7.0'">
+		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+		<IsTrimmable>true</IsTrimmable>
+	</PropertyGroup>
+
+	<ItemGroup  Condition="'$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="PolySharp">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>build; analyzers</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<PropertyGroup  Condition="'$(TargetFramework)' == 'netstandard2.0' OR  '$(TargetFramework)' == 'net6.0'">
+		<PolySharpIncludeGeneratedTypes>
+			System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute;
+			System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute;
+			System.Diagnostics.CodeAnalysis.MemberNotNullAttribute;
+			System.Diagnostics.CodeAnalysis.NotNullAttribute;
+			System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute;
+			System.Diagnostics.CodeAnalysis.NotNullWhenAttribute;
+			System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute;
+			System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute;
+			System.Runtime.CompilerServices.CallerArgumentExpressionAttribute;
+			System.Runtime.CompilerServices.IsExternalInit;
+			System.Runtime.CompilerServices.SkipLocalsInitAttribute;
+			System.Runtime.CompilerServices.RequiredMemberAttribute;
+			System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute;
+		</PolySharpIncludeGeneratedTypes>
+	</PropertyGroup>
+</Project>

@@ -1,0 +1,40 @@
+﻿<Project>
+	<PropertyGroup>
+		<MiniVersionTargetFramework>netstandard2.0</MiniVersionTargetFramework>
+		<RepositoryDirectory>$(MSBuildThisFileDirectory)</RepositoryDirectory>
+		<BuildToolsDirectory>$(RepositoryDirectory)Build\</BuildToolsDirectory>
+		<BaseIntermediateOutputPath>$(RepositoryDirectory).vs\$(SolutionName)\Intermediate\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+		<!--<IntermediateOutputPath Condition="$([MSBuild]::IsOSPlatform('OSX'))">$(MSBuildThisFileDirectory).vs\$(SolutionName)\Intermediate\$(MSBuildProjectName)\</IntermediateOutputPath>-->
+		<!--<IntermediateOutputPath>$(SolutionDir).vs\$(SolutionName)\Intermediate\$(MSBuildProjectName)\</IntermediateOutputPath>-->
+		<!--<IntermediateOutputPath>$(MSBuildThisFileDirectory).vs\$(SolutionName)\Intermediate\$(MSBuildProjectName)\</IntermediateOutputPath>-->
+		<OutputPath>$(RepositoryDirectory)Binary\</OutputPath>
+		<!--<IsNetStandard2>$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', '$(MiniVersionTargetFramework)'))</IsNetStandard2>-->
+	</PropertyGroup>
+
+	<Import Project="$(BuildToolsDirectory)Directory.build.common.props" />
+
+	<Choose>
+		<When Condition="'$(SourceLinkEnabled)' != 'false'">
+			<PropertyGroup>
+				<!-- Declare that the Repository URL can be published to NuSpec -->
+				<PublishRepositoryUrl>true</PublishRepositoryUrl>
+				<!-- Embed source files that are not tracked by the source control manager to the PDB -->
+				<EmbedUntrackedSources>true</EmbedUntrackedSources>
+				<!-- Include PDB in the built .nupkg -->
+				<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+			</PropertyGroup>
+			<ItemGroup>
+				<PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+			</ItemGroup>
+		</When>
+		<When Condition="'$(Configuration)' == 'Debug'">
+			<PropertyGroup>
+				<DebugSymbols>true</DebugSymbols>
+				<DebugType>full</DebugType>
+				<Optimize>false</Optimize>
+				<DefineConstants>DEBUG;TRACE</DefineConstants>
+			</PropertyGroup>
+		</When>
+	</Choose>
+
+</Project>

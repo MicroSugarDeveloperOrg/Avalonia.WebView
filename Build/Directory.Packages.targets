@@ -1,0 +1,37 @@
+﻿<Project>
+	<PropertyGroup>
+		<!--Package-->
+		<WebviewVersion>0.1.0-preview7.1.1</WebviewVersion>
+		<WebViewPackageOutputPath>$(RepositoryDirectory)nuget\</WebViewPackageOutputPath>
+		<VersionPrefix>1.0.0-avalonia11p7-preview1</VersionPrefix>
+		<Authors>AvaloniaDeveloper</Authors>
+		<Company>AvaloniaDeveloperOrg</Company>
+		<Description>This repository is a set of controls that will help you add webview control.</Description>
+		<PackageTags>webview for avaloniaui</PackageTags>
+		<RepositoryUrl>https://github.com/AvaloniaDeveloperOrg/WebView.Avalonia</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/AvaloniaDeveloperOrg/WebView.Avalonia</PackageProjectUrl>
+		<RepositoryType>git</RepositoryType>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>webview@avalonia-logo.png</PackageIcon>
+		<Version>$(WebviewVersion)</Version>
+		<PackageOutputPath>$(WebViewPackageOutputPath)</PackageOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\Packages\webview@avalonia-logo.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+	
+</Project>
