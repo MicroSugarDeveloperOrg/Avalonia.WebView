@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Avalonia.WebView.Core\Avalonia.WebView.Core.csproj" />
+    <ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
   </ItemGroup> 
 
 </Project>
