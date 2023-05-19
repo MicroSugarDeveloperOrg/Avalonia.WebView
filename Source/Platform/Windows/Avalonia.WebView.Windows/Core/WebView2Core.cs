@@ -10,7 +10,10 @@ public partial class WebView2Core : IPlatformWebView<WebView2Core>
         _creationProperties = webViewCreationProperties;
 
         if (handler.RefHandler.Handle != IntPtr.Zero)
+        {
+            NativeHandler = handler.RefHandler.Handle;
             _hwndTaskSource.SetResult(handler.RefHandler.Handle);
+        }
 
         SetEnvirmentDefaultBackground(webViewCreationProperties.DefaultWebViewBackgroundColor);
         RegisterEvents();
@@ -61,5 +64,4 @@ public partial class WebView2Core : IPlatformWebView<WebView2Core>
             return _coreWebView2Controller?.CoreWebView2;
         }
     }
-
 }

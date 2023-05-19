@@ -4,10 +4,10 @@ public class WebViewHandler : ViewHandler<IVirtualWebView, WebView2Core>
 {
     public WebViewHandler(IVirtualWebView virtualWebView, IVirtualWebViewControlCallBack callback , WebViewCreationProperties webViewCreationProperties)
     {
-        var webview2core = new WebView2Core(this, callback, webViewCreationProperties);
-        PlatformWebView = webview2core;
+        var webView = new WebView2Core(this, callback, webViewCreationProperties);
+        PlatformWebView = webView;
         VirtualViewContext = virtualWebView;
-        PlatformViewContext = webview2core;
+        PlatformViewContext = webView;
     }
 
     protected override HandleRef CreatePlatformHandler(IPlatformHandle parent, Func<IPlatformHandle> createFromSystem)

@@ -76,6 +76,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleBlazorWebViewShared",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleBlazorWebView.Wpf", "Source\Sample\SampleBlazorWebView\SampleBlazorWebView.Wpf\SampleBlazorWebView.Wpf.csproj", "{6C5F0436-9396-4941-B7D4-DE6A3F8B2584}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.WebView.Mac", "Source\Platform\Mac\Avalonia.WebView.Mac\Avalonia.WebView.Mac.csproj", "{C6673D56-527D-44A0-9534-E9446888C44B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -166,6 +168,10 @@ Global
 		{6C5F0436-9396-4941-B7D4-DE6A3F8B2584}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C5F0436-9396-4941-B7D4-DE6A3F8B2584}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C5F0436-9396-4941-B7D4-DE6A3F8B2584}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6673D56-527D-44A0-9534-E9446888C44B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6673D56-527D-44A0-9534-E9446888C44B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6673D56-527D-44A0-9534-E9446888C44B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6673D56-527D-44A0-9534-E9446888C44B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -193,6 +199,7 @@ Global
 		{8D642CAF-2505-4228-925B-7DA737FB4E4A} = {B3C57F7C-EFD6-4E43-A557-2DC448FE5AEB}
 		{18CB7DBF-4E4F-4210-9049-0689CE1C0D7A} = {30565A8D-5256-4118-8BD2-D3ADFAAE5D4A}
 		{6C5F0436-9396-4941-B7D4-DE6A3F8B2584} = {30565A8D-5256-4118-8BD2-D3ADFAAE5D4A}
+		{C6673D56-527D-44A0-9534-E9446888C44B} = {69A9B177-4720-4495-A6BA-028141036014}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0921EC9A-CD2A-4912-BC79-11B67BBCBDF5}

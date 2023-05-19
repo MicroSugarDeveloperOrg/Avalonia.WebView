@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<SupportedOSPlatformVersion>10.14</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" />
+		<PackageReference Include="MonoMac.NetStandard" /> 
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
+	</ItemGroup>
+
+	<!--<ItemGroup>
+		<PackageReference Include="MonoMac.NetStandard" />
+	</ItemGroup>-->
+
+</Project>

@@ -2,6 +2,8 @@
 
 partial class WebView2Core
 {
+    public IntPtr NativeHandler { get; private set; }
+
     WebView2Core IPlatformWebView<WebView2Core>.PlatformView => this;
 
     object? IPlatformWebView.PlatformViewContext => this;
@@ -72,14 +74,14 @@ partial class WebView2Core
 
             IsInitialized = true;
             _callBack.PlatformWebViewCreated(this, new WebViewCreatedEventArgs { IsSucceed = true });
+            return true;
         }
         catch (Exception ex2)
         {
             _callBack.PlatformWebViewCreated(this, new WebViewCreatedEventArgs { IsSucceed = false, Message = ex2.ToString() });
-            throw;
         }
 
-        return true;
+        return false;
     }
 
     bool IWebViewControl.GoBack()
