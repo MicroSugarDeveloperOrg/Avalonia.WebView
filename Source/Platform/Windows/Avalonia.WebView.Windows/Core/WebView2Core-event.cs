@@ -24,7 +24,7 @@ partial class WebView2Core
         if (topLevel is not null)
             scale = topLevel.RenderScaling;
 
-        _coreWebView2Controller.Bounds = new System.Drawing.Rectangle(0, 0, Convert.ToInt32(e.NewSize.Width * scale), Convert.ToInt32(e.NewSize.Height * scale));
+        _coreWebView2Controller.Bounds = new Rectangle(0, 0, Convert.ToInt32(e.NewSize.Width * scale), Convert.ToInt32(e.NewSize.Height * scale));
         _coreWebView2Controller.NotifyParentWindowPositionChanged();
     }
 

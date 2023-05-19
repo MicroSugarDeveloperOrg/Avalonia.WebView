@@ -4,12 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:SampleWebView.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SampleWebView.Views.MainView"
-             Foreground="White"
-             Background="#171C2C">
-  <Design.DataContext>
-    <viewModels:MainViewModel />
-  </Design.DataContext>
+             x:Class="SampleWebView.Views.MainView" >
 
-  <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+	<Grid RowDefinitions="50,*">
+		
+		<Button Content="Baidu" Command="{Binding BaiduCommand}"/>
+		
+		<WebView Grid.Row="1" x:Name="PART_WebView" Url="https://www.baidu.com"></WebView>
+
+	</Grid>
 </UserControl>

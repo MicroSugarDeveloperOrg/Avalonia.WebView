@@ -1,5 +1,4 @@
 ﻿using WebViewCore.Events;
-using WebViewCore.Models;
 
 namespace WebViewCore;
 public interface IVirtualWebViewControlCallBack

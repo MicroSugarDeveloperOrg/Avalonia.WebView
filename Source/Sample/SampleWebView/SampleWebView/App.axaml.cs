@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using SampleWebView.ViewModels;
 using SampleWebView.Views;
+using AvaloniaWebView;
 
 namespace SampleWebView;
 public partial class App : Application
@@ -10,6 +11,12 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+    }
+
+    public override void RegisterServices()
+    {
+        base.RegisterServices();
+        AvaloniaLocator.CurrentMutable.UseAvaloniaWebView(default);
     }
 
     public override void OnFrameworkInitializationCompleted()

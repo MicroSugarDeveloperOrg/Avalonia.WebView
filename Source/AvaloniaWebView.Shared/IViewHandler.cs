@@ -5,6 +5,6 @@ namespace AvaloniaWebView.Shared;
 
 public interface IViewHandler
 {
-    Control HandlerView { get; }
+    Control AttachableControl { get; }
     IPlatformWebView PlatformWebView { get; }
 }

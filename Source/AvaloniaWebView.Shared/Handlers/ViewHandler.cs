@@ -26,7 +26,7 @@ public abstract class ViewHandler : NativeControlHost, IViewHandler, IPlatformHa
     public IPlatformWebView PlatformWebView { get; protected set; } = default!;
     //#nullable restore
 
-    public Control HandlerView => this;
+    public Control AttachableControl => this;
 
     public IntPtr Handle => RefHandler.Handle;
 

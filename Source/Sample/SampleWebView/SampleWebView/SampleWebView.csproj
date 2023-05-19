@@ -10,10 +10,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia"  />
-    <PackageReference Include="Avalonia.Themes.Fluent"  />
-    <PackageReference Include="Avalonia.ReactiveUI"  />
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.ReactiveUI" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics"  /> 
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" /> 
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Avalonia.WebView\Avalonia.WebView.csproj" />
   </ItemGroup>
 </Project>

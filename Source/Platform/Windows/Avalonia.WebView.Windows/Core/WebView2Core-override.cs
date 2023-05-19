@@ -32,14 +32,14 @@ partial class WebView2Core
             if (options is not null)
             {
                 CoreWebView2Environment environment3 = environment2;
-                CoreWebView2Controller coreWebView2Controller = await environment3.CreateCoreWebView2ControllerAsync(intPtr, options).ConfigureAwait(true);
+                CoreWebView2Controller coreWebView2Controller = await environment3.CreateCoreWebView2ControllerAsync(intPtr, options);
                 _coreWebView2Controller = coreWebView2Controller;
                 _controllerOptions = options;
             }
             else
             {
                 CoreWebView2Environment environment3 = environment2;
-                CoreWebView2Controller coreWebView2Controller = await environment3.CreateCoreWebView2ControllerAsync(intPtr).ConfigureAwait(true);
+                CoreWebView2Controller coreWebView2Controller = await environment3.CreateCoreWebView2ControllerAsync(intPtr);
                 _coreWebView2Controller = coreWebView2Controller;
             }
 
@@ -60,6 +60,9 @@ partial class WebView2Core
 
             if (_coreWebView2Controller.ParentWindow != intPtr)
                 ReparentController(_coreWebView2Controller, intPtr);
+
+            if (_coreWebView2Controller.ParentWindow != IntPtr.Zero)
+                SyncControllerWithParentWindow(_coreWebView2Controller);
 
             ApplyDefaultWebViewSettings(corewebview2);
             RegisterWebViewEvents(_coreWebView2Controller);
@@ -143,15 +146,22 @@ partial class WebView2Core
         {
             if (disposing)
             {
+                try
+                {
+                    ClearBlazorWebViewCompleted(CoreWebView2!);
+                    UnregisterWebViewEvents(_coreWebView2Controller!);
+                    UnregisterEvents();
+                }
+                catch (Exception)
+                {
 
+                }
+
+                _controllerOptions = null;
+                _coreWebView2Controller = null;
+                _coreWebView2Environment = null;
             }
-
-            ClearBlazorWebViewCompleted(CoreWebView2!);
-            UnregisterWebViewEvents(_coreWebView2Controller!);
-            UnregisterEvents();
-            _controllerOptions = null;
-            _coreWebView2Controller = null;
-            _coreWebView2Environment = null;
+ 
             IsDisposed = true;
         }
     }

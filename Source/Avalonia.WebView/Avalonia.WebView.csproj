@@ -1,8 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<RootNamespace>AvaloniaWebView</RootNamespace>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
+	</ItemGroup>
 
 </Project>

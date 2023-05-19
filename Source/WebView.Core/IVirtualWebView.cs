@@ -2,6 +2,6 @@
 
 public interface IVirtualWebView
 {
-    object? VirtualViewObject { get; }
+    object VirtualViewObject { get; }
     IPlatformWebView? PlatformView { get; }
 }

@@ -12,7 +12,7 @@ public partial class WebView2Core : IPlatformWebView<WebView2Core>
         if (handler.RefHandler.Handle != IntPtr.Zero)
             _hwndTaskSource.SetResult(handler.RefHandler.Handle);
 
-        SetEnvirmentDefaultBackground(webViewCreationProperties.DefaultWebViewBackgroundColor);
+        //SetEnvirmentDefaultBackground(webViewCreationProperties.DefaultWebViewBackgroundColor);
         RegisterEvents();
     }
 
