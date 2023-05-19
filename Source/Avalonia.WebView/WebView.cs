@@ -1,6 +1,6 @@
 ﻿namespace AvaloniaWebView;
 
-public sealed partial class  WebView : Control, IVirtualWebView<WebView>, IEmptyView, IWebViewEventHandler, IVirtualWebViewControlCallBack
+public sealed partial class  WebView : Control, IVirtualWebView<WebView>, IEmptyView, IWebViewEventHandler, IVirtualWebViewControlCallBack, IWebViewControl
 {
     static WebView()
     {
@@ -8,6 +8,12 @@ public sealed partial class  WebView : Control, IVirtualWebView<WebView>, IEmpty
         AffectsMeasure<WebView>(ChildProperty, PaddingProperty, BorderThicknessProperty);
         LoadDependencyObjectsChanged();
         LoadHostDependencyObjectsChanged();
+    }
+
+    public WebView()
+        : this(default)
+    {
+
     }
 
     public WebView(IServiceProvider? serviceProvider = default)
@@ -45,5 +51,4 @@ public sealed partial class  WebView : Control, IVirtualWebView<WebView>, IEmpty
 
     IPlatformWebView? _platformWebView;
     public IPlatformWebView? PlatformWebView => _platformWebView;
-
 }

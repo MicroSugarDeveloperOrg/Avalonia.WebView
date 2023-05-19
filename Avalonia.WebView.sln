@@ -54,7 +54,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mac", "Mac", "{69A9B177-472
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{B3C57F7C-EFD6-4E43-A557-2DC448FE5AEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.WebView.Windows", "Source\Platform\Windows\Avalonia.WebView.Windows\Avalonia.WebView.Windows.csproj", "{330C8AF8-47C7-4C4E-ADF7-F186D892AA47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.WebView.Windows", "Source\Platform\Windows\Avalonia.WebView.Windows\Avalonia.WebView.Windows.csproj", "{330C8AF8-47C7-4C4E-ADF7-F186D892AA47}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Web.WebView2.Core", "Source\Platform\Windows\Microsoft.Web.WebView2.Core\Microsoft.Web.WebView2.Core.csproj", "{68A24AE6-B95D-412A-98E4-B84BC42A52C3}"
 EndProject
@@ -62,11 +62,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Web.WebView2.WinF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Web.WebView2.Wpf", "Source\Platform\Windows\Microsoft.Web.WebView2.Wpf\Microsoft.Web.WebView2.Wpf.csproj", "{80630AA2-4003-4D20-A768-A032DD4463E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.WebView", "Source\Avalonia.WebView\Avalonia.WebView.csproj", "{F7830EE5-7C91-4AD4-8A10-32A8B01A7637}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.WebView", "Source\Avalonia.WebView\Avalonia.WebView.csproj", "{F7830EE5-7C91-4AD4-8A10-32A8B01A7637}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebView.Core", "Source\WebView.Core\WebView.Core.csproj", "{3903CFAE-3430-4DDF-AB82-BC2DC5148909}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebView.Core", "Source\WebView.Core\WebView.Core.csproj", "{3903CFAE-3430-4DDF-AB82-BC2DC5148909}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaWebView.Shared", "Source\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj", "{2A2FA36D-BCB3-4C99-86FE-A534FB211EF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaWebView.Shared", "Source\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj", "{2A2FA36D-BCB3-4C99-86FE-A534FB211EF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.BlazorWebView", "Source\Avalonia.BlazorWebView\Avalonia.BlazorWebView.csproj", "{6067C60B-5E91-43B9-A077-1A8E5318ED9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -142,6 +144,10 @@ Global
 		{2A2FA36D-BCB3-4C99-86FE-A534FB211EF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A2FA36D-BCB3-4C99-86FE-A534FB211EF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A2FA36D-BCB3-4C99-86FE-A534FB211EF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6067C60B-5E91-43B9-A077-1A8E5318ED9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6067C60B-5E91-43B9-A077-1A8E5318ED9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6067C60B-5E91-43B9-A077-1A8E5318ED9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6067C60B-5E91-43B9-A077-1A8E5318ED9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

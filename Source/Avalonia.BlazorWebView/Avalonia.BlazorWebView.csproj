@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<RootNamespace>AvaloniaBlazorWebView</RootNamespace>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="Avalonia" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
+	</ItemGroup>
+	
+</Project>

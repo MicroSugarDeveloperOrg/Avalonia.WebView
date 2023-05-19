@@ -4,12 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:SampleBlazorWebView.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SampleBlazorWebView.Views.MainView"
-             Foreground="White"
-             Background="#171C2C">
-  <Design.DataContext>
-    <viewModels:MainViewModel />
-  </Design.DataContext>
-
-  <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+             x:Class="SampleBlazorWebView.Views.MainView" >
+	
+	<BlazorWebView HostPage="wwwroot/index.html"/>
+	
 </UserControl>

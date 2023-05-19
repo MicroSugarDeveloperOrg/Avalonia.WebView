@@ -1,10 +1,6 @@
 ﻿namespace WebViewCore;
-public interface IPlatformWebViewControl
+public interface IWebViewControl
 {
-    Task<bool> Initialize(IVirtualWebViewProvider? virtualProvider);
-
-    bool IsInitialized { get; }
-
     bool IsCanGoForward { get; }
     bool IsCanGoBack { get; }
 

@@ -1,4 +1,5 @@
-﻿using WebViewCore.Models;
+﻿using System;
+using WebViewCore.Models;
 
 namespace Avalonia.WebView.Windows.Core;
 
@@ -50,7 +51,7 @@ partial class WebView2Core
         corewebview2.ProcessFailed += Corewebview2_ProcessFailed;
         corewebview2.SourceChanged += Corewebview2_SourceChanged;
         corewebview2.WebMessageReceived += Corewebview2_WebMessageReceived;
-        //corewebview2.WebResourceRequested += CoreWebView2_WebResourceRequested;
+        corewebview2.WebResourceRequested += CoreWebView2_WebResourceRequested;
         corewebview2.DOMContentLoaded += Corewebview2_DOMContentLoaded;
         corewebview2.Profile.Deleted += Profile_Deleted;
     }
@@ -82,7 +83,7 @@ partial class WebView2Core
         corewebview2.ProcessFailed -= Corewebview2_ProcessFailed;
         corewebview2.SourceChanged -= Corewebview2_SourceChanged;
         corewebview2.WebMessageReceived -= Corewebview2_WebMessageReceived;
-        //corewebview2.WebResourceRequested += CoreWebView2_WebResourceRequested;
+        corewebview2.WebResourceRequested += CoreWebView2_WebResourceRequested;
         corewebview2.DOMContentLoaded -= Corewebview2_DOMContentLoaded;
         corewebview2.Profile.Deleted -= Profile_Deleted;
     }
@@ -97,9 +98,12 @@ partial class WebView2Core
 
         _isBlazorWebView = true;
         coreWebView2.AddWebResourceRequestedFilter(fileter, CoreWebView2WebResourceContext.All);
-        coreWebView2.WebResourceRequested += CoreWebView2_WebResourceRequested;
+        //coreWebView2.WebResourceRequested += CoreWebView2_WebResourceRequested;
+
         return coreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(BlazorScriptHelper.BlazorStartingScript);
     }
+
+
 
     void ClearBlazorWebViewCompleted(CoreWebView2 coreWebView2)
     {
@@ -112,15 +116,21 @@ partial class WebView2Core
         coreWebView2.WebResourceRequested -= CoreWebView2_WebResourceRequested;
     }
 
-    private void CoreWebView2_WebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)
+    private async void CoreWebView2_WebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)
+    {
+        await CoreWebView2_WebResourceRequestedAsync(sender, e);
+    }
+
+    private Task CoreWebView2_WebResourceRequestedAsync(object sender, CoreWebView2WebResourceRequestedEventArgs e)
     {
         if (_provider is null)
-            return;
+            return Task.CompletedTask;
 
         if (_coreWebView2Environment is null)
-            return;
+            return Task.CompletedTask;
 
-        var allowFallbackOnHostPage = e.ResourceContext == CoreWebView2WebResourceContext.Document || e.ResourceContext == CoreWebView2WebResourceContext.Other;
+        var allowFallbackOnHostPage = e.ResourceContext == CoreWebView2WebResourceContext.Document ||
+                                      e.ResourceContext == CoreWebView2WebResourceContext.Other;
 
         var request = new WebResourceRequest
         {
@@ -129,12 +139,14 @@ partial class WebView2Core
         };
 
         if (!_provider.PlatformWebViewResourceRequested(this, request, out var reponse))
-            return;
+            return Task.CompletedTask;
 
         if (reponse is null)
-            return;
+            return Task.CompletedTask;
 
         e.Response = _coreWebView2Environment.CreateWebResourceResponse(reponse.Content, reponse.StatusCode, reponse.StatusMessage, reponse.HeaderString);
+
+        return Task.CompletedTask;
     }
 
     private void CoreWebView2Controller_ZoomFactorChanged(object sender, object e)
@@ -161,12 +173,17 @@ partial class WebView2Core
     {
     }
 
-    private void Corewebview2_WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e) => _callBack.PlatformWebViewMessageReceived(this, new WebViewMessageReceivedEventArgs
+    private void Corewebview2_WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
     {
-        Message = e.TryGetWebMessageAsString(),
-        MessageAsJson = e.WebMessageAsJson,
-        Source = e.Source,
-    });
+        var message = new WebViewMessageReceivedEventArgs
+        {
+            Message = e.TryGetWebMessageAsString(),
+            MessageAsJson = e.WebMessageAsJson,
+            Source = e.Source,
+        };
+        _callBack.PlatformWebViewMessageReceived(this, message);
+        _provider?.PlatformWebViewMessageReceived(this, message);
+    }
 
     private void Corewebview2_SourceChanged(object sender, CoreWebView2SourceChangedEventArgs e)
     {

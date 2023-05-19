@@ -1,19 +1,28 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <AvaloniaResource Include="Assets\**" /> 
-  </ItemGroup>
+	<ItemGroup>
+		<AvaloniaResource Include="Assets\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Avalonia" />
-    <PackageReference Include="Avalonia.Themes.Fluent" />
-    <PackageReference Include="Avalonia.ReactiveUI" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia" />
+		<PackageReference Include="Avalonia.Themes.Fluent" />
+		<PackageReference Include="Avalonia.ReactiveUI" />
+		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Avalonia.BlazorWebView\Avalonia.BlazorWebView.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Update="wwwroot\**">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 </Project>

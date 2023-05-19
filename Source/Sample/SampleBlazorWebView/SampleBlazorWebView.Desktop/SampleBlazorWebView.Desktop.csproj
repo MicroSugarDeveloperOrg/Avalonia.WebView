@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <TargetFramework>net7.0</TargetFramework> 
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
   </PropertyGroup>
 
@@ -11,10 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia.Desktop"/>
+    <PackageReference Include="Avalonia.Desktop" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Windows\Avalonia.WebView.Windows\Avalonia.WebView.Windows.csproj" />
     <ProjectReference Include="..\SampleBlazorWebView\SampleBlazorWebView.csproj" />
   </ItemGroup>
 </Project>

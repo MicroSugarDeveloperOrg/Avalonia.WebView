@@ -6,14 +6,14 @@ partial class WebView2Core
 
     object? IPlatformWebView.PlatformViewContext => this;
 
-    bool IPlatformWebViewControl.IsInitialized => IsInitialized;
+    bool IPlatformWebView.IsInitialized => IsInitialized;
 
-    bool IPlatformWebViewControl.IsCanGoForward => throw new NotImplementedException();
+    bool IWebViewControl.IsCanGoForward => throw new NotImplementedException();
 
-    bool IPlatformWebViewControl.IsCanGoBack => throw new NotImplementedException();
+    bool IWebViewControl.IsCanGoBack => throw new NotImplementedException();
 
 
-    async Task<bool> IPlatformWebViewControl.Initialize(IVirtualWebViewProvider? virtualProvider)
+    async Task<bool> IPlatformWebView.Initialize(IVirtualWebViewProvider? virtualProvider)
     {
         if (IsInitialized)
             return true;
@@ -70,6 +70,8 @@ partial class WebView2Core
             if (virtualProvider is not null)
                 await PrepareBlazorWebViewStarting(virtualProvider, corewebview2).ConfigureAwait(true);
 
+            corewebview2.WebMessageReceived += Corewebview2_WebMessageReceived;
+
             IsInitialized = true;
             _callBack.PlatformWebViewCreated(this, new WebViewCreatedEventArgs { IsSucceed = true });
         }
@@ -82,17 +84,17 @@ partial class WebView2Core
         return true;
     }
 
-    bool IPlatformWebViewControl.GoBack()
+    bool IWebViewControl.GoBack()
     {
         throw new NotImplementedException();
     }
 
-    bool IPlatformWebViewControl.GoForward()
+    bool IWebViewControl.GoForward()
     {
         throw new NotImplementedException();
     }
 
-    bool IPlatformWebViewControl.Navigate(Uri? uri)
+    bool IWebViewControl.Navigate(Uri? uri)
     {
         if (uri is null)
             return false;
@@ -104,38 +106,38 @@ partial class WebView2Core
         return true;
     }
 
-    bool IPlatformWebViewControl.NavigateToString(string htmlContent)
+    bool IWebViewControl.NavigateToString(string htmlContent)
     {
         throw new NotImplementedException();
     }
 
-    bool IPlatformWebViewControl.OpenDevToolsWindow()
+    bool IWebViewControl.OpenDevToolsWindow()
     {
         throw new NotImplementedException();
     }
 
-    Task<string?> IPlatformWebViewControl.ExecuteScriptAsync(string javaScript)
+    Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
     {
         throw new NotImplementedException();
     }
 
 
-    bool IPlatformWebViewControl.PostWebMessageAsJson(string webMessageAsJson)
+    bool IWebViewControl.PostWebMessageAsJson(string webMessageAsJson)
     {
         throw new NotImplementedException();
     }
 
-    bool IPlatformWebViewControl.PostWebMessageAsString(string webMessageAsString)
+    bool IWebViewControl.PostWebMessageAsString(string webMessageAsString)
     {
         throw new NotImplementedException();
     }
 
-    bool IPlatformWebViewControl.Reload()
+    bool IWebViewControl.Reload()
     {
         throw new NotImplementedException();
     }
 
-    bool IPlatformWebViewControl.Stop()
+    bool IWebViewControl.Stop()
     {
         throw new NotImplementedException();
     }
