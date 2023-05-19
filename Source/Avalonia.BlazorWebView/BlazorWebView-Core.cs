@@ -34,13 +34,11 @@ partial class BlazorWebView
         var fileProvider = new PhysicalFileProvider(contentRootDirFullPath);
 
         var webviewManager = new AvaloniaWebViewManager(this, _serviceProvider, _dispatcher, _baseUri, fileProvider, _jsComponents, contentRootDirRelativePath, hostPageRelativePath);
-        foreach (var rootComponent in RootComponents)
-            await rootComponent.AddToWebViewManagerAsync(webviewManager);
-
         var bRet = await platformWebView.Initialize(webviewManager);
         if (!bRet)
             return false;
-
+        foreach (var rootComponent in RootComponents)
+            await rootComponent.AddToWebViewManagerAsync(webviewManager);
         _webviewManager = webviewManager;
         return true;
     }

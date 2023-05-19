@@ -52,7 +52,11 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualWebViewProvider
             for (; ; )
             {
                 var message = await reader.ReadAsync();
-                _webViewControl.PostWebMessageAsString(message);
+
+                await  Dispatcher.InvokeAsync(() =>
+                {
+                    _webViewControl.PostWebMessageAsString(message);
+                });
             }
         }
         catch (Exception)

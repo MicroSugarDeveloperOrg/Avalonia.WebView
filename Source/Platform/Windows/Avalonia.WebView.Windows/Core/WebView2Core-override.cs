@@ -97,10 +97,8 @@ partial class WebView2Core
         if (uri is null)
             return false;
 
-        if (CoreWebView2 is null)
-            return false;
-
-        CoreWebView2.Navigate(uri.AbsoluteUri);
+        var coreWebView2 = CoreWebView2;
+        coreWebView2!.Navigate(uri.AbsoluteUri);
         return true;
     }
 
@@ -127,7 +125,9 @@ partial class WebView2Core
 
     bool IWebViewControl.PostWebMessageAsString(string webMessageAsString)
     {
-        throw new NotImplementedException();
+        var coreWebView2 = CoreWebView2;
+        coreWebView2!.PostWebMessageAsString(webMessageAsString);
+        return true;
     }
 
     bool IWebViewControl.Reload()

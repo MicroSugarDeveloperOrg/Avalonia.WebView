@@ -7,10 +7,10 @@ internal class BlazorWebViewApplication : IBlazorWebViewApplication
         _serviceCollection = new ServiceCollection();
         injectDelegate?.Invoke(_serviceCollection);
         _serviceCollection.AddOptions<BlazorWebViewSetting>().Configure(configDelegate);
-        _serviceCollection.AddSingleton<JSComponentConfigurationStore>()
+        _serviceCollection.AddBlazorWebView().
+                          AddSingleton<JSComponentConfigurationStore>()
                           .AddSingleton<AvaloniaDispatcher>(provider => new AvaloniaDispatcher(AvaloniaUIDispatcher.UIThread))
-                          .AddSingleton<IJSComponentConfiguration>(provider =>new JsComponentConfigration(provider.GetRequiredService<JSComponentConfigurationStore>()))
-                          .AddBlazorWebView();
+                          .AddSingleton<IJSComponentConfiguration>(provider =>new JsComponentConfigration(provider.GetRequiredService<JSComponentConfigurationStore>()));
     }
 
     readonly IServiceCollection _serviceCollection;

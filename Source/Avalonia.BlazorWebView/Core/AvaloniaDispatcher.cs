@@ -9,28 +9,66 @@ internal class AvaloniaDispatcher : Dispatcher
 
     readonly AvaloniaUIDispatcher _dispatcher;
 
-    public override bool CheckAccess()
+    public override bool CheckAccess() => _dispatcher.CheckAccess();
+
+    public override async Task InvokeAsync(Action workItem)
     {
-        return _dispatcher.CheckAccess();
+        try
+        {
+            if (_dispatcher.CheckAccess())
+                workItem();
+            else
+                await _dispatcher.InvokeAsync(workItem).GetTask();
+
+        }
+        catch (Exception ex)
+        {      
+            throw;
+        }
     }
 
-    public override Task InvokeAsync(Action workItem)
+    public override async Task InvokeAsync(Func<Task> workItem)
     {
-        return _dispatcher.InvokeAsync(workItem).GetTask();
+        try
+        {
+            if (_dispatcher.CheckAccess())
+               await workItem();
+            else
+                await _dispatcher.InvokeAsync(workItem);
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 
-    public override Task InvokeAsync(Func<Task> workItem)
+    public override async Task<TResult> InvokeAsync<TResult>(Func<TResult> workItem)
     {
-        return _dispatcher.InvokeAsync(workItem);
+        try
+        {
+            if (_dispatcher.CheckAccess())
+                return workItem();
+            else
+                return await _dispatcher.InvokeAsync(workItem);
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 
-    public override Task<TResult> InvokeAsync<TResult>(Func<TResult> workItem)
+    public override async Task<TResult> InvokeAsync<TResult>(Func<Task<TResult>> workItem)
     {
-        return _dispatcher.InvokeAsync(workItem).GetTask();
-    }
-
-    public override Task<TResult> InvokeAsync<TResult>(Func<Task<TResult>> workItem)
-    {
-        return _dispatcher.InvokeAsync(workItem);
+        try
+        {
+            if (_dispatcher.CheckAccess())
+                return await workItem();
+            else
+                return await _dispatcher.InvokeAsync(workItem);
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 }

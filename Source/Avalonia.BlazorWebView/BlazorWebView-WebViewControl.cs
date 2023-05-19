@@ -1,4 +1,6 @@
-﻿namespace AvaloniaBlazorWebView;
+﻿using System;
+
+namespace AvaloniaBlazorWebView;
 
 partial class BlazorWebView  
 {
@@ -54,7 +56,10 @@ partial class BlazorWebView
 
     bool IWebViewControl.PostWebMessageAsString(string webMessageAsString)
     {
-        throw new NotImplementedException();
+        if (_platformWebView is null || !_platformWebView.IsInitialized)
+            return false;
+
+       return _platformWebView.PostWebMessageAsString(webMessageAsString);
     }
 
     bool IWebViewControl.OpenDevToolsWindow()
