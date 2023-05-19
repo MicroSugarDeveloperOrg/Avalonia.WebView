@@ -6,7 +6,7 @@ partial class MacWebViewCore
         if (provider is null )
             return Task.CompletedTask;
 
-        if (!provider.ResourceRequestedFilterProvider(this, out var fileter))
+        if (!provider.ResourceRequestedFilterProvider(this, out var filter))
             return Task.CompletedTask;
 
         _isBlazorWebView = true;

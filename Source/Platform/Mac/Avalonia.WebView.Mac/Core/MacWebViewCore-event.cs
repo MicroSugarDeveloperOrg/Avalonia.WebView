@@ -1,5 +1,5 @@
 ﻿namespace Avalonia.WebView.Mac.Core;
-partial class MacWebViewCore  
+partial class MacWebViewCore   : WebFrameLoadDelegate
 {
     void RegisterEvents()
     {
@@ -13,6 +13,17 @@ partial class MacWebViewCore
         _handler.PlatformHandlerChanged -= Handler_PlatformHandlerChanged;
     }
 
+    private void HostControl_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+
+    }
+
+    private void Handler_PlatformHandlerChanged(object sender, EventArgs e)
+    {
+
+    }
+
+
     void RegisterWebViewEvents(MacosWebView webView)
     {
         if (webView is null)
@@ -21,18 +32,23 @@ partial class MacWebViewCore
         webView.ReceivedTitle += WebView_ReceivedTitle;
         webView.FinishedLoad += WebView_FinishedLoad;
         webView.FailedLoadWithError += WebView_FailedLoadWithError;
+        webView.OnReceivedResponse += WebView_OnReceivedResponse;
+        webView.WindowScriptObjectAvailable += WebView_WindowScriptObjectAvailable;
     }
 
     void UnregisterWebViewEvents(MacosWebView webView)
     {
         if (webView is null)
             return;
-
+        
         webView.ReceivedTitle -= WebView_ReceivedTitle;
         webView.FinishedLoad -= WebView_FinishedLoad;
         webView.FailedLoadWithError -= WebView_FailedLoadWithError;
+        webView.OnReceivedResponse -= WebView_OnReceivedResponse;
+        webView.WindowScriptObjectAvailable -= WebView_WindowScriptObjectAvailable;
     }
 
+  
     private void WebView_FailedLoadWithError(object sender, WebFrameErrorEventArgs e)
     {
     }
@@ -45,14 +61,13 @@ partial class MacWebViewCore
     {
     }
 
-    private void HostControl_SizeChanged(object sender, SizeChangedEventArgs e)
+    private void WebView_WindowScriptObjectAvailable(object sender, WebFrameScriptObjectEventArgs e)
     {
-        
+
     }
 
-    private void Handler_PlatformHandlerChanged(object sender, EventArgs e)
+    private void WebView_OnReceivedResponse(object sender, WebResourceReceivedResponseEventArgs e)
     {
-         
-    }
 
+    }
 }

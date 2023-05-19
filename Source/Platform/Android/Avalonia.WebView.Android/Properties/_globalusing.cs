@@ -1,0 +1,13 @@
+﻿global using Android.Webkit;
+global using Avalonia;
+global using Avalonia.Controls;
+global using Avalonia.Controls.Platform;
+global using Avalonia.Data;
+global using Avalonia.Platform;
+global using System.ComponentModel;
+global using Android.Content; 
+global using AndroidWebView = Android.Webkit.WebView;
+global using AndroidApplication = Android.App.Application;
+global using Avalonia.WebView.Core;
+global using System.Runtime.InteropServices;
+global using Avalonia.WebView.Core.Configurations;

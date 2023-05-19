@@ -1,0 +1,20 @@
+﻿
+global using GObject = GLib.Object;
+global using LinuxWebView = WebKit.WebView;
+global using Avalonia.Data;
+global using System.ComponentModel;
+global using Avalonia.Platform;
+global using System.Runtime.InteropServices;
+global using Avalonia.Platform.Interop;
+global using AvaloniaWebView.Shared.Handlers;
+global using WebViewCore;
+global using Avalonia.Controls; 
+global using WebViewCore.Configurations;
+global using AvaloniaWebView.Shared;
+global using Avalonia.Input;
+global using System.Drawing;
+global using WebViewCore.Events;
+global using WebViewCore.Models;
+global using GString = GLib.GString;
+global using Avalonia.WebView.Linux.Helpers;
+global using WebKit;
