@@ -82,6 +82,9 @@ partial class LinuxWebViewCore
 
     bool IWebViewControl.OpenDevToolsWindow()
     {
+        //WebView.ZoomLevel
+        //GString()
+        WebView.Settings.EnableDeveloperExtras = true;
         throw new NotImplementedException();
     }
 

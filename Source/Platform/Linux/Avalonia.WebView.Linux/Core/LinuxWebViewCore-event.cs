@@ -54,6 +54,7 @@ partial class LinuxWebViewCore
     void WebView_WebMessageReceived(nint contentManager, nint jsResult, nint arg)
     {
         var jsValue = JavascriptResult.New(jsResult);
+        
         var message = new WebViewMessageReceivedEventArgs
         {
             Message = jsValue.ToString(),
@@ -87,7 +88,7 @@ partial class LinuxWebViewCore
         response.Content.CopyTo(ms); 
         var span = ms.GetBuffer().AsSpan();
         void* ptr = &span;
-        var inputStream = new GLib.InputStream(new IntPtr(ptr));
+        using var inputStream = new GInputStream(new IntPtr(ptr));
         request.Finish(inputStream, span.Length, response.HeaderString);
     }
 

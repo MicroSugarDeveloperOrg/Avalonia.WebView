@@ -16,5 +16,6 @@ global using System.Drawing;
 global using WebViewCore.Events;
 global using WebViewCore.Models;
 global using GString = GLib.GString;
+global using GInputStream = GLib.InputStream;
 global using Avalonia.WebView.Linux.Helpers;
 global using WebKit;
