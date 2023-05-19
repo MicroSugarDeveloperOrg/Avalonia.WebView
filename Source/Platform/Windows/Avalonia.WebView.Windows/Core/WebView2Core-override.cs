@@ -32,14 +32,14 @@ partial class WebView2Core
             if (options is not null)
             {
                 CoreWebView2Environment environment3 = environment2;
-                CoreWebView2Controller coreWebView2Controller = await environment3.CreateCoreWebView2ControllerAsync(intPtr, options);
+                CoreWebView2Controller coreWebView2Controller = await environment3.CreateCoreWebView2ControllerAsync(intPtr, options).ConfigureAwait(true);
                 _coreWebView2Controller = coreWebView2Controller;
                 _controllerOptions = options;
             }
             else
             {
                 CoreWebView2Environment environment3 = environment2;
-                CoreWebView2Controller coreWebView2Controller = await environment3.CreateCoreWebView2ControllerAsync(intPtr);
+                CoreWebView2Controller coreWebView2Controller = await environment3.CreateCoreWebView2ControllerAsync(intPtr).ConfigureAwait(true);
                 _coreWebView2Controller = coreWebView2Controller;
             }
 
@@ -68,7 +68,7 @@ partial class WebView2Core
             RegisterWebViewEvents(_coreWebView2Controller);
 
             if (virtualProvider is not null)
-                await PrepareBlazorWebViewStarting(virtualProvider, corewebview2);
+                await PrepareBlazorWebViewStarting(virtualProvider, corewebview2).ConfigureAwait(true);
 
             IsInitialized = true;
             _callBack.PlatformWebViewCreated(this, new WebViewCreatedEventArgs { IsSucceed = true });

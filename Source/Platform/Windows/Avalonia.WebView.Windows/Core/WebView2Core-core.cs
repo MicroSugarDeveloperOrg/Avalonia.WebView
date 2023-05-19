@@ -7,8 +7,8 @@ partial class WebView2Core
     Task<CoreWebView2Environment> CreateEnvironmentAsync()
     {
         var options = new CoreWebView2EnvironmentOptions(_creationProperties.AdditionalBrowserArguments!, _creationProperties.Language!);
-        //return CoreWebView2Environment.CreateAsync(_creationProperties.BrowserExecutableFolder!, _creationProperties.UserDataFolder!, options);
-        return CoreWebView2Environment.CreateAsync();
+        return CoreWebView2Environment.CreateAsync(_creationProperties.BrowserExecutableFolder!, _creationProperties.UserDataFolder!, options);
+        //return CoreWebView2Environment.CreateAsync();
     }
 
     CoreWebView2ControllerOptions? CreateCoreWebView2ControllerOptions(CoreWebView2Environment environment)
