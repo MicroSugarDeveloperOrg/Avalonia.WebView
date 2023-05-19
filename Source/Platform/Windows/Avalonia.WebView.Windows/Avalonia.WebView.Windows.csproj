@@ -4,4 +4,9 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
+	  <ProjectReference Include="..\Microsoft.Web.WebView2.Core\Microsoft.Web.WebView2.Core.csproj" />
+	</ItemGroup>
+
 </Project>

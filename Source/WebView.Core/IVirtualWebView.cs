@@ -1,6 +1,7 @@
 ﻿namespace WebViewCore;
 
-public interface IVirtualWebView : IVirtualWebViewControl
+public interface IVirtualWebView
 {
-
+    object? VirtualViewObject { get; }
+    IPlatformWebView? PlatformView { get; }
 }

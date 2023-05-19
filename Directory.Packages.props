@@ -1,58 +1,56 @@
 ﻿<Project>
-	<PropertyGroup>
-		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-		<AvaloniaVersion>11.0.0-preview8</AvaloniaVersion>
-	</PropertyGroup>
-	<ItemGroup>
-		<PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="GtkSharp" Version="3.24.24.95" />
-		<PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
-		<PackageVersion Include="Microsoft.Web.WebView2" Version="1.0.1829-prerelease" />
-		<PackageVersion Include="WebkitGtkSharp" Version="3.24.24.95" />
-		<PackageVersion Include="XamarinMac" Version="1.0.0" />
-		<PackageVersion Include="XamlNameReferenceGenerator" Version="1.5.1" />
-		<!--<PackageVersion Include="Avalonia.Web" Version="$(AvaloniaVersion)" />-->
-		<PackageVersion Include="Avalonia.iOS" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Native" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Browser.Blazor" Version="$(AvaloniaVersion)" />
-		<!--<PackageVersion Include="Avalonia.Web.Blazor" Version="$(AvaloniaVersion)" />-->
-		<PackageVersion Include="Avalonia.Direct2D1" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Headless.Vnc" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Themes.Simple" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Controls.ColorPicker" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
-		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4-beta1.22518.1" />
-		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" />
-		<PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
-		<PackageVersion Include="System.Memory" Version="4.5.5" />
-		<PackageVersion Include="System.Runtime" Version="4.3.1" />
-		<PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
-		<PackageVersion Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
-		<PackageVersion Include="System.Numerics.Vectors" Version="4.5.0" />
-		<PackageVersion Include="System.ComponentModel.Annotations" Version="6.0.0-preview.4.21253.7" />
-		<PackageVersion Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageVersion Include="PolySharp" Version="1.13.1" />
-		<PackageVersion Include="MonoMac.NetStandard" Version="0.0.4" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebView" Version="7.0.5" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebView" Version="6.0.16" />
-	</ItemGroup>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <AvaloniaVersion>11.0.0-preview8</AvaloniaVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="GtkSharp" Version="3.24.24.95" />
+    <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageVersion Include="Microsoft.Web.WebView2" Version="1.0.1829-prerelease" />
+    <PackageVersion Include="WebkitGtkSharp" Version="3.24.24.95" />
+    <PackageVersion Include="XamarinMac" Version="1.0.0" />
+    <PackageVersion Include="XamlNameReferenceGenerator" Version="1.5.1" />
+    <!--<PackageVersion Include="Avalonia.Web" Version="$(AvaloniaVersion)" />-->
+    <PackageVersion Include="Avalonia.iOS" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Native" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Browser.Blazor" Version="$(AvaloniaVersion)" />
+    <!--<PackageVersion Include="Avalonia.Web.Blazor" Version="$(AvaloniaVersion)" />-->
+    <PackageVersion Include="Avalonia.Direct2D1" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Headless.Vnc" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Themes.Simple" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Controls.ColorPicker" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4-beta1.22518.1" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" />
+    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
+    <PackageVersion Include="System.Memory" Version="4.5.5" />
+    <PackageVersion Include="System.Runtime" Version="4.3.1" />
+    <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
+    <PackageVersion Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
+    <PackageVersion Include="System.Numerics.Vectors" Version="4.5.0" />
+    <PackageVersion Include="System.ComponentModel.Annotations" Version="6.0.0-preview.4.21253.7" />
+    <PackageVersion Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="PolySharp" Version="1.13.1" />
+    <PackageVersion Include="MonoMac.NetStandard" Version="0.0.4" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebView" Version="7.0.5" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebView" Version="6.0.16" />
+  </ItemGroup>
 </Project>

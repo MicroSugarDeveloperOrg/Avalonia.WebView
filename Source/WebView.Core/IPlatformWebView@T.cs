@@ -1,7 +1,7 @@
 ﻿namespace WebViewCore;
 
-public interface IPlatformWebView<T>
+public interface IPlatformWebView<T> : IPlatformWebView
 {
-    T? PlatformView { get; }
+    T PlatformView { get; }
 
 }

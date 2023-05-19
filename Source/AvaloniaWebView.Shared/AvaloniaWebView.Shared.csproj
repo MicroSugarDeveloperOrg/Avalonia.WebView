@@ -9,4 +9,8 @@
 		<PackageReference Include="Avalonia" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\WebView.Core\WebView.Core.csproj" />
+	</ItemGroup>
+
 </Project>

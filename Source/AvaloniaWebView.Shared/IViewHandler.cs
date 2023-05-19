@@ -1,7 +1,10 @@
-﻿using Avalonia;
+﻿using Avalonia.Controls;
+using WebViewCore;
 
 namespace AvaloniaWebView.Shared;
+
 public interface IViewHandler
 {
-    Visual? VisualView { get; }
+    Control HandlerView { get; }
+    IPlatformWebView PlatformWebView { get; }
 }

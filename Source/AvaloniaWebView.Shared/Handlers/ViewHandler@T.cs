@@ -1,6 +1,4 @@
-﻿using Avalonia;
-
-namespace AvaloniaWebView.Shared.Handlers;
+﻿namespace AvaloniaWebView.Shared.Handlers;
 
 //public class ViewHandler<TVirtualView, TPlatformView>: ViewHandler where TVirtualView : Visual
 //{
@@ -16,15 +14,15 @@ namespace AvaloniaWebView.Shared.Handlers;
 //}
 
 
-public class ViewHandler<TVirtualView, TPlatformView> : ViewHandler 
+public abstract class ViewHandler<TVirtualViewContext, TPlatformViewContext> : ViewHandler where TVirtualViewContext:class where TPlatformViewContext : class
 {
-    protected ViewHandler() 
+    public ViewHandler()
     {
-
+        HandleDescriptor = typeof(TPlatformViewContext).FullName;
     }
 
-    //public static Func<ViewHandler<TVirtualView, TPlatformView>, TPlatformView>? PlatformViewFactory { get; set; }
+#nullable disable
 
-    public TPlatformView? PlatformView { get; private protected set; }
-    public TVirtualView? VirtualView { get; private protected set; }
+    public TPlatformViewContext PlatformViewContext { get => PlatformViewContextObject as TPlatformViewContext;  protected set => PlatformViewContextObject = value; }
+    public TVirtualViewContext VirtualViewContext { get => VisualViewContextObject as TVirtualViewContext; protected set=> VisualViewContextObject = value; }
 }

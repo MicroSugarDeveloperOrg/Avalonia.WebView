@@ -1,6 +1,10 @@
 ﻿namespace WebViewCore;
 public interface IPlatformWebViewControl
 {
+    Task<bool> Initialize(IVirtualWebViewProvider? virtualProvider);
+
+    bool IsInitialized { get; }
+
     bool IsCanGoForward { get; }
     bool IsCanGoBack { get; }
 
@@ -9,7 +13,7 @@ public interface IPlatformWebViewControl
 
     bool GoBack();
     bool GoForward();
-    bool Stop(); 
+    bool Stop();
     bool Reload();
 
     Task<string?> ExecuteScriptAsync(string javaScript);

@@ -1,11 +1,6 @@
 ﻿namespace WebViewCore;
 
-public interface IPlatformWebView : IPlatformWebViewControl
+public interface IPlatformWebView : IPlatformWebViewControl, IDisposable, IAsyncDisposable
 {
-    IntPtr Handle { get; }
-    string? HandleDescriptor { get; }
     object? PlatformViewContext { get; }
-
- 
-
 }
