@@ -27,6 +27,11 @@ global using Microsoft.Extensions.Options;
 global using AvaloniaBlazorWebView.Configurations;
 global using System.Threading.Channels;
 global using System.Reflection;
-
-
+global using Microsoft.Extensions.Logging;
+global using Microsoft.JSInterop;
+global using System.Reflection.Metadata;
+global using System.Text;
+global using System.Text.RegularExpressions;
+global using WebViewCore.Helpers;
+global using WebViewCore.Models;
 global using AvaloniaUIDispatcher = Avalonia.Threading.Dispatcher;

@@ -1,4 +1,4 @@
-﻿namespace AvaloniaBlazorWebView.Core;
+﻿namespace AvaloniaBlazorWebView.Common;
 
 internal class AvaloniaFileProvider : IFileProvider
 {

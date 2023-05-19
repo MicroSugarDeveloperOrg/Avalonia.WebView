@@ -19,7 +19,6 @@ internal class AvaloniaDispatcher : Dispatcher
                 workItem();
             else
                 await _dispatcher.InvokeAsync(workItem).GetTask();
-
         }
         catch (Exception ex)
         {      

@@ -1,6 +1,4 @@
-﻿using WebViewCore;
-using WebViewCore.Helpers;
-using WebViewCore.Models;
+﻿using AvaloniaBlazorWebView.Common;
 
 namespace AvaloniaBlazorWebView.Core;
 
@@ -34,9 +32,9 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualWebViewProvider
     readonly string _hostPageRelativePath;
 
 
-    protected override void NavigateCore(Uri absoluteUri)
+    protected override async void NavigateCore(Uri absoluteUri)
     {
-        _webViewControl.Navigate(absoluteUri);
+        await Dispatcher.InvokeAsync(() => _webViewControl.Navigate(absoluteUri));
     }
 
     protected override void SendMessage(string message)
@@ -53,7 +51,7 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualWebViewProvider
             {
                 var message = await reader.ReadAsync();
 
-                await  Dispatcher.InvokeAsync(() =>
+                await Dispatcher.InvokeAsync(() =>
                 {
                     _webViewControl.PostWebMessageAsString(message);
                 });
@@ -100,6 +98,7 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualWebViewProvider
         if (!TryGetResponseContent(requestUri, request.AllowFallbackOnHostPage, out var statusCode, out var statusMessage, out var content, out var headers))
             return false;
 
+        //StaticContentHotReloadManager.TryReplaceResponseContent(_contentRootDirRelativePath, requestUri, ref statusCode, ref content, headers);
         var headerstring = GetHeaderString(headers);
         //var headerstring = headers["Content-Type"];  //GetHeaderString(headers);
         var autoCloseStream = new AutoCloseOnReadCompleteStream(content);
@@ -112,7 +111,7 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualWebViewProvider
             Headers = headers,
             HeaderString = headerstring
         };
- 
+
         return true;
     }
 

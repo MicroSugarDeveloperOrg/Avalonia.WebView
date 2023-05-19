@@ -1,4 +1,6 @@
-﻿namespace AvaloniaBlazorWebView;
+﻿using AvaloniaBlazorWebView.Common;
+
+namespace AvaloniaBlazorWebView;
 
 partial class BlazorWebView
 {
@@ -31,9 +33,9 @@ partial class BlazorWebView
         var contentRootDirFullPath = Path.GetDirectoryName(hostPageFullPath)!;
         var hostPageRelativePath = Path.GetRelativePath(contentRootDirFullPath, hostPageFullPath);
         var contentRootDirRelativePath = Path.GetRelativePath(appRootDir, contentRootDirFullPath);
-        var fileProvider = new PhysicalFileProvider(contentRootDirFullPath);
-
+        var fileProvider = FileProviderBuilder.Build(contentRootDirFullPath);
         var webviewManager = new AvaloniaWebViewManager(this, _serviceProvider, _dispatcher, _baseUri, fileProvider, _jsComponents, contentRootDirRelativePath, hostPageRelativePath);
+        //StaticContentHotReloadManager.AttachToWebViewManagerIfEnabled(webviewManager);
         var bRet = await platformWebView.Initialize(webviewManager);
         if (!bRet)
             return false;
