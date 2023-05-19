@@ -1,4 +1,4 @@
-namespace SampleBlazorWebView.Data;
+namespace SampleBlazorWebViewShared.Data;
 
 public class WeatherForecastService
 {

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\Microsoft.Web.WebView2.Core\Microsoft.Web.WebView2.Core.csproj" />
+	  <ProjectReference Include="..\Microsoft.Web.WebView2.Wpf\Microsoft.Web.WebView2.Wpf.csproj" />
+	</ItemGroup>
+
+</Project>

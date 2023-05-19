@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+ 
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Platform\Windows\Microsoft.AspNetCore.Components.WebView.Wpf\Microsoft.AspNetCore.Components.WebView.Wpf.csproj" />
+		<ProjectReference Include="..\SampleBlazorWebViewShared\SampleBlazorWebViewShared.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -13,10 +13,11 @@
 		<PackageReference Include="Avalonia.ReactiveUI" />
 		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
 		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebView"/>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Avalonia.BlazorWebView\Avalonia.BlazorWebView.csproj" />
+		<ProjectReference Include="..\SampleBlazorWebViewShared\SampleBlazorWebViewShared.csproj" />
 	</ItemGroup>
 </Project>

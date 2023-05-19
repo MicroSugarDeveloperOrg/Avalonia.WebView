@@ -3,9 +3,10 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using AvaloniaBlazorWebView;
 using Microsoft.Extensions.DependencyInjection;
-using SampleBlazorWebView.Data;
 using SampleBlazorWebView.ViewModels;
 using SampleBlazorWebView.Views;
+using SampleBlazorWebViewShared;
+using SampleBlazorWebViewShared.Data;
 
 namespace SampleBlazorWebView;
 public partial class App : Application
