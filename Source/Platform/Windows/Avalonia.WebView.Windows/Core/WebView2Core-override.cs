@@ -70,8 +70,6 @@ partial class WebView2Core
             if (virtualProvider is not null)
                 await PrepareBlazorWebViewStarting(virtualProvider, corewebview2).ConfigureAwait(true);
 
-            corewebview2.WebMessageReceived += Corewebview2_WebMessageReceived;
-
             IsInitialized = true;
             _callBack.PlatformWebViewCreated(this, new WebViewCreatedEventArgs { IsSucceed = true });
         }

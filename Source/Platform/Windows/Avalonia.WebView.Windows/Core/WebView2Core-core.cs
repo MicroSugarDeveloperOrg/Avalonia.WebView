@@ -1,15 +1,12 @@
-﻿using System;
-using WebViewCore.Models;
-
-namespace Avalonia.WebView.Windows.Core;
+﻿namespace Avalonia.WebView.Windows.Core;
 
 partial class WebView2Core
 {
     Task<CoreWebView2Environment> CreateEnvironmentAsync()
     {
         var options = new CoreWebView2EnvironmentOptions(_creationProperties.AdditionalBrowserArguments!, _creationProperties.Language!);
-        return CoreWebView2Environment.CreateAsync(_creationProperties.BrowserExecutableFolder!, _creationProperties.UserDataFolder!, options);
-        //return CoreWebView2Environment.CreateAsync();
+        //return CoreWebView2Environment.CreateAsync(_creationProperties.BrowserExecutableFolder!, _creationProperties.UserDataFolder!, options);
+        return CoreWebView2Environment.CreateAsync();
     }
 
     CoreWebView2ControllerOptions? CreateCoreWebView2ControllerOptions(CoreWebView2Environment environment)
@@ -98,8 +95,6 @@ partial class WebView2Core
 
         _isBlazorWebView = true;
         coreWebView2.AddWebResourceRequestedFilter(fileter, CoreWebView2WebResourceContext.All);
-        //coreWebView2.WebResourceRequested += CoreWebView2_WebResourceRequested;
-
         return coreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(BlazorScriptHelper.BlazorStartingScript);
     }
 
