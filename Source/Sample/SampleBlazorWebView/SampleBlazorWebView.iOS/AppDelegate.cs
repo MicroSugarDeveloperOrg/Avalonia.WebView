@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.iOS;
 using Avalonia.Media;
 using Avalonia.ReactiveUI;
+using Avalonia.WebView.iOS;
 using Foundation;
 using UIKit;
 
@@ -15,6 +16,6 @@ public partial class AppDelegate : AvaloniaAppDelegate<App>
 {
     protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
     {
-        return builder.UseReactiveUI();
+        return builder.UseReactiveUI().UseIosWebView();
     }
 }

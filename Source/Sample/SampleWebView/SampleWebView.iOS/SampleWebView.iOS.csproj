@@ -11,11 +11,18 @@
     <!--<CodesignKey></CodesignKey>-->
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <CreatePackage>false</CreatePackage>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <CreatePackage>false</CreatePackage>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia.iOS" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SampleWebView\SampleWebView.csproj" />
+    <ProjectReference Include="..\..\..\Platform\iOS\Avalonia.WebView.iOS\Avalonia.WebView.iOS.csproj" />
   </ItemGroup>
 </Project>

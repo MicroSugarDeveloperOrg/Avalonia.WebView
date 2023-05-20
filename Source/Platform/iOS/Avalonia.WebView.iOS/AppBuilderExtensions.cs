@@ -1,4 +1,7 @@
-﻿namespace Avalonia.WebView.iOS;
+﻿using AvaloniaWebView.Shared;
+
+
+namespace Avalonia.WebView.iOS;
 
 public static class AppBuilderExtensions
 {
@@ -6,7 +9,7 @@ public static class AppBuilderExtensions
     {
         return builder.AfterPlatformServicesSetup(app =>
         {
-            AvaloniaLocator.CurrentMutable.BindToSelf<IPlatformWebViewProvider>(new WebViewHandlerProvider());
+            AvaloniaLocator.CurrentMutable.BindToSelf<IViewHandlerProvider>(new ViewHandlerProvider());
             AvaloniaLocator.CurrentMutable.BindToSelf<IPlatformBlazorWebViewProvider>(new BlaozeWebViewHandlerProvider());
         });
     }

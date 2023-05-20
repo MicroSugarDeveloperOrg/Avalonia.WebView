@@ -1,21 +1,34 @@
-﻿namespace Avalonia.WebView.iOS;
+﻿using Avalonia.WebView.iOS.Core;
+using AvaloniaWebView.Shared.Handlers;
+using System;
+using WebViewCore;
 
-public partial class WebViewHandler : ViewHandler<IVirtualView, WKWebView>
+using WebViewCore.Configurations;
+
+namespace Avalonia.WebView.iOS;
+
+public class WebViewHandler : ViewHandler<IVirtualWebView, IosWebViewCore>
 {
-    static WebViewHandler()
+    public WebViewHandler(IVirtualWebView virtualWebView, IVirtualWebViewControlCallBack callback, WebViewCreationProperties webViewCreationProperties)
     {
-        LoadedPropertyChanged();
+        var webView = new IosWebViewCore(this, callback, webViewCreationProperties);
+        _webViewCore = webView;
+        PlatformWebView = webView;
+        VirtualViewContext = virtualWebView;
+        PlatformViewContext = webView;
+    }
+    readonly IosWebViewCore _webViewCore;
+
+    protected override HandleRef CreatePlatformHandler(IPlatformHandle parent, Func<IPlatformHandle> createFromSystem)
+    {
+        //var handler = createFromSystem.Invoke();
+        return new HandleRef(this, _webViewCore.NativeHandler);
     }
 
-    public WebViewHandler(IVirtualView virtualView) : base(virtualView)
+    protected override void Disposing()
     {
-        _hwndTaskSource = new();
-        _platformViewCall = () => WebView;
+        PlatformWebView.Dispose();
+        PlatformWebView = default!;
+        VirtualViewContext = default!;
     }
-
-    readonly TaskCompletionSource<WKWebView> _hwndTaskSource;
-    Task? _initTask;
-
-    [Browsable(false)]
-    public WKWebView? WebView { get; set; } 
 }
