@@ -1,5 +1,6 @@
 ﻿
 global using GObject = GLib.Object;
+global using GIAsyncResult = GLib.IAsyncResult;
 global using LinuxWebView = WebKit.WebView;
 global using Avalonia.Data;
 global using System.ComponentModel;

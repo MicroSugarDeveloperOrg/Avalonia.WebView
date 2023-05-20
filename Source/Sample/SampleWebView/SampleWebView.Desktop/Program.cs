@@ -1,6 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.ReactiveUI;
-using Avalonia.WebView.Windows;
+using Avalonia.WebView.Desktop;
 
 namespace SampleWebView.Desktop;
 
@@ -19,5 +19,5 @@ internal class Program
             .UsePlatformDetect()
             .LogToTrace()
             .UseReactiveUI()
-            .UseWindowWebView();
+            .UseDesktopWebView();
 }

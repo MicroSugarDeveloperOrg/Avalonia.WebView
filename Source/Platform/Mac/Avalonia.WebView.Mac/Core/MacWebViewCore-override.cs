@@ -9,9 +9,9 @@ partial class MacWebViewCore
 
     object? IPlatformWebView.PlatformViewContext => this;
 
-    bool IWebViewControl.IsCanGoForward => throw new NotImplementedException();
+    bool IWebViewControl.IsCanGoForward => WebView.CanGoForward();
 
-    bool IWebViewControl.IsCanGoBack => throw new NotImplementedException();
+    bool IWebViewControl.IsCanGoBack => WebView.CanGoBack();
 
     async Task<bool> IPlatformWebView.Initialize(IVirtualWebViewProvider? virtualProvider)
     {
@@ -47,15 +47,9 @@ partial class MacWebViewCore
         throw new NotImplementedException();
     }
 
-    bool IWebViewControl.GoBack()
-    {
-        throw new NotImplementedException();
-    }
+    bool IWebViewControl.GoBack() => WebView.GoBack();
 
-    bool IWebViewControl.GoForward()
-    {
-        throw new NotImplementedException();
-    }
+    bool IWebViewControl.GoForward() => WebView.GoForward();
 
     bool IWebViewControl.Navigate(Uri? uri)
     {

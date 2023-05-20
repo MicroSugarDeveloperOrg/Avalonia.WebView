@@ -1,5 +1,5 @@
 ﻿namespace Avalonia.WebView.Mac.Core;
-partial class MacWebViewCore   : WebFrameLoadDelegate
+partial class MacWebViewCore
 {
     void RegisterEvents()
     {
