@@ -9,7 +9,12 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Avalonia.WebView.Core\Avalonia.WebView.Core.csproj" />
+	  <None Remove="Core\" />
 	</ItemGroup>
-
+	<ItemGroup>
+	  <Folder Include="Core\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
+	</ItemGroup>
 </Project>

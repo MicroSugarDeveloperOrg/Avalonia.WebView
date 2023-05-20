@@ -1,26 +1,29 @@
-﻿namespace Avalonia.WebView.Android;
+﻿using Avalonia.WebView.Android.Core;
 
-[ToolboxItem(true)]
-public partial class WebViewHandler : ViewHandler<IVirtualView, AndroidWebView>
+namespace Avalonia.WebView.Android;
+
+public class WebViewHandler : ViewHandler<IVirtualWebView, AndroidWebViewCore>
 {
-    static WebViewHandler()
+    public WebViewHandler(IVirtualWebView virtualWebView, IVirtualWebViewControlCallBack callback, WebViewCreationProperties webViewCreationProperties)
     {
-        LoadedPropertyChanged();
+        var webView = new AndroidWebViewCore(this, callback, webViewCreationProperties);
+        _webViewCore = webView;
+        PlatformWebView = webView;
+        VirtualViewContext = virtualWebView;
+        PlatformViewContext = webView;
+    }
+    readonly AndroidWebViewCore _webViewCore;
+
+    protected override HandleRef CreatePlatformHandler(IPlatformHandle parent, Func<IPlatformHandle> createFromSystem)
+    {
+        //var handler = createFromSystem.Invoke();
+        return new HandleRef(this, _webViewCore.NativeHandler);
     }
 
-    public WebViewHandler(IVirtualView virtualView) : base(virtualView)
+    protected override void Disposing()
     {
-        _hwndTaskSource = new();
-        _platformViewCall = () => AndroidWebView;
-        SizeChanged += WebViewHandler_SizeChanged;
+        PlatformWebView.Dispose();
+        PlatformWebView = default!;
+        VirtualViewContext = default!;
     }
-
-    readonly TaskCompletionSource<AndroidWebView> _hwndTaskSource;
-    Task? _initTask;
-
-    WebViewClient? _webViewClient;
-    WebChromeClient? _webChromeClient;
-
-    [Browsable(false)]
-    public AndroidWebView? AndroidWebView { get; set; }
 }
