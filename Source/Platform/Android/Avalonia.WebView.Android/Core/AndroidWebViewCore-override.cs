@@ -1,4 +1,5 @@
 ﻿using Avalonia.WebView.Android.Clients;
+using Avalonia.WebView.Android.Handlers;
 
 namespace Avalonia.WebView.Android.Core;
 
@@ -18,6 +19,11 @@ partial class AndroidWebViewCore
 
     Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
     {
+        _webView.EvaluateJavascript(javaScript, new JavaScriptValueCallback(result =>
+        {
+            
+
+        }));
         throw new NotImplementedException();
     }
 
@@ -58,13 +64,12 @@ partial class AndroidWebViewCore
         webview.Settings.SetSupportMultipleWindows(true);
         webview.Settings.JavaScriptEnabled = true;
         webview.Settings.DomStorageEnabled = true;
-
-        _webViewClient?.Dispose();
+        webview.Settings.SetSupportZoom(true);
+        //webview.ZoomBy(1.2f);
         _webViewClient = new WebViewClient();
         webview.SetWebViewClient(_webViewClient);
 
-        _webChromeClient?.Dispose();
-        _webChromeClient = new AvaloniaWebChromeClient();
+        _webChromeClient = new WebChromeClient();
         //_webChromeClient = new WebChromeClient();
         webview.SetWebChromeClient(_webChromeClient);
 

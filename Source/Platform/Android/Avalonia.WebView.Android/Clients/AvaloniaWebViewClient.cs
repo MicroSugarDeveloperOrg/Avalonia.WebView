@@ -33,7 +33,7 @@ internal class AvaloniaWebViewClient : WebViewClient
 
     }
 
-    bool ShouldOverrideUrlLoadingCore(IWebResourceRequest? request)
+     bool ShouldOverrideUrlLoadingCore(IWebResourceRequest? request)
     {
         if (_webViewHandler is null || !Uri.TryCreate(request?.Url?.ToString(), UriKind.RelativeOrAbsolute, out var uri))
             return false;
