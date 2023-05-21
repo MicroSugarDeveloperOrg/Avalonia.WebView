@@ -16,7 +16,7 @@ partial class AndroidWebViewCore
 
     private void HostControl_SizeChanged(object? sender, SizeChangedEventArgs e)
     {
-
+        //e.Handled = true;
     }
 
     private void Handler_PlatformHandlerChanged(object? sender, EventArgs e)

@@ -2,6 +2,6 @@
 
 partial class AndroidWebViewCore
 {
- 
+    internal TopLevel? GetTopLevel() => TopLevel.GetTopLevel(_handler);
 }
 

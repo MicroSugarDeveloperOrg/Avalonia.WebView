@@ -2,18 +2,23 @@
 
 partial class AndroidWebViewCore
 {
-    Task PrepareBlazorWebViewStarting(IVirtualBlazorWebViewProvider? provider)
+    Task<bool> PrepareBlazorWebViewStarting(AndroidWebView webView, IVirtualBlazorWebViewProvider? provider)
     {
+        if (webView is null)
+            return Task.FromResult(false);
+
         if (provider is null)
-            return Task.CompletedTask;
+            return Task.FromResult(false);
 
         if (!provider.ResourceRequestedFilterProvider(this, out var filter))
-            return Task.CompletedTask;
+            return Task.FromResult(false);
 
-        var blazorProvider = AvaloniaLocator.Current.GetRequiredService<IPlatformBlazorWebViewProvider>();
-      
+        _webViewClient = new AvaloniaWebViewClient(this, _callBack, provider, filter);
+        _webChromeClient = new AvaloniaWebChromeClient(this);
+        webView.SetWebViewClient(_webViewClient);
+        webView.SetWebChromeClient(_webChromeClient);
         _isBlazorWebView = true;
-        return Task.CompletedTask;
+        return Task.FromResult(true);
     }
 
     void ClearBlazorWebViewCompleted()

@@ -5,7 +5,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebView"/>
+		<AvaloniaResource Include="wwwroot\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView" />
 	</ItemGroup>
 
 	<ItemGroup>

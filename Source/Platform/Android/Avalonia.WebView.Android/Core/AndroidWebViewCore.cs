@@ -1,6 +1,4 @@
-﻿using static Android.Views.ViewGroup;
-
-namespace Avalonia.WebView.Android.Core;
+﻿namespace Avalonia.WebView.Android.Core;
 
 public partial class AndroidWebViewCore : IPlatformWebView<AndroidWebViewCore>
 {
@@ -10,13 +8,17 @@ public partial class AndroidWebViewCore : IPlatformWebView<AndroidWebViewCore>
         _handler = handler;
         _creationProperties = webViewCreationProperties;
 
+        AndroidWebView.SetWebContentsDebuggingEnabled(webViewCreationProperties.AreDevToolEnabled);
+
         var parentContext = AndroidApplication.Context;
         var webView = new AndroidWebView(parentContext)
         {
-#pragma warning disable CS0618,CA1422  // Type or member is obsolete // Validate platform compatibility
+#pragma warning disable CS0618, CA1422  // Type or member is obsolete // Validate platform compatibility
             LayoutParameters = new AbsoluteLayout.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent, 0, 0),
 #pragma warning restore CS0618, CA1422 // Type or member is obsolete
         };
+        webView.SetBackgroundColor(new AndroidColor(webViewCreationProperties.DefaultWebViewBackgroundColor.R, webViewCreationProperties.DefaultWebViewBackgroundColor.G, webViewCreationProperties.DefaultWebViewBackgroundColor.B));
+
         _webView = webView;
         NativeHandler = webView.Handle;
         RegisterEvents();
@@ -53,7 +55,7 @@ public partial class AndroidWebViewCore : IPlatformWebView<AndroidWebViewCore>
     WebViewClient? _webViewClient;
     WebChromeClient? _webChromeClient;
 
-    AndroidWebView WebView
+    public AndroidWebView WebView
     {
         get => _webView;
         set => _webView = value;

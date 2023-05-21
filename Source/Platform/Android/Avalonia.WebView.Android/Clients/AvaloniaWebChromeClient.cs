@@ -1,23 +1,29 @@
-﻿using Android.OS;
-using Android.Views;
-using Avalonia.Platform.Storage;
-using AndroidNetUri = Android.Net.Uri;
+﻿namespace Avalonia.WebView.Android.Clients;
 
-namespace Avalonia.WebView.Android.Clients;
 internal class AvaloniaWebChromeClient : WebChromeClient
 {
+    public AvaloniaWebChromeClient(AndroidWebViewCore androidWebViewCore)
+    {
+        _androidWebViewCore = androidWebViewCore;
+        var topLevel = androidWebViewCore.GetTopLevel();
+        if (topLevel is null)
+            throw new ArgumentNullException(nameof(topLevel));
+
+        _topLevel = topLevel;
+    }
+
+    readonly AndroidWebViewCore _androidWebViewCore;
+    readonly TopLevel _topLevel;
+
     public override bool OnCreateWindow(AndroidWebView? view, bool isDialog, bool isUserGesture, Message? resultMsg)
     {
         if (view?.Context is not null)
         {
-            // Intercept _blank target <a> tags to always open in device browser
-            // regardless of UrlLoadingStrategy.OpenInWebview
             var requestUrl = view.GetHitTestResult().Extra;
-            var intent = new Intent(Intent.ActionView, AndroidNetUri.Parse(requestUrl));
+            var intent = new Intent(Intent.ActionView, AndroidUri.Parse(requestUrl));
             view.Context.StartActivity(intent);
         }
 
-        // We don't actually want to create a new WebView window so we just return false 
         return false;
     }
 
@@ -30,60 +36,64 @@ internal class AvaloniaWebChromeClient : WebChromeClient
         return true;
     }
 
-    private static async Task CallFilePickerAsync(IValueCallback filePathCallback, FileChooserParams? fileChooserParams)
+    private async Task CallFilePickerAsync(IValueCallback filePathCallback, FileChooserParams? fileChooserParams)
     {
         var pickOptions = GetPickOptions(fileChooserParams);
-        var fileResults = fileChooserParams?.Mode == ChromeFileChooserMode.OpenMultiple ?
-                await FilePicker.PickMultipleAsync(pickOptions) :
-                new[] { (await FilePicker.PickAsync(pickOptions))! };
-
-        if (fileResults?.All(f => f is null) ?? true)
+        if (pickOptions is null)
         {
-            // Task was cancelled, return null to original callback
-            filePathCallback.OnReceiveValue(null);
+            filePathCallback.OnReceiveValue(default);
             return;
         }
 
-        var fileUris = new List<Uri>(fileResults.Count());
+        var fileResults = await _topLevel.StorageProvider.OpenFilePickerAsync(pickOptions);
+        if (fileResults?.All(f => f is null) ?? true)
+        {
+            filePathCallback.OnReceiveValue(default);
+            return;
+        }
+
+        var fileUris = new List<AndroidUri>(fileResults.Count());
         foreach (var fileResult in fileResults)
         {
             if (fileResult is null)
-            {
                 continue;
-            }
 
-            var javaFile = new File(fileResult.FullPath);
-            var androidUri = Uri.FromFile(javaFile);
+            var javaFile = new JavaFile(fileResult.Path.AbsoluteUri);
+            var androidUri = AndroidUri.FromFile(javaFile);
 
             if (androidUri is not null)
-            {
                 fileUris.Add(androidUri);
-            }
         }
 
         filePathCallback.OnReceiveValue(fileUris.ToArray());
         return;
     }
 
-    private static PickOptions? GetPickOptions(FileChooserParams? fileChooserParams)
+    private static FilePickerOpenOptions? GetPickOptions(FileChooserParams? fileChooserParams)
     {
-        var acceptedFileTypes = fileChooserParams?.GetAcceptTypes();
-        if (acceptedFileTypes is null ||
-            // When the accept attribute isn't provided GetAcceptTypes returns: [ "" ]
-            // this must be filtered out.
-            (acceptedFileTypes.Length == 1 && string.IsNullOrEmpty(acceptedFileTypes[0])))
-        {
-            return null;
-        }
+        if (fileChooserParams is null)
+            return default;
 
-        var pickOptions = new PickOptions()
+        var acceptedFileTypes = fileChooserParams.GetAcceptTypes();
+        if (acceptedFileTypes is null || (acceptedFileTypes.Length == 1 && string.IsNullOrEmpty(acceptedFileTypes[0])))
+            return null;
+
+        bool allowMultiple = fileChooserParams.Mode == ChromeFileChooserMode.OpenMultiple;
+
+        var pickOptions = new FilePickerOpenOptions()
         {
-            FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
-                {
-                    { DevicePlatform.Android, acceptedFileTypes }
-                })
+            AllowMultiple = allowMultiple,
+            FileTypeFilter = new List<FilePickerFileType>()
+            {
+                 new FilePickerFileType("Accepted File")
+                 {
+                     Patterns = acceptedFileTypes,
+                     AppleUniformTypeIdentifiers = new string[1] { "public.accepted"},
+                     MimeTypes = new string[1] { "accepted/*" }
+                 }
+            }
         };
         return pickOptions;
     }
 }
-}
+

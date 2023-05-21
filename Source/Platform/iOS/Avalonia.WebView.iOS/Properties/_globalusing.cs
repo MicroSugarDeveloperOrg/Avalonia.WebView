@@ -16,3 +16,4 @@ global using CoreFoundation;
 global using Avalonia.WebView.iOS.Handlers;
 global using AvaloniaWebView.Shared.Handlers;
 global using WebViewCore.Configurations;
+global using System.Reflection;

@@ -1,7 +1,4 @@
-﻿using Avalonia.WebView.Android.Clients;
-using Avalonia.WebView.Android.Handlers;
-
-namespace Avalonia.WebView.Android.Core;
+﻿namespace Avalonia.WebView.Android.Core;
 
 partial class AndroidWebViewCore
 {
@@ -21,7 +18,7 @@ partial class AndroidWebViewCore
     {
         _webView.EvaluateJavascript(javaScript, new JavaScriptValueCallback(result =>
         {
-            
+
 
         }));
         throw new NotImplementedException();
@@ -59,22 +56,23 @@ partial class AndroidWebViewCore
             return true;
 
         _provider = virtualProvider;
-        var webview = WebView;
+        var webView = WebView;
 
-        webview.Settings.SetSupportMultipleWindows(true);
-        webview.Settings.JavaScriptEnabled = true;
-        webview.Settings.DomStorageEnabled = true;
-        webview.Settings.SetSupportZoom(true);
+        webView.Settings.SetSupportMultipleWindows(true);
+        webView.Settings.JavaScriptEnabled = true;
+        webView.Settings.DomStorageEnabled = true;
+        webView.Settings.SetSupportZoom(true);
         //webview.ZoomBy(1.2f);
-        _webViewClient = new WebViewClient();
-        webview.SetWebViewClient(_webViewClient);
 
-        _webChromeClient = new WebChromeClient();
-        //_webChromeClient = new WebChromeClient();
-        webview.SetWebChromeClient(_webChromeClient);
-
-        await PrepareBlazorWebViewStarting(virtualProvider);
-
+        var bRet = await PrepareBlazorWebViewStarting(webView, virtualProvider);
+        if (!bRet)
+        {
+            _webViewClient = new WebViewClient();
+            _webChromeClient = new WebChromeClient();
+            webView.SetWebViewClient(_webViewClient);
+            webView.SetWebChromeClient(_webChromeClient);
+        }
+        IsInitialized = true;
         return true;
     }
 
@@ -116,7 +114,15 @@ partial class AndroidWebViewCore
 
     bool IWebViewControl.PostWebMessageAsString(string webMessageAsString)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(webMessageAsString))
+            return false;
+
+        var webView = WebView;
+        if (webView is null)
+            return false;
+
+        webView.PostWebMessage(new WebMessage(webMessageAsString), default!);
+        return true;
     }
 
     bool IWebViewControl.Reload()

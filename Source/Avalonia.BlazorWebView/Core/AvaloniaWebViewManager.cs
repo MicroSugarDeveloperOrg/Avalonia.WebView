@@ -10,13 +10,13 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualBlazorWebViewPro
                                   Uri appBaseUri,
                                   IFileProvider fileProvider,
                                   JSComponentConfigurationStore jsComponents,
-                                  string contentRootRelativeToAppRoot,
+                                  string contentRootDirToAppRoot,
                                   string hostPagePathWithinFileProvider)
          : base(provider, dispatcher, appBaseUri, fileProvider, jsComponents, hostPagePathWithinFileProvider)
     {
         _blazorWebView = webview;
         _webViewControl = _blazorWebView;
-        _contentRootDirRelativePath = contentRootRelativeToAppRoot;
+        _contentRootDirPath = contentRootDirToAppRoot;
         _hostPageRelativePath = hostPagePathWithinFileProvider;
         _appScheme = appScheme;
         _appHostAddress = appHostAddress;
@@ -25,7 +25,7 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualBlazorWebViewPro
         _handleMessageTask = Task.Factory.StartNew(MessageReadProgress, TaskCreationOptions.LongRunning);
     }
 
-    readonly string _contentRootDirRelativePath;
+    readonly string _contentRootDirPath;
     readonly BlazorWebView _blazorWebView;
     readonly IWebViewControl _webViewControl;
     readonly Channel<string> _messageQueue;

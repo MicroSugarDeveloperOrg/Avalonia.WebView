@@ -24,6 +24,7 @@ public partial class App : Application
         {
             setting.ComponentType = typeof(AppWeb);
             setting.Selector = "#app";
+            setting.ResourceAssembly = typeof(AppWeb).Assembly;
         }, inject =>
         {
             inject.AddSingleton<WeatherForecastService>();

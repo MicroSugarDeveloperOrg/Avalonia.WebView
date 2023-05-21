@@ -7,6 +7,6 @@ internal class BlazorWebViewHandlerProvider : IPlatformBlazorWebViewProvider
 {
     public string Scheme => "app";
 
-    public IFileProvider CreateFileProvider(string contentRootDirFullPath) => new iOSAssetFileProvider(contentRootDirFullPath);
+    public IFileProvider CreateFileProvider(Assembly? assembly, string contentRootDirFullPath) => new iOSAssetFileProvider(contentRootDirFullPath);
 
 }

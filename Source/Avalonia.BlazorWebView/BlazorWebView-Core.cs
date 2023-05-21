@@ -1,6 +1,4 @@
-﻿using AvaloniaBlazorWebView.Common;
-
-namespace AvaloniaBlazorWebView;
+﻿namespace AvaloniaBlazorWebView;
 
 partial class BlazorWebView
 {
@@ -22,19 +20,25 @@ partial class BlazorWebView
         if (RootComponents.Count <= 0)
             return false;
 
-        string appRootDir;
-        var entryAssemblyLocation = Assembly.GetEntryAssembly()?.Location;
-        if (!string.IsNullOrEmpty(entryAssemblyLocation))
-            appRootDir = Path.GetDirectoryName(entryAssemblyLocation)!;
-        else
-            appRootDir = Environment.CurrentDirectory;
+        string contentRootDirFullPath;
+        string hostPageRelativePath;
 
-        var hostPageFullPath = Path.GetFullPath(Path.Combine(appRootDir, HostPage));
-        var contentRootDirFullPath = Path.GetDirectoryName(hostPageFullPath)!;
-        var hostPageRelativePath = Path.GetRelativePath(contentRootDirFullPath, hostPageFullPath);
-        var contentRootDirRelativePath = Path.GetRelativePath(appRootDir, contentRootDirFullPath);
-        var fileProvider = _platformBlazorWebViewProvider.CreateFileProvider(contentRootDirFullPath);
-        var webViewManager = new AvaloniaWebViewManager(this, _serviceProvider, _dispatcher, _appScheme, _appHostAddress, _baseUri, fileProvider, _jsComponents, contentRootDirRelativePath, hostPageRelativePath);
+        if (OperatingSystemEx.IsDesktop())
+        {
+            var appRootDir = AppContext.BaseDirectory;
+            var hostPageFullPath = Path.GetFullPath(Path.Combine(appRootDir, HostPage));
+            contentRootDirFullPath = Path.GetDirectoryName(hostPageFullPath)!;
+            hostPageRelativePath = Path.GetRelativePath(contentRootDirFullPath, hostPageFullPath);
+            var contentRootDir = Path.GetRelativePath(appRootDir, contentRootDirFullPath);
+        }
+        else
+        {
+            contentRootDirFullPath = Path.GetDirectoryName(HostPage) ?? string.Empty;
+            hostPageRelativePath = Path.GetRelativePath(contentRootDirFullPath, HostPage!);
+        }
+
+        var fileProvider = _platformBlazorWebViewProvider.CreateFileProvider(_setting.ResourceAssembly, contentRootDirFullPath);
+        var webViewManager = new AvaloniaWebViewManager(this, _serviceProvider, _dispatcher, _appScheme, _appHostAddress, _baseUri, fileProvider, _jsComponents, contentRootDirFullPath, hostPageRelativePath);
         //StaticContentHotReloadManager.AttachToWebViewManagerIfEnabled(webviewManager);
         var bRet = await platformWebView.Initialize(webViewManager);
         if (!bRet)

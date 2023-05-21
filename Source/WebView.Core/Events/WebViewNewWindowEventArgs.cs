@@ -1,4 +1,4 @@
 ﻿namespace WebViewCore.Events;
-public class WebViewNewWindowEventArgs
+public class WebViewNewWindowEventArgs : EventArgs
 {
 }

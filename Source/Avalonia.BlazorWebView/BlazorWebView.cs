@@ -38,6 +38,7 @@ public sealed partial class BlazorWebView : Control, IVirtualWebView<BlazorWebVi
             });
         }
 
+        _setting = setting.Value;
         _appScheme = _platformBlazorWebViewProvider.Scheme;
         _appHostAddress = setting.Value.AppAddress;
         _baseUri = new Uri($"{_appScheme}://{_appHostAddress}/");
@@ -54,6 +55,7 @@ public sealed partial class BlazorWebView : Control, IVirtualWebView<BlazorWebVi
     readonly string _appHostAddress;
     readonly Uri _baseUri;
     readonly string _startAddress;
+    readonly BlazorWebViewSetting _setting;
     readonly IBlazorWebViewApplication _blazorApplication;
     readonly IServiceProvider _serviceProvider;
     readonly AvaloniaDispatcher _dispatcher;

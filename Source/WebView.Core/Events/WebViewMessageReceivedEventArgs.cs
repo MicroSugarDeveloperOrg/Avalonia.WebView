@@ -1,6 +1,6 @@
 ﻿namespace WebViewCore.Events;
 
-public class WebViewMessageReceivedEventArgs
+public class WebViewMessageReceivedEventArgs : EventArgs
 {
     public required string Source { get; set; }
 

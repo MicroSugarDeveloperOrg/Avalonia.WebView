@@ -6,5 +6,8 @@ public class BlazorWebViewSetting
     public string StartAddress { get; set; } = "/";
 
     public Type? ComponentType { get; set; }
+
+    public Assembly? ResourceAssembly { get; set; }
+
     public string? Selector { get; set; }
 }

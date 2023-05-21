@@ -1,5 +1,8 @@
-﻿namespace WebViewCore.Events;
+﻿using WebViewCore.Enums;
 
-public class WebViewUrlLoadedEventArg
+namespace WebViewCore.Events;
+
+public class WebViewUrlLoadedEventArg : EventArgs
 {
+    public UrlLoadingStrategy UrlLoadingStrategy { get; set; }
 }

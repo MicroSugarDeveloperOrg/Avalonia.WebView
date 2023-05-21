@@ -26,4 +26,5 @@ public class WebViewHandler : ViewHandler<IVirtualWebView, AndroidWebViewCore>
         PlatformWebView = default!;
         VirtualViewContext = default!;
     }
+
 }

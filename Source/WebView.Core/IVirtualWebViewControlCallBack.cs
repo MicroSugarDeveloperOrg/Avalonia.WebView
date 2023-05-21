@@ -3,11 +3,11 @@
 namespace WebViewCore;
 public interface IVirtualWebViewControlCallBack
 {
-    void PlatformWebViewCreating(object? sender, WebViewCreatingEventArgs arg);
+    bool PlatformWebViewCreating(object? sender, WebViewCreatingEventArgs arg);
 
     void PlatformWebViewCreated(object? sender, WebViewCreatedEventArgs arg);
 
-    void PlatformWebViewNavigationStarting(object? sender, WebViewUrlLoadingEventArg arg);
+    bool PlatformWebViewNavigationStarting(object? sender, WebViewUrlLoadingEventArg arg);
 
     void PlatformWebViewNavigationCompleted(object? sender, WebViewUrlLoadedEventArg arg);
 

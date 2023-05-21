@@ -1,5 +1,5 @@
 ﻿namespace WebViewCore.Events;
-public class WebViewCreatedEventArgs
+public class WebViewCreatedEventArgs : EventArgs
 {
     public required bool IsSucceed { get; set; }
 
