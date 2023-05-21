@@ -20,3 +20,4 @@ global using GString = GLib.GString;
 global using GInputStream = GLib.InputStream;
 global using Avalonia.WebView.Linux.Helpers;
 global using WebKit;
+global using Microsoft.Extensions.FileProviders;

@@ -2,6 +2,8 @@
 
 public class QueryStringHelper
 {
+    public static string ContentTypeKey = "Content-Type";
+
     public static string RemovePossibleQueryString(string? url)
     {
         if (string.IsNullOrEmpty(url))

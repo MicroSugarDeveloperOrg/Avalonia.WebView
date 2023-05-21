@@ -2,7 +2,7 @@
 
 partial class IosWebViewCore
 {
-    Task PrepareBlazorWebViewStarting(IVirtualWebViewProvider? provider)
+    Task PrepareBlazorWebViewStarting(IVirtualBlazorWebViewProvider? provider)
     {
         if (provider is null)
             return Task.CompletedTask;

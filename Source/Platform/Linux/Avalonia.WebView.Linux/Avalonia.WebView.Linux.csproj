@@ -1,16 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="GtkSharp" />
-    <PackageReference Include="WebkitGtkSharp" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="GtkSharp" />
+		<PackageReference Include="WebkitGtkSharp" />
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
-  </ItemGroup> 
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
+	</ItemGroup>
 
 </Project>

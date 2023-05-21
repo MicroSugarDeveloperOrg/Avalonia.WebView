@@ -53,7 +53,7 @@ partial class AndroidWebViewCore
         return true;
     }
 
-    async Task<bool> IPlatformWebView.Initialize(IVirtualWebViewProvider? virtualProvider)
+    async Task<bool> IPlatformWebView.Initialize(IVirtualBlazorWebViewProvider? virtualProvider)
     {
         if (IsInitialized)
             return true;

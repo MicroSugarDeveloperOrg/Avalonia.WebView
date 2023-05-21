@@ -4,7 +4,7 @@ public interface IPlatformWebView : IWebViewControl, IDisposable, IAsyncDisposab
 {
     IntPtr NativeHandler { get;}
 
-    Task<bool> Initialize(IVirtualWebViewProvider? virtualProvider);
+    Task<bool> Initialize(IVirtualBlazorWebViewProvider? virtualProvider);
     bool IsInitialized { get; }
 
     object? PlatformViewContext { get; }

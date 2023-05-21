@@ -48,7 +48,7 @@ public partial class AndroidWebViewCore : IPlatformWebView<AndroidWebViewCore>
         private set => Volatile.Write(ref _isdisposed, value);
     }
 
-    IVirtualWebViewProvider? _provider;
+    IVirtualBlazorWebViewProvider? _provider;
 
     WebViewClient? _webViewClient;
     WebChromeClient? _webChromeClient;

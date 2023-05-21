@@ -15,7 +15,7 @@ partial class WebView2Core
     bool IWebViewControl.IsCanGoBack => throw new NotImplementedException();
 
 
-    async Task<bool> IPlatformWebView.Initialize(IVirtualWebViewProvider? virtualProvider)
+    async Task<bool> IPlatformWebView.Initialize(IVirtualBlazorWebViewProvider? virtualProvider)
     {
         if (IsInitialized)
             return true;
@@ -45,9 +45,9 @@ partial class WebView2Core
                 _coreWebView2Controller = coreWebView2Controller;
             }
 
-            var corewebview2 = _coreWebView2Controller.CoreWebView2;
-            if (corewebview2 is null)
-                throw new ArgumentNullException(nameof(corewebview2), "corewebview2 is null!");
+            var coreWebView2 = _coreWebView2Controller.CoreWebView2;
+            if (coreWebView2 is null)
+                throw new ArgumentNullException(nameof(coreWebView2), "coreWebView2 is null!");
 
             try
             {
@@ -66,11 +66,11 @@ partial class WebView2Core
             if (_coreWebView2Controller.ParentWindow != IntPtr.Zero)
                 SyncControllerWithParentWindow(_coreWebView2Controller);
 
-            ApplyDefaultWebViewSettings(corewebview2);
+            ApplyDefaultWebViewSettings(coreWebView2);
             RegisterWebViewEvents(_coreWebView2Controller);
 
             if (virtualProvider is not null)
-                await PrepareBlazorWebViewStarting(virtualProvider, corewebview2).ConfigureAwait(true);
+                await PrepareBlazorWebViewStarting(virtualProvider, coreWebView2).ConfigureAwait(true);
 
             IsInitialized = true;
             _callBack.PlatformWebViewCreated(this, new WebViewCreatedEventArgs { IsSucceed = true });

@@ -23,16 +23,17 @@ partial class WebView2Core
 
     void SetEnvirmentDefaultBackground(Color color) => Environment.SetEnvironmentVariable("WEBVIEW2_DEFAULT_BACKGROUND_COLOR", color.Name);
 
-    Task PrepareBlazorWebViewStarting(IVirtualWebViewProvider provider, CoreWebView2 coreWebView2)
+    Task PrepareBlazorWebViewStarting(IVirtualBlazorWebViewProvider provider, CoreWebView2 coreWebView2)
     {
         if (provider is null || coreWebView2 is null)
             return Task.CompletedTask;
 
-        if (!provider.ResourceRequestedFilterProvider(this, out var fileter))
+        if (!provider.ResourceRequestedFilterProvider(this, out var filter))
             return Task.CompletedTask;
 
         _isBlazorWebView = true;
-        coreWebView2.AddWebResourceRequestedFilter(fileter, CoreWebView2WebResourceContext.All);
+        var filterString = $"{filter.BaseUri.AbsoluteUri}*";
+        coreWebView2.AddWebResourceRequestedFilter(filterString, CoreWebView2WebResourceContext.All);
         return coreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(BlazorScriptHelper.BlazorStartingScript);
     }
 
@@ -45,6 +46,8 @@ partial class WebView2Core
     {
         await CoreWebView2_WebResourceRequestedAsync(sender, e);
     }
+
+    private protected string GetHeaderString(IDictionary<string, string> headers) => string.Join(Environment.NewLine, headers.Select(kvp => $"{kvp.Key}: {kvp.Value}"));
 
     private Task CoreWebView2_WebResourceRequestedAsync(object sender, CoreWebView2WebResourceRequestedEventArgs e)
     {
@@ -63,14 +66,14 @@ partial class WebView2Core
             AllowFallbackOnHostPage = allowFallbackOnHostPage
         };
 
-        if (!_provider.PlatformWebViewResourceRequested(this, request, out var reponse))
+        if (!_provider.PlatformWebViewResourceRequested(this, request, out var response))
             return Task.CompletedTask;
 
-        if (reponse is null)
+        if (response is null)
             return Task.CompletedTask;
 
-        e.Response = _coreWebView2Environment.CreateWebResourceResponse(reponse.Content, reponse.StatusCode, reponse.StatusMessage, reponse.HeaderString);
-
+        var headerString = GetHeaderString(response.Headers);
+        e.Response = _coreWebView2Environment.CreateWebResourceResponse(response.Content, response.StatusCode, response.StatusMessage, headerString);
         return Task.CompletedTask;
     }
 

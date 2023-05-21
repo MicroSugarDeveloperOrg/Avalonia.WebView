@@ -1,4 +1,5 @@
 ﻿using Android.Runtime;
+using Avalonia.WebView.Android.Core;
 using System.Runtime.Versioning;
 
 namespace Avalonia.WebView.Android.Clients;
@@ -6,7 +7,7 @@ namespace Avalonia.WebView.Android.Clients;
 [SupportedOSPlatform("android23.0")]
 internal class AvaloniaWebViewClient : WebViewClient
 {
-    public AvaloniaWebViewClient(WebViewHandler webViewHandler)
+    public AvaloniaWebViewClient(AndroidWebViewCore webViewHandler)
     {
         ArgumentNullException.ThrowIfNull(webViewHandler);
         _webViewHandler = webViewHandler;
@@ -18,12 +19,7 @@ internal class AvaloniaWebViewClient : WebViewClient
         // happens when overridden methods are called between execution of this constructor and the one above.
         // because of these facts, we have to check all methods below for null field references and properties.
     }
-
-    private static readonly string AppOrigin = $"https://0.0.0.0";
-
-    private static readonly Uri AppOriginUri = new(AppOrigin);
-
-    private readonly WebViewHandler? _webViewHandler;
+    readonly AndroidWebViewCore? _webViewHandler;
 
     public override bool ShouldOverrideUrlLoading(AndroidWebView? view, IWebResourceRequest? request)
     {

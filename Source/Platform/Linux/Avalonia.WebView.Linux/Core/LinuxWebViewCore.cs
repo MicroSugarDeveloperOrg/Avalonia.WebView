@@ -41,7 +41,7 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
         private set => Volatile.Write(ref _isdisposed, value);
     }
 
-    IVirtualWebViewProvider? _provider;
+    IVirtualBlazorWebViewProvider? _provider;
 
     public LinuxWebView WebView
     {

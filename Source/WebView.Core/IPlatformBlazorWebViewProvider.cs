@@ -1,6 +1,10 @@
-﻿namespace WebViewCore;
+﻿using Microsoft.Extensions.FileProviders;
+
+namespace WebViewCore;
 
 public interface IPlatformBlazorWebViewProvider
 {
-    public string Scheme { get; }
+    string Scheme { get; }
+
+    IFileProvider CreateFileProvider(string contentRootDirFullPath); 
 }

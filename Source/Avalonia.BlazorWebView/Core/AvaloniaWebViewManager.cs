@@ -1,12 +1,12 @@
-﻿using AvaloniaBlazorWebView.Common;
+﻿namespace AvaloniaBlazorWebView.Core;
 
-namespace AvaloniaBlazorWebView.Core;
-
-internal class AvaloniaWebViewManager : WebViewManager, IVirtualWebViewProvider
+internal class AvaloniaWebViewManager : WebViewManager, IVirtualBlazorWebViewProvider
 {
     public AvaloniaWebViewManager(BlazorWebView webview,
                                   IServiceProvider provider,
                                   Dispatcher dispatcher,
+                                  string appScheme,
+                                  string appHostAddress,
                                   Uri appBaseUri,
                                   IFileProvider fileProvider,
                                   JSComponentConfigurationStore jsComponents,
@@ -18,6 +18,8 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualWebViewProvider
         _webViewControl = _blazorWebView;
         _contentRootDirRelativePath = contentRootRelativeToAppRoot;
         _hostPageRelativePath = hostPagePathWithinFileProvider;
+        _appScheme = appScheme;
+        _appHostAddress = appHostAddress;
         _appBaseUri = appBaseUri;
         _messageQueue = Channel.CreateUnbounded<string>(new UnboundedChannelOptions() { SingleReader = true, SingleWriter = false, AllowSynchronousContinuations = false });
         _handleMessageTask = Task.Factory.StartNew(MessageReadProgress, TaskCreationOptions.LongRunning);
@@ -28,9 +30,14 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualWebViewProvider
     readonly IWebViewControl _webViewControl;
     readonly Channel<string> _messageQueue;
     readonly Task _handleMessageTask;
+    readonly string _appScheme;
+    readonly string _appHostAddress;
     readonly Uri _appBaseUri;
     readonly string _hostPageRelativePath;
 
+    //string IVirtualBlazorWebViewProvider.AppHostAddress => _appHostAddress;
+
+    //Uri IVirtualBlazorWebViewProvider.BaseUri => _appBaseUri;
 
     protected override async void NavigateCore(Uri absoluteUri)
     {
@@ -51,10 +58,7 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualWebViewProvider
             {
                 var message = await reader.ReadAsync();
 
-                await Dispatcher.InvokeAsync(() =>
-                {
-                    _webViewControl.PostWebMessageAsString(message);
-                });
+                await Dispatcher.InvokeAsync(() => _webViewControl.PostWebMessageAsString(message));
             }
         }
         catch (Exception)
@@ -80,15 +84,13 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualWebViewProvider
         return base.DisposeAsyncCore();
     }
 
-    private protected static string GetHeaderString(IDictionary<string, string> headers) => string.Join(Environment.NewLine, headers.Select(kvp => $"{kvp.Key}: {kvp.Value}"));
-
-    bool IVirtualWebViewProvider.ResourceRequestedFilterProvider(object? requester, out string filter)
+    bool IVirtualBlazorWebViewProvider.ResourceRequestedFilterProvider(object? requester, out WebScheme filter)
     {
-        filter = $"{_appBaseUri.AbsoluteUri}*";
+        filter = new(_appScheme, _appHostAddress, _appBaseUri);
         return true;
     }
 
-    bool IVirtualWebViewProvider.PlatformWebViewResourceRequested(object? sender, WebResourceRequest request, out WebResourceResponse? response)
+    bool IVirtualBlazorWebViewProvider.PlatformWebViewResourceRequested(object? sender, WebResourceRequest request, out WebResourceResponse? response)
     {
         response = default;
         if (request is null)
@@ -99,7 +101,6 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualWebViewProvider
             return false;
 
         //StaticContentHotReloadManager.TryReplaceResponseContent(_contentRootDirRelativePath, requestUri, ref statusCode, ref content, headers);
-        var headerstring = GetHeaderString(headers);
         //var headerstring = headers["Content-Type"];  //GetHeaderString(headers);
         var autoCloseStream = new AutoCloseOnReadCompleteStream(content);
 
@@ -109,13 +110,12 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualWebViewProvider
             StatusMessage = statusMessage,
             Content = autoCloseStream,
             Headers = headers,
-            HeaderString = headerstring
         };
 
         return true;
     }
 
-    void IVirtualWebViewProvider.PlatformWebViewMessageReceived(object? sender, WebViewMessageReceivedEventArgs arg)
+    void IVirtualBlazorWebViewProvider.PlatformWebViewMessageReceived(object? sender, WebViewMessageReceivedEventArgs arg)
     {
         MessageReceived(new Uri(arg.Source), arg.Message);
     }

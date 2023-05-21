@@ -48,7 +48,7 @@ public partial class WebView2Core : IPlatformWebView<WebView2Core>
         private set => Volatile.Write(ref _isdisposed, value);
     }
 
-    IVirtualWebViewProvider? _provider;
+    IVirtualBlazorWebViewProvider? _provider;
 
     CoreWebView2Environment? _coreWebView2Environment { get; set; }
     CoreWebView2Controller? _coreWebView2Controller { get; set; }

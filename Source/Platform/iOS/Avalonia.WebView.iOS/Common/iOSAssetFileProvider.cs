@@ -1,7 +1,14 @@
-﻿namespace AvaloniaBlazorWebView.Common;
+﻿using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Primitives;
 
-internal class AvaloniaFileProvider : IFileProvider
+namespace Avalonia.WebView.iOS.Common;
+internal class iOSAssetFileProvider : IFileProvider
 {
+    public iOSAssetFileProvider(string contentRootDir)
+    {
+        _contentRootDir = contentRootDir;
+    }
+    readonly string _contentRootDir;
     public IDirectoryContents GetDirectoryContents(string subpath)
     {
         throw new NotImplementedException();

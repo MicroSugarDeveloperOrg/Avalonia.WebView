@@ -38,7 +38,9 @@ public sealed partial class BlazorWebView : Control, IVirtualWebView<BlazorWebVi
             });
         }
 
-        _baseUri = new Uri($"{_platformBlazorWebViewProvider.Scheme}://{setting.Value.AppAddress}/");
+        _appScheme = _platformBlazorWebViewProvider.Scheme;
+        _appHostAddress = setting.Value.AppAddress;
+        _baseUri = new Uri($"{_appScheme}://{_appHostAddress}/");
         _startAddress = setting.Value.StartAddress;
 
         RootComponents.CollectionChanged += RootComponents_CollectionChanged;
@@ -48,6 +50,8 @@ public sealed partial class BlazorWebView : Control, IVirtualWebView<BlazorWebVi
     readonly WebViewCreationProperties _creationProperties;
     readonly IViewHandlerProvider _viewHandlerProvider;
 
+    readonly string _appScheme;
+    readonly string _appHostAddress;
     readonly Uri _baseUri;
     readonly string _startAddress;
     readonly IBlazorWebViewApplication _blazorApplication;

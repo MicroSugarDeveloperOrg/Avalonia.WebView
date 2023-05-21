@@ -33,15 +33,15 @@ partial class BlazorWebView
         var contentRootDirFullPath = Path.GetDirectoryName(hostPageFullPath)!;
         var hostPageRelativePath = Path.GetRelativePath(contentRootDirFullPath, hostPageFullPath);
         var contentRootDirRelativePath = Path.GetRelativePath(appRootDir, contentRootDirFullPath);
-        var fileProvider = FileProviderBuilder.Build(contentRootDirFullPath);
-        var webviewManager = new AvaloniaWebViewManager(this, _serviceProvider, _dispatcher, _baseUri, fileProvider, _jsComponents, contentRootDirRelativePath, hostPageRelativePath);
+        var fileProvider = _platformBlazorWebViewProvider.CreateFileProvider(contentRootDirFullPath);
+        var webViewManager = new AvaloniaWebViewManager(this, _serviceProvider, _dispatcher, _appScheme, _appHostAddress, _baseUri, fileProvider, _jsComponents, contentRootDirRelativePath, hostPageRelativePath);
         //StaticContentHotReloadManager.AttachToWebViewManagerIfEnabled(webviewManager);
-        var bRet = await platformWebView.Initialize(webviewManager);
+        var bRet = await platformWebView.Initialize(webViewManager);
         if (!bRet)
             return false;
         foreach (var rootComponent in RootComponents)
-            await rootComponent.AddToWebViewManagerAsync(webviewManager);
-        _webviewManager = webviewManager;
+            await rootComponent.AddToWebViewManagerAsync(webViewManager);
+        _webviewManager = webViewManager;
         return true;
     }
 

@@ -7,6 +7,7 @@
 
 	<ItemGroup>
 	  <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
+	  <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" />
 	</ItemGroup>
 
 </Project>

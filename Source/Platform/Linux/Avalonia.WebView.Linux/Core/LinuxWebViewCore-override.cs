@@ -13,7 +13,7 @@ partial class LinuxWebViewCore
 
     bool IWebViewControl.IsCanGoBack => WebView.CanGoBack();
 
-    async Task<bool> IPlatformWebView.Initialize(IVirtualWebViewProvider? virtualProvider)
+    async Task<bool> IPlatformWebView.Initialize(IVirtualBlazorWebViewProvider? virtualProvider)
     {
         if (IsInitialized)
             return true;

@@ -7,7 +7,7 @@ public static class AppBuilderExtensions
         return builder.AfterPlatformServicesSetup(app =>
         {
             AvaloniaLocator.CurrentMutable.BindToSelf<IViewHandlerProvider>(new ViewHandlerProvider());
-            AvaloniaLocator.CurrentMutable.BindToSelf<IPlatformBlazorWebViewProvider>(new BlaozeWebViewHandlerProvider());
+            AvaloniaLocator.CurrentMutable.BindToSelf<IPlatformBlazorWebViewProvider>(new BlazorWebViewHandlerProvider());
         });
     }
 }

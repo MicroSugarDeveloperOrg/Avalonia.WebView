@@ -1,7 +1,7 @@
 ﻿namespace Avalonia.WebView.Mac.Core;
 partial class MacWebViewCore  
 {
-    Task PrepareBlazorWebViewStarting(IVirtualWebViewProvider? provider)
+    Task PrepareBlazorWebViewStarting(IVirtualBlazorWebViewProvider? provider)
     {
         if (provider is null )
             return Task.CompletedTask;

@@ -1,4 +1,6 @@
-﻿namespace Avalonia.WebView.Linux.Core;
+﻿using WebViewCore.Helpers;
+
+namespace Avalonia.WebView.Linux.Core;
 
 partial class LinuxWebViewCore
 {
@@ -83,13 +85,14 @@ partial class LinuxWebViewCore
 
         if (response is null)
             return;
-       
+
+        var headerString = response.Headers[QueryStringHelper.ContentTypeKey];
         using var ms = new MemoryStream();
         response.Content.CopyTo(ms); 
         var span = ms.GetBuffer().AsSpan();
         void* ptr = &span;
         using var inputStream = new GInputStream(new IntPtr(ptr));
-        request.Finish(inputStream, span.Length, response.HeaderString);
+        request.Finish(inputStream, span.Length, headerString);
     }
 
 }

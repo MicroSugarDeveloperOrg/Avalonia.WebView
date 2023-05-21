@@ -15,3 +15,4 @@ global using Avalonia.Input;
 global using System.Drawing;
 global using WebViewCore.Events;
 global using WebViewCore.Models;
+global using Microsoft.Extensions.FileProviders;
