@@ -22,6 +22,8 @@ public partial class IosWebViewCore: IPlatformWebView<IosWebViewCore>
                 _config.UserContentController.AddUserScript(new WKUserScript(new NSString(BlazorScriptHelper.BlazorStartingScript), WKUserScriptInjectionTime.AtDocumentEnd, true));
                 _config.SetUrlSchemeHandler(new SchemeHandler(this, provider, filter), urlScheme: filter.Scheme);
             }
+
+            _isBlazorWebView = true;
         }
 
         _webView = new WKWebView(CGRect.Empty, _config)

@@ -4,7 +4,7 @@ namespace Avalonia.WebView.iOS.Delegates;
 
 internal class WebViewNavigationDelegate : WKNavigationDelegate
 {
-    public WebViewNavigationDelegate(IosWebViewCore webViewCore,IVirtualWebViewControlCallBack callBack, WebScheme webScheme)
+    public WebViewNavigationDelegate(IosWebViewCore webViewCore,IVirtualWebViewControlCallBack callBack, WebScheme? webScheme)
     {
         _webViewCore = webViewCore;
         //_webView = _webViewCore.WebView;
@@ -12,7 +12,7 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
     }
     readonly IosWebViewCore _webViewCore;
     //readonly WKWebView _webView;
-    readonly WebScheme _webScheme;
+    readonly WebScheme? _webScheme;
 
     WKNavigation? _navigation;
     Uri? _currentUri;
@@ -36,7 +36,10 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
             strategy = UrlLoadingStrategy.OpenExternally;
         else
         {
-            strategy =  _webScheme.BaseUri.IsBaseOf(uri) ? UrlLoadingStrategy.OpenInWebView : UrlLoadingStrategy.OpenExternally;
+            if (_webScheme is not null)
+                strategy = _webScheme.BaseUri.IsBaseOf(uri) ? UrlLoadingStrategy.OpenInWebView : UrlLoadingStrategy.OpenExternally;
+            else
+                strategy = UrlLoadingStrategy.OpenInWebView;
         }
 
         if (strategy == UrlLoadingStrategy.OpenExternally)

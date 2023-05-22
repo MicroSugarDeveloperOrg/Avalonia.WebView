@@ -4,13 +4,9 @@ partial class IosWebViewCore
 {
     Task PrepareBlazorWebViewStarting(IVirtualBlazorWebViewProvider? provider)
     {
-        if (_filter is not null)
-        {
-            WebView.NavigationDelegate = new WebViewNavigationDelegate(this, _callBack, _filter);
-            WebView.UIDelegate = new WebViewUIDelegate();
-        }
- 
-        _isBlazorWebView = true;
+        WebView.NavigationDelegate = new WebViewNavigationDelegate(this, _callBack, _filter);
+        WebView.UIDelegate = new WebViewUIDelegate();
+
         return Task.CompletedTask;
     }
 
