@@ -64,7 +64,7 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
 
     public override void DidReceiveServerRedirectForProvisionalNavigation(WKWebView webView, WKNavigation navigation)
     {
-        if (_currentUri?.Host == _webScheme.AppAddress)
+        if (_currentUri?.Host == _webScheme?.AppAddress)
         {
             var uri = _currentUri;
             _currentUri = null;
@@ -75,8 +75,9 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
                 webView.LoadRequest(request);
             }
         }
-        else
-            base.DidReceiveServerRedirectForProvisionalNavigation(webView, navigation);
+  
+        //else
+            //base.DidReceiveServerRedirectForProvisionalNavigation(webView, navigation);
     }
 
     public override void DidFailNavigation(WKWebView webView, WKNavigation navigation, NSError error)
