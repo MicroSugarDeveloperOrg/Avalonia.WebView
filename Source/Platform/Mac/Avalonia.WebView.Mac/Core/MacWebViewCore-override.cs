@@ -1,4 +1,6 @@
-﻿namespace Avalonia.WebView.Mac.Core;
+﻿using System.Web;
+
+namespace Avalonia.WebView.Mac.Core;
 
 partial class MacWebViewCore
 {
@@ -22,14 +24,19 @@ partial class MacWebViewCore
         try
         {
             _callBack.PlatformWebViewCreating(this, new WebViewCreatingEventArgs());
-
+           
             RegisterWebViewEvents(WebView);
 
+            WebView.Preferences.JavaEnabled = true;
+            WebView.Preferences.JavaScriptEnabled = true;
+            WebView.Preferences.JavaScriptCanOpenWindowsAutomatically = true;
+            //WebView.Preferences.PrivateBrowsingEnabled = true;
+            //WebView.Preferences.AllowAir
             await PrepareBlazorWebViewStarting(_provider);
+
 
             IsInitialized = true;
             _callBack.PlatformWebViewCreated(this, new WebViewCreatedEventArgs { IsSucceed = true });
-
             return true;
         }
         catch (Exception ex)
@@ -42,7 +49,14 @@ partial class MacWebViewCore
 
     Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(javaScript))
+            return Task.FromResult<string?>(default);
+
+        var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(javaScript);
+        var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
+
+        var result = WebView.StringByEvaluatingJavaScriptFromString(script);
+        return Task.FromResult<string?>(result);
     }
 
     bool IWebViewControl.GoBack() => WebView.GoBack();
@@ -62,28 +76,42 @@ partial class MacWebViewCore
 
     bool IWebViewControl.NavigateToString(string htmlContent)
     {
-        if (!string.IsNullOrWhiteSpace(htmlContent))
-        {
-            WebView.MainFrame.LoadHtmlString(htmlContent, default);
-            return true;
-        }
+        if (string.IsNullOrWhiteSpace(htmlContent))
+            return false;
 
-        return false;
+        WebView.MainFrame.LoadHtmlString(htmlContent, default);
+        return true; 
     }
 
     bool IWebViewControl.OpenDevToolsWindow()
     {
-        throw new NotImplementedException();
+        
+        return false;
     }
 
     bool IWebViewControl.PostWebMessageAsJson(string webMessageAsJson, Uri? baseUri)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(webMessageAsJson))
+            return false;
+
+        var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(webMessageAsJson);
+        var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
+
+        WebView.WindowScriptObject.EvaluateWebScript(script);
+        return true;
+
     }
 
     bool IWebViewControl.PostWebMessageAsString(string webMessageAsString, Uri? baseUri)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(webMessageAsString))
+            return false;
+
+        var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(webMessageAsString);
+        var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
+
+        WebView.WindowScriptObject.EvaluateWebScript(script);
+        return true;
     }
 
     bool IWebViewControl.Reload()

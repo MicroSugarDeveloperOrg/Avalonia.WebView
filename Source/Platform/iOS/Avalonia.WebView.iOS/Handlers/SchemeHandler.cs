@@ -1,6 +1,4 @@
-﻿using WebViewCore.Helpers;
-
-namespace Avalonia.WebView.iOS.Handlers;
+﻿namespace Avalonia.WebView.iOS.Handlers;
 
 internal class SchemeHandler : NSObject, IWKUrlSchemeHandler
 {

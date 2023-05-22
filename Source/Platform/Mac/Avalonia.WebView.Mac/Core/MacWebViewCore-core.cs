@@ -1,4 +1,6 @@
-﻿namespace Avalonia.WebView.Mac.Core;
+﻿using Avalonia.WebView.Mac.Helpers;
+
+namespace Avalonia.WebView.Mac.Core;
 partial class MacWebViewCore  
 {
     Task PrepareBlazorWebViewStarting(IVirtualBlazorWebViewProvider? provider)
@@ -9,6 +11,12 @@ partial class MacWebViewCore
         if (!provider.ResourceRequestedFilterProvider(this, out var filter))
             return Task.CompletedTask;
 
+        MacosWebView.RegisterUrlSchemeAsLocal(filter.Scheme);
+
+        //NSHttpUrlResponse
+
+        WebView.StringByEvaluatingJavaScriptFromString(BlazorScriptHelper.BlazorStartingScript);
+
         _isBlazorWebView = true;
         return Task.CompletedTask;
     }
@@ -17,4 +25,7 @@ partial class MacWebViewCore
     {
         _isBlazorWebView = false;
     }
+
+    
+
 }

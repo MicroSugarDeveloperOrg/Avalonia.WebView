@@ -23,6 +23,7 @@ public partial class MacWebViewCore : IPlatformWebView<MacWebViewCore>
     readonly IVirtualWebViewControlCallBack _callBack;
     readonly ViewHandler _handler;
     readonly WebViewCreationProperties _creationProperties;
+    readonly string _dispatchMessageCallback = "__dispatchMessageCallback";
 
     bool _isBlazorWebView = false;
 

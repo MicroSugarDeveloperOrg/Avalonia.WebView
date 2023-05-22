@@ -29,12 +29,15 @@ partial class MacWebViewCore
         if (webView is null)
             return;
 
+        //WebView.DecidePolicyForNewWindow += WebView_DecidePolicyForNewWindow;
         webView.ReceivedTitle += WebView_ReceivedTitle;
         webView.FinishedLoad += WebView_FinishedLoad;
         webView.FailedLoadWithError += WebView_FailedLoadWithError;
         webView.OnReceivedResponse += WebView_OnReceivedResponse;
         webView.WindowScriptObjectAvailable += WebView_WindowScriptObjectAvailable;
+        webView.WillPerformClientRedirect += WebView_WillPerformClientRedirect;
     }
+
 
     void UnregisterWebViewEvents(MacosWebView webView)
     {
@@ -48,13 +51,19 @@ partial class MacWebViewCore
         webView.WindowScriptObjectAvailable -= WebView_WindowScriptObjectAvailable;
     }
 
-  
+    private void WebView_WillPerformClientRedirect(object sender, WebFrameClientRedirectEventArgs e)
+    {
+
+    }
+
     private void WebView_FailedLoadWithError(object sender, WebFrameErrorEventArgs e)
     {
+        //e.ForFrame.StopLoading();
     }
 
     private void WebView_FinishedLoad(object sender, WebFrameEventArgs e)
     {
+        //e.ForFrame.
     }
 
     private void WebView_ReceivedTitle(object sender, WebFrameTitleEventArgs e)
