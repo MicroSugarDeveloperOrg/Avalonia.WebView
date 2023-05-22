@@ -1,4 +1,6 @@
-﻿namespace Avalonia.WebView.iOS.Core;
+﻿using CoreImage;
+
+namespace Avalonia.WebView.iOS.Core;
 
 public partial class IosWebViewCore: IPlatformWebView<IosWebViewCore>
 {
@@ -9,6 +11,19 @@ public partial class IosWebViewCore: IPlatformWebView<IosWebViewCore>
         _handler = handler;
         _creationProperties = webViewCreationProperties;
         _config = new WKWebViewConfiguration();
+
+        if (provider is not null)
+        {
+          
+            if (provider.ResourceRequestedFilterProvider(this, out var filter))
+            {
+                _filter = filter;
+                _config.UserContentController.AddScriptMessageHandler(new WebViewScriptMessageHandler(filter.BaseUri, MessageReceived), _filterKeyWord);
+                _config.UserContentController.AddUserScript(new WKUserScript(new NSString(BlazorScriptHelper.BlazorStartingScript), WKUserScriptInjectionTime.AtDocumentEnd, true));
+                _config.SetUrlSchemeHandler(new SchemeHandler(this, provider, filter), urlScheme: filter.Scheme);
+            }
+        }
+
         _webView = new WKWebView(CGRect.Empty, _config)
         {
             BackgroundColor = UIColor.Clear,
@@ -25,6 +40,7 @@ public partial class IosWebViewCore: IPlatformWebView<IosWebViewCore>
     }
 
     WKWebView _webView;
+    readonly WebScheme? _filter;
     readonly WKWebViewConfiguration _config;
     readonly IVirtualBlazorWebViewProvider? _provider;
     readonly IVirtualWebViewControlCallBack _callBack;

@@ -4,19 +4,12 @@ partial class IosWebViewCore
 {
     Task PrepareBlazorWebViewStarting(IVirtualBlazorWebViewProvider? provider)
     {
-        if (provider is null)
-            return Task.CompletedTask;
-
-        if (!provider.ResourceRequestedFilterProvider(this, out var filter))
-            return Task.CompletedTask;
-
-        _config.UserContentController.AddScriptMessageHandler(new WebViewScriptMessageHandler(filter.BaseUri, MessageReceived), _filterKeyWord);
-        _config.UserContentController.AddUserScript(new WKUserScript(new NSString(BlazorScriptHelper.BlazorStartingScript), WKUserScriptInjectionTime.AtDocumentEnd, true));
-
-        _config.SetUrlSchemeHandler(new SchemeHandler(this, provider, filter), urlScheme: filter.Scheme);
-        WebView.NavigationDelegate = new WebViewNavigationDelegate(this, _callBack, filter);
-        WebView.UIDelegate = new WebViewUIDelegate();
-
+        if (_filter is not null)
+        {
+            WebView.NavigationDelegate = new WebViewNavigationDelegate(this, _callBack, _filter);
+            WebView.UIDelegate = new WebViewUIDelegate();
+        }
+ 
         _isBlazorWebView = true;
         return Task.CompletedTask;
     }
