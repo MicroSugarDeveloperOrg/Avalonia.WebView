@@ -36,3 +36,6 @@ global using WebViewCore.Helpers;
 global using WebViewCore.Models;
 global using AvaloniaUIDispatcher = Avalonia.Threading.Dispatcher;
 global using Avalonia.Toolkit.Helpers;
+global using System.Buffers;
+global using System.Collections;
+

@@ -1,12 +1,10 @@
-﻿using System;
+﻿namespace AvaloniaBlazorWebView;
 
-namespace AvaloniaBlazorWebView;
-
-partial class BlazorWebView  
+partial class BlazorWebView
 {
-    bool IWebViewControl.IsCanGoForward => throw new NotImplementedException();
+    bool IWebViewControl.IsCanGoForward => _platformWebView?.IsCanGoForward ?? false;
 
-    bool IWebViewControl.IsCanGoBack => throw new NotImplementedException();
+    bool IWebViewControl.IsCanGoBack => _platformWebView?.IsCanGoBack ?? false;
 
     bool IWebViewControl.Navigate(Uri? uri)
     {
@@ -21,50 +19,74 @@ partial class BlazorWebView
 
     bool IWebViewControl.NavigateToString(string htmlContent)
     {
-        throw new NotImplementedException();
+        if (_platformWebView is null || !_platformWebView.IsInitialized)
+            return false;
+
+        return _platformWebView.NavigateToString(htmlContent);
     }
 
     bool IWebViewControl.GoBack()
     {
-        throw new NotImplementedException();
+        if (_platformWebView is null || !_platformWebView.IsInitialized)
+            return false;
+
+        return _platformWebView.GoBack();
     }
 
     bool IWebViewControl.GoForward()
     {
-        throw new NotImplementedException();
+        if (_platformWebView is null || !_platformWebView.IsInitialized)
+            return false;
+
+        return _platformWebView.GoForward();
     }
 
     bool IWebViewControl.Stop()
     {
-        throw new NotImplementedException();
+        if (_platformWebView is null || !_platformWebView.IsInitialized)
+            return false;
+
+        return _platformWebView.Stop();
     }
 
     bool IWebViewControl.Reload()
     {
-        throw new NotImplementedException();
+        if (_platformWebView is null || !_platformWebView.IsInitialized)
+            return false;
+
+        return _platformWebView.Reload();
     }
 
     Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
     {
-        throw new NotImplementedException();
+        if (_platformWebView is null || !_platformWebView.IsInitialized)
+            return Task.FromResult<string?>(default);
+
+        return _platformWebView.ExecuteScriptAsync(javaScript);
     }
 
-    bool IWebViewControl.PostWebMessageAsJson(string webMessageAsJson)
-    {
-        throw new NotImplementedException();
-    }
-
-    bool IWebViewControl.PostWebMessageAsString(string webMessageAsString)
+    bool IWebViewControl.PostWebMessageAsJson(string webMessageAsJson, Uri? baseUri)
     {
         if (_platformWebView is null || !_platformWebView.IsInitialized)
             return false;
 
-       return _platformWebView.PostWebMessageAsString(webMessageAsString);
+        return _platformWebView.PostWebMessageAsString(webMessageAsJson, baseUri);
+    }
+
+    bool IWebViewControl.PostWebMessageAsString(string webMessageAsString, Uri? baseUri)
+    {
+        if (_platformWebView is null || !_platformWebView.IsInitialized)
+            return false;
+
+        return _platformWebView.PostWebMessageAsString(webMessageAsString, baseUri);
     }
 
     bool IWebViewControl.OpenDevToolsWindow()
     {
-        throw new NotImplementedException();
+        if (_platformWebView is null || !_platformWebView.IsInitialized)
+            return false;
+
+        return _platformWebView.OpenDevToolsWindow();
     }
 
 }

@@ -8,7 +8,7 @@ internal class BlazorScriptHelper
 
     public const string UndefinedString =
         """
-            "undefined"
+        "undefined"
         """;
 
     public const string BlazorMessageScript =

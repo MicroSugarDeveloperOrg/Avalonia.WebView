@@ -1,4 +1,6 @@
-﻿namespace AvaloniaBlazorWebView;
+﻿using AvaloniaBlazorWebView.Common;
+
+namespace AvaloniaBlazorWebView;
 
 partial class BlazorWebView
 {
@@ -22,6 +24,7 @@ partial class BlazorWebView
 
         string contentRootDirFullPath;
         string hostPageRelativePath;
+        string contentRootDir;
 
         if (OperatingSystemEx.IsDesktop())
         {
@@ -29,15 +32,21 @@ partial class BlazorWebView
             var hostPageFullPath = Path.GetFullPath(Path.Combine(appRootDir, HostPage));
             contentRootDirFullPath = Path.GetDirectoryName(hostPageFullPath)!;
             hostPageRelativePath = Path.GetRelativePath(contentRootDirFullPath, hostPageFullPath);
-            var contentRootDir = Path.GetRelativePath(appRootDir, contentRootDirFullPath);
+            contentRootDir = Path.GetRelativePath(appRootDir, contentRootDirFullPath);
         }
         else
         {
             contentRootDirFullPath = Path.GetDirectoryName(HostPage) ?? string.Empty;
             hostPageRelativePath = Path.GetRelativePath(contentRootDirFullPath, HostPage!);
+            contentRootDir = contentRootDirFullPath;
         }
 
-        var fileProvider = _platformBlazorWebViewProvider.CreateFileProvider(_setting.ResourceAssembly, contentRootDirFullPath);
+        IFileProvider fileProvider;
+        if (_setting.IsAvaloniaResource)
+            fileProvider = new AvaloniaResourceFileProvider(_setting.ResourceAssembly!, contentRootDir);
+        else
+            fileProvider = _platformBlazorWebViewProvider.CreateFileProvider(_setting.ResourceAssembly, contentRootDirFullPath);
+
         var webViewManager = new AvaloniaWebViewManager(this, _serviceProvider, _dispatcher, _appScheme, _appHostAddress, _baseUri, fileProvider, _jsComponents, contentRootDirFullPath, hostPageRelativePath);
         //StaticContentHotReloadManager.AttachToWebViewManagerIfEnabled(webviewManager);
         var bRet = await platformWebView.Initialize(webViewManager);
@@ -57,6 +66,6 @@ partial class BlazorWebView
 
     ValueTask IAsyncDisposable.DisposeAsync()
     {
-        throw new NotImplementedException();
+        return ValueTask.CompletedTask;
     }
 }

@@ -21,6 +21,7 @@ internal class AvaloniaWebChromeClient : WebChromeClient
         {
             var requestUrl = view.GetHitTestResult().Extra;
             var intent = new Intent(Intent.ActionView, AndroidUri.Parse(requestUrl));
+            intent.SetFlags(ActivityFlags.NewTask);
             view.Context.StartActivity(intent);
         }
 

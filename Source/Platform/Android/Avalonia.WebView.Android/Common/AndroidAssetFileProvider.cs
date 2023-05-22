@@ -10,25 +10,11 @@ internal class AndroidAssetFileProvider : IFileProvider
         if (assets is null)
             throw new ArgumentNullException(nameof(assets));
 
-       
-
         _assetManager = assets;
         _assembly = assembly;
         _assetLoader = AvaloniaLocator.Current.GetRequiredService<IAssetLoader>();
         _contentRootDir = contentRootDir;
 
-        try
-        {
-            var uri = new Uri("www/index.xml");
-
-            var stream1 = _assetLoader.Open(uri);
-
-            var stream = assets.Open("www/index.xml");
-        }
-        catch (Exception ex)
-        {
-
-        }
     }
 
     readonly AssetManager _assetManager;

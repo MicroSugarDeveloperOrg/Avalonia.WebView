@@ -91,12 +91,12 @@ partial class IosWebViewCore
         throw new NotImplementedException();
     }
 
-    bool IWebViewControl.PostWebMessageAsJson(string webMessageAsJson)
+    bool IWebViewControl.PostWebMessageAsJson(string webMessageAsJson, Uri? baseUri)
     {
         throw new NotImplementedException();
     }
 
-    bool IWebViewControl.PostWebMessageAsString(string webMessageAsString)
+    bool IWebViewControl.PostWebMessageAsString(string webMessageAsString, Uri? baseUri)
     {
         if (string.IsNullOrWhiteSpace(webMessageAsString))
             return false;

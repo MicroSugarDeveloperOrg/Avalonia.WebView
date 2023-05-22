@@ -30,6 +30,7 @@ internal class AvaloniaWebViewClient : WebViewClient
     readonly IVirtualBlazorWebViewProvider? _provider;
     readonly WebScheme? _webScheme;
 
+    bool _isStarted = false;
 
     public override bool ShouldOverrideUrlLoading(AndroidWebView? view, IWebResourceRequest? request)
 #pragma warning disable CA1416
@@ -110,11 +111,14 @@ internal class AvaloniaWebViewClient : WebViewClient
 
         _webView.EvaluateJavascript(BlazorScriptHelper.BlazorStartedScript, new JavaScriptValueCallback(blazorStarted =>
         {
-            if (blazorStarted?.ToString() != BlazorScriptHelper.UndefinedString)
+            var result = blazorStarted?.ToString();
+
+            if (result != BlazorScriptHelper.UndefinedString)
                 return;
 
             _webView.EvaluateJavascript(BlazorScriptHelper.BlazorMessageScript, new JavaScriptValueCallback(_ =>
             {
+                _isStarted = true;
                 BlazorMessageChannel(_webView, _provider!);
 
                 _webView.EvaluateJavascript(BlazorScriptHelper.BlazorStartingScript, new JavaScriptValueCallback(_ =>

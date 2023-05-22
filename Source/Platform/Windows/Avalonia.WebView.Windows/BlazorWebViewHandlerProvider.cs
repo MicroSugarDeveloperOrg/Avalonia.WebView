@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Avalonia.WebView.Windows;
+﻿namespace Avalonia.WebView.Windows;
 
 internal class BlazorWebViewHandlerProvider : IPlatformBlazorWebViewProvider
 {

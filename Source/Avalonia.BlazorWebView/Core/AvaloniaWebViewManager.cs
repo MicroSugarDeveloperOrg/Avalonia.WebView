@@ -37,7 +37,7 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualBlazorWebViewPro
 
     //string IVirtualBlazorWebViewProvider.AppHostAddress => _appHostAddress;
 
-    //Uri IVirtualBlazorWebViewProvider.BaseUri => _appBaseUri;
+    Uri IVirtualBlazorWebViewProvider.BaseUri => _appBaseUri;
 
     protected override async void NavigateCore(Uri absoluteUri)
     {
@@ -57,8 +57,7 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualBlazorWebViewPro
             for (; ; )
             {
                 var message = await reader.ReadAsync();
-
-                await Dispatcher.InvokeAsync(() => _webViewControl.PostWebMessageAsString(message));
+                await Dispatcher.InvokeAsync(() => _webViewControl.PostWebMessageAsString(message, _appBaseUri));
             }
         }
         catch (Exception)
@@ -101,14 +100,15 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualBlazorWebViewPro
             return false;
 
         //StaticContentHotReloadManager.TryReplaceResponseContent(_contentRootDirRelativePath, requestUri, ref statusCode, ref content, headers);
-        //var headerstring = headers["Content-Type"];  //GetHeaderString(headers);
-        var autoCloseStream = new AutoCloseOnReadCompleteStream(content);
-
+        Stream contentStream = content;
+        if (OperatingSystemEx.IsDesktop())
+            contentStream = new AutoCloseOnReadCompleteStream(content);
+       
         response = new WebResourceResponse
         {
             StatusCode = statusCode,
             StatusMessage = statusMessage,
-            Content = autoCloseStream,
+            Content = contentStream,
             Headers = headers,
         };
 

@@ -14,8 +14,8 @@ public interface IWebViewControl
 
     Task<string?> ExecuteScriptAsync(string javaScript);
 
-    bool PostWebMessageAsJson(string webMessageAsJson);
-    bool PostWebMessageAsString(string webMessageAsString);
+    bool PostWebMessageAsJson(string webMessageAsJson, Uri? baseUri);
+    bool PostWebMessageAsString(string webMessageAsString, Uri? baseUri);
 
     bool OpenDevToolsWindow();
 }

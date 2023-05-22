@@ -107,22 +107,58 @@ partial class AndroidWebViewCore
         throw new NotImplementedException();
     }
 
-    bool IWebViewControl.PostWebMessageAsJson(string webMessageAsJson)
+    bool IWebViewControl.PostWebMessageAsJson(string webMessageAsJson, Uri? baseUri)
     {
-        throw new NotImplementedException();
-    }
-
-    bool IWebViewControl.PostWebMessageAsString(string webMessageAsString)
-    {
-        if (string.IsNullOrWhiteSpace(webMessageAsString))
-            return false;
-
         var webView = WebView;
         if (webView is null)
             return false;
 
-        webView.PostWebMessage(new WebMessage(webMessageAsString), default!);
-        return true;
+        if (string.IsNullOrWhiteSpace(webMessageAsJson))
+            return false;
+
+        try
+        {
+            var basUri = _provider?.BaseUri;
+            var androidUri = AndroidUri.Parse(baseUri?.AbsoluteUri);
+            if (androidUri is null)
+                return false;
+
+            webView.PostWebMessage(new WebMessage(webMessageAsJson), androidUri);
+            return true;
+        }
+        catch (Exception)
+        {
+
+        }
+
+        return false;
+    }
+
+    bool IWebViewControl.PostWebMessageAsString(string webMessageAsString, Uri? baseUri)
+    {
+        var webView = WebView;
+        if (webView is null)
+            return false;
+
+        if (string.IsNullOrWhiteSpace(webMessageAsString))
+            return false;
+
+        try
+        {
+            var basUri = _provider?.BaseUri;
+            var androidUri = AndroidUri.Parse(baseUri?.AbsoluteUri);
+            if (androidUri is null)
+                return false;
+
+            webView.PostWebMessage(new WebMessage(webMessageAsString), androidUri);
+            return true;
+        }
+        catch (Exception)
+        {
+             
+        }    
+
+        return false;
     }
 
     bool IWebViewControl.Reload()

@@ -10,9 +10,9 @@ partial class WebView2Core
 
     bool IPlatformWebView.IsInitialized => IsInitialized;
 
-    bool IWebViewControl.IsCanGoForward => throw new NotImplementedException();
+    bool IWebViewControl.IsCanGoForward => CoreWebView2?.CanGoForward ?? false;
 
-    bool IWebViewControl.IsCanGoBack => throw new NotImplementedException();
+    bool IWebViewControl.IsCanGoBack => CoreWebView2?.CanGoBack ?? false;
 
 
     async Task<bool> IPlatformWebView.Initialize(IVirtualBlazorWebViewProvider? virtualProvider)
@@ -86,60 +86,124 @@ partial class WebView2Core
 
     bool IWebViewControl.GoBack()
     {
-        throw new NotImplementedException();
+        var coreWebView2 = CoreWebView2;
+        if (coreWebView2 is null)
+            return false;
+
+        if (!coreWebView2.CanGoBack)
+            return false;
+
+        coreWebView2.GoBack();
+        return true;
     }
 
     bool IWebViewControl.GoForward()
     {
-        throw new NotImplementedException();
+        var coreWebView2 = CoreWebView2;
+        if (coreWebView2 is null)
+            return false;
+
+        if (!coreWebView2.CanGoForward)
+            return false;
+
+        coreWebView2.GoForward();
+        return true;
     }
 
     bool IWebViewControl.Navigate(Uri? uri)
     {
+        var coreWebView2 = CoreWebView2;
+        if (coreWebView2 is null)
+            return false;
+
         if (uri is null)
             return false;
 
-        var coreWebView2 = CoreWebView2;
-        coreWebView2!.Navigate(uri.AbsoluteUri);
+        coreWebView2.Navigate(uri.AbsoluteUri);
         return true;
     }
 
     bool IWebViewControl.NavigateToString(string htmlContent)
     {
-        throw new NotImplementedException();
+        var coreWebView2 = CoreWebView2;
+        if (coreWebView2 is null)
+            return false;
+
+        if (string.IsNullOrWhiteSpace(htmlContent))
+            return false;
+
+        coreWebView2.NavigateToString(htmlContent);
+        return true;    
     }
 
     bool IWebViewControl.OpenDevToolsWindow()
     {
-        throw new NotImplementedException();
+        var coreWebView2 = CoreWebView2;
+        if (coreWebView2 is null)
+            return false;
+
+        coreWebView2.OpenDevToolsWindow();
+        return true;    
     }
 
-    Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
-    {
-        throw new NotImplementedException();
-    }
-
-
-    bool IWebViewControl.PostWebMessageAsJson(string webMessageAsJson)
-    {
-        throw new NotImplementedException();
-    }
-
-    bool IWebViewControl.PostWebMessageAsString(string webMessageAsString)
+    async Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
     {
         var coreWebView2 = CoreWebView2;
-        coreWebView2!.PostWebMessageAsString(webMessageAsString);
+        if (coreWebView2 is null)
+            return default;
+
+        if (string.IsNullOrEmpty(javaScript))
+            return default;
+
+        var result = await coreWebView2.ExecuteScriptAsync(javaScript);
+        return result;
+    }
+
+
+    bool IWebViewControl.PostWebMessageAsJson(string webMessageAsJson, Uri? baseUri)
+    {
+        var coreWebView2 = CoreWebView2;
+        if (coreWebView2 is null)
+            return false;
+
+        if (string.IsNullOrWhiteSpace(webMessageAsJson))
+            return false;
+
+        coreWebView2.PostWebMessageAsJson(webMessageAsJson);
+        return true;
+    }
+
+    bool IWebViewControl.PostWebMessageAsString(string webMessageAsString, Uri? baseUri)
+    {
+        var coreWebView2 = CoreWebView2;
+        if (coreWebView2 is null)
+            return false;
+
+        if (string.IsNullOrWhiteSpace(webMessageAsString))
+            return false;
+
+        coreWebView2.PostWebMessageAsString(webMessageAsString);
         return true;
     }
 
     bool IWebViewControl.Reload()
     {
-        throw new NotImplementedException();
+        var coreWebView2 = CoreWebView2;
+        if (coreWebView2 is null)
+            return false;
+
+        coreWebView2.Reload();
+        return true;
     }
 
     bool IWebViewControl.Stop()
     {
-        throw new NotImplementedException();
+        var coreWebView2 = CoreWebView2;
+        if (coreWebView2 is null)
+            return false;
+
+        coreWebView2.Stop();
+        return true;
     }
 
     protected virtual void Dispose(bool disposing)
