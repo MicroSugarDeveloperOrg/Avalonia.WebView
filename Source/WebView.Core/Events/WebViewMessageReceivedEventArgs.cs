@@ -2,7 +2,7 @@
 
 public class WebViewMessageReceivedEventArgs : EventArgs
 {
-    public required string Source { get; set; }
+    public required Uri Source { get; set; }
 
     public required string Message { get; set; }
 

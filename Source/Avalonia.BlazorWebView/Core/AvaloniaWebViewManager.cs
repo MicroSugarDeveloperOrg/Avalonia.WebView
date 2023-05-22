@@ -117,6 +117,6 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualBlazorWebViewPro
 
     void IVirtualBlazorWebViewProvider.PlatformWebViewMessageReceived(object? sender, WebViewMessageReceivedEventArgs arg)
     {
-        MessageReceived(new Uri(arg.Source), arg.Message);
+        MessageReceived(arg.Source, arg.Message);
     }
 }

@@ -1,6 +1,4 @@
-﻿using Avalonia.WebView.iOS.Handlers;
-
-namespace Avalonia.WebView.iOS.Core;
+﻿namespace Avalonia.WebView.iOS.Core;
 
 partial class IosWebViewCore
 {
@@ -22,27 +20,31 @@ partial class IosWebViewCore
             return true;
 
         _provider = virtualProvider;
-        _config.Preferences.SetValueForKey(NSObject.FromObject(true), new NSString("developerExtrasEnabled"));
-        _config.UserContentController.AddScriptMessageHandler(new WebViewScriptMessageHandler(MessageReceived), "webwindowinterop");
-        //config.UserContentController.AddUserScript(new WKUserScript( new NSString(BlazorInitScript), WKUserScriptInjectionTime.AtDocumentEnd, true));
+        _config.Preferences.SetValueForKey(NSObject.FromObject(_creationProperties.AreDevToolEnabled), new NSString("developerExtrasEnabled"));
 
-       await PrepareBlazorWebViewStarting(virtualProvider);
+        await PrepareBlazorWebViewStarting(virtualProvider);
 
-
-
+        IsInitialized = true;
         return true;
     }
 
-    async Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
+    Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
     {
         if (WebView is null)
-            return default;
+            return Task.FromResult<string?>(default);
 
         if (string.IsNullOrWhiteSpace(javaScript))
-            return default;
+            return Task.FromResult<string?>(default);
 
-        var ret = await WebView.EvaluateJavaScriptAsync(javaScript);
-        return CFString.FromHandle(ret.Handle) ?? string.Empty;
+        string? resultString = default;
+        var messageJSStringLiteral = JavaScriptEncoder.Default.Encode(javaScript);
+        WebView.EvaluateJavaScript(javascript: $"{_dispatchMessageCallback}(\"{messageJSStringLiteral}\")",
+                                   completionHandler: (NSObject result, NSError error) =>
+                                   {
+                                       resultString = result.ToString();
+                                   });
+
+        return Task.FromResult(resultString); ;
     }
 
     bool IWebViewControl.GoBack()
@@ -88,12 +90,21 @@ partial class IosWebViewCore
 
     bool IWebViewControl.OpenDevToolsWindow()
     {
-        throw new NotImplementedException();
+        return true;
     }
 
     bool IWebViewControl.PostWebMessageAsJson(string webMessageAsJson, Uri? baseUri)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(webMessageAsJson))
+            return false;
+
+        var messageJSStringLiteral = JavaScriptEncoder.Default.Encode(webMessageAsJson);
+        WebView.EvaluateJavaScript(javascript: $"{_dispatchMessageCallback}(\"{messageJSStringLiteral}\")",
+                                   completionHandler: (NSObject result, NSError error) =>
+                                   {
+
+                                   });
+        return true;
     }
 
     bool IWebViewControl.PostWebMessageAsString(string webMessageAsString, Uri? baseUri)
@@ -101,6 +112,12 @@ partial class IosWebViewCore
         if (string.IsNullOrWhiteSpace(webMessageAsString))
             return false;
 
+        var messageJSStringLiteral = JavaScriptEncoder.Default.Encode(webMessageAsString);
+        WebView.EvaluateJavaScript(javascript: $"{_dispatchMessageCallback}(\"{messageJSStringLiteral}\")",
+                                   completionHandler: (NSObject result, NSError error) =>
+                                   {
+
+                                   });
         return true;
     }
 
@@ -128,7 +145,7 @@ partial class IosWebViewCore
         {
             if (disposing)
             {
-               
+
             }
 
             ClearBlazorWebViewCompleted();

@@ -149,7 +149,7 @@ internal class AvaloniaWebViewClient : WebViewClient
 
               provider.PlatformWebViewMessageReceived(_webViewHandler, new WebViewMessageReceivedEventArgs() 
               {
-                  Source = _webScheme.BaseUri.AbsoluteUri,
+                  Source = _webScheme.BaseUri,
                   Message = message
               });
         });

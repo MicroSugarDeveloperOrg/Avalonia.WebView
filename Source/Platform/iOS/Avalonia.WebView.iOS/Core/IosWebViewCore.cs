@@ -29,6 +29,8 @@ public partial class IosWebViewCore: IPlatformWebView<IosWebViewCore>
     readonly IVirtualWebViewControlCallBack _callBack;
     readonly ViewHandler _handler;
     readonly WebViewCreationProperties _creationProperties;
+    readonly string _filterKeyWord = "webwindowinterop";
+    readonly string _dispatchMessageCallback = "__dispatchMessageCallback";
 
     bool _isBlazorWebView = false;
 

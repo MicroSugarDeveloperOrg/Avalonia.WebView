@@ -60,7 +60,7 @@ partial class LinuxWebViewCore
         var message = new WebViewMessageReceivedEventArgs
         {
             Message = jsValue.ToString(),
-            Source = string.Empty
+            Source = new Uri("")
         };
         jsValue.Unref();
 

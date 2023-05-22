@@ -1,6 +1,4 @@
-﻿using WebViewCore.Configurations;
-
-namespace Avalonia.WebView.iOS;
+﻿namespace Avalonia.WebView.iOS;
 
 internal class ViewHandlerProvider : IViewHandlerProvider
 {

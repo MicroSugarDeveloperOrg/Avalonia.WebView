@@ -23,10 +23,5 @@ partial class IosWebViewCore
     {
 
     }
-
-    private void MessageReceived(Uri uri, string message)
-    {
-        //_webviewManager?.MessageReceivedInternal(uri, message);
-    }
 }
 

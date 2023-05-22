@@ -1,7 +1,4 @@
-﻿using AvaloniaWebView.Shared;
-
-
-namespace Avalonia.WebView.iOS;
+﻿namespace Avalonia.WebView.iOS;
 
 public static class AppBuilderExtensions
 {

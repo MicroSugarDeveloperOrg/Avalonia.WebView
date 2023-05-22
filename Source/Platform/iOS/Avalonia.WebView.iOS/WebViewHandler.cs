@@ -1,11 +1,4 @@
-﻿using Avalonia.WebView.iOS.Core;
-using AvaloniaWebView.Shared.Handlers;
-using System;
-using WebViewCore;
-
-using WebViewCore.Configurations;
-
-namespace Avalonia.WebView.iOS;
+﻿namespace Avalonia.WebView.iOS;
 
 public class WebViewHandler : ViewHandler<IVirtualWebView, IosWebViewCore>
 {

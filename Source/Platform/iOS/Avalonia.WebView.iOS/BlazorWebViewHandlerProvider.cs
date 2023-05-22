@@ -1,7 +1,4 @@
-﻿using Avalonia.WebView.iOS.Common;
-using Microsoft.Extensions.FileProviders;
-
-namespace Avalonia.WebView.iOS;
+﻿namespace Avalonia.WebView.iOS;
 
 internal class BlazorWebViewHandlerProvider : IPlatformBlazorWebViewProvider
 {

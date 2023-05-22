@@ -10,9 +10,12 @@ partial class IosWebViewCore
         if (!provider.ResourceRequestedFilterProvider(this, out var filter))
             return Task.CompletedTask;
 
-        // iOS WKWebView doesn't allow handling 'http'/'https' schemes, so we use the fake 'app' scheme
-        var blazorProvider = AvaloniaLocator.Current.GetRequiredService<IPlatformBlazorWebViewProvider>();
-        _config.SetUrlSchemeHandler(new SchemeHandler(), urlScheme: blazorProvider.Scheme);
+        _config.UserContentController.AddScriptMessageHandler(new WebViewScriptMessageHandler(filter.BaseUri, MessageReceived), _filterKeyWord);
+        _config.UserContentController.AddUserScript(new WKUserScript(new NSString(BlazorScriptHelper.BlazorStartingScript), WKUserScriptInjectionTime.AtDocumentEnd, true));
+
+        _config.SetUrlSchemeHandler(new SchemeHandler(this, provider, filter), urlScheme: filter.Scheme);
+        WebView.NavigationDelegate = new WebViewNavigationDelegate(this, _callBack, filter);
+        WebView.UIDelegate = new WebViewUIDelegate();
 
         _isBlazorWebView = true;
         return Task.CompletedTask;
@@ -21,6 +24,11 @@ partial class IosWebViewCore
     void ClearBlazorWebViewCompleted()
     {
         _isBlazorWebView = false;
+    }
+
+    private void MessageReceived(Uri uri, string message)
+    {
+        _provider?.PlatformWebViewMessageReceived(this, new WebViewMessageReceivedEventArgs() { Source = uri, Message = message });
     }
 }
 

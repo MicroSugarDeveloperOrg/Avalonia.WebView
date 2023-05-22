@@ -1,4 +1,6 @@
-﻿namespace Avalonia.WebView.Windows.Core;
+﻿using System;
+
+namespace Avalonia.WebView.Windows.Core;
 
 partial class WebView2Core
 {
@@ -107,7 +109,7 @@ partial class WebView2Core
         {
             Message = e.TryGetWebMessageAsString(),
             MessageAsJson = e.WebMessageAsJson,
-            Source = e.Source,
+            Source = new Uri(e.Source),
         };
         _callBack.PlatformWebViewMessageReceived(this, message);
         _provider?.PlatformWebViewMessageReceived(this, message);
