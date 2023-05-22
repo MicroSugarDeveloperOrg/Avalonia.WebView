@@ -19,7 +19,7 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
 
     public override void DidStartProvisionalNavigation(WKWebView webView, WKNavigation navigation)
     {
-        base.DidStartProvisionalNavigation(webView, navigation);
+        //base.DidStartProvisionalNavigation(webView, navigation);
         _navigation = navigation;
     }
 
@@ -36,7 +36,7 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
             strategy = UrlLoadingStrategy.OpenExternally;
         else
         {
-            strategy = UrlLoadingStrategy.OpenExternally;
+            strategy =  _webScheme.BaseUri.IsBaseOf(uri) ? UrlLoadingStrategy.OpenInWebView : UrlLoadingStrategy.OpenExternally;
         }
 
         if (strategy == UrlLoadingStrategy.OpenExternally)
@@ -80,14 +80,14 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
     {
         _currentUri = null;
         _navigation = null;
-        base.DidFailNavigation(webView, navigation, error);
+        //base.DidFailNavigation(webView, navigation, error);
     }
 
     public override void DidFailProvisionalNavigation(WKWebView webView, WKNavigation navigation, NSError error)
     {
         _currentUri = null;
         _navigation = null;
-        base.DidFailProvisionalNavigation(webView, navigation, error);
+        //base.DidFailProvisionalNavigation(webView, navigation, error);
     }
 
     public override void DidCommitNavigation(WKWebView webView, WKNavigation navigation)
@@ -97,7 +97,7 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
             // TODO: Determine whether this is needed
             //_webView.HandleNavigationStarting(_currentUri);
         }
-        base.DidCommitNavigation(webView, navigation);
+        //base.DidCommitNavigation(webView, navigation);
     }
 
     public override void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
@@ -109,6 +109,6 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
             _currentUri = null;
             _navigation = null;
         }
-        base.DidFinishNavigation(webView, navigation);
+        //base.DidFinishNavigation(webView, navigation);
     }
 }

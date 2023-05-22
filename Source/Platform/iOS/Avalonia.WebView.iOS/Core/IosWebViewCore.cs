@@ -11,10 +11,10 @@ public partial class IosWebViewCore: IPlatformWebView<IosWebViewCore>
         _handler = handler;
         _creationProperties = webViewCreationProperties;
         _config = new WKWebViewConfiguration();
+        _config.Preferences.SetValueForKey(NSObject.FromObject(_creationProperties.AreDevToolEnabled), new NSString("developerExtrasEnabled"));
 
         if (provider is not null)
         {
-          
             if (provider.ResourceRequestedFilterProvider(this, out var filter))
             {
                 _filter = filter;

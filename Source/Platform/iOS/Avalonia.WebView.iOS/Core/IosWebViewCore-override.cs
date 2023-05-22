@@ -18,8 +18,6 @@ partial class IosWebViewCore
     {
         if (IsInitialized)
             return true;
-         
-        _config.Preferences.SetValueForKey(NSObject.FromObject(_creationProperties.AreDevToolEnabled), new NSString("developerExtrasEnabled"));
 
         await PrepareBlazorWebViewStarting(_provider);
 
