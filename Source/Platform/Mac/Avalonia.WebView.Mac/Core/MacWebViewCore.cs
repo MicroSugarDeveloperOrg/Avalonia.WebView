@@ -1,8 +1,9 @@
 ﻿namespace Avalonia.WebView.Mac.Core;
 public partial class MacWebViewCore : IPlatformWebView<MacWebViewCore>
 {
-    public MacWebViewCore(ViewHandler handler, IVirtualWebViewControlCallBack callback, WebViewCreationProperties webViewCreationProperties)
-    { 
+    public MacWebViewCore(ViewHandler handler, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
+    {
+        _provider = provider;
         _callBack = callback;
         _handler = handler;
         _creationProperties = webViewCreationProperties;
@@ -18,6 +19,7 @@ public partial class MacWebViewCore : IPlatformWebView<MacWebViewCore>
     }
 
     MacosWebView _webView;
+    readonly IVirtualBlazorWebViewProvider? _provider;
     readonly IVirtualWebViewControlCallBack _callBack;
     readonly ViewHandler _handler;
     readonly WebViewCreationProperties _creationProperties;
@@ -38,7 +40,6 @@ public partial class MacWebViewCore : IPlatformWebView<MacWebViewCore>
         private set => Volatile.Write(ref _isdisposed, value);
     }
 
-    IVirtualBlazorWebViewProvider? _provider;
 
     public MacosWebView WebView
     {

@@ -13,12 +13,10 @@ partial class LinuxWebViewCore
 
     bool IWebViewControl.IsCanGoBack => WebView.CanGoBack();
 
-    async Task<bool> IPlatformWebView.Initialize(IVirtualBlazorWebViewProvider? virtualProvider)
+    async Task<bool> IPlatformWebView.Initialize()
     {
         if (IsInitialized)
-            return true;
-
-        _provider = virtualProvider;
+            return true; 
 
         try
         {
@@ -26,7 +24,7 @@ partial class LinuxWebViewCore
 
             RegisterWebViewEvents(WebView);
 
-            await PrepareBlazorWebViewStarting(virtualProvider, WebView);
+            await PrepareBlazorWebViewStarting(_provider, WebView);
 
             IsInitialized = true;
             _callBack.PlatformWebViewCreated(this, new WebViewCreatedEventArgs { IsSucceed = true });

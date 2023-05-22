@@ -4,9 +4,9 @@ namespace Avalonia.WebView.Mac;
 
 public class WebViewHandler : ViewHandler<IVirtualWebView, MacWebViewCore>
 {
-    public WebViewHandler(IVirtualWebView virtualWebView, IVirtualWebViewControlCallBack callback, WebViewCreationProperties webViewCreationProperties)
+    public WebViewHandler(IVirtualWebView virtualWebView, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
     {
-        var webView = new MacWebViewCore(this, callback, webViewCreationProperties);
+        var webView = new MacWebViewCore(this, callback, provider, webViewCreationProperties);
         _webViewCore = webView;
         PlatformWebView = webView;
         VirtualViewContext = virtualWebView;

@@ -2,13 +2,13 @@
 
 public partial class IosWebViewCore: IPlatformWebView<IosWebViewCore>
 {
-    public IosWebViewCore(ViewHandler handler, IVirtualWebViewControlCallBack callback, WebViewCreationProperties webViewCreationProperties)
+    public IosWebViewCore(ViewHandler handler, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
     {
+        _provider = provider;
         _callBack = callback;
         _handler = handler;
         _creationProperties = webViewCreationProperties;
         _config = new WKWebViewConfiguration();
-
         _webView = new WKWebView(CGRect.Empty, _config)
         {
             BackgroundColor = UIColor.Clear,
@@ -26,6 +26,7 @@ public partial class IosWebViewCore: IPlatformWebView<IosWebViewCore>
 
     WKWebView _webView;
     readonly WKWebViewConfiguration _config;
+    readonly IVirtualBlazorWebViewProvider? _provider;
     readonly IVirtualWebViewControlCallBack _callBack;
     readonly ViewHandler _handler;
     readonly WebViewCreationProperties _creationProperties;
@@ -48,7 +49,6 @@ public partial class IosWebViewCore: IPlatformWebView<IosWebViewCore>
         private set => Volatile.Write(ref _isdisposed, value);
     }
 
-    IVirtualBlazorWebViewProvider? _provider;
 
     public WKWebView WebView
     {

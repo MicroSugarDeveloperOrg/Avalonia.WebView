@@ -14,13 +14,10 @@ partial class WebView2Core
 
     bool IWebViewControl.IsCanGoBack => CoreWebView2?.CanGoBack ?? false;
 
-
-    async Task<bool> IPlatformWebView.Initialize(IVirtualBlazorWebViewProvider? virtualProvider)
+    async Task<bool> IPlatformWebView.Initialize()
     {
         if (IsInitialized)
             return true;
-
-        _provider = virtualProvider;
 
         try
         {
@@ -69,10 +66,11 @@ partial class WebView2Core
             ApplyDefaultWebViewSettings(coreWebView2);
             RegisterWebViewEvents(_coreWebView2Controller);
 
-            if (virtualProvider is not null)
-                await PrepareBlazorWebViewStarting(virtualProvider, coreWebView2).ConfigureAwait(true);
-
+            if (_provider is not null)
+                await PrepareBlazorWebViewStarting(_provider, coreWebView2).ConfigureAwait(true);
+  
             IsInitialized = true;
+
             _callBack.PlatformWebViewCreated(this, new WebViewCreatedEventArgs { IsSucceed = true });
             return true;
         }

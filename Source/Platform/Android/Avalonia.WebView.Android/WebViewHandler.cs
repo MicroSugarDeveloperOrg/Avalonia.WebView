@@ -4,9 +4,9 @@ namespace Avalonia.WebView.Android;
 
 public class WebViewHandler : ViewHandler<IVirtualWebView, AndroidWebViewCore>
 {
-    public WebViewHandler(IVirtualWebView virtualWebView, IVirtualWebViewControlCallBack callback, WebViewCreationProperties webViewCreationProperties)
+    public WebViewHandler(IVirtualWebView virtualWebView, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
     {
-        var webView = new AndroidWebViewCore(this, callback, webViewCreationProperties);
+        var webView = new AndroidWebViewCore(this, callback, provider, webViewCreationProperties);
         _webViewCore = webView;
         PlatformWebView = webView;
         VirtualViewContext = virtualWebView;

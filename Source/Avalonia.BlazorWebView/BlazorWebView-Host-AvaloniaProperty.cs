@@ -14,8 +14,8 @@ partial class BlazorWebView
                 return;
 
             var webviewManager = s._webviewManager;
-            if (webviewManager is null)
-                await s.CreateWebViewManager(s._platformWebView);
+            //if (webviewManager is null)
+               // await s.CreateWebViewManager(s._platformWebView);
 
             if (webviewManager is not null)
                 webviewManager.Navigate(s._startAddress);
@@ -45,7 +45,7 @@ partial class BlazorWebView
 
         if (_webviewManager is null)
         {
-            await CreateWebViewManager(_platformWebView);
+            //await CreateWebViewManager(_platformWebView);
             return;
         }
 

@@ -78,6 +78,5 @@ partial class WebView2Core
         coreWebView2.Settings.AreDefaultContextMenusEnabled = _creationProperties.AreDefaultContextMenusEnabled;
         coreWebView2.Settings.IsStatusBarEnabled = _creationProperties.IsStatusBarEnabled;
     }
-
-
+ 
 }

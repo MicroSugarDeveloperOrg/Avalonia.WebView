@@ -20,7 +20,7 @@ partial class WebView
     protected override async void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
-        var viewHandler = _viewHandlerProvider.CreatePlatformWebViewHandler(this, this, config =>
+        var viewHandler = _viewHandlerProvider.CreatePlatformWebViewHandler(this, this, default, config =>
         {
             config.AreDevToolEnabled = _creationProperties.AreDevToolEnabled;
             config.AreDefaultContextMenusEnabled = _creationProperties.AreDefaultContextMenusEnabled;

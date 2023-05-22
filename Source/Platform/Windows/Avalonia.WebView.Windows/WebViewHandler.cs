@@ -2,9 +2,9 @@
 
 public class WebViewHandler : ViewHandler<IVirtualWebView, WebView2Core>
 {
-    public WebViewHandler(IVirtualWebView virtualWebView, IVirtualWebViewControlCallBack callback , WebViewCreationProperties webViewCreationProperties)
+    public WebViewHandler(IVirtualWebView virtualWebView, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
     {
-        var webView = new WebView2Core(this, callback, webViewCreationProperties);
+        var webView = new WebView2Core(this, callback, provider, webViewCreationProperties);
         PlatformWebView = webView;
         VirtualViewContext = virtualWebView;
         PlatformViewContext = webView;

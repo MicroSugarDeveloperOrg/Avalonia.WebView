@@ -99,8 +99,20 @@ partial class WebView2Core
     {
     }
 
-    private void CoreWebView2_DOMContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
+    private async void CoreWebView2_DOMContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
     {
+        var coreWebView2 = CoreWebView2;
+        if (coreWebView2 is null)
+            return;
+
+        try
+        {
+            await coreWebView2.ExecuteScriptAsync(BlazorScriptHelper.BlazorStaredScript);
+        }
+        catch (Exception)
+        {
+        }
+        
     }
 
     private void CoreWebView2_WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)

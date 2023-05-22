@@ -50,12 +50,11 @@ partial class AndroidWebViewCore
         return true;
     }
 
-    async Task<bool> IPlatformWebView.Initialize(IVirtualBlazorWebViewProvider? virtualProvider)
+    async Task<bool> IPlatformWebView.Initialize()
     {
         if (IsInitialized)
             return true;
 
-        _provider = virtualProvider;
         var webView = WebView;
 
         webView.Settings.SetSupportMultipleWindows(true);
@@ -64,7 +63,7 @@ partial class AndroidWebViewCore
         webView.Settings.SetSupportZoom(true);
         //webview.ZoomBy(1.2f);
 
-        var bRet = await PrepareBlazorWebViewStarting(webView, virtualProvider);
+        var bRet = await PrepareBlazorWebViewStarting(webView, _provider);
         if (!bRet)
         {
             _webViewClient = new WebViewClient();

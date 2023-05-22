@@ -2,8 +2,9 @@
 
 public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
 {
-    public LinuxWebViewCore(ViewHandler handler, IVirtualWebViewControlCallBack callback, WebViewCreationProperties webViewCreationProperties)
+    public LinuxWebViewCore(ViewHandler handler, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
     {
+        _provider = provider;
         _messageKeyWord = "webview";
         _callBack = callback;
         _handler = handler;
@@ -21,6 +22,7 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
 
     LinuxWebView _webView;
     readonly string _messageKeyWord;
+    readonly IVirtualBlazorWebViewProvider? _provider;
     readonly IVirtualWebViewControlCallBack _callBack;
     readonly ViewHandler _handler;
     readonly WebViewCreationProperties _creationProperties;
@@ -40,8 +42,6 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
         get => Volatile.Read(ref _isdisposed);
         private set => Volatile.Write(ref _isdisposed, value);
     }
-
-    IVirtualBlazorWebViewProvider? _provider;
 
     public LinuxWebView WebView
     {

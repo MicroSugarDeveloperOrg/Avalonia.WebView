@@ -12,7 +12,7 @@ partial class WebView
 
         if (!_platformWebView.IsInitialized)
         {
-            var bRet = await _platformWebView.Initialize(default);
+            var bRet = await _platformWebView.Initialize();
             if (!bRet)
                 return false;
         }
@@ -30,7 +30,7 @@ partial class WebView
 
         if (!_platformWebView.IsInitialized)
         {
-            var bRet = await _platformWebView.Initialize(default);
+            var bRet = await _platformWebView.Initialize();
             if (!bRet)
                 return false;
         }

@@ -2,12 +2,13 @@
 
 public partial class WebView2Core : IPlatformWebView<WebView2Core>
 {
-    public WebView2Core(ViewHandler handler, IVirtualWebViewControlCallBack callback, WebViewCreationProperties webViewCreationProperties)
+    public WebView2Core(ViewHandler handler, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
     {
         _hwndTaskSource = new();
         _callBack = callback;
         _handler = handler;
         _creationProperties = webViewCreationProperties;
+        _provider = provider;
 
         if (handler.RefHandler.Handle != IntPtr.Zero)
         {
@@ -24,6 +25,7 @@ public partial class WebView2Core : IPlatformWebView<WebView2Core>
         Dispose(disposing: false);
     }
 
+    readonly IVirtualBlazorWebViewProvider? _provider;
     readonly IVirtualWebViewControlCallBack _callBack;
     readonly ViewHandler _handler;
     readonly WebViewCreationProperties _creationProperties;
@@ -47,9 +49,7 @@ public partial class WebView2Core : IPlatformWebView<WebView2Core>
         get => Volatile.Read(ref _isdisposed);
         private set => Volatile.Write(ref _isdisposed, value);
     }
-
-    IVirtualBlazorWebViewProvider? _provider;
-
+ 
     CoreWebView2Environment? _coreWebView2Environment { get; set; }
     CoreWebView2Controller? _coreWebView2Controller { get; set; }
     CoreWebView2ControllerOptions? _controllerOptions { get; set; }

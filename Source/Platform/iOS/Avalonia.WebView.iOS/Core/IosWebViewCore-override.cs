@@ -14,15 +14,14 @@ partial class IosWebViewCore
 
     bool IWebViewControl.IsCanGoBack => WebView.CanGoBack;
 
-    async Task<bool> IPlatformWebView.Initialize(IVirtualBlazorWebViewProvider? virtualProvider)
+    async Task<bool> IPlatformWebView.Initialize()
     {
         if (IsInitialized)
             return true;
-
-        _provider = virtualProvider;
+         
         _config.Preferences.SetValueForKey(NSObject.FromObject(_creationProperties.AreDevToolEnabled), new NSString("developerExtrasEnabled"));
 
-        await PrepareBlazorWebViewStarting(virtualProvider);
+        await PrepareBlazorWebViewStarting(_provider);
 
         IsInitialized = true;
         return true;

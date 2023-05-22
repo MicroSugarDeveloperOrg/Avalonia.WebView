@@ -2,8 +2,9 @@
 
 public partial class AndroidWebViewCore : IPlatformWebView<AndroidWebViewCore>
 {
-    public AndroidWebViewCore(ViewHandler handler, IVirtualWebViewControlCallBack callback, WebViewCreationProperties webViewCreationProperties)
+    public AndroidWebViewCore(ViewHandler handler, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
     {
+        _provider = provider;
         _callBack = callback;
         _handler = handler;
         _creationProperties = webViewCreationProperties;
@@ -30,6 +31,7 @@ public partial class AndroidWebViewCore : IPlatformWebView<AndroidWebViewCore>
     }
 
     AndroidWebView _webView;
+    readonly IVirtualBlazorWebViewProvider? _provider;
     readonly IVirtualWebViewControlCallBack _callBack;
     readonly ViewHandler _handler;
     readonly WebViewCreationProperties _creationProperties;
@@ -49,8 +51,6 @@ public partial class AndroidWebViewCore : IPlatformWebView<AndroidWebViewCore>
         get => Volatile.Read(ref _isdisposed);
         private set => Volatile.Write(ref _isdisposed, value);
     }
-
-    IVirtualBlazorWebViewProvider? _provider;
 
     WebViewClient? _webViewClient;
     WebChromeClient? _webChromeClient;
