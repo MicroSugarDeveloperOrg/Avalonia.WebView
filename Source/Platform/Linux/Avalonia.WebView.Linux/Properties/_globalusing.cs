@@ -1,6 +1,7 @@
 ﻿
 global using GObject = GLib.Object;
 global using GIAsyncResult = GLib.IAsyncResult;
+global using GAsyncReadyCallback = GLib.AsyncReadyCallback;
 global using LinuxWebView = WebKit.WebView;
 global using Avalonia.Data;
 global using System.ComponentModel;
@@ -22,3 +23,4 @@ global using Avalonia.WebView.Linux.Helpers;
 global using WebKit;
 global using Microsoft.Extensions.FileProviders;
 global using System.Reflection;
+global using System.Web;

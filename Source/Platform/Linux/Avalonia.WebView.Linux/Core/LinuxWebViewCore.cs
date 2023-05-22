@@ -26,6 +26,9 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
     readonly IVirtualWebViewControlCallBack _callBack;
     readonly ViewHandler _handler;
     readonly WebViewCreationProperties _creationProperties;
+    readonly string _dispatchMessageCallback = "__dispatchMessageCallback";
+
+    WebScheme? _webScheme;
 
     bool _isBlazorWebView = false;
 

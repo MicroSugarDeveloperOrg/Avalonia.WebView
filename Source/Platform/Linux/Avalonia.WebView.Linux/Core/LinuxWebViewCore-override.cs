@@ -16,11 +16,23 @@ partial class LinuxWebViewCore
     async Task<bool> IPlatformWebView.Initialize()
     {
         if (IsInitialized)
-            return true; 
+            return true;
 
         try
         {
             _callBack.PlatformWebViewCreating(this, new WebViewCreatingEventArgs());
+
+            WebView.Settings.EnableDeveloperExtras = _creationProperties.AreDevToolEnabled;
+            WebView.Settings.AllowFileAccessFromFileUrls = true;
+            WebView.Settings.AllowModalDialogs = true;
+            WebView.Settings.AllowTopNavigationToDataUrls = true;
+            WebView.Settings.AllowUniversalAccessFromFileUrls = true;
+            WebView.Settings.EnableBackForwardNavigationGestures = true;
+            WebView.Settings.EnableCaretBrowsing = true;
+            WebView.Settings.EnableMediaCapabilities = true;
+            WebView.Settings.EnableMediaStream = true;
+            WebView.Settings.JavascriptCanAccessClipboard = true;
+            WebView.Settings.JavascriptCanOpenWindowsAutomatically = true;
 
             RegisterWebViewEvents(WebView);
 
@@ -41,7 +53,17 @@ partial class LinuxWebViewCore
 
     Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(javaScript))
+            return Task.FromResult<string?>(default); ;
+
+        var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(javaScript);
+        var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
+
+        WebView.RunJavascript(script, default, (GObject source_object, GIAsyncResult res) =>
+        {
+           
+        });
+        return Task.FromResult<string?>(string.Empty);
     }
 
     bool IWebViewControl.GoBack()
@@ -55,7 +77,11 @@ partial class LinuxWebViewCore
 
     bool IWebViewControl.GoForward()
     {
-        throw new NotImplementedException();
+        if (!WebView.CanGoForward())
+            return false;
+
+        WebView.GoForward();
+        return true;
     }
 
     bool IWebViewControl.Navigate(Uri? uri)
@@ -80,22 +106,36 @@ partial class LinuxWebViewCore
 
     bool IWebViewControl.OpenDevToolsWindow()
     {
-        //WebView.ZoomLevel
-        //GString()
-        WebView.Settings.EnableDeveloperExtras = true;
-        throw new NotImplementedException();
+        return false;
     }
 
     bool IWebViewControl.PostWebMessageAsJson(string webMessageAsJson, Uri? baseUri)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(webMessageAsJson))
+            return false;
+
+        var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(webMessageAsJson);
+        var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
+
+        WebView.RunJavascript(script, default, (GObject source_object, GIAsyncResult res) =>
+        {
+
+        });
+        return true;
     }
 
     bool IWebViewControl.PostWebMessageAsString(string webMessageAsString, Uri? baseUri)
     {
         if (string.IsNullOrWhiteSpace(webMessageAsString))
             return false;
-        WebView.RunJavascript(webMessageAsString);
+
+        var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(webMessageAsString);
+        var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
+
+        WebView.RunJavascript(script, default, (GObject source_object, GIAsyncResult res) =>
+        {
+
+        });
         return true;
     }
 
