@@ -4,8 +4,8 @@ public delegate bool timeout_callback(IntPtr data);
 
 internal unsafe class Interop_glib
 {
-    const string _Glib = "glib";
-    //const string _Glib = "libglib-2.0.so.0";
+    //const string _Glib = "glib";
+    const string _Glib = "libglib-2.0.so.0";
 
 
     [DllImport(_Glib)]

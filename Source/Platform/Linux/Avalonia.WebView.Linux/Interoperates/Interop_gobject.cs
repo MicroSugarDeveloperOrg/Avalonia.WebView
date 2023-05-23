@@ -2,8 +2,8 @@
 
 internal class Interop_gobject
 {
-    const string _GObject = "gobject";
-    //const string _GObject = "libgobject-2.0.so.0";
+    //const string _GObject = "gobject";
+    const string _GObject = "libgobject-2.0.so.0";
 
     [DllImport(_GObject)]
     private static extern void g_object_ref(nint instance);

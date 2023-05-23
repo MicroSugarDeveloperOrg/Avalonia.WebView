@@ -2,8 +2,8 @@
 
 internal class Interop_gdk
 {
-    const string _Gdk = "gdk";
-    //const string _Gdk = "libgdk-3.so.0";
+    //const string _Gdk = "gdk";
+    const string _Gdk = "libgdk-3.so.0";
 
     [DllImport(_Gdk)]
     public static extern ulong g_signal_connect_data(nint instance, string detailed_signal, nint c_handler, nint data, nint destroy_data, GConnectFlags connect_flags);
@@ -21,17 +21,17 @@ internal class Interop_gdk
 
 
     [DllImport(_Gdk)]
-    static extern nint gdk_x11_window_foreign_new_for_display(nint display, nint xid);
+    public static extern nint gdk_x11_window_foreign_new_for_display(nint display, nint xid);
 
     [DllImport(_Gdk)]
     public static extern nint gdk_x11_window_get_xid(nint window);
 
 
     [DllImport(_Gdk)]
-    static extern nint gdk_set_allowed_backends(Utf8Buffer backends);
+    public static extern nint gdk_set_allowed_backends(Utf8Buffer backends);
 
     [DllImport(_Gdk)]
-    static extern nint gdk_display_get_default();
+    public static extern nint gdk_display_get_default();
 
     [DllImport(_Gdk)]
     public static extern void gdk_window_set_transient_for(nint window, nint parent);

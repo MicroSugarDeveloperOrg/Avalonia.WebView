@@ -38,8 +38,8 @@ enum GtkResponseType
 
 internal unsafe class Interop_gtk
 {
-    const string _Gtk = "gtk";
-    //const string _Gtk = "libgtk-3.so.0";
+    //const string _Gtk = "gtk";
+    const string _Gtk = "libgtk-3.so.0";
 
     [DllImport(_Gtk)]
     public static extern ulong g_signal_connect_data(nint instance, string detailed_signal, nint c_handler, nint data, nint destroy_data, GConnectFlags connect_flags);
@@ -57,7 +57,7 @@ internal unsafe class Interop_gtk
 
 
     [DllImport(_Gtk)]
-    static extern void gtk_main_iteration();
+    public static extern void gtk_main_iteration();
 
 
     [DllImport(_Gtk)]
@@ -121,11 +121,11 @@ internal unsafe class Interop_gtk
     public static extern void gtk_widget_hide(nint gtkWidget);
 
     [DllImport(_Gtk)]
-    static extern bool gtk_init_check(int argc, nint argv);
+    public static extern bool gtk_init_check(int argc, nint argv);
 
     [DllImport(_Gtk)]
     public static extern nint gtk_container_add(nint container, nint widget);
 
     [DllImport(_Gtk)]
-    static extern nint gtk_application_new(Utf8Buffer appId, int flags);
+    public static extern nint gtk_application_new(Utf8Buffer appId, int flags);
 }
