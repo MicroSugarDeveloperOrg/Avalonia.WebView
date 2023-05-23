@@ -8,6 +8,8 @@ public class WebViewNavigationDelegate : WebPolicyDelegate
 
     public override void DecidePolicyForNavigation(MacosWebView webView, NSDictionary actionInformation, NSUrlRequest request, WebFrame frame, NSObject decisionToken)
     {
+        //webView.OnSendRequest(webView, decisionToken, request, new NSUrlResponse(), new WebDataSource());
+        DecideUse(decisionToken);
         //base.DecidePolicyForNavigation(webView, actionInformation, request, frame, decisionToken);
     }
 
