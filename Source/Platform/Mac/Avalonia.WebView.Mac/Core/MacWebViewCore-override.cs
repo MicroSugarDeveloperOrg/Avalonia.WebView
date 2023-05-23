@@ -20,13 +20,11 @@ partial class MacWebViewCore
         if (IsInitialized)
             return true;
  
-        NSApplication.Init();
         try
         {
             _callBack.PlatformWebViewCreating(this, new WebViewCreatingEventArgs());
            
             RegisterWebViewEvents(WebView);
-
             WebView.Preferences.JavaEnabled = true;
             WebView.Preferences.JavaScriptEnabled = true;
             WebView.Preferences.JavaScriptCanOpenWindowsAutomatically = true;

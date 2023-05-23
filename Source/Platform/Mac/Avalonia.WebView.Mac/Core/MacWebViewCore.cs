@@ -3,6 +3,7 @@ public partial class MacWebViewCore : IPlatformWebView<MacWebViewCore>
 {
     public MacWebViewCore(ViewHandler handler, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
     {
+        NSApplication.Init();
         _provider = provider;
         _callBack = callback;
         _handler = handler;

@@ -1,4 +1,6 @@
-﻿using Avalonia.WebView.Mac.Helpers;
+﻿using Avalonia.WebView.Mac.Delegates;
+using Avalonia.WebView.Mac.Helpers;
+using System.Web;
 
 namespace Avalonia.WebView.Mac.Core;
 partial class MacWebViewCore  
@@ -13,9 +15,14 @@ partial class MacWebViewCore
 
         MacosWebView.RegisterUrlSchemeAsLocal(filter.Scheme);
 
+        WebView.PolicyDelegate = new WebViewNavigationDelegate();
+        WebView.ResourceLoadDelegate = new WebViewResourceLoadDelegate();
+        //WebView.UIDelegate = new WebViewUIDelegate();
         //NSHttpUrlResponse
 
-        WebView.StringByEvaluatingJavaScriptFromString(BlazorScriptHelper.BlazorStartingScript);
+        var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(BlazorScriptHelper.BlazorStartingScript);
+        var result= WebView.StringByEvaluatingJavaScriptFromString(messageJSStringLiteral);
+        //var result1 = WebView.StringByEvaluatingJavaScriptFromString(BlazorScriptHelper.BlazorStaredScript);
 
         _isBlazorWebView = true;
         return Task.CompletedTask;

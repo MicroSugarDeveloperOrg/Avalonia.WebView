@@ -18,4 +18,9 @@ internal class BlazorScriptHelper
 		        }
 		    };
 		""";
+
+    public const string BlazorStaredScript =
+       """
+            Blazor.start();
+        """;
 }
