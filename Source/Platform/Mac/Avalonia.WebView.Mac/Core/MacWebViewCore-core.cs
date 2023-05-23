@@ -17,6 +17,7 @@ partial class MacWebViewCore
 
         WebView.PolicyDelegate = new WebViewNavigationDelegate();
         WebView.ResourceLoadDelegate = new WebViewResourceLoadDelegate();
+        WebView.FrameLoadDelegate = new WebViewFrameLoadDelegate(); 
         //WebView.UIDelegate = new WebViewUIDelegate();
         //NSHttpUrlResponse
 

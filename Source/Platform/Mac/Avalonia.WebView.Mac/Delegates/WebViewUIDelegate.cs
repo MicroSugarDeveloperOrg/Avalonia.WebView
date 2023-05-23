@@ -1,11 +1,10 @@
 ﻿using System;
-namespace Avalonia.WebView.Mac.Delegates
+namespace Avalonia.WebView.Mac.Delegates;
+
+public class WebViewUIDelegate : WebUIDelegate
 {
-    public class WebViewUIDelegate : WebUIDelegate
+    public WebViewUIDelegate()
     {
-        public WebViewUIDelegate()
-        {
-        }
     }
 }
 

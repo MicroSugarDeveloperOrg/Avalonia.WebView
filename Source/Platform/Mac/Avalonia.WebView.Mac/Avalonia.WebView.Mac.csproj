@@ -22,7 +22,4 @@
 	<ItemGroup>
 	  <None Remove="Delegates\" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Delegates\" />
-	</ItemGroup>
 </Project>
