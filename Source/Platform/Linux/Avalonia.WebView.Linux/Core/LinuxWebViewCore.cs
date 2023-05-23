@@ -1,4 +1,7 @@
-﻿namespace Avalonia.WebView.Linux.Core;
+﻿using Avalonia.WebView.Linux.Extensions;
+using Avalonia.WebView.Linux.Runtimes;
+
+namespace Avalonia.WebView.Linux.Core;
 
 public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
 {
@@ -10,8 +13,16 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
         _handler = handler;
         _creationProperties = webViewCreationProperties;
 
+        _linuxApplication = new();
+        var bRet = _linuxApplication.RunAsync().Result;
+        if (!bRet)
+            throw new ArgumentNullException(nameof(LinuxApplication));
         _webView = new LinuxWebView();
-        NativeHandler = _webView.Handle;
+        var webViewWindow =  _linuxApplication.CreatWindow(_webView);
+        if (webViewWindow is null)
+            throw new ArgumentNullException(nameof(webViewWindow));
+
+        NativeHandler = webViewWindow.Handler();
         RegisterEvents();
     }
 
@@ -19,6 +30,8 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
     {
         Dispose(disposing: false);
     }
+
+    readonly LinuxApplication _linuxApplication;
 
     LinuxWebView _webView;
     readonly string _messageKeyWord;
