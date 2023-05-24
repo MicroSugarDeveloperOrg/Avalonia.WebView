@@ -22,7 +22,7 @@ partial class LinuxWebViewCore
         {
             _callBack.PlatformWebViewCreating(this, new WebViewCreatingEventArgs());
 
-            await _dispatcher.InvokeAsync(() =>
+            var bRet = _dispatcher.InvokeAsync(() =>
             {
                 WebView.Settings.EnableDeveloperExtras = _creationProperties.AreDevToolEnabled;
                 WebView.Settings.AllowFileAccessFromFileUrls = true;
@@ -35,7 +35,7 @@ partial class LinuxWebViewCore
                 WebView.Settings.EnableMediaStream = true;
                 WebView.Settings.JavascriptCanAccessClipboard = true;
                 WebView.Settings.JavascriptCanOpenWindowsAutomatically = true;
-            });
+            }).Result;
             
             RegisterWebViewEvents(WebView);
 
@@ -54,23 +54,23 @@ partial class LinuxWebViewCore
         return false;
     }
 
-    async Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
+    Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
     {
         if (string.IsNullOrWhiteSpace(javaScript))
-            return default;
+            return Task.FromResult<string?>(default);
 
         var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(javaScript);
         var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
 
-        await _dispatcher.InvokeAsync(() =>
+        var bRet = _dispatcher.InvokeAsync(() =>
         {
             WebView.RunJavascript(script, default, (GLib.Object source_object, GLib.IAsyncResult res) =>
             {
         
             });
-        }) ;
+        }) .Result;
 
-        return string.Empty;
+        return Task.FromResult<string?>(string.Empty);
     }
 
     bool IWebViewControl.GoBack()

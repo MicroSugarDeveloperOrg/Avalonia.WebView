@@ -119,8 +119,8 @@ internal class LinuxApplication : ILinuxApplication
             window.ShowAll();
             //window.Present();
 
-            return (window, webView, window.Handle);
-            //return (window, webView, window.X11Handle());
+            //return (window, webView, window.Handle);
+            return (window, webView, window.X11Handle());
         });
     }
 }
