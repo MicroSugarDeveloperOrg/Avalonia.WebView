@@ -6,3 +6,4 @@ global using GWindow = Gtk.Window;
 global using GApplication = Gtk.Application;
 global using GDisplay = Gdk.Display;
 global using WebKitWebView = WebKit.WebView;
+global using GSize = Gdk.Size;

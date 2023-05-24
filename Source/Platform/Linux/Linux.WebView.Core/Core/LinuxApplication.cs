@@ -110,6 +110,7 @@ internal class LinuxApplication : ILinuxApplication
             var window = new GWindow(Gtk.WindowType.Toplevel);
             window.Title = nameof(WebView);
             window.KeepAbove = true;
+            window.DefaultSize = new GSize(1024, 768);
 
             var webView = new WebKitWebView();
             //webView.Realize();
@@ -118,8 +119,8 @@ internal class LinuxApplication : ILinuxApplication
             window.ShowAll();
             //window.Present();
 
-            //return (window, webView, window.Handle);
-            return (window, webView, window.X11Handle());
+            return (window, webView, window.Handle);
+            //return (window, webView, window.X11Handle());
         });
     }
 }
