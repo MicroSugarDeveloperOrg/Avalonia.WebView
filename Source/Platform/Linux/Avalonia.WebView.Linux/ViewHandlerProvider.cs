@@ -9,7 +9,6 @@ internal class ViewHandlerProvider : IViewHandlerProvider
     {
         _linuxApplication = AvaloniaLocator.Current.GetRequiredService<ILinuxApplication>();
         var bRet = _linuxApplication.RunAsync(default, default).Result;
-  
         if (!bRet)
             throw new ArgumentNullException(nameof(ILinuxApplication), "create gtk application failed!");
 

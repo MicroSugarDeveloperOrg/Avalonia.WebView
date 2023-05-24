@@ -83,10 +83,15 @@ internal class LinuxApplication : ILinuxApplication
 
             _dispatcher.Start();
             IsRunning = true;
+            //Gtk.Application.RunIteration();
+            //var window = new Gtk.Window(Gtk.WindowType.Toplevel);
+
+            //window.DefaultSize = new Gdk.Size(1024, 768);
+            //window.ShowAll();
             tcs.SetResult(true);
-            //Gtk.Application.Run();
-            while (true)
-                Gtk.Application.RunIteration();
+            Gtk.Application.Run();
+            //while (true)
+                //Gtk.Application.RunIteration();
 
         }, TaskCreationOptions.LongRunning);
 

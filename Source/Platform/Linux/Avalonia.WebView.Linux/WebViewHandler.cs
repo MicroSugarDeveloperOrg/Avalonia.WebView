@@ -1,5 +1,6 @@
 ﻿using Avalonia.WebView.Linux.Core;
 using Linux.WebView.Core;
+using Linux.WebView.Core.Interoperates;
 
 namespace Avalonia.WebView.Linux;
 

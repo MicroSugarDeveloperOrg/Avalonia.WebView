@@ -7,31 +7,33 @@ internal class LinuxWebViewCore : ILinuxWebView
     {
         _application = application;
         _dispathcer = dispatcher;
-
-        Gtk.Window window = default!;
-        WebKit.WebView webView = default!;
-
-        var bRet = dispatcher.InvokeAsync(() =>
+        
+        var gdkGroup = dispatcher.InvokeAsync<(Gtk.Window, WebKit.WebView, nint)>(() =>
         {
-            window = new Gtk.Window(Gtk.WindowType.Toplevel);
+            //var application1 = new Gtk.Application(_application.Handle);
+            var window = new Gtk.Window(Gtk.WindowType.Toplevel);
             window.Title = nameof(WebView);
             window.KeepAbove = true;
-            _application.AddWindow(window);
+            //_application.AddWindow(window);
+            //application1.AddWindow(window);
 
-            webView = new WebKit.WebView();
+            var webView = new WebKit.WebView();
             webView.Realize();
-
+            
             window.Add(webView);
             window.ShowAll();
             window.Present();
-
+            
+            //return (window, webView, window.Handle);
+            return (window, webView, window.X11Handle());
         }).Result;
 
-        if (!bRet)
+        if (gdkGroup.Item1 is null || gdkGroup.Item2 is null)
             throw new ArgumentNullException(nameof(WebKit.WebView));
         
-        _window = window;
-        _webView = webView;
+        _window = gdkGroup.Item1;
+        _webView = gdkGroup.Item2;
+        WindowHandle = gdkGroup.Item3;
     }
     ~LinuxWebViewCore()
     {
@@ -52,8 +54,7 @@ internal class LinuxWebViewCore : ILinuxWebView
         set => _isDisposed = value;
     }
 
-    nint ILinuxWebView.NativeHandle => IsDisposed ? IntPtr.Zero : _window.X11Handle();
-
+    public nint WindowHandle { get; private set; } 
     //bool ILinuxWebView.IsCanGoBack
     //{
     //    get
