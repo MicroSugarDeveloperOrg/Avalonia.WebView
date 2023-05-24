@@ -74,7 +74,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AspNetCore.Compon
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleBlazorWebViewShared", "Source\Sample\SampleBlazorWebView\SampleBlazorWebViewShared\SampleBlazorWebViewShared.csproj", "{18CB7DBF-4E4F-4210-9049-0689CE1C0D7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleBlazorWebView.Wpf", "Source\Sample\SampleBlazorWebView\SampleBlazorWebView.Wpf\SampleBlazorWebView.Wpf.csproj", "{6C5F0436-9396-4941-B7D4-DE6A3F8B2584}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleBlazorWebView.Wpf", "Source\Sample\SampleBlazorWebView\SampleBlazorWebView.Wpf\SampleBlazorWebView.Wpf.csproj", "{6C5F0436-9396-4941-B7D4-DE6A3F8B2584}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.WebView.Mac", "Source\Platform\Mac\Avalonia.WebView.Mac\Avalonia.WebView.Mac.csproj", "{C6673D56-527D-44A0-9534-E9446888C44B}"
 EndProject
@@ -87,6 +87,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Desktop", ".Desktop", "{F8A28023-40F2-493A-9BE4-940A03E2F5FC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.WebView.Desktop", "Source\Platform\Desktop\Avalonia.WebView.Desktop\Avalonia.WebView.Desktop.csproj", "{BAD2F732-E4AB-40C4-9792-B866E668ACB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linux.WebView.Core", "Source\Platform\Linux\Linux.WebView.Core\Linux.WebView.Core.csproj", "{A8FFBC52-132F-4161-9AFF-33E03704B932}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -198,6 +200,10 @@ Global
 		{BAD2F732-E4AB-40C4-9792-B866E668ACB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAD2F732-E4AB-40C4-9792-B866E668ACB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAD2F732-E4AB-40C4-9792-B866E668ACB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8FFBC52-132F-4161-9AFF-33E03704B932}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8FFBC52-132F-4161-9AFF-33E03704B932}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8FFBC52-132F-4161-9AFF-33E03704B932}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8FFBC52-132F-4161-9AFF-33E03704B932}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -231,6 +237,7 @@ Global
 		{9EE80C26-E340-4326-BD52-CE3A1E0A88F8} = {E918DF40-7D4A-401A-839E-1295F7F0E6E5}
 		{F8A28023-40F2-493A-9BE4-940A03E2F5FC} = {070755E7-E85D-4C99-A7A7-CFE543054D7C}
 		{BAD2F732-E4AB-40C4-9792-B866E668ACB8} = {F8A28023-40F2-493A-9BE4-940A03E2F5FC}
+		{A8FFBC52-132F-4161-9AFF-33E03704B932} = {46299C4E-04B1-4205-AC04-EF86ED23FFF2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0921EC9A-CD2A-4912-BC79-11B67BBCBDF5}

@@ -1,6 +1,4 @@
-﻿using WebViewCore.Helpers;
-
-namespace Avalonia.WebView.Linux.Core;
+﻿namespace Avalonia.WebView.Linux.Core;
 
 unsafe partial class LinuxWebViewCore
 {
@@ -26,24 +24,28 @@ unsafe partial class LinuxWebViewCore
 
     }
 
-    void RegisterWebViewEvents(LinuxWebView webView)
+    void RegisterWebViewEvents(WebKit.WebView webView)
     {
         if (webView is null)
             return;
 
-        webView.UserMessageReceived += WebView_UserMessageReceived;
-        //webView.UserContentManager.AddSignalHandler("script-message-received::webview", WebView_WebMessageReceived);
-        webView.AddSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
+        _dispatcher.Invoke(() =>
+        {
+            webView.UserMessageReceived += WebView_UserMessageReceived;
+            //webView.UserContentManager.AddSignalHandler("script-message-received::webview", WebView_WebMessageReceived);
+        });
     }
 
 
 
-    void UnregisterWebViewEvents(LinuxWebView webView)
+    void UnregisterWebViewEvents(WebKit.WebView webView)
     {
         if (webView is null)
             return;
 
-        webView.UserMessageReceived -= WebView_UserMessageReceived;
-        webView.RemoveSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
+        _dispatcher.Invoke(() =>
+        {
+            webView.UserMessageReceived -= WebView_UserMessageReceived;
+        });
     }
 }

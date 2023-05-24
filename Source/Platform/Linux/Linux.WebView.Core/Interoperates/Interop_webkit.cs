@@ -1,4 +1,4 @@
-﻿namespace Avalonia.WebView.Linux.Interoperates;
+﻿namespace Linux.WebView.Core.Interoperates;
 
 public enum WebKitUserContentInjectedFrames
 {

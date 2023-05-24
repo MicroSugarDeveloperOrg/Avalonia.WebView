@@ -9,9 +9,9 @@ partial class LinuxWebViewCore
 
     object? IPlatformWebView.PlatformViewContext => this;
 
-    bool IWebViewControl.IsCanGoForward => WebView.CanGoForward();
+    bool IWebViewControl.IsCanGoForward => _dispatcher.Invoke(WebView.CanGoForward);
 
-    bool IWebViewControl.IsCanGoBack => WebView.CanGoBack();
+    bool IWebViewControl.IsCanGoBack => _dispatcher.Invoke(WebView.CanGoBack);
 
     async Task<bool> IPlatformWebView.Initialize()
     {
@@ -22,17 +22,21 @@ partial class LinuxWebViewCore
         {
             _callBack.PlatformWebViewCreating(this, new WebViewCreatingEventArgs());
 
-            WebView.Settings.EnableDeveloperExtras = _creationProperties.AreDevToolEnabled;
-            WebView.Settings.AllowFileAccessFromFileUrls = true;
-            WebView.Settings.AllowModalDialogs = true;
-            WebView.Settings.AllowTopNavigationToDataUrls = true;
-            WebView.Settings.AllowUniversalAccessFromFileUrls = true;
-            WebView.Settings.EnableBackForwardNavigationGestures = true;
-            WebView.Settings.EnableCaretBrowsing = true;
-            WebView.Settings.EnableMediaCapabilities = true;
-            WebView.Settings.EnableMediaStream = true;
-            WebView.Settings.JavascriptCanAccessClipboard = true;
-            WebView.Settings.JavascriptCanOpenWindowsAutomatically = true;
+            _dispatcher.Invoke(() =>
+            {
+                WebView.Settings.EnableDeveloperExtras = _creationProperties.AreDevToolEnabled;
+                WebView.Settings.AllowFileAccessFromFileUrls = true;
+                WebView.Settings.AllowModalDialogs = true;
+                WebView.Settings.AllowTopNavigationToDataUrls = true;
+                WebView.Settings.AllowUniversalAccessFromFileUrls = true;
+                WebView.Settings.EnableBackForwardNavigationGestures = true;
+                WebView.Settings.EnableCaretBrowsing = true;
+                WebView.Settings.EnableMediaCapabilities = true;
+                WebView.Settings.EnableMediaStream = true;
+                WebView.Settings.JavascriptCanAccessClipboard = true;
+                WebView.Settings.JavascriptCanOpenWindowsAutomatically = true;
+            });
+
 
             RegisterWebViewEvents(WebView);
 
@@ -54,34 +58,45 @@ partial class LinuxWebViewCore
     Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
     {
         if (string.IsNullOrWhiteSpace(javaScript))
-            return Task.FromResult<string?>(default); ;
+            return Task.FromResult<string?>(default);
 
         var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(javaScript);
         var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
 
-        WebView.RunJavascript(script, default, (GObject source_object, GIAsyncResult res) =>
+        _dispatcher.Invoke(() =>
         {
-           
-        });
+            WebView.RunJavascript(script, default, (GLib.Object source_object, GLib.IAsyncResult res) =>
+            {
+        
+            });
+        }) ;
+
         return Task.FromResult<string?>(string.Empty);
     }
 
     bool IWebViewControl.GoBack()
     {
-        if (!WebView.CanGoBack())
-            return false;
+        return _dispatcher.Invoke(() =>
+        {
+            if (!WebView.CanGoBack())
+                return false;
 
-        WebView.GoBack();
-        return true;
+            WebView.GoBack();
+            return true;
+        });
     }
 
     bool IWebViewControl.GoForward()
     {
-        if (!WebView.CanGoForward())
-            return false;
+        return _dispatcher.Invoke(() =>
+        {
+            if (!WebView.CanGoForward())
+                return false;
 
-        WebView.GoForward();
-        return true;
+            WebView.GoForward();
+            return true;
+        });
+
     }
 
     bool IWebViewControl.Navigate(Uri? uri)
@@ -89,19 +104,17 @@ partial class LinuxWebViewCore
         if (uri is null)
             return false;
 
-        WebView.LoadUri(uri.AbsoluteUri);
+        _dispatcher.Invoke(() => WebView.LoadUri(uri.AbsoluteUri));
         return true;
     }
 
     bool IWebViewControl.NavigateToString(string htmlContent)
     {
-        if (!string.IsNullOrWhiteSpace(htmlContent))
-        {
-            WebView.LoadHtml(htmlContent);
-            return true;
-        }
+        if (string.IsNullOrWhiteSpace(htmlContent))
+            return false;
 
-        return false;
+        _dispatcher.Invoke(() => WebView.LoadHtml(htmlContent));
+        return true;
     }
 
     bool IWebViewControl.OpenDevToolsWindow()
@@ -117,10 +130,14 @@ partial class LinuxWebViewCore
         var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(webMessageAsJson);
         var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
 
-        WebView.RunJavascript(script, default, (GObject source_object, GIAsyncResult res) =>
+        _dispatcher.Invoke(() =>
         {
+            WebView.RunJavascript(script, default, (GLib.Object source_object, GLib.IAsyncResult res) =>
+            {
 
+            });
         });
+
         return true;
     }
 
@@ -132,22 +149,26 @@ partial class LinuxWebViewCore
         var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(webMessageAsString);
         var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
 
-        WebView.RunJavascript(script, default, (GObject source_object, GIAsyncResult res) =>
+        _dispatcher.Invoke(() =>
         {
+            WebView.RunJavascript(script, default, (GLib.Object source_object, GLib.IAsyncResult res) =>
+            {
 
+            });
         });
+
         return true;
     }
 
     bool IWebViewControl.Reload()
     {
-        WebView.Reload();
+        _dispatcher.Invoke(WebView.Reload);
         return true;
     }
 
     bool IWebViewControl.Stop()
     {
-        WebView.StopLoading();
+        _dispatcher.Invoke(WebView.StopLoading);
         return true;
     }
 
@@ -163,8 +184,7 @@ partial class LinuxWebViewCore
                     UnregisterWebViewEvents(WebView);
                     UnregisterEvents();
 
-                    WebView.Dispose();
-                    WebView = default!;
+                    _linuxWebView.Dispose();
                 }
                 catch (Exception)
                 {

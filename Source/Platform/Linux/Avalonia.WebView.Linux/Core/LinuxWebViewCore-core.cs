@@ -1,10 +1,11 @@
-﻿using WebViewCore.Helpers;
+﻿using WebKit;
+using WebViewCore.Helpers;
 
 namespace Avalonia.WebView.Linux.Core;
 
-partial class LinuxWebViewCore
+unsafe partial class LinuxWebViewCore
 {
-    Task PrepareBlazorWebViewStarting(IVirtualBlazorWebViewProvider? provider, LinuxWebView webView)
+    Task PrepareBlazorWebViewStarting(IVirtualBlazorWebViewProvider? provider, WebKit.WebView webView)
     {
         if (provider is null || WebView is null)
             return Task.CompletedTask;
@@ -13,26 +14,36 @@ partial class LinuxWebViewCore
             return Task.CompletedTask;
 
         _webScheme = filter;
-        webView.Context.RegisterUriScheme(filter.Scheme, WebView_WebResourceRequest);
+        _dispatcher.Invoke(() =>
+        {
+            webView.AddSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
+            webView.Context.RegisterUriScheme(filter.Scheme, WebView_WebResourceRequest);
+            webView.UserContentManager.RegisterScriptMessageHandler(_messageKeyWord);
 
-        var scriptString = new GString(BlazorScriptHelper.BlazorStartingScript);
-        var script = UserScript.New(scriptString.Handle);
-        webView.UserContentManager.AddScript(script);
-        script.Unref();
-
-        webView.UserContentManager.RegisterScriptMessageHandler(_messageKeyWord);
+            var spanChar = BlazorScriptHelper.BlazorStartingScript.AsSpan();
+            fixed (void* pBuffer = spanChar)
+            {
+                var script = UserScript.New(new IntPtr(pBuffer));
+                webView.UserContentManager.AddScript(script);
+                script.Unref(); 
+            }
+        });
 
         _isBlazorWebView = true;
         return Task.CompletedTask;
     }
 
-    void ClearBlazorWebViewCompleted(LinuxWebView webView)
+    void ClearBlazorWebViewCompleted(WebKit.WebView webView)
     {
         if (WebView is null)
             return;
 
-        webView.UserContentManager.UnregisterScriptMessageHandler(_messageKeyWord);
-
+        _dispatcher.Invoke(() => 
+        {
+            webView.UserContentManager.UnregisterScriptMessageHandler(_messageKeyWord);
+            webView.RemoveSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
+        });
+  
         _isBlazorWebView = false;
     }
 
@@ -83,10 +94,16 @@ partial class LinuxWebViewCore
         var headerString = response.Headers[QueryStringHelper.ContentTypeKey];
         using var ms = new MemoryStream();
         response.Content.CopyTo(ms);
-        var span = ms.GetBuffer().AsSpan();
-        void* ptr = &span; 
-        using var inputStream = new GInputStream(new IntPtr(ptr));
-        request.Finish(inputStream, span.Length, headerString); 
+
+        _dispatcher.Invoke(() =>
+        {
+            var span = ms.GetBuffer().AsSpan();
+            fixed (void* pBuffer = span)
+            {
+                using var inputStream = new GLib.InputStream(new IntPtr(pBuffer));
+                request.Finish(inputStream, span.Length, headerString);
+            }
+        });
     }
 
 }
