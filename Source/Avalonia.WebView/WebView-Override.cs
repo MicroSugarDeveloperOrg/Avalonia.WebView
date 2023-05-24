@@ -40,8 +40,8 @@ partial class WebView
         var control = viewHandler.AttachableControl;
         if (control is null)
             return;
-
-        _partInnerContainer.Child = control;
+        Child = control;
+        //_partInnerContainer.Child = control;
         _platformWebView = viewHandler.PlatformWebView;
 
         await Navigate(Url);

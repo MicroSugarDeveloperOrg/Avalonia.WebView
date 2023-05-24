@@ -36,7 +36,7 @@ public sealed partial class  WebView : Control, IVirtualWebView<WebView>, IEmpty
             ClipToBounds = true,
             [!Border.CornerRadiusProperty] = this[!CornerRadiusProperty]
         };
-        Child = _partInnerContainer;
+        //Child = _partInnerContainer;
     }
 
     readonly WebViewCreationProperties _creationProperties;
