@@ -23,8 +23,8 @@ public class Interop_gdk
     [DllImport(_Gdk)]
     public static extern nint gdk_x11_window_foreign_new_for_display(nint display, nint xid);
 
-    [DllImport(_Gdk)]
-    public static extern nint gdk_x11_window_get_xid(nint window);
+    //[DllImport(_Gdk)]
+    //public static extern nint gdk_x11_window_get_xid(nint window);
 
 
     [DllImport(_Gdk)]

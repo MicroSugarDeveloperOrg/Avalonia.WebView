@@ -107,17 +107,15 @@ internal class LinuxApplication : ILinuxApplication
         if (!_isRunning) throw new InvalidOperationException(nameof(IsRunning));
         return _dispatcher.InvokeAsync(() =>
         {
-            var window = new GWindow(Gtk.WindowType.Toplevel);
-            window.Title = nameof(WebView);
-            window.KeepAbove = true;
+            var window = new GWindow("WebView.GTK.Window");  
             window.DefaultSize = new GSize(1024, 768);
 
             var webView = new WebKitWebView();
-            //webView.Realize();
+            webView.Realize();
 
             window.Add(webView);
             window.ShowAll();
-            //window.Present();
+            window.Present();
 
             //return (window, webView, window.Handle);
             return (window, webView, window.X11Handle());

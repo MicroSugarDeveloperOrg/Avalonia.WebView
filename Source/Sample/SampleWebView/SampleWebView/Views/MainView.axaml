@@ -8,9 +8,9 @@
 
 	<Grid RowDefinitions="50,*">
 		
-		<Button Content="Baidu" Command="{Binding BaiduCommand}"/>
+		<!--<Button Content="Baidu" Command="{Binding BaiduCommand}"/>-->
 		
-		<WebView Grid.Row="1" x:Name="PART_WebView" Url="https://www.bilibili.com" BorderThickness="1"></WebView>
+		<WebView Grid.Row="1" x:Name="PART_WebView" Url="https://www.bilibili.com"></WebView>
 
 	</Grid>
 </UserControl>
