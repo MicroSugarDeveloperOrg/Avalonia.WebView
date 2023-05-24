@@ -7,82 +7,136 @@ internal class LinuxDispatcher : ILinuxDispatcher
 
     }
 
-    bool _isRuning = false;
-
-    void ILinuxDispatcher.Invoke(EventHandler handler)
-    {
-        if (_isRuning)
-            Gtk.Application.Invoke(handler);
-    }
-
-    void ILinuxDispatcher.Invoke(object sender, EventArgs args, EventHandler handler)
-    {
-        if (_isRuning)
-            Gtk.Application.Invoke(sender, args, handler);
-    }
-
-
-    Task<bool> ILinuxDispatcher.InvokeAsync(EventHandler handler)
-    {
-        if (_isRuning)
-            return Task.FromResult(false);
-
-        var task = new TaskCompletionSource<bool>();
-        Task.Run(() =>
-        {
-            Gtk.Application.Invoke(handler);
-            task.SetResult(true);
-        });
-        return task.Task;
-    }
-
-    Task<bool> ILinuxDispatcher.InvokeAsync(object sender, EventArgs args, EventHandler handler)
-    {
-        if (_isRuning)
-            return Task.FromResult(false);
-
-        var task = new TaskCompletionSource<bool>();
-        Task.Run(() =>
-        {
-            Gtk.Application.Invoke(sender, args, handler);
-            task.SetResult(true);
-        });
-        return task.Task;
-    }
-
+    bool _isRunning = false;
     bool ILinuxDispatcher.Start()
     {
-        _isRuning = true;
+        _isRunning = true;
         return true;
     }
 
     bool ILinuxDispatcher.Stop()
     {
-        _isRuning = false;
+        _isRunning = false;
         return true;
     }
 
-    void ILinuxDispatcher.Invoke(Action action)
+    Task<bool> ILinuxDispatcher.InvokeAsync(Action action)
     {
-        if (!_isRuning)
-            return;
-        Gtk.Application.Invoke((s, e) =>
+        if (action is null)
+            throw new ArgumentNullException(nameof(action));
+        
+        if (!_isRunning)
+            return Task.FromResult(false);
+
+        var task = new TaskCompletionSource<bool>();
+        Task.Run(() =>
         {
-            action?.Invoke();
+            Gtk.Application.Invoke((s, e) =>
+            {
+                action?.Invoke();
+                task.SetResult(true);
+            });
         });
+        return task.Task;
     }
-
-    T ILinuxDispatcher.Invoke<T>(Func<T> func)
+    
+    Task<bool> ILinuxDispatcher.InvokeAsync(Action<object, EventArgs> action)
     {
-        if (!_isRuning)
-            return default(T)!;
+        if (action is null)
+            throw new ArgumentNullException(nameof(action));
+        
+        if (!_isRunning)
+            return Task.FromResult(false);
 
-        T flag = default(T)!;
-        Gtk.Application.Invoke((s, e) =>
+        var task = new TaskCompletionSource<bool>();
+        Task.Run(() =>
         {
-            flag = func.Invoke();
+            Gtk.Application.Invoke((s, e) =>
+            {
+                action?.Invoke(s, e);
+                task.SetResult(true);
+            });
         });
+        return task.Task;
+    }
+    
+    Task<bool> ILinuxDispatcher.InvokeAsync(object sender, EventArgs args, Action<object, EventArgs> action)
+    {
+        if (action is null)
+            throw new ArgumentNullException(nameof(action));
+        
+        if (!_isRunning)
+            return Task.FromResult(false);
 
-        return flag;    
+        var task = new TaskCompletionSource<bool>();
+        Task.Run(() =>
+        {
+            Gtk.Application.Invoke(sender, args,(s, e) =>
+            {
+                action?.Invoke(s, e);
+                task.SetResult(true);
+            });
+        });
+        return task.Task;
+    }
+    
+    Task<T> ILinuxDispatcher.InvokeAsync<T>(Func<T> func)
+    {
+        if (func is null)
+            throw new ArgumentNullException(nameof(func));
+        
+        if (!_isRunning)
+            return Task.FromResult<T>(default(T)!);
+
+        var task = new TaskCompletionSource<T>();
+        Task.Run(() =>
+        {
+            Gtk.Application.Invoke((s, e) =>
+            {
+                var ret = func.Invoke();
+                task.SetResult(ret);
+            });
+        });
+        return task.Task;
+    }
+    
+    Task<T> ILinuxDispatcher.InvokeAsync<T>(Func<object, EventArgs, T> func)
+    {
+        if (func is null)
+            throw new ArgumentNullException(nameof(func));
+        
+        if (!_isRunning)
+            return Task.FromResult<T>(default(T)!);
+
+        var task = new TaskCompletionSource<T>();
+        Task.Run(() =>
+        {
+            Gtk.Application.Invoke((s, e) =>
+            {
+                var ret = func.Invoke(s, e);
+                task.SetResult(ret);
+            });
+        });
+        return task.Task;
+    }
+    
+    Task<T> ILinuxDispatcher.InvokeAsync<T>(object sender, EventArgs args, Func<object, EventArgs, T> func)
+    {
+        if (func is null)
+            throw new ArgumentNullException(nameof(func));
+        
+        if (!_isRunning)
+            return Task.FromResult<T>(default(T)!);
+
+        var task = new TaskCompletionSource<T>();
+        Task.Run(() =>
+        {
+            Gtk.Application.Invoke(sender, args,(s, e) =>
+            {
+                var ret = func.Invoke(s, e);
+                task.SetResult(ret);
+            });
+        });
+        return task.Task;
     }
 }

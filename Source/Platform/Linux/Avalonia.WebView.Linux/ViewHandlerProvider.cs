@@ -8,10 +8,9 @@ internal class ViewHandlerProvider : IViewHandlerProvider
     public ViewHandlerProvider()
     {
         _linuxApplication = AvaloniaLocator.Current.GetRequiredService<ILinuxApplication>();
-        var task = _linuxApplication.RunAsync(default, default);
-        task.Wait();
-
-        if (!task.Result)
+        var bRet = _linuxApplication.RunAsync(default, default).Result;
+  
+        if (!bRet)
             throw new ArgumentNullException(nameof(ILinuxApplication), "create gtk application failed!");
 
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime deskTop)

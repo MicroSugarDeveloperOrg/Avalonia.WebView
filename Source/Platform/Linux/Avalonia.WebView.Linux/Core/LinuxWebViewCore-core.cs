@@ -14,7 +14,7 @@ unsafe partial class LinuxWebViewCore
             return Task.CompletedTask;
 
         _webScheme = filter;
-        _dispatcher.Invoke(() =>
+        var bRet = _dispatcher.InvokeAsync(() =>
         {
             webView.AddSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
             webView.Context.RegisterUriScheme(filter.Scheme, WebView_WebResourceRequest);
@@ -27,7 +27,7 @@ unsafe partial class LinuxWebViewCore
                 webView.UserContentManager.AddScript(script);
                 script.Unref(); 
             }
-        });
+        }).Result;
 
         _isBlazorWebView = true;
         return Task.CompletedTask;
@@ -38,11 +38,11 @@ unsafe partial class LinuxWebViewCore
         if (WebView is null)
             return;
 
-        _dispatcher.Invoke(() => 
+        var bRet = _dispatcher.InvokeAsync(() => 
         {
             webView.UserContentManager.UnregisterScriptMessageHandler(_messageKeyWord);
             webView.RemoveSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
-        });
+        }).Result;
   
         _isBlazorWebView = false;
     }
@@ -95,7 +95,7 @@ unsafe partial class LinuxWebViewCore
         using var ms = new MemoryStream();
         response.Content.CopyTo(ms);
 
-        _dispatcher.Invoke(() =>
+        bRet = _dispatcher.InvokeAsync(() =>
         {
             var span = ms.GetBuffer().AsSpan();
             fixed (void* pBuffer = span)
@@ -103,7 +103,7 @@ unsafe partial class LinuxWebViewCore
                 using var inputStream = new GLib.InputStream(new IntPtr(pBuffer));
                 request.Finish(inputStream, span.Length, headerString);
             }
-        });
+        }).Result;
     }
 
 }

@@ -398,3 +398,4 @@ FodyWeavers.xsd
 *.sln.iml
 /Binary/net7.0
 /Binary
+/.idea/.idea.Avalonia.WebView/.idea/indexLayout.xml

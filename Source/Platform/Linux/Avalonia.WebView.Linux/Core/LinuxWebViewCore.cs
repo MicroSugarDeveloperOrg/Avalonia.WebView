@@ -19,7 +19,9 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
             throw new ArgumentNullException(nameof(linuxWebView));
 
         _linuxWebView = linuxWebView;
-        NativeHandler = linuxWebView.NativeHandle;
+
+        var handle = _dispatcher.InvokeAsync(() => linuxWebView.NativeHandle).Result;
+        NativeHandler = handle;
         RegisterEvents();
     }
 

@@ -9,9 +9,9 @@ partial class LinuxWebViewCore
 
     object? IPlatformWebView.PlatformViewContext => this;
 
-    bool IWebViewControl.IsCanGoForward => _dispatcher.Invoke(WebView.CanGoForward);
+    bool IWebViewControl.IsCanGoForward =>  _dispatcher.InvokeAsync(WebView.CanGoForward).Result;
 
-    bool IWebViewControl.IsCanGoBack => _dispatcher.Invoke(WebView.CanGoBack);
+    bool IWebViewControl.IsCanGoBack => _dispatcher.InvokeAsync(WebView.CanGoBack).Result;
 
     async Task<bool> IPlatformWebView.Initialize()
     {
@@ -22,7 +22,7 @@ partial class LinuxWebViewCore
         {
             _callBack.PlatformWebViewCreating(this, new WebViewCreatingEventArgs());
 
-            _dispatcher.Invoke(() =>
+            await _dispatcher.InvokeAsync(() =>
             {
                 WebView.Settings.EnableDeveloperExtras = _creationProperties.AreDevToolEnabled;
                 WebView.Settings.AllowFileAccessFromFileUrls = true;
@@ -36,8 +36,7 @@ partial class LinuxWebViewCore
                 WebView.Settings.JavascriptCanAccessClipboard = true;
                 WebView.Settings.JavascriptCanOpenWindowsAutomatically = true;
             });
-
-
+            
             RegisterWebViewEvents(WebView);
 
             await PrepareBlazorWebViewStarting(_provider, WebView);
@@ -55,15 +54,15 @@ partial class LinuxWebViewCore
         return false;
     }
 
-    Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
+    async Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
     {
         if (string.IsNullOrWhiteSpace(javaScript))
-            return Task.FromResult<string?>(default);
+            return default;
 
         var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(javaScript);
         var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
 
-        _dispatcher.Invoke(() =>
+        await _dispatcher.InvokeAsync(() =>
         {
             WebView.RunJavascript(script, default, (GLib.Object source_object, GLib.IAsyncResult res) =>
             {
@@ -71,31 +70,31 @@ partial class LinuxWebViewCore
             });
         }) ;
 
-        return Task.FromResult<string?>(string.Empty);
+        return string.Empty;
     }
 
     bool IWebViewControl.GoBack()
     {
-        return _dispatcher.Invoke(() =>
+        return _dispatcher.InvokeAsync(() =>
         {
             if (!WebView.CanGoBack())
                 return false;
 
             WebView.GoBack();
             return true;
-        });
+        }).Result;
     }
 
     bool IWebViewControl.GoForward()
     {
-        return _dispatcher.Invoke(() =>
+        return _dispatcher.InvokeAsync(() =>
         {
             if (!WebView.CanGoForward())
                 return false;
 
             WebView.GoForward();
             return true;
-        });
+        }).Result;
 
     }
 
@@ -104,8 +103,7 @@ partial class LinuxWebViewCore
         if (uri is null)
             return false;
 
-        _dispatcher.Invoke(() => WebView.LoadUri(uri.AbsoluteUri));
-        return true;
+        return _dispatcher.InvokeAsync(() => WebView.LoadUri(uri.AbsoluteUri)).Result;
     }
 
     bool IWebViewControl.NavigateToString(string htmlContent)
@@ -113,8 +111,7 @@ partial class LinuxWebViewCore
         if (string.IsNullOrWhiteSpace(htmlContent))
             return false;
 
-        _dispatcher.Invoke(() => WebView.LoadHtml(htmlContent));
-        return true;
+       return  _dispatcher.InvokeAsync(() => WebView.LoadHtml(htmlContent)).Result;
     }
 
     bool IWebViewControl.OpenDevToolsWindow()
@@ -130,15 +127,14 @@ partial class LinuxWebViewCore
         var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(webMessageAsJson);
         var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
 
-        _dispatcher.Invoke(() =>
+       return _dispatcher.InvokeAsync(() =>
         {
             WebView.RunJavascript(script, default, (GLib.Object source_object, GLib.IAsyncResult res) =>
             {
 
             });
-        });
-
-        return true;
+        }).Result;
+ 
     }
 
     bool IWebViewControl.PostWebMessageAsString(string webMessageAsString, Uri? baseUri)
@@ -149,28 +145,17 @@ partial class LinuxWebViewCore
         var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(webMessageAsString);
         var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
 
-        _dispatcher.Invoke(() =>
+       return _dispatcher.InvokeAsync(() =>
         {
             WebView.RunJavascript(script, default, (GLib.Object source_object, GLib.IAsyncResult res) =>
             {
 
             });
-        });
-
-        return true;
+        }).Result; 
     }
 
-    bool IWebViewControl.Reload()
-    {
-        _dispatcher.Invoke(WebView.Reload);
-        return true;
-    }
-
-    bool IWebViewControl.Stop()
-    {
-        _dispatcher.Invoke(WebView.StopLoading);
-        return true;
-    }
+    bool IWebViewControl.Reload() =>  _dispatcher.InvokeAsync(WebView.Reload).Result;
+    bool IWebViewControl.Stop() => _dispatcher.InvokeAsync(WebView.StopLoading).Result;
 
     protected virtual void Dispose(bool disposing)
     {

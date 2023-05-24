@@ -10,7 +10,8 @@ internal class LinuxWebViewCore : ILinuxWebView
 
         Gtk.Window window = default!;
         WebKit.WebView webView = default!;
-        dispatcher.Invoke(() =>
+
+        var bRet = dispatcher.InvokeAsync(() =>
         {
             window = new Gtk.Window(Gtk.WindowType.Toplevel);
             window.Title = nameof(WebView);
@@ -24,8 +25,11 @@ internal class LinuxWebViewCore : ILinuxWebView
             window.ShowAll();
             window.Present();
 
-        });
+        }).Result;
 
+        if (!bRet)
+            throw new ArgumentNullException(nameof(WebKit.WebView));
+        
         _window = window;
         _webView = webView;
     }
@@ -192,12 +196,12 @@ internal class LinuxWebViewCore : ILinuxWebView
                  
             }
 
-            _dispathcer.Invoke(() =>
+            var bRet = _dispathcer.InvokeAsync(() =>
             {
                 _webView.Dispose(); 
                 _window.Dispose();
                 _application.RemoveWindow(_window);
-            });
+            }).Result;
 
             IsDisposed = true;
         }
