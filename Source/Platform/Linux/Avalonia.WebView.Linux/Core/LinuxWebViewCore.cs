@@ -14,13 +14,11 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
         _creationProperties = webViewCreationProperties;
 
         _dispatcher = linuxApplication.Dispatcher;
-        var linuxWebView = linuxApplication.CreateWebView();
-        if (linuxWebView is null)
-            throw new ArgumentNullException(nameof(linuxWebView));
+        var gtkWrapper = linuxApplication.CreateWebView().Result;
 
-        _linuxWebView = linuxWebView;
-        var handle = linuxWebView.WindowHandle;
-        NativeHandler = handle;
+        _hostWindow = gtkWrapper.Item1;
+        _webView = gtkWrapper.Item2;
+        NativeHandler = gtkWrapper.Item3;
         RegisterEvents();
     }
 
@@ -29,17 +27,16 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
         Dispose(disposing: false);
     }
 
+    readonly GWindow _hostWindow;
+    readonly WebKitWebView _webView;
     readonly ILinuxApplication _application;
-    readonly ILinuxDispatcher _dispatcher;
-    readonly ILinuxWebView _linuxWebView;
+    readonly ILinuxDispatcher _dispatcher; 
     readonly string _messageKeyWord;
     readonly IVirtualBlazorWebViewProvider? _provider;
     readonly IVirtualWebViewControlCallBack _callBack;
     readonly ViewHandler _handler;
     readonly WebViewCreationProperties _creationProperties;
     readonly string _dispatchMessageCallback = "__dispatchMessageCallback";
-
-    //WebKit.WebView _webView;
 
     WebScheme? _webScheme;
 
@@ -59,6 +56,6 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
         private set => Volatile.Write(ref _isdisposed, value);
     }
 
-    public WebKit.WebView WebView => _linuxWebView.WebView;
+    public WebKitWebView WebView => _webView;
 
 }

@@ -17,3 +17,6 @@ global using Avalonia.WebView.Linux.Helpers;
 global using Microsoft.Extensions.FileProviders;
 global using System.Reflection;
 global using System.Web;
+
+global using GWindow = Gtk.Window;
+global using WebKitWebView = WebKit.WebView;

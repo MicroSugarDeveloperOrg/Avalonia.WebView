@@ -1,4 +1,4 @@
-﻿using Linux.WebView.Core.Core;
+﻿using Linux.WebView.Core.Extensions;
 
 namespace Linux.WebView.Core;
 
@@ -14,13 +14,9 @@ internal class LinuxApplication : ILinuxApplication
         Dispose(disposing: false);
     }
 
-    readonly string _applicationCheckString = "WebViewApplication";
     readonly ILinuxDispatcher _dispatcher;
     Task? _appRunning;
-    Gtk.Application? _application;
-    Gdk.Display? _defaultDisplay;
-
-    bool _isInitilazed = false;
+    GDisplay? _defaultDisplay;
 
     bool _isRunning = false;
     public bool IsRunning
@@ -40,35 +36,6 @@ internal class LinuxApplication : ILinuxApplication
 
     ILinuxDispatcher ILinuxApplication.Dispatcher => _dispatcher;
 
-    bool Initialize(string? applicationName, string[]? args)
-    {
-        if (_isInitilazed)
-            return true;
-
-        try
-        {
-            using var backends = new Utf8Buffer("x11");
-            Interop_gdk.gdk_set_allowed_backends(backends);
-        }
-        catch
-        {
-        }
- 
-        Environment.SetEnvironmentVariable("WAYLAND_DISPLAY", "/proc/fake-display-to-prevent-wayland-initialization-by-gtk3");
-
-        if (args is null)
-            args = new string[] { };
-
-        Gtk.Application.Init(); 
-        //Gtk.Application.InitCheck(_applicationCheckString, ref args);
-
-        var appName = string.IsNullOrWhiteSpace(applicationName) ? $"webview.app.a{Guid.NewGuid():N}" : applicationName!;
-        _application = new Gtk.Application(appName, GLib.ApplicationFlags.None);
-        _defaultDisplay = Gdk.Display.Default;
-
-        _isInitilazed = true;
-        return true;
-    }
 
     Task<bool> ILinuxApplication.RunAsync(string? applicationName, string[]? args)
     {
@@ -78,20 +45,24 @@ internal class LinuxApplication : ILinuxApplication
         var tcs = new TaskCompletionSource<bool>();
         _appRunning = Task.Factory.StartNew(obj =>
         {
-            if (!Initialize(applicationName, args))
-                tcs.SetResult(false);
+            try
+            {
+                using var backends = new Utf8Buffer("x11");
+                Interop_gdk.gdk_set_allowed_backends(backends);
+            }
+            catch
+            {
+            }
+
+            Environment.SetEnvironmentVariable("WAYLAND_DISPLAY", "/proc/fake-display-to-prevent-wayland-initialization-by-gtk3");
+            GApplication.Init();
+            _defaultDisplay = GDisplay.Default;
 
             _dispatcher.Start();
             IsRunning = true;
-            //Gtk.Application.RunIteration();
-            //var window = new Gtk.Window(Gtk.WindowType.Toplevel);
 
-            //window.DefaultSize = new Gdk.Size(1024, 768);
-            //window.ShowAll();
             tcs.SetResult(true);
-            Gtk.Application.Run();
-            //while (true)
-                //Gtk.Application.RunIteration();
+            GApplication.Run();
 
         }, TaskCreationOptions.LongRunning);
 
@@ -104,7 +75,7 @@ internal class LinuxApplication : ILinuxApplication
             return Task.CompletedTask;
 
         _dispatcher.Stop();
-        Gtk.Application.Quit();
+        GApplication.Quit();
         return Task.CompletedTask;
     }
 
@@ -121,9 +92,6 @@ internal class LinuxApplication : ILinuxApplication
             _defaultDisplay?.Dispose();
             _defaultDisplay = null;
 
-            _application?.Dispose();
-            _application = null;
-
             IsDisposed = true;
         }
     }
@@ -134,15 +102,24 @@ internal class LinuxApplication : ILinuxApplication
         GC.SuppressFinalize(this);
     }
 
-    ILinuxWebView? ILinuxApplication.CreateWebView()
+    Task<(GWindow, WebKitWebView, IntPtr hostHandle)> ILinuxApplication.CreateWebView()
     {
-        if (!_isRunning)
-            return default;
+        if (!_isRunning) throw new InvalidOperationException(nameof(IsRunning));
+        return _dispatcher.InvokeAsync(() =>
+        {
+            var window = new GWindow(Gtk.WindowType.Toplevel);
+            window.Title = nameof(WebView);
+            window.KeepAbove = true;
 
-        if (_application is null)
-            return default;
+            var webView = new WebKitWebView();
+            //webView.Realize();
 
-        var linuxWebView = new LinuxWebViewCore(_dispatcher, _application);
-        return linuxWebView;
+            window.Add(webView);
+            window.ShowAll();
+            //window.Present();
+
+            //return (window, webView, window.Handle);
+            return (window, webView, window.X11Handle());
+        });
     }
 }

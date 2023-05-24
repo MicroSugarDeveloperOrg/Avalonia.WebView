@@ -169,7 +169,12 @@ partial class LinuxWebViewCore
                     UnregisterWebViewEvents(WebView);
                     UnregisterEvents();
 
-                    _linuxWebView.Dispose();
+                    var ret = _dispatcher.InvokeAsync(() =>
+                    {
+                        WebView.Dispose();
+                        _hostWindow.Dispose();
+                    }).Result;
+
                 }
                 catch (Exception)
                 {
