@@ -7,7 +7,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Linux\Avalonia.WebView.Linux\Avalonia.WebView.Linux.csproj" Condition="'$(IsLinux)'=='true'" />
-		<ProjectReference Include="..\..\Mac\Avalonia.WebView.MacCatalyst\Avalonia.WebView.MacCatalyst.csproj" Condition="'$(IsOSX)'=='true'" /> 
+		<ProjectReference Include="..\..\Mac\Avalonia.WebView.MacCatalyst\Avalonia.WebView.MacCatalyst.csproj" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'"/> 
 		<ProjectReference Include="..\..\Windows\Avalonia.WebView.Windows\Avalonia.WebView.Windows.csproj" Condition="'$(IsWindows)'=='true'" />
 	</ItemGroup>
 
