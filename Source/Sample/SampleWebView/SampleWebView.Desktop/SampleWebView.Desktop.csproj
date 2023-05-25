@@ -1,20 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0</TargetFramework> 
-    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFrameworks>net7.0</TargetFrameworks>
+		<TargetFrameworks Condition="'$(IsOSX)'=='true'">$(TargetFrameworks);net7.0-maccatalyst</TargetFrameworks>
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
+	<PropertyGroup>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Avalonia.Desktop" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia.Desktop" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SampleWebView\SampleWebView.csproj" />
-    <ProjectReference Include="..\..\..\Platform\Desktop\Avalonia.WebView.Desktop\Avalonia.WebView.Desktop.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SampleWebView\SampleWebView.csproj" />
+		<ProjectReference Include="..\..\..\Platform\Desktop\Avalonia.WebView.Desktop\Avalonia.WebView.Desktop.csproj" />
+	</ItemGroup>
 </Project>

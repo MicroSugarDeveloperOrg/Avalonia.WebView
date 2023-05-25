@@ -1,7 +1,7 @@
 ﻿#if __WINDOWS__
 using Avalonia.WebView.Windows;
 # elif __OSX__
-using Avalonia.WebView.Mac;
+using Avalonia.WebView.MacCatalyst;
 # elif __LINUX__
 using Avalonia.WebView.Linux;
 #endif
@@ -15,7 +15,7 @@ public static class AppBuilderExtensions
 #if __WINDOWS__
         builder.UseWindowWebView();
 #elif __OSX__
-        builder.UseOSXWebView();
+        builder.UseMacCatalystWebView();
 #elif __LINUX__
         builder.UseLinuxWebView();
 #endif

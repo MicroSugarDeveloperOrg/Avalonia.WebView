@@ -1,14 +1,13 @@
-﻿namespace Avalonia.WebView.iOS.Delegates;
-
+﻿namespace Avalonia.WebView.MacCatalyst.Delegates;
 internal class WebViewNavigationDelegate : WKNavigationDelegate
 {
-    public WebViewNavigationDelegate(IosWebViewCore webViewCore, IVirtualWebViewControlCallBack callBack, WebScheme? webScheme)
+    public WebViewNavigationDelegate(MacCatalystWebViewCore webViewCore, IVirtualWebViewControlCallBack callBack, WebScheme? webScheme)
     {
         _webViewCore = webViewCore;
         //_webView = _webViewCore.WebView;
         _webScheme = webScheme;
     }
-    readonly IosWebViewCore _webViewCore;
+    readonly MacCatalystWebViewCore _webViewCore;
     //readonly WKWebView _webView;
     readonly WebScheme? _webScheme;
 

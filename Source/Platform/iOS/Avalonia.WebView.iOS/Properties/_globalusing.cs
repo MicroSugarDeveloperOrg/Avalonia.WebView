@@ -31,3 +31,4 @@ global using Avalonia.WebView.iOS.Helpers;
 global using Avalonia.WebView.iOS.Delegates;
 global using WebViewCore.Events;
 global using System.Text.Encodings.Web;
+global using WebViewCore.Enums;
