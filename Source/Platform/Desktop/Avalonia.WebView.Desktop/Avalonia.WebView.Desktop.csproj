@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks Condition="'$(IsWindows)'=='true' OR '$(IsLinux)'=='true'">netstandard2.0</TargetFrameworks>
-		<TargetFrameworks Condition="'$(IsOSX)'=='true'">$(TargetFrameworks);net7.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks> 
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Linux\Avalonia.WebView.Linux\Avalonia.WebView.Linux.csproj" Condition="'$(IsLinux)'=='true'" />
-		<ProjectReference Include="..\..\Mac\Avalonia.WebView.MacCatalyst\Avalonia.WebView.MacCatalyst.csproj"  Condition="'$(IsOSX)'=='true'"/> 
+		<ProjectReference Include="..\..\Linux\Avalonia.WebView.Linux\Avalonia.WebView.Linux.csproj" Condition="'$(IsLinux)'=='true'" /> 
+		<ProjectReference Include="..\..\Mac\Avalonia.WebView.Mac\Avalonia.WebView.Mac.csproj" Condition="'$(IsOSX)'=='true'" /> 
 		<ProjectReference Include="..\..\Windows\Avalonia.WebView.Windows\Avalonia.WebView.Windows.csproj" Condition="'$(IsWindows)'=='true'" />
 	</ItemGroup>
 
