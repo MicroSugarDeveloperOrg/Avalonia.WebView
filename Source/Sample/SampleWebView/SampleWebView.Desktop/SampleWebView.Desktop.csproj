@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFrameworks>net7.0</TargetFrameworks>
+		<TargetFrameworks Condition="'$(IsWindows)'=='true' OR '$(IsLinux)'=='true'">net7.0</TargetFrameworks>
 		<TargetFrameworks Condition="'$(IsOSX)'=='true'">$(TargetFrameworks);net7.0-maccatalyst</TargetFrameworks>
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 	</PropertyGroup>
