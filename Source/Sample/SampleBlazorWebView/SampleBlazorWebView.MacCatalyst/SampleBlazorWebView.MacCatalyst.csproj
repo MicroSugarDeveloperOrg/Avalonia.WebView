@@ -4,6 +4,10 @@
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net6.0-maccatalyst</TargetFramework>
 		<SupportedOSPlatformVersion>13.1</SupportedOSPlatformVersion>
+
+		<!-- App Identifier -->
+		<ApplicationId>com.companyname.smartpartybuild</ApplicationId>
+		<ApplicationIdGuid>180091c4-43d6-43f2-8a91-0670455f2834</ApplicationIdGuid>
 	</PropertyGroup>
 
 	<PropertyGroup>
