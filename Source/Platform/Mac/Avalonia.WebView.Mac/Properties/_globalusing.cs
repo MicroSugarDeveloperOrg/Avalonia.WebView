@@ -1,10 +1,10 @@
-﻿global using MacosWebView = MonoMac.WebKit.WebView;
-global using MonoMac.WebKit; 
-global using MonoMac.Foundation;
+﻿global using MacosWebView = WebKit.WebView;
+global using WebKit; 
+global using Foundation;
 global using System.ComponentModel;
 global using Avalonia.Data;
 global using Avalonia.Platform;
-global using MonoMac.AppKit;
+global using AppKit;
 global using AvaloniaWebView.Shared.Handlers; 
 global using WebViewCore; 
 global using Avalonia.Controls; 

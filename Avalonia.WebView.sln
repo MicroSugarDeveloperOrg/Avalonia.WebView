@@ -92,9 +92,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Linux.WebView.Core", "Sourc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.WebView.MacCatalyst", "Source\Platform\Mac\Avalonia.WebView.MacCatalyst\Avalonia.WebView.MacCatalyst.csproj", "{C196C208-3E95-4E3C-B0B3-47B3ABA74D69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebView.MacCatalyst", "Source\Sample\SampleWebView\SampleWebView.MacCatalyst\SampleWebView.MacCatalyst.csproj", "{249F2771-A81D-4DE8-8C0C-8B51156CBC14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebView.MacCatalyst", "Source\Sample\SampleWebView\SampleWebView.MacCatalyst\SampleWebView.MacCatalyst.csproj", "{249F2771-A81D-4DE8-8C0C-8B51156CBC14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleBlazorWebView.MacCatalyst", "Source\Sample\SampleBlazorWebView\SampleBlazorWebView.MacCatalyst\SampleBlazorWebView.MacCatalyst.csproj", "{3A48C08E-9270-41DD-8CF6-C9DCB150896C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleBlazorWebView.MacCatalyst", "Source\Sample\SampleBlazorWebView\SampleBlazorWebView.MacCatalyst\SampleBlazorWebView.MacCatalyst.csproj", "{3A48C08E-9270-41DD-8CF6-C9DCB150896C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Mac", "Source\Platform\Mac\Xamarin.Mac\Xamarin.Mac.csproj", "{E176F4E6-93C3-4E7B-A3CE-E8CE29F627E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -222,6 +224,10 @@ Global
 		{3A48C08E-9270-41DD-8CF6-C9DCB150896C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A48C08E-9270-41DD-8CF6-C9DCB150896C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A48C08E-9270-41DD-8CF6-C9DCB150896C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E176F4E6-93C3-4E7B-A3CE-E8CE29F627E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E176F4E6-93C3-4E7B-A3CE-E8CE29F627E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E176F4E6-93C3-4E7B-A3CE-E8CE29F627E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E176F4E6-93C3-4E7B-A3CE-E8CE29F627E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -259,6 +265,7 @@ Global
 		{C196C208-3E95-4E3C-B0B3-47B3ABA74D69} = {69A9B177-4720-4495-A6BA-028141036014}
 		{249F2771-A81D-4DE8-8C0C-8B51156CBC14} = {83490912-3D02-4366-B645-BFAD4ED0AFE5}
 		{3A48C08E-9270-41DD-8CF6-C9DCB150896C} = {30565A8D-5256-4118-8BD2-D3ADFAAE5D4A}
+		{E176F4E6-93C3-4E7B-A3CE-E8CE29F627E6} = {69A9B177-4720-4495-A6BA-028141036014}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0921EC9A-CD2A-4912-BC79-11B67BBCBDF5}

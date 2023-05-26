@@ -1,0 +1,35 @@
+namespace AudioToolbox;
+
+public enum AudioFileProperty
+{
+	FileFormat = 1717988724,
+	DataFormat = 1684434292,
+	IsOptimized = 1869640813,
+	MagicCookieData = 1835493731,
+	AudioDataByteCount = 1650683508,
+	AudioDataPacketCount = 1885564532,
+	MaximumPacketSize = 1886616165,
+	DataOffset = 1685022310,
+	ChannelLayout = 1668112752,
+	DeferSizeUpdates = 1685289589,
+	DataFormatName = 1718512997,
+	MarkerList = 1835756659,
+	RegionList = 1919380595,
+	PacketToFrame = 1886086770,
+	FrameToPacket = 1718775915,
+	PacketToByte = 1886085753,
+	ByteToPacket = 1652125803,
+	ChunkIDs = 1667787108,
+	InfoDictionary = 1768842863,
+	PacketTableInfo = 1886283375,
+	FormatList = 1718383476,
+	PacketSizeUpperBound = 1886090594,
+	ReserveDuration = 1920168566,
+	EstimatedDuration = 1701082482,
+	BitRate = 1651663220,
+	ID3Tag = 1768174452,
+	SourceBitDepth = 1935832164,
+	AlbumArtwork = 1633776244,
+	ReadyToProducePackets = 1919247481,
+	AverageBytesPerPacket = 1633841264
+}

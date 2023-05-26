@@ -1,0 +1,35 @@
+namespace AudioToolbox;
+
+internal enum AudioConverterPropertyID
+{
+	MinimumInputBufferSize = 1835623027,
+	MinimumOutputBufferSize = 1836016243,
+	MaximumInputPacketSize = 2020175987,
+	MaximumOutputPacketSize = 2020569203,
+	CalculateInputBufferSize = 1667850867,
+	CalculateOutputBufferSize = 1668244083,
+	SampleRateConverterComplexity = 1936876385,
+	SampleRateConverterQuality = 1936876401,
+	SampleRateConverterInitialPhase = 1936876400,
+	CodecQuality = 1667527029,
+	PrimeMethod = 1886547309,
+	PrimeInfo = 1886546285,
+	ChannelMap = 1667788144,
+	DecompressionMagicCookie = 1684891491,
+	CompressionMagicCookie = 1668114275,
+	EncodeBitRate = 1651663220,
+	EncodeAdjustableSampleRate = 1634366322,
+	InputChannelLayout = 1768123424,
+	OutputChannelLayout = 1868786720,
+	ApplicableEncodeBitRates = 1634034290,
+	AvailableEncodeBitRates = 1986355826,
+	ApplicableEncodeSampleRates = 1634038642,
+	AvailableEncodeSampleRates = 1986360178,
+	AvailableEncodeChannelLayoutTags = 1634034540,
+	CurrentOutputStreamDescription = 1633906532,
+	CurrentInputStreamDescription = 1633904996,
+	PropertySettings = 1633906803,
+	PropertyBitDepthHint = 1633903204,
+	PropertyFormatList = 1718383476,
+	CanResumeFromInterruption = 1668441705
+}

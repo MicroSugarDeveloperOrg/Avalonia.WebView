@@ -7,12 +7,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="Avalonia" />
-		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" />
-		<PackageReference Include="MonoMac.NetStandard" /> 
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" /> 
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
+	  <ProjectReference Include="..\Xamarin.Mac\Xamarin.Mac.csproj" />
 	</ItemGroup>
 
 	<!--<ItemGroup>
@@ -21,5 +21,12 @@
 
 	<ItemGroup>
 	  <None Remove="Delegates\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="PolySharp">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>build; analyzers</IncludeAssets>
+	  </PackageReference>
 	</ItemGroup>
 </Project>
