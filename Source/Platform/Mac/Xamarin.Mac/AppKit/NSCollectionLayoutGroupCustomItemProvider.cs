@@ -1,0 +1,3 @@
+﻿namespace AppKit;
+
+public delegate NSCollectionLayoutGroupCustomItem[] NSCollectionLayoutGroupCustomItemProvider(INSCollectionLayoutEnvironment layout);

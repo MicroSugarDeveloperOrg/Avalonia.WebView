@@ -17,7 +17,9 @@ public struct BlockDescriptor
 
 	public IntPtr dispose;
 
-	private unsafe static CopyHelperDelegate copy_helper_delegate = CopyHelper;
+    public IntPtr signature;
+
+    private unsafe static CopyHelperDelegate copy_helper_delegate = CopyHelper;
 
 	private unsafe static DisposeHelperDelegate dispose_helper_delegate = DisposeHelper;
 

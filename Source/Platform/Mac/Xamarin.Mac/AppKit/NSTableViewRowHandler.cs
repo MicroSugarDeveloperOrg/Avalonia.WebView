@@ -1,3 +1,3 @@
 namespace AppKit;
 
-public delegate void NSTableViewRowHandler(NSTableRowView rowView, int row);
+public delegate void NSTableViewRowHandler(NSTableRowView rowView, nint row);

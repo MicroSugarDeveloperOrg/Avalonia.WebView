@@ -1,9 +1,12 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
-public enum NSRectEdge
+[Native]
+public enum NSRectEdge : ulong
 {
-	MinXEdge,
-	MinYEdge,
-	MaxXEdge,
-	MaxYEdge
+    MinXEdge,
+    MinYEdge,
+    MaxXEdge,
+    MaxYEdge
 }

@@ -1,39 +1,29 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace Foundation;
 
 [Register("__MonoMac_NSAsyncActionDispatcher")]
-internal class NSAsyncActionDispatcher : NSObject
+internal sealed class NSAsyncActionDispatcher : NSAsyncDispatcher
 {
-	private GCHandle gch;
+    private Action action;
 
-	private NSAction action;
+    public NSAsyncActionDispatcher(Action action)
+    {
+        if (action == null)
+        {
+            throw new ArgumentNullException("action");
+        }
+        this.action = action;
+    }
 
-	[Obsolete("Do not use, this method is only used internally")]
-	public NSAsyncActionDispatcher(IntPtr handle)
-		: base(handle)
-	{
-	}
-
-	public NSAsyncActionDispatcher(NSAction action)
-	{
-		this.action = action;
-		gch = GCHandle.Alloc(this);
-	}
-
-	[Export("xamarinApplySelector")]
-	[Preserve(Conditional = true)]
-	public void Apply()
-	{
-		try
-		{
-			action();
-		}
-		finally
-		{
-			action = null;
-			gch.Free();
-		}
-	}
+    public override void Apply()
+    {
+        try
+        {
+            action();
+        }
+        finally
+        {
+            action = null;
+            base.Apply();
+        }
+    }
 }

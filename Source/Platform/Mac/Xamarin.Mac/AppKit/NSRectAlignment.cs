@@ -1,0 +1,18 @@
+using ObjCRuntime;
+
+namespace AppKit;
+
+[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+[Native]
+public enum NSRectAlignment : long
+{
+	None,
+	Top,
+	TopLeading,
+	Leading,
+	BottomLeading,
+	Bottom,
+	BottomTrailing,
+	Trailing,
+	TopTrailing
+}

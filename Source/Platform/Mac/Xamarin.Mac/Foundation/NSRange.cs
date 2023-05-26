@@ -2,26 +2,20 @@ namespace Foundation;
 
 public struct NSRange
 {
-	public ulong Location;
+    public nint Location;
 
-	public ulong Length;
+    public nint Length;
 
-	public const ulong NotFound = ulong.MaxValue;
+    public static readonly nint NotFound = nint.MaxValue;
 
-	public NSRange(ulong start, ulong len)
-	{
-		Location = start;
-		Length = len;
-	}
+    public NSRange(nint start, nint len)
+    {
+        Location = start;
+        Length = len;
+    }
 
-	public NSRange(int start, int len)
-	{
-		Location = (ulong)start;
-		Length = (ulong)len;
-	}
-
-	public override string ToString()
-	{
-		return $"[Location={Location},Length={Length}]";
-	}
+    public override string ToString()
+    {
+        return $"[Location={Location},Length={Length}]";
+    }
 }

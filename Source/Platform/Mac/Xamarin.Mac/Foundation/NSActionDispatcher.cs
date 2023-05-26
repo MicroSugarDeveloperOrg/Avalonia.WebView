@@ -4,27 +4,21 @@ using ObjCRuntime;
 namespace Foundation;
 
 [Register("__MonoMac_NSActionDispatcher")]
-internal sealed class NSActionDispatcher : NSObject
+internal sealed class NSActionDispatcher : NSDispatcher
 {
-	public const string SelectorName = "xamarinApplySelector";
+    private readonly Action action;
 
-	public static readonly Selector Selector = new Selector("xamarinApplySelector");
+    public NSActionDispatcher(Action action)
+    {
+        if (action == null)
+        {
+            throw new ArgumentNullException("action");
+        }
+        this.action = action;
+    }
 
-	private readonly NSAction action;
-
-	public NSActionDispatcher(NSAction action)
-	{
-		if (action == null)
-		{
-			throw new ArgumentNullException("action");
-		}
-		this.action = action;
-	}
-
-	[Export("xamarinApplySelector")]
-	[Preserve(Conditional = true)]
-	public void Apply()
-	{
-		action();
-	}
+    public override void Apply()
+    {
+        action();
+    }
 }

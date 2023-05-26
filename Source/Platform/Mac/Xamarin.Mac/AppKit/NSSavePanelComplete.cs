@@ -1,3 +1,3 @@
 namespace AppKit;
 
-public delegate void NSSavePanelComplete(int result);
+public delegate void NSSavePanelComplete(nint result);

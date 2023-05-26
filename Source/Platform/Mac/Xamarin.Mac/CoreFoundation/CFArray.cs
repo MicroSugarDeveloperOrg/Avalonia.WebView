@@ -7,125 +7,128 @@ namespace CoreFoundation;
 
 internal class CFArray : INativeObject, IDisposable
 {
-	internal IntPtr handle;
+    internal IntPtr handle;
 
-	private static readonly IntPtr kCFTypeArrayCallbacks_ptr;
+    private static IntPtr kCFTypeArrayCallbacks_ptr_value;
 
-	public IntPtr Handle => handle;
+    public IntPtr Handle => handle;
 
-	public int Count => CFArrayGetCount(handle);
+    private static IntPtr kCFTypeArrayCallbacks_ptr
+    {
+        get
+        {
+            if (kCFTypeArrayCallbacks_ptr_value == IntPtr.Zero)
+            {
+                kCFTypeArrayCallbacks_ptr_value = Dlfcn.GetIndirect(Libraries.CoreFoundation.Handle, "kCFTypeArrayCallBacks");
+            }
+            return kCFTypeArrayCallbacks_ptr_value;
+        }
+    }
 
-	internal CFArray(IntPtr handle)
-		: this(handle, owns: false)
-	{
-	}
+    public nint Count => CFArrayGetCount(handle);
 
-	[Preserve(Conditional = true)]
-	internal CFArray(IntPtr handle, bool owns)
-	{
-		if (handle == IntPtr.Zero)
-		{
-			throw new ArgumentNullException("handle");
-		}
-		this.handle = handle;
-		if (!owns)
-		{
-			CFObject.CFRetain(handle);
-		}
-	}
+    internal CFArray(IntPtr handle)
+        : this(handle, owns: false)
+    {
+    }
 
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFArrayGetTypeID")]
-	public static extern int GetTypeID();
+    [Preserve(Conditional = true)]
+    internal CFArray(IntPtr handle, bool owns)
+    {
+        if (handle == IntPtr.Zero)
+        {
+            throw new ArgumentNullException("handle");
+        }
+        this.handle = handle;
+        if (!owns)
+        {
+            CFObject.CFRetain(handle);
+        }
+    }
 
-	~CFArray()
-	{
-		Dispose(disposing: false);
-	}
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFArrayGetTypeID")]
+    public static extern nint GetTypeID();
 
-	public void Dispose()
-	{
-		Dispose(disposing: true);
-		GC.SuppressFinalize(this);
-	}
+    ~CFArray()
+    {
+        Dispose(disposing: false);
+    }
 
-	protected virtual void Dispose(bool disposing)
-	{
-		if (handle != IntPtr.Zero)
-		{
-			CFObject.CFRelease(handle);
-			handle = IntPtr.Zero;
-		}
-	}
+    public void Dispose()
+    {
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
 
-	static CFArray()
-	{
-		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", 0);
-		if (intPtr == IntPtr.Zero)
-		{
-			return;
-		}
-		try
-		{
-			kCFTypeArrayCallbacks_ptr = Dlfcn.GetIndirect(intPtr, "kCFTypeArrayCallBacks");
-		}
-		finally
-		{
-			Dlfcn.dlclose(intPtr);
-		}
-	}
+    protected virtual void Dispose(bool disposing)
+    {
+        if (handle != IntPtr.Zero)
+        {
+            CFObject.CFRelease(handle);
+            handle = IntPtr.Zero;
+        }
+    }
 
-	public static CFArray FromIntPtrs(params IntPtr[] values)
-	{
-		return new CFArray(Create(values), owns: true);
-	}
+    public static CFArray FromIntPtrs(params IntPtr[] values)
+    {
+        return new CFArray(Create(values), owns: true);
+    }
 
-	public static CFArray FromNativeObjects(params INativeObject[] values)
-	{
-		return new CFArray(Create(values), owns: true);
-	}
+    public static CFArray FromNativeObjects(params INativeObject[] values)
+    {
+        return new CFArray(Create(values), owns: true);
+    }
 
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFArrayCreate(IntPtr allocator, IntPtr values, CFIndex numValues, IntPtr callbacks);
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+    private static extern IntPtr CFArrayCreate(IntPtr allocator, IntPtr values, nint numValues, IntPtr callBacks);
 
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFArrayGetValueAtIndex(IntPtr theArray, IntPtr index);
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+    internal static extern IntPtr CFArrayGetValueAtIndex(IntPtr theArray, nint idx);
 
-	public IntPtr GetValue(int index)
-	{
-		return CFArrayGetValueAtIndex(handle, new IntPtr(index));
-	}
+    public IntPtr GetValue(nint index)
+    {
+        return CFArrayGetValueAtIndex(handle, index);
+    }
 
-	public unsafe static IntPtr Create(params IntPtr[] values)
-	{
-		if (values == null)
-		{
-			throw new ArgumentNullException("values");
-		}
-		fixed (IntPtr* ptr = values)
-		{
-			return CFArrayCreate(IntPtr.Zero, (IntPtr)ptr, values.Length, kCFTypeArrayCallbacks_ptr);
-		}
-	}
+    public unsafe static IntPtr Create(params IntPtr[] values)
+    {
+        if (values == null)
+        {
+            throw new ArgumentNullException("values");
+        }
+        fixed (IntPtr* ptr = values)
+        {
+            return CFArrayCreate(IntPtr.Zero, (IntPtr)ptr, values.Length, kCFTypeArrayCallbacks_ptr);
+        }
+    }
 
-	public static IntPtr Create(params INativeObject[] values)
-	{
-		if (values == null)
-		{
-			throw new ArgumentNullException("values");
-		}
-		IntPtr[] array = new IntPtr[values.Length];
-		for (int i = 0; i < array.Length; i++)
-		{
-			array[i] = values[i].Handle;
-		}
-		return Create(array);
-	}
+    public static IntPtr Create(params INativeObject[] values)
+    {
+        if (values == null)
+        {
+            throw new ArgumentNullException("values");
+        }
+        IntPtr[] array = new IntPtr[values.Length];
+        for (int i = 0; i < array.Length; i++)
+        {
+            array[i] = values[i].Handle;
+        }
+        return Create(array);
+    }
 
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern CFIndex CFArrayGetCount(IntPtr theArray);
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+    private static extern nint CFArrayGetCount(IntPtr theArray);
 
-	public static int GetCount(IntPtr array)
-	{
-		return CFArrayGetCount(array);
-	}
+    public static nint GetCount(IntPtr array)
+    {
+        return CFArrayGetCount(array);
+    }
+
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+    private static extern IntPtr CFArrayCreateCopy(IntPtr allocator, IntPtr theArray);
+
+    public CFArray Clone()
+    {
+        return new CFArray(CFArrayCreateCopy(IntPtr.Zero, Handle), owns: true);
+    }
 }

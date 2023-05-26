@@ -1,8 +1,12 @@
+using ObjCRuntime;
+
 namespace AVFoundation;
 
-public enum AVAssetImageGeneratorResult
+[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
+[Native]
+public enum AVAssetImageGeneratorResult : long
 {
-	Succeeded,
-	Failed,
-	Cancelled
+    Succeeded,
+    Failed,
+    Cancelled
 }

@@ -7,8 +7,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="System.Numerics.Vectors" />
 	  <PackageReference Include="System.Reflection.Emit" />
 	  <PackageReference Include="System.Reflection.Emit.Lightweight" />
+	  <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
 	</ItemGroup>
 
 	<ItemGroup>

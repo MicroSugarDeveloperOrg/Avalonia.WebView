@@ -654,7 +654,10 @@ public class NSApplication : NSResponder
 
 	private static object __mt_SharedApplication_var_static;
 
-	private object __mt_WeakDelegate_var;
+
+    public static bool IgnoreMissingAssembliesDuringRegistration = false;
+
+    private object __mt_WeakDelegate_var;
 
 	private object __mt_Context_var;
 

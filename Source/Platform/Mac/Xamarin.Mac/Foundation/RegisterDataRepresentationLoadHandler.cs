@@ -1,0 +1,3 @@
+namespace Foundation;
+
+public delegate NSProgress RegisterDataRepresentationLoadHandler(ItemProviderDataCompletionHandler completionHandler);
