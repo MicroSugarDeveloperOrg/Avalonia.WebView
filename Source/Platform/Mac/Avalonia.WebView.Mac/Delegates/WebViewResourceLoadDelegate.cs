@@ -31,7 +31,7 @@ public class WebViewResourceLoadDelegate : WebResourceLoadDelegate
         base.OnReceivedResponse(sender, identifier, responseReceived, dataSource);
     }
 
-    public override void OnReceivedContentLength(MacosWebView sender, NSObject identifier, int length, WebDataSource dataSource)
+    public override void OnReceivedContentLength(MacosWebView sender, NSObject identifier, nint length, WebDataSource dataSource)
     {
         base.OnReceivedContentLength(sender, identifier, length, dataSource);
     }

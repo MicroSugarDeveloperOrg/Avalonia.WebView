@@ -77,7 +77,7 @@ partial class MacWebViewCore
         if (string.IsNullOrWhiteSpace(htmlContent))
             return false;
 
-        WebView.MainFrame.LoadHtmlString(htmlContent, default);
+        WebView.MainFrame.LoadHtmlString(htmlContent, default!);
         return true; 
     }
 
