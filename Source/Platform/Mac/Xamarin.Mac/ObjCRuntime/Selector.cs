@@ -9,7 +9,13 @@ public class Selector : IEquatable<Selector>, INativeObject
 
 	internal static readonly IntPtr InitWithCoder = GetHandle("initWithCoder:");
 
-	internal static IntPtr AllocHandle = GetHandle("alloc");
+    private static IntPtr MethodSignatureForSelector = GetHandle("methodSignatureForSelector:");
+
+    private static IntPtr FrameLength = GetHandle("frameLength");
+
+    internal static IntPtr RetainCount = GetHandle("retainCount");
+
+    internal static IntPtr AllocHandle = GetHandle("alloc");
 
 	internal static IntPtr ReleaseHandle = GetHandle("release");
 
@@ -72,7 +78,11 @@ public class Selector : IEquatable<Selector>, INativeObject
 		handle = GetHandle(name);
 	}
 
-	public static bool operator !=(Selector left, Selector right)
+    [MonoPInvokeCallback(typeof(getFrameLengthDelegate))]
+    public static int GetFrameLength(IntPtr @this, IntPtr sel) => Messaging.int_objc_msgSend(Messaging.IntPtr_objc_msgSend_IntPtr(@this, MethodSignatureForSelector, sel), FrameLength);
+
+
+    public static bool operator !=(Selector left, Selector right)
 	{
 		return !(left == right);
 	}
@@ -136,4 +146,7 @@ public class Selector : IEquatable<Selector>, INativeObject
 
 	[DllImport("/usr/lib/libobjc.dylib")]
 	private static extern bool sel_isMapped(IntPtr sel);
+
+    [MonoNativeFunctionWrapper]
+    private delegate int getFrameLengthDelegate(IntPtr @this, IntPtr sel);
 }

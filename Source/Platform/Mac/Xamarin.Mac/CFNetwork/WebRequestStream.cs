@@ -55,16 +55,16 @@ internal class WebRequestStream
 
 	public async Task Open()
 	{
-		writeStream.OpenCompletedEvent += delegate
+		writeStream.OpenCompletedEvent += async delegate
 		{
 			open = true;
 			openTcs.SetResult(null);
 			if (canWrite)
 			{
-				Write();
+			    await Write();
 			}
 		};
-		writeStream.CanAcceptBytesEvent += delegate
+		writeStream.CanAcceptBytesEvent += async delegate
 		{
 			if (!open)
 			{
@@ -72,7 +72,7 @@ internal class WebRequestStream
 			}
 			else
 			{
-				Write();
+				await Write();
 			}
 		};
 		writeStream.ErrorEvent += delegate

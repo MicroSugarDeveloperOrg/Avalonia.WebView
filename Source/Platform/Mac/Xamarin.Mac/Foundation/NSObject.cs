@@ -14,7 +14,16 @@ namespace Foundation;
 [Register("NSObject", true)]
 public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObjectProtocol
 {
-	[Flags]
+    private struct objc_super
+    {
+        public IntPtr receiver;
+        public IntPtr super;
+    }
+
+    private delegate IntPtr RetainTrampolineDelegate(IntPtr @this, IntPtr sel);
+    private delegate void ReleaseTrampolineDelegate(IntPtr @this, IntPtr sel);
+
+    [Flags]
 	private enum Flags : byte
 	{
 		Disposed = 1,
@@ -78,7 +87,8 @@ public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObj
 			}
 			foreach (NSObject item in list)
 			{
-				item.ReleaseManagedRef();
+				item.ReleaseManagedRefEx();
+                //item.ReleaseManagedRef();
 			}
 			list.Clear();
 		}
@@ -147,7 +157,21 @@ public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObj
 
 	public static readonly Assembly PlatformAssembly = typeof(NSObject).Assembly;
 
-	private IntPtr handle;
+    private static IntPtr RetainTrampolineFunctionPointer;
+    private static IntPtr ReleaseTrampolineFunctionPointer;
+
+    private static RetainTrampolineDelegate retainTrampoline;
+    private static ReleaseTrampolineDelegate releaseTrampoline;
+
+    private static object lock_obj = new object();
+
+    #region
+    //private IntPtr super;
+    //private IntPtr gchandle;
+    //private bool has_managed_ref;
+    #endregion
+
+    private IntPtr handle;
 
 	private IntPtr class_handle;
 
@@ -973,8 +997,10 @@ public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObj
 		Runtime.RegisterNSObject(this, handle);
 		if ((flags & Flags.NativeRef) != Flags.NativeRef)
 		{
-			CreateManagedRef(!alloced);
-		}
+            //CreateManagedRef(!alloced);
+            CreateManagedRefEx(!alloced);
+
+        }
 	}
 
 	private void CreateManagedRef(bool retain)
@@ -1380,14 +1406,18 @@ public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObj
 		{
 			if (disposing)
 			{
-				ReleaseManagedRef();
+				ReleaseManagedRefEx();
+                //ReleaseManagedRef();
 			}
 			else
 			{
 				NSObject_Disposer.Add(this);
 			}
 		}
-	}
+
+        //DisposeInner();
+
+    }
 
 	public IDisposable AddObserver(string key, NSKeyValueObservingOptions options, Action<NSObservedChange> observer)
 	{
@@ -2429,4 +2459,190 @@ public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObj
 		}
 		NSString.ReleaseNative(arg);
 	}
+
+    #region
+
+    [Export("encodeWithCoder:")]
+    public virtual void EncodeTo(NSCoder coder)
+    {
+        if (coder == null)
+            throw new ArgumentNullException(nameof(coder));
+        if (IsDirectBinding)
+            Messaging.void_objc_msgSend_intptr(Handle, selEncodeWithCoderHandle, coder.Handle);
+        else
+            Messaging.void_objc_msgSendSuper_intptr(SuperHandle, selEncodeWithCoderHandle, coder.Handle);
+    }
+
+    public void Release() => Messaging.void_objc_msgSend(handle, Selector.ReleaseHandle);
+
+    public NSObject Retain()
+    {
+        Messaging.void_objc_msgSend(handle, Selector.RetainHandle);
+        return this;
+    }
+
+    public NSObject Autorelease()
+    {
+        Messaging.void_objc_msgSend(handle, Selector.AutoreleaseHandle);
+        return this;
+    }
+
+    //public unsafe IntPtr SuperHandleEx
+    //{
+    //    get
+    //    {
+    //        if (super == IntPtr.Zero)
+    //        {
+    //            super = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(NSObject.objc_super)));
+    //            NSObject.objc_super* innerSuper = (NSObject.objc_super*)(void*)super;
+    //            innerSuper->receiver = handle;
+    //            innerSuper->super = ClassHandle;
+    //        }
+    //        return super;
+    //    }
+    //}
+
+
+    //protected void DisposeInner()
+    //{
+    //    if (!(super != IntPtr.Zero))
+    //        return;
+    //    Marshal.FreeHGlobal(super);
+    //    super = IntPtr.Zero;
+    //}
+
+    private static int GetRetainCount(IntPtr @this) => Messaging.int_objc_msgSend(@this, Selector.RetainCount);
+
+    private void UnregisterObject() => Runtime.NativeObjectHasDied(handle);
+
+    //private void FreeGCHandle()
+    //{
+    //    if (!(gchandle != IntPtr.Zero))
+    //        return;
+    //    GCHandle.FromIntPtr(gchandle).Free();
+    //    gchandle = IntPtr.Zero;
+    //}
+
+    //private void SwitchGCHandle(bool to_weak)
+    //{
+    //    if (gchandle != IntPtr.Zero)
+    //        GCHandle.FromIntPtr(gchandle).Free();
+    //    if (to_weak)
+    //        gchandle = GCHandle.ToIntPtr(GCHandle.Alloc((object)this, GCHandleType.WeakTrackResurrection));
+    //    else
+    //        gchandle = GCHandle.ToIntPtr(GCHandle.Alloc((object)this, GCHandleType.Normal));
+    //}
+
+    internal static void OverrideRetainAndRelease(IntPtr @class)
+    {
+        lock (lock_obj)
+        {
+            if (NSObject.ReleaseTrampolineFunctionPointer == IntPtr.Zero)
+            {
+                //NSObject.retainTrampoline = new NSObject.RetainTrampolineDelegate(NSObject.RetainTrampoline);
+                //NSObject.releaseTrampoline = new NSObject.ReleaseTrampolineDelegate(NSObject.ReleaseTrampoline);
+                NSObject.RetainTrampolineFunctionPointer = Marshal.GetFunctionPointerForDelegate<NSObject.RetainTrampolineDelegate>(NSObject.retainTrampoline);
+                NSObject.ReleaseTrampolineFunctionPointer = Marshal.GetFunctionPointerForDelegate<NSObject.ReleaseTrampolineDelegate>(NSObject.releaseTrampoline);
+            }
+        }
+        Class.class_addMethod(@class, Selector.RetainHandle, NSObject.RetainTrampolineFunctionPointer, "@@:");
+        Class.class_addMethod(@class, Selector.ReleaseHandle, NSObject.ReleaseTrampolineFunctionPointer, "v@:");
+    }
+
+    private static bool IsUserType(IntPtr @this)
+    {
+        IntPtr num = NSObject.object_getClass(@this);
+        if (Class.class_getMethodImplementation(num, Selector.RetainHandle) == NSObject.RetainTrampolineFunctionPointer)
+            return true;
+        Type type = Class.Lookup(num, false);
+        return type != (Type)null && Class.IsCustomType(type);
+    }
+
+    //private void CreateGCHandle(bool force_weak)
+    //{
+    //    int num = force_weak ? 1 : (NSObject.GetRetainCount(handle) == 1 ? 1 : 0);
+    //    has_managed_ref = true;
+    //    if (num != 0)
+    //        gchandle = GCHandle.ToIntPtr(GCHandle.Alloc((object)this, GCHandleType.WeakTrackResurrection));
+    //    else
+    //        gchandle = GCHandle.ToIntPtr(GCHandle.Alloc((object)this, GCHandleType.Normal));
+    //}
+
+    private void CreateManagedRefEx(bool retain)
+    {
+        //if (NSObject.IsUserType(handle) && gchandle == IntPtr.Zero)
+            //CreateGCHandle(!retain);
+        if (!retain)
+            return;
+        Messaging.void_objc_msgSend(handle, Selector.RetainHandle);
+    }
+
+    private void ReleaseManagedRefEx()
+    {
+
+        if (disposed)
+            return;
+
+        //IntPtr innerhandle = handle;
+        //if (NSObject.IsUserType(innerhandle))
+            //has_managed_ref = false;
+        //else
+            UnregisterObject();
+        Messaging.void_objc_msgSend(handle, Selector.ReleaseHandle);
+    }
+
+    [DllImport("/usr/lib/libobjc.dylib")]
+    private static extern IntPtr object_getClass(IntPtr @this);
+
+    [DllImport("/usr/lib/libobjc.dylib")]
+    private static extern IntPtr objc_msgSendSuper(ref NSObject.objc_super super, IntPtr selector);
+
+    private static IntPtr InvokeObjCMethodImplementation(IntPtr @this, IntPtr sel)
+    {
+        IntPtr cls = NSObject.object_getClass(@this);
+        IntPtr superclass = Class.class_getSuperclass(cls);
+        IntPtr methodImplementation1 = Class.class_getMethodImplementation(cls, sel);
+        for (IntPtr methodImplementation2 = Class.class_getMethodImplementation(superclass, sel); methodImplementation1 == methodImplementation2; methodImplementation2 = Class.class_getMethodImplementation(superclass, sel))
+            superclass = Class.class_getSuperclass(superclass);
+        NSObject.objc_super super;
+        super.receiver = @this;
+        super.super = superclass;
+        return NSObject.objc_msgSendSuper(ref super, sel);
+    }
+
+    //private static void ReleaseTrampoline(IntPtr @this, IntPtr sel)
+    //{
+    //    int num = Messaging.int_objc_msgSend(@this, Selector.RetainCount);
+    //    if (num == 1)
+    //    {
+    //        NSObject nsObject = ObjCRuntime.Runtime.TryGetNSObject(@this);
+    //        if (nsObject != null)
+    //        {
+    //            nsObject.UnregisterObject();
+    //            nsObject.FreeGCHandle();
+    //        }
+    //    }
+    //    if (num == 2)
+    //    {
+    //        NSObject nsObject = ObjCRuntime.Runtime.TryGetNSObject(@this);
+    //        if (nsObject != null && nsObject.has_managed_ref)
+    //            nsObject.SwitchGCHandle(true);
+    //    }
+    //    NSObject.InvokeObjCMethodImplementation(@this, sel);
+    //}
+
+    //private static IntPtr RetainTrampoline(IntPtr @this, IntPtr sel)
+    //{
+    //    if (Messaging.int_objc_msgSend(@this, Selector.RetainCount) == 1)
+    //    {
+    //        NSObject nsObject = ObjCRuntime.Runtime.TryGetNSObject(@this);
+    //        if (nsObject != null && nsObject.has_managed_ref)
+    //            nsObject.SwitchGCHandle(false);
+    //    }
+    //    @this = NSObject.InvokeObjCMethodImplementation(@this, sel);
+    //    return @this;
+    //}
+
+    #endregion
+
 }

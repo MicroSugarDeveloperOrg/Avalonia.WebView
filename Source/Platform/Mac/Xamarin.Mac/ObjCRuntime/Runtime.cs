@@ -1826,6 +1826,18 @@ public static class Runtime
         }
     }
 
+    internal static void NativeObjectHasDied(IntPtr ptr)
+    {
+        lock (Runtime.lock_obj)
+        {
+            WeakReference weakReference;
+            if (!Runtime.object_map.TryGetValue(ptr, out weakReference))
+                return;
+            Runtime.object_map.Remove(ptr);
+            ((NSObject)weakReference.Target)?.ClearHandle();
+        }
+    }
+
     private static void NativeObjectHasDied(IntPtr ptr, NSObject managed_obj)
     {
         lock (lock_obj)
