@@ -1374,6 +1374,8 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 
 	private static bool initialized;
 
+	internal static bool is_autoloaded = false;
+
 	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	private const string selAbortModal = "abortModal";
 
@@ -9192,7 +9194,7 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 	private static extern int NSApplicationMain(int argc, string[] argv);
 
     [Preserve]
-    public static void Init(bool is_autoloaded = false)
+    public static void Init()
 	{
 		if (initialized)
 		{
@@ -9201,8 +9203,7 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 
         initialized = true;
         Runtime.EnsureInitialized(is_autoloaded);
-        Runtime.RegisterAssemblies();
-
+        
         if (!is_autoloaded)
         {
             Runtime.Initialize();
@@ -9222,6 +9223,8 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
                 }
             }
         }
+
+        Runtime.RegisterAssemblies();
 
         if (SynchronizationContext.Current == null)
 		{

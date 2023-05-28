@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using AppKit;
 using Foundation;
 namespace ObjCRuntime;
 
@@ -17,7 +18,7 @@ public class Class : INativeObject, IEquatable<Class>
 	}
 
     #region
-
+    //private static bool is_fromxamarin_initilized = false;
     private static object lock_obj = new object();
     private static Dictionary<IntPtr, Type> type_map = new Dictionary<IntPtr, Type>();
     private static Dictionary<Type, Type> custom_types = new Dictionary<Type, Type>();
@@ -51,12 +52,11 @@ public class Class : INativeObject, IEquatable<Class>
 		return Marshal.PtrToStringAuto(class_getName(@class));
 	}
 
-	static bool is_xamarin_initilized = false;
 
 	[BindingImpl(BindingImplOptions.Optimizable)]
 	internal unsafe static void Initialize(Runtime.InitializationOptions* options)
 	{
-		is_xamarin_initilized = true;
+        //is_fromxamarin_initilized = true;
         type_to_class = new Dictionary<Type, IntPtr>(Runtime.TypeEqualityComparer);
 		Runtime.MTRegistrationMap* registrationMap = options->RegistrationMap;
 		if (registrationMap == null)
@@ -74,11 +74,12 @@ public class Class : INativeObject, IEquatable<Class>
 		}
 	}
 
-	internal static void Initialize()
+    //[BindingImpl(BindingImplOptions.Optimizable)]
+    internal static void Initialize()
 	{
-		is_xamarin_initilized = false;
+        //is_fromxamarin_initilized = false;
         type_to_class = new Dictionary<Type, IntPtr>(Runtime.TypeEqualityComparer);
-		class_to_type = new Type[20];
+		//class_to_type = new Type[20];
         if (Runtime.DynamicRegistrationSupported)
         {
             //IntPtr ptr = Marshal.ReadIntPtr(assembly, IntPtr.Size);
@@ -166,7 +167,7 @@ public class Class : INativeObject, IEquatable<Class>
 		}
 		if (!flag)
 		{
-			if (is_xamarin_initilized)
+			if (NSApplication.is_autoloaded)
                 value = FindClass(type, out is_custom_type);
 			else
 				value = FindClassEx(type, out is_custom_type);
