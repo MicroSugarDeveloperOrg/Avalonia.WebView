@@ -1024,6 +1024,12 @@ public static class Runtime
     [DllImport("/usr/lib/libc.dylib")]
     private static extern int _NSGetExecutablePath(byte[] buf, ref int bufsize);
 
+    internal static void Initialize()
+    {
+        NSObjectClass = NSObject.Initialize();
+        Registrar = new DynamicRegistrar();
+    }
+
     [Preserve]
     [BindingImpl(BindingImplOptions.Optimizable)]
     private unsafe static void Initialize(InitializationOptions* options)
@@ -1266,6 +1272,38 @@ public static class Runtime
     {
         RegisterEntryAssembly(GetEntryAssembly());
     }
+
+    public static void RegisterAssemblyEx(Assembly a)
+    {
+        foreach (RequiredFrameworkAttribute customAttribute in a.GetCustomAttributes(typeof(RequiredFrameworkAttribute), false))
+        {
+            string path2 = customAttribute.Name;
+            string path1;
+            if (path2.Contains(".dylib"))
+            {
+                path1 = Runtime.ResourcesPath;
+            }
+            else
+            {
+                path1 = Path.Combine(Runtime.FrameworksPath, path2);
+                path2 = path2.Replace(".frameworks", "");
+            }
+            if (Dlfcn.dlopen(Path.Combine(path1, path2), 0) == IntPtr.Zero)
+                throw new Exception(string.Format("Unable to load required framework: '{0}'", (object)customAttribute.Name), new Exception(Dlfcn.dlerror()));
+        }
+        if (Runtime.assemblies == null)
+        {
+            Runtime.assemblies = new List<Assembly>();
+            Class.Register(typeof(NSObject));
+        }
+        Runtime.assemblies.Add(a);
+        foreach (Type type in a.GetTypes())
+        {
+            if (type.IsSubclassOf(typeof(NSObject)) && !Attribute.IsDefined((MemberInfo)type, typeof(ModelAttribute), false))
+                Class.Register(type);
+        }
+    }
+
 
     internal static void RegisterEntryAssembly(Assembly entry_assembly)
     {

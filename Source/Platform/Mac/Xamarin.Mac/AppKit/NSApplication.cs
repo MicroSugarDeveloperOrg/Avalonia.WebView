@@ -9198,10 +9198,27 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		{
 			throw new InvalidOperationException("Init has already been invoked; it can only be invoked once");
 		}
-		Runtime.EnsureInitialized();
-		initialized = true;
+        Runtime.Initialize();
+        Runtime.EnsureInitialized();
+        initialized = true;
 		Runtime.RegisterAssemblies();
-		if (SynchronizationContext.Current == null)
+
+        //ÐÂÔö
+        Assembly assembly1 = typeof(NSApplication).Assembly;
+        AssemblyName name = assembly1.GetName();
+        foreach (Assembly assembly2 in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            foreach (AssemblyName referencedAssembly in assembly2.GetReferencedAssemblies())
+            {
+                if (AssemblyName.ReferenceMatchesDefinition(referencedAssembly, name))
+                {
+                    Runtime.RegisterAssembly(assembly2);
+                    break;
+                }
+            }
+        }
+
+        if (SynchronizationContext.Current == null)
 		{
 			SynchronizationContext.SetSynchronizationContext(new AppKitSynchronizationContext());
 		}
