@@ -2511,6 +2511,8 @@ public static class Runtime
 
     internal static void EnsureInitialized()
     {
+        initialized = true;
+
         if (!initialized)
         {
             if (GC.MaxGeneration <= 0)
