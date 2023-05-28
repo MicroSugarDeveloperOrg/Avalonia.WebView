@@ -9203,8 +9203,9 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
         initialized = true;
 		Runtime.RegisterAssemblies();
 
-        //ÐÂÔö
+        //ï¿½ï¿½ï¿½ï¿½
         Assembly assembly1 = typeof(NSApplication).Assembly;
+		Class.Initialize(assembly1);
         AssemblyName name = assembly1.GetName();
         foreach (Assembly assembly2 in AppDomain.CurrentDomain.GetAssemblies())
         {

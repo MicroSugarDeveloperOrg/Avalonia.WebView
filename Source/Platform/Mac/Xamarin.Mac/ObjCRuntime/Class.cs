@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Foundation;
-
 namespace ObjCRuntime;
 
 public class Class : INativeObject, IEquatable<Class>
@@ -43,10 +42,13 @@ public class Class : INativeObject, IEquatable<Class>
 		return Marshal.PtrToStringAuto(class_getName(@class));
 	}
 
+	static bool is_xamarin_initilized = false;
+
 	[BindingImpl(BindingImplOptions.Optimizable)]
 	internal unsafe static void Initialize(Runtime.InitializationOptions* options)
 	{
-		type_to_class = new Dictionary<Type, IntPtr>(Runtime.TypeEqualityComparer);
+		is_xamarin_initilized = true;
+        type_to_class = new Dictionary<Type, IntPtr>(Runtime.TypeEqualityComparer);
 		Runtime.MTRegistrationMap* registrationMap = options->RegistrationMap;
 		if (registrationMap == null)
 		{
@@ -63,7 +65,20 @@ public class Class : INativeObject, IEquatable<Class>
 		}
 	}
 
-	public Class(string name)
+	internal static void Initialize(Assembly assembly)
+	{
+		is_xamarin_initilized = false;
+        type_to_class = new Dictionary<Type, IntPtr>(Runtime.TypeEqualityComparer);
+		class_to_type = new Type[20];
+        if (Runtime.DynamicRegistrationSupported)
+        {
+            //IntPtr ptr = Marshal.ReadIntPtr(assembly, IntPtr.Size);
+            //Runtime.Registrar.SetAssemblyRegistered(Marshal.PtrToStringAuto(ptr));
+        }
+    }
+
+
+    public Class(string name)
 	{
 		handle = objc_getClass(name);
 		if (handle == IntPtr.Zero)
@@ -143,7 +158,10 @@ public class Class : INativeObject, IEquatable<Class>
 		}
 		if (!flag)
 		{
-			value = FindClass(type, out is_custom_type);
+			if (is_xamarin_initilized)
+                value = FindClass(type, out is_custom_type);
+			else
+				value = FindClassEx(type, out is_custom_type);
 			lock (type_to_class)
 			{
 				type_to_class[type] = value + (is_custom_type ? 1 : 0);
@@ -242,6 +260,18 @@ public class Class : INativeObject, IEquatable<Class>
 	internal static IntPtr Register(Type type)
 	{
 		return Runtime.Registrar.Register(type);
+	}
+
+	public static IntPtr FindClassEx(Type type, out bool is_custom_type)
+	{
+		var customAttribute = (RegisterAttribute)Attribute.GetCustomAttribute((MemberInfo)type, typeof(RegisterAttribute), false);
+		var name = customAttribute == null ? type.FullName : customAttribute.Name ?? type.FullName;
+		bool is_wrapper = customAttribute != null && customAttribute.IsWrapper;
+		IntPtr handle = Class.object_getClass(name);
+		if (handle == IntPtr.Zero)
+			handle = Class.Register(type, name, is_wrapper);
+
+		return handle;
 	}
 
 	private unsafe static IntPtr FindClass(Type type, out bool is_custom_type)
@@ -574,7 +604,10 @@ public class Class : INativeObject, IEquatable<Class>
 	[DllImport("/usr/lib/libobjc.dylib")]
 	internal static extern IntPtr object_getClass(IntPtr obj);
 
-	[DllImport("/usr/lib/libobjc.dylib")]
+    [DllImport("/usr/lib/libobjc.dylib")]
+    internal static extern IntPtr object_getClass(string name);
+
+    [DllImport("/usr/lib/libobjc.dylib")]
 	internal static extern IntPtr class_getMethodImplementation(IntPtr cls, IntPtr sel);
 
 	[DllImport("/usr/lib/libobjc.dylib")]
