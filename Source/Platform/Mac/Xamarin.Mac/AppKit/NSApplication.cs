@@ -9206,10 +9206,9 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
         
         if (!is_autoloaded)
         {
-            Runtime.Initialize();
-            Class.Initialize();
-            NSObject.Initialize(is_autoloaded);
+            Runtime.Initialize(); 
             Assembly assembly1 = typeof(NSApplication).Assembly;
+			Runtime.RegisterAssemblyEx(assembly1);
             AssemblyName name = assembly1.GetName();
             foreach (Assembly assembly2 in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -9217,7 +9216,7 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
                 {
                     if (AssemblyName.ReferenceMatchesDefinition(referencedAssembly, name))
                     {
-                        Runtime.RegisterAssembly(assembly2);
+                        Runtime.RegisterAssemblyEx(assembly2);
                         break;
                     }
                 }

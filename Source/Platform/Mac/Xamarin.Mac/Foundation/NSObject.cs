@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
+using AppKit;
 using CoreGraphics;
 using ObjCRuntime;
 using Xamarin.Mac.System.Mac;
@@ -87,7 +88,7 @@ public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObj
 			}
 			foreach (NSObject item in list)
 			{
-                if (_is_autoloaded)
+                if (NSApplication.is_autoloaded)
                     item.ReleaseManagedRef();
                 else
                     item.ReleaseManagedRefEx();
@@ -167,8 +168,6 @@ public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObj
     private static ReleaseTrampolineDelegate releaseTrampoline;
 
     private static object lock_obj = new object();
-
-    private static bool _is_autoloaded = true;
 
     #region
     //private IntPtr super;
@@ -311,12 +310,6 @@ public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObj
 	private static IntPtr un = Dlfcn.dlopen("/System/Library/Frameworks/UserNotifications.framework/UserNotifications", 1);
 
 	private static IntPtr il = Dlfcn.dlopen("/System/Library/Frameworks/iTunesLibrary.framework/iTunesLibrary", 1);
-
-    internal static bool Initialize(bool is_autoloaded)
-    {
-        _is_autoloaded = is_autoloaded;
-        return true;
-    }
 
 	//[Obsolete("Use PlatformAssembly for easier code sharing across platforms.")]
 	public static readonly Assembly MonoMacAssembly = typeof(NSObject).Assembly;
@@ -1008,7 +1001,7 @@ public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObj
 		Runtime.RegisterNSObject(this, handle);
 		if ((flags & Flags.NativeRef) != Flags.NativeRef)
 		{
-            if (_is_autoloaded)
+            if (NSApplication.is_autoloaded)
                 CreateManagedRef(!alloced);
             else
                 CreateManagedRefEx(!alloced);
@@ -1419,7 +1412,7 @@ public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObj
 		{
 			if (disposing)
 			{
-                if (_is_autoloaded)
+                if (NSApplication.is_autoloaded)
                     ReleaseManagedRef();
                 else
                     ReleaseManagedRefEx();
