@@ -1024,11 +1024,18 @@ public static class Runtime
     [DllImport("/usr/lib/libc.dylib")]
     private static extern int _NSGetExecutablePath(byte[] buf, ref int bufsize);
 
+
+    #region
+
+    private static IntPtr sel_Class = Selector.GetHandle("class");
+
     internal static void Initialize()
     {
         NSObjectClass = NSObject.Initialize();
         Registrar = new DynamicRegistrar();
     }
+
+    #endregion
 
     [Preserve]
     [BindingImpl(BindingImplOptions.Optimizable)]
@@ -2058,6 +2065,41 @@ public static class Runtime
         return GetNSObject(ptr, MissingCtorResolution.ThrowConstructor1NotFound);
     }
 
+    #region
+
+    public static NSObject GetNSObjectEx(IntPtr ptr)
+    {
+        if (ptr == IntPtr.Zero)
+            return (NSObject)null;
+        lock (lock_obj)
+        {
+            WeakReference weakReference;
+            if (object_map.TryGetValue(ptr, out weakReference))
+            {
+                NSObject target = (NSObject)weakReference.Target;
+                if (target != null)
+                    return target;
+            }
+        }
+        Type type = Class.LookupEx(Messaging.intptr_objc_msgSend(ptr, sel_Class));
+        if (!(type != (Type)null))
+            return new NSObject(ptr);
+        return (NSObject)Activator.CreateInstance(type, (object)ptr);
+    }
+
+    public static NSObject TryGetNSObjectEx(IntPtr ptr)
+    {
+        lock (lock_obj)
+        {
+            WeakReference weakReference;
+            if (object_map.TryGetValue(ptr, out weakReference))
+                return (NSObject)weakReference.Target;
+        }
+        return (NSObject)null;
+    }
+
+    #endregion
+
     internal static NSObject GetNSObject(IntPtr ptr, MissingCtorResolution missingCtorResolution, bool evenInFinalizerQueue = false)
     {
         if (ptr == IntPtr.Zero)
@@ -2559,9 +2601,10 @@ public static class Runtime
         return (T)(object)Marshal.GetDelegateForFunctionPointer(intPtr, typeof(T));
     }
 
-    internal static void EnsureInitialized()
+    internal static void EnsureInitialized(bool is_autoloaded)
     {
-        initialized = true;
+        if (!is_autoloaded)
+            initialized = true;
 
         if (!initialized)
         {

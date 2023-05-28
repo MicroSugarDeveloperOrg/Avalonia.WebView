@@ -87,8 +87,11 @@ public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObj
 			}
 			foreach (NSObject item in list)
 			{
-				item.ReleaseManagedRefEx();
-                //item.ReleaseManagedRef();
+                if (_is_autoloaded)
+                    item.ReleaseManagedRef();
+                else
+                    item.ReleaseManagedRefEx();
+                //
 			}
 			list.Clear();
 		}
@@ -164,6 +167,8 @@ public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObj
     private static ReleaseTrampolineDelegate releaseTrampoline;
 
     private static object lock_obj = new object();
+
+    private static bool _is_autoloaded = true;
 
     #region
     //private IntPtr super;
@@ -307,7 +312,13 @@ public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObj
 
 	private static IntPtr il = Dlfcn.dlopen("/System/Library/Frameworks/iTunesLibrary.framework/iTunesLibrary", 1);
 
-	[Obsolete("Use PlatformAssembly for easier code sharing across platforms.")]
+    internal static bool Initialize(bool is_autoloaded)
+    {
+        _is_autoloaded = is_autoloaded;
+        return true;
+    }
+
+	//[Obsolete("Use PlatformAssembly for easier code sharing across platforms.")]
 	public static readonly Assembly MonoMacAssembly = typeof(NSObject).Assembly;
 
 	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
@@ -997,8 +1008,10 @@ public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObj
 		Runtime.RegisterNSObject(this, handle);
 		if ((flags & Flags.NativeRef) != Flags.NativeRef)
 		{
-            //CreateManagedRef(!alloced);
-            CreateManagedRefEx(!alloced);
+            if (_is_autoloaded)
+                CreateManagedRef(!alloced);
+            else
+                CreateManagedRefEx(!alloced);
 
         }
 	}
@@ -1406,8 +1419,10 @@ public class NSObject : IEquatable<NSObject>, INativeObject, IDisposable, INSObj
 		{
 			if (disposing)
 			{
-				ReleaseManagedRefEx();
-                //ReleaseManagedRef();
+                if (_is_autoloaded)
+                    ReleaseManagedRef();
+                else
+                    ReleaseManagedRefEx();
 			}
 			else
 			{

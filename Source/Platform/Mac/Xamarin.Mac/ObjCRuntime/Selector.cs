@@ -72,7 +72,9 @@ public class Selector : IEquatable<Selector>, INativeObject
 		name = GetName(sel);
 	}
 
-	public Selector(string name)
+    public Selector(string name, bool alloc) => this.handle = Selector.GetHandle(name);
+
+    public Selector(string name)
 	{
 		this.name = name;
 		handle = GetHandle(name);

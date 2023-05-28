@@ -388,7 +388,39 @@ public class NSArray : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		return array;
 	}
 
-	public static T[] EnumsFromHandle<T>(IntPtr handle) where T : struct, IConvertible
+    #region
+
+    public static T[] ArrayFromHandleEx<T>(IntPtr handle, Converter<IntPtr, T> creator)
+    {
+        if (handle == IntPtr.Zero)
+            return (T[])null;
+        uint length = Messaging.UInt32_objc_msgSend(handle, NSArray.selCountHandle);
+        T[] objArray = new T[(int)length];
+        for (uint index = 0; index < length; ++index)
+        {
+            IntPtr num = Messaging.IntPtr_objc_msgSend_UInt32(handle, NSArray.selObjectAtIndex_Handle, index);
+            objArray[(int)index] = creator.Invoke(num);
+        }
+        return objArray;
+    }
+
+    public static string[] StringArrayFromHandleEx(IntPtr handle)
+    {
+        if (handle == IntPtr.Zero)
+            return (string[])null;
+        uint length = Messaging.UInt32_objc_msgSend(handle, NSArray.selCountHandle);
+        string[] strArray = new string[(int)length];
+        for (uint index = 0; index < length; ++index)
+        {
+            IntPtr usrhandle = Messaging.IntPtr_objc_msgSend_UInt32(handle, NSArray.selObjectAtIndex_Handle, index);
+            strArray[(int)index] = NSString.FromHandle(usrhandle);
+        }
+        return strArray;
+    }
+
+    #endregion
+
+    public static T[] EnumsFromHandle<T>(IntPtr handle) where T : struct, IConvertible
 	{
 		if (handle == IntPtr.Zero)
 		{

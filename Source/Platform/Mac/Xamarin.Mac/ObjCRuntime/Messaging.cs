@@ -13050,6 +13050,8 @@ internal class Messaging
     [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
     public static extern void void_objc_msgSendSuper_intptr(IntPtr receiver, IntPtr selector, IntPtr arg1);
 
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern IntPtr intptr_objc_msgSend(IntPtr receiver, IntPtr selector);
 
     #endregion
 

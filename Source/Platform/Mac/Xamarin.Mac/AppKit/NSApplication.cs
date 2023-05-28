@@ -9191,30 +9191,34 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 	[DllImport("/System/Library/Frameworks/AppKit.framework/AppKit")]
 	private static extern int NSApplicationMain(int argc, string[] argv);
 
-	[Preserve]
-	public static void Init()
+    [Preserve]
+    public static void Init(bool is_autoloaded = false)
 	{
 		if (initialized)
 		{
 			throw new InvalidOperationException("Init has already been invoked; it can only be invoked once");
 		}
-        Runtime.Initialize();
-        Runtime.EnsureInitialized();
-        initialized = true;
-		Runtime.RegisterAssemblies();
 
-        //����
-        Assembly assembly1 = typeof(NSApplication).Assembly;
-		Class.Initialize(assembly1);
-        AssemblyName name = assembly1.GetName();
-        foreach (Assembly assembly2 in AppDomain.CurrentDomain.GetAssemblies())
+        initialized = true;
+        Runtime.EnsureInitialized(is_autoloaded);
+        Runtime.RegisterAssemblies();
+
+        if (!is_autoloaded)
         {
-            foreach (AssemblyName referencedAssembly in assembly2.GetReferencedAssemblies())
+            Runtime.Initialize();
+            Class.Initialize();
+            NSObject.Initialize(is_autoloaded);
+            Assembly assembly1 = typeof(NSApplication).Assembly;
+            AssemblyName name = assembly1.GetName();
+            foreach (Assembly assembly2 in AppDomain.CurrentDomain.GetAssemblies())
             {
-                if (AssemblyName.ReferenceMatchesDefinition(referencedAssembly, name))
+                foreach (AssemblyName referencedAssembly in assembly2.GetReferencedAssemblies())
                 {
-                    Runtime.RegisterAssembly(assembly2);
-                    break;
+                    if (AssemblyName.ReferenceMatchesDefinition(referencedAssembly, name))
+                    {
+                        Runtime.RegisterAssembly(assembly2);
+                        break;
+                    }
                 }
             }
         }
