@@ -1,7 +1,7 @@
-using System;
 using Foundation;
 using ObjCRuntime;
 using OpenTK;
+using Xamarin.Mac.System.Mac;
 
 namespace ModelIO;
 

@@ -1,4 +1,6 @@
-﻿namespace Avalonia.WebView.Mac.Delegates;
+﻿using Xamarin.Mac.System.Mac;
+
+namespace Avalonia.WebView.Mac.Delegates;
 
 public class WebViewResourceLoadDelegate : WebResourceLoadDelegate
 {

@@ -1,9 +1,9 @@
-using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using AppKit;
 using ObjCRuntime;
 using QuickLookUI;
+using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 
@@ -3111,7 +3111,7 @@ public class NSUrl : NSObject, IEquatable<NSUrl>, INSCoding, INativeObject, IDis
 		return SetResourceValue(value, nsUrlResourceKey, out error);
 	}
 
-	public static bool operator ==(NSUrl x, NSUrl y)
+	public static bool operator ==(NSUrl? x, NSUrl? y)
 	{
 		if ((object)x == y)
 		{
@@ -3124,7 +3124,7 @@ public class NSUrl : NSObject, IEquatable<NSUrl>, INSCoding, INativeObject, IDis
 		return x.Equals(y);
 	}
 
-	public static bool operator !=(NSUrl x, NSUrl y)
+	public static bool operator !=(NSUrl? x, NSUrl? y)
 	{
 		return !(x == y);
 	}

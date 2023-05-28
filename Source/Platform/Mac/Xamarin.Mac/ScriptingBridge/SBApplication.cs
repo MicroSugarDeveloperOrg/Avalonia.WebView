@@ -1,9 +1,9 @@
-using System;
 using System.ComponentModel;
 using System.Reflection;
 using AppKit;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace ScriptingBridge;
 

@@ -1,8 +1,8 @@
-using System;
 using System.ComponentModel;
 using AVFoundation;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace AudioUnit;
 

@@ -1,9 +1,9 @@
-using System;
 using System.Linq;
 using CoreFoundation;
 using CoreGraphics;
 using CoreMedia;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 

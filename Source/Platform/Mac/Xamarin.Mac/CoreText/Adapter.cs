@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace CoreText;
 

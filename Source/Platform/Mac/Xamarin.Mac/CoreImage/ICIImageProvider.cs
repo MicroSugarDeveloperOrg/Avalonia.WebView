@@ -1,6 +1,6 @@
-using System;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace CoreImage;
 

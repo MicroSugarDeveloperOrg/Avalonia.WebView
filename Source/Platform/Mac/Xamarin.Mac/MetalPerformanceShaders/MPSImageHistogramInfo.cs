@@ -1,6 +1,6 @@
-using System;
 using System.Runtime.InteropServices;
 using OpenTK;
+using Xamarin.Mac.System.Mac;
 
 namespace MetalPerformanceShaders;
 

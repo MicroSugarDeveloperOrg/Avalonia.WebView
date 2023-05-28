@@ -13,11 +13,4 @@
 	  <ProjectReference Include="..\Microsoft.Web.WebView2.Core\Microsoft.Web.WebView2.Core.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <PackageReference Update="PolySharp">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>build; analyzers</IncludeAssets>
-	  </PackageReference>
-	</ItemGroup>
-
 </Project>

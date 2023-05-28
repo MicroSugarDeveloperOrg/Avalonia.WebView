@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace CoreFoundation;
 

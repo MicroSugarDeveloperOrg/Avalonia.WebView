@@ -1,10 +1,10 @@
-using System;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Security.Authentication;
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace CoreServices;
 

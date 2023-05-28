@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using AppKit;
 using AVFoundation;
@@ -9,6 +8,7 @@ using ImageIO;
 using IOSurface;
 using Metal;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace CoreImage;
 

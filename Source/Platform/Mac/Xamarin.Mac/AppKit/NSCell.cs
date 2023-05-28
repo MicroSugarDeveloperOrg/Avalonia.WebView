@@ -1,10 +1,10 @@
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 

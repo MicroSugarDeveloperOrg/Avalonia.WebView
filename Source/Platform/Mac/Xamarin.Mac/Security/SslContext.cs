@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Text;
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace Security;
 

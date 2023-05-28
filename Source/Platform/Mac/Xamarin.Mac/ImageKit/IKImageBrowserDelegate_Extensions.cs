@@ -1,6 +1,6 @@
-using System;
 using AppKit;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace ImageKit;
 

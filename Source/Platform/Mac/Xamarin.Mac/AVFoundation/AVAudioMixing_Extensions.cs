@@ -1,5 +1,5 @@
-using System;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace AVFoundation;
 

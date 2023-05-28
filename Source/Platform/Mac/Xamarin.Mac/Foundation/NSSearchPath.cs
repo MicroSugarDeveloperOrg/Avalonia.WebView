@@ -1,5 +1,5 @@
-using System;
 using System.Runtime.InteropServices;
+using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 

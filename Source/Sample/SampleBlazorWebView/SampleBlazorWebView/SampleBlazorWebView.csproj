@@ -20,10 +20,4 @@
 		<ProjectReference Include="..\SampleBlazorWebViewShared\SampleBlazorWebViewShared.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <PackageReference Update="PolySharp">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>build; analyzers</IncludeAssets>
-	  </PackageReference>
-	</ItemGroup>
 </Project>

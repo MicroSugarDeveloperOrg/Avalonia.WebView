@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 using Accounts;
 using AppKit;
@@ -56,6 +55,7 @@ using StoreKit;
 using UserNotifications;
 using Vision;
 using WebKit;
+using Xamarin.Mac.System.Mac;
 
 namespace ObjCRuntime;
 

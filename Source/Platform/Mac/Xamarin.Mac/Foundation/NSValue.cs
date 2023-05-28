@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using CoreAnimation;
@@ -8,6 +7,7 @@ using CoreMedia;
 using MapKit;
 using ObjCRuntime;
 using SceneKit;
+using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 

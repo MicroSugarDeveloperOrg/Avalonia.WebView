@@ -17,3 +17,5 @@ global using WebViewCore.Models;
 global using WebViewCore.Enums;
 global using Avalonia.WebView.MacCatalyst.Delegates;
 global using WebViewCore.Events;
+global using Foundation;
+global using CoreGraphics;

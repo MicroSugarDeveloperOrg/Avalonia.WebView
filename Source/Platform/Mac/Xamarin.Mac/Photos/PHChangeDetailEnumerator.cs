@@ -1,4 +1,4 @@
-using System;
+using Xamarin.Mac.System.Mac;
 
 namespace Photos;
 

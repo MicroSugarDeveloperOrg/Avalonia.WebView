@@ -1,5 +1,5 @@
-using System;
 using AudioToolbox;
+using Xamarin.Mac.System.Mac;
 
 namespace AudioUnit;
 

@@ -42,9 +42,7 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
         if (strategy == UrlLoadingStrategy.OpenExternally)
         {
 
-#pragma warning disable CA1422  // TODO: OpenUrl(...) has [UnsupportedOSPlatform("ios10.0")]
-            UIApplication.SharedApplication.OpenUrl(requestUrl);
-#pragma warning restore CA1422 // 
+            //Open use system  
         }
 
         if (strategy != UrlLoadingStrategy.OpenInWebView)

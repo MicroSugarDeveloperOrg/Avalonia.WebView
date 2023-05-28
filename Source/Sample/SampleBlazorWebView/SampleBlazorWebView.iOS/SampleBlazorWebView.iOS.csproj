@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0-ios16.1</TargetFramework>
+	<TargetFramework>net7.0-ios</TargetFramework>
     <SupportedOSPlatformVersion>10.0</SupportedOSPlatformVersion>
     <ProvisioningType>manual</ProvisioningType> 
     <RuntimeIdentifier>iossimulator-x64</RuntimeIdentifier>
@@ -11,12 +11,6 @@
     <!--<CodesignKey></CodesignKey>-->
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <CreatePackage>false</CreatePackage>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <CreatePackage>false</CreatePackage>
-  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia.iOS" />
   </ItemGroup>

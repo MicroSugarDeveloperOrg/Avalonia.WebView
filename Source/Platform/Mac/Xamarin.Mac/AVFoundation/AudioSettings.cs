@@ -1,6 +1,6 @@
-using System;
 using AudioToolbox;
 using Foundation;
+using Xamarin.Mac.System.Mac;
 
 namespace AVFoundation;
 

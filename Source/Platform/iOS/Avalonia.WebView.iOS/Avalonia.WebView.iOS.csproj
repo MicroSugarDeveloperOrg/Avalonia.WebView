@@ -4,12 +4,6 @@
 		<TargetFrameworks>net6.0-ios;net7.0-ios</TargetFrameworks>
 	</PropertyGroup>
 
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-	  <CreatePackage>false</CreatePackage>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-	  <CreatePackage>false</CreatePackage>
-	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Avalonia" />
 	</ItemGroup>
@@ -18,10 +12,4 @@
 		<ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <None Remove="Core\" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Core\" />
-	</ItemGroup>
 </Project>

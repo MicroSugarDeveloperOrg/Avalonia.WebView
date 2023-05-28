@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
@@ -15,18 +15,4 @@
 	  <ProjectReference Include="..\Xamarin.Mac\Xamarin.Mac.csproj" />
 	</ItemGroup>
 
-	<!--<ItemGroup>
-		<PackageReference Include="MonoMac.NetStandard" />
-	</ItemGroup>-->
-
-	<ItemGroup>
-	  <None Remove="Delegates\" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Update="PolySharp">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>build; analyzers</IncludeAssets>
-	  </PackageReference>
-	</ItemGroup>
 </Project>

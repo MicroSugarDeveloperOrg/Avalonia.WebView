@@ -1,8 +1,8 @@
-using System;
 using System.Runtime.InteropServices;
 using Foundation;
 using IOSurface;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace CoreVideo;
 

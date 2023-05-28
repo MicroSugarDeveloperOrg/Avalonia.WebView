@@ -1,10 +1,10 @@
-using System;
 using System.ComponentModel;
 using CoreAnimation;
 using CoreGraphics;
 using Foundation;
 using ModelIO;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace SceneKit;
 

@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using AppKit;
 using CoreFoundation;
@@ -6,6 +5,7 @@ using CoreGraphics;
 using CoreText;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace CoreAnimation;
 

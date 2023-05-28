@@ -1,7 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace AudioUnit;
 

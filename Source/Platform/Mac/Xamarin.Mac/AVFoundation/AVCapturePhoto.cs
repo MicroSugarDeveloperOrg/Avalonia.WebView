@@ -1,10 +1,10 @@
-using System;
 using System.ComponentModel;
 using CoreGraphics;
 using CoreMedia;
 using CoreVideo;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace AVFoundation;
 

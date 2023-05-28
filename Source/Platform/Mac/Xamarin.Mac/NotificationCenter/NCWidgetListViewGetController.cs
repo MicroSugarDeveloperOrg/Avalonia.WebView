@@ -1,5 +1,5 @@
-using System;
 using AppKit;
+using Xamarin.Mac.System.Mac;
 
 namespace NotificationCenter;
 

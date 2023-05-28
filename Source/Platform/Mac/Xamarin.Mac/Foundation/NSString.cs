@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -6,6 +5,7 @@ using AppKit;
 using CloudKit;
 using CoreGraphics;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 

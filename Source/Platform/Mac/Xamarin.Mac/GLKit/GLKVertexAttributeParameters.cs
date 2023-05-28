@@ -1,7 +1,7 @@
-using System;
 using System.Runtime.InteropServices;
 using ModelIO;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace GLKit;
 

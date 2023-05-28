@@ -1,10 +1,10 @@
-using System;
 using CoreGraphics;
 using CoreVideo;
 using Foundation;
 using IOSurface;
 using Metal;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace CoreImage;
 

@@ -1,10 +1,10 @@
-using System;
 using System.Runtime.InteropServices;
 using AudioToolbox;
 using CoreFoundation;
 using CoreVideo;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace CoreMedia;
 

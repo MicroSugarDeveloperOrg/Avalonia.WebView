@@ -10,5 +10,5 @@
 		<PackageReference Include="System.Memory" />
 		<PackageReference Include="System.Threading.Tasks.Extensions" />
 	</ItemGroup>
-
+ 
 </Project>

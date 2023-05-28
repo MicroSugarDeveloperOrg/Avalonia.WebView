@@ -13,11 +13,4 @@
 		<ProjectReference Include="..\Linux.WebView.Core\Linux.WebView.Core.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <PackageReference Update="PolySharp">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>build; analyzers</IncludeAssets>
-	  </PackageReference>
-	</ItemGroup>
-
 </Project>

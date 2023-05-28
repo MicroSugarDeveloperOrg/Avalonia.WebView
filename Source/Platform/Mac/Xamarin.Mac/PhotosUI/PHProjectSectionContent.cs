@@ -1,9 +1,9 @@
-using System;
 using System.ComponentModel;
 using AppKit;
 using Foundation;
 using ObjCRuntime;
 using Photos;
+using Xamarin.Mac.System.Mac;
 
 namespace PhotosUI;
 

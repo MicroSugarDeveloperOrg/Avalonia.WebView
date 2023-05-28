@@ -1,7 +1,7 @@
-using System;
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace CoreVideo;
 

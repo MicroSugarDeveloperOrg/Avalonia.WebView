@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -9,6 +8,7 @@ using Foundation;
 using Metal;
 using ObjCRuntime;
 using SpriteKit;
+using Xamarin.Mac.System.Mac;
 
 namespace SceneKit;
 

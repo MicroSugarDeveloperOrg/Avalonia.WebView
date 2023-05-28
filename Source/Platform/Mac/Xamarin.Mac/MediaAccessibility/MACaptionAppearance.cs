@@ -1,10 +1,10 @@
-using System;
 using System.Runtime.InteropServices;
 using CoreFoundation;
 using CoreGraphics;
 using CoreText;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace MediaAccessibility;
 

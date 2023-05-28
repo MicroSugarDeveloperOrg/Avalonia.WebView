@@ -1,8 +1,8 @@
-using System;
 using System.Collections;
 using System.Runtime.InteropServices;
 using CoreFoundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace AudioToolbox;
 

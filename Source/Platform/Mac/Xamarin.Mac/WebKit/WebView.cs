@@ -1,10 +1,10 @@
-using System;
 using System.ComponentModel;
 using AppKit;
 using CoreGraphics;
 using Foundation;
 using JavaScriptCore;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace WebKit;
 

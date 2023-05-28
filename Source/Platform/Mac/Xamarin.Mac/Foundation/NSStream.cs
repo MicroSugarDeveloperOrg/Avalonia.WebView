@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
@@ -6,6 +5,7 @@ using AppKit;
 using CoreFoundation;
 using CoreServices;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 

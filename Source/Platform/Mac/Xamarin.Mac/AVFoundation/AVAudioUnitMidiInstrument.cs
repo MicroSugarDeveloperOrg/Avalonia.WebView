@@ -1,9 +1,9 @@
-using System;
 using System.ComponentModel;
 using AudioUnit;
 using Foundation;
 using ObjCRuntime;
 using OpenTK;
+using Xamarin.Mac.System.Mac;
 
 namespace AVFoundation;
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,6 +5,7 @@ using Foundation;
 using GameplayKit;
 using ModelIO;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace SceneKit;
 

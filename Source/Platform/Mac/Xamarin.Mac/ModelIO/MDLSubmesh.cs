@@ -1,8 +1,8 @@
-using System;
 using System.ComponentModel;
 using Foundation;
 using ObjCRuntime;
 using SceneKit;
+using Xamarin.Mac.System.Mac;
 
 namespace ModelIO;
 

@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using AppKit;
 using CoreAnimation;
@@ -7,6 +6,7 @@ using Foundation;
 using ModelIO;
 using ObjCRuntime;
 using OpenTK;
+using Xamarin.Mac.System.Mac;
 
 namespace SceneKit;
 

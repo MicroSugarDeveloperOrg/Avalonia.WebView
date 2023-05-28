@@ -1,10 +1,10 @@
-using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using CoreServices;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace CoreFoundation;
 

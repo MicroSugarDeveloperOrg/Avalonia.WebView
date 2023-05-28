@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 using AppKit;
 using AudioToolbox;
@@ -21,6 +20,7 @@ using ModelIO;
 using OpenTK;
 using QTKit;
 using SceneKit;
+using Xamarin.Mac.System.Mac;
 
 namespace ObjCRuntime;
 

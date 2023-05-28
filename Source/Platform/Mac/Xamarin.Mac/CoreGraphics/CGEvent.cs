@@ -1,8 +1,8 @@
-using System;
 using System.Runtime.InteropServices;
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace CoreGraphics;
 

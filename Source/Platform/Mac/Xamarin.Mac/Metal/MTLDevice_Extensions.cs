@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -6,6 +5,7 @@ using CoreFoundation;
 using Foundation;
 using IOSurface;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace Metal;
 

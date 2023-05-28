@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using AppKit;
 using CoreAnimation;
@@ -6,6 +5,7 @@ using CoreGraphics;
 using Foundation;
 using Metal;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace MetalKit;
 

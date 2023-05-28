@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -9,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CoreFoundation;
 using Security;
+using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 

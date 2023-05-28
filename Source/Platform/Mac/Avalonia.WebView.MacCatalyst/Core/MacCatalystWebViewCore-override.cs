@@ -1,6 +1,6 @@
 ﻿using System.Text.Encodings.Web;
-
 namespace Avalonia.WebView.MacCatalyst.Core;
+
 partial class MacCatalystWebViewCore
 {
     MacCatalystWebViewCore IPlatformWebView<MacCatalystWebViewCore>.PlatformView => this;

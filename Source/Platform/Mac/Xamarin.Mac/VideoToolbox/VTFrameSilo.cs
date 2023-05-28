@@ -1,9 +1,9 @@
-using System;
 using System.Runtime.InteropServices;
 using CoreFoundation;
 using CoreMedia;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace VideoToolbox;
 

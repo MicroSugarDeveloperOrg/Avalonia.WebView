@@ -9,12 +9,5 @@
 		<ProjectReference Include="..\..\Mac\Avalonia.WebView.Mac\Avalonia.WebView.Mac.csproj" Condition="'$(IsOSX)'=='true'" /> 
 		<ProjectReference Include="..\..\Windows\Avalonia.WebView.Windows\Avalonia.WebView.Windows.csproj" Condition="'$(IsWindows)'=='true'" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Update="PolySharp">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>build; analyzers</IncludeAssets>
-	  </PackageReference>
-	</ItemGroup>
-
+	
 </Project>

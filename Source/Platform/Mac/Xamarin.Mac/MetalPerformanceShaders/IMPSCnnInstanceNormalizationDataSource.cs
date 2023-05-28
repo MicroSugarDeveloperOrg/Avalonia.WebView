@@ -1,7 +1,7 @@
-using System;
 using Foundation;
 using Metal;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace MetalPerformanceShaders;
 

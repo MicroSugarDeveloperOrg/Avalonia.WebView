@@ -1,5 +1,6 @@
 ﻿using Avalonia.WebView.MacCatalyst.Handlers;
 using Avalonia.WebView.MacCatalyst.Helpers;
+using CoreGraphics;
 
 namespace Avalonia.WebView.MacCatalyst.Core;
 public partial class MacCatalystWebViewCore : IPlatformWebView<MacCatalystWebViewCore>
@@ -27,12 +28,11 @@ public partial class MacCatalystWebViewCore : IPlatformWebView<MacCatalystWebVie
         }
 
         _webView = new WKWebView(CGRect.Empty, _config)
-        {
-            BackgroundColor = UIColor.Clear,
-            AutosizesSubviews = true
+        { 
+            AutoresizesSubviews = true
         };
 
-        NativeHandler = _webView.Handle.Handle;
+        NativeHandler = _webView.Handle;
         RegisterEvents();
     }
 

@@ -1,6 +1,6 @@
-using System;
 using CoreGraphics;
 using Foundation;
+using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 

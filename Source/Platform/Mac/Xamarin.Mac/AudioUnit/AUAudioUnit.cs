@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using AppKit;
@@ -6,6 +5,7 @@ using AVFoundation;
 using CoreMidi;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace AudioUnit;
 

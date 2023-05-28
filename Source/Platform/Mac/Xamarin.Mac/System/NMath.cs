@@ -1,3 +1,5 @@
+using Xamarin.Mac.System.Mac;
+
 namespace System;
 
 public static class NMath

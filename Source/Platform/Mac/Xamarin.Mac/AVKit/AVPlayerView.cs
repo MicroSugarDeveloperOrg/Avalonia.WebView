@@ -1,10 +1,10 @@
-using System;
 using System.ComponentModel;
 using AppKit;
 using AVFoundation;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace AVKit;
 

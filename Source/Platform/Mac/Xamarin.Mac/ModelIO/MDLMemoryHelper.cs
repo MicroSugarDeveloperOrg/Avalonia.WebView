@@ -1,6 +1,6 @@
-using System;
 using System.Runtime.InteropServices;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace ModelIO;
 

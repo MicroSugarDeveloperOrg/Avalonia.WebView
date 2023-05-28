@@ -1,7 +1,7 @@
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 

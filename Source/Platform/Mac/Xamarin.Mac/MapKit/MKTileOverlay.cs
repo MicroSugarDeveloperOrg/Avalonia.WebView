@@ -1,9 +1,9 @@
-using System;
 using System.ComponentModel;
 using CoreGraphics;
 using CoreLocation;
 using Foundation;
 using ObjCRuntime;
+using Xamarin.Mac.System.Mac;
 
 namespace MapKit;
 
