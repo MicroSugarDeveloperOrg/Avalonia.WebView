@@ -1,5 +1,9 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
+[Native]
+[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.None, "Use formatters instead.")]
 public enum NSType : ulong
 {
 	Any = 0uL,

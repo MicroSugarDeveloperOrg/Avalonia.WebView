@@ -1,91 +1,88 @@
 using System;
+using CoreFoundation;
+using Foundation;
 using ObjCRuntime;
 
 namespace Security;
 
 internal static class KeysAccessible
 {
-	private static IntPtr _WhenUnlocked;
-
-	private static IntPtr _AfterFirstUnlock;
-
-	private static IntPtr _Always;
-
-	private static IntPtr _WhenUnlockedThisDeviceOnly;
-
-	private static IntPtr _AfterFirstUnlockThisDeviceOnly;
-
-	private static IntPtr _AlwaysThisDeviceOnly;
-
-	public static IntPtr WhenUnlocked
-	{
-		get
-		{
-			if (_WhenUnlocked == IntPtr.Zero)
-			{
-				_WhenUnlocked = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAccessibleWhenUnlocked");
-			}
-			return _WhenUnlocked;
-		}
-	}
-
+	[Field("kSecAttrAccessibleAfterFirstUnlock", "Security")]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
 	public static IntPtr AfterFirstUnlock
 	{
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_AfterFirstUnlock == IntPtr.Zero)
-			{
-				_AfterFirstUnlock = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAccessibleAfterFirstUnlock");
-			}
-			return _AfterFirstUnlock;
+			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAccessibleAfterFirstUnlock");
 		}
 	}
 
-	public static IntPtr Always
-	{
-		get
-		{
-			if (_Always == IntPtr.Zero)
-			{
-				_Always = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAccessibleAlways");
-			}
-			return _Always;
-		}
-	}
-
-	public static IntPtr WhenUnlockedThisDeviceOnly
-	{
-		get
-		{
-			if (_WhenUnlockedThisDeviceOnly == IntPtr.Zero)
-			{
-				_WhenUnlockedThisDeviceOnly = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAccessibleWhenUnlockedThisDeviceOnly");
-			}
-			return _WhenUnlockedThisDeviceOnly;
-		}
-	}
-
+	[Field("kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly", "Security")]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
 	public static IntPtr AfterFirstUnlockThisDeviceOnly
 	{
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_AfterFirstUnlockThisDeviceOnly == IntPtr.Zero)
-			{
-				_AfterFirstUnlockThisDeviceOnly = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly");
-			}
-			return _AfterFirstUnlockThisDeviceOnly;
+			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly");
 		}
 	}
 
-	public static IntPtr AlwaysThisDeviceOnly
+	[Field("kSecAttrAccessibleAlways", "Security")]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public static IntPtr Always
 	{
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_AlwaysThisDeviceOnly == IntPtr.Zero)
-			{
-				_AlwaysThisDeviceOnly = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAccessibleAlwaysThisDeviceOnly");
-			}
-			return _AlwaysThisDeviceOnly;
+			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAccessibleAlways");
+		}
+	}
+
+	[Field("kSecAttrAccessibleAlwaysThisDeviceOnly", "Security")]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public static IntPtr AlwaysThisDeviceOnly
+	{
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		get
+		{
+			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAccessibleAlwaysThisDeviceOnly");
+		}
+	}
+
+	[Field("kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly", "Security")]
+	[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	public static IntPtr WhenPasscodeSetThisDeviceOnly
+	{
+		[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		get
+		{
+			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly");
+		}
+	}
+
+	[Field("kSecAttrAccessibleWhenUnlocked", "Security")]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public static IntPtr WhenUnlocked
+	{
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		get
+		{
+			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAccessibleWhenUnlocked");
+		}
+	}
+
+	[Field("kSecAttrAccessibleWhenUnlockedThisDeviceOnly", "Security")]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public static IntPtr WhenUnlockedThisDeviceOnly
+	{
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		get
+		{
+			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAccessibleWhenUnlockedThisDeviceOnly");
 		}
 	}
 
@@ -99,36 +96,45 @@ internal static class KeysAccessible
 			SecAccessible.WhenUnlockedThisDeviceOnly => WhenUnlockedThisDeviceOnly, 
 			SecAccessible.AfterFirstUnlockThisDeviceOnly => AfterFirstUnlockThisDeviceOnly, 
 			SecAccessible.AlwaysThisDeviceOnly => AlwaysThisDeviceOnly, 
+			SecAccessible.WhenPasscodeSetThisDeviceOnly => WhenPasscodeSetThisDeviceOnly, 
 			_ => throw new ArgumentException("accessible"), 
 		};
 	}
 
 	public static SecAccessible ToSecAccessible(IntPtr handle)
 	{
-		if (handle == WhenUnlocked)
+		if (handle == IntPtr.Zero)
+		{
+			return SecAccessible.Invalid;
+		}
+		if (CFType.Equal(handle, WhenUnlocked))
 		{
 			return SecAccessible.WhenUnlocked;
 		}
-		if (handle == AfterFirstUnlock)
+		if (CFType.Equal(handle, AfterFirstUnlock))
 		{
 			return SecAccessible.AfterFirstUnlock;
 		}
-		if (handle == Always)
+		if (CFType.Equal(handle, Always))
 		{
 			return SecAccessible.Always;
 		}
-		if (handle == WhenUnlockedThisDeviceOnly)
+		if (CFType.Equal(handle, WhenUnlockedThisDeviceOnly))
 		{
 			return SecAccessible.WhenUnlockedThisDeviceOnly;
 		}
-		if (handle == AfterFirstUnlockThisDeviceOnly)
+		if (CFType.Equal(handle, AfterFirstUnlockThisDeviceOnly))
 		{
 			return SecAccessible.AfterFirstUnlockThisDeviceOnly;
 		}
-		if (handle == AlwaysThisDeviceOnly)
+		if (CFType.Equal(handle, AlwaysThisDeviceOnly))
 		{
 			return SecAccessible.AlwaysThisDeviceOnly;
 		}
-		throw new ArgumentException("obj");
+		if (CFType.Equal(handle, WhenUnlockedThisDeviceOnly))
+		{
+			return SecAccessible.WhenUnlockedThisDeviceOnly;
+		}
+		return SecAccessible.Invalid;
 	}
 }

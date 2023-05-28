@@ -1,110 +1,221 @@
 using System;
 using System.ComponentModel;
 using CoreAnimation;
+using CoreGraphics;
+using CoreVideo;
 using Foundation;
 using ObjCRuntime;
 
 namespace AVFoundation;
 
 [Register("AVPlayerLayer", true)]
+[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
 public class AVPlayerLayer : CALayer
 {
-	private static readonly IntPtr selPlayerHandle = Selector.GetHandle("player");
-
-	private static readonly IntPtr selSetPlayer_Handle = Selector.GetHandle("setPlayer:");
-
-	private static readonly IntPtr selVideoGravityHandle = Selector.GetHandle("videoGravity");
-
-	private static readonly IntPtr selSetVideoGravity_Handle = Selector.GetHandle("setVideoGravity:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsReadyForDisplay = "isReadyForDisplay";
 
 	private static readonly IntPtr selIsReadyForDisplayHandle = Selector.GetHandle("isReadyForDisplay");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPixelBufferAttributes = "pixelBufferAttributes";
+
+	private static readonly IntPtr selPixelBufferAttributesHandle = Selector.GetHandle("pixelBufferAttributes");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPlayer = "player";
+
+	private static readonly IntPtr selPlayerHandle = Selector.GetHandle("player");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPlayerLayerWithPlayer_ = "playerLayerWithPlayer:";
+
 	private static readonly IntPtr selPlayerLayerWithPlayer_Handle = Selector.GetHandle("playerLayerWithPlayer:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("AVPlayerLayer");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPixelBufferAttributes_ = "setPixelBufferAttributes:";
 
-	private object __mt_Player_var;
+	private static readonly IntPtr selSetPixelBufferAttributes_Handle = Selector.GetHandle("setPixelBufferAttributes:");
 
-	private object __mt_WeakVideoGravity_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPlayer_ = "setPlayer:";
 
-	private static NSString _GravityResizeAspect;
+	private static readonly IntPtr selSetPlayer_Handle = Selector.GetHandle("setPlayer:");
 
-	private static NSString _GravityResizeAspectFill;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetVideoGravity_ = "setVideoGravity:";
 
-	private static NSString _GravityResize;
+	private static readonly IntPtr selSetVideoGravity_Handle = Selector.GetHandle("setVideoGravity:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selVideoGravity = "videoGravity";
+
+	private static readonly IntPtr selVideoGravityHandle = Selector.GetHandle("videoGravity");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selVideoRect = "videoRect";
+
+	private static readonly IntPtr selVideoRectHandle = Selector.GetHandle("videoRect");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVPlayerLayer");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GravityResize;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GravityResizeAspect;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GravityResizeAspectFill;
+
+	public AVLayerVideoGravity VideoGravity
+	{
+		get
+		{
+			return KeyToEnum(WeakVideoGravity);
+		}
+		set
+		{
+			WeakVideoGravity = EnumToKey(value);
+		}
+	}
+
+	[iOS(9, 0)]
+	[Mac(10, 11)]
+	public CVPixelBufferAttributes PixelBufferAttributes
+	{
+		get
+		{
+			if (WeakPixelBufferAttributes != null)
+			{
+				return new CVPixelBufferAttributes(WeakPixelBufferAttributes);
+			}
+			return null;
+		}
+		set
+		{
+			WeakPixelBufferAttributes = value?.Dictionary;
+		}
+	}
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual AVPlayer Player
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual AVPlayer? Player
 	{
-		[Export("player")]
+		[Export("player", ArgumentSemantic.Retain)]
 		get
 		{
-			return (AVPlayer)(__mt_Player_var = ((!IsDirectBinding) ? ((AVPlayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPlayerHandle))) : ((AVPlayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPlayerHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<AVPlayer>(Messaging.IntPtr_objc_msgSend(base.Handle, selPlayerHandle));
+			}
+			return Runtime.GetNSObject<AVPlayer>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPlayerHandle));
 		}
-		[Export("setPlayer:")]
+		[Export("setPlayer:", ArgumentSemantic.Retain)]
 		set
 		{
-			if (value == null)
+			if (base.IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPlayer_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPlayer_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPlayer_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPlayer_Handle, value?.Handle ?? IntPtr.Zero);
 			}
-			__mt_Player_var = value;
 		}
 	}
 
-	public string VideoGravity
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ReadyForDisplay
 	{
+		[Export("isReadyForDisplay")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selVideoGravityHandle));
+				return Messaging.bool_objc_msgSend(base.Handle, selIsReadyForDisplayHandle);
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selVideoGravityHandle));
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsReadyForDisplayHandle);
 		}
-		set
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public virtual CGRect VideoRect
+	{
+		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("videoRect")]
+		get
 		{
-			if (value == null)
+			CGRect retval;
+			if (base.IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetVideoGravity_Handle, arg);
+				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selVideoRectHandle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetVideoGravity_Handle, arg);
+				Messaging.CGRect_objc_msgSendSuper_stret(out retval, base.SuperHandle, selVideoRectHandle);
 			}
-			NSString.ReleaseNative(arg);
+			return retval;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	public virtual NSDictionary? WeakPixelBufferAttributes
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+		[Export("pixelBufferAttributes", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selPixelBufferAttributesHandle));
+			}
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPixelBufferAttributesHandle));
+		}
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+		[Export("setPixelBufferAttributes:", ArgumentSemantic.Copy)]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPixelBufferAttributes_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPixelBufferAttributes_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected virtual NSString WeakVideoGravity
 	{
-		[Export("videoGravity")]
+		[Export("videoGravity", ArgumentSemantic.Copy)]
 		get
 		{
-			return (NSString)(__mt_WeakVideoGravity_var = ((!IsDirectBinding) ? ((NSString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selVideoGravityHandle))) : ((NSString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selVideoGravityHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSend(base.Handle, selVideoGravityHandle));
+			}
+			return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selVideoGravityHandle));
 		}
-		[Export("setVideoGravity:")]
+		[Export("setVideoGravity:", ArgumentSemantic.Copy)]
 		set
 		{
 			if (value == null)
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetVideoGravity_Handle, value.Handle);
 			}
@@ -112,20 +223,19 @@ public class AVPlayerLayer : CALayer
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetVideoGravity_Handle, value.Handle);
 			}
-			__mt_WeakVideoGravity_var = value;
 		}
 	}
 
-	public virtual bool ReadyForDisplay
+	[Field("AVLayerVideoGravityResize", "AVFoundation")]
+	public new static NSString GravityResize
 	{
-		[Export("isReadyForDisplay")]
 		get
 		{
-			if (IsDirectBinding)
+			if (_GravityResize == null)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsReadyForDisplayHandle);
+				_GravityResize = Dlfcn.GetStringConstant(Libraries.AVFoundation.Handle, "AVLayerVideoGravityResize");
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsReadyForDisplayHandle);
+			return _GravityResize;
 		}
 	}
 
@@ -155,78 +265,89 @@ public class AVPlayerLayer : CALayer
 		}
 	}
 
-	[Field("AVLayerVideoGravityResize", "AVFoundation")]
-	public new static NSString GravityResize
+	internal static AVLayerVideoGravity KeyToEnum(NSString key, bool clamp = true)
 	{
-		get
+		if (key == GravityResize)
 		{
-			if (_GravityResize == null)
-			{
-				_GravityResize = Dlfcn.GetStringConstant(Libraries.AVFoundation.Handle, "AVLayerVideoGravityResize");
-			}
-			return _GravityResize;
+			return AVLayerVideoGravity.Resize;
 		}
+		if (key == GravityResizeAspectFill)
+		{
+			return AVLayerVideoGravity.ResizeAspectFill;
+		}
+		if (key == GravityResizeAspect)
+		{
+			return AVLayerVideoGravity.ResizeAspect;
+		}
+		if (clamp)
+		{
+			return AVLayerVideoGravity.ResizeAspect;
+		}
+		return (AVLayerVideoGravity)(-1);
 	}
 
+	internal static NSString EnumToKey(AVLayerVideoGravity vg)
+	{
+		return vg switch
+		{
+			AVLayerVideoGravity.ResizeAspect => GravityResizeAspect, 
+			AVLayerVideoGravity.ResizeAspectFill => GravityResizeAspectFill, 
+			AVLayerVideoGravity.Resize => GravityResize, 
+			_ => null, 
+		};
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public AVPlayerLayer()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public AVPlayerLayer(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVPlayerLayer(NSObjectFlag t)
+	protected AVPlayerLayer(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVPlayerLayer(IntPtr handle)
+	protected internal AVPlayerLayer(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("playerLayerWithPlayer:")]
-	public static AVPlayerLayer FromPlayer(AVPlayer player)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static AVPlayerLayer FromPlayer(AVPlayer? player)
 	{
-		if (player == null)
-		{
-			throw new ArgumentNullException("player");
-		}
-		return (AVPlayerLayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selPlayerLayerWithPlayer_Handle, player.Handle));
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_Player_var = null;
-			__mt_WeakVideoGravity_var = null;
-		}
+		return Runtime.GetNSObject<AVPlayerLayer>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selPlayerLayerWithPlayer_Handle, player?.Handle ?? IntPtr.Zero));
 	}
 }

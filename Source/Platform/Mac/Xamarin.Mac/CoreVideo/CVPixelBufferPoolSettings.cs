@@ -1,7 +1,9 @@
 using Foundation;
+using ObjCRuntime;
 
 namespace CoreVideo;
 
+[Watch(4, 0)]
 public class CVPixelBufferPoolSettings : DictionaryContainer
 {
 	public int? MinimumBufferCount

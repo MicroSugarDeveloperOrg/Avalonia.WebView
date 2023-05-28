@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using ObjCRuntime;
 
 namespace AudioToolbox;
 
@@ -53,20 +54,6 @@ public class AudioQueueProcessingTap : IDisposable
 	private static extern int AudioQueueProcessingTapDispose(IntPtr inAQTap);
 
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
-	[Obsolete]
-	private static extern AudioQueueStatus AudioQueueProcessingTapGetSourceAudio(IntPtr inAQTap, uint inNumberFrames, ref AudioTimeStamp ioTimeStamp, out AudioQueueProcessingTapFlags outFlags, out uint outNumberFrames, AudioBufferList ioData);
-
-	[Obsolete("Use overload with AudioBuffers")]
-	public AudioQueueStatus GetSourceAudio(uint numberOfFrames, ref AudioTimeStamp timeStamp, out AudioQueueProcessingTapFlags flags, out uint parentNumberOfFrames, AudioBufferList data)
-	{
-		if (data == null)
-		{
-			throw new ArgumentNullException("data");
-		}
-		return AudioQueueProcessingTapGetSourceAudio(TapHandle, numberOfFrames, ref timeStamp, out flags, out parentNumberOfFrames, data);
-	}
-
-	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
 	private static extern AudioQueueStatus AudioQueueProcessingTapGetSourceAudio(IntPtr inAQTap, uint inNumberFrames, ref AudioTimeStamp ioTimeStamp, out AudioQueueProcessingTapFlags outFlags, out uint outNumberFrames, IntPtr ioData);
 
 	public AudioQueueStatus GetSourceAudio(uint numberOfFrames, ref AudioTimeStamp timeStamp, out AudioQueueProcessingTapFlags flags, out uint parentNumberOfFrames, AudioBuffers data)
@@ -90,6 +77,7 @@ public class AudioQueueProcessingTap : IDisposable
 	private static void TapCallback(IntPtr clientData, IntPtr tap, uint numberFrames, ref AudioTimeStamp timeStamp, ref AudioQueueProcessingTapFlags flags, out uint outNumberFrames, IntPtr data)
 	{
 		AudioQueueProcessingTap audioQueueProcessingTap = (AudioQueueProcessingTap)GCHandle.FromIntPtr(clientData).Target;
-		outNumberFrames = audioQueueProcessingTap.callback(audioQueueProcessingTap, numberFrames, ref timeStamp, ref flags, new AudioBuffers(data));
+		using AudioBuffers data2 = new AudioBuffers(data);
+		outNumberFrames = audioQueueProcessingTap.callback(audioQueueProcessingTap, numberFrames, ref timeStamp, ref flags, data2);
 	}
 }

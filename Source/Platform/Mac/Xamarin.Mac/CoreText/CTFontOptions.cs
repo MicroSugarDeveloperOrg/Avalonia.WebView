@@ -3,12 +3,12 @@ using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
 [Flags]
-public enum CTFontOptions
+[Native]
+public enum CTFontOptions : ulong
 {
-	Default = 0,
-	PreventAutoActivation = 1,
-	PreferSystemFont = 4,
-	IncludeDisabled = 0x80
+	Default = 0uL,
+	PreventAutoActivation = 1uL,
+	PreferSystemFont = 4uL,
+	IncludeDisabled = 0x80uL
 }

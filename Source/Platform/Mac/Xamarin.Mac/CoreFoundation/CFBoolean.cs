@@ -1,83 +1,83 @@
+using System;
+using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
-using System.Runtime.InteropServices;
 
 namespace CoreFoundation;
 
-[Since(3, 2)]
 internal class CFBoolean : INativeObject, IDisposable
 {
-    private IntPtr handle;
+	private IntPtr handle;
 
-    public IntPtr Handle => handle;
+	public IntPtr Handle => handle;
 
-    public bool Value => CFBooleanGetValue(handle);
+	public bool Value => CFBooleanGetValue(handle);
 
-    [Field("kCFBooleanFalse", "CoreFoundation")]
-    internal static IntPtr FalseHandle => Dlfcn.GetIntPtr(Libraries.CoreFoundation.Handle, "kCFBooleanFalse");
+	[Field("kCFBooleanFalse", "CoreFoundation")]
+	internal static IntPtr FalseHandle => Dlfcn.GetIntPtr(Libraries.CoreFoundation.Handle, "kCFBooleanFalse");
 
-    [Field("kCFBooleanTrue", "CoreFoundation")]
-    internal static IntPtr TrueHandle => Dlfcn.GetIntPtr(Libraries.CoreFoundation.Handle, "kCFBooleanTrue");
+	[Field("kCFBooleanTrue", "CoreFoundation")]
+	internal static IntPtr TrueHandle => Dlfcn.GetIntPtr(Libraries.CoreFoundation.Handle, "kCFBooleanTrue");
 
-    [Preserve(Conditional = true)]
-    internal CFBoolean(IntPtr handle, bool owns)
-    {
-        this.handle = handle;
-        if (!owns)
-        {
-            CFObject.CFRetain(handle);
-        }
-    }
+	[Preserve(Conditional = true)]
+	internal CFBoolean(IntPtr handle, bool owns)
+	{
+		this.handle = handle;
+		if (!owns)
+		{
+			CFObject.CFRetain(handle);
+		}
+	}
 
-    ~CFBoolean()
-    {
-        Dispose(disposing: false);
-    }
+	~CFBoolean()
+	{
+		Dispose(disposing: false);
+	}
 
-    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFBooleanGetTypeID")]
-    public static extern nint GetTypeID();
+	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFBooleanGetTypeID")]
+	public static extern nint GetTypeID();
 
-    public void Dispose()
-    {
-        Dispose(disposing: true);
-        GC.SuppressFinalize(this);
-    }
+	public void Dispose()
+	{
+		Dispose(disposing: true);
+		GC.SuppressFinalize(this);
+	}
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (handle != IntPtr.Zero)
-        {
-            CFObject.CFRelease(handle);
-            handle = IntPtr.Zero;
-        }
-    }
+	protected virtual void Dispose(bool disposing)
+	{
+		if (handle != IntPtr.Zero)
+		{
+			CFObject.CFRelease(handle);
+			handle = IntPtr.Zero;
+		}
+	}
 
-    public static implicit operator bool(CFBoolean value)
-    {
-        return value.Value;
-    }
+	public static implicit operator bool(CFBoolean value)
+	{
+		return value.Value;
+	}
 
-    public static explicit operator CFBoolean(bool value)
-    {
-        return FromBoolean(value);
-    }
+	public static explicit operator CFBoolean(bool value)
+	{
+		return FromBoolean(value);
+	}
 
-    internal static IntPtr ToHandle(bool value)
-    {
-        return value ? TrueHandle : FalseHandle;
-    }
+	internal static IntPtr ToHandle(bool value)
+	{
+		return value ? TrueHandle : FalseHandle;
+	}
 
-    public static CFBoolean FromBoolean(bool value)
-    {
-        return new CFBoolean(value ? TrueHandle : FalseHandle, owns: false);
-    }
+	public static CFBoolean FromBoolean(bool value)
+	{
+		return new CFBoolean(value ? TrueHandle : FalseHandle, owns: false);
+	}
 
-    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static extern bool CFBooleanGetValue(IntPtr boolean);
+	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static extern bool CFBooleanGetValue(IntPtr boolean);
 
-    public static bool GetValue(IntPtr boolean)
-    {
-        return CFBooleanGetValue(boolean);
-    }
+	public static bool GetValue(IntPtr boolean)
+	{
+		return CFBooleanGetValue(boolean);
+	}
 }

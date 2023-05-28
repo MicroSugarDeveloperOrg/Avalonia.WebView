@@ -1,5 +1,8 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
+[Native]
 public enum NSEventSubtype : ulong
 {
 	WindowExposed = 0uL,

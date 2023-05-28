@@ -7,89 +7,161 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Register("AVCaptureFileOutput", true)]
+[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
 public class AVCaptureFileOutput : AVCaptureOutput
 {
-	private static readonly IntPtr selRecordedDurationHandle = Selector.GetHandle("recordedDuration");
+	private class recordingProxy : AVCaptureFileOutputRecordingDelegate
+	{
+		private Action<NSObject[]> startRecordingFromConnections;
 
-	private static readonly IntPtr selRecordedFileSizeHandle = Selector.GetHandle("recordedFileSize");
+		private Action<NSObject[], NSError> finishedRecording;
+
+		public recordingProxy(Action<NSObject[]> startRecordingFromConnections, Action<NSObject[], NSError> finishedRecording)
+		{
+			this.startRecordingFromConnections = startRecordingFromConnections;
+			this.finishedRecording = finishedRecording;
+		}
+
+		public override void DidStartRecording(AVCaptureFileOutput captureOutput, NSUrl outputFileUrl, NSObject[] connections)
+		{
+			startRecordingFromConnections(connections);
+		}
+
+		public override void FinishedRecording(AVCaptureFileOutput captureOutput, NSUrl outputFileUrl, NSObject[] connections, NSError error)
+		{
+			finishedRecording(connections, error);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDelegate = "delegate";
+
+	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsRecording = "isRecording";
 
 	private static readonly IntPtr selIsRecordingHandle = Selector.GetHandle("isRecording");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsRecordingPaused = "isRecordingPaused";
+
+	private static readonly IntPtr selIsRecordingPausedHandle = Selector.GetHandle("isRecordingPaused");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMaxRecordedDuration = "maxRecordedDuration";
+
 	private static readonly IntPtr selMaxRecordedDurationHandle = Selector.GetHandle("maxRecordedDuration");
 
-	private static readonly IntPtr selSetMaxRecordedDuration_Handle = Selector.GetHandle("setMaxRecordedDuration:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMaxRecordedFileSize = "maxRecordedFileSize";
 
 	private static readonly IntPtr selMaxRecordedFileSizeHandle = Selector.GetHandle("maxRecordedFileSize");
 
-	private static readonly IntPtr selSetMaxRecordedFileSize_Handle = Selector.GetHandle("setMaxRecordedFileSize:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMinFreeDiskSpaceLimit = "minFreeDiskSpaceLimit";
 
 	private static readonly IntPtr selMinFreeDiskSpaceLimitHandle = Selector.GetHandle("minFreeDiskSpaceLimit");
 
-	private static readonly IntPtr selSetMinFreeDiskSpaceLimit_Handle = Selector.GetHandle("setMinFreeDiskSpaceLimit:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selOutputFileURL = "outputFileURL";
 
 	private static readonly IntPtr selOutputFileURLHandle = Selector.GetHandle("outputFileURL");
 
-	private static readonly IntPtr selStartRecordingToOutputFileURLRecordingDelegate_Handle = Selector.GetHandle("startRecordingToOutputFileURL:recordingDelegate:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPauseRecording = "pauseRecording";
+
+	private static readonly IntPtr selPauseRecordingHandle = Selector.GetHandle("pauseRecording");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRecordedDuration = "recordedDuration";
+
+	private static readonly IntPtr selRecordedDurationHandle = Selector.GetHandle("recordedDuration");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRecordedFileSize = "recordedFileSize";
+
+	private static readonly IntPtr selRecordedFileSizeHandle = Selector.GetHandle("recordedFileSize");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selResumeRecording = "resumeRecording";
+
+	private static readonly IntPtr selResumeRecordingHandle = Selector.GetHandle("resumeRecording");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDelegate_ = "setDelegate:";
+
+	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMaxRecordedDuration_ = "setMaxRecordedDuration:";
+
+	private static readonly IntPtr selSetMaxRecordedDuration_Handle = Selector.GetHandle("setMaxRecordedDuration:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMaxRecordedFileSize_ = "setMaxRecordedFileSize:";
+
+	private static readonly IntPtr selSetMaxRecordedFileSize_Handle = Selector.GetHandle("setMaxRecordedFileSize:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMinFreeDiskSpaceLimit_ = "setMinFreeDiskSpaceLimit:";
+
+	private static readonly IntPtr selSetMinFreeDiskSpaceLimit_Handle = Selector.GetHandle("setMinFreeDiskSpaceLimit:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStartRecordingToOutputFileURL_RecordingDelegate_ = "startRecordingToOutputFileURL:recordingDelegate:";
+
+	private static readonly IntPtr selStartRecordingToOutputFileURL_RecordingDelegate_Handle = Selector.GetHandle("startRecordingToOutputFileURL:recordingDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStopRecording = "stopRecording";
 
 	private static readonly IntPtr selStopRecordingHandle = Selector.GetHandle("stopRecording");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("AVCaptureFileOutput");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVCaptureFileOutput");
 
-	private object __mt_OutputFileURL_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_Delegate_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual CMTime RecordedDuration
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual IAVCaptureFileOutputDelegate? Delegate
 	{
-		[Export("recordedDuration")]
+		[Export("delegate", ArgumentSemantic.Assign)]
 		get
 		{
-			CMTime retval;
-			if (IsDirectBinding)
+			IAVCaptureFileOutputDelegate iAVCaptureFileOutputDelegate = ((!base.IsDirectBinding) ? Runtime.GetINativeObject<IAVCaptureFileOutputDelegate>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle), owns: false) : Runtime.GetINativeObject<IAVCaptureFileOutputDelegate>(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle), owns: false));
+			MarkDirty();
+			__mt_Delegate_var = iAVCaptureFileOutputDelegate;
+			return iAVCaptureFileOutputDelegate;
+		}
+		[Export("setDelegate:", ArgumentSemantic.Assign)]
+		set
+		{
+			if (base.IsDirectBinding)
 			{
-				Messaging.CMTime_objc_msgSend_stret(out retval, base.Handle, selRecordedDurationHandle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 			else
 			{
-				Messaging.CMTime_objc_msgSendSuper_stret(out retval, base.SuperHandle, selRecordedDurationHandle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
-			return retval;
+			MarkDirty();
+			__mt_Delegate_var = value;
 		}
 	}
 
-	public virtual long RecordedFileSize
-	{
-		[Export("recordedFileSize")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.Int64_objc_msgSend(base.Handle, selRecordedFileSizeHandle);
-			}
-			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selRecordedFileSizeHandle);
-		}
-	}
-
-	public virtual bool Recording
-	{
-		[Export("isRecording")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsRecordingHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsRecordingHandle);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CMTime MaxRecordedDuration
 	{
 		[Export("maxRecordedDuration")]
 		get
 		{
 			CMTime retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.CMTime_objc_msgSend_stret(out retval, base.Handle, selMaxRecordedDurationHandle);
 			}
@@ -102,7 +174,7 @@ public class AVCaptureFileOutput : AVCaptureOutput
 		[Export("setMaxRecordedDuration:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_CMTime(base.Handle, selSetMaxRecordedDuration_Handle, value);
 			}
@@ -113,12 +185,13 @@ public class AVCaptureFileOutput : AVCaptureOutput
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual long MaxRecordedFileSize
 	{
 		[Export("maxRecordedFileSize")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.Int64_objc_msgSend(base.Handle, selMaxRecordedFileSizeHandle);
 			}
@@ -127,7 +200,7 @@ public class AVCaptureFileOutput : AVCaptureOutput
 		[Export("setMaxRecordedFileSize:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_Int64(base.Handle, selSetMaxRecordedFileSize_Handle, value);
 			}
@@ -138,12 +211,13 @@ public class AVCaptureFileOutput : AVCaptureOutput
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual long MinFreeDiskSpaceLimit
 	{
 		[Export("minFreeDiskSpaceLimit")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.Int64_objc_msgSend(base.Handle, selMinFreeDiskSpaceLimitHandle);
 			}
@@ -152,7 +226,7 @@ public class AVCaptureFileOutput : AVCaptureOutput
 		[Export("setMinFreeDiskSpaceLimit:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_Int64(base.Handle, selSetMinFreeDiskSpaceLimit_Handle, value);
 			}
@@ -163,67 +237,162 @@ public class AVCaptureFileOutput : AVCaptureOutput
 		}
 	}
 
-	public virtual NSUrl OutputFileURL
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSUrl? OutputFileURL
 	{
 		[Export("outputFileURL")]
 		get
 		{
-			return (NSUrl)(__mt_OutputFileURL_var = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOutputFileURLHandle))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selOutputFileURLHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selOutputFileURLHandle));
+			}
+			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOutputFileURLHandle));
 		}
 	}
 
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public AVCaptureFileOutput(NSCoder coder)
-		: base(NSObjectFlag.Empty)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CMTime RecordedDuration
 	{
-		if (IsDirectBinding)
+		[Export("recordedDuration")]
+		get
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			CMTime retval;
+			if (base.IsDirectBinding)
+			{
+				Messaging.CMTime_objc_msgSend_stret(out retval, base.Handle, selRecordedDurationHandle);
+			}
+			else
+			{
+				Messaging.CMTime_objc_msgSendSuper_stret(out retval, base.SuperHandle, selRecordedDurationHandle);
+			}
+			return retval;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual long RecordedFileSize
+	{
+		[Export("recordedFileSize")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.Int64_objc_msgSend(base.Handle, selRecordedFileSizeHandle);
+			}
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selRecordedFileSizeHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Recording
+	{
+		[Export("isRecording")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsRecordingHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsRecordingHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool RecordingPaused
+	{
+		[Export("isRecordingPaused")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsRecordingPausedHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsRecordingPausedHandle);
+		}
+	}
+
+	public void StartRecordingToOutputFile(NSUrl outputFileUrl, Action<NSObject[]> startRecordingFromConnections, Action<NSObject[], NSError> finishedRecording)
+	{
+		StartRecordingToOutputFile(outputFileUrl, new recordingProxy(startRecordingFromConnections, finishedRecording));
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVCaptureFileOutput(NSObjectFlag t)
+	protected AVCaptureFileOutput(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVCaptureFileOutput(IntPtr handle)
+	protected internal AVCaptureFileOutput(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("pauseRecording")]
+	[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void PauseRecording()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selPauseRecordingHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selPauseRecordingHandle);
+		}
+	}
+
+	[Export("resumeRecording")]
+	[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ResumeRecording()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selResumeRecordingHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selResumeRecordingHandle);
+		}
+	}
+
 	[Export("startRecordingToOutputFileURL:recordingDelegate:")]
-	public virtual void StartRecordingToOutputFile(NSUrl outputFileUrl, AVCaptureFileOutputRecordingDelegate recordingDelegate)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void StartRecordingToOutputFile(NSUrl outputFileUrl, IAVCaptureFileOutputRecordingDelegate recordingDelegate)
 	{
 		if (outputFileUrl == null)
 		{
 			throw new ArgumentNullException("outputFileUrl");
 		}
-		if (recordingDelegate == null)
+		if (recordingDelegate != null)
 		{
-			throw new ArgumentNullException("recordingDelegate");
+			if (!(recordingDelegate is NSObject))
+			{
+				throw new ArgumentException("The object passed of type " + recordingDelegate.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selStartRecordingToOutputFileURL_RecordingDelegate_Handle, outputFileUrl.Handle, recordingDelegate.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selStartRecordingToOutputFileURL_RecordingDelegate_Handle, outputFileUrl.Handle, recordingDelegate.Handle);
+			}
+			return;
 		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selStartRecordingToOutputFileURLRecordingDelegate_Handle, outputFileUrl.Handle, recordingDelegate.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selStartRecordingToOutputFileURLRecordingDelegate_Handle, outputFileUrl.Handle, recordingDelegate.Handle);
-		}
+		throw new ArgumentNullException("recordingDelegate");
 	}
 
 	[Export("stopRecording")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void StopRecording()
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selStopRecordingHandle);
 		}
@@ -233,12 +402,13 @@ public class AVCaptureFileOutput : AVCaptureOutput
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
-			__mt_OutputFileURL_var = null;
+			__mt_Delegate_var = null;
 		}
 	}
 }

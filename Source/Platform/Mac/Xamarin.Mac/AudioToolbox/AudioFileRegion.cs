@@ -26,7 +26,8 @@ public struct AudioFileRegion
 			{
 				throw new ArgumentOutOfRangeException("index");
 			}
-			return *(AudioFileMarker*)((byte*)(void*)ptr + (nint)12 * (nint)sizeof(AudioFileMarker) + (nint)sizeof(IntPtr) * (nint)sizeof(AudioFileMarker) + (nint)(index * sizeof(AudioFileMarker)) * (nint)sizeof(AudioFileMarker));
+			AudioFileMarker* ptr = (AudioFileMarker*)((byte*)(void*)this.ptr + (nint)12 * (nint)sizeof(AudioFileMarker) + (nint)sizeof(IntPtr) * (nint)sizeof(AudioFileMarker) + (nint)(index * sizeof(AudioFileMarker)) * (nint)sizeof(AudioFileMarker));
+			return *ptr;
 		}
 	}
 

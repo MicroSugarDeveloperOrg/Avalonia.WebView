@@ -1,16 +1,18 @@
 using System;
+using ObjCRuntime;
 
 namespace AppKit;
 
 [Flags]
-public enum NSPrintPanelOptions : ulong
+[Native]
+public enum NSPrintPanelOptions : long
 {
-	ShowsCopies = 1uL,
-	ShowsPageRange = 2uL,
-	ShowsPaperSize = 4uL,
-	ShowsOrientation = 8uL,
-	ShowsScaling = 0x10uL,
-	ShowsPrintSelection = 0x20uL,
-	ShowsPageSetupAccessory = 0x100uL,
-	ShowsPreview = 0x20000uL
+	ShowsCopies = 1L,
+	ShowsPageRange = 2L,
+	ShowsPaperSize = 4L,
+	ShowsOrientation = 8L,
+	ShowsScaling = 0x10L,
+	ShowsPrintSelection = 0x20L,
+	ShowsPageSetupAccessory = 0x100L,
+	ShowsPreview = 0x20000L
 }

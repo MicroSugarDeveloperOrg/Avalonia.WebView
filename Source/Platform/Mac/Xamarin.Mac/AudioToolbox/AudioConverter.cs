@@ -4,15 +4,21 @@ using ObjCRuntime;
 
 namespace AudioToolbox;
 
-public class AudioConverter : IDisposable
+public class AudioConverter : IDisposable, INativeObject
 {
 	private delegate AudioConverterError AudioConverterComplexInputDataShared(IntPtr inAudioConverter, ref int ioNumberDataPackets, IntPtr ioData, IntPtr outDataPacketDescription, IntPtr inUserData);
 
 	private IntPtr handle;
 
+	private IntPtr packetDescriptions;
+
+	private int packetDescriptionSize;
+
 	private readonly bool owns;
 
 	private static readonly AudioConverterComplexInputDataShared ComplexInputDataShared = FillComplexBufferShared;
+
+	public IntPtr Handle => handle;
 
 	public uint MinimumInputBufferSize => GetUIntProperty(AudioConverterPropertyID.MinimumInputBufferSize);
 
@@ -38,9 +44,29 @@ public class AudioConverter : IDisposable
 		}
 	}
 
-	public AudioConverterSampleRateConverterComplexity SampleRateConverterComplexity => (AudioConverterSampleRateConverterComplexity)GetUIntProperty(AudioConverterPropertyID.SampleRateConverterComplexity);
+	public AudioConverterSampleRateConverterComplexity SampleRateConverterComplexity
+	{
+		get
+		{
+			return (AudioConverterSampleRateConverterComplexity)GetUIntProperty(AudioConverterPropertyID.SampleRateConverterComplexity);
+		}
+		set
+		{
+			SetProperty(AudioConverterPropertyID.SampleRateConverterComplexity, (uint)value);
+		}
+	}
 
-	public AudioConverterQuality SampleRateConverterQuality => (AudioConverterQuality)GetUIntProperty(AudioConverterPropertyID.SampleRateConverterQuality);
+	public AudioConverterQuality SampleRateConverterQuality
+	{
+		get
+		{
+			return (AudioConverterQuality)GetUIntProperty(AudioConverterPropertyID.SampleRateConverterQuality);
+		}
+		set
+		{
+			SetProperty(AudioConverterPropertyID.SampleRateConverterQuality, (uint)value);
+		}
+	}
 
 	public AudioConverterQuality CodecQuality
 	{
@@ -316,7 +342,6 @@ public class AudioConverter : IDisposable
 	~AudioConverter()
 	{
 		Dispose(disposing: false);
-		GC.SuppressFinalize(this);
 	}
 
 	public void Dispose()
@@ -334,6 +359,12 @@ public class AudioConverter : IDisposable
 			}
 			handle = IntPtr.Zero;
 		}
+		if (packetDescriptions != IntPtr.Zero)
+		{
+			Marshal.FreeHGlobal(packetDescriptions);
+			packetDescriptions = IntPtr.Zero;
+		}
+		GC.SuppressFinalize(this);
 	}
 
 	public AudioConverterError ConvertBuffer(byte[] input, byte[] output)
@@ -350,7 +381,6 @@ public class AudioConverter : IDisposable
 		return AudioConverterConvertBuffer(handle, input.Length, input, ref ioOutputDataSize, output);
 	}
 
-	[Since(5, 0)]
 	public AudioConverterError ConvertComplexBuffer(int numberPCMFrames, AudioBuffers inputData, AudioBuffers outputData)
 	{
 		if (inputData == null)
@@ -364,40 +394,103 @@ public class AudioConverter : IDisposable
 		return AudioConverterConvertComplexBuffer(handle, numberPCMFrames, (IntPtr)inputData, (IntPtr)outputData);
 	}
 
-	public unsafe AudioConverterError FillComplexBuffer(ref int outputDataPacketSize, AudioBuffers outputData, AudioStreamPacketDescription[] packetDescription)
+	public AudioConverterError FillComplexBuffer(ref int outputDataPacketSize, AudioBuffers outputData, AudioStreamPacketDescription[] packetDescription, AudioConverterComplexInputData newInputDataHandler)
 	{
-		IntPtr inInputDataProcUserData = GCHandle.ToIntPtr(GCHandle.Alloc(this));
-		AudioConverterError result;
-		if (packetDescription == null)
+		if (outputData == null)
 		{
-			result = AudioConverterFillComplexBuffer(handle, ComplexInputDataShared, inInputDataProcUserData, ref outputDataPacketSize, (IntPtr)outputData, IntPtr.Zero);
+			throw new ArgumentNullException("outputData");
 		}
-		else
+		if (newInputDataHandler == null)
 		{
+			throw new ArgumentNullException("newInputDataHandler");
+		}
+		return FillComplexBuffer(ref outputDataPacketSize, outputData, packetDescription, new Tuple<AudioConverter, AudioConverterComplexInputData>(this, newInputDataHandler));
+	}
+
+	public AudioConverterError FillComplexBuffer(ref int outputDataPacketSize, AudioBuffers outputData, AudioStreamPacketDescription[] packetDescription)
+	{
+		if (outputData == null)
+		{
+			throw new ArgumentNullException("outputData");
+		}
+		return FillComplexBuffer(ref outputDataPacketSize, outputData, packetDescription, new Tuple<AudioConverter, AudioConverterComplexInputData>(this, null));
+	}
+
+	private unsafe AudioConverterError FillComplexBuffer(ref int outputDataPacketSize, AudioBuffers outputData, AudioStreamPacketDescription[] packetDescription, Tuple<AudioConverter, AudioConverterComplexInputData> instanceData)
+	{
+		GCHandle value = GCHandle.Alloc(instanceData);
+		try
+		{
+			IntPtr inInputDataProcUserData = GCHandle.ToIntPtr(value);
+			if (packetDescription == null)
+			{
+				return AudioConverterFillComplexBuffer(handle, ComplexInputDataShared, inInputDataProcUserData, ref outputDataPacketSize, (IntPtr)outputData, IntPtr.Zero);
+			}
 			fixed (AudioStreamPacketDescription* ptr = &packetDescription[0])
 			{
-				result = AudioConverterFillComplexBuffer(handle, ComplexInputDataShared, inInputDataProcUserData, ref outputDataPacketSize, (IntPtr)outputData, (IntPtr)ptr);
+				return AudioConverterFillComplexBuffer(handle, ComplexInputDataShared, inInputDataProcUserData, ref outputDataPacketSize, (IntPtr)outputData, (IntPtr)ptr);
 			}
 		}
-		return result;
+		finally
+		{
+			value.Free();
+		}
 	}
 
 	[MonoPInvokeCallback(typeof(AudioConverterComplexInputDataShared))]
-	private static AudioConverterError FillComplexBufferShared(IntPtr inAudioConverter, ref int ioNumberDataPackets, IntPtr ioData, IntPtr outDataPacketDescription, IntPtr inUserData)
+	private unsafe static AudioConverterError FillComplexBufferShared(IntPtr inAudioConverter, ref int ioNumberDataPackets, IntPtr ioData, IntPtr outDataPacketDescription, IntPtr inUserData)
 	{
-		AudioStreamPacketDescription[] dataPacketDescription = ((!(outDataPacketDescription == IntPtr.Zero)) ? null : null);
-		AudioConverter obj = (AudioConverter)GCHandle.FromIntPtr(inUserData).Target;
-		if (obj.InputData == null)
+		Tuple<AudioConverter, AudioConverterComplexInputData> tuple = (Tuple<AudioConverter, AudioConverterComplexInputData>)GCHandle.FromIntPtr(inUserData).Target;
+		AudioConverter item = tuple.Item1;
+		AudioConverterComplexInputData item2 = tuple.Item2;
+		if (item2 == null && item.InputData == null)
 		{
 			throw new ArgumentNullException("InputData");
 		}
-		AudioConverterError result = obj.InputData(ref ioNumberDataPackets, new AudioBuffers(ioData), ref dataPacketDescription);
-		if (dataPacketDescription == null)
+		if (item2 != null && item.InputData != null)
 		{
-			outDataPacketDescription = IntPtr.Zero;
-			return result;
+			throw new InvalidOperationException("Please either only subscribe to InputData event or provide newInputDataHandler in FillComplexBuffer, using both is unsuported.");
 		}
-		throw new NotImplementedException("outDataPacketDescription is not null");
+		using AudioBuffers data = new AudioBuffers(ioData);
+		AudioStreamPacketDescription[] dataPacketDescription = ((outDataPacketDescription == IntPtr.Zero) ? null : new AudioStreamPacketDescription[0]);
+		AudioConverterError result = ((item.InputData != null) ? item.InputData(ref ioNumberDataPackets, data, ref dataPacketDescription) : item2(ref ioNumberDataPackets, data, ref dataPacketDescription));
+		if (outDataPacketDescription != IntPtr.Zero)
+		{
+			if (ioNumberDataPackets > 0)
+			{
+				if (dataPacketDescription == null || dataPacketDescription.Length == 0)
+				{
+					throw new ArgumentException("ref argument outDataPacketDescription has to be set");
+				}
+				int num = Marshal.SizeOf(dataPacketDescription[0]);
+				if (item.packetDescriptionSize < dataPacketDescription.Length && item.packetDescriptions != IntPtr.Zero)
+				{
+					Marshal.FreeHGlobal(item.packetDescriptions);
+					item.packetDescriptions = IntPtr.Zero;
+				}
+				if (item.packetDescriptions == IntPtr.Zero)
+				{
+					item.packetDescriptionSize = dataPacketDescription.Length;
+					item.packetDescriptions = Marshal.AllocHGlobal(dataPacketDescription.Length * num);
+				}
+				try
+				{
+					fixed (AudioStreamPacketDescription* source = dataPacketDescription)
+					{
+						Runtime.memcpy((byte*)(void*)item.packetDescriptions, (byte*)source, dataPacketDescription.Length * num);
+					}
+				}
+				finally
+				{
+				}
+				Marshal.WriteIntPtr(outDataPacketDescription, item.packetDescriptions);
+			}
+			else
+			{
+				Marshal.WriteIntPtr(outDataPacketDescription, IntPtr.Zero);
+			}
+		}
+		return result;
 	}
 
 	public AudioConverterError Reset()

@@ -7,24 +7,33 @@ namespace Foundation;
 [Register("NSMetadataQueryAttributeValueTuple", true)]
 public class NSMetadataQueryAttributeValueTuple : NSObject
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAttribute = "attribute";
+
 	private static readonly IntPtr selAttributeHandle = Selector.GetHandle("attribute");
 
-	private static readonly IntPtr selValueHandle = Selector.GetHandle("value");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCount = "count";
 
 	private static readonly IntPtr selCountHandle = Selector.GetHandle("count");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSMetadataQueryAttributeValueTuple");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selValue = "value";
 
-	private object __mt_Value_var;
+	private static readonly IntPtr selValueHandle = Selector.GetHandle("value");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSMetadataQueryAttributeValueTuple");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string Attribute
 	{
 		[Export("attribute")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAttributeHandle));
 			}
@@ -32,76 +41,61 @@ public class NSMetadataQueryAttributeValueTuple : NSObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint Count
+	{
+		[Export("count")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nint_objc_msgSend(base.Handle, selCountHandle);
+			}
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selCountHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSObject Value
 	{
 		[Export("value")]
 		get
 		{
-			return (NSObject)(__mt_Value_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selValueHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selValueHandle))));
-		}
-	}
-
-	public virtual ulong Count
-	{
-		[Export("count")]
-		get
-		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.UInt64_objc_msgSend(base.Handle, selCountHandle);
+				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selValueHandle));
 			}
-			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selCountHandle);
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selValueHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSMetadataQueryAttributeValueTuple()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSMetadataQueryAttributeValueTuple(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSMetadataQueryAttributeValueTuple(NSObjectFlag t)
+	protected NSMetadataQueryAttributeValueTuple(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSMetadataQueryAttributeValueTuple(IntPtr handle)
+	protected internal NSMetadataQueryAttributeValueTuple(IntPtr handle)
 		: base(handle)
 	{
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_Value_var = null;
-		}
 	}
 }

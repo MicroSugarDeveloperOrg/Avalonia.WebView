@@ -7,6 +7,19 @@ public class AVVideoSettingsCompressed : DictionaryContainer
 {
 	public AVVideoCodec? Codec
 	{
+		get
+		{
+			NSString nSStringValue = GetNSStringValue(AVVideo.CodecKey);
+			if (nSStringValue == AVVideo.CodecH264)
+			{
+				return AVVideoCodec.H264;
+			}
+			if (nSStringValue == AVVideo.CodecJPEG)
+			{
+				return AVVideoCodec.JPEG;
+			}
+			return null;
+		}
 		set
 		{
 			NSString nSString = value switch
@@ -51,8 +64,25 @@ public class AVVideoSettingsCompressed : DictionaryContainer
 		}
 	}
 
+	[iOS(7, 0)]
+	public double? MaxKeyFrameIntervalDuration
+	{
+		get
+		{
+			return GetDoubleValue(AVVideo.MaxKeyFrameIntervalDurationKey);
+		}
+		set
+		{
+			SetNumberValue(AVVideo.MaxKeyFrameIntervalDurationKey, value);
+		}
+	}
+
 	public AVVideoScalingMode? ScalingMode
 	{
+		get
+		{
+			return AVVideoSettingsUncompressed.ScalingModeFromNSString(GetNSStringValue(AVVideo.ScalingModeKey));
+		}
 		set
 		{
 			NSString nSString = value switch
@@ -77,6 +107,15 @@ public class AVVideoSettingsCompressed : DictionaryContainer
 
 	public AVVideoCodecSettings CodecSettings
 	{
+		get
+		{
+			NSDictionary nSDictionary = GetNSDictionary(AVVideo.CompressionPropertiesKey);
+			if (nSDictionary == null)
+			{
+				return null;
+			}
+			return new AVVideoCodecSettings(nSDictionary);
+		}
 		set
 		{
 			SetNativeValue(AVVideo.CompressionPropertiesKey, value?.Dictionary);

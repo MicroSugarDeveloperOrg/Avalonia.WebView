@@ -1,8 +1,10 @@
+using System;
 using Foundation;
 using ObjCRuntime;
 
 namespace AVFoundation;
 
+[Watch(6, 0)]
 public class AVUrlAssetOptions : DictionaryContainer
 {
 	public bool? PreferPreciseDurationAndTiming
@@ -17,16 +19,15 @@ public class AVUrlAssetOptions : DictionaryContainer
 		}
 	}
 
-	[Since(5, 0)]
 	public AVAssetReferenceRestrictions? ReferenceRestrictions
 	{
 		get
 		{
-			return (AVAssetReferenceRestrictions?)GetInt32Value(AVUrlAsset.ReferenceRestrictionsKey);
+			return (AVAssetReferenceRestrictions?)(ulong?)GetNUIntValue(AVUrlAsset.ReferenceRestrictionsKey);
 		}
 		set
 		{
-			SetNumberValue(AVUrlAsset.ReferenceRestrictionsKey, (int?)value);
+			SetNumberValue(AVUrlAsset.ReferenceRestrictionsKey, (nuint?)(ulong?)value);
 		}
 	}
 

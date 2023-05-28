@@ -10,7 +10,10 @@ internal struct CTParagraphStyleSettingValue
 	public byte int8;
 
 	[FieldOffset(0)]
-	public float single;
+	public nfloat single;
+
+	[FieldOffset(0)]
+	public nuint native_uint;
 
 	[FieldOffset(0)]
 	public IntPtr pointer;

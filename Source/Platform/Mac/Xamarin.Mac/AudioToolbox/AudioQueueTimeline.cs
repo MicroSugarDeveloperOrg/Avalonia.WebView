@@ -23,13 +23,14 @@ public class AudioQueueTimeline : IDisposable
 		Dispose(disposing: true);
 	}
 
-	public virtual void Dispose(bool disposing)
+	protected virtual void Dispose(bool disposing)
 	{
 		if (timelineHandle != IntPtr.Zero)
 		{
 			AudioQueueDisposeTimeline(queueHandle, timelineHandle);
 			timelineHandle = IntPtr.Zero;
 		}
+		GC.SuppressFinalize(this);
 	}
 
 	~AudioQueueTimeline()

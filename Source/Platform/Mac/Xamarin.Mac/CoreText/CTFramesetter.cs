@@ -7,7 +7,6 @@ using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
 public class CTFramesetter : INativeObject, IDisposable
 {
 	internal IntPtr handle;
@@ -99,5 +98,30 @@ public class CTFramesetter : INativeObject, IDisposable
 	public CGSize SuggestFrameSize(NSRange stringRange, CTFrameAttributes frameAttributes, CGSize constraints, out NSRange fitRange)
 	{
 		return CTFramesetterSuggestFrameSizeWithConstraints(handle, stringRange, frameAttributes?.Dictionary.Handle ?? IntPtr.Zero, constraints, out fitRange);
+	}
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
+	[Mac(10, 14)]
+	[iOS(12, 0)]
+	[TV(12, 0)]
+	[Watch(5, 0)]
+	private static extern IntPtr CTFramesetterCreateWithTypesetter(IntPtr typesetter);
+
+	[Mac(10, 14)]
+	[iOS(12, 0)]
+	[TV(12, 0)]
+	[Watch(5, 0)]
+	public static CTFramesetter Create(CTTypesetter typesetter)
+	{
+		if (typesetter == null)
+		{
+			throw new ArgumentNullException("typesetter");
+		}
+		IntPtr intPtr = CTFramesetterCreateWithTypesetter(typesetter.Handle);
+		if (intPtr == IntPtr.Zero)
+		{
+			return null;
+		}
+		return new CTFramesetter(intPtr, owns: true);
 	}
 }

@@ -1,8 +1,10 @@
 using System;
+using ObjCRuntime;
 
 namespace AppKit;
 
 [Flags]
+[Native]
 public enum NSMenuProperty : ulong
 {
 	Title = 1uL,

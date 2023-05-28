@@ -1,8 +1,10 @@
 using System;
+using ObjCRuntime;
 
 namespace CoreData;
 
 [Flags]
+[Native]
 public enum NSFetchRequestResultType : ulong
 {
 	ManagedObject = 0uL,

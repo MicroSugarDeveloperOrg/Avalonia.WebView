@@ -2,7 +2,7 @@ using ObjCRuntime;
 
 namespace Foundation;
 
-[Since(4, 0)]
+[Native]
 public enum NSOperationQueuePriority : long
 {
 	VeryLow = -8L,

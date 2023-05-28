@@ -1,9 +1,10 @@
-using System;
 using Foundation;
+using ObjCRuntime;
 
 namespace CoreText;
 
-[Obsolete("Deprecated")]
+[Deprecated(PlatformName.iOS, 6, 0, PlatformArchitecture.None, null)]
+[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.None, null)]
 public class CTFontFeatureLetterCase : CTFontFeatureSelectors
 {
 	public enum Selector
@@ -16,7 +17,7 @@ public class CTFontFeatureLetterCase : CTFontFeatureSelectors
 		InitialCapsAndSmallCaps
 	}
 
-	public Selector Feature => Feature;
+	public Selector Feature => (Selector)base.FeatureWeak;
 
 	public CTFontFeatureLetterCase(NSDictionary dictionary)
 		: base(dictionary)

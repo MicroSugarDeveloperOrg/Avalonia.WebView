@@ -5,8 +5,10 @@ namespace Foundation;
 
 public class NSUndoManagerCloseUndoGroupEventArgs : NSNotificationEventArgs
 {
+	[Field("NSUndoManagerGroupIsDiscardableKey", "Foundation")]
 	private static IntPtr k0;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public bool? Discardable
 	{
 		get
@@ -15,16 +17,17 @@ public class NSUndoManagerCloseUndoGroupEventArgs : NSNotificationEventArgs
 			{
 				k0 = Dlfcn.GetIntPtr(Libraries.Foundation.Handle, "NSUndoManagerGroupIsDiscardableKey");
 			}
-			if (base.Notification.UserInfo == null)
+			NSDictionary userInfo = base.Notification.UserInfo;
+			if (userInfo == null)
 			{
 				return null;
 			}
-			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k0);
+			IntPtr intPtr = userInfo.LowlevelObjectForKey(k0);
 			if (intPtr == IntPtr.Zero)
 			{
 				return null;
 			}
-			using NSNumber nSNumber = new NSNumber(intPtr);
+			using NSNumber nSNumber = Runtime.GetNSObject<NSNumber>(intPtr);
 			return nSNumber.BoolValue;
 		}
 	}

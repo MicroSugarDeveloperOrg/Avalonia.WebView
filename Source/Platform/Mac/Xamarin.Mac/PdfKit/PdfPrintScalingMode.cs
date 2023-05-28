@@ -1,6 +1,10 @@
+using ObjCRuntime;
+
 namespace PdfKit;
 
-public enum PdfPrintScalingMode
+[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+[Native]
+public enum PdfPrintScalingMode : long
 {
 	None,
 	ToFit,

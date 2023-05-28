@@ -12,15 +12,15 @@ public class CGPDFDocument : INativeObject, IDisposable
 
 	public IntPtr Handle => handle;
 
-	public int Pages => CGPDFDocumentGetNumberOfPages(handle);
+	public nint Pages => CGPDFDocumentGetNumberOfPages(handle);
 
-	public bool IsEncrypted => CGPDFDocumentIsEncrypted(handle) != 0;
+	public bool IsEncrypted => CGPDFDocumentIsEncrypted(handle);
 
-	public bool IsUnlocked => CGPDFDocumentIsUnlocked(handle) != 0;
+	public bool IsUnlocked => CGPDFDocumentIsUnlocked(handle);
 
-	public bool AllowsPrinting => CGPDFDocumentAllowsPrinting(handle) != 0;
+	public bool AllowsPrinting => CGPDFDocumentAllowsPrinting(handle);
 
-	public bool AllowsCopying => CGPDFDocumentAllowsCopying(handle) != 0;
+	public bool AllowsCopying => CGPDFDocumentAllowsCopying(handle);
 
 	~CGPDFDocument()
 	{
@@ -34,10 +34,10 @@ public class CGPDFDocument : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGPDFDocumentRelease(IntPtr handle);
+	private static extern void CGPDFDocumentRelease(IntPtr document);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGPDFDocumentRetain(IntPtr handle);
+	private static extern IntPtr CGPDFDocumentRetain(IntPtr document);
 
 	protected virtual void Dispose(bool disposing)
 	{
@@ -110,18 +110,19 @@ public class CGPDFDocument : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern int CGPDFDocumentGetNumberOfPages(IntPtr handle);
+	private static extern nint CGPDFDocumentGetNumberOfPages(IntPtr document);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGPDFDocumentGetPage(IntPtr handle, int page);
+	private static extern IntPtr CGPDFDocumentGetPage(IntPtr document, nint page);
 
-	public CGPDFPage GetPage(int page)
+	public CGPDFPage GetPage(nint page)
 	{
-		return new CGPDFPage(this, CGPDFDocumentGetPage(handle, page));
+		IntPtr intPtr = CGPDFDocumentGetPage(handle, page);
+		return (intPtr == IntPtr.Zero) ? null : new CGPDFPage(intPtr);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGPDFDocumentGetVersion(IntPtr handle, out int major, out int minor);
+	private static extern void CGPDFDocumentGetVersion(IntPtr document, out int majorVersion, out int minorVersion);
 
 	public void GetVersion(out int major, out int minor)
 	{
@@ -129,67 +130,27 @@ public class CGPDFDocument : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern int CGPDFDocumentIsEncrypted(IntPtr handle);
+	private static extern bool CGPDFDocumentIsEncrypted(IntPtr document);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern int CGPDFDocumentUnlockWithPassword(IntPtr handle, string password);
+	private static extern bool CGPDFDocumentUnlockWithPassword(IntPtr document, string password);
 
-	public bool UnlockWithPassword(string pass)
+	public bool Unlock(string password)
 	{
-		return CGPDFDocumentUnlockWithPassword(handle, pass) != 0;
+		return CGPDFDocumentUnlockWithPassword(handle, password);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern int CGPDFDocumentIsUnlocked(IntPtr handle);
+	private static extern bool CGPDFDocumentIsUnlocked(IntPtr document);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern int CGPDFDocumentAllowsPrinting(IntPtr handle);
+	private static extern bool CGPDFDocumentAllowsPrinting(IntPtr document);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern int CGPDFDocumentAllowsCopying(IntPtr handle);
+	private static extern bool CGPDFDocumentAllowsCopying(IntPtr document);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern CGRect CGPDFDocumentGetMediaBox(IntPtr handle, int page);
-
-	public CGRect GetMediaBox(int page)
-	{
-		return CGPDFDocumentGetMediaBox(handle, page);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern CGRect CGPDFDocumentGetCropBox(IntPtr handle, int page);
-
-	public CGRect GetCropBox(int page)
-	{
-		return CGPDFDocumentGetCropBox(handle, page);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern CGRect CGPDFDocumentGetBleedBox(IntPtr handle, int page);
-
-	public CGRect GetBleedBox(int page)
-	{
-		return CGPDFDocumentGetBleedBox(handle, page);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern CGRect CGPDFDocumentGetTrimBox(IntPtr handle, int page);
-
-	public CGRect GetTrimBox(int page)
-	{
-		return CGPDFDocumentGetTrimBox(handle, page);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern CGRect CGPDFDocumentGetArtBox(IntPtr handle, int page);
-
-	public CGRect GetArtBox(int page)
-	{
-		return CGPDFDocumentGetArtBox(handle, page);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGPDFDocumentGetCatalog(IntPtr handle);
+	private static extern IntPtr CGPDFDocumentGetCatalog(IntPtr document);
 
 	public CGPDFDictionary GetCatalog()
 	{
@@ -197,10 +158,59 @@ public class CGPDFDocument : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGPDFDocumentGetInfo(IntPtr handle);
+	private static extern IntPtr CGPDFDocumentGetInfo(IntPtr document);
 
 	public CGPDFDictionary GetInfo()
 	{
 		return new CGPDFDictionary(CGPDFDocumentGetInfo(handle));
+	}
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	private static extern void CGPDFContextSetOutline(IntPtr document, IntPtr outline);
+
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	public void SetOutline(CGPDFOutlineOptions options)
+	{
+		CGPDFContextSetOutline(handle, options?.Dictionary.Handle ?? IntPtr.Zero);
+	}
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	private static extern IntPtr CGPDFDocumentGetOutline(IntPtr document);
+
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	public CGPDFOutlineOptions GetOutline()
+	{
+		IntPtr ptr = CGPDFDocumentGetOutline(handle);
+		return new CGPDFOutlineOptions(Runtime.GetNSObject<NSDictionary>(ptr));
+	}
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	private static extern CGPDFAccessPermissions CGPDFDocumentGetAccessPermissions(IntPtr document);
+
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	public CGPDFAccessPermissions GetAccessPermissions()
+	{
+		return CGPDFDocumentGetAccessPermissions(handle);
 	}
 }

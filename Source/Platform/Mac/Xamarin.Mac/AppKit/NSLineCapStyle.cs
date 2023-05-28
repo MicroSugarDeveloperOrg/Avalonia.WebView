@@ -1,6 +1,9 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
-public enum NSLineCapStyle
+[Native]
+public enum NSLineCapStyle : ulong
 {
 	Butt,
 	Round,

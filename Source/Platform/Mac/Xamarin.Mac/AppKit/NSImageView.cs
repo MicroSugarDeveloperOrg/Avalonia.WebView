@@ -7,210 +7,226 @@ using ObjCRuntime;
 namespace AppKit;
 
 [Register("NSImageView", true)]
-public class NSImageView : NSControl
+public class NSImageView : NSControl, INSAccessibilityElementProtocol, INativeObject, IDisposable, INSAccessibilityImage, INSMenuItemValidation
 {
-	private static readonly IntPtr selImageHandle = Selector.GetHandle("image");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAccessibilityFrame = "accessibilityFrame";
 
-	private static readonly IntPtr selSetImage_Handle = Selector.GetHandle("setImage:");
+	private static readonly IntPtr selAccessibilityFrameHandle = Selector.GetHandle("accessibilityFrame");
 
-	private static readonly IntPtr selImageAlignmentHandle = Selector.GetHandle("imageAlignment");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAccessibilityIdentifier = "accessibilityIdentifier";
 
-	private static readonly IntPtr selSetImageAlignment_Handle = Selector.GetHandle("setImageAlignment:");
+	private static readonly IntPtr selAccessibilityIdentifierHandle = Selector.GetHandle("accessibilityIdentifier");
 
-	private static readonly IntPtr selImageScalingHandle = Selector.GetHandle("imageScaling");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAccessibilityLabel = "accessibilityLabel";
 
-	private static readonly IntPtr selSetImageScaling_Handle = Selector.GetHandle("setImageScaling:");
+	private static readonly IntPtr selAccessibilityLabelHandle = Selector.GetHandle("accessibilityLabel");
 
-	private static readonly IntPtr selImageFrameStyleHandle = Selector.GetHandle("imageFrameStyle");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAccessibilityParent = "accessibilityParent";
 
-	private static readonly IntPtr selSetImageFrameStyle_Handle = Selector.GetHandle("setImageFrameStyle:");
+	private static readonly IntPtr selAccessibilityParentHandle = Selector.GetHandle("accessibilityParent");
 
-	private static readonly IntPtr selIsEditableHandle = Selector.GetHandle("isEditable");
-
-	private static readonly IntPtr selSetEditable_Handle = Selector.GetHandle("setEditable:");
-
-	private static readonly IntPtr selAnimatesHandle = Selector.GetHandle("animates");
-
-	private static readonly IntPtr selSetAnimates_Handle = Selector.GetHandle("setAnimates:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAllowsCutCopyPaste = "allowsCutCopyPaste";
 
 	private static readonly IntPtr selAllowsCutCopyPasteHandle = Selector.GetHandle("allowsCutCopyPaste");
 
-	private static readonly IntPtr selSetAllowsCutCopyPaste_Handle = Selector.GetHandle("setAllowsCutCopyPaste:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAnimates = "animates";
+
+	private static readonly IntPtr selAnimatesHandle = Selector.GetHandle("animates");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selContentTintColor = "contentTintColor";
+
+	private static readonly IntPtr selContentTintColorHandle = Selector.GetHandle("contentTintColor");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImage = "image";
+
+	private static readonly IntPtr selImageHandle = Selector.GetHandle("image");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImageAlignment = "imageAlignment";
+
+	private static readonly IntPtr selImageAlignmentHandle = Selector.GetHandle("imageAlignment");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImageFrameStyle = "imageFrameStyle";
+
+	private static readonly IntPtr selImageFrameStyleHandle = Selector.GetHandle("imageFrameStyle");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImageScaling = "imageScaling";
+
+	private static readonly IntPtr selImageScalingHandle = Selector.GetHandle("imageScaling");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImageViewWithImage_ = "imageViewWithImage:";
+
+	private static readonly IntPtr selImageViewWithImage_Handle = Selector.GetHandle("imageViewWithImage:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithFrame_ = "initWithFrame:";
 
 	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSImageView");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsAccessibilityFocused = "isAccessibilityFocused";
 
-	private object __mt_Image_var;
+	private static readonly IntPtr selIsAccessibilityFocusedHandle = Selector.GetHandle("isAccessibilityFocused");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsEditable = "isEditable";
+
+	private static readonly IntPtr selIsEditableHandle = Selector.GetHandle("isEditable");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAllowsCutCopyPaste_ = "setAllowsCutCopyPaste:";
+
+	private static readonly IntPtr selSetAllowsCutCopyPaste_Handle = Selector.GetHandle("setAllowsCutCopyPaste:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAnimates_ = "setAnimates:";
+
+	private static readonly IntPtr selSetAnimates_Handle = Selector.GetHandle("setAnimates:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetContentTintColor_ = "setContentTintColor:";
+
+	private static readonly IntPtr selSetContentTintColor_Handle = Selector.GetHandle("setContentTintColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEditable_ = "setEditable:";
+
+	private static readonly IntPtr selSetEditable_Handle = Selector.GetHandle("setEditable:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetImage_ = "setImage:";
+
+	private static readonly IntPtr selSetImage_Handle = Selector.GetHandle("setImage:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetImageAlignment_ = "setImageAlignment:";
+
+	private static readonly IntPtr selSetImageAlignment_Handle = Selector.GetHandle("setImageAlignment:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetImageFrameStyle_ = "setImageFrameStyle:";
+
+	private static readonly IntPtr selSetImageFrameStyle_Handle = Selector.GetHandle("setImageFrameStyle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetImageScaling_ = "setImageScaling:";
+
+	private static readonly IntPtr selSetImageScaling_Handle = Selector.GetHandle("setImageScaling:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selValidateMenuItem_ = "validateMenuItem:";
+
+	private static readonly IntPtr selValidateMenuItem_Handle = Selector.GetHandle("validateMenuItem:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSImageView");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSImage Image
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	public new virtual bool AccessibilityFocused
 	{
-		[Export("image")]
+		[Export("isAccessibilityFocused")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSImage)(__mt_Image_var = ((!IsDirectBinding) ? ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selImageHandle))) : ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selImageHandle)))));
-		}
-		[Export("setImage:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetImage_Handle, value?.Handle ?? IntPtr.Zero);
+				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityFocusedHandle);
 			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetImage_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			__mt_Image_var = value;
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityFocusedHandle);
 		}
 	}
 
-	public virtual NSImageAlignment ImageAlignment
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	public new virtual CGRect AccessibilityFrame
 	{
-		[Export("imageAlignment")]
+		[Export("accessibilityFrame")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			CGRect retval;
+			if (base.IsDirectBinding)
 			{
-				return (NSImageAlignment)Messaging.UInt64_objc_msgSend(base.Handle, selImageAlignmentHandle);
-			}
-			return (NSImageAlignment)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selImageAlignmentHandle);
-		}
-		[Export("setImageAlignment:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetImageAlignment_Handle, (ulong)value);
+				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selAccessibilityFrameHandle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetImageAlignment_Handle, (ulong)value);
+				Messaging.CGRect_objc_msgSendSuper_stret(out retval, base.SuperHandle, selAccessibilityFrameHandle);
 			}
+			return retval;
 		}
 	}
 
-	public virtual NSImageScale ImageScaling
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	public new virtual string AccessibilityIdentifier
 	{
-		[Export("imageScaling")]
+		[Export("accessibilityIdentifier")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return (NSImageScale)Messaging.UInt64_objc_msgSend(base.Handle, selImageScalingHandle);
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityIdentifierHandle));
 			}
-			return (NSImageScale)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selImageScalingHandle);
-		}
-		[Export("setImageScaling:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetImageScaling_Handle, (ulong)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetImageScaling_Handle, (ulong)value);
-			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityIdentifierHandle));
 		}
 	}
 
-	public virtual NSImageFrameStyle ImageFrameStyle
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	public new virtual string? AccessibilityLabel
 	{
-		[Export("imageFrameStyle")]
+		[Export("accessibilityLabel")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return (NSImageFrameStyle)Messaging.UInt64_objc_msgSend(base.Handle, selImageFrameStyleHandle);
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityLabelHandle));
 			}
-			return (NSImageFrameStyle)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selImageFrameStyleHandle);
-		}
-		[Export("setImageFrameStyle:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetImageFrameStyle_Handle, (ulong)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetImageFrameStyle_Handle, (ulong)value);
-			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityLabelHandle));
 		}
 	}
 
-	public virtual bool Editable
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	public new virtual NSObject? AccessibilityParent
 	{
-		[Export("isEditable")]
+		[Export("accessibilityParent")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsEditableHandle);
+				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityParentHandle));
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsEditableHandle);
-		}
-		[Export("setEditable:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetEditable_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetEditable_Handle, value);
-			}
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityParentHandle));
 		}
 	}
 
-	public virtual bool Animates
-	{
-		[Export("animates")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAnimatesHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAnimatesHandle);
-		}
-		[Export("setAnimates:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAnimates_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAnimates_Handle, value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool AllowsCutCopyPaste
 	{
 		[Export("allowsCutCopyPaste")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selAllowsCutCopyPasteHandle);
 			}
@@ -220,7 +236,7 @@ public class NSImageView : NSControl
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsCutCopyPaste_Handle, value);
 			}
@@ -231,69 +247,297 @@ public class NSImageView : NSControl
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Animates
+	{
+		[Export("animates")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selAnimatesHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAnimatesHandle);
+		}
+		[Export("setAnimates:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetAnimates_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAnimates_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 14, PlatformArchitecture.All, null)]
+	public virtual NSColor? ContentTintColor
+	{
+		[Introduced(PlatformName.MacOSX, 10, 14, PlatformArchitecture.All, null)]
+		[Export("contentTintColor", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selContentTintColorHandle));
+			}
+			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContentTintColorHandle));
+		}
+		[Introduced(PlatformName.MacOSX, 10, 14, PlatformArchitecture.All, null)]
+		[Export("setContentTintColor:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetContentTintColor_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetContentTintColor_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Editable
+	{
+		[Export("isEditable")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsEditableHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsEditableHandle);
+		}
+		[Export("setEditable:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetEditable_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetEditable_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSImage? Image
+	{
+		[Export("image", ArgumentSemantic.Retain)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSend(base.Handle, selImageHandle));
+			}
+			return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selImageHandle));
+		}
+		[Export("setImage:", ArgumentSemantic.Retain)]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetImage_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetImage_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSImageAlignment ImageAlignment
+	{
+		[Export("imageAlignment")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return (NSImageAlignment)Messaging.UInt64_objc_msgSend(base.Handle, selImageAlignmentHandle);
+			}
+			return (NSImageAlignment)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selImageAlignmentHandle);
+		}
+		[Export("setImageAlignment:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetImageAlignment_Handle, (ulong)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetImageAlignment_Handle, (ulong)value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSImageFrameStyle ImageFrameStyle
+	{
+		[Export("imageFrameStyle")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return (NSImageFrameStyle)Messaging.UInt64_objc_msgSend(base.Handle, selImageFrameStyleHandle);
+			}
+			return (NSImageFrameStyle)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selImageFrameStyleHandle);
+		}
+		[Export("setImageFrameStyle:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetImageFrameStyle_Handle, (ulong)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetImageFrameStyle_Handle, (ulong)value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSImageScale ImageScaling
+	{
+		[Export("imageScaling")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return (NSImageScale)Messaging.UInt64_objc_msgSend(base.Handle, selImageScalingHandle);
+			}
+			return (NSImageScale)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selImageScalingHandle);
+		}
+		[Export("setImageScaling:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetImageScaling_Handle, (ulong)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetImageScaling_Handle, (ulong)value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSImageView()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSImageView(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSImageView(NSObjectFlag t)
+	protected NSImageView(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSImageView(IntPtr handle)
+	protected internal NSImageView(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithFrame:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSImageView(CGRect frameRect)
 		: base(NSObjectFlag.Empty)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
 		}
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("imageViewWithImage:")]
+	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSImageView FromImage(NSImage image)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		NSApplication.EnsureUIThread();
+		if (image == null)
 		{
-			__mt_Image_var = null;
+			throw new ArgumentNullException("image");
 		}
+		return Runtime.GetNSObject<NSImageView>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selImageViewWithImage_Handle, image.Handle));
+	}
+
+	[Export("validateMenuItem:")]
+	[Introduced(PlatformName.MacOSX, 10, 14, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ValidateMenuItem(NSMenuItem menuItem)
+	{
+		NSApplication.EnsureUIThread();
+		if (menuItem == null)
+		{
+			throw new ArgumentNullException("menuItem");
+		}
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selValidateMenuItem_Handle, menuItem.Handle);
+		}
+		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selValidateMenuItem_Handle, menuItem.Handle);
 	}
 }

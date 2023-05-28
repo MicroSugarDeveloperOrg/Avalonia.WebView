@@ -6,45 +6,66 @@ using ObjCRuntime;
 namespace AppKit;
 
 [Register("NSTextList", true)]
-public class NSTextList : NSObject
+public class NSTextList : NSObject, INSCoding, INativeObject, IDisposable, INSCopying, INSSecureCoding
 {
-	private static readonly IntPtr selMarkerFormatHandle = Selector.GetHandle("markerFormat");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCopyWithZone_ = "copyWithZone:";
+
+	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEncodeWithCoder_ = "encodeWithCoder:";
+
+	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithCoder_ = "initWithCoder:";
+
+	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithMarkerFormat_Options_ = "initWithMarkerFormat:options:";
+
+	private static readonly IntPtr selInitWithMarkerFormat_Options_Handle = Selector.GetHandle("initWithMarkerFormat:options:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selListOptions = "listOptions";
 
 	private static readonly IntPtr selListOptionsHandle = Selector.GetHandle("listOptions");
 
-	private static readonly IntPtr selStartingItemNumberHandle = Selector.GetHandle("startingItemNumber");
-
-	private static readonly IntPtr selSetStartingItemNumber_Handle = Selector.GetHandle("setStartingItemNumber:");
-
-	private static readonly IntPtr selInitWithMarkerFormatOptions_Handle = Selector.GetHandle("initWithMarkerFormat:options:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMarkerForItemNumber_ = "markerForItemNumber:";
 
 	private static readonly IntPtr selMarkerForItemNumber_Handle = Selector.GetHandle("markerForItemNumber:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSTextList");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMarkerFormat = "markerFormat";
+
+	private static readonly IntPtr selMarkerFormatHandle = Selector.GetHandle("markerFormat");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetStartingItemNumber_ = "setStartingItemNumber:";
+
+	private static readonly IntPtr selSetStartingItemNumber_Handle = Selector.GetHandle("setStartingItemNumber:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStartingItemNumber = "startingItemNumber";
+
+	private static readonly IntPtr selStartingItemNumberHandle = Selector.GetHandle("startingItemNumber");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSTextList");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual string MarkerFormat
-	{
-		[Export("markerFormat")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMarkerFormatHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMarkerFormatHandle));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSTextListOptions ListOptions
 	{
 		[Export("listOptions")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return (NSTextListOptions)Messaging.UInt64_objc_msgSend(base.Handle, selListOptionsHandle);
 			}
@@ -52,76 +73,100 @@ public class NSTextList : NSObject
 		}
 	}
 
-	public virtual long StartingItemNumber
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string MarkerFormat
+	{
+		[Export("markerFormat")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMarkerFormatHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMarkerFormatHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint StartingItemNumber
 	{
 		[Export("startingItemNumber")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Int64_objc_msgSend(base.Handle, selStartingItemNumberHandle);
+				return Messaging.nint_objc_msgSend(base.Handle, selStartingItemNumberHandle);
 			}
-			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selStartingItemNumberHandle);
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selStartingItemNumberHandle);
 		}
 		[Export("setStartingItemNumber:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetStartingItemNumber_Handle, value);
+				Messaging.void_objc_msgSend_nint(base.Handle, selSetStartingItemNumber_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetStartingItemNumber_Handle, value);
+				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetStartingItemNumber_Handle, value);
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSTextList()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSTextList(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTextList(NSObjectFlag t)
+	protected NSTextList(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTextList(IntPtr handle)
+	protected internal NSTextList(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithMarkerFormat:options:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSTextList(string format, NSTextListOptions mask)
 		: base(NSObjectFlag.Empty)
 	{
@@ -131,25 +176,65 @@ public class NSTextList : NSObject
 			throw new ArgumentNullException("format");
 		}
 		IntPtr arg = NSString.CreateNative(format);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_UInt64(base.Handle, selInitWithMarkerFormatOptions_Handle, arg, (ulong)mask);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64(base.Handle, selInitWithMarkerFormat_Options_Handle, arg, (ulong)mask), "initWithMarkerFormat:options:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selInitWithMarkerFormatOptions_Handle, arg, (ulong)mask);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selInitWithMarkerFormat_Options_Handle, arg, (ulong)mask), "initWithMarkerFormat:options:");
 		}
 		NSString.ReleaseNative(arg);
 	}
 
-	[Export("markerForItemNumber:")]
-	public virtual string GetMarker(long itemNum)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public NSTextList(NSTextListMarkerFormats format, NSTextListOptions mask)
+		: this(format.GetConstant(), mask)
+	{
+	}
+
+	[Export("copyWithZone:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[return: Release]
+	public virtual NSObject Copy(NSZone? zone)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
+		if (nSObject != null)
 		{
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_Int64(base.Handle, selMarkerForItemNumber_Handle, itemNum));
+			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
 		}
-		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_Int64(base.SuperHandle, selMarkerForItemNumber_Handle, itemNum));
+		return nSObject;
+	}
+
+	[Export("encodeWithCoder:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void EncodeTo(NSCoder encoder)
+	{
+		NSApplication.EnsureUIThread();
+		if (encoder == null)
+		{
+			throw new ArgumentNullException("encoder");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+	}
+
+	[Export("markerForItemNumber:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string GetMarker(nint itemNum)
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_nint(base.Handle, selMarkerForItemNumber_Handle, itemNum));
+		}
+		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_nint(base.SuperHandle, selMarkerForItemNumber_Handle, itemNum));
 	}
 }

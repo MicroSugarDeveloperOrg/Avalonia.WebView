@@ -2,9 +2,11 @@ using ObjCRuntime;
 
 namespace AVFoundation;
 
-[Since(4, 0)]
-public enum AVPlayerActionAtItemEnd
+[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
+[Native]
+public enum AVPlayerActionAtItemEnd : long
 {
-	Pause = 1,
+	Advance,
+	Pause,
 	None
 }

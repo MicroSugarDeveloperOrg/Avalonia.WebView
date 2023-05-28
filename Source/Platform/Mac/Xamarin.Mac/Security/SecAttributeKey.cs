@@ -1,581 +1,200 @@
 using System;
+using Foundation;
 using ObjCRuntime;
 
 namespace Security;
 
 internal static class SecAttributeKey
 {
-	private static IntPtr _AttrAccessible;
-
-	private static IntPtr _AttrAccessGroup;
-
-	private static IntPtr _AttrCreationDate;
-
-	private static IntPtr _AttrModificationDate;
-
-	private static IntPtr _AttrDescription;
-
-	private static IntPtr _AttrComment;
-
-	private static IntPtr _AttrCreator;
-
-	private static IntPtr _AttrType;
-
-	private static IntPtr _AttrLabel;
-
-	private static IntPtr _AttrIsInvisible;
-
-	private static IntPtr _AttrIsNegative;
-
-	private static IntPtr _AttrAccount;
-
-	private static IntPtr _AttrService;
-
-	private static IntPtr _AttrGeneric;
-
-	private static IntPtr _AttrSecurityDomain;
-
-	private static IntPtr _AttrServer;
-
-	private static IntPtr _AttrProtocol;
-
-	private static IntPtr _AttrAuthenticationType;
-
-	private static IntPtr _AttrPort;
-
-	private static IntPtr _AttrPath;
-
-	private static IntPtr _AttrSubject;
-
-	private static IntPtr _AttrIssuer;
-
-	private static IntPtr _AttrSerialNumber;
-
-	private static IntPtr _AttrSubjectKeyID;
-
-	private static IntPtr _AttrPublicKeyHash;
-
-	private static IntPtr _AttrCertificateType;
-
-	private static IntPtr _AttrCertificateEncoding;
-
-	private static IntPtr _AttrKeyClass;
-
-	private static IntPtr _AttrApplicationLabel;
-
-	private static IntPtr _AttrIsPermanent;
-
-	private static IntPtr _AttrApplicationTag;
-
-	private static IntPtr _AttrKeyType;
-
-	private static IntPtr _AttrKeySizeInBits;
-
-	private static IntPtr _AttrEffectiveKeySize;
-
-	private static IntPtr _AttrCanEncrypt;
-
-	private static IntPtr _AttrCanDecrypt;
-
-	private static IntPtr _AttrCanDerive;
-
-	private static IntPtr _AttrCanSign;
-
-	private static IntPtr _AttrCanVerify;
-
-	private static IntPtr _AttrCanWrap;
-
-	private static IntPtr _AttrCanUnwrap;
-
-	public static IntPtr AttrAccessible
+	[Field("kSecAttrAccessGroup", "Security")]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public static IntPtr AccessGroup
 	{
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_AttrAccessible == IntPtr.Zero)
-			{
-				_AttrAccessible = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAccessible");
-			}
-			return _AttrAccessible;
+			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAccessGroup");
 		}
 	}
 
-	public static IntPtr AttrAccessGroup
+	[Field("kSecAttrAccessGroupToken", "Security")]
+	[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.WatchOS, 3, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
+	public static IntPtr AccessGroupToken
 	{
+		[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.WatchOS, 3, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_AttrAccessGroup == IntPtr.Zero)
-			{
-				_AttrAccessGroup = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAccessGroup");
-			}
-			return _AttrAccessGroup;
+			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAccessGroupToken");
 		}
 	}
 
-	public static IntPtr AttrCreationDate
+	[Field("kSecAttrAccessible", "Security")]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public static IntPtr Accessible
 	{
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_AttrCreationDate == IntPtr.Zero)
-			{
-				_AttrCreationDate = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrCreationDate");
-			}
-			return _AttrCreationDate;
+			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAccessible");
 		}
 	}
 
-	public static IntPtr AttrModificationDate
+	[Field("kSecAttrAccount", "Security")]
+	public static IntPtr Account => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAccount");
+
+	[Field("kSecAttrApplicationLabel", "Security")]
+	public static IntPtr ApplicationLabel => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrApplicationLabel");
+
+	[Field("kSecAttrAuthenticationType", "Security")]
+	public static IntPtr AuthenticationType => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAuthenticationType");
+
+	[Field("kSecAttrCertificateEncoding", "Security")]
+	public static IntPtr CertificateEncoding => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrCertificateEncoding");
+
+	[Field("kSecAttrCertificateType", "Security")]
+	public static IntPtr CertificateType => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrCertificateType");
+
+	[Field("kSecAttrComment", "Security")]
+	public static IntPtr Comment => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrComment");
+
+	[Field("kSecAttrCreationDate", "Security")]
+	public static IntPtr CreationDate => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrCreationDate");
+
+	[Field("kSecAttrCreator", "Security")]
+	public static IntPtr Creator => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrCreator");
+
+	[Field("kSecAttrDescription", "Security")]
+	public static IntPtr Description => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrDescription");
+
+	[Field("kSecAttrGeneric", "Security")]
+	public static IntPtr Generic => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrGeneric");
+
+	[Field("kSecAttrIsExtractable", "Security")]
+	public static IntPtr IsExtractable => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrIsExtractable");
+
+	[Field("kSecAttrIsInvisible", "Security")]
+	public static IntPtr IsInvisible => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrIsInvisible");
+
+	[Field("kSecAttrIsNegative", "Security")]
+	public static IntPtr IsNegative => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrIsNegative");
+
+	[Field("kSecAttrIsSensitive", "Security")]
+	public static IntPtr IsSensitive => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrIsSensitive");
+
+	[Field("kSecAttrIssuer", "Security")]
+	public static IntPtr Issuer => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrIssuer");
+
+	[Field("kSecAttrKeyClass", "Security")]
+	public static IntPtr KeyClass => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrKeyClass");
+
+	[Field("kSecAttrModificationDate", "Security")]
+	public static IntPtr ModificationDate => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrModificationDate");
+
+	[Field("kSecAttrPath", "Security")]
+	public static IntPtr Path => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrPath");
+
+	[Field("kSecAttrPersistentReference", "Security")]
+	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.WatchOS, 4, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+	public static IntPtr PersistentReference
 	{
+		[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.WatchOS, 4, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_AttrModificationDate == IntPtr.Zero)
-			{
-				_AttrModificationDate = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrModificationDate");
-			}
-			return _AttrModificationDate;
+			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrPersistentReference");
 		}
 	}
 
-	public static IntPtr AttrDescription
+	[Field("kSecAttrPort", "Security")]
+	public static IntPtr Port => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrPort");
+
+	[Field("kSecAttrProtocol", "Security")]
+	public static IntPtr Protocol => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocol");
+
+	[Field("kSecAttrPublicKeyHash", "Security")]
+	public static IntPtr PublicKeyHash => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrPublicKeyHash");
+
+	[Field("kSecAttrTokenIDSecureEnclave", "Security")]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+	public static IntPtr SecureEnclave
 	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_AttrDescription == IntPtr.Zero)
-			{
-				_AttrDescription = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrDescription");
-			}
-			return _AttrDescription;
+			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrTokenIDSecureEnclave");
 		}
 	}
 
-	public static IntPtr AttrComment
+	[Field("kSecAttrSecurityDomain", "Security")]
+	public static IntPtr SecurityDomain => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrSecurityDomain");
+
+	[Field("kSecAttrSerialNumber", "Security")]
+	public static IntPtr SerialNumber => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrSerialNumber");
+
+	[Field("kSecAttrServer", "Security")]
+	public static IntPtr Server => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrServer");
+
+	[Field("kSecAttrService", "Security")]
+	public static IntPtr Service => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrService");
+
+	[Field("kSecAttrSubject", "Security")]
+	public static IntPtr Subject => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrSubject");
+
+	[Field("kSecAttrSubjectKeyID", "Security")]
+	public static IntPtr SubjectKeyID => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrSubjectKeyID");
+
+	[Field("kSecAttrSyncViewHint", "Security")]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	public static IntPtr SyncViewHint
 	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_AttrComment == IntPtr.Zero)
-			{
-				_AttrComment = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrComment");
-			}
-			return _AttrComment;
+			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrSyncViewHint");
 		}
 	}
 
-	public static IntPtr AttrCreator
+	[Field("kSecAttrSynchronizable", "Security")]
+	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public static IntPtr Synchronizable
 	{
+		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_AttrCreator == IntPtr.Zero)
-			{
-				_AttrCreator = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrCreator");
-			}
-			return _AttrCreator;
+			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrSynchronizable");
 		}
 	}
 
-	public static IntPtr AttrType
+	[Field("kSecAttrSynchronizableAny", "Security")]
+	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public static IntPtr SynchronizableAny
 	{
+		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_AttrType == IntPtr.Zero)
-			{
-				_AttrType = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrType");
-			}
-			return _AttrType;
+			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrSynchronizableAny");
 		}
 	}
 
-	public static IntPtr AttrLabel
-	{
-		get
-		{
-			if (_AttrLabel == IntPtr.Zero)
-			{
-				_AttrLabel = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrLabel");
-			}
-			return _AttrLabel;
-		}
-	}
-
-	public static IntPtr AttrIsInvisible
-	{
-		get
-		{
-			if (_AttrIsInvisible == IntPtr.Zero)
-			{
-				_AttrIsInvisible = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrIsInvisible");
-			}
-			return _AttrIsInvisible;
-		}
-	}
-
-	public static IntPtr AttrIsNegative
-	{
-		get
-		{
-			if (_AttrIsNegative == IntPtr.Zero)
-			{
-				_AttrIsNegative = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrIsNegative");
-			}
-			return _AttrIsNegative;
-		}
-	}
-
-	public static IntPtr AttrAccount
-	{
-		get
-		{
-			if (_AttrAccount == IntPtr.Zero)
-			{
-				_AttrAccount = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAccount");
-			}
-			return _AttrAccount;
-		}
-	}
-
-	public static IntPtr AttrService
-	{
-		get
-		{
-			if (_AttrService == IntPtr.Zero)
-			{
-				_AttrService = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrService");
-			}
-			return _AttrService;
-		}
-	}
-
-	public static IntPtr AttrGeneric
-	{
-		get
-		{
-			if (_AttrGeneric == IntPtr.Zero)
-			{
-				_AttrGeneric = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrGeneric");
-			}
-			return _AttrGeneric;
-		}
-	}
-
-	public static IntPtr AttrSecurityDomain
-	{
-		get
-		{
-			if (_AttrSecurityDomain == IntPtr.Zero)
-			{
-				_AttrSecurityDomain = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrSecurityDomain");
-			}
-			return _AttrSecurityDomain;
-		}
-	}
-
-	public static IntPtr AttrServer
-	{
-		get
-		{
-			if (_AttrServer == IntPtr.Zero)
-			{
-				_AttrServer = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrServer");
-			}
-			return _AttrServer;
-		}
-	}
-
-	public static IntPtr AttrProtocol
-	{
-		get
-		{
-			if (_AttrProtocol == IntPtr.Zero)
-			{
-				_AttrProtocol = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocol");
-			}
-			return _AttrProtocol;
-		}
-	}
-
-	public static IntPtr AttrAuthenticationType
-	{
-		get
-		{
-			if (_AttrAuthenticationType == IntPtr.Zero)
-			{
-				_AttrAuthenticationType = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAuthenticationType");
-			}
-			return _AttrAuthenticationType;
-		}
-	}
-
-	public static IntPtr AttrPort
-	{
-		get
-		{
-			if (_AttrPort == IntPtr.Zero)
-			{
-				_AttrPort = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrPort");
-			}
-			return _AttrPort;
-		}
-	}
-
-	public static IntPtr AttrPath
-	{
-		get
-		{
-			if (_AttrPath == IntPtr.Zero)
-			{
-				_AttrPath = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrPath");
-			}
-			return _AttrPath;
-		}
-	}
-
-	public static IntPtr AttrSubject
-	{
-		get
-		{
-			if (_AttrSubject == IntPtr.Zero)
-			{
-				_AttrSubject = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrSubject");
-			}
-			return _AttrSubject;
-		}
-	}
-
-	public static IntPtr AttrIssuer
-	{
-		get
-		{
-			if (_AttrIssuer == IntPtr.Zero)
-			{
-				_AttrIssuer = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrIssuer");
-			}
-			return _AttrIssuer;
-		}
-	}
-
-	public static IntPtr AttrSerialNumber
-	{
-		get
-		{
-			if (_AttrSerialNumber == IntPtr.Zero)
-			{
-				_AttrSerialNumber = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrSerialNumber");
-			}
-			return _AttrSerialNumber;
-		}
-	}
-
-	public static IntPtr AttrSubjectKeyID
-	{
-		get
-		{
-			if (_AttrSubjectKeyID == IntPtr.Zero)
-			{
-				_AttrSubjectKeyID = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrSubjectKeyID");
-			}
-			return _AttrSubjectKeyID;
-		}
-	}
-
-	public static IntPtr AttrPublicKeyHash
-	{
-		get
-		{
-			if (_AttrPublicKeyHash == IntPtr.Zero)
-			{
-				_AttrPublicKeyHash = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrPublicKeyHash");
-			}
-			return _AttrPublicKeyHash;
-		}
-	}
-
-	public static IntPtr AttrCertificateType
-	{
-		get
-		{
-			if (_AttrCertificateType == IntPtr.Zero)
-			{
-				_AttrCertificateType = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrCertificateType");
-			}
-			return _AttrCertificateType;
-		}
-	}
-
-	public static IntPtr AttrCertificateEncoding
-	{
-		get
-		{
-			if (_AttrCertificateEncoding == IntPtr.Zero)
-			{
-				_AttrCertificateEncoding = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrCertificateEncoding");
-			}
-			return _AttrCertificateEncoding;
-		}
-	}
-
-	public static IntPtr AttrKeyClass
-	{
-		get
-		{
-			if (_AttrKeyClass == IntPtr.Zero)
-			{
-				_AttrKeyClass = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrKeyClass");
-			}
-			return _AttrKeyClass;
-		}
-	}
-
-	public static IntPtr AttrApplicationLabel
-	{
-		get
-		{
-			if (_AttrApplicationLabel == IntPtr.Zero)
-			{
-				_AttrApplicationLabel = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrApplicationLabel");
-			}
-			return _AttrApplicationLabel;
-		}
-	}
-
-	public static IntPtr AttrIsPermanent
-	{
-		get
-		{
-			if (_AttrIsPermanent == IntPtr.Zero)
-			{
-				_AttrIsPermanent = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrIsPermanent");
-			}
-			return _AttrIsPermanent;
-		}
-	}
-
-	public static IntPtr AttrApplicationTag
-	{
-		get
-		{
-			if (_AttrApplicationTag == IntPtr.Zero)
-			{
-				_AttrApplicationTag = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrApplicationTag");
-			}
-			return _AttrApplicationTag;
-		}
-	}
-
-	public static IntPtr AttrKeyType
-	{
-		get
-		{
-			if (_AttrKeyType == IntPtr.Zero)
-			{
-				_AttrKeyType = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrKeyType");
-			}
-			return _AttrKeyType;
-		}
-	}
-
-	public static IntPtr AttrKeySizeInBits
-	{
-		get
-		{
-			if (_AttrKeySizeInBits == IntPtr.Zero)
-			{
-				_AttrKeySizeInBits = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrKeySizeInBits");
-			}
-			return _AttrKeySizeInBits;
-		}
-	}
-
-	public static IntPtr AttrEffectiveKeySize
-	{
-		get
-		{
-			if (_AttrEffectiveKeySize == IntPtr.Zero)
-			{
-				_AttrEffectiveKeySize = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrEffectiveKeySize");
-			}
-			return _AttrEffectiveKeySize;
-		}
-	}
-
-	public static IntPtr AttrCanEncrypt
-	{
-		get
-		{
-			if (_AttrCanEncrypt == IntPtr.Zero)
-			{
-				_AttrCanEncrypt = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrCanEncrypt");
-			}
-			return _AttrCanEncrypt;
-		}
-	}
-
-	public static IntPtr AttrCanDecrypt
-	{
-		get
-		{
-			if (_AttrCanDecrypt == IntPtr.Zero)
-			{
-				_AttrCanDecrypt = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrCanDecrypt");
-			}
-			return _AttrCanDecrypt;
-		}
-	}
-
-	public static IntPtr AttrCanDerive
-	{
-		get
-		{
-			if (_AttrCanDerive == IntPtr.Zero)
-			{
-				_AttrCanDerive = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrCanDerive");
-			}
-			return _AttrCanDerive;
-		}
-	}
-
-	public static IntPtr AttrCanSign
-	{
-		get
-		{
-			if (_AttrCanSign == IntPtr.Zero)
-			{
-				_AttrCanSign = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrCanSign");
-			}
-			return _AttrCanSign;
-		}
-	}
-
-	public static IntPtr AttrCanVerify
-	{
-		get
-		{
-			if (_AttrCanVerify == IntPtr.Zero)
-			{
-				_AttrCanVerify = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrCanVerify");
-			}
-			return _AttrCanVerify;
-		}
-	}
-
-	public static IntPtr AttrCanWrap
-	{
-		get
-		{
-			if (_AttrCanWrap == IntPtr.Zero)
-			{
-				_AttrCanWrap = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrCanWrap");
-			}
-			return _AttrCanWrap;
-		}
-	}
-
-	public static IntPtr AttrCanUnwrap
-	{
-		get
-		{
-			if (_AttrCanUnwrap == IntPtr.Zero)
-			{
-				_AttrCanUnwrap = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrCanUnwrap");
-			}
-			return _AttrCanUnwrap;
-		}
-	}
+	[Field("kSecAttrType", "Security")]
+	public static IntPtr Type => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrType");
 }

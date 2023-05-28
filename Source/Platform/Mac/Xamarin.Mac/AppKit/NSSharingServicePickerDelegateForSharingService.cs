@@ -1,3 +1,3 @@
 namespace AppKit;
 
-public delegate NSSharingServiceDelegate NSSharingServicePickerDelegateForSharingService(NSSharingServicePicker sharingServicePicker, NSSharingService sharingService);
+public delegate INSSharingServiceDelegate NSSharingServicePickerDelegateForSharingService(NSSharingServicePicker sharingServicePicker, NSSharingService sharingService);

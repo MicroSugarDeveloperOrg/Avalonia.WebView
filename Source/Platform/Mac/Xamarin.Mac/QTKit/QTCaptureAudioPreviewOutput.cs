@@ -8,24 +8,38 @@ namespace QTKit;
 [Register("QTCaptureAudioPreviewOutput", true)]
 public class QTCaptureAudioPreviewOutput : QTCaptureOutput
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selOutputDeviceUniqueID = "outputDeviceUniqueID";
+
 	private static readonly IntPtr selOutputDeviceUniqueIDHandle = Selector.GetHandle("outputDeviceUniqueID");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetOutputDeviceUniqueID_ = "setOutputDeviceUniqueID:";
 
 	private static readonly IntPtr selSetOutputDeviceUniqueID_Handle = Selector.GetHandle("setOutputDeviceUniqueID:");
 
-	private static readonly IntPtr selVolumeHandle = Selector.GetHandle("volume");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetVolume_ = "setVolume:";
 
 	private static readonly IntPtr selSetVolume_Handle = Selector.GetHandle("setVolume:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("QTCaptureAudioPreviewOutput");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selVolume = "volume";
+
+	private static readonly IntPtr selVolumeHandle = Selector.GetHandle("volume");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("QTCaptureAudioPreviewOutput");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string OutputDeviceUniqueID
 	{
 		[Export("outputDeviceUniqueID")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selOutputDeviceUniqueIDHandle));
 			}
@@ -39,7 +53,7 @@ public class QTCaptureAudioPreviewOutput : QTCaptureOutput
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetOutputDeviceUniqueID_Handle, arg);
 			}
@@ -51,12 +65,13 @@ public class QTCaptureAudioPreviewOutput : QTCaptureOutput
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual float Volume
 	{
 		[Export("volume")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.float_objc_msgSend(base.Handle, selVolumeHandle);
 			}
@@ -65,7 +80,7 @@ public class QTCaptureAudioPreviewOutput : QTCaptureOutput
 		[Export("setVolume:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_float(base.Handle, selSetVolume_Handle, value);
 			}
@@ -76,44 +91,32 @@ public class QTCaptureAudioPreviewOutput : QTCaptureOutput
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public QTCaptureAudioPreviewOutput()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public QTCaptureAudioPreviewOutput(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public QTCaptureAudioPreviewOutput(NSObjectFlag t)
+	protected QTCaptureAudioPreviewOutput(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public QTCaptureAudioPreviewOutput(IntPtr handle)
+	protected internal QTCaptureAudioPreviewOutput(IntPtr handle)
 		: base(handle)
 	{
 	}

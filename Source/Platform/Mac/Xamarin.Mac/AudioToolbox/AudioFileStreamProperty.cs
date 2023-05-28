@@ -19,5 +19,6 @@ public enum AudioFileStreamProperty
 	PacketTableInfo = 1886283375,
 	PacketSizeUpperBound = 1886090594,
 	AverageBytesPerPacket = 1633841264,
-	BitRate = 1651663220
+	BitRate = 1651663220,
+	InfoDictionary = 1768842863
 }

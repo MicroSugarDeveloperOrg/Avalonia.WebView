@@ -1,0 +1,3 @@
+namespace MetalPerformanceShaders;
+
+public delegate void MPSAccelerationStructureCompletionHandler(MPSAccelerationStructure? structure);

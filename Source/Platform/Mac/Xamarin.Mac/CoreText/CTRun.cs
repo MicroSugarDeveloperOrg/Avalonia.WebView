@@ -7,14 +7,13 @@ using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
 public class CTRun : INativeObject, IDisposable
 {
 	internal IntPtr handle;
 
 	public IntPtr Handle => handle;
 
-	public int GlyphCount => CTRunGetGlyphCount(handle);
+	public nint GlyphCount => CTRunGetGlyphCount(handle);
 
 	public CTRunStatus Status => CTRunGetStatus(handle);
 
@@ -80,16 +79,16 @@ public class CTRun : INativeObject, IDisposable
 
 	private T[] GetBuffer<T>(NSRange range, T[] buffer)
 	{
-		int glyphCount = GlyphCount;
-		if (buffer != null && range.Length != 0L && (ulong)buffer.Length < range.Length)
+		nint glyphCount = GlyphCount;
+		if (buffer != null && range.Length != 0 && buffer.Length < range.Length)
 		{
 			throw new ArgumentException("buffer.Length must be >= range.Length.", "buffer");
 		}
-		if (buffer != null && range.Length == 0L && buffer.Length < glyphCount)
+		if (buffer != null && range.Length == 0 && buffer.Length < glyphCount)
 		{
 			throw new ArgumentException("buffer.Length must be >= GlyphCount.", "buffer");
 		}
-		return buffer ?? new T[(range.Length == 0L) ? glyphCount : ((int)range.Length)];
+		return buffer ?? new T[(long)((range.Length == 0) ? glyphCount : range.Length)];
 	}
 
 	public CGSize[] GetAdvances(NSRange range)
@@ -108,15 +107,11 @@ public class CTRun : INativeObject, IDisposable
 	public CTStringAttributes GetAttributes()
 	{
 		NSDictionary nSDictionary = (NSDictionary)Runtime.GetNSObject(CTRunGetAttributes(handle));
-		if (nSDictionary != null)
-		{
-			return new CTStringAttributes(nSDictionary);
-		}
-		return null;
+		return (nSDictionary == null) ? null : new CTStringAttributes(nSDictionary);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern int CTRunGetGlyphCount(IntPtr handle);
+	private static extern nint CTRunGetGlyphCount(IntPtr handle);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
 	private static extern void CTRunGetGlyphs(IntPtr h, NSRange range, [In][Out] ushort[] buffer);
@@ -170,21 +165,21 @@ public class CTRun : INativeObject, IDisposable
 	private static extern CTRunStatus CTRunGetStatus(IntPtr handle);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern void CTRunGetStringIndices(IntPtr h, NSRange range, [In][Out] int[] buffer);
+	private static extern void CTRunGetStringIndices(IntPtr h, NSRange range, [In][Out] nint[] buffer);
 
-	public int[] GetStringIndices(NSRange range, int[] buffer)
+	public nint[] GetStringIndices(NSRange range, nint[] buffer)
 	{
 		buffer = GetBuffer(range, buffer);
 		CTRunGetStringIndices(handle, range, buffer);
 		return buffer;
 	}
 
-	public int[] GetStringIndices(NSRange range)
+	public nint[] GetStringIndices(NSRange range)
 	{
 		return GetStringIndices(range, null);
 	}
 
-	public int[] GetStringIndices()
+	public nint[] GetStringIndices()
 	{
 		return GetStringIndices(new NSRange(0, 0), null);
 	}
@@ -196,12 +191,12 @@ public class CTRun : INativeObject, IDisposable
 	private static extern CGAffineTransform CTRunGetTextMatrix(IntPtr handle);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern double CTRunGetTypographicBounds(IntPtr h, NSRange range, out double ascent, out double descent, out double leading);
+	private static extern double CTRunGetTypographicBounds(IntPtr h, NSRange range, out nfloat ascent, out nfloat descent, out nfloat leading);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
 	private static extern double CTRunGetTypographicBounds(IntPtr h, NSRange range, IntPtr ascent, IntPtr descent, IntPtr leading);
 
-	public double GetTypographicBounds(NSRange range, out double ascent, out double descent, out double leading)
+	public double GetTypographicBounds(NSRange range, out nfloat ascent, out nfloat descent, out nfloat leading)
 	{
 		return CTRunGetTypographicBounds(handle, range, out ascent, out descent, out leading);
 	}
@@ -209,9 +204,27 @@ public class CTRun : INativeObject, IDisposable
 	public double GetTypographicBounds()
 	{
 		NSRange nSRange = default(NSRange);
-		nSRange.Location = 0uL;
-		nSRange.Length = 0uL;
+		nSRange.Location = 0;
+		nSRange.Length = 0;
 		NSRange range = nSRange;
 		return CTRunGetTypographicBounds(handle, range, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+	}
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
+	[Watch(6, 0)]
+	[TV(13, 0)]
+	[Mac(10, 15)]
+	[iOS(13, 0)]
+	private static extern void CTRunGetBaseAdvancesAndOrigins(IntPtr runRef, NSRange range, CGSize[] advancesBuffer, CGPoint[] originsBuffer);
+
+	[Watch(6, 0)]
+	[TV(13, 0)]
+	[Mac(10, 15)]
+	[iOS(13, 0)]
+	public void GetBaseAdvancesAndOrigins(NSRange range, out CGSize[] advancesBuffer, out CGPoint[] originsBuffer)
+	{
+		advancesBuffer = GetBuffer<CGSize>(range, null);
+		originsBuffer = GetBuffer<CGPoint>(range, null);
+		CTRunGetBaseAdvancesAndOrigins(handle, range, advancesBuffer, originsBuffer);
 	}
 }

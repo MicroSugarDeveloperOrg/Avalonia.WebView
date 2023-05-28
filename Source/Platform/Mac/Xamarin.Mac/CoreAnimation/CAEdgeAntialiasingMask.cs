@@ -3,13 +3,13 @@ using System;
 namespace CoreAnimation;
 
 [Flags]
-public enum CAEdgeAntialiasingMask
+public enum CAEdgeAntialiasingMask : uint
 {
-	LeftEdge = 1,
-	RightEdge = 2,
-	BottomEdge = 4,
-	TopEdge = 8,
-	All = 0xF,
-	LeftRightEdges = 3,
-	TopBottomEdges = 0xC
+	LeftEdge = 1u,
+	RightEdge = 2u,
+	BottomEdge = 4u,
+	TopEdge = 8u,
+	All = 0xFu,
+	LeftRightEdges = 3u,
+	TopBottomEdges = 0xCu
 }

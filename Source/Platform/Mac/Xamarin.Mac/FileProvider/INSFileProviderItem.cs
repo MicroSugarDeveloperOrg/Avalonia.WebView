@@ -1,4 +1,5 @@
-﻿using Foundation;
+using System;
+using Foundation;
 using ObjCRuntime;
 
 namespace FileProvider;
@@ -33,31 +34,31 @@ namespace FileProvider;
 [ProtocolMember(IsRequired = true, IsProperty = true, IsStatic = false, Name = "TypeIdentifier", Selector = "typeIdentifier", PropertyType = typeof(string), GetterSelector = "typeIdentifier", ArgumentSemantic = ArgumentSemantic.None)]
 public interface INSFileProviderItem : INativeObject, IDisposable
 {
-    [Preserve(Conditional = true)]
-    string Identifier
-    {
-        [Export("itemIdentifier")]
-        get;
-    }
+	[Preserve(Conditional = true)]
+	string Identifier
+	{
+		[Export("itemIdentifier")]
+		get;
+	}
 
-    [Preserve(Conditional = true)]
-    string ParentIdentifier
-    {
-        [Export("parentItemIdentifier")]
-        get;
-    }
+	[Preserve(Conditional = true)]
+	string ParentIdentifier
+	{
+		[Export("parentItemIdentifier")]
+		get;
+	}
 
-    [Preserve(Conditional = true)]
-    string Filename
-    {
-        [Export("filename")]
-        get;
-    }
+	[Preserve(Conditional = true)]
+	string Filename
+	{
+		[Export("filename")]
+		get;
+	}
 
-    [Preserve(Conditional = true)]
-    string TypeIdentifier
-    {
-        [Export("typeIdentifier")]
-        get;
-    }
+	[Preserve(Conditional = true)]
+	string TypeIdentifier
+	{
+		[Export("typeIdentifier")]
+		get;
+	}
 }

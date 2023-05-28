@@ -1,4 +1,4 @@
-﻿using ObjCRuntime;
+using ObjCRuntime;
 
 namespace Metal;
 
@@ -7,7 +7,7 @@ namespace Metal;
 [Introduced(PlatformName.MacOSX, 10, 15, 4, PlatformArchitecture.None, null)]
 public struct MTLVertexAmplificationViewMapping
 {
-    public uint ViewportArrayIndexOffset;
+	public uint ViewportArrayIndexOffset;
 
-    public uint RenderTargetArrayIndexOffset;
+	public uint RenderTargetArrayIndexOffset;
 }

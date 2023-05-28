@@ -8,10 +8,16 @@ using ObjCRuntime;
 
 namespace CoreMedia;
 
-[Since(4, 0)]
-public class CMSampleBuffer : INativeObject, IDisposable
+[Watch(6, 0)]
+public class CMSampleBuffer : ICMAttachmentBearer, INativeObject, IDisposable
 {
+	private delegate CMSampleBufferError CMSampleBufferCallForEachSampleCallback(IntPtr sampleBuffer, int index, IntPtr refcon);
+
+	private delegate void CMSampleBufferInvalidateCallback(IntPtr sbuf, ulong invalidateRefCon);
+
 	internal IntPtr handle;
+
+	private GCHandle invalidate;
 
 	public IntPtr Handle => handle;
 
@@ -21,7 +27,7 @@ public class CMSampleBuffer : INativeObject, IDisposable
 
 	public CMTime Duration => CMSampleBufferGetDuration(handle);
 
-	public int NumSamples => CMSampleBufferGetNumSamples(handle);
+	public nint NumSamples => CMSampleBufferGetNumSamples(handle);
 
 	public CMTime OutputDecodeTimeStamp => CMSampleBufferGetOutputDecodeTimeStamp(handle);
 
@@ -29,9 +35,23 @@ public class CMSampleBuffer : INativeObject, IDisposable
 
 	public CMTime OutputPresentationTimeStamp => CMSampleBufferGetOutputPresentationTimeStamp(handle);
 
-	public CMTime PresentationTimeStamp => CMSampleBufferGetPresentationTimeStamp(handle);
+	public CMTime PresentationTimeStamp
+	{
+		get
+		{
+			return CMSampleBufferGetPresentationTimeStamp(handle);
+		}
+		set
+		{
+			CMSampleBufferError cMSampleBufferError = CMSampleBufferSetOutputPresentationTimeStamp(handle, value);
+			if (cMSampleBufferError != 0)
+			{
+				throw new ArgumentException(cMSampleBufferError.ToString());
+			}
+		}
+	}
 
-	public uint TotalSampleSize => CMSampleBufferGetTotalSampleSize(handle);
+	public nuint TotalSampleSize => CMSampleBufferGetTotalSampleSize(handle);
 
 	public bool IsValid => CMSampleBufferIsValid(handle);
 
@@ -63,6 +83,10 @@ public class CMSampleBuffer : INativeObject, IDisposable
 
 	protected virtual void Dispose(bool disposing)
 	{
+		if (invalidate.IsAllocated)
+		{
+			invalidate.Free();
+		}
 		if (handle != IntPtr.Zero)
 		{
 			CFObject.CFRelease(handle);
@@ -70,8 +94,8 @@ public class CMSampleBuffer : INativeObject, IDisposable
 		}
 	}
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern CMSampleBufferError CMAudioSampleBufferCreateWithPacketDescriptions(IntPtr allocator, IntPtr dataBuffer, bool dataReady, IntPtr makeDataReadyCallback, IntPtr makeDataReadyRefcon, IntPtr formatDescription, int numSamples, CMTime sbufPTS, AudioStreamPacketDescription[] packetDescriptions, out IntPtr sBufOut);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern CMSampleBufferError CMAudioSampleBufferCreateWithPacketDescriptions(IntPtr allocator, IntPtr dataBuffer, bool dataReady, IntPtr makeDataReadyCallback, IntPtr makeDataReadyRefcon, IntPtr formatDescription, nint numSamples, CMTime sbufPTS, AudioStreamPacketDescription[] packetDescriptions, out IntPtr sBufOut);
 
 	public static CMSampleBuffer CreateWithPacketDescriptions(CMBlockBuffer dataBuffer, CMFormatDescription formatDescription, int samplesCount, CMTime sampleTimestamp, AudioStreamPacketDescription[] packetDescriptions, out CMSampleBufferError error)
 	{
@@ -91,21 +115,26 @@ public class CMSampleBuffer : INativeObject, IDisposable
 		return new CMSampleBuffer(sBufOut, owns: true);
 	}
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private unsafe static extern int CMSampleBufferCreateCopyWithNewTiming(IntPtr allocator, IntPtr originalSBuf, int numSampleTimingEntries, CMSampleTimingInfo* sampleTimingArray, out IntPtr sBufCopyOut);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private unsafe static extern nint CMSampleBufferCreateCopyWithNewTiming(IntPtr allocator, IntPtr originalSBuf, nint numSampleTimingEntries, CMSampleTimingInfo* sampleTimingArray, out IntPtr sBufCopyOut);
 
 	public static CMSampleBuffer CreateWithNewTiming(CMSampleBuffer original, CMSampleTimingInfo[] timing)
 	{
-		int status;
+		nint status;
 		return CreateWithNewTiming(original, timing, out status);
 	}
 
-	public unsafe static CMSampleBuffer CreateWithNewTiming(CMSampleBuffer original, CMSampleTimingInfo[] timing, out int status)
+	public unsafe static CMSampleBuffer CreateWithNewTiming(CMSampleBuffer original, CMSampleTimingInfo[] timing, out nint status)
 	{
+		if (original == null)
+		{
+			throw new ArgumentNullException("original");
+		}
+		nint numSampleTimingEntries = ((timing != null) ? timing.Length : 0);
 		IntPtr sBufCopyOut;
 		fixed (CMSampleTimingInfo* sampleTimingArray = timing)
 		{
-			if ((status = CMSampleBufferCreateCopyWithNewTiming(IntPtr.Zero, original.Handle, timing.Length, sampleTimingArray, out sBufCopyOut)) != 0)
+			if ((status = CMSampleBufferCreateCopyWithNewTiming(IntPtr.Zero, original.Handle, numSampleTimingEntries, sampleTimingArray, out sBufCopyOut)) != 0)
 			{
 				return null;
 			}
@@ -113,7 +142,31 @@ public class CMSampleBuffer : INativeObject, IDisposable
 		return new CMSampleBuffer(sBufCopyOut, owns: true);
 	}
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern CMSampleBufferError CMSampleBufferCallForEachSample(IntPtr sbuf, CMSampleBufferCallForEachSampleCallback callback, IntPtr refcon);
+
+	private static CMSampleBufferError ForEachSampleHandler(IntPtr sbuf, int index, IntPtr refCon)
+	{
+		if (!(GCHandle.FromIntPtr(refCon).Target is Tuple<Func<CMSampleBuffer, int, CMSampleBufferError>, CMSampleBuffer> tuple))
+		{
+			return CMSampleBufferError.RequiredParameterMissing;
+		}
+		return tuple.Item1(tuple.Item2, index);
+	}
+
+	public CMSampleBufferError CallForEachSample(Func<CMSampleBuffer, int, CMSampleBufferError> callback)
+	{
+		if (callback == null)
+		{
+			throw new ArgumentNullException("callback");
+		}
+		GCHandle gCHandle = GCHandle.Alloc(Tuple.Create(callback, this));
+		CMSampleBufferError result = CMSampleBufferCallForEachSample(handle, ForEachSampleHandler, (IntPtr)gCHandle);
+		gCHandle.Free();
+		return result;
+	}
+
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
 	private static extern CMSampleBufferError CMSampleBufferCreateForImageBuffer(IntPtr allocator, IntPtr imageBuffer, bool dataReady, IntPtr makeDataReadyCallback, IntPtr makeDataReadyRefcon, IntPtr formatDescription, ref CMSampleTimingInfo sampleTiming, out IntPtr bufOut);
 
 	public static CMSampleBuffer CreateForImageBuffer(CVImageBuffer imageBuffer, bool dataReady, CMVideoFormatDescription formatDescription, CMSampleTimingInfo sampleTiming, out CMSampleBufferError error)
@@ -134,11 +187,11 @@ public class CMSampleBuffer : INativeObject, IDisposable
 		return new CMSampleBuffer(bufOut, owns: true);
 	}
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern bool CMSampleBufferDataIsReady(IntPtr handle);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern bool CMSampleBufferDataIsReady(IntPtr sbuf);
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern IntPtr CMSampleBufferGetDataBuffer(IntPtr handle);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern IntPtr CMSampleBufferGetDataBuffer(IntPtr sbuf);
 
 	public CMBlockBuffer GetDataBuffer()
 	{
@@ -150,26 +203,14 @@ public class CMSampleBuffer : INativeObject, IDisposable
 		return new CMBlockBuffer(intPtr, owns: false);
 	}
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern CMTime CMSampleBufferGetDecodeTimeStamp(IntPtr handle);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern CMTime CMSampleBufferGetDecodeTimeStamp(IntPtr sbuf);
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern CMTime CMSampleBufferGetDuration(IntPtr handle);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern CMTime CMSampleBufferGetDuration(IntPtr sbuf);
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern IntPtr CMSampleBufferGetFormatDescription(IntPtr handle);
-
-	[Advice("Use GetAudioFormatDescription or GetVideoFormatDescription")]
-	public CMFormatDescription GetFormatDescription()
-	{
-		CMFormatDescription result = null;
-		IntPtr intPtr = CMSampleBufferGetFormatDescription(handle);
-		if (intPtr != IntPtr.Zero)
-		{
-			result = new CMFormatDescription(intPtr, owns: false);
-		}
-		return result;
-	}
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern IntPtr CMSampleBufferGetFormatDescription(IntPtr sbuf);
 
 	public CMAudioFormatDescription GetAudioFormatDescription()
 	{
@@ -191,8 +232,8 @@ public class CMSampleBuffer : INativeObject, IDisposable
 		return new CMVideoFormatDescription(intPtr, owns: false);
 	}
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern IntPtr CMSampleBufferGetImageBuffer(IntPtr handle);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern IntPtr CMSampleBufferGetImageBuffer(IntPtr sbuf);
 
 	public CVImageBuffer GetImageBuffer()
 	{
@@ -201,38 +242,34 @@ public class CMSampleBuffer : INativeObject, IDisposable
 		{
 			return null;
 		}
-		if (CFType.GetTypeID(intPtr) == CVPixelBuffer.CVImageBufferType)
+		nint typeID = CFType.GetTypeID(intPtr);
+		if (typeID == CVPixelBuffer.GetTypeID())
 		{
 			return new CVPixelBuffer(intPtr, owns: false);
 		}
 		return new CVImageBuffer(intPtr, owns: false);
 	}
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern int CMSampleBufferGetNumSamples(IntPtr handle);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern nint CMSampleBufferGetNumSamples(IntPtr sbuf);
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern CMTime CMSampleBufferGetOutputDecodeTimeStamp(IntPtr handle);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern CMTime CMSampleBufferGetOutputDecodeTimeStamp(IntPtr sbuf);
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern CMTime CMSampleBufferGetOutputDuration(IntPtr handle);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern CMTime CMSampleBufferGetOutputDuration(IntPtr sbuf);
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern CMTime CMSampleBufferGetOutputPresentationTimeStamp(IntPtr handle);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern CMTime CMSampleBufferGetOutputPresentationTimeStamp(IntPtr sbuf);
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern CMSampleBufferError CMSampleBufferSetOutputPresentationTimeStamp(IntPtr handle, CMTime outputPresentationTimeStamp);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern CMSampleBufferError CMSampleBufferSetOutputPresentationTimeStamp(IntPtr sbuf, CMTime outputPresentationTimeStamp);
 
-	public int SetOutputPresentationTimeStamp(CMTime outputPresentationTimeStamp)
-	{
-		return (int)CMSampleBufferSetOutputPresentationTimeStamp(handle, outputPresentationTimeStamp);
-	}
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern CMTime CMSampleBufferGetPresentationTimeStamp(IntPtr sbuf);
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern CMTime CMSampleBufferGetPresentationTimeStamp(IntPtr handle);
-
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern IntPtr CMSampleBufferGetSampleAttachmentsArray(IntPtr handle, bool createIfNecessary);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern IntPtr CMSampleBufferGetSampleAttachmentsArray(IntPtr sbuf, bool createIfNecessary);
 
 	public CMSampleBufferAttachmentSettings[] GetSampleAttachments(bool createIfNecessary)
 	{
@@ -244,24 +281,24 @@ public class CMSampleBuffer : INativeObject, IDisposable
 		return NSArray.ArrayFromHandle(intPtr, (IntPtr h) => new CMSampleBufferAttachmentSettings((NSMutableDictionary)Runtime.GetNSObject(h)));
 	}
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern uint CMSampleBufferGetSampleSize(IntPtr handle, int sampleIndex);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern nuint CMSampleBufferGetSampleSize(IntPtr sbuf, nint sampleIndex);
 
-	public uint GetSampleSize(int sampleIndex)
+	public nuint GetSampleSize(nint sampleIndex)
 	{
 		return CMSampleBufferGetSampleSize(handle, sampleIndex);
 	}
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private unsafe static extern int CMSampleBufferGetSampleTimingInfoArray(IntPtr sbuf, int timingArrayEntries, CMSampleTimingInfo* timingArrayOut, out int timingArrayEntriesNeededOut);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private unsafe static extern nint CMSampleBufferGetSampleTimingInfoArray(IntPtr sbuf, nint timingArrayEntries, CMSampleTimingInfo* timingArrayOut, out nint timingArrayEntriesNeededOut);
 
 	public CMSampleTimingInfo[] GetSampleTimingInfo()
 	{
-		int status;
+		nint status;
 		return GetSampleTimingInfo(out status);
 	}
 
-	public unsafe CMSampleTimingInfo[] GetSampleTimingInfo(out int status)
+	public unsafe CMSampleTimingInfo[] GetSampleTimingInfo(out nint status)
 	{
 		status = 0;
 		if (handle == IntPtr.Zero)
@@ -272,7 +309,7 @@ public class CMSampleBuffer : INativeObject, IDisposable
 		{
 			return null;
 		}
-		CMSampleTimingInfo[] array = new CMSampleTimingInfo[timingArrayEntriesNeededOut];
+		CMSampleTimingInfo[] array = new CMSampleTimingInfo[(long)timingArrayEntriesNeededOut];
 		if (timingArrayEntriesNeededOut == 0)
 		{
 			return array;
@@ -287,72 +324,207 @@ public class CMSampleBuffer : INativeObject, IDisposable
 		return array;
 	}
 
-	private static string OSStatusToString(int status)
+	private static string OSStatusToString(nint status)
 	{
 		return new NSError(NSError.OsStatusErrorDomain, status).LocalizedDescription;
 	}
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern uint CMSampleBufferGetTotalSampleSize(IntPtr handle);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern nuint CMSampleBufferGetTotalSampleSize(IntPtr sbuf);
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern int CMSampleBufferGetTypeID();
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern nint CMSampleBufferGetTypeID();
 
-	public static int GetTypeID()
+	public static nint GetTypeID()
 	{
 		return CMSampleBufferGetTypeID();
 	}
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern CMSampleBufferError CMSampleBufferInvalidate(IntPtr handle);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern CMSampleBufferError CMSampleBufferInvalidate(IntPtr sbuf);
 
-	public int Invalidate()
+	public CMSampleBufferError Invalidate()
 	{
-		return (int)CMSampleBufferInvalidate(handle);
+		return CMSampleBufferInvalidate(handle);
 	}
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern bool CMSampleBufferIsValid(IntPtr handle);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern bool CMSampleBufferIsValid(IntPtr sbuf);
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
 	private static extern CMSampleBufferError CMSampleBufferMakeDataReady(IntPtr handle);
 
-	public int MakeDataReady()
+	public CMSampleBufferError MakeDataReady()
 	{
-		return (int)CMSampleBufferMakeDataReady(handle);
+		return CMSampleBufferMakeDataReady(handle);
 	}
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
 	private static extern CMSampleBufferError CMSampleBufferSetDataBuffer(IntPtr handle, IntPtr dataBufferHandle);
 
-	public int SetDataBuffer(CMBlockBuffer dataBuffer)
+	public CMSampleBufferError SetDataBuffer(CMBlockBuffer dataBuffer)
 	{
-		IntPtr zero = IntPtr.Zero;
-		if (dataBuffer != null)
-		{
-			zero = dataBuffer.handle;
-		}
-		return (int)CMSampleBufferSetDataBuffer(handle, zero);
+		IntPtr dataBufferHandle = dataBuffer?.handle ?? IntPtr.Zero;
+		return CMSampleBufferSetDataBuffer(handle, dataBufferHandle);
 	}
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern CMSampleBufferError CMSampleBufferSetDataReady(IntPtr handle);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern CMSampleBufferError CMSampleBufferSetDataReady(IntPtr sbuf);
 
-	public int SetDataReady()
+	public CMSampleBufferError SetDataReady()
 	{
-		return (int)CMSampleBufferSetDataReady(handle);
+		return CMSampleBufferSetDataReady(handle);
 	}
 
-	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
-	private static extern CMSampleBufferError CMSampleBufferTrackDataReadiness(IntPtr handle, IntPtr handleToTrack);
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern CMSampleBufferError CMSampleBufferSetInvalidateCallback(IntPtr sbuf, CMSampleBufferInvalidateCallback invalidateCallback, ulong invalidateRefCon);
 
-	public int TrackDataReadiness(CMSampleBuffer bufferToTrack)
+	private static void InvalidateHandler(IntPtr sbuf, ulong invalidateRefCon)
 	{
-		IntPtr zero = IntPtr.Zero;
-		if (bufferToTrack != null)
+		if (GCHandle.FromIntPtr((IntPtr)(long)invalidateRefCon).Target is Tuple<Action<CMSampleBuffer>, CMSampleBuffer> tuple)
 		{
-			zero = bufferToTrack.handle;
+			tuple.Item1(tuple.Item2);
 		}
-		return (int)CMSampleBufferTrackDataReadiness(handle, zero);
+	}
+
+	public CMSampleBufferError SetInvalidateCallback(Action<CMSampleBuffer> invalidateHandler)
+	{
+		if (invalidateHandler == null)
+		{
+			if (invalidate.IsAllocated)
+			{
+				invalidate.Free();
+			}
+			return CMSampleBufferSetInvalidateCallback(handle, null, 0uL);
+		}
+		if (invalidate.IsAllocated)
+		{
+			return CMSampleBufferError.RequiredParameterMissing;
+		}
+		invalidate = GCHandle.Alloc(Tuple.Create(invalidateHandler, this));
+		return CMSampleBufferSetInvalidateCallback(handle, InvalidateHandler, (ulong)(long)(IntPtr)invalidate);
+	}
+
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	private static extern CMSampleBufferError CMSampleBufferTrackDataReadiness(IntPtr sbuf, IntPtr sbufToTrack);
+
+	public CMSampleBufferError TrackDataReadiness(CMSampleBuffer bufferToTrack)
+	{
+		IntPtr sbufToTrack = bufferToTrack?.handle ?? IntPtr.Zero;
+		return CMSampleBufferTrackDataReadiness(handle, sbufToTrack);
+	}
+
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[iOS(7, 0)]
+	[Mac(10, 9)]
+	private static extern CMSampleBufferError CMSampleBufferCopyPCMDataIntoAudioBufferList(IntPtr sbuf, int frameOffset, int numFrames, IntPtr bufferList);
+
+	[iOS(7, 0)]
+	[Mac(10, 9)]
+	public CMSampleBufferError CopyPCMDataIntoAudioBufferList(int frameOffset, int numFrames, AudioBuffers bufferList)
+	{
+		if (bufferList == null)
+		{
+			throw new ArgumentNullException("bufferList");
+		}
+		return CMSampleBufferCopyPCMDataIntoAudioBufferList(handle, frameOffset, numFrames, (IntPtr)bufferList);
+	}
+
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[iOS(8, 0)]
+	[Mac(10, 10)]
+	private static extern CMSampleBufferError CMAudioSampleBufferCreateReadyWithPacketDescriptions(IntPtr allocator, IntPtr dataBuffer, IntPtr formatDescription, nint numSamples, CMTime sbufPTS, AudioStreamPacketDescription[] packetDescriptions, out IntPtr sBufOut);
+
+	[iOS(8, 0)]
+	[Mac(10, 10)]
+	public static CMSampleBuffer CreateReadyWithPacketDescriptions(CMBlockBuffer dataBuffer, CMFormatDescription formatDescription, int samplesCount, CMTime sampleTimestamp, AudioStreamPacketDescription[] packetDescriptions, out CMSampleBufferError error)
+	{
+		if (dataBuffer == null)
+		{
+			throw new ArgumentNullException("dataBuffer");
+		}
+		if (formatDescription == null)
+		{
+			throw new ArgumentNullException("formatDescription");
+		}
+		if (samplesCount <= 0)
+		{
+			throw new ArgumentOutOfRangeException("samplesCount");
+		}
+		error = CMAudioSampleBufferCreateReadyWithPacketDescriptions(IntPtr.Zero, dataBuffer.handle, formatDescription.handle, samplesCount, sampleTimestamp, packetDescriptions, out var sBufOut);
+		if (error != 0)
+		{
+			return null;
+		}
+		return new CMSampleBuffer(sBufOut, owns: true);
+	}
+
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[iOS(8, 0)]
+	[Mac(10, 10)]
+	private static extern CMSampleBufferError CMSampleBufferCreateReady(IntPtr allocator, IntPtr dataBuffer, IntPtr formatDescription, nint numSamples, nint numSampleTimingEntries, CMSampleTimingInfo[] sampleTimingArray, nint numSampleSizeEntries, nuint[] sampleSizeArray, out IntPtr sBufOut);
+
+	[iOS(8, 0)]
+	[Mac(10, 10)]
+	public static CMSampleBuffer CreateReady(CMBlockBuffer dataBuffer, CMFormatDescription formatDescription, int samplesCount, CMSampleTimingInfo[] sampleTimingArray, nuint[] sampleSizeArray, out CMSampleBufferError error)
+	{
+		if (dataBuffer == null)
+		{
+			throw new ArgumentNullException("dataBuffer");
+		}
+		if (samplesCount < 0)
+		{
+			throw new ArgumentOutOfRangeException("samplesCount");
+		}
+		IntPtr formatDescription2 = formatDescription?.Handle ?? IntPtr.Zero;
+		int num = ((sampleTimingArray != null) ? sampleTimingArray.Length : 0);
+		int num2 = ((sampleSizeArray != null) ? sampleSizeArray.Length : 0);
+		error = CMSampleBufferCreateReady(IntPtr.Zero, dataBuffer.handle, formatDescription2, samplesCount, num, sampleTimingArray, num2, sampleSizeArray, out var sBufOut);
+		if (error != 0)
+		{
+			return null;
+		}
+		return new CMSampleBuffer(sBufOut, owns: true);
+	}
+
+	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[iOS(8, 0)]
+	[Mac(10, 10)]
+	private static extern CMSampleBufferError CMSampleBufferCreateReadyWithImageBuffer(IntPtr allocator, IntPtr imageBuffer, IntPtr formatDescription, ref CMSampleTimingInfo sampleTiming, out IntPtr sBufOut);
+
+	[Obsolete("Use the 'CreateReadyWithImageBuffer' overload with a single ref, not array, 'CMSampleTimingInfo' parameter.")]
+	[iOS(8, 0)]
+	[Mac(10, 10)]
+	public static CMSampleBuffer CreateReadyWithImageBuffer(CVImageBuffer imageBuffer, CMFormatDescription formatDescription, CMSampleTimingInfo[] sampleTiming, out CMSampleBufferError error)
+	{
+		if (sampleTiming == null)
+		{
+			throw new ArgumentNullException("sampleTiming");
+		}
+		if (sampleTiming.Length != 1)
+		{
+			throw new ArgumentException("Only a single sample is allowed.", "sampleTiming");
+		}
+		return CreateReadyWithImageBuffer(imageBuffer, formatDescription, sampleTiming, out error);
+	}
+
+	[iOS(8, 0)]
+	[Mac(10, 10)]
+	public static CMSampleBuffer CreateReadyWithImageBuffer(CVImageBuffer imageBuffer, CMFormatDescription formatDescription, ref CMSampleTimingInfo sampleTiming, out CMSampleBufferError error)
+	{
+		if (imageBuffer == null)
+		{
+			throw new ArgumentNullException("imageBuffer");
+		}
+		if (formatDescription == null)
+		{
+			throw new ArgumentNullException("formatDescription");
+		}
+		error = CMSampleBufferCreateReadyWithImageBuffer(IntPtr.Zero, imageBuffer.handle, formatDescription.Handle, ref sampleTiming, out var sBufOut);
+		if (error != 0)
+		{
+			return null;
+		}
+		return new CMSampleBuffer(sBufOut, owns: true);
 	}
 }

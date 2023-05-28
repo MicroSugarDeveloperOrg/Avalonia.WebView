@@ -8,93 +8,81 @@ namespace AppKit;
 [Register("NSViewAnimation", true)]
 public class NSViewAnimation : NSAnimation
 {
-	private static readonly IntPtr selViewAnimationsHandle = Selector.GetHandle("viewAnimations");
-
-	private static readonly IntPtr selSetViewAnimations_Handle = Selector.GetHandle("setViewAnimations:");
-
-	private static readonly IntPtr selAnimatorHandle = Selector.GetHandle("animator");
-
-	private static readonly IntPtr selAnimationsHandle = Selector.GetHandle("animations");
-
-	private static readonly IntPtr selSetAnimations_Handle = Selector.GetHandle("setAnimations:");
-
-	private static readonly IntPtr selInitWithViewAnimations_Handle = Selector.GetHandle("initWithViewAnimations:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAnimationForKey_ = "animationForKey:";
 
 	private static readonly IntPtr selAnimationForKey_Handle = Selector.GetHandle("animationForKey:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAnimations = "animations";
+
+	private static readonly IntPtr selAnimationsHandle = Selector.GetHandle("animations");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAnimator = "animator";
+
+	private static readonly IntPtr selAnimatorHandle = Selector.GetHandle("animator");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDefaultAnimationForKey_ = "defaultAnimationForKey:";
+
 	private static readonly IntPtr selDefaultAnimationForKey_Handle = Selector.GetHandle("defaultAnimationForKey:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSViewAnimation");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithViewAnimations_ = "initWithViewAnimations:";
 
-	private object __mt_ViewAnimations_var;
+	private static readonly IntPtr selInitWithViewAnimations_Handle = Selector.GetHandle("initWithViewAnimations:");
 
-	private object __mt_Animator_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAnimations_ = "setAnimations:";
 
-	private object __mt_Animations_var;
+	private static readonly IntPtr selSetAnimations_Handle = Selector.GetHandle("setAnimations:");
 
-	private static NSString _TargetKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetViewAnimations_ = "setViewAnimations:";
 
-	private static NSString _StartFrameKey;
+	private static readonly IntPtr selSetViewAnimations_Handle = Selector.GetHandle("setViewAnimations:");
 
-	private static NSString _EndFrameKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selViewAnimations = "viewAnimations";
 
-	private static NSString _EffectKey;
+	private static readonly IntPtr selViewAnimationsHandle = Selector.GetHandle("viewAnimations");
 
-	private static NSString _FadeInEffect;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSViewAnimation");
 
-	private static NSString _FadeOutEffect;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _EffectKey;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _EndFrameKey;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FadeInEffect;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FadeOutEffect;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _StartFrameKey;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TargetKey;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSDictionary[] ViewAnimations
-	{
-		[Export("viewAnimations")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSDictionary[])(__mt_ViewAnimations_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selViewAnimationsHandle)) : NSArray.ArrayFromHandle<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selViewAnimationsHandle))));
-		}
-		[Export("setViewAnimations:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetViewAnimations_Handle, nSArray.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetViewAnimations_Handle, nSArray.Handle);
-			}
-			nSArray.Dispose();
-			__mt_ViewAnimations_var = value;
-		}
-	}
-
-	public virtual NSObject Animator
-	{
-		[Export("animator")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			NSObject nSObject = (NSObject)(__mt_Animator_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAnimatorHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAnimatorHandle))));
-			nSObject.SetAsProxy();
-			return nSObject;
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDictionary Animations
 	{
 		[Export("animations")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSDictionary)(__mt_Animations_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAnimationsHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAnimationsHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selAnimationsHandle));
+			}
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAnimationsHandle));
 		}
 		[Export("setAnimations:")]
 		set
@@ -104,7 +92,7 @@ public class NSViewAnimation : NSAnimation
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAnimations_Handle, value.Handle);
 			}
@@ -112,46 +100,53 @@ public class NSViewAnimation : NSAnimation
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAnimations_Handle, value.Handle);
 			}
-			__mt_Animations_var = value;
 		}
 	}
 
-	[Field("NSViewAnimationTargetKey", "AppKit")]
-	public static NSString TargetKey
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject Animator
 	{
+		[Export("animator")]
 		get
 		{
-			if (_TargetKey == null)
-			{
-				_TargetKey = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSViewAnimationTargetKey");
-			}
-			return _TargetKey;
+			NSApplication.EnsureUIThread();
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAnimatorHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAnimatorHandle)));
+			nSObject.SetAsProxy();
+			return nSObject;
 		}
 	}
 
-	[Field("NSViewAnimationStartFrameKey", "AppKit")]
-	public static NSString StartFrameKey
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary[] ViewAnimations
 	{
+		[Export("viewAnimations", ArgumentSemantic.Copy)]
 		get
 		{
-			if (_StartFrameKey == null)
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
 			{
-				_StartFrameKey = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSViewAnimationStartFrameKey");
+				return NSArray.ArrayFromHandle<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selViewAnimationsHandle));
 			}
-			return _StartFrameKey;
+			return NSArray.ArrayFromHandle<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selViewAnimationsHandle));
 		}
-	}
-
-	[Field("NSViewAnimationEndFrameKey", "AppKit")]
-	public static NSString EndFrameKey
-	{
-		get
+		[Export("setViewAnimations:", ArgumentSemantic.Copy)]
+		set
 		{
-			if (_EndFrameKey == null)
+			NSApplication.EnsureUIThread();
+			if (value == null)
 			{
-				_EndFrameKey = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSViewAnimationEndFrameKey");
+				throw new ArgumentNullException("value");
 			}
-			return _EndFrameKey;
+			NSArray nSArray = NSArray.FromNSObjects(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetViewAnimations_Handle, nSArray.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetViewAnimations_Handle, nSArray.Handle);
+			}
+			nSArray.Dispose();
 		}
 	}
 
@@ -165,6 +160,19 @@ public class NSViewAnimation : NSAnimation
 				_EffectKey = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSViewAnimationEffectKey");
 			}
 			return _EffectKey;
+		}
+	}
+
+	[Field("NSViewAnimationEndFrameKey", "AppKit")]
+	public static NSString EndFrameKey
+	{
+		get
+		{
+			if (_EndFrameKey == null)
+			{
+				_EndFrameKey = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSViewAnimationEndFrameKey");
+			}
+			return _EndFrameKey;
 		}
 	}
 
@@ -194,49 +202,83 @@ public class NSViewAnimation : NSAnimation
 		}
 	}
 
+	[Field("NSViewAnimationStartFrameKey", "AppKit")]
+	public static NSString StartFrameKey
+	{
+		get
+		{
+			if (_StartFrameKey == null)
+			{
+				_StartFrameKey = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSViewAnimationStartFrameKey");
+			}
+			return _StartFrameKey;
+		}
+	}
+
+	[Field("NSViewAnimationTargetKey", "AppKit")]
+	public static NSString TargetKey
+	{
+		get
+		{
+			if (_TargetKey == null)
+			{
+				_TargetKey = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSViewAnimationTargetKey");
+			}
+			return _TargetKey;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSViewAnimation()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSViewAnimation(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSViewAnimation(NSObjectFlag t)
+	protected NSViewAnimation(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSViewAnimation(IntPtr handle)
+	protected internal NSViewAnimation(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithViewAnimations:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSViewAnimation(NSDictionary[] viewAnimations)
 		: base(NSObjectFlag.Empty)
 	{
@@ -246,18 +288,19 @@ public class NSViewAnimation : NSAnimation
 			throw new ArgumentNullException("viewAnimations");
 		}
 		NSArray nSArray = NSArray.FromNSObjects(viewAnimations);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithViewAnimations_Handle, nSArray.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithViewAnimations_Handle, nSArray.Handle), "initWithViewAnimations:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithViewAnimations_Handle, nSArray.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithViewAnimations_Handle, nSArray.Handle), "initWithViewAnimations:");
 		}
 		nSArray.Dispose();
 	}
 
 	[Export("animationForKey:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSObject AnimationForKey(string key)
 	{
 		NSApplication.EnsureUIThread();
@@ -266,12 +309,13 @@ public class NSViewAnimation : NSAnimation
 			throw new ArgumentNullException("key");
 		}
 		IntPtr arg = NSString.CreateNative(key);
-		NSObject result = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAnimationForKey_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAnimationForKey_Handle, arg)));
+		NSObject result = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAnimationForKey_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAnimationForKey_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
 	[Export("defaultAnimationForKey:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSObject DefaultAnimationForKey(string key)
 	{
 		NSApplication.EnsureUIThread();
@@ -283,16 +327,5 @@ public class NSViewAnimation : NSAnimation
 		NSObject nSObject = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selDefaultAnimationForKey_Handle, arg));
 		NSString.ReleaseNative(arg);
 		return nSObject;
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_ViewAnimations_var = null;
-			__mt_Animator_var = null;
-			__mt_Animations_var = null;
-		}
 	}
 }

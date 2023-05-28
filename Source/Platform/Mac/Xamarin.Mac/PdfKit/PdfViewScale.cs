@@ -1,3 +1,5 @@
+using System;
+
 namespace PdfKit;
 
-public delegate float PdfViewScale(PdfView sender, float scale);
+public delegate nfloat PdfViewScale(PdfView sender, nfloat scale);

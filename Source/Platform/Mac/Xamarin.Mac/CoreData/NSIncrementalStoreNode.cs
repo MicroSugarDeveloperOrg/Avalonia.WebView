@@ -8,37 +8,57 @@ namespace CoreData;
 [Register("NSIncrementalStoreNode", true)]
 public class NSIncrementalStoreNode : NSObject
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithObjectID_WithValues_Version_ = "initWithObjectID:withValues:version:";
+
+	private static readonly IntPtr selInitWithObjectID_WithValues_Version_Handle = Selector.GetHandle("initWithObjectID:withValues:version:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selObjectID = "objectID";
+
 	private static readonly IntPtr selObjectIDHandle = Selector.GetHandle("objectID");
 
-	private static readonly IntPtr selVersionHandle = Selector.GetHandle("version");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selUpdateWithValues_Version_ = "updateWithValues:version:";
 
-	private static readonly IntPtr selInitWithObjectIDWithValuesVersion_Handle = Selector.GetHandle("initWithObjectID:withValues:version:");
+	private static readonly IntPtr selUpdateWithValues_Version_Handle = Selector.GetHandle("updateWithValues:version:");
 
-	private static readonly IntPtr selUpdateWithValuesVersion_Handle = Selector.GetHandle("updateWithValues:version:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selValueForPropertyDescription_ = "valueForPropertyDescription:";
 
 	private static readonly IntPtr selValueForPropertyDescription_Handle = Selector.GetHandle("valueForPropertyDescription:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSIncrementalStoreNode");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selVersion = "version";
 
-	private object __mt_ObjectId_var;
+	private static readonly IntPtr selVersionHandle = Selector.GetHandle("version");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSIncrementalStoreNode");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSManagedObjectID ObjectId
 	{
 		[Export("objectID")]
 		get
 		{
-			return (NSManagedObjectID)(__mt_ObjectId_var = ((!IsDirectBinding) ? ((NSManagedObjectID)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selObjectIDHandle))) : ((NSManagedObjectID)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selObjectIDHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSManagedObjectID>(Messaging.IntPtr_objc_msgSend(base.Handle, selObjectIDHandle));
+			}
+			return Runtime.GetNSObject<NSManagedObjectID>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selObjectIDHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual long Version
 	{
 		[Export("version")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.Int64_objc_msgSend(base.Handle, selVersionHandle);
 			}
@@ -46,49 +66,38 @@ public class NSIncrementalStoreNode : NSObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSIncrementalStoreNode()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSIncrementalStoreNode(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSIncrementalStoreNode(NSObjectFlag t)
+	protected NSIncrementalStoreNode(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSIncrementalStoreNode(IntPtr handle)
+	protected internal NSIncrementalStoreNode(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithObjectID:withValues:version:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSIncrementalStoreNode(NSManagedObjectID objectId, NSDictionary values, ulong version)
 		: base(NSObjectFlag.Empty)
 	{
@@ -100,53 +109,46 @@ public class NSIncrementalStoreNode : NSObject
 		{
 			throw new ArgumentNullException("values");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_UInt64(base.Handle, selInitWithObjectIDWithValuesVersion_Handle, objectId.Handle, values.Handle, version);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_UInt64(base.Handle, selInitWithObjectID_WithValues_Version_Handle, objectId.Handle, values.Handle, version), "initWithObjectID:withValues:version:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_UInt64(base.SuperHandle, selInitWithObjectIDWithValuesVersion_Handle, objectId.Handle, values.Handle, version);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_UInt64(base.SuperHandle, selInitWithObjectID_WithValues_Version_Handle, objectId.Handle, values.Handle, version), "initWithObjectID:withValues:version:");
 		}
 	}
 
 	[Export("updateWithValues:version:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Update(NSDictionary values, ulong version)
 	{
 		if (values == null)
 		{
 			throw new ArgumentNullException("values");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_UInt64(base.Handle, selUpdateWithValuesVersion_Handle, values.Handle, version);
+			Messaging.void_objc_msgSend_IntPtr_UInt64(base.Handle, selUpdateWithValues_Version_Handle, values.Handle, version);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selUpdateWithValuesVersion_Handle, values.Handle, version);
+			Messaging.void_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selUpdateWithValues_Version_Handle, values.Handle, version);
 		}
 	}
 
 	[Export("valueForPropertyDescription:")]
-	public virtual NSObject ValueForPropertyDescription(NSPropertyDescription prop)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? ValueForPropertyDescription(NSPropertyDescription prop)
 	{
 		if (prop == null)
 		{
 			throw new ArgumentNullException("prop");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selValueForPropertyDescription_Handle, prop.Handle));
 		}
 		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selValueForPropertyDescription_Handle, prop.Handle));
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_ObjectId_var = null;
-		}
 	}
 }

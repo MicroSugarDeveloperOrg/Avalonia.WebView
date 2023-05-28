@@ -1,37 +1,71 @@
-using System;
 using Foundation;
 using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
-public class CTFontFeatureKey
+public static class CTFontFeatureKey
 {
-	public static readonly NSString Identifier;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Exclusive;
 
-	public static readonly NSString Name;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Identifier;
 
-	public static readonly NSString Exclusive;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Name;
 
-	public static readonly NSString Selectors;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Selectors;
 
-	static CTFontFeatureKey()
+	[Field("kCTFontFeatureTypeExclusiveKey", "CoreText")]
+	public static NSString Exclusive
 	{
-		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText", 0);
-		if (intPtr == IntPtr.Zero)
+		get
 		{
-			return;
+			if (_Exclusive == null)
+			{
+				_Exclusive = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontFeatureTypeExclusiveKey");
+			}
+			return _Exclusive;
 		}
-		try
+	}
+
+	[Field("kCTFontFeatureTypeIdentifierKey", "CoreText")]
+	public static NSString Identifier
+	{
+		get
 		{
-			Identifier = Dlfcn.GetStringConstant(intPtr, "kCTFontFeatureTypeIdentifierKey");
-			Name = Dlfcn.GetStringConstant(intPtr, "kCTFontFeatureTypeNameKey");
-			Exclusive = Dlfcn.GetStringConstant(intPtr, "kCTFontFeatureTypeExclusiveKey");
-			Selectors = Dlfcn.GetStringConstant(intPtr, "kCTFontFeatureTypeSelectorsKey");
+			if (_Identifier == null)
+			{
+				_Identifier = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontFeatureTypeIdentifierKey");
+			}
+			return _Identifier;
 		}
-		finally
+	}
+
+	[Field("kCTFontFeatureTypeNameKey", "CoreText")]
+	public static NSString Name
+	{
+		get
 		{
-			Dlfcn.dlclose(intPtr);
+			if (_Name == null)
+			{
+				_Name = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontFeatureTypeNameKey");
+			}
+			return _Name;
+		}
+	}
+
+	[Field("kCTFontFeatureTypeSelectorsKey", "CoreText")]
+	public static NSString Selectors
+	{
+		get
+		{
+			if (_Selectors == null)
+			{
+				_Selectors = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontFeatureTypeSelectorsKey");
+			}
+			return _Selectors;
 		}
 	}
 }

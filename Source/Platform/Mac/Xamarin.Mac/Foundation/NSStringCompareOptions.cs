@@ -1,14 +1,17 @@
+using ObjCRuntime;
+
 namespace Foundation;
 
-public enum NSStringCompareOptions : uint
+[Native]
+public enum NSStringCompareOptions : ulong
 {
-	CaseInsensitiveSearch = 1u,
-	LiteralSearch = 2u,
-	BackwardsSearch = 4u,
-	AnchoredSearch = 8u,
-	NumericSearch = 0x40u,
-	DiacriticInsensitiveSearch = 0x80u,
-	WidthInsensitiveSearch = 0x100u,
-	ForcedOrderingSearch = 0x200u,
-	RegularExpressionSearch = 0x400u
+	CaseInsensitiveSearch = 1uL,
+	LiteralSearch = 2uL,
+	BackwardsSearch = 4uL,
+	AnchoredSearch = 8uL,
+	NumericSearch = 0x40uL,
+	DiacriticInsensitiveSearch = 0x80uL,
+	WidthInsensitiveSearch = 0x100uL,
+	ForcedOrderingSearch = 0x200uL,
+	RegularExpressionSearch = 0x400uL
 }

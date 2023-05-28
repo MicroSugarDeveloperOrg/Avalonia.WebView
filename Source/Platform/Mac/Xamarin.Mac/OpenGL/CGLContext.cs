@@ -5,9 +5,10 @@ using ObjCRuntime;
 
 namespace OpenGL;
 
+[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'Metal' Framework instead.")]
 public class CGLContext : INativeObject, IDisposable
 {
-	internal IntPtr handle;
+	private IntPtr handle;
 
 	public IntPtr Handle => handle;
 
@@ -24,7 +25,7 @@ public class CGLContext : INativeObject, IDisposable
 		}
 		set
 		{
-			if (CGLSetCurrentContext(value.Handle) != 0)
+			if (CGLSetCurrentContext(value?.Handle ?? IntPtr.Zero) != 0)
 			{
 				throw new Exception("Error setting the Current Context");
 			}

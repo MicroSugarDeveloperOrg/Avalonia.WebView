@@ -13,6 +13,6 @@ public struct CGPathElement
 	public CGPathElement(int t)
 	{
 		Type = (CGPathElementType)t;
-		Point1 = (Point2 = (Point3 = new CGPoint(0, 0)));
+		Point1 = (Point2 = (Point3 = CGPoint.Empty));
 	}
 }

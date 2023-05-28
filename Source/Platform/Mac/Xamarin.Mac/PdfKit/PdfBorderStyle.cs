@@ -1,6 +1,10 @@
+using ObjCRuntime;
+
 namespace PdfKit;
 
-public enum PdfBorderStyle
+[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+[Native]
+public enum PdfBorderStyle : long
 {
 	Solid,
 	Dashed,

@@ -52,18 +52,14 @@ public class AudioPanningInfo
 			return null;
 		}
 		float[] array = new float[outPropertyDataSize / 4];
-		AudioFormatError num2;
+		AudioFormatError audioFormatError;
 		fixed (float* outPropertyData = array)
 		{
-			num2 = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.PanningMatrix, num, intPtr, ref outPropertyDataSize, outPropertyData);
+			audioFormatError = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.PanningMatrix, num, intPtr, ref outPropertyDataSize, outPropertyData);
 		}
 		Marshal.FreeHGlobal(layout.OutputChannelMapWeak);
 		Marshal.FreeHGlobal(intPtr);
-		if (num2 != 0)
-		{
-			return null;
-		}
-		return array;
+		return (audioFormatError == AudioFormatError.None) ? array : null;
 	}
 
 	private Layout ToStruct()

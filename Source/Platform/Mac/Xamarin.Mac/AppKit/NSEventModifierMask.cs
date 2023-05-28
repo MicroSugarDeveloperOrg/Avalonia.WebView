@@ -1,8 +1,10 @@
 using System;
+using ObjCRuntime;
 
 namespace AppKit;
 
 [Flags]
+[Native]
 public enum NSEventModifierMask : ulong
 {
 	AlphaShiftKeyMask = 0x10000uL,

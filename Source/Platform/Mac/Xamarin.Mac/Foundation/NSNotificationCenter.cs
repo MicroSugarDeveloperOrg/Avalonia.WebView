@@ -21,41 +21,59 @@ public class NSNotificationCenter : NSObject
 
 	private List<ObservedData> __mt_ObserverList_var = new List<ObservedData>();
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAddObserver_Selector_Name_Object_ = "addObserver:selector:name:object:";
+
+	private static readonly IntPtr selAddObserver_Selector_Name_Object_Handle = Selector.GetHandle("addObserver:selector:name:object:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAddObserverForName_Object_Queue_UsingBlock_ = "addObserverForName:object:queue:usingBlock:";
+
+	private static readonly IntPtr selAddObserverForName_Object_Queue_UsingBlock_Handle = Selector.GetHandle("addObserverForName:object:queue:usingBlock:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDefaultCenter = "defaultCenter";
+
 	private static readonly IntPtr selDefaultCenterHandle = Selector.GetHandle("defaultCenter");
 
-	private static readonly IntPtr selAddObserverSelectorNameObject_Handle = Selector.GetHandle("addObserver:selector:name:object:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPostNotification_ = "postNotification:";
 
 	private static readonly IntPtr selPostNotification_Handle = Selector.GetHandle("postNotification:");
 
-	private static readonly IntPtr selPostNotificationNameObject_Handle = Selector.GetHandle("postNotificationName:object:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPostNotificationName_Object_ = "postNotificationName:object:";
 
-	private static readonly IntPtr selPostNotificationNameObjectUserInfo_Handle = Selector.GetHandle("postNotificationName:object:userInfo:");
+	private static readonly IntPtr selPostNotificationName_Object_Handle = Selector.GetHandle("postNotificationName:object:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPostNotificationName_Object_UserInfo_ = "postNotificationName:object:userInfo:";
+
+	private static readonly IntPtr selPostNotificationName_Object_UserInfo_Handle = Selector.GetHandle("postNotificationName:object:userInfo:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveObserver_ = "removeObserver:";
 
 	private static readonly IntPtr selRemoveObserver_Handle = Selector.GetHandle("removeObserver:");
 
-	private static readonly IntPtr selRemoveObserverNameObject_Handle = Selector.GetHandle("removeObserver:name:object:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveObserver_Name_Object_ = "removeObserver:name:object:";
 
-	private static readonly IntPtr selAddObserverForNameObjectQueueUsingBlock_Handle = Selector.GetHandle("addObserverForName:object:queue:usingBlock:");
+	private static readonly IntPtr selRemoveObserver_Name_Object_Handle = Selector.GetHandle("removeObserver:name:object:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSNotificationCenter");
-
-	private static object __mt_DefaultCenter_var_static;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSNotificationCenter");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSNotificationCenter DefaultCenter
 	{
-		[Export("defaultCenter")]
+		[Export("defaultCenter", ArgumentSemantic.Retain)]
 		get
 		{
-			return (NSNotificationCenter)(__mt_DefaultCenter_var_static = (NSNotificationCenter)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selDefaultCenterHandle)));
+			return Runtime.GetNSObject<NSNotificationCenter>(Messaging.IntPtr_objc_msgSend(class_ptr, selDefaultCenterHandle));
 		}
-	}
-
-	[Advice("Use AddObserver(NSString, Action<NSNotification>, NSObject)")]
-	public NSObject AddObserver(string aName, Action<NSNotification> notify, NSObject fromObject)
-	{
-		return AddObserver(new NSString(aName), notify, fromObject);
 	}
 
 	public NSObject AddObserver(NSString aName, Action<NSNotification> notify, NSObject fromObject)
@@ -74,18 +92,6 @@ public class NSNotificationCenter : NSObject
 		return AddObserver(aName, notify, null);
 	}
 
-	[Advice("Use AddObserver(NSString, Action<NSNotification>) instead")]
-	public NSObject AddObserver(string aName, Action<NSNotification> notify)
-	{
-		return AddObserver(aName, notify, null);
-	}
-
-	[Advice("Use AddObserver(NSObject, Selector, NSString, NSObject) instead")]
-	public void AddObserver(NSObject observer, Selector aSelector, string aname, NSObject anObject)
-	{
-		AddObserver(observer, aSelector, new NSString(aname), anObject);
-	}
-
 	public void RemoveObservers(IEnumerable<NSObject> keys)
 	{
 		if (keys == null)
@@ -100,70 +106,66 @@ public class NSNotificationCenter : NSObject
 
 	private void AddObserverToList(NSObject observer, string aName, NSObject anObject)
 	{
-		__mt_ObserverList_var.Add(new ObservedData
+		lock (__mt_ObserverList_var)
 		{
-			Observer = observer,
-			Name = aName,
-			Object = anObject
-		});
+			__mt_ObserverList_var.Add(new ObservedData
+			{
+				Observer = observer,
+				Name = aName,
+				Object = anObject
+			});
+		}
+		MarkDirty();
 	}
 
 	private void RemoveObserversFromList(NSObject observer, string aName, NSObject anObject)
 	{
-		for (int num = __mt_ObserverList_var.Count - 1; num >= 0; num--)
+		lock (__mt_ObserverList_var)
 		{
-			ObservedData observedData = __mt_ObserverList_var[num];
-			if (observer == observedData.Observer && (aName == null || !(aName != observedData.Name)) && (anObject == null || anObject == observedData.Object))
+			for (int num = __mt_ObserverList_var.Count - 1; num >= 0; num--)
 			{
-				__mt_ObserverList_var.RemoveAt(num);
+				ObservedData observedData = __mt_ObserverList_var[num];
+				if (observer == observedData.Observer && (aName == null || !(aName != observedData.Name)) && (anObject == null || anObject == observedData.Object))
+				{
+					__mt_ObserverList_var.RemoveAt(num);
+				}
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSNotificationCenter()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSNotificationCenter(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSNotificationCenter(NSObjectFlag t)
+	protected NSNotificationCenter(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSNotificationCenter(IntPtr handle)
+	protected internal NSNotificationCenter(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("addObserver:selector:name:object:")]
-	public virtual void AddObserver(NSObject observer, Selector aSelector, NSString aName, NSObject anObject)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AddObserver(NSObject observer, Selector aSelector, NSString? aName, NSObject? anObject)
 	{
 		if (observer == null)
 		{
@@ -173,25 +175,44 @@ public class NSNotificationCenter : NSObject
 		{
 			throw new ArgumentNullException("aSelector");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selAddObserverSelectorNameObject_Handle, observer.Handle, aSelector.Handle, (aName == null) ? IntPtr.Zero : aName.Handle, anObject?.Handle ?? IntPtr.Zero);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selAddObserver_Selector_Name_Object_Handle, observer.Handle, aSelector.Handle, (aName == null) ? IntPtr.Zero : aName.Handle, anObject?.Handle ?? IntPtr.Zero);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selAddObserverSelectorNameObject_Handle, observer.Handle, aSelector.Handle, (aName == null) ? IntPtr.Zero : aName.Handle, anObject?.Handle ?? IntPtr.Zero);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selAddObserver_Selector_Name_Object_Handle, observer.Handle, aSelector.Handle, (aName == null) ? IntPtr.Zero : aName.Handle, anObject?.Handle ?? IntPtr.Zero);
 		}
 		AddObserverToList(observer, aName, anObject);
 	}
 
+	[Export("addObserverForName:object:queue:usingBlock:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public unsafe virtual NSObject AddObserver(string? name, NSObject? obj, NSOperationQueue? queue, [BlockProxy(typeof(Trampolines.NIDActionArity1V32))] Action<NSNotification> handler)
+	{
+		if (handler == null)
+		{
+			throw new ArgumentNullException("handler");
+		}
+		IntPtr arg = NSString.CreateNative(name);
+		BlockLiteral blockLiteral = default(BlockLiteral);
+		BlockLiteral* ptr = &blockLiteral;
+		blockLiteral.SetupBlockUnsafe(Trampolines.SDActionArity1V32.Handler, handler);
+		NSObject result = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selAddObserverForName_Object_Queue_UsingBlock_Handle, arg, obj?.Handle ?? IntPtr.Zero, queue?.Handle ?? IntPtr.Zero, (IntPtr)ptr)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selAddObserverForName_Object_Queue_UsingBlock_Handle, arg, obj?.Handle ?? IntPtr.Zero, queue?.Handle ?? IntPtr.Zero, (IntPtr)ptr)));
+		NSString.ReleaseNative(arg);
+		ptr->CleanupBlock();
+		return result;
+	}
+
 	[Export("postNotification:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void PostNotification(NSNotification notification)
 	{
 		if (notification == null)
 		{
 			throw new ArgumentNullException("notification");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selPostNotification_Handle, notification.Handle);
 		}
@@ -202,51 +223,54 @@ public class NSNotificationCenter : NSObject
 	}
 
 	[Export("postNotificationName:object:")]
-	public virtual void PostNotificationName(string aName, NSObject anObject)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void PostNotificationName(string aName, NSObject? anObject)
 	{
 		if (aName == null)
 		{
 			throw new ArgumentNullException("aName");
 		}
 		IntPtr arg = NSString.CreateNative(aName);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selPostNotificationNameObject_Handle, arg, anObject?.Handle ?? IntPtr.Zero);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selPostNotificationName_Object_Handle, arg, anObject?.Handle ?? IntPtr.Zero);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selPostNotificationNameObject_Handle, arg, anObject?.Handle ?? IntPtr.Zero);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selPostNotificationName_Object_Handle, arg, anObject?.Handle ?? IntPtr.Zero);
 		}
 		NSString.ReleaseNative(arg);
 	}
 
 	[Export("postNotificationName:object:userInfo:")]
-	public virtual void PostNotificationName(string aName, NSObject anObject, NSDictionary aUserInfo)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void PostNotificationName(string aName, NSObject? anObject, NSDictionary? aUserInfo)
 	{
 		if (aName == null)
 		{
 			throw new ArgumentNullException("aName");
 		}
 		IntPtr arg = NSString.CreateNative(aName);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selPostNotificationNameObjectUserInfo_Handle, arg, anObject?.Handle ?? IntPtr.Zero, aUserInfo?.Handle ?? IntPtr.Zero);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selPostNotificationName_Object_UserInfo_Handle, arg, anObject?.Handle ?? IntPtr.Zero, aUserInfo?.Handle ?? IntPtr.Zero);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selPostNotificationNameObjectUserInfo_Handle, arg, anObject?.Handle ?? IntPtr.Zero, aUserInfo?.Handle ?? IntPtr.Zero);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selPostNotificationName_Object_UserInfo_Handle, arg, anObject?.Handle ?? IntPtr.Zero, aUserInfo?.Handle ?? IntPtr.Zero);
 		}
 		NSString.ReleaseNative(arg);
 	}
 
 	[Export("removeObserver:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void RemoveObserver(NSObject observer)
 	{
 		if (observer == null)
 		{
 			throw new ArgumentNullException("observer");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveObserver_Handle, observer.Handle);
 		}
@@ -258,51 +282,23 @@ public class NSNotificationCenter : NSObject
 	}
 
 	[Export("removeObserver:name:object:")]
-	public virtual void RemoveObserver(NSObject observer, string aName, NSObject anObject)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RemoveObserver(NSObject observer, string? aName, NSObject? anObject)
 	{
 		if (observer == null)
 		{
 			throw new ArgumentNullException("observer");
 		}
 		IntPtr arg = NSString.CreateNative(aName);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selRemoveObserverNameObject_Handle, observer.Handle, arg, anObject?.Handle ?? IntPtr.Zero);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selRemoveObserver_Name_Object_Handle, observer.Handle, arg, anObject?.Handle ?? IntPtr.Zero);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selRemoveObserverNameObject_Handle, observer.Handle, arg, anObject?.Handle ?? IntPtr.Zero);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selRemoveObserver_Name_Object_Handle, observer.Handle, arg, anObject?.Handle ?? IntPtr.Zero);
 		}
 		RemoveObserversFromList(observer, aName, anObject);
 		NSString.ReleaseNative(arg);
-	}
-
-	[Export("addObserverForName:object:queue:usingBlock:")]
-	public unsafe virtual NSObject AddObserver(string name, NSObject obj, NSOperationQueue queue, NSNotificationHandler handler)
-	{
-		if (name == null)
-		{
-			throw new ArgumentNullException("name");
-		}
-		if (obj == null)
-		{
-			throw new ArgumentNullException("obj");
-		}
-		if (queue == null)
-		{
-			throw new ArgumentNullException("queue");
-		}
-		if (handler == null)
-		{
-			throw new ArgumentNullException("handler");
-		}
-		IntPtr arg = NSString.CreateNative(name);
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlock(Trampolines.SDNSNotificationHandler.Handler, handler);
-		NSObject result = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selAddObserverForNameObjectQueueUsingBlock_Handle, arg, obj.Handle, queue.Handle, (IntPtr)ptr)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selAddObserverForNameObjectQueueUsingBlock_Handle, arg, obj.Handle, queue.Handle, (IntPtr)ptr)));
-		NSString.ReleaseNative(arg);
-		ptr->CleanupBlock();
-		return result;
 	}
 }

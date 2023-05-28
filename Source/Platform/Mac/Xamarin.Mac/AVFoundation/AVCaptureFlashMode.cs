@@ -2,8 +2,10 @@ using ObjCRuntime;
 
 namespace AVFoundation;
 
-[Since(4, 0)]
-public enum AVCaptureFlashMode
+[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
+[Native]
+public enum AVCaptureFlashMode : long
 {
 	Off,
 	On,

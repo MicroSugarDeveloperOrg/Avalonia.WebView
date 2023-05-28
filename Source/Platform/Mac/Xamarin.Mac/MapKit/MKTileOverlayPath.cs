@@ -1,12 +1,14 @@
-﻿namespace MapKit;
+using System;
+
+namespace MapKit;
 
 public struct MKTileOverlayPath
 {
-    public nint X;
+	public nint X;
 
-    public nint Y;
+	public nint Y;
 
-    public nint Z;
+	public nint Z;
 
-    public nfloat ContentScaleFactor;
+	public nfloat ContentScaleFactor;
 }

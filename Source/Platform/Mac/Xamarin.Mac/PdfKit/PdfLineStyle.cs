@@ -1,6 +1,10 @@
+using ObjCRuntime;
+
 namespace PdfKit;
 
-public enum PdfLineStyle
+[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+[Native]
+public enum PdfLineStyle : long
 {
 	None,
 	Square,

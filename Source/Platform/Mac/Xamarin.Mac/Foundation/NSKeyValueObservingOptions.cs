@@ -1,8 +1,10 @@
 using System;
+using ObjCRuntime;
 
 namespace Foundation;
 
 [Flags]
+[Native]
 public enum NSKeyValueObservingOptions : ulong
 {
 	New = 1uL,

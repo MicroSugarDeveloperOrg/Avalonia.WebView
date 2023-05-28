@@ -6,61 +6,17 @@ namespace CoreGraphics;
 
 public class CGPDFPage : INativeObject, IDisposable
 {
-	private CGPDFDocument doc;
-
 	internal IntPtr handle;
 
-	public CGPDFDocument Document => doc;
+	public IntPtr Handle => handle;
 
-	public int PageNumber => CGPDFPageGetPageNumber(handle);
+	public CGPDFDocument Document => new CGPDFDocument(CGPDFPageGetDocument(handle));
+
+	public nint PageNumber => CGPDFPageGetPageNumber(handle);
 
 	public int RotationAngle => CGPDFPageGetRotationAngle(handle);
 
 	public CGPDFDictionary Dictionary => new CGPDFDictionary(CGPDFPageGetDictionary(handle));
-
-	public IntPtr Handle => handle;
-
-	public CGPDFPage(IntPtr handle)
-	{
-		if (handle == IntPtr.Zero)
-		{
-			throw new Exception("Invalid parameters to CGPDFPage creation");
-		}
-		CGPDFPageRetain(handle);
-		this.handle = handle;
-	}
-
-	internal CGPDFPage(CGPDFDocument doc, IntPtr handle)
-	{
-		this.doc = doc;
-		this.handle = handle;
-		CGPDFPageRetain(handle);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern int CGPDFPageGetPageNumber(IntPtr handle);
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern CGRect CGPDFPageGetBoxRect(IntPtr handle, CGPDFBox box);
-
-	public CGRect GetBoxRect(CGPDFBox box)
-	{
-		return CGPDFPageGetBoxRect(handle, box);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern int CGPDFPageGetRotationAngle(IntPtr handle);
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern CGAffineTransform CGPDFPageGetDrawingTransform(IntPtr handle, CGPDFBox box, CGRect rect, int rotate, int preserveAspectRatio);
-
-	public CGAffineTransform GetDrawingTransform(CGPDFBox box, CGRect rect, int rotate, bool preserveAspectRatio)
-	{
-		return CGPDFPageGetDrawingTransform(handle, box, rect, rotate, preserveAspectRatio ? 1 : 0);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGPDFPageGetDictionary(IntPtr pageHandle);
 
 	~CGPDFPage()
 	{
@@ -74,10 +30,10 @@ public class CGPDFPage : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGPDFPageRetain(IntPtr handle);
+	private static extern IntPtr CGPDFPageRetain(IntPtr page);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGPDFPageRelease(IntPtr handle);
+	private static extern void CGPDFPageRelease(IntPtr page);
 
 	protected virtual void Dispose(bool disposing)
 	{
@@ -87,4 +43,42 @@ public class CGPDFPage : INativeObject, IDisposable
 			handle = IntPtr.Zero;
 		}
 	}
+
+	public CGPDFPage(IntPtr handle)
+	{
+		if (handle == IntPtr.Zero)
+		{
+			throw new Exception("Invalid parameters to CGPDFPage creation");
+		}
+		CGPDFPageRetain(handle);
+		this.handle = handle;
+	}
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	private static extern IntPtr CGPDFPageGetDocument(IntPtr page);
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	private static extern nint CGPDFPageGetPageNumber(IntPtr page);
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	private static extern CGRect CGPDFPageGetBoxRect(IntPtr page, CGPDFBox box);
+
+	public CGRect GetBoxRect(CGPDFBox box)
+	{
+		return CGPDFPageGetBoxRect(handle, box);
+	}
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	private static extern int CGPDFPageGetRotationAngle(IntPtr page);
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	private static extern CGAffineTransform CGPDFPageGetDrawingTransform(IntPtr page, CGPDFBox box, CGRect rect, int rotate, bool preserveAspectRatio);
+
+	public CGAffineTransform GetDrawingTransform(CGPDFBox box, CGRect rect, int rotate, bool preserveAspectRatio)
+	{
+		return CGPDFPageGetDrawingTransform(handle, box, rect, rotate, preserveAspectRatio);
+	}
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	private static extern IntPtr CGPDFPageGetDictionary(IntPtr page);
 }

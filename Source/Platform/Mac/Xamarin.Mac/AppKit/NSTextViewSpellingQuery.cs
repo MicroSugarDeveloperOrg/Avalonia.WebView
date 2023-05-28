@@ -1,5 +1,6 @@
+using System;
 using Foundation;
 
 namespace AppKit;
 
-public delegate long NSTextViewSpellingQuery(NSTextView textView, long value, NSRange affectedCharRange);
+public delegate nint NSTextViewSpellingQuery(NSTextView textView, nint value, NSRange affectedCharRange);

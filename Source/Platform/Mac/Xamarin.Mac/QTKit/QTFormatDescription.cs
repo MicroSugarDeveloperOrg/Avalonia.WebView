@@ -8,47 +8,69 @@ namespace QTKit;
 [Register("QTFormatDescription", true)]
 public class QTFormatDescription : NSObject
 {
-	private static readonly IntPtr selMediaTypeHandle = Selector.GetHandle("mediaType");
-
-	private static readonly IntPtr selFormatTypeHandle = Selector.GetHandle("formatType");
-
-	private static readonly IntPtr selLocalizedFormatSummaryHandle = Selector.GetHandle("localizedFormatSummary");
-
-	private static readonly IntPtr selQuickTimeSampleDescriptionHandle = Selector.GetHandle("quickTimeSampleDescription");
-
-	private static readonly IntPtr selFormatDescriptionAttributesHandle = Selector.GetHandle("formatDescriptionAttributes");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAttributeForKey_ = "attributeForKey:";
 
 	private static readonly IntPtr selAttributeForKey_Handle = Selector.GetHandle("attributeForKey:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFormatDescriptionAttributes = "formatDescriptionAttributes";
+
+	private static readonly IntPtr selFormatDescriptionAttributesHandle = Selector.GetHandle("formatDescriptionAttributes");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFormatType = "formatType";
+
+	private static readonly IntPtr selFormatTypeHandle = Selector.GetHandle("formatType");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsEqualToFormatDescription_ = "isEqualToFormatDescription:";
+
 	private static readonly IntPtr selIsEqualToFormatDescription_Handle = Selector.GetHandle("isEqualToFormatDescription:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("QTFormatDescription");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLocalizedFormatSummary = "localizedFormatSummary";
 
-	private object __mt_QuickTimeSampleDescription_var;
+	private static readonly IntPtr selLocalizedFormatSummaryHandle = Selector.GetHandle("localizedFormatSummary");
 
-	private object __mt_FormatDescriptionAttributes_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMediaType = "mediaType";
+
+	private static readonly IntPtr selMediaTypeHandle = Selector.GetHandle("mediaType");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selQuickTimeSampleDescription = "quickTimeSampleDescription";
+
+	private static readonly IntPtr selQuickTimeSampleDescriptionHandle = Selector.GetHandle("quickTimeSampleDescription");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("QTFormatDescription");
+
+	public QTMediaType MediaTypeValue => QTMedia.QTMediaTypeFromNSString((NSString)MediaType);
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual string MediaType
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary FormatDescriptionAttributes
 	{
-		[Export("mediaType")]
+		[Export("formatDescriptionAttributes")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMediaTypeHandle));
+				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selFormatDescriptionAttributesHandle));
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMediaTypeHandle));
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFormatDescriptionAttributesHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual uint FormatType
 	{
 		[Export("formatType")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.UInt32_objc_msgSend(base.Handle, selFormatTypeHandle);
 			}
@@ -56,12 +78,13 @@ public class QTFormatDescription : NSObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string LocalizedFormatSummary
 	{
 		[Export("localizedFormatSummary")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedFormatSummaryHandle));
 			}
@@ -69,67 +92,66 @@ public class QTFormatDescription : NSObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string MediaType
+	{
+		[Export("mediaType")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMediaTypeHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMediaTypeHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSData QuickTimeSampleDescription
 	{
 		[Export("quickTimeSampleDescription")]
 		get
 		{
-			return (NSData)(__mt_QuickTimeSampleDescription_var = ((!IsDirectBinding) ? ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selQuickTimeSampleDescriptionHandle))) : ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selQuickTimeSampleDescriptionHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSend(base.Handle, selQuickTimeSampleDescriptionHandle));
+			}
+			return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selQuickTimeSampleDescriptionHandle));
 		}
 	}
 
-	public virtual NSDictionary FormatDescriptionAttributes
-	{
-		[Export("formatDescriptionAttributes")]
-		get
-		{
-			return (NSDictionary)(__mt_FormatDescriptionAttributes_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFormatDescriptionAttributesHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFormatDescriptionAttributesHandle)))));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public QTFormatDescription()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public QTFormatDescription(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public QTFormatDescription(NSObjectFlag t)
+	protected QTFormatDescription(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public QTFormatDescription(IntPtr handle)
+	protected internal QTFormatDescription(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("attributeForKey:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSObject AttributeForKey(string key)
 	{
 		if (key == null)
@@ -137,32 +159,23 @@ public class QTFormatDescription : NSObject
 			throw new ArgumentNullException("key");
 		}
 		IntPtr arg = NSString.CreateNative(key);
-		NSObject result = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAttributeForKey_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAttributeForKey_Handle, arg)));
+		NSObject result = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAttributeForKey_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAttributeForKey_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
 	[Export("isEqualToFormatDescription:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsEqualToFormatDescription(QTFormatDescription formatDescription)
 	{
 		if (formatDescription == null)
 		{
 			throw new ArgumentNullException("formatDescription");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIsEqualToFormatDescription_Handle, formatDescription.Handle);
 		}
 		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selIsEqualToFormatDescription_Handle, formatDescription.Handle);
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_QuickTimeSampleDescription_var = null;
-			__mt_FormatDescriptionAttributes_var = null;
-		}
 	}
 }

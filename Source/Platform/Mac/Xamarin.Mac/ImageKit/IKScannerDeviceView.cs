@@ -1,7 +1,9 @@
 using System;
 using System.ComponentModel;
 using AppKit;
+using CoreGraphics;
 using Foundation;
+using ImageCaptureCore;
 using ObjCRuntime;
 
 namespace ImageKit;
@@ -10,14 +12,36 @@ namespace ImageKit;
 public class IKScannerDeviceView : NSView
 {
 	[Register]
-	private sealed class _IKScannerDeviceViewDelegate : IKScannerDeviceViewDelegate
+	internal class _IKScannerDeviceViewDelegate : NSObject, IIKScannerDeviceViewDelegate, INativeObject, IDisposable
 	{
-		internal EventHandler<IKScannerDeviceViewScanEventArgs> didScan;
+		internal EventHandler<IKScannerDeviceViewErrorEventArgs>? didEncounterError;
 
-		internal EventHandler<IKScannerDeviceViewErrorEventArgs> didEncounterError;
+		internal EventHandler<IKScannerDeviceViewScanEventArgs>? didScan;
+
+		internal EventHandler<IKScannerDeviceViewScanBandDataEventArgs>? didScanToBandData;
+
+		internal EventHandler<IKScannerDeviceViewScanUrlEventArgs>? didScanToUrl;
+
+		public _IKScannerDeviceViewDelegate()
+		{
+			base.IsDirectBinding = false;
+		}
 
 		[Preserve(Conditional = true)]
-		public override void DidScan(IKScannerDeviceView scannerDeviceView, NSUrl url, NSData data, NSError error)
+		[Export("scannerDeviceView:didEncounterError:")]
+		public void DidEncounterError(IKScannerDeviceView scannerDeviceView, NSError error)
+		{
+			EventHandler<IKScannerDeviceViewErrorEventArgs> eventHandler = didEncounterError;
+			if (eventHandler != null)
+			{
+				IKScannerDeviceViewErrorEventArgs e = new IKScannerDeviceViewErrorEventArgs(error);
+				eventHandler(scannerDeviceView, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("scannerDeviceView:didScanToURL:fileData:error:")]
+		public void DidScan(IKScannerDeviceView scannerDeviceView, NSUrl url, NSData data, NSError error)
 		{
 			EventHandler<IKScannerDeviceViewScanEventArgs> eventHandler = didScan;
 			if (eventHandler != null)
@@ -28,277 +52,227 @@ public class IKScannerDeviceView : NSView
 		}
 
 		[Preserve(Conditional = true)]
-		public override void DidEncounterError(IKScannerDeviceView scannerDeviceView, NSError error)
+		[Export("scannerDeviceView:didScanToBandData:scanInfo:error:")]
+		public void DidScanToBandData(IKScannerDeviceView scannerDeviceView, ICScannerBandData data, NSDictionary scanInfo, NSError error)
 		{
-			EventHandler<IKScannerDeviceViewErrorEventArgs> eventHandler = didEncounterError;
+			EventHandler<IKScannerDeviceViewScanBandDataEventArgs> eventHandler = didScanToBandData;
 			if (eventHandler != null)
 			{
-				IKScannerDeviceViewErrorEventArgs e = new IKScannerDeviceViewErrorEventArgs(error);
+				IKScannerDeviceViewScanBandDataEventArgs e = new IKScannerDeviceViewScanBandDataEventArgs(data, scanInfo, error);
+				eventHandler(scannerDeviceView, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("scannerDeviceView:didScanToURL:error:")]
+		public void DidScanToUrl(IKScannerDeviceView scannerDeviceView, NSUrl url, NSError error)
+		{
+			EventHandler<IKScannerDeviceViewScanUrlEventArgs> eventHandler = didScanToUrl;
+			if (eventHandler != null)
+			{
+				IKScannerDeviceViewScanUrlEventArgs e = new IKScannerDeviceViewScanUrlEventArgs(url, error);
 				eventHandler(scannerDeviceView, e);
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDelegate = "delegate";
+
 	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
 
-	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
-
-	private static readonly IntPtr selModeHandle = Selector.GetHandle("mode");
-
-	private static readonly IntPtr selSetMode_Handle = Selector.GetHandle("setMode:");
-
-	private static readonly IntPtr selHasDisplayModeSimpleHandle = Selector.GetHandle("hasDisplayModeSimple");
-
-	private static readonly IntPtr selSetHasDisplayModeSimple_Handle = Selector.GetHandle("setHasDisplayModeSimple:");
-
-	private static readonly IntPtr selHasDisplayModeAdvancedHandle = Selector.GetHandle("hasDisplayModeAdvanced");
-
-	private static readonly IntPtr selSetHasDisplayModeAdvanced_Handle = Selector.GetHandle("setHasDisplayModeAdvanced:");
-
-	private static readonly IntPtr selTransferModeHandle = Selector.GetHandle("transferMode");
-
-	private static readonly IntPtr selSetTransferMode_Handle = Selector.GetHandle("setTransferMode:");
-
-	private static readonly IntPtr selScanControlLabelHandle = Selector.GetHandle("scanControlLabel");
-
-	private static readonly IntPtr selSetScanControlLabel_Handle = Selector.GetHandle("setScanControlLabel:");
-
-	private static readonly IntPtr selOverviewControlLabelHandle = Selector.GetHandle("overviewControlLabel");
-
-	private static readonly IntPtr selSetOverviewControlLabel_Handle = Selector.GetHandle("setOverviewControlLabel:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDisplaysDownloadsDirectoryControl = "displaysDownloadsDirectoryControl";
 
 	private static readonly IntPtr selDisplaysDownloadsDirectoryControlHandle = Selector.GetHandle("displaysDownloadsDirectoryControl");
 
-	private static readonly IntPtr selSetDisplaysDownloadsDirectoryControl_Handle = Selector.GetHandle("setDisplaysDownloadsDirectoryControl:");
-
-	private static readonly IntPtr selDownloadsDirectoryHandle = Selector.GetHandle("downloadsDirectory");
-
-	private static readonly IntPtr selSetDownloadsDirectory_Handle = Selector.GetHandle("setDownloadsDirectory:");
-
-	private static readonly IntPtr selDocumentNameHandle = Selector.GetHandle("documentName");
-
-	private static readonly IntPtr selSetDocumentName_Handle = Selector.GetHandle("setDocumentName:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDisplaysPostProcessApplicationControl = "displaysPostProcessApplicationControl";
 
 	private static readonly IntPtr selDisplaysPostProcessApplicationControlHandle = Selector.GetHandle("displaysPostProcessApplicationControl");
 
-	private static readonly IntPtr selSetDisplaysPostProcessApplicationControl_Handle = Selector.GetHandle("setDisplaysPostProcessApplicationControl:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDocumentName = "documentName";
+
+	private static readonly IntPtr selDocumentNameHandle = Selector.GetHandle("documentName");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDownloadsDirectory = "downloadsDirectory";
+
+	private static readonly IntPtr selDownloadsDirectoryHandle = Selector.GetHandle("downloadsDirectory");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selHasDisplayModeAdvanced = "hasDisplayModeAdvanced";
+
+	private static readonly IntPtr selHasDisplayModeAdvancedHandle = Selector.GetHandle("hasDisplayModeAdvanced");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selHasDisplayModeSimple = "hasDisplayModeSimple";
+
+	private static readonly IntPtr selHasDisplayModeSimpleHandle = Selector.GetHandle("hasDisplayModeSimple");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithFrame_ = "initWithFrame:";
+
+	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMode = "mode";
+
+	private static readonly IntPtr selModeHandle = Selector.GetHandle("mode");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selOverviewControlLabel = "overviewControlLabel";
+
+	private static readonly IntPtr selOverviewControlLabelHandle = Selector.GetHandle("overviewControlLabel");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPostProcessApplication = "postProcessApplication";
 
 	private static readonly IntPtr selPostProcessApplicationHandle = Selector.GetHandle("postProcessApplication");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selScanControlLabel = "scanControlLabel";
+
+	private static readonly IntPtr selScanControlLabelHandle = Selector.GetHandle("scanControlLabel");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selScannerDevice = "scannerDevice";
+
+	private static readonly IntPtr selScannerDeviceHandle = Selector.GetHandle("scannerDevice");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDelegate_ = "setDelegate:";
+
+	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDisplaysDownloadsDirectoryControl_ = "setDisplaysDownloadsDirectoryControl:";
+
+	private static readonly IntPtr selSetDisplaysDownloadsDirectoryControl_Handle = Selector.GetHandle("setDisplaysDownloadsDirectoryControl:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDisplaysPostProcessApplicationControl_ = "setDisplaysPostProcessApplicationControl:";
+
+	private static readonly IntPtr selSetDisplaysPostProcessApplicationControl_Handle = Selector.GetHandle("setDisplaysPostProcessApplicationControl:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDocumentName_ = "setDocumentName:";
+
+	private static readonly IntPtr selSetDocumentName_Handle = Selector.GetHandle("setDocumentName:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDownloadsDirectory_ = "setDownloadsDirectory:";
+
+	private static readonly IntPtr selSetDownloadsDirectory_Handle = Selector.GetHandle("setDownloadsDirectory:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetHasDisplayModeAdvanced_ = "setHasDisplayModeAdvanced:";
+
+	private static readonly IntPtr selSetHasDisplayModeAdvanced_Handle = Selector.GetHandle("setHasDisplayModeAdvanced:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetHasDisplayModeSimple_ = "setHasDisplayModeSimple:";
+
+	private static readonly IntPtr selSetHasDisplayModeSimple_Handle = Selector.GetHandle("setHasDisplayModeSimple:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMode_ = "setMode:";
+
+	private static readonly IntPtr selSetMode_Handle = Selector.GetHandle("setMode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetOverviewControlLabel_ = "setOverviewControlLabel:";
+
+	private static readonly IntPtr selSetOverviewControlLabel_Handle = Selector.GetHandle("setOverviewControlLabel:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPostProcessApplication_ = "setPostProcessApplication:";
+
 	private static readonly IntPtr selSetPostProcessApplication_Handle = Selector.GetHandle("setPostProcessApplication:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("IKScannerDeviceView");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetScanControlLabel_ = "setScanControlLabel:";
 
-	private object __mt_WeakDelegate_var;
+	private static readonly IntPtr selSetScanControlLabel_Handle = Selector.GetHandle("setScanControlLabel:");
 
-	private object __mt_DownloadsDirectory_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetScannerDevice_ = "setScannerDevice:";
 
-	private object __mt_PostProcessApplication_var;
+	private static readonly IntPtr selSetScannerDevice_Handle = Selector.GetHandle("setScannerDevice:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTransferMode_ = "setTransferMode:";
+
+	private static readonly IntPtr selSetTransferMode_Handle = Selector.GetHandle("setTransferMode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTransferMode = "transferMode";
+
+	private static readonly IntPtr selTransferModeHandle = Selector.GetHandle("transferMode");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("IKScannerDeviceView");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_ScannerDevice_var;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_WeakDelegate_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSObject WeakDelegate
-	{
-		[Export("delegate", ArgumentSemantic.Assign)]
-		get
-		{
-			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
-		}
-		[Export("setDelegate:", ArgumentSemantic.Assign)]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			__mt_WeakDelegate_var = value;
-		}
-	}
-
-	public IKScannerDeviceViewDelegate Delegate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public IIKScannerDeviceViewDelegate Delegate
 	{
 		get
 		{
-			return WeakDelegate as IKScannerDeviceViewDelegate;
+			return WeakDelegate as IIKScannerDeviceViewDelegate;
 		}
 		set
 		{
-			WeakDelegate = value;
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
+			{
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			WeakDelegate = nSObject;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual IKScannerDeviceViewDisplayMode DisplayMode
 	{
 		[Export("mode")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return (IKScannerDeviceViewDisplayMode)Messaging.int_objc_msgSend(base.Handle, selModeHandle);
+				return (IKScannerDeviceViewDisplayMode)Messaging.Int64_objc_msgSend(base.Handle, selModeHandle);
 			}
-			return (IKScannerDeviceViewDisplayMode)Messaging.int_objc_msgSendSuper(base.SuperHandle, selModeHandle);
+			return (IKScannerDeviceViewDisplayMode)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selModeHandle);
 		}
 		[Export("setMode:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_int(base.Handle, selSetMode_Handle, (int)value);
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetMode_Handle, (long)value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetMode_Handle, (int)value);
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetMode_Handle, (long)value);
 			}
 		}
 	}
 
-	public virtual bool HasDisplayModeSimple
-	{
-		[Export("hasDisplayModeSimple")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selHasDisplayModeSimpleHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selHasDisplayModeSimpleHandle);
-		}
-		[Export("setHasDisplayModeSimple:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetHasDisplayModeSimple_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetHasDisplayModeSimple_Handle, value);
-			}
-		}
-	}
-
-	public virtual bool HasDisplayModeAdvanced
-	{
-		[Export("hasDisplayModeAdvanced")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selHasDisplayModeAdvancedHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selHasDisplayModeAdvancedHandle);
-		}
-		[Export("setHasDisplayModeAdvanced:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetHasDisplayModeAdvanced_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetHasDisplayModeAdvanced_Handle, value);
-			}
-		}
-	}
-
-	public virtual IKScannerDeviceViewTransferMode TransferMode
-	{
-		[Export("transferMode")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return (IKScannerDeviceViewTransferMode)Messaging.int_objc_msgSend(base.Handle, selTransferModeHandle);
-			}
-			return (IKScannerDeviceViewTransferMode)Messaging.int_objc_msgSendSuper(base.SuperHandle, selTransferModeHandle);
-		}
-		[Export("setTransferMode:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_int(base.Handle, selSetTransferMode_Handle, (int)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetTransferMode_Handle, (int)value);
-			}
-		}
-	}
-
-	public virtual string ScanControlLabel
-	{
-		[Export("scanControlLabel", ArgumentSemantic.Copy)]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selScanControlLabelHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selScanControlLabelHandle));
-		}
-		[Export("setScanControlLabel:", ArgumentSemantic.Copy)]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetScanControlLabel_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetScanControlLabel_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	public virtual string OverviewControlLabel
-	{
-		[Export("overviewControlLabel", ArgumentSemantic.Copy)]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selOverviewControlLabelHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOverviewControlLabelHandle));
-		}
-		[Export("setOverviewControlLabel:", ArgumentSemantic.Copy)]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetOverviewControlLabel_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetOverviewControlLabel_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool DisplaysDownloadsDirectoryControl
 	{
 		[Export("displaysDownloadsDirectoryControl")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selDisplaysDownloadsDirectoryControlHandle);
 			}
@@ -307,7 +281,7 @@ public class IKScannerDeviceView : NSView
 		[Export("setDisplaysDownloadsDirectoryControl:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetDisplaysDownloadsDirectoryControl_Handle, value);
 			}
@@ -318,38 +292,39 @@ public class IKScannerDeviceView : NSView
 		}
 	}
 
-	public virtual NSUrl DownloadsDirectory
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool DisplaysPostProcessApplicationControl
 	{
-		[Export("downloadsDirectory", ArgumentSemantic.Retain)]
+		[Export("displaysPostProcessApplicationControl")]
 		get
 		{
-			return (NSUrl)(__mt_DownloadsDirectory_var = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDownloadsDirectoryHandle))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDownloadsDirectoryHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selDisplaysPostProcessApplicationControlHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selDisplaysPostProcessApplicationControlHandle);
 		}
-		[Export("setDownloadsDirectory:", ArgumentSemantic.Retain)]
+		[Export("setDisplaysPostProcessApplicationControl:")]
 		set
 		{
-			if (value == null)
+			if (base.IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDownloadsDirectory_Handle, value.Handle);
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetDisplaysPostProcessApplicationControl_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDownloadsDirectory_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetDisplaysPostProcessApplicationControl_Handle, value);
 			}
-			__mt_DownloadsDirectory_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string DocumentName
 	{
 		[Export("documentName", ArgumentSemantic.Copy)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDocumentNameHandle));
 			}
@@ -363,7 +338,7 @@ public class IKScannerDeviceView : NSView
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDocumentName_Handle, arg);
 			}
@@ -375,37 +350,131 @@ public class IKScannerDeviceView : NSView
 		}
 	}
 
-	public virtual bool DisplaysPostProcessApplicationControl
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSUrl DownloadsDirectory
 	{
-		[Export("displaysPostProcessApplicationControl")]
+		[Export("downloadsDirectory", ArgumentSemantic.Retain)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selDisplaysPostProcessApplicationControlHandle);
+				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selDownloadsDirectoryHandle));
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selDisplaysPostProcessApplicationControlHandle);
+			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDownloadsDirectoryHandle));
 		}
-		[Export("setDisplaysPostProcessApplicationControl:")]
+		[Export("setDownloadsDirectory:", ArgumentSemantic.Retain)]
 		set
 		{
-			if (IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetDisplaysPostProcessApplicationControl_Handle, value);
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDownloadsDirectory_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetDisplaysPostProcessApplicationControl_Handle, value);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDownloadsDirectory_Handle, value.Handle);
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool HasDisplayModeAdvanced
+	{
+		[Export("hasDisplayModeAdvanced")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selHasDisplayModeAdvancedHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selHasDisplayModeAdvancedHandle);
+		}
+		[Export("setHasDisplayModeAdvanced:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetHasDisplayModeAdvanced_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetHasDisplayModeAdvanced_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool HasDisplayModeSimple
+	{
+		[Export("hasDisplayModeSimple")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selHasDisplayModeSimpleHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selHasDisplayModeSimpleHandle);
+		}
+		[Export("setHasDisplayModeSimple:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetHasDisplayModeSimple_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetHasDisplayModeSimple_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string OverviewControlLabel
+	{
+		[Export("overviewControlLabel", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selOverviewControlLabelHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOverviewControlLabelHandle));
+		}
+		[Export("setOverviewControlLabel:", ArgumentSemantic.Copy)]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetOverviewControlLabel_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetOverviewControlLabel_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSUrl PostProcessApplication
 	{
 		[Export("postProcessApplication", ArgumentSemantic.Retain)]
 		get
 		{
-			return (NSUrl)(__mt_PostProcessApplication_var = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPostProcessApplicationHandle))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPostProcessApplicationHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selPostProcessApplicationHandle));
+			}
+			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPostProcessApplicationHandle));
 		}
 		[Export("setPostProcessApplication:", ArgumentSemantic.Retain)]
 		set
@@ -414,7 +483,7 @@ public class IKScannerDeviceView : NSView
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPostProcessApplication_Handle, value.Handle);
 			}
@@ -422,7 +491,139 @@ public class IKScannerDeviceView : NSView
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPostProcessApplication_Handle, value.Handle);
 			}
-			__mt_PostProcessApplication_var = value;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string ScanControlLabel
+	{
+		[Export("scanControlLabel", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selScanControlLabelHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selScanControlLabelHandle));
+		}
+		[Export("setScanControlLabel:", ArgumentSemantic.Copy)]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetScanControlLabel_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetScanControlLabel_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual ICScannerDevice ScannerDevice
+	{
+		[Export("scannerDevice", ArgumentSemantic.Assign)]
+		get
+		{
+			ICScannerDevice iCScannerDevice = ((!base.IsDirectBinding) ? Runtime.GetNSObject<ICScannerDevice>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selScannerDeviceHandle)) : Runtime.GetNSObject<ICScannerDevice>(Messaging.IntPtr_objc_msgSend(base.Handle, selScannerDeviceHandle)));
+			MarkDirty();
+			__mt_ScannerDevice_var = iCScannerDevice;
+			return iCScannerDevice;
+		}
+		[Export("setScannerDevice:", ArgumentSemantic.Assign)]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetScannerDevice_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetScannerDevice_Handle, value.Handle);
+			}
+			MarkDirty();
+			__mt_ScannerDevice_var = value;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual IKScannerDeviceViewTransferMode TransferMode
+	{
+		[Export("transferMode")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return (IKScannerDeviceViewTransferMode)Messaging.Int64_objc_msgSend(base.Handle, selTransferModeHandle);
+			}
+			return (IKScannerDeviceViewTransferMode)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selTransferModeHandle);
+		}
+		[Export("setTransferMode:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetTransferMode_Handle, (long)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetTransferMode_Handle, (long)value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakDelegate
+	{
+		[Export("delegate", ArgumentSemantic.Assign)]
+		get
+		{
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
+			MarkDirty();
+			__mt_WeakDelegate_var = nSObject;
+			return nSObject;
+		}
+		[Export("setDelegate:", ArgumentSemantic.Assign)]
+		set
+		{
+			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakDelegate_var, value, GetInternalEventDelegateType);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			MarkDirty();
+			__mt_WeakDelegate_var = value;
+		}
+	}
+
+	internal virtual Type GetInternalEventDelegateType => typeof(_IKScannerDeviceViewDelegate);
+
+	public event EventHandler<IKScannerDeviceViewErrorEventArgs> DidEncounterError
+	{
+		add
+		{
+			_IKScannerDeviceViewDelegate iKScannerDeviceViewDelegate = EnsureIKScannerDeviceViewDelegate();
+			iKScannerDeviceViewDelegate.didEncounterError = (EventHandler<IKScannerDeviceViewErrorEventArgs>)System.Delegate.Combine(iKScannerDeviceViewDelegate.didEncounterError, value);
+		}
+		remove
+		{
+			_IKScannerDeviceViewDelegate iKScannerDeviceViewDelegate = EnsureIKScannerDeviceViewDelegate();
+			iKScannerDeviceViewDelegate.didEncounterError = (EventHandler<IKScannerDeviceViewErrorEventArgs>)System.Delegate.Remove(iKScannerDeviceViewDelegate.didEncounterError, value);
 		}
 	}
 
@@ -440,80 +641,123 @@ public class IKScannerDeviceView : NSView
 		}
 	}
 
-	public event EventHandler<IKScannerDeviceViewErrorEventArgs> DidEncounterError
+	public event EventHandler<IKScannerDeviceViewScanBandDataEventArgs> DidScanToBandData
 	{
 		add
 		{
 			_IKScannerDeviceViewDelegate iKScannerDeviceViewDelegate = EnsureIKScannerDeviceViewDelegate();
-			iKScannerDeviceViewDelegate.didEncounterError = (EventHandler<IKScannerDeviceViewErrorEventArgs>)System.Delegate.Combine(iKScannerDeviceViewDelegate.didEncounterError, value);
+			iKScannerDeviceViewDelegate.didScanToBandData = (EventHandler<IKScannerDeviceViewScanBandDataEventArgs>)System.Delegate.Combine(iKScannerDeviceViewDelegate.didScanToBandData, value);
 		}
 		remove
 		{
 			_IKScannerDeviceViewDelegate iKScannerDeviceViewDelegate = EnsureIKScannerDeviceViewDelegate();
-			iKScannerDeviceViewDelegate.didEncounterError = (EventHandler<IKScannerDeviceViewErrorEventArgs>)System.Delegate.Remove(iKScannerDeviceViewDelegate.didEncounterError, value);
+			iKScannerDeviceViewDelegate.didScanToBandData = (EventHandler<IKScannerDeviceViewScanBandDataEventArgs>)System.Delegate.Remove(iKScannerDeviceViewDelegate.didScanToBandData, value);
 		}
 	}
 
+	public event EventHandler<IKScannerDeviceViewScanUrlEventArgs> DidScanToUrl
+	{
+		add
+		{
+			_IKScannerDeviceViewDelegate iKScannerDeviceViewDelegate = EnsureIKScannerDeviceViewDelegate();
+			iKScannerDeviceViewDelegate.didScanToUrl = (EventHandler<IKScannerDeviceViewScanUrlEventArgs>)System.Delegate.Combine(iKScannerDeviceViewDelegate.didScanToUrl, value);
+		}
+		remove
+		{
+			_IKScannerDeviceViewDelegate iKScannerDeviceViewDelegate = EnsureIKScannerDeviceViewDelegate();
+			iKScannerDeviceViewDelegate.didScanToUrl = (EventHandler<IKScannerDeviceViewScanUrlEventArgs>)System.Delegate.Remove(iKScannerDeviceViewDelegate.didScanToUrl, value);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public IKScannerDeviceView()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public IKScannerDeviceView(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public IKScannerDeviceView(NSObjectFlag t)
+	protected IKScannerDeviceView(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public IKScannerDeviceView(IntPtr handle)
+	protected internal IKScannerDeviceView(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	private _IKScannerDeviceViewDelegate EnsureIKScannerDeviceViewDelegate()
+	[Export("initWithFrame:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public IKScannerDeviceView(CGRect frameRect)
+		: base(NSObjectFlag.Empty)
 	{
-		NSObject nSObject = WeakDelegate;
-		if (nSObject == null || !(nSObject is _IKScannerDeviceViewDelegate))
+		if (base.IsDirectBinding)
 		{
-			nSObject = (WeakDelegate = new _IKScannerDeviceViewDelegate());
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
 		}
-		return (_IKScannerDeviceViewDelegate)nSObject;
+		else
+		{
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
+		}
 	}
 
+	internal virtual _IKScannerDeviceViewDelegate CreateInternalEventDelegateType()
+	{
+		return new _IKScannerDeviceViewDelegate();
+	}
+
+	internal _IKScannerDeviceViewDelegate EnsureIKScannerDeviceViewDelegate()
+	{
+		if (WeakDelegate != null)
+		{
+			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakDelegate, GetInternalEventDelegateType);
+		}
+		_IKScannerDeviceViewDelegate iKScannerDeviceViewDelegate = Delegate as _IKScannerDeviceViewDelegate;
+		if (iKScannerDeviceViewDelegate == null)
+		{
+			iKScannerDeviceViewDelegate = (_IKScannerDeviceViewDelegate)(Delegate = CreateInternalEventDelegateType());
+		}
+		return iKScannerDeviceViewDelegate;
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
+			__mt_ScannerDevice_var = null;
 			__mt_WeakDelegate_var = null;
-			__mt_DownloadsDirectory_var = null;
-			__mt_PostProcessApplication_var = null;
 		}
 	}
 }

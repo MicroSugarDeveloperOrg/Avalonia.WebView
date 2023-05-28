@@ -1,15 +1,42 @@
+using ObjCRuntime;
+
 namespace QTKit;
 
+[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, null)]
 public struct QTTimeRange
 {
-	public QTTime Time;
+	private QTTime time;
 
-	public QTTime Duration;
+	private QTTime duration;
+
+	public QTTime Time
+	{
+		get
+		{
+			return time;
+		}
+		set
+		{
+			time = value;
+		}
+	}
+
+	public QTTime Duration
+	{
+		get
+		{
+			return duration;
+		}
+		set
+		{
+			duration = value;
+		}
+	}
 
 	public QTTimeRange(QTTime time, QTTime duration)
 	{
-		Time = time;
-		Duration = duration;
+		this.time = time;
+		this.duration = duration;
 	}
 
 	public override string ToString()

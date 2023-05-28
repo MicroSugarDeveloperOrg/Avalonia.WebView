@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 
@@ -9,388 +10,341 @@ namespace AppKit;
 public class NSRuleEditor : NSControl
 {
 	[Register]
-	private sealed class _NSRuleEditorDelegate : NSRuleEditorDelegate
+	internal class _NSRuleEditorDelegate : NSObject, INSRuleEditorDelegate, INativeObject, IDisposable
 	{
-		internal NSRuleEditorNumberOfChildren numberOfChildren;
+		internal EventHandler? changed;
 
-		internal NSRulerEditorChildCriterion childForCriterion;
+		internal NSRulerEditorChildCriterion? childForCriterion;
 
-		internal NSRulerEditorDisplayValue displayValue;
+		internal NSRulerEditorDisplayValue? displayValue;
 
-		internal NSRulerEditorPredicateParts predicateParts;
+		internal EventHandler? editingBegan;
 
-		internal EventHandler rowsDidChange;
+		internal EventHandler? editingEnded;
 
-		internal EventHandler editingEnded;
+		internal NSRuleEditorNumberOfChildren? numberOfChildren;
 
-		internal EventHandler changed;
+		internal NSRulerEditorPredicateParts? predicateParts;
 
-		internal EventHandler editingBegan;
+		internal EventHandler? rowsDidChange;
 
-		[Preserve(Conditional = true)]
-		public override long NumberOfChildren(NSRuleEditor editor, NSObject criterion, NSRuleEditorRowType rowType)
+		public _NSRuleEditorDelegate()
 		{
-			return numberOfChildren?.Invoke(editor, criterion, rowType) ?? 0;
+			base.IsDirectBinding = false;
 		}
 
 		[Preserve(Conditional = true)]
-		public override NSObject ChildForCriterion(NSRuleEditor editor, long index, NSObject criterion, NSRuleEditorRowType rowType)
-		{
-			return childForCriterion?.Invoke(editor, index, criterion, rowType);
-		}
-
-		[Preserve(Conditional = true)]
-		public override NSObject DisplayValue(NSRuleEditor editor, NSObject criterion, long row)
-		{
-			return displayValue?.Invoke(editor, criterion, row);
-		}
-
-		[Preserve(Conditional = true)]
-		public override NSDictionary PredicateParts(NSRuleEditor editor, NSObject criterion, NSObject value, long row)
-		{
-			return predicateParts?.Invoke(editor, criterion, value, row);
-		}
-
-		[Preserve(Conditional = true)]
-		public override void RowsDidChange(NSNotification notification)
-		{
-			rowsDidChange?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		public override void EditingEnded(NSNotification notification)
-		{
-			editingEnded?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		public override void Changed(NSNotification notification)
+		[Export("controlTextDidChange:")]
+		public void Changed(NSNotification notification)
 		{
 			changed?.Invoke(notification, EventArgs.Empty);
 		}
 
 		[Preserve(Conditional = true)]
-		public override void EditingBegan(NSNotification notification)
+		[Export("ruleEditor:child:forCriterion:withRowType:")]
+		public NSObject ChildForCriterion(NSRuleEditor editor, nint index, NSObject criterion, NSRuleEditorRowType rowType)
+		{
+			return childForCriterion?.Invoke(editor, index, criterion, rowType);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("ruleEditor:displayValueForCriterion:inRow:")]
+		public NSObject DisplayValue(NSRuleEditor editor, NSObject criterion, nint row)
+		{
+			return displayValue?.Invoke(editor, criterion, row);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("controlTextDidBeginEditing:")]
+		public void EditingBegan(NSNotification notification)
 		{
 			editingBegan?.Invoke(notification, EventArgs.Empty);
 		}
+
+		[Preserve(Conditional = true)]
+		[Export("controlTextDidEndEditing:")]
+		public void EditingEnded(NSNotification notification)
+		{
+			editingEnded?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("ruleEditor:numberOfChildrenForCriterion:withRowType:")]
+		public nint NumberOfChildren(NSRuleEditor editor, NSObject criterion, NSRuleEditorRowType rowType)
+		{
+			return numberOfChildren?.Invoke(editor, criterion, rowType) ?? ((nint)0);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("ruleEditor:predicatePartsForCriterion:withDisplayValue:inRow:")]
+		public NSDictionary PredicateParts(NSRuleEditor editor, NSObject criterion, NSObject value, nint row)
+		{
+			return predicateParts?.Invoke(editor, criterion, value, row);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("ruleEditorRowsDidChange:")]
+		public void RowsDidChange(NSNotification notification)
+		{
+			rowsDidChange?.Invoke(notification, EventArgs.Empty);
+		}
 	}
 
-	private static readonly IntPtr selPredicateHandle = Selector.GetHandle("predicate");
+	public new static class Notifications
+	{
+		public static NSObject ObserveRowsDidChange(EventHandler<NSNotificationEventArgs> handler)
+		{
+			EventHandler<NSNotificationEventArgs> handler2 = handler;
+			return NSNotificationCenter.DefaultCenter.AddObserver(RowsDidChangeNotification, delegate(NSNotification notification)
+			{
+				handler2(null, new NSNotificationEventArgs(notification));
+			});
+		}
 
-	private static readonly IntPtr selNumberOfRowsHandle = Selector.GetHandle("numberOfRows");
+		public static NSObject ObserveRowsDidChange(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
+		{
+			EventHandler<NSNotificationEventArgs> handler2 = handler;
+			return NSNotificationCenter.DefaultCenter.AddObserver(RowsDidChangeNotification, delegate(NSNotification notification)
+			{
+				handler2(null, new NSNotificationEventArgs(notification));
+			}, objectToObserve);
+		}
+	}
 
-	private static readonly IntPtr selSelectedRowIndexesHandle = Selector.GetHandle("selectedRowIndexes");
-
-	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
-
-	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
-
-	private static readonly IntPtr selFormattingStringsFilenameHandle = Selector.GetHandle("formattingStringsFilename");
-
-	private static readonly IntPtr selSetFormattingStringsFilename_Handle = Selector.GetHandle("setFormattingStringsFilename:");
-
-	private static readonly IntPtr selFormattingDictionaryHandle = Selector.GetHandle("formattingDictionary");
-
-	private static readonly IntPtr selSetFormattingDictionary_Handle = Selector.GetHandle("setFormattingDictionary:");
-
-	private static readonly IntPtr selNestingModeHandle = Selector.GetHandle("nestingMode");
-
-	private static readonly IntPtr selSetNestingMode_Handle = Selector.GetHandle("setNestingMode:");
-
-	private static readonly IntPtr selRowHeightHandle = Selector.GetHandle("rowHeight");
-
-	private static readonly IntPtr selSetRowHeight_Handle = Selector.GetHandle("setRowHeight:");
-
-	private static readonly IntPtr selIsEditableHandle = Selector.GetHandle("isEditable");
-
-	private static readonly IntPtr selSetEditable_Handle = Selector.GetHandle("setEditable:");
-
-	private static readonly IntPtr selCanRemoveAllRowsHandle = Selector.GetHandle("canRemoveAllRows");
-
-	private static readonly IntPtr selSetCanRemoveAllRows_Handle = Selector.GetHandle("setCanRemoveAllRows:");
-
-	private static readonly IntPtr selRowClassHandle = Selector.GetHandle("rowClass");
-
-	private static readonly IntPtr selSetRowClass_Handle = Selector.GetHandle("setRowClass:");
-
-	private static readonly IntPtr selRowTypeKeyPathHandle = Selector.GetHandle("rowTypeKeyPath");
-
-	private static readonly IntPtr selSetRowTypeKeyPath_Handle = Selector.GetHandle("setRowTypeKeyPath:");
-
-	private static readonly IntPtr selSubrowsKeyPathHandle = Selector.GetHandle("subrowsKeyPath");
-
-	private static readonly IntPtr selSetSubrowsKeyPath_Handle = Selector.GetHandle("setSubrowsKeyPath:");
-
-	private static readonly IntPtr selCriteriaKeyPathHandle = Selector.GetHandle("criteriaKeyPath");
-
-	private static readonly IntPtr selSetCriteriaKeyPath_Handle = Selector.GetHandle("setCriteriaKeyPath:");
-
-	private static readonly IntPtr selDisplayValuesKeyPathHandle = Selector.GetHandle("displayValuesKeyPath");
-
-	private static readonly IntPtr selSetDisplayValuesKeyPath_Handle = Selector.GetHandle("setDisplayValuesKeyPath:");
-
-	private static readonly IntPtr selReloadCriteriaHandle = Selector.GetHandle("reloadCriteria");
-
-	private static readonly IntPtr selReloadPredicateHandle = Selector.GetHandle("reloadPredicate");
-
-	private static readonly IntPtr selPredicateForRow_Handle = Selector.GetHandle("predicateForRow:");
-
-	private static readonly IntPtr selSubrowIndexesForRow_Handle = Selector.GetHandle("subrowIndexesForRow:");
-
-	private static readonly IntPtr selCriteriaForRow_Handle = Selector.GetHandle("criteriaForRow:");
-
-	private static readonly IntPtr selDisplayValuesForRow_Handle = Selector.GetHandle("displayValuesForRow:");
-
-	private static readonly IntPtr selRowForDisplayValue_Handle = Selector.GetHandle("rowForDisplayValue:");
-
-	private static readonly IntPtr selRowTypeForRow_Handle = Selector.GetHandle("rowTypeForRow:");
-
-	private static readonly IntPtr selParentRowForRow_Handle = Selector.GetHandle("parentRowForRow:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAddRow_ = "addRow:";
 
 	private static readonly IntPtr selAddRow_Handle = Selector.GetHandle("addRow:");
 
-	private static readonly IntPtr selInsertRowAtIndexWithTypeAsSubrowOfRowAnimate_Handle = Selector.GetHandle("insertRowAtIndex:withType:asSubrowOfRow:animate:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCanRemoveAllRows = "canRemoveAllRows";
 
-	private static readonly IntPtr selSetCriteriaAndDisplayValuesForRowAtIndex_Handle = Selector.GetHandle("setCriteria:andDisplayValues:forRowAtIndex:");
+	private static readonly IntPtr selCanRemoveAllRowsHandle = Selector.GetHandle("canRemoveAllRows");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCriteriaForRow_ = "criteriaForRow:";
+
+	private static readonly IntPtr selCriteriaForRow_Handle = Selector.GetHandle("criteriaForRow:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCriteriaKeyPath = "criteriaKeyPath";
+
+	private static readonly IntPtr selCriteriaKeyPathHandle = Selector.GetHandle("criteriaKeyPath");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDelegate = "delegate";
+
+	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDisplayValuesForRow_ = "displayValuesForRow:";
+
+	private static readonly IntPtr selDisplayValuesForRow_Handle = Selector.GetHandle("displayValuesForRow:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDisplayValuesKeyPath = "displayValuesKeyPath";
+
+	private static readonly IntPtr selDisplayValuesKeyPathHandle = Selector.GetHandle("displayValuesKeyPath");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFormattingDictionary = "formattingDictionary";
+
+	private static readonly IntPtr selFormattingDictionaryHandle = Selector.GetHandle("formattingDictionary");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFormattingStringsFilename = "formattingStringsFilename";
+
+	private static readonly IntPtr selFormattingStringsFilenameHandle = Selector.GetHandle("formattingStringsFilename");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithFrame_ = "initWithFrame:";
+
+	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInsertRowAtIndex_WithType_AsSubrowOfRow_Animate_ = "insertRowAtIndex:withType:asSubrowOfRow:animate:";
+
+	private static readonly IntPtr selInsertRowAtIndex_WithType_AsSubrowOfRow_Animate_Handle = Selector.GetHandle("insertRowAtIndex:withType:asSubrowOfRow:animate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsEditable = "isEditable";
+
+	private static readonly IntPtr selIsEditableHandle = Selector.GetHandle("isEditable");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selNestingMode = "nestingMode";
+
+	private static readonly IntPtr selNestingModeHandle = Selector.GetHandle("nestingMode");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selNumberOfRows = "numberOfRows";
+
+	private static readonly IntPtr selNumberOfRowsHandle = Selector.GetHandle("numberOfRows");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selParentRowForRow_ = "parentRowForRow:";
+
+	private static readonly IntPtr selParentRowForRow_Handle = Selector.GetHandle("parentRowForRow:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPredicate = "predicate";
+
+	private static readonly IntPtr selPredicateHandle = Selector.GetHandle("predicate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPredicateForRow_ = "predicateForRow:";
+
+	private static readonly IntPtr selPredicateForRow_Handle = Selector.GetHandle("predicateForRow:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReloadCriteria = "reloadCriteria";
+
+	private static readonly IntPtr selReloadCriteriaHandle = Selector.GetHandle("reloadCriteria");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReloadPredicate = "reloadPredicate";
+
+	private static readonly IntPtr selReloadPredicateHandle = Selector.GetHandle("reloadPredicate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveRowAtIndex_ = "removeRowAtIndex:";
 
 	private static readonly IntPtr selRemoveRowAtIndex_Handle = Selector.GetHandle("removeRowAtIndex:");
 
-	private static readonly IntPtr selRemoveRowsAtIndexesIncludeSubrows_Handle = Selector.GetHandle("removeRowsAtIndexes:includeSubrows:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveRowsAtIndexes_IncludeSubrows_ = "removeRowsAtIndexes:includeSubrows:";
 
-	private static readonly IntPtr selSelectRowIndexesByExtendingSelection_Handle = Selector.GetHandle("selectRowIndexes:byExtendingSelection:");
+	private static readonly IntPtr selRemoveRowsAtIndexes_IncludeSubrows_Handle = Selector.GetHandle("removeRowsAtIndexes:includeSubrows:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSRuleEditor");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRowClass = "rowClass";
 
-	private object __mt_Predicate_var;
+	private static readonly IntPtr selRowClassHandle = Selector.GetHandle("rowClass");
 
-	private object __mt_SelectedRows_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRowForDisplayValue_ = "rowForDisplayValue:";
 
-	private object __mt_WeakDelegate_var;
+	private static readonly IntPtr selRowForDisplayValue_Handle = Selector.GetHandle("rowForDisplayValue:");
 
-	private object __mt_FormattingDictionary_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRowHeight = "rowHeight";
+
+	private static readonly IntPtr selRowHeightHandle = Selector.GetHandle("rowHeight");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRowTypeForRow_ = "rowTypeForRow:";
+
+	private static readonly IntPtr selRowTypeForRow_Handle = Selector.GetHandle("rowTypeForRow:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRowTypeKeyPath = "rowTypeKeyPath";
+
+	private static readonly IntPtr selRowTypeKeyPathHandle = Selector.GetHandle("rowTypeKeyPath");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSelectRowIndexes_ByExtendingSelection_ = "selectRowIndexes:byExtendingSelection:";
+
+	private static readonly IntPtr selSelectRowIndexes_ByExtendingSelection_Handle = Selector.GetHandle("selectRowIndexes:byExtendingSelection:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSelectedRowIndexes = "selectedRowIndexes";
+
+	private static readonly IntPtr selSelectedRowIndexesHandle = Selector.GetHandle("selectedRowIndexes");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCanRemoveAllRows_ = "setCanRemoveAllRows:";
+
+	private static readonly IntPtr selSetCanRemoveAllRows_Handle = Selector.GetHandle("setCanRemoveAllRows:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCriteria_AndDisplayValues_ForRowAtIndex_ = "setCriteria:andDisplayValues:forRowAtIndex:";
+
+	private static readonly IntPtr selSetCriteria_AndDisplayValues_ForRowAtIndex_Handle = Selector.GetHandle("setCriteria:andDisplayValues:forRowAtIndex:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCriteriaKeyPath_ = "setCriteriaKeyPath:";
+
+	private static readonly IntPtr selSetCriteriaKeyPath_Handle = Selector.GetHandle("setCriteriaKeyPath:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDelegate_ = "setDelegate:";
+
+	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDisplayValuesKeyPath_ = "setDisplayValuesKeyPath:";
+
+	private static readonly IntPtr selSetDisplayValuesKeyPath_Handle = Selector.GetHandle("setDisplayValuesKeyPath:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEditable_ = "setEditable:";
+
+	private static readonly IntPtr selSetEditable_Handle = Selector.GetHandle("setEditable:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFormattingDictionary_ = "setFormattingDictionary:";
+
+	private static readonly IntPtr selSetFormattingDictionary_Handle = Selector.GetHandle("setFormattingDictionary:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFormattingStringsFilename_ = "setFormattingStringsFilename:";
+
+	private static readonly IntPtr selSetFormattingStringsFilename_Handle = Selector.GetHandle("setFormattingStringsFilename:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetNestingMode_ = "setNestingMode:";
+
+	private static readonly IntPtr selSetNestingMode_Handle = Selector.GetHandle("setNestingMode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetRowClass_ = "setRowClass:";
+
+	private static readonly IntPtr selSetRowClass_Handle = Selector.GetHandle("setRowClass:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetRowHeight_ = "setRowHeight:";
+
+	private static readonly IntPtr selSetRowHeight_Handle = Selector.GetHandle("setRowHeight:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetRowTypeKeyPath_ = "setRowTypeKeyPath:";
+
+	private static readonly IntPtr selSetRowTypeKeyPath_Handle = Selector.GetHandle("setRowTypeKeyPath:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetSubrowsKeyPath_ = "setSubrowsKeyPath:";
+
+	private static readonly IntPtr selSetSubrowsKeyPath_Handle = Selector.GetHandle("setSubrowsKeyPath:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSubrowIndexesForRow_ = "subrowIndexesForRow:";
+
+	private static readonly IntPtr selSubrowIndexesForRow_Handle = Selector.GetHandle("subrowIndexesForRow:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSubrowsKeyPath = "subrowsKeyPath";
+
+	private static readonly IntPtr selSubrowsKeyPathHandle = Selector.GetHandle("subrowsKeyPath");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSRuleEditor");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_WeakDelegate_var;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _RowsDidChangeNotification;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSPredicate Predicate
-	{
-		[Export("predicate")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSPredicate)(__mt_Predicate_var = ((!IsDirectBinding) ? ((NSPredicate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPredicateHandle))) : ((NSPredicate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPredicateHandle)))));
-		}
-	}
-
-	public virtual long NumberOfRows
-	{
-		[Export("numberOfRows")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Int64_objc_msgSend(base.Handle, selNumberOfRowsHandle);
-			}
-			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selNumberOfRowsHandle);
-		}
-	}
-
-	public virtual NSIndexSet SelectedRows
-	{
-		[Export("selectedRowIndexes")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSIndexSet)(__mt_SelectedRows_var = ((!IsDirectBinding) ? ((NSIndexSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectedRowIndexesHandle))) : ((NSIndexSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectedRowIndexesHandle)))));
-		}
-	}
-
-	public virtual NSRuleEditorDelegate WeakDelegate
-	{
-		[Export("delegate", ArgumentSemantic.Assign)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSRuleEditorDelegate)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? ((NSRuleEditorDelegate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle))) : ((NSRuleEditorDelegate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)))));
-		}
-		[Export("setDelegate:", ArgumentSemantic.Assign)]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			__mt_WeakDelegate_var = value;
-		}
-	}
-
-	public NSRuleEditorDelegate Delegate
-	{
-		get
-		{
-			return WeakDelegate;
-		}
-		set
-		{
-			WeakDelegate = value;
-		}
-	}
-
-	public virtual string FormattingStringsFilename
-	{
-		[Export("formattingStringsFilename")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selFormattingStringsFilenameHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFormattingStringsFilenameHandle));
-		}
-		[Export("setFormattingStringsFilename:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFormattingStringsFilename_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFormattingStringsFilename_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	public virtual NSDictionary FormattingDictionary
-	{
-		[Export("formattingDictionary")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSDictionary)(__mt_FormattingDictionary_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFormattingDictionaryHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFormattingDictionaryHandle)))));
-		}
-		[Export("setFormattingDictionary:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFormattingDictionary_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFormattingDictionary_Handle, value.Handle);
-			}
-			__mt_FormattingDictionary_var = value;
-		}
-	}
-
-	public virtual NSRuleEditorNestingMode NestingMode
-	{
-		[Export("nestingMode")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return (NSRuleEditorNestingMode)Messaging.UInt64_objc_msgSend(base.Handle, selNestingModeHandle);
-			}
-			return (NSRuleEditorNestingMode)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selNestingModeHandle);
-		}
-		[Export("setNestingMode:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetNestingMode_Handle, (ulong)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetNestingMode_Handle, (ulong)value);
-			}
-		}
-	}
-
-	public virtual double RowHeight
-	{
-		[Export("rowHeight")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selRowHeightHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selRowHeightHandle);
-		}
-		[Export("setRowHeight:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetRowHeight_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetRowHeight_Handle, value);
-			}
-		}
-	}
-
-	public virtual bool Editable
-	{
-		[Export("isEditable")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsEditableHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsEditableHandle);
-		}
-		[Export("setEditable:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetEditable_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetEditable_Handle, value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool CanRemoveAllRows
 	{
 		[Export("canRemoveAllRows")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selCanRemoveAllRowsHandle);
 			}
@@ -400,7 +354,7 @@ public class NSRuleEditor : NSControl
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetCanRemoveAllRows_Handle, value);
 			}
@@ -411,110 +365,14 @@ public class NSRuleEditor : NSControl
 		}
 	}
 
-	public virtual Class RowClass
-	{
-		[Export("rowClass")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return new Class(Messaging.IntPtr_objc_msgSend(base.Handle, selRowClassHandle));
-			}
-			return new Class(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRowClassHandle));
-		}
-		[Export("setRowClass:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetRowClass_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetRowClass_Handle, value.Handle);
-			}
-		}
-	}
-
-	public virtual string RowTypeKeyPath
-	{
-		[Export("rowTypeKeyPath")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selRowTypeKeyPathHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRowTypeKeyPathHandle));
-		}
-		[Export("setRowTypeKeyPath:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetRowTypeKeyPath_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetRowTypeKeyPath_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	public virtual string SubrowsKeyPath
-	{
-		[Export("subrowsKeyPath")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSubrowsKeyPathHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSubrowsKeyPathHandle));
-		}
-		[Export("setSubrowsKeyPath:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSubrowsKeyPath_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSubrowsKeyPath_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string CriteriaKeyPath
 	{
 		[Export("criteriaKeyPath")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCriteriaKeyPathHandle));
 			}
@@ -529,7 +387,7 @@ public class NSRuleEditor : NSControl
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCriteriaKeyPath_Handle, arg);
 			}
@@ -541,13 +399,32 @@ public class NSRuleEditor : NSControl
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public INSRuleEditorDelegate Delegate
+	{
+		get
+		{
+			return WeakDelegate as INSRuleEditorDelegate;
+		}
+		set
+		{
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
+			{
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			WeakDelegate = nSObject;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string DisplayValuesKeyPath
 	{
 		[Export("displayValuesKeyPath")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDisplayValuesKeyPathHandle));
 			}
@@ -562,7 +439,7 @@ public class NSRuleEditor : NSControl
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDisplayValuesKeyPath_Handle, arg);
 			}
@@ -574,19 +451,345 @@ public class NSRuleEditor : NSControl
 		}
 	}
 
-	public NSRuleEditorNumberOfChildren NumberOfChildren
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Editable
 	{
+		[Export("isEditable")]
 		get
 		{
-			return EnsureNSRuleEditorDelegate().numberOfChildren;
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsEditableHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsEditableHandle);
 		}
+		[Export("setEditable:")]
 		set
 		{
-			EnsureNSRuleEditorDelegate().numberOfChildren = value;
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetEditable_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetEditable_Handle, value);
+			}
 		}
 	}
 
-	public NSRulerEditorChildCriterion ChildForCriterion
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary FormattingDictionary
+	{
+		[Export("formattingDictionary", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selFormattingDictionaryHandle));
+			}
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFormattingDictionaryHandle));
+		}
+		[Export("setFormattingDictionary:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFormattingDictionary_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFormattingDictionary_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string FormattingStringsFilename
+	{
+		[Export("formattingStringsFilename")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selFormattingStringsFilenameHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFormattingStringsFilenameHandle));
+		}
+		[Export("setFormattingStringsFilename:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFormattingStringsFilename_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFormattingStringsFilename_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSRuleEditorNestingMode NestingMode
+	{
+		[Export("nestingMode")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return (NSRuleEditorNestingMode)Messaging.UInt64_objc_msgSend(base.Handle, selNestingModeHandle);
+			}
+			return (NSRuleEditorNestingMode)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selNestingModeHandle);
+		}
+		[Export("setNestingMode:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetNestingMode_Handle, (ulong)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetNestingMode_Handle, (ulong)value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint NumberOfRows
+	{
+		[Export("numberOfRows")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nint_objc_msgSend(base.Handle, selNumberOfRowsHandle);
+			}
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selNumberOfRowsHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSPredicate Predicate
+	{
+		[Export("predicate")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSPredicate>(Messaging.IntPtr_objc_msgSend(base.Handle, selPredicateHandle));
+			}
+			return Runtime.GetNSObject<NSPredicate>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPredicateHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual Class RowClass
+	{
+		[Export("rowClass")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRowClassHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selRowClassHandle));
+			return (intPtr == IntPtr.Zero) ? null : new Class(intPtr);
+		}
+		[Export("setRowClass:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetRowClass_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetRowClass_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat RowHeight
+	{
+		[Export("rowHeight")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selRowHeightHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selRowHeightHandle);
+		}
+		[Export("setRowHeight:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetRowHeight_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetRowHeight_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string RowTypeKeyPath
+	{
+		[Export("rowTypeKeyPath")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selRowTypeKeyPathHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRowTypeKeyPathHandle));
+		}
+		[Export("setRowTypeKeyPath:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetRowTypeKeyPath_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetRowTypeKeyPath_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSIndexSet SelectedRows
+	{
+		[Export("selectedRowIndexes")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSIndexSet>(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectedRowIndexesHandle));
+			}
+			return Runtime.GetNSObject<NSIndexSet>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectedRowIndexesHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string SubrowsKeyPath
+	{
+		[Export("subrowsKeyPath")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSubrowsKeyPathHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSubrowsKeyPathHandle));
+		}
+		[Export("setSubrowsKeyPath:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSubrowsKeyPath_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSubrowsKeyPath_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakDelegate
+	{
+		[Export("delegate", ArgumentSemantic.Assign)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
+			MarkDirty();
+			__mt_WeakDelegate_var = nSObject;
+			return nSObject;
+		}
+		[Export("setDelegate:", ArgumentSemantic.Assign)]
+		set
+		{
+			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakDelegate_var, value, GetInternalEventDelegateType);
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			MarkDirty();
+			__mt_WeakDelegate_var = value;
+		}
+	}
+
+	[Field("NSRuleEditorRowsDidChangeNotification", "AppKit")]
+	[Advice("Use NSRuleEditor.Notifications.ObserveRowsDidChange helper method instead.")]
+	public static NSString RowsDidChangeNotification
+	{
+		get
+		{
+			if (_RowsDidChangeNotification == null)
+			{
+				_RowsDidChangeNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSRuleEditorRowsDidChangeNotification");
+			}
+			return _RowsDidChangeNotification;
+		}
+	}
+
+	internal virtual Type GetInternalEventDelegateType => typeof(_NSRuleEditorDelegate);
+
+	public NSRulerEditorChildCriterion? ChildForCriterion
 	{
 		get
 		{
@@ -598,7 +801,7 @@ public class NSRuleEditor : NSControl
 		}
 	}
 
-	public NSRulerEditorDisplayValue DisplayValue
+	public NSRulerEditorDisplayValue? DisplayValue
 	{
 		get
 		{
@@ -610,7 +813,19 @@ public class NSRuleEditor : NSControl
 		}
 	}
 
-	public NSRulerEditorPredicateParts PredicateParts
+	public NSRuleEditorNumberOfChildren? NumberOfChildren
+	{
+		get
+		{
+			return EnsureNSRuleEditorDelegate().numberOfChildren;
+		}
+		set
+		{
+			EnsureNSRuleEditorDelegate().numberOfChildren = value;
+		}
+	}
+
+	public NSRulerEditorPredicateParts? PredicateParts
 	{
 		get
 		{
@@ -619,34 +834,6 @@ public class NSRuleEditor : NSControl
 		set
 		{
 			EnsureNSRuleEditorDelegate().predicateParts = value;
-		}
-	}
-
-	public event EventHandler RowsDidChange
-	{
-		add
-		{
-			_NSRuleEditorDelegate nSRuleEditorDelegate = EnsureNSRuleEditorDelegate();
-			nSRuleEditorDelegate.rowsDidChange = (EventHandler)System.Delegate.Combine(nSRuleEditorDelegate.rowsDidChange, value);
-		}
-		remove
-		{
-			_NSRuleEditorDelegate nSRuleEditorDelegate = EnsureNSRuleEditorDelegate();
-			nSRuleEditorDelegate.rowsDidChange = (EventHandler)System.Delegate.Remove(nSRuleEditorDelegate.rowsDidChange, value);
-		}
-	}
-
-	public event EventHandler EditingEnded
-	{
-		add
-		{
-			_NSRuleEditorDelegate nSRuleEditorDelegate = EnsureNSRuleEditorDelegate();
-			nSRuleEditorDelegate.editingEnded = (EventHandler)System.Delegate.Combine(nSRuleEditorDelegate.editingEnded, value);
-		}
-		remove
-		{
-			_NSRuleEditorDelegate nSRuleEditorDelegate = EnsureNSRuleEditorDelegate();
-			nSRuleEditorDelegate.editingEnded = (EventHandler)System.Delegate.Remove(nSRuleEditorDelegate.editingEnded, value);
 		}
 	}
 
@@ -678,53 +865,187 @@ public class NSRuleEditor : NSControl
 		}
 	}
 
+	public event EventHandler EditingEnded
+	{
+		add
+		{
+			_NSRuleEditorDelegate nSRuleEditorDelegate = EnsureNSRuleEditorDelegate();
+			nSRuleEditorDelegate.editingEnded = (EventHandler)System.Delegate.Combine(nSRuleEditorDelegate.editingEnded, value);
+		}
+		remove
+		{
+			_NSRuleEditorDelegate nSRuleEditorDelegate = EnsureNSRuleEditorDelegate();
+			nSRuleEditorDelegate.editingEnded = (EventHandler)System.Delegate.Remove(nSRuleEditorDelegate.editingEnded, value);
+		}
+	}
+
+	public event EventHandler RowsDidChange
+	{
+		add
+		{
+			_NSRuleEditorDelegate nSRuleEditorDelegate = EnsureNSRuleEditorDelegate();
+			nSRuleEditorDelegate.rowsDidChange = (EventHandler)System.Delegate.Combine(nSRuleEditorDelegate.rowsDidChange, value);
+		}
+		remove
+		{
+			_NSRuleEditorDelegate nSRuleEditorDelegate = EnsureNSRuleEditorDelegate();
+			nSRuleEditorDelegate.rowsDidChange = (EventHandler)System.Delegate.Remove(nSRuleEditorDelegate.rowsDidChange, value);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSRuleEditor()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSRuleEditor(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSRuleEditor(NSObjectFlag t)
+	protected NSRuleEditor(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSRuleEditor(IntPtr handle)
+	protected internal NSRuleEditor(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("initWithFrame:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public NSRuleEditor(CGRect frameRect)
+		: base(NSObjectFlag.Empty)
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
+		}
+		else
+		{
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
+		}
+	}
+
+	[Export("addRow:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AddRow(NSObject sender)
+	{
+		NSApplication.EnsureUIThread();
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddRow_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAddRow_Handle, sender.Handle);
+		}
+	}
+
+	[Export("criteriaForRow:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSArray Criteria(nint row)
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<NSArray>(Messaging.IntPtr_objc_msgSend_nint(base.Handle, selCriteriaForRow_Handle, row));
+		}
+		return Runtime.GetNSObject<NSArray>(Messaging.IntPtr_objc_msgSendSuper_nint(base.SuperHandle, selCriteriaForRow_Handle, row));
+	}
+
+	[Export("displayValuesForRow:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject[] DisplayValues(nint row)
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend_nint(base.Handle, selDisplayValuesForRow_Handle, row));
+		}
+		return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper_nint(base.SuperHandle, selDisplayValuesForRow_Handle, row));
+	}
+
+	[Export("predicateForRow:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSPredicate GetPredicate(nint row)
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<NSPredicate>(Messaging.IntPtr_objc_msgSend_nint(base.Handle, selPredicateForRow_Handle, row));
+		}
+		return Runtime.GetNSObject<NSPredicate>(Messaging.IntPtr_objc_msgSendSuper_nint(base.SuperHandle, selPredicateForRow_Handle, row));
+	}
+
+	[Export("insertRowAtIndex:withType:asSubrowOfRow:animate:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void InsertRowAtIndex(nint rowIndex, NSRuleEditorRowType rowType, nint parentRow, bool shouldAnimate)
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_nint_UInt64_nint_bool(base.Handle, selInsertRowAtIndex_WithType_AsSubrowOfRow_Animate_Handle, rowIndex, (ulong)rowType, parentRow, shouldAnimate);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_nint_UInt64_nint_bool(base.SuperHandle, selInsertRowAtIndex_WithType_AsSubrowOfRow_Animate_Handle, rowIndex, (ulong)rowType, parentRow, shouldAnimate);
+		}
+	}
+
+	[Export("parentRowForRow:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint ParentRow(nint rowIndex)
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			return Messaging.nint_objc_msgSend_nint(base.Handle, selParentRowForRow_Handle, rowIndex);
+		}
+		return Messaging.nint_objc_msgSendSuper_nint(base.SuperHandle, selParentRowForRow_Handle, rowIndex);
+	}
+
 	[Export("reloadCriteria")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ReloadCriteria()
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selReloadCriteriaHandle);
 		}
@@ -735,10 +1056,11 @@ public class NSRuleEditor : NSControl
 	}
 
 	[Export("reloadPredicate")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ReloadPredicate()
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selReloadPredicateHandle);
 		}
@@ -748,121 +1070,90 @@ public class NSRuleEditor : NSControl
 		}
 	}
 
-	[Export("predicateForRow:")]
-	public virtual NSPredicate GetPredicate(long row)
+	[Export("removeRowAtIndex:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RemoveRowAtIndex(nint rowIndex)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSPredicate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_Int64(base.Handle, selPredicateForRow_Handle, row));
+			Messaging.void_objc_msgSend_nint(base.Handle, selRemoveRowAtIndex_Handle, rowIndex);
 		}
-		return (NSPredicate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_Int64(base.SuperHandle, selPredicateForRow_Handle, row));
+		else
+		{
+			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selRemoveRowAtIndex_Handle, rowIndex);
+		}
 	}
 
-	[Export("subrowIndexesForRow:")]
-	public virtual NSIndexSet SubrowIndexes(long rowIndex)
+	[Export("removeRowsAtIndexes:includeSubrows:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RemoveRowsAtIndexes(NSIndexSet rowIndexes, bool includeSubrows)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (rowIndexes == null)
 		{
-			return (NSIndexSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_Int64(base.Handle, selSubrowIndexesForRow_Handle, rowIndex));
+			throw new ArgumentNullException("rowIndexes");
 		}
-		return (NSIndexSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_Int64(base.SuperHandle, selSubrowIndexesForRow_Handle, rowIndex));
-	}
-
-	[Export("criteriaForRow:")]
-	public virtual NSArray Criteria(long row)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSArray)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_Int64(base.Handle, selCriteriaForRow_Handle, row));
+			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selRemoveRowsAtIndexes_IncludeSubrows_Handle, rowIndexes.Handle, includeSubrows);
 		}
-		return (NSArray)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_Int64(base.SuperHandle, selCriteriaForRow_Handle, row));
-	}
-
-	[Export("displayValuesForRow:")]
-	public virtual NSObject[] DisplayValues(long row)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		else
 		{
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend_Int64(base.Handle, selDisplayValuesForRow_Handle, row));
+			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selRemoveRowsAtIndexes_IncludeSubrows_Handle, rowIndexes.Handle, includeSubrows);
 		}
-		return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper_Int64(base.SuperHandle, selDisplayValuesForRow_Handle, row));
 	}
 
 	[Export("rowForDisplayValue:")]
-	public virtual long Row(NSObject displayValue)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint Row(NSObject displayValue)
 	{
 		NSApplication.EnsureUIThread();
 		if (displayValue == null)
 		{
 			throw new ArgumentNullException("displayValue");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return Messaging.Int64_objc_msgSend_IntPtr(base.Handle, selRowForDisplayValue_Handle, displayValue.Handle);
+			return Messaging.nint_objc_msgSend_IntPtr(base.Handle, selRowForDisplayValue_Handle, displayValue.Handle);
 		}
-		return Messaging.Int64_objc_msgSendSuper_IntPtr(base.SuperHandle, selRowForDisplayValue_Handle, displayValue.Handle);
+		return Messaging.nint_objc_msgSendSuper_IntPtr(base.SuperHandle, selRowForDisplayValue_Handle, displayValue.Handle);
 	}
 
 	[Export("rowTypeForRow:")]
-	public virtual NSRuleEditorRowType RowType(long rowIndex)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSRuleEditorRowType RowType(nint rowIndex)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSRuleEditorRowType)Messaging.UInt64_objc_msgSend_Int64(base.Handle, selRowTypeForRow_Handle, rowIndex);
+			return (NSRuleEditorRowType)Messaging.UInt64_objc_msgSend_nint(base.Handle, selRowTypeForRow_Handle, rowIndex);
 		}
-		return (NSRuleEditorRowType)Messaging.UInt64_objc_msgSendSuper_Int64(base.SuperHandle, selRowTypeForRow_Handle, rowIndex);
+		return (NSRuleEditorRowType)Messaging.UInt64_objc_msgSendSuper_nint(base.SuperHandle, selRowTypeForRow_Handle, rowIndex);
 	}
 
-	[Export("parentRowForRow:")]
-	public virtual long ParentRow(long rowIndex)
+	[Export("selectRowIndexes:byExtendingSelection:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SelectRows(NSIndexSet indexes, bool extend)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (indexes == null)
 		{
-			return Messaging.Int64_objc_msgSend_Int64(base.Handle, selParentRowForRow_Handle, rowIndex);
+			throw new ArgumentNullException("indexes");
 		}
-		return Messaging.Int64_objc_msgSendSuper_Int64(base.SuperHandle, selParentRowForRow_Handle, rowIndex);
-	}
-
-	[Export("addRow:")]
-	public virtual void AddRow(NSObject sender)
-	{
-		NSApplication.EnsureUIThread();
-		if (sender == null)
+		if (base.IsDirectBinding)
 		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddRow_Handle, sender.Handle);
+			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selSelectRowIndexes_ByExtendingSelection_Handle, indexes.Handle, extend);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAddRow_Handle, sender.Handle);
-		}
-	}
-
-	[Export("insertRowAtIndex:withType:asSubrowOfRow:animate:")]
-	public virtual void InsertRowAtIndex(long rowIndex, NSRuleEditorRowType rowType, long parentRow, bool shouldAnimate)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_Int64_UInt64_Int64_bool(base.Handle, selInsertRowAtIndexWithTypeAsSubrowOfRowAnimate_Handle, rowIndex, (ulong)rowType, parentRow, shouldAnimate);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_Int64_UInt64_Int64_bool(base.SuperHandle, selInsertRowAtIndexWithTypeAsSubrowOfRowAnimate_Handle, rowIndex, (ulong)rowType, parentRow, shouldAnimate);
+			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selSelectRowIndexes_ByExtendingSelection_Handle, indexes.Handle, extend);
 		}
 	}
 
 	[Export("setCriteria:andDisplayValues:forRowAtIndex:")]
-	public virtual void SetCriteria(NSArray criteria, NSArray values, long rowIndex)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SetCriteria(NSArray criteria, NSArray values, nint rowIndex)
 	{
 		NSApplication.EnsureUIThread();
 		if (criteria == null)
@@ -873,85 +1164,54 @@ public class NSRuleEditor : NSControl
 		{
 			throw new ArgumentNullException("values");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_Int64(base.Handle, selSetCriteriaAndDisplayValuesForRowAtIndex_Handle, criteria.Handle, values.Handle, rowIndex);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr_nint(base.Handle, selSetCriteria_AndDisplayValues_ForRowAtIndex_Handle, criteria.Handle, values.Handle, rowIndex);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_Int64(base.SuperHandle, selSetCriteriaAndDisplayValuesForRowAtIndex_Handle, criteria.Handle, values.Handle, rowIndex);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_nint(base.SuperHandle, selSetCriteria_AndDisplayValues_ForRowAtIndex_Handle, criteria.Handle, values.Handle, rowIndex);
 		}
 	}
 
-	[Export("removeRowAtIndex:")]
-	public virtual void RemoveRowAtIndex(long rowIndex)
+	[Export("subrowIndexesForRow:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSIndexSet SubrowIndexes(nint rowIndex)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_Int64(base.Handle, selRemoveRowAtIndex_Handle, rowIndex);
+			return Runtime.GetNSObject<NSIndexSet>(Messaging.IntPtr_objc_msgSend_nint(base.Handle, selSubrowIndexesForRow_Handle, rowIndex));
 		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selRemoveRowAtIndex_Handle, rowIndex);
-		}
+		return Runtime.GetNSObject<NSIndexSet>(Messaging.IntPtr_objc_msgSendSuper_nint(base.SuperHandle, selSubrowIndexesForRow_Handle, rowIndex));
 	}
 
-	[Export("removeRowsAtIndexes:includeSubrows:")]
-	public virtual void RemoveRowsAtIndexes(NSIndexSet rowIndexes, bool includeSubrows)
+	internal virtual _NSRuleEditorDelegate CreateInternalEventDelegateType()
 	{
-		NSApplication.EnsureUIThread();
-		if (rowIndexes == null)
-		{
-			throw new ArgumentNullException("rowIndexes");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selRemoveRowsAtIndexesIncludeSubrows_Handle, rowIndexes.Handle, includeSubrows);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selRemoveRowsAtIndexesIncludeSubrows_Handle, rowIndexes.Handle, includeSubrows);
-		}
+		return new _NSRuleEditorDelegate();
 	}
 
-	[Export("selectRowIndexes:byExtendingSelection:")]
-	public virtual void SelectRows(NSIndexSet indexes, bool extend)
+	internal _NSRuleEditorDelegate EnsureNSRuleEditorDelegate()
 	{
-		NSApplication.EnsureUIThread();
-		if (indexes == null)
+		if (WeakDelegate != null)
 		{
-			throw new ArgumentNullException("indexes");
+			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakDelegate, GetInternalEventDelegateType);
 		}
-		if (IsDirectBinding)
+		_NSRuleEditorDelegate nSRuleEditorDelegate = Delegate as _NSRuleEditorDelegate;
+		if (nSRuleEditorDelegate == null)
 		{
-			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selSelectRowIndexesByExtendingSelection_Handle, indexes.Handle, extend);
+			nSRuleEditorDelegate = (_NSRuleEditorDelegate)(Delegate = CreateInternalEventDelegateType());
 		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selSelectRowIndexesByExtendingSelection_Handle, indexes.Handle, extend);
-		}
+		return nSRuleEditorDelegate;
 	}
 
-	private _NSRuleEditorDelegate EnsureNSRuleEditorDelegate()
-	{
-		NSRuleEditorDelegate nSRuleEditorDelegate = Delegate;
-		if (nSRuleEditorDelegate == null || !(nSRuleEditorDelegate is _NSRuleEditorDelegate))
-		{
-			nSRuleEditorDelegate = (Delegate = new _NSRuleEditorDelegate());
-		}
-		return (_NSRuleEditorDelegate)nSRuleEditorDelegate;
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
-			__mt_Predicate_var = null;
-			__mt_SelectedRows_var = null;
 			__mt_WeakDelegate_var = null;
-			__mt_FormattingDictionary_var = null;
 		}
 	}
 }

@@ -1,95 +1,96 @@
-﻿using ObjCRuntime;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using ObjCRuntime;
 
 namespace Foundation;
 
-
 internal class NSFastEnumerator
 {
-    [DllImport("/usr/lib/libobjc.dylib")]
-    public static extern nuint objc_msgSend(IntPtr receiver, IntPtr selector, ref NSFastEnumerationState arg1, IntPtr[] arg2, nuint arg3);
+	[DllImport("/usr/lib/libobjc.dylib")]
+	public static extern nuint objc_msgSend(IntPtr receiver, IntPtr selector, ref NSFastEnumerationState arg1, IntPtr[] arg2, nuint arg3);
 }
 internal class NSFastEnumerator<T> : IEnumerator<T>, IDisposable, IEnumerator where T : class, INativeObject
 {
-    private NSFastEnumerationState state;
+	private NSFastEnumerationState state;
 
-    private NSObject collection;
+	private NSObject collection;
 
-    private IntPtr[] array;
+	private IntPtr[] array;
 
-    private nuint count;
+	private nuint count;
 
-    private IntPtr mutationValue;
+	private IntPtr mutationValue;
 
-    private nuint current;
+	private nuint current;
 
-    private bool started;
+	private bool started;
 
-    object IEnumerator.Current
-    {
-        get
-        {
-            VerifyNonMutated();
-            return Current;
-        }
-    }
+	object IEnumerator.Current
+	{
+		get
+		{
+			VerifyNonMutated();
+			return Current;
+		}
+	}
 
-    public T Current => Runtime.GetINativeObject<T>(Marshal.ReadIntPtr(state.itemsPtr, IntPtr.Size * (int)current), owns: false);
+	public T Current => Runtime.GetINativeObject<T>(Marshal.ReadIntPtr(state.itemsPtr, IntPtr.Size * (int)current), owns: false);
 
-    public NSFastEnumerator(NSObject collection)
-    {
-        this.collection = collection;
-    }
+	public NSFastEnumerator(NSObject collection)
+	{
+		this.collection = collection;
+	}
 
-    private void Fetch()
-    {
-        if (array == null)
-        {
-            array = new IntPtr[16];
-        }
-        count = NSFastEnumerator.objc_msgSend(collection.Handle, Selector.GetHandle("countByEnumeratingWithState:objects:count:"), ref state, array, (nuint)array.Length);
-        if (!started)
-        {
-            started = true;
-            mutationValue = Marshal.ReadIntPtr(state.mutationsPtr);
-        }
-        current = (byte)0;
-    }
+	private void Fetch()
+	{
+		if (array == null)
+		{
+			array = new IntPtr[16];
+		}
+		count = NSFastEnumerator.objc_msgSend(collection.Handle, Selector.GetHandle("countByEnumeratingWithState:objects:count:"), ref state, array, (nuint)array.Length);
+		if (!started)
+		{
+			started = true;
+			mutationValue = Marshal.ReadIntPtr(state.mutationsPtr);
+		}
+		current = (byte)0;
+	}
 
-    private void VerifyNonMutated()
-    {
-        if (mutationValue != Marshal.ReadIntPtr(state.mutationsPtr))
-        {
-            throw new InvalidOperationException("Collection was modified");
-        }
-    }
+	private void VerifyNonMutated()
+	{
+		if (mutationValue != Marshal.ReadIntPtr(state.mutationsPtr))
+		{
+			throw new InvalidOperationException("Collection was modified");
+		}
+	}
 
-    bool IEnumerator.MoveNext()
-    {
-        if (array == null || current == count - (byte)1)
-        {
-            Fetch();
-            if (count == (byte)0)
-            {
-                return false;
-            }
-        }
-        else
-        {
-            ++current;
-        }
-        VerifyNonMutated();
-        return true;
-    }
+	bool IEnumerator.MoveNext()
+	{
+		if (array == null || current == count - (byte)1)
+		{
+			Fetch();
+			if (count == (byte)0)
+			{
+				return false;
+			}
+		}
+		else
+		{
+			++current;
+		}
+		VerifyNonMutated();
+		return true;
+	}
 
-    void IEnumerator.Reset()
-    {
-        state = default(NSFastEnumerationState);
-        started = false;
-    }
+	void IEnumerator.Reset()
+	{
+		state = default(NSFastEnumerationState);
+		started = false;
+	}
 
-    void IDisposable.Dispose()
-    {
-    }
+	void IDisposable.Dispose()
+	{
+	}
 }

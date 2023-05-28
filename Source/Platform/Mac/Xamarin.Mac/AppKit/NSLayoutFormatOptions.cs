@@ -1,20 +1,29 @@
+using System;
+using ObjCRuntime;
+
 namespace AppKit;
 
+[Flags]
+[Native]
 public enum NSLayoutFormatOptions : ulong
 {
 	None = 0uL,
 	AlignAllLeft = 2uL,
 	AlignAllRight = 4uL,
 	AlignAllTop = 8uL,
-	AlignAllBottom = 16uL,
-	AlignAllLeading = 32uL,
-	AlignAllTrailing = 64uL,
-	AlignAllCenterX = 512uL,
-	AlignAllCenterY = 1024uL,
-	AlignAllBaseline = 2048uL,
-	AlignmentMask = 65535uL,
+	AlignAllBottom = 0x10uL,
+	AlignAllLeading = 0x20uL,
+	AlignAllTrailing = 0x40uL,
+	AlignAllCenterX = 0x200uL,
+	AlignAllCenterY = 0x400uL,
+	AlignAllBaseline = 0x800uL,
+	[Mac(10, 11)]
+	AlignAllLastBaseline = 0x800uL,
+	[Mac(10, 11)]
+	AlignAllFirstBaseline = 0x1000uL,
+	AlignmentMask = 0xFFFFuL,
 	DirectionLeadingToTrailing = 0uL,
-	DirectionLeftToRight = 65536uL,
-	DirectionRightToLeft = 131072uL,
-	DirectionMask = 196608uL
+	DirectionLeftToRight = 0x10000uL,
+	DirectionRightToLeft = 0x20000uL,
+	DirectionMask = 0x30000uL
 }

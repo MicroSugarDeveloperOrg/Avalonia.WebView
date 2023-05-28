@@ -1,7 +1,10 @@
-﻿namespace MetalPerformanceShaders;
+using System;
+
+namespace MetalPerformanceShaders;
+
 public struct MPSDimensionSlice
 {
-    public nuint Start;
+	public nuint Start;
 
-    public nuint Length;
+	public nuint Length;
 }

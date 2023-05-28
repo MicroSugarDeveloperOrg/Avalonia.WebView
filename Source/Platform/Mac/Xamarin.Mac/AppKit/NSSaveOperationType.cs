@@ -1,5 +1,8 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
+[Native]
 public enum NSSaveOperationType : ulong
 {
 	Save = 0uL,

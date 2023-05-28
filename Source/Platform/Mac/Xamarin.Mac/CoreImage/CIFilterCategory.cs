@@ -5,97 +5,92 @@ namespace CoreImage;
 
 public static class CIFilterCategory
 {
-	private static NSString _DistortionEffect;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Blur;
 
-	private static NSString _GeometryAdjustment;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _BuiltIn;
 
-	private static NSString _CompositeOperation;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ColorAdjustment;
 
-	private static NSString _HalftoneEffect;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ColorEffect;
 
-	private static NSString _ColorAdjustment;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _CompositeOperation;
 
-	private static NSString _ColorEffect;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _DistortionEffect;
 
-	private static NSString _Transition;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FilterGenerator;
 
-	private static NSString _TileEffect;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Generator;
 
-	private static NSString _Generator;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GeometryAdjustment;
 
-	private static NSString _Reduction;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Gradient;
 
-	private static NSString _Gradient;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _HalftoneEffect;
 
-	private static NSString _Stylize;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _HighDynamicRange;
 
-	private static NSString _Sharpen;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Interlaced;
 
-	private static NSString _Blur;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _NonSquarePixels;
 
-	private static NSString _Video;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Reduction;
 
-	private static NSString _StillImage;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Sharpen;
 
-	private static NSString _Interlaced;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _StillImage;
 
-	private static NSString _NonSquarePixels;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Stylize;
 
-	private static NSString _HighDynamicRange;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TileEffect;
 
-	private static NSString _BuiltIn;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Transition;
 
-	private static NSString _FilterGenerator;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Video;
 
-	[Field("kCICategoryDistortionEffect", "Quartz")]
-	public static NSString DistortionEffect
+	[Field("kCICategoryBlur", "Quartz")]
+	public static NSString Blur
 	{
 		get
 		{
-			if (_DistortionEffect == null)
+			if (_Blur == null)
 			{
-				_DistortionEffect = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryDistortionEffect");
+				_Blur = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryBlur");
 			}
-			return _DistortionEffect;
+			return _Blur;
 		}
 	}
 
-	[Field("kCICategoryGeometryAdjustment", "Quartz")]
-	public static NSString GeometryAdjustment
+	[Field("kCICategoryBuiltIn", "Quartz")]
+	public static NSString BuiltIn
 	{
 		get
 		{
-			if (_GeometryAdjustment == null)
+			if (_BuiltIn == null)
 			{
-				_GeometryAdjustment = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryGeometryAdjustment");
+				_BuiltIn = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryBuiltIn");
 			}
-			return _GeometryAdjustment;
-		}
-	}
-
-	[Field("kCICategoryCompositeOperation", "Quartz")]
-	public static NSString CompositeOperation
-	{
-		get
-		{
-			if (_CompositeOperation == null)
-			{
-				_CompositeOperation = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryCompositeOperation");
-			}
-			return _CompositeOperation;
-		}
-	}
-
-	[Field("kCICategoryHalftoneEffect", "Quartz")]
-	public static NSString HalftoneEffect
-	{
-		get
-		{
-			if (_HalftoneEffect == null)
-			{
-				_HalftoneEffect = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryHalftoneEffect");
-			}
-			return _HalftoneEffect;
+			return _BuiltIn;
 		}
 	}
 
@@ -125,29 +120,44 @@ public static class CIFilterCategory
 		}
 	}
 
-	[Field("kCICategoryTransition", "Quartz")]
-	public static NSString Transition
+	[Field("kCICategoryCompositeOperation", "Quartz")]
+	public static NSString CompositeOperation
 	{
 		get
 		{
-			if (_Transition == null)
+			if (_CompositeOperation == null)
 			{
-				_Transition = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryTransition");
+				_CompositeOperation = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryCompositeOperation");
 			}
-			return _Transition;
+			return _CompositeOperation;
 		}
 	}
 
-	[Field("kCICategoryTileEffect", "Quartz")]
-	public static NSString TileEffect
+	[Field("kCICategoryDistortionEffect", "Quartz")]
+	public static NSString DistortionEffect
 	{
 		get
 		{
-			if (_TileEffect == null)
+			if (_DistortionEffect == null)
 			{
-				_TileEffect = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryTileEffect");
+				_DistortionEffect = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryDistortionEffect");
 			}
-			return _TileEffect;
+			return _DistortionEffect;
+		}
+	}
+
+	[Field("kCICategoryFilterGenerator", "Quartz")]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	public static NSString FilterGenerator
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_FilterGenerator == null)
+			{
+				_FilterGenerator = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryFilterGenerator");
+			}
+			return _FilterGenerator;
 		}
 	}
 
@@ -164,16 +174,16 @@ public static class CIFilterCategory
 		}
 	}
 
-	[Field("kCICategoryReduction", "Quartz")]
-	public static NSString Reduction
+	[Field("kCICategoryGeometryAdjustment", "Quartz")]
+	public static NSString GeometryAdjustment
 	{
 		get
 		{
-			if (_Reduction == null)
+			if (_GeometryAdjustment == null)
 			{
-				_Reduction = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryReduction");
+				_GeometryAdjustment = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryGeometryAdjustment");
 			}
-			return _Reduction;
+			return _GeometryAdjustment;
 		}
 	}
 
@@ -190,68 +200,29 @@ public static class CIFilterCategory
 		}
 	}
 
-	[Field("kCICategoryStylize", "Quartz")]
-	public static NSString Stylize
+	[Field("kCICategoryHalftoneEffect", "Quartz")]
+	public static NSString HalftoneEffect
 	{
 		get
 		{
-			if (_Stylize == null)
+			if (_HalftoneEffect == null)
 			{
-				_Stylize = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryStylize");
+				_HalftoneEffect = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryHalftoneEffect");
 			}
-			return _Stylize;
+			return _HalftoneEffect;
 		}
 	}
 
-	[Field("kCICategorySharpen", "Quartz")]
-	public static NSString Sharpen
+	[Field("kCICategoryHighDynamicRange", "Quartz")]
+	public static NSString HighDynamicRange
 	{
 		get
 		{
-			if (_Sharpen == null)
+			if (_HighDynamicRange == null)
 			{
-				_Sharpen = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategorySharpen");
+				_HighDynamicRange = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryHighDynamicRange");
 			}
-			return _Sharpen;
-		}
-	}
-
-	[Field("kCICategoryBlur", "Quartz")]
-	public static NSString Blur
-	{
-		get
-		{
-			if (_Blur == null)
-			{
-				_Blur = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryBlur");
-			}
-			return _Blur;
-		}
-	}
-
-	[Field("kCICategoryVideo", "Quartz")]
-	public static NSString Video
-	{
-		get
-		{
-			if (_Video == null)
-			{
-				_Video = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryVideo");
-			}
-			return _Video;
-		}
-	}
-
-	[Field("kCICategoryStillImage", "Quartz")]
-	public static NSString StillImage
-	{
-		get
-		{
-			if (_StillImage == null)
-			{
-				_StillImage = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryStillImage");
-			}
-			return _StillImage;
+			return _HighDynamicRange;
 		}
 	}
 
@@ -281,42 +252,94 @@ public static class CIFilterCategory
 		}
 	}
 
-	[Field("kCICategoryHighDynamicRange", "Quartz")]
-	public static NSString HighDynamicRange
+	[Field("kCICategoryReduction", "Quartz")]
+	public static NSString Reduction
 	{
 		get
 		{
-			if (_HighDynamicRange == null)
+			if (_Reduction == null)
 			{
-				_HighDynamicRange = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryHighDynamicRange");
+				_Reduction = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryReduction");
 			}
-			return _HighDynamicRange;
+			return _Reduction;
 		}
 	}
 
-	[Field("kCICategoryBuiltIn", "Quartz")]
-	public static NSString BuiltIn
+	[Field("kCICategorySharpen", "Quartz")]
+	public static NSString Sharpen
 	{
 		get
 		{
-			if (_BuiltIn == null)
+			if (_Sharpen == null)
 			{
-				_BuiltIn = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryBuiltIn");
+				_Sharpen = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategorySharpen");
 			}
-			return _BuiltIn;
+			return _Sharpen;
 		}
 	}
 
-	[Field("kCICategoryFilterGenerator", "Quartz")]
-	public static NSString FilterGenerator
+	[Field("kCICategoryStillImage", "Quartz")]
+	public static NSString StillImage
 	{
 		get
 		{
-			if (_FilterGenerator == null)
+			if (_StillImage == null)
 			{
-				_FilterGenerator = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryFilterGenerator");
+				_StillImage = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryStillImage");
 			}
-			return _FilterGenerator;
+			return _StillImage;
+		}
+	}
+
+	[Field("kCICategoryStylize", "Quartz")]
+	public static NSString Stylize
+	{
+		get
+		{
+			if (_Stylize == null)
+			{
+				_Stylize = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryStylize");
+			}
+			return _Stylize;
+		}
+	}
+
+	[Field("kCICategoryTileEffect", "Quartz")]
+	public static NSString TileEffect
+	{
+		get
+		{
+			if (_TileEffect == null)
+			{
+				_TileEffect = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryTileEffect");
+			}
+			return _TileEffect;
+		}
+	}
+
+	[Field("kCICategoryTransition", "Quartz")]
+	public static NSString Transition
+	{
+		get
+		{
+			if (_Transition == null)
+			{
+				_Transition = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryTransition");
+			}
+			return _Transition;
+		}
+	}
+
+	[Field("kCICategoryVideo", "Quartz")]
+	public static NSString Video
+	{
+		get
+		{
+			if (_Video == null)
+			{
+				_Video = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCICategoryVideo");
+			}
+			return _Video;
 		}
 	}
 }

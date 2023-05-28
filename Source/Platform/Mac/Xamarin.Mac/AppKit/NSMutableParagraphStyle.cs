@@ -8,235 +8,224 @@ namespace AppKit;
 [Register("NSMutableParagraphStyle", true)]
 public class NSMutableParagraphStyle : NSParagraphStyle
 {
-	private static readonly IntPtr selTabStopsHandle = Selector.GetHandle("tabStops");
-
-	private static readonly IntPtr selSetTabStops_Handle = Selector.GetHandle("setTabStops:");
-
-	private static readonly IntPtr selDefaultTabIntervalHandle = Selector.GetHandle("defaultTabInterval");
-
-	private static readonly IntPtr selSetDefaultTabInterval_Handle = Selector.GetHandle("setDefaultTabInterval:");
-
-	private static readonly IntPtr selTighteningFactorForTruncationHandle = Selector.GetHandle("tighteningFactorForTruncation");
-
-	private static readonly IntPtr selSetTighteningFactorForTruncation_Handle = Selector.GetHandle("setTighteningFactorForTruncation:");
-
-	private static readonly IntPtr selHeaderLevelHandle = Selector.GetHandle("headerLevel");
-
-	private static readonly IntPtr selSetHeaderLevel_Handle = Selector.GetHandle("setHeaderLevel:");
-
-	private static readonly IntPtr selLineSpacingHandle = Selector.GetHandle("lineSpacing");
-
-	private static readonly IntPtr selSetLineSpacing_Handle = Selector.GetHandle("setLineSpacing:");
-
-	private static readonly IntPtr selAlignmentHandle = Selector.GetHandle("alignment");
-
-	private static readonly IntPtr selSetAlignment_Handle = Selector.GetHandle("setAlignment:");
-
-	private static readonly IntPtr selHeadIndentHandle = Selector.GetHandle("headIndent");
-
-	private static readonly IntPtr selSetHeadIndent_Handle = Selector.GetHandle("setHeadIndent:");
-
-	private static readonly IntPtr selTailIndentHandle = Selector.GetHandle("tailIndent");
-
-	private static readonly IntPtr selSetTailIndent_Handle = Selector.GetHandle("setTailIndent:");
-
-	private static readonly IntPtr selFirstLineHeadIndentHandle = Selector.GetHandle("firstLineHeadIndent");
-
-	private static readonly IntPtr selSetFirstLineHeadIndent_Handle = Selector.GetHandle("setFirstLineHeadIndent:");
-
-	private static readonly IntPtr selMinimumLineHeightHandle = Selector.GetHandle("minimumLineHeight");
-
-	private static readonly IntPtr selSetMinimumLineHeight_Handle = Selector.GetHandle("setMinimumLineHeight:");
-
-	private static readonly IntPtr selMaximumLineHeightHandle = Selector.GetHandle("maximumLineHeight");
-
-	private static readonly IntPtr selSetMaximumLineHeight_Handle = Selector.GetHandle("setMaximumLineHeight:");
-
-	private static readonly IntPtr selLineBreakModeHandle = Selector.GetHandle("lineBreakMode");
-
-	private static readonly IntPtr selSetLineBreakMode_Handle = Selector.GetHandle("setLineBreakMode:");
-
-	private static readonly IntPtr selBaseWritingDirectionHandle = Selector.GetHandle("baseWritingDirection");
-
-	private static readonly IntPtr selSetBaseWritingDirection_Handle = Selector.GetHandle("setBaseWritingDirection:");
-
-	private static readonly IntPtr selLineHeightMultipleHandle = Selector.GetHandle("lineHeightMultiple");
-
-	private static readonly IntPtr selSetLineHeightMultiple_Handle = Selector.GetHandle("setLineHeightMultiple:");
-
-	private static readonly IntPtr selParagraphSpacingHandle = Selector.GetHandle("paragraphSpacing");
-
-	private static readonly IntPtr selSetParagraphSpacing_Handle = Selector.GetHandle("setParagraphSpacing:");
-
-	private static readonly IntPtr selParagraphSpacingBeforeHandle = Selector.GetHandle("paragraphSpacingBefore");
-
-	private static readonly IntPtr selSetParagraphSpacingBefore_Handle = Selector.GetHandle("setParagraphSpacingBefore:");
-
-	private static readonly IntPtr selHyphenationFactorHandle = Selector.GetHandle("hyphenationFactor");
-
-	private static readonly IntPtr selSetHyphenationFactor_Handle = Selector.GetHandle("setHyphenationFactor:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAddTabStop_ = "addTabStop:";
 
 	private static readonly IntPtr selAddTabStop_Handle = Selector.GetHandle("addTabStop:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAlignment = "alignment";
+
+	private static readonly IntPtr selAlignmentHandle = Selector.GetHandle("alignment");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAllowsDefaultTighteningForTruncation = "allowsDefaultTighteningForTruncation";
+
+	private static readonly IntPtr selAllowsDefaultTighteningForTruncationHandle = Selector.GetHandle("allowsDefaultTighteningForTruncation");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBaseWritingDirection = "baseWritingDirection";
+
+	private static readonly IntPtr selBaseWritingDirectionHandle = Selector.GetHandle("baseWritingDirection");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDefaultTabInterval = "defaultTabInterval";
+
+	private static readonly IntPtr selDefaultTabIntervalHandle = Selector.GetHandle("defaultTabInterval");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFirstLineHeadIndent = "firstLineHeadIndent";
+
+	private static readonly IntPtr selFirstLineHeadIndentHandle = Selector.GetHandle("firstLineHeadIndent");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selHeadIndent = "headIndent";
+
+	private static readonly IntPtr selHeadIndentHandle = Selector.GetHandle("headIndent");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selHeaderLevel = "headerLevel";
+
+	private static readonly IntPtr selHeaderLevelHandle = Selector.GetHandle("headerLevel");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selHyphenationFactor = "hyphenationFactor";
+
+	private static readonly IntPtr selHyphenationFactorHandle = Selector.GetHandle("hyphenationFactor");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLineBreakMode = "lineBreakMode";
+
+	private static readonly IntPtr selLineBreakModeHandle = Selector.GetHandle("lineBreakMode");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLineHeightMultiple = "lineHeightMultiple";
+
+	private static readonly IntPtr selLineHeightMultipleHandle = Selector.GetHandle("lineHeightMultiple");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLineSpacing = "lineSpacing";
+
+	private static readonly IntPtr selLineSpacingHandle = Selector.GetHandle("lineSpacing");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMaximumLineHeight = "maximumLineHeight";
+
+	private static readonly IntPtr selMaximumLineHeightHandle = Selector.GetHandle("maximumLineHeight");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMinimumLineHeight = "minimumLineHeight";
+
+	private static readonly IntPtr selMinimumLineHeightHandle = Selector.GetHandle("minimumLineHeight");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selParagraphSpacing = "paragraphSpacing";
+
+	private static readonly IntPtr selParagraphSpacingHandle = Selector.GetHandle("paragraphSpacing");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selParagraphSpacingBefore = "paragraphSpacingBefore";
+
+	private static readonly IntPtr selParagraphSpacingBeforeHandle = Selector.GetHandle("paragraphSpacingBefore");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveTabStop_ = "removeTabStop:";
+
 	private static readonly IntPtr selRemoveTabStop_Handle = Selector.GetHandle("removeTabStop:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAlignment_ = "setAlignment:";
+
+	private static readonly IntPtr selSetAlignment_Handle = Selector.GetHandle("setAlignment:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAllowsDefaultTighteningForTruncation_ = "setAllowsDefaultTighteningForTruncation:";
+
+	private static readonly IntPtr selSetAllowsDefaultTighteningForTruncation_Handle = Selector.GetHandle("setAllowsDefaultTighteningForTruncation:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBaseWritingDirection_ = "setBaseWritingDirection:";
+
+	private static readonly IntPtr selSetBaseWritingDirection_Handle = Selector.GetHandle("setBaseWritingDirection:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDefaultTabInterval_ = "setDefaultTabInterval:";
+
+	private static readonly IntPtr selSetDefaultTabInterval_Handle = Selector.GetHandle("setDefaultTabInterval:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFirstLineHeadIndent_ = "setFirstLineHeadIndent:";
+
+	private static readonly IntPtr selSetFirstLineHeadIndent_Handle = Selector.GetHandle("setFirstLineHeadIndent:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetHeadIndent_ = "setHeadIndent:";
+
+	private static readonly IntPtr selSetHeadIndent_Handle = Selector.GetHandle("setHeadIndent:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetHeaderLevel_ = "setHeaderLevel:";
+
+	private static readonly IntPtr selSetHeaderLevel_Handle = Selector.GetHandle("setHeaderLevel:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetHyphenationFactor_ = "setHyphenationFactor:";
+
+	private static readonly IntPtr selSetHyphenationFactor_Handle = Selector.GetHandle("setHyphenationFactor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLineBreakMode_ = "setLineBreakMode:";
+
+	private static readonly IntPtr selSetLineBreakMode_Handle = Selector.GetHandle("setLineBreakMode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLineHeightMultiple_ = "setLineHeightMultiple:";
+
+	private static readonly IntPtr selSetLineHeightMultiple_Handle = Selector.GetHandle("setLineHeightMultiple:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLineSpacing_ = "setLineSpacing:";
+
+	private static readonly IntPtr selSetLineSpacing_Handle = Selector.GetHandle("setLineSpacing:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMaximumLineHeight_ = "setMaximumLineHeight:";
+
+	private static readonly IntPtr selSetMaximumLineHeight_Handle = Selector.GetHandle("setMaximumLineHeight:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMinimumLineHeight_ = "setMinimumLineHeight:";
+
+	private static readonly IntPtr selSetMinimumLineHeight_Handle = Selector.GetHandle("setMinimumLineHeight:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetParagraphSpacing_ = "setParagraphSpacing:";
+
+	private static readonly IntPtr selSetParagraphSpacing_Handle = Selector.GetHandle("setParagraphSpacing:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetParagraphSpacingBefore_ = "setParagraphSpacingBefore:";
+
+	private static readonly IntPtr selSetParagraphSpacingBefore_Handle = Selector.GetHandle("setParagraphSpacingBefore:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetParagraphStyle_ = "setParagraphStyle:";
 
 	private static readonly IntPtr selSetParagraphStyle_Handle = Selector.GetHandle("setParagraphStyle:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTabStops_ = "setTabStops:";
+
+	private static readonly IntPtr selSetTabStops_Handle = Selector.GetHandle("setTabStops:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTailIndent_ = "setTailIndent:";
+
+	private static readonly IntPtr selSetTailIndent_Handle = Selector.GetHandle("setTailIndent:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTextBlocks_ = "setTextBlocks:";
+
 	private static readonly IntPtr selSetTextBlocks_Handle = Selector.GetHandle("setTextBlocks:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTextLists_ = "setTextLists:";
 
 	private static readonly IntPtr selSetTextLists_Handle = Selector.GetHandle("setTextLists:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSMutableParagraphStyle");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTighteningFactorForTruncation_ = "setTighteningFactorForTruncation:";
 
-	private object __mt_TabStops_var;
+	private static readonly IntPtr selSetTighteningFactorForTruncation_Handle = Selector.GetHandle("setTighteningFactorForTruncation:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTabStops = "tabStops";
+
+	private static readonly IntPtr selTabStopsHandle = Selector.GetHandle("tabStops");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTailIndent = "tailIndent";
+
+	private static readonly IntPtr selTailIndentHandle = Selector.GetHandle("tailIndent");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTighteningFactorForTruncation = "tighteningFactorForTruncation";
+
+	private static readonly IntPtr selTighteningFactorForTruncationHandle = Selector.GetHandle("tighteningFactorForTruncation");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSMutableParagraphStyle");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public override NSTextTab[] TabStops
-	{
-		[Export("tabStops")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSTextTab[])(__mt_TabStops_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSTextTab>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTabStopsHandle)) : NSArray.ArrayFromHandle<NSTextTab>(Messaging.IntPtr_objc_msgSend(base.Handle, selTabStopsHandle))));
-		}
-		[Export("setTabStops:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTabStops_Handle, nSArray.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTabStops_Handle, nSArray.Handle);
-			}
-			nSArray.Dispose();
-			__mt_TabStops_var = value;
-		}
-	}
-
-	public override double DefaultTabInterval
-	{
-		[Export("defaultTabInterval")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selDefaultTabIntervalHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selDefaultTabIntervalHandle);
-		}
-		[Export("setDefaultTabInterval:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetDefaultTabInterval_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetDefaultTabInterval_Handle, value);
-			}
-		}
-	}
-
-	public override float TighteningFactorForTruncation
-	{
-		[Export("tighteningFactorForTruncation")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.float_objc_msgSend(base.Handle, selTighteningFactorForTruncationHandle);
-			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selTighteningFactorForTruncationHandle);
-		}
-		[Export("setTighteningFactorForTruncation:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_float(base.Handle, selSetTighteningFactorForTruncation_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetTighteningFactorForTruncation_Handle, value);
-			}
-		}
-	}
-
-	public override long HeaderLevel
-	{
-		[Export("headerLevel")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Int64_objc_msgSend(base.Handle, selHeaderLevelHandle);
-			}
-			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selHeaderLevelHandle);
-		}
-		[Export("setHeaderLevel:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetHeaderLevel_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetHeaderLevel_Handle, value);
-			}
-		}
-	}
-
-	public override double LineSpacing
-	{
-		[Export("lineSpacing")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selLineSpacingHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selLineSpacingHandle);
-		}
-		[Export("setLineSpacing:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetLineSpacing_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetLineSpacing_Handle, value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public override NSTextAlignment Alignment
 	{
 		[Export("alignment")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return (NSTextAlignment)Messaging.UInt64_objc_msgSend(base.Handle, selAlignmentHandle);
 			}
@@ -246,7 +235,7 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetAlignment_Handle, (ulong)value);
 			}
@@ -257,175 +246,45 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 		}
 	}
 
-	public override double HeadIndent
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	public new virtual bool AllowsDefaultTighteningForTruncation
 	{
-		[Export("headIndent")]
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+		[Export("allowsDefaultTighteningForTruncation")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Double_objc_msgSend(base.Handle, selHeadIndentHandle);
+				return Messaging.bool_objc_msgSend(base.Handle, selAllowsDefaultTighteningForTruncationHandle);
 			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selHeadIndentHandle);
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAllowsDefaultTighteningForTruncationHandle);
 		}
-		[Export("setHeadIndent:")]
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+		[Export("setAllowsDefaultTighteningForTruncation:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetHeadIndent_Handle, value);
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsDefaultTighteningForTruncation_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetHeadIndent_Handle, value);
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAllowsDefaultTighteningForTruncation_Handle, value);
 			}
 		}
 	}
 
-	public override double TailIndent
-	{
-		[Export("tailIndent")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selTailIndentHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selTailIndentHandle);
-		}
-		[Export("setTailIndent:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetTailIndent_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetTailIndent_Handle, value);
-			}
-		}
-	}
-
-	public override double FirstLineHeadIndent
-	{
-		[Export("firstLineHeadIndent")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selFirstLineHeadIndentHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selFirstLineHeadIndentHandle);
-		}
-		[Export("setFirstLineHeadIndent:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetFirstLineHeadIndent_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetFirstLineHeadIndent_Handle, value);
-			}
-		}
-	}
-
-	public override double MinimumLineHeight
-	{
-		[Export("minimumLineHeight")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selMinimumLineHeightHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selMinimumLineHeightHandle);
-		}
-		[Export("setMinimumLineHeight:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetMinimumLineHeight_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetMinimumLineHeight_Handle, value);
-			}
-		}
-	}
-
-	public override double MaximumLineHeight
-	{
-		[Export("maximumLineHeight")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selMaximumLineHeightHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selMaximumLineHeightHandle);
-		}
-		[Export("setMaximumLineHeight:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetMaximumLineHeight_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetMaximumLineHeight_Handle, value);
-			}
-		}
-	}
-
-	public override NSLineBreakMode LineBreakMode
-	{
-		[Export("lineBreakMode")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return (NSLineBreakMode)Messaging.UInt64_objc_msgSend(base.Handle, selLineBreakModeHandle);
-			}
-			return (NSLineBreakMode)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selLineBreakModeHandle);
-		}
-		[Export("setLineBreakMode:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetLineBreakMode_Handle, (ulong)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetLineBreakMode_Handle, (ulong)value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public override NSWritingDirection BaseWritingDirection
 	{
 		[Export("baseWritingDirection")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return (NSWritingDirection)Messaging.Int64_objc_msgSend(base.Handle, selBaseWritingDirectionHandle);
 			}
@@ -435,7 +294,7 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_Int64(base.Handle, selSetBaseWritingDirection_Handle, (long)value);
 			}
@@ -446,94 +305,126 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 		}
 	}
 
-	public override double LineHeightMultiple
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override nfloat DefaultTabInterval
 	{
-		[Export("lineHeightMultiple")]
+		[Export("defaultTabInterval")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Double_objc_msgSend(base.Handle, selLineHeightMultipleHandle);
+				return Messaging.nfloat_objc_msgSend(base.Handle, selDefaultTabIntervalHandle);
 			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selLineHeightMultipleHandle);
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selDefaultTabIntervalHandle);
 		}
-		[Export("setLineHeightMultiple:")]
+		[Export("setDefaultTabInterval:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetLineHeightMultiple_Handle, value);
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetDefaultTabInterval_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetLineHeightMultiple_Handle, value);
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetDefaultTabInterval_Handle, value);
 			}
 		}
 	}
 
-	public override double ParagraphSpacing
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override nfloat FirstLineHeadIndent
 	{
-		[Export("paragraphSpacing")]
+		[Export("firstLineHeadIndent")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Double_objc_msgSend(base.Handle, selParagraphSpacingHandle);
+				return Messaging.nfloat_objc_msgSend(base.Handle, selFirstLineHeadIndentHandle);
 			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selParagraphSpacingHandle);
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selFirstLineHeadIndentHandle);
 		}
-		[Export("setParagraphSpacing:")]
+		[Export("setFirstLineHeadIndent:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetParagraphSpacing_Handle, value);
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetFirstLineHeadIndent_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetParagraphSpacing_Handle, value);
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetFirstLineHeadIndent_Handle, value);
 			}
 		}
 	}
 
-	public override double ParagraphSpacingBefore
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override nfloat HeadIndent
 	{
-		[Export("paragraphSpacingBefore")]
+		[Export("headIndent")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Double_objc_msgSend(base.Handle, selParagraphSpacingBeforeHandle);
+				return Messaging.nfloat_objc_msgSend(base.Handle, selHeadIndentHandle);
 			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selParagraphSpacingBeforeHandle);
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selHeadIndentHandle);
 		}
-		[Export("setParagraphSpacingBefore:")]
+		[Export("setHeadIndent:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetParagraphSpacingBefore_Handle, value);
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetHeadIndent_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetParagraphSpacingBefore_Handle, value);
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetHeadIndent_Handle, value);
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override nint HeaderLevel
+	{
+		[Export("headerLevel")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nint_objc_msgSend(base.Handle, selHeaderLevelHandle);
+			}
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selHeaderLevelHandle);
+		}
+		[Export("setHeaderLevel:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nint(base.Handle, selSetHeaderLevel_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetHeaderLevel_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public override float HyphenationFactor
 	{
 		[Export("hyphenationFactor")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.float_objc_msgSend(base.Handle, selHyphenationFactorHandle);
 			}
@@ -543,7 +434,7 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_float(base.Handle, selSetHyphenationFactor_Handle, value);
 			}
@@ -554,49 +445,343 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override NSLineBreakMode LineBreakMode
+	{
+		[Export("lineBreakMode")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return (NSLineBreakMode)Messaging.UInt64_objc_msgSend(base.Handle, selLineBreakModeHandle);
+			}
+			return (NSLineBreakMode)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selLineBreakModeHandle);
+		}
+		[Export("setLineBreakMode:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetLineBreakMode_Handle, (ulong)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetLineBreakMode_Handle, (ulong)value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override nfloat LineHeightMultiple
+	{
+		[Export("lineHeightMultiple")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selLineHeightMultipleHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selLineHeightMultipleHandle);
+		}
+		[Export("setLineHeightMultiple:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetLineHeightMultiple_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetLineHeightMultiple_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override nfloat LineSpacing
+	{
+		[Export("lineSpacing")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selLineSpacingHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selLineSpacingHandle);
+		}
+		[Export("setLineSpacing:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetLineSpacing_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetLineSpacing_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override nfloat MaximumLineHeight
+	{
+		[Export("maximumLineHeight")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selMaximumLineHeightHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selMaximumLineHeightHandle);
+		}
+		[Export("setMaximumLineHeight:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetMaximumLineHeight_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetMaximumLineHeight_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override nfloat MinimumLineHeight
+	{
+		[Export("minimumLineHeight")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selMinimumLineHeightHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selMinimumLineHeightHandle);
+		}
+		[Export("setMinimumLineHeight:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetMinimumLineHeight_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetMinimumLineHeight_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override nfloat ParagraphSpacing
+	{
+		[Export("paragraphSpacing")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selParagraphSpacingHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selParagraphSpacingHandle);
+		}
+		[Export("setParagraphSpacing:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetParagraphSpacing_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetParagraphSpacing_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override nfloat ParagraphSpacingBefore
+	{
+		[Export("paragraphSpacingBefore")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selParagraphSpacingBeforeHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selParagraphSpacingBeforeHandle);
+		}
+		[Export("setParagraphSpacingBefore:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetParagraphSpacingBefore_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetParagraphSpacingBefore_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override NSTextTab[] TabStops
+	{
+		[Export("tabStops", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<NSTextTab>(Messaging.IntPtr_objc_msgSend(base.Handle, selTabStopsHandle));
+			}
+			return NSArray.ArrayFromHandle<NSTextTab>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTabStopsHandle));
+		}
+		[Export("setTabStops:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			NSArray nSArray = NSArray.FromNSObjects(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTabStops_Handle, nSArray.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTabStops_Handle, nSArray.Handle);
+			}
+			nSArray.Dispose();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override nfloat TailIndent
+	{
+		[Export("tailIndent")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selTailIndentHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selTailIndentHandle);
+		}
+		[Export("setTailIndent:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetTailIndent_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetTailIndent_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override float TighteningFactorForTruncation
+	{
+		[Export("tighteningFactorForTruncation")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.float_objc_msgSend(base.Handle, selTighteningFactorForTruncationHandle);
+			}
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selTighteningFactorForTruncationHandle);
+		}
+		[Export("setTighteningFactorForTruncation:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_float(base.Handle, selSetTighteningFactorForTruncation_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetTighteningFactorForTruncation_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSMutableParagraphStyle()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSMutableParagraphStyle(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSMutableParagraphStyle(NSObjectFlag t)
+	protected NSMutableParagraphStyle(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSMutableParagraphStyle(IntPtr handle)
+	protected internal NSMutableParagraphStyle(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("addTabStop:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AddTabStop(NSTextTab anObject)
 	{
 		NSApplication.EnsureUIThread();
@@ -604,7 +789,7 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 		{
 			throw new ArgumentNullException("anObject");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddTabStop_Handle, anObject.Handle);
 		}
@@ -612,10 +797,10 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 		{
 			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAddTabStop_Handle, anObject.Handle);
 		}
-		_ = TabStops;
 	}
 
 	[Export("removeTabStop:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void RemoveTabStop(NSTextTab anObject)
 	{
 		NSApplication.EnsureUIThread();
@@ -623,7 +808,7 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 		{
 			throw new ArgumentNullException("anObject");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveTabStop_Handle, anObject.Handle);
 		}
@@ -631,10 +816,10 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 		{
 			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveTabStop_Handle, anObject.Handle);
 		}
-		_ = TabStops;
 	}
 
 	[Export("setParagraphStyle:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SetParagraphStyle(NSParagraphStyle obj)
 	{
 		NSApplication.EnsureUIThread();
@@ -642,7 +827,7 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 		{
 			throw new ArgumentNullException("obj");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetParagraphStyle_Handle, obj.Handle);
 		}
@@ -653,6 +838,7 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 	}
 
 	[Export("setTextBlocks:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SetTextBlocks(NSTextBlock[] array)
 	{
 		NSApplication.EnsureUIThread();
@@ -661,7 +847,7 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 			throw new ArgumentNullException("array");
 		}
 		NSArray nSArray = NSArray.FromNSObjects(array);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextBlocks_Handle, nSArray.Handle);
 		}
@@ -673,6 +859,7 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 	}
 
 	[Export("setTextLists:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SetTextLists(NSTextList[] array)
 	{
 		NSApplication.EnsureUIThread();
@@ -681,7 +868,7 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 			throw new ArgumentNullException("array");
 		}
 		NSArray nSArray = NSArray.FromNSObjects(array);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextLists_Handle, nSArray.Handle);
 		}
@@ -690,14 +877,5 @@ public class NSMutableParagraphStyle : NSParagraphStyle
 			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextLists_Handle, nSArray.Handle);
 		}
 		nSArray.Dispose();
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_TabStops_var = null;
-		}
 	}
 }

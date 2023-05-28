@@ -1,8 +1,10 @@
 using System;
+using ObjCRuntime;
 
 namespace Foundation;
 
 [Flags]
+[Native]
 public enum NSLinguisticTaggerOptions : ulong
 {
 	OmitWords = 1uL,

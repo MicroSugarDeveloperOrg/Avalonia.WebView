@@ -6,7 +6,7 @@ internal struct AuthorizationItem
 {
 	public IntPtr name;
 
-	public IntPtr valueLen;
+	public nint valueLen;
 
 	public IntPtr value;
 

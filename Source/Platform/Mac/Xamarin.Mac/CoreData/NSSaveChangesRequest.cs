@@ -8,145 +8,134 @@ namespace CoreData;
 [Register("NSSaveChangesRequest", true)]
 public class NSSaveChangesRequest : NSPersistentStoreRequest
 {
-	private static readonly IntPtr selInsertedObjectsHandle = Selector.GetHandle("insertedObjects");
-
-	private static readonly IntPtr selUpdatedObjectsHandle = Selector.GetHandle("updatedObjects");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDeletedObjects = "deletedObjects";
 
 	private static readonly IntPtr selDeletedObjectsHandle = Selector.GetHandle("deletedObjects");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithInsertedObjects_UpdatedObjects_DeletedObjects_LockedObjects_ = "initWithInsertedObjects:updatedObjects:deletedObjects:lockedObjects:";
+
+	private static readonly IntPtr selInitWithInsertedObjects_UpdatedObjects_DeletedObjects_LockedObjects_Handle = Selector.GetHandle("initWithInsertedObjects:updatedObjects:deletedObjects:lockedObjects:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInsertedObjects = "insertedObjects";
+
+	private static readonly IntPtr selInsertedObjectsHandle = Selector.GetHandle("insertedObjects");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLockedObjects = "lockedObjects";
+
 	private static readonly IntPtr selLockedObjectsHandle = Selector.GetHandle("lockedObjects");
 
-	private static readonly IntPtr selInitWithInsertedObjectsUpdatedObjectsDeletedObjectsLockedObjects_Handle = Selector.GetHandle("initWithInsertedObjects:updatedObjects:deletedObjects:lockedObjects:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selUpdatedObjects = "updatedObjects";
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSSaveChangesRequest");
+	private static readonly IntPtr selUpdatedObjectsHandle = Selector.GetHandle("updatedObjects");
 
-	private object __mt_InsertedObjects_var;
-
-	private object __mt_UpdatedObjects_var;
-
-	private object __mt_DeletedObjects_var;
-
-	private object __mt_LockedObjects_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSSaveChangesRequest");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSSet InsertedObjects
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSSet? DeletedObjects
 	{
-		[Export("insertedObjects")]
+		[Export("deletedObjects", ArgumentSemantic.Retain)]
 		get
 		{
-			return (NSSet)(__mt_InsertedObjects_var = ((!IsDirectBinding) ? ((NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInsertedObjectsHandle))) : ((NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selInsertedObjectsHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSSet>(Messaging.IntPtr_objc_msgSend(base.Handle, selDeletedObjectsHandle));
+			}
+			return Runtime.GetNSObject<NSSet>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDeletedObjectsHandle));
 		}
 	}
 
-	public virtual NSSet UpdatedObjects
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSSet? InsertedObjects
 	{
-		[Export("updatedObjects")]
+		[Export("insertedObjects", ArgumentSemantic.Retain)]
 		get
 		{
-			return (NSSet)(__mt_UpdatedObjects_var = ((!IsDirectBinding) ? ((NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUpdatedObjectsHandle))) : ((NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selUpdatedObjectsHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSSet>(Messaging.IntPtr_objc_msgSend(base.Handle, selInsertedObjectsHandle));
+			}
+			return Runtime.GetNSObject<NSSet>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInsertedObjectsHandle));
 		}
 	}
 
-	public virtual NSSet DeletedObjects
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSSet? LockedObjects
 	{
-		[Export("deletedObjects")]
+		[Export("lockedObjects", ArgumentSemantic.Retain)]
 		get
 		{
-			return (NSSet)(__mt_DeletedObjects_var = ((!IsDirectBinding) ? ((NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDeletedObjectsHandle))) : ((NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDeletedObjectsHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSSet>(Messaging.IntPtr_objc_msgSend(base.Handle, selLockedObjectsHandle));
+			}
+			return Runtime.GetNSObject<NSSet>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLockedObjectsHandle));
 		}
 	}
 
-	public virtual NSSet LockedObjects
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSSet? UpdatedObjects
 	{
-		[Export("lockedObjects")]
+		[Export("updatedObjects", ArgumentSemantic.Retain)]
 		get
 		{
-			return (NSSet)(__mt_LockedObjects_var = ((!IsDirectBinding) ? ((NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLockedObjectsHandle))) : ((NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selLockedObjectsHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSSet>(Messaging.IntPtr_objc_msgSend(base.Handle, selUpdatedObjectsHandle));
+			}
+			return Runtime.GetNSObject<NSSet>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUpdatedObjectsHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSSaveChangesRequest()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSSaveChangesRequest(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSSaveChangesRequest(NSObjectFlag t)
+	protected NSSaveChangesRequest(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSSaveChangesRequest(IntPtr handle)
+	protected internal NSSaveChangesRequest(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithInsertedObjects:updatedObjects:deletedObjects:lockedObjects:")]
-	public NSSaveChangesRequest(NSSet insertedObjects, NSSet updatedObjects, NSSet deletedObjects, NSSet lockedObjects)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public NSSaveChangesRequest(NSSet? insertedObjects, NSSet? updatedObjects, NSSet? deletedObjects, NSSet? lockedObjects)
 		: base(NSObjectFlag.Empty)
 	{
-		if (insertedObjects == null)
+		if (base.IsDirectBinding)
 		{
-			throw new ArgumentNullException("insertedObjects");
-		}
-		if (updatedObjects == null)
-		{
-			throw new ArgumentNullException("updatedObjects");
-		}
-		if (deletedObjects == null)
-		{
-			throw new ArgumentNullException("deletedObjects");
-		}
-		if (lockedObjects == null)
-		{
-			throw new ArgumentNullException("lockedObjects");
-		}
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selInitWithInsertedObjectsUpdatedObjectsDeletedObjectsLockedObjects_Handle, insertedObjects.Handle, updatedObjects.Handle, deletedObjects.Handle, lockedObjects.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selInitWithInsertedObjects_UpdatedObjects_DeletedObjects_LockedObjects_Handle, insertedObjects?.Handle ?? IntPtr.Zero, updatedObjects?.Handle ?? IntPtr.Zero, deletedObjects?.Handle ?? IntPtr.Zero, lockedObjects?.Handle ?? IntPtr.Zero), "initWithInsertedObjects:updatedObjects:deletedObjects:lockedObjects:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selInitWithInsertedObjectsUpdatedObjectsDeletedObjectsLockedObjects_Handle, insertedObjects.Handle, updatedObjects.Handle, deletedObjects.Handle, lockedObjects.Handle);
-		}
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_InsertedObjects_var = null;
-			__mt_UpdatedObjects_var = null;
-			__mt_DeletedObjects_var = null;
-			__mt_LockedObjects_var = null;
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selInitWithInsertedObjects_UpdatedObjects_DeletedObjects_LockedObjects_Handle, insertedObjects?.Handle ?? IntPtr.Zero, updatedObjects?.Handle ?? IntPtr.Zero, deletedObjects?.Handle ?? IntPtr.Zero, lockedObjects?.Handle ?? IntPtr.Zero), "initWithInsertedObjects:updatedObjects:deletedObjects:lockedObjects:");
 		}
 	}
 }

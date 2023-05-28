@@ -5,53 +5,40 @@ using ObjCRuntime;
 
 namespace AppKit;
 
-[Register("NSDatePickerCellDelegate", true)]
+[Protocol]
+[Register("NSDatePickerCellDelegate", false)]
 [Model]
-public class NSDatePickerCellDelegate : NSObject
+public class NSDatePickerCellDelegate : NSObject, INSDatePickerCellDelegate, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSDatePickerCellDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
+		NSApplication.EnsureUIThread();
+		base.IsDirectBinding = false;
+		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSDatePickerCellDelegate(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSDatePickerCellDelegate(NSObjectFlag t)
+	protected NSDatePickerCellDelegate(NSObjectFlag t)
 		: base(t)
 	{
+		base.IsDirectBinding = false;
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSDatePickerCellDelegate(IntPtr handle)
+	protected internal NSDatePickerCellDelegate(IntPtr handle)
 		: base(handle)
 	{
+		base.IsDirectBinding = false;
 	}
 
 	[Export("datePickerCell:validateProposedDateValue:timeInterval:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ValidateProposedDateValue(NSDatePickerCell aDatePickerCell, ref NSDate proposedDateValue, double proposedTimeInterval)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();

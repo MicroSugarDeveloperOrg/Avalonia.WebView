@@ -18,7 +18,7 @@ public class CTFontFeatureSmartSwash : CTFontFeatureSelectors
 		NonFinalSwashesOff
 	}
 
-	public Selector Feature => Feature;
+	public Selector Feature => (Selector)base.FeatureWeak;
 
 	public CTFontFeatureSmartSwash(NSDictionary dictionary)
 		: base(dictionary)

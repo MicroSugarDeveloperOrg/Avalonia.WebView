@@ -20,24 +20,13 @@ internal static class CTBaselineClassID
 
 	static CTBaselineClassID()
 	{
-		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText", 0);
-		if (intPtr == IntPtr.Zero)
-		{
-			return;
-		}
-		try
-		{
-			Roman = Dlfcn.GetStringConstant(intPtr, "kCTBaselineClassRoman");
-			IdeographicCentered = Dlfcn.GetStringConstant(intPtr, "kCTBaselineClassIdeographicCentered");
-			IdeographicLow = Dlfcn.GetStringConstant(intPtr, "kCTBaselineClassIdeographicLow");
-			IdeographicHigh = Dlfcn.GetStringConstant(intPtr, "kCTBaselineClassIdeographicHigh");
-			Hanging = Dlfcn.GetStringConstant(intPtr, "kCTBaselineClassHanging");
-			Math = Dlfcn.GetStringConstant(intPtr, "kCTBaselineClassMath");
-		}
-		finally
-		{
-			Dlfcn.dlclose(intPtr);
-		}
+		IntPtr handle = Libraries.CoreText.Handle;
+		Roman = Dlfcn.GetStringConstant(handle, "kCTBaselineClassRoman");
+		IdeographicCentered = Dlfcn.GetStringConstant(handle, "kCTBaselineClassIdeographicCentered");
+		IdeographicLow = Dlfcn.GetStringConstant(handle, "kCTBaselineClassIdeographicLow");
+		IdeographicHigh = Dlfcn.GetStringConstant(handle, "kCTBaselineClassIdeographicHigh");
+		Hanging = Dlfcn.GetStringConstant(handle, "kCTBaselineClassHanging");
+		Math = Dlfcn.GetStringConstant(handle, "kCTBaselineClassMath");
 	}
 
 	public static NSString ToNSString(CTBaselineClass key)

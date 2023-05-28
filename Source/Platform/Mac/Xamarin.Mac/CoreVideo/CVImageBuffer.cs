@@ -6,90 +6,143 @@ using ObjCRuntime;
 
 namespace CoreVideo;
 
-[Since(4, 0)]
+[Watch(4, 0)]
 public class CVImageBuffer : CVBuffer
 {
-	public static readonly NSString CGColorSpaceKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _AlphaChannelIsOpaque;
 
-	public static readonly NSString GammaLevelKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _AlphaChannelModeKey;
 
-	public static readonly NSString CleanApertureKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _CGColorSpaceKey;
 
-	public static readonly NSString PreferredCleanApertureKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ChromaLocationBottomFieldKey;
 
-	public static readonly NSString CleanApertureWidthKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ChromaLocationTopFieldKey;
 
-	public static readonly NSString CleanApertureHeightKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ChromaLocation_Bottom;
 
-	public static readonly NSString CleanApertureHorizontalOffsetKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ChromaLocation_BottomLeft;
 
-	public static readonly NSString CleanApertureVerticalOffsetKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ChromaLocation_Center;
 
-	public static readonly NSString FieldCountKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ChromaLocation_DV420;
 
-	public static readonly NSString FieldDetailKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ChromaLocation_Left;
 
-	public static readonly NSString FieldDetailTemporalTopFirst;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ChromaLocation_Top;
 
-	public static readonly NSString FieldDetailTemporalBottomFirst;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ChromaLocation_TopLeft;
 
-	public static readonly NSString FieldDetailSpatialFirstLineEarly;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ChromaSubsamplingKey;
 
-	public static readonly NSString FieldDetailSpatialFirstLineLate;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ChromaSubsampling_411;
 
-	public static readonly NSString PixelAspectRatioKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ChromaSubsampling_420;
 
-	public static readonly NSString PixelAspectRatioHorizontalSpacingKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ChromaSubsampling_422;
 
-	public static readonly NSString PixelAspectRatioVerticalSpacingKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _CleanApertureHeightKey;
 
-	public static readonly NSString DisplayDimensionsKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _CleanApertureHorizontalOffsetKey;
 
-	public static readonly NSString DisplayWidthKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _CleanApertureKey;
 
-	public static readonly NSString DisplayHeightKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _CleanApertureVerticalOffsetKey;
 
-	public static readonly NSString YCbCrMatrixKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _CleanApertureWidthKey;
 
-	public static readonly NSString YCbCrMatrix_ITU_R_709_2;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ColorPrimariesKey;
 
-	public static readonly NSString YCbCrMatrix_ITU_R_601_4;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ContentLightLevelInfoKey;
 
-	public static readonly NSString YCbCrMatrix_SMPTE_240M_1995;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _DisplayDimensionsKey;
 
-	public static readonly NSString ChromaSubsamplingKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _DisplayHeightKey;
 
-	public static readonly NSString ChromaSubsampling_420;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _DisplayWidthKey;
 
-	public static readonly NSString ChromaSubsampling_422;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FieldCountKey;
 
-	public static readonly NSString ChromaSubsampling_411;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FieldDetailKey;
 
-	public static readonly NSString TransferFunctionKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FieldDetailSpatialFirstLineEarly;
 
-	public static readonly NSString TransferFunction_ITU_R_709_2;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FieldDetailSpatialFirstLineLate;
 
-	public static readonly NSString TransferFunction_SMPTE_240M_1995;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FieldDetailTemporalBottomFirst;
 
-	public static readonly NSString TransferFunction_UseGamma;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FieldDetailTemporalTopFirst;
 
-	public static readonly NSString ChromaLocationTopFieldKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GammaLevelKey;
 
-	public static readonly NSString ChromaLocationBottomFieldKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _MasteringDisplayColorVolumeKey;
 
-	public static readonly NSString ChromaLocation_Left;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _MovieTimeKey;
 
-	public static readonly NSString ChromaLocation_Center;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _NonPropagatedAttachmentsKey;
 
-	public static readonly NSString ChromaLocation_TopLeft;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _PixelAspectRatioHorizontalSpacingKey;
 
-	public static readonly NSString ChromaLocation_Top;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _PixelAspectRatioKey;
 
-	public static readonly NSString ChromaLocation_BottomLeft;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _PixelAspectRatioVerticalSpacingKey;
 
-	public static readonly NSString ChromaLocation_Bottom;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _PreferredCleanApertureKey;
 
-	public static readonly NSString ChromaLocation_DV420;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _PropagatedAttachmentsKey;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TimeScaleKey;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TimeValueKey;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TransferFunctionKey;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _YCbCrMatrixKey;
 
 	public CGRect CleanRect => CVImageBufferGetCleanRect(handle);
 
@@ -99,62 +152,806 @@ public class CVImageBuffer : CVBuffer
 
 	public bool IsFlipped => CVImageBufferIsFlipped(handle);
 
-	public CGColorSpace ColorSpace => new CGColorSpace(CVImageBufferGetColorSpace(handle));
-
-	static CVImageBuffer()
+	[Deprecated(PlatformName.MacOSX, 10, 4, PlatformArchitecture.None, null)]
+	[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
+	public CGColorSpace ColorSpace
 	{
-		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/CoreVideo.framework/CoreVideo", 0);
-		if (intPtr == IntPtr.Zero)
+		get
 		{
-			return;
+			IntPtr intPtr = CVImageBufferGetColorSpace(handle);
+			return (intPtr == IntPtr.Zero) ? null : new CGColorSpace(intPtr);
 		}
-		try
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	public static NSString ColorPrimaries_DCI_P3
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+		get
 		{
-			CGColorSpaceKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferCGColorSpaceKey");
-			GammaLevelKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferGammaLevelKey");
-			CleanApertureKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferCleanApertureKey");
-			PreferredCleanApertureKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferPreferredCleanApertureKey");
-			CleanApertureWidthKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferCleanApertureWidthKey");
-			CleanApertureHeightKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferCleanApertureHeightKey");
-			CleanApertureHorizontalOffsetKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferCleanApertureHorizontalOffsetKey");
-			CleanApertureVerticalOffsetKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferCleanApertureVerticalOffsetKey");
-			FieldCountKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferFieldCountKey");
-			FieldDetailKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferFieldDetailKey");
-			FieldDetailTemporalTopFirst = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferFieldDetailTemporalTopFirst");
-			FieldDetailTemporalBottomFirst = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferFieldDetailTemporalBottomFirst");
-			FieldDetailSpatialFirstLineEarly = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferFieldDetailSpatialFirstLineEarly");
-			FieldDetailSpatialFirstLineLate = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferFieldDetailSpatialFirstLineLate");
-			PixelAspectRatioKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferPixelAspectRatioKey");
-			PixelAspectRatioHorizontalSpacingKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferPixelAspectRatioHorizontalSpacingKey");
-			PixelAspectRatioVerticalSpacingKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferPixelAspectRatioVerticalSpacingKey");
-			DisplayDimensionsKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferDisplayDimensionsKey");
-			DisplayWidthKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferDisplayWidthKey");
-			DisplayHeightKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferDisplayHeightKey");
-			YCbCrMatrixKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferYCbCrMatrixKey");
-			YCbCrMatrix_ITU_R_709_2 = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferYCbCrMatrix_ITU_R_709_2");
-			YCbCrMatrix_ITU_R_601_4 = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferYCbCrMatrix_ITU_R_601_4");
-			YCbCrMatrix_SMPTE_240M_1995 = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferYCbCrMatrix_SMPTE_240M_1995");
-			ChromaSubsamplingKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferChromaSubsamplingKey");
-			ChromaSubsampling_420 = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferChromaSubsampling_420");
-			ChromaSubsampling_422 = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferChromaSubsampling_422");
-			ChromaSubsampling_411 = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferChromaSubsampling_411");
-			TransferFunctionKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferTransferFunctionKey");
-			TransferFunction_ITU_R_709_2 = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferTransferFunction_ITU_R_709_2");
-			TransferFunction_SMPTE_240M_1995 = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferTransferFunction_SMPTE_240M_1995");
-			TransferFunction_UseGamma = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferTransferFunction_UseGamma");
-			ChromaLocationTopFieldKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferChromaLocationTopFieldKey");
-			ChromaLocationBottomFieldKey = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferChromaLocationBottomFieldKey");
-			ChromaLocation_Left = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferChromaLocation_Left");
-			ChromaLocation_Center = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferChromaLocation_Center");
-			ChromaLocation_TopLeft = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferChromaLocation_TopLeft");
-			ChromaLocation_Top = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferChromaLocation_Top");
-			ChromaLocation_BottomLeft = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferChromaLocation_BottomLeft");
-			ChromaLocation_Bottom = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferChromaLocation_Bottom");
-			ChromaLocation_DV420 = Dlfcn.GetStringConstant(intPtr, "kCVImageBufferChromaLocation_DV420");
+			return CVImageBufferColorPrimaries.DciP3.GetConstant();
 		}
-		finally
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSString ColorPrimaries_EBU_3213 => CVImageBufferColorPrimaries.Ebu3213.GetConstant();
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	public static NSString ColorPrimaries_ITU_R_2020
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+		get
 		{
-			Dlfcn.dlclose(intPtr);
+			return CVImageBufferColorPrimaries.ItuR2020.GetConstant();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSString ColorPrimaries_ITU_R_709_2 => CVImageBufferColorPrimaries.ItuR709_2.GetConstant();
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSString ColorPrimaries_P22 => CVImageBufferColorPrimaries.P22.GetConstant();
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	public static NSString ColorPrimaries_P3_D65
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+		get
+		{
+			return CVImageBufferColorPrimaries.P3D65.GetConstant();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSString ColorPrimaries_SMPTE_C => CVImageBufferColorPrimaries.SmpteC.GetConstant();
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
+	public static NSString TransferFunction_ITU_R_2020
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			return CVImageBufferTransferFunction.ItuR2020.GetConstant();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+	public static NSString TransferFunction_ITU_R_2100_HLG
+	{
+		[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			return CVImageBufferTransferFunction.ItuR2100Hlg.GetConstant();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSString TransferFunction_ITU_R_709_2 => CVImageBufferTransferFunction.ItuR709_2.GetConstant();
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSString TransferFunction_SMPTE_240M_1995 => CVImageBufferTransferFunction.Smpte240M1995.GetConstant();
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+	public static NSString TransferFunction_SMPTE_ST_2084_PQ
+	{
+		[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			return CVImageBufferTransferFunction.SmpteST2084PQ.GetConstant();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
+	public static NSString TransferFunction_SMPTE_ST_428_1
+	{
+		[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			return CVImageBufferTransferFunction.SmpteST428_1.GetConstant();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSString TransferFunction_UseGamma => CVImageBufferTransferFunction.UseGamma.GetConstant();
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+	public static NSString TransferFunction_sRGB
+	{
+		[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			return CVImageBufferTransferFunction.SRgb.GetConstant();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+	public static NSString YCbCrMatrix_DCI_P3
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+		get
+		{
+			return CVImageBufferYCbCrMatrix.DciP3.GetConstant();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	public static NSString YCbCrMatrix_ITU_R_2020
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+		get
+		{
+			return CVImageBufferYCbCrMatrix.ItuR2020.GetConstant();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSString YCbCrMatrix_ITU_R_601_4 => CVImageBufferYCbCrMatrix.ItuR601_4.GetConstant();
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSString YCbCrMatrix_ITU_R_709_2 => CVImageBufferYCbCrMatrix.ItuR709_2.GetConstant();
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+	public static NSString YCbCrMatrix_P3_D65
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+		get
+		{
+			return CVImageBufferYCbCrMatrix.P3D65.GetConstant();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSString YCbCrMatrix_SMPTE_240M_1995 => CVImageBufferYCbCrMatrix.Smpte240M1995.GetConstant();
+
+	[Field("kCVImageBufferAlphaChannelIsOpaque", "CoreVideo")]
+	[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	public static NSString AlphaChannelIsOpaque
+	{
+		[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_AlphaChannelIsOpaque == null)
+			{
+				_AlphaChannelIsOpaque = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferAlphaChannelIsOpaque");
+			}
+			return _AlphaChannelIsOpaque;
+		}
+	}
+
+	[Field("kCVImageBufferAlphaChannelModeKey", "CoreVideo")]
+	[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
+	[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
+	public static NSString AlphaChannelModeKey
+	{
+		[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
+		[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_AlphaChannelModeKey == null)
+			{
+				_AlphaChannelModeKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferAlphaChannelModeKey");
+			}
+			return _AlphaChannelModeKey;
+		}
+	}
+
+	[Field("kCVImageBufferCGColorSpaceKey", "CoreVideo")]
+	public static NSString CGColorSpaceKey
+	{
+		get
+		{
+			if (_CGColorSpaceKey == null)
+			{
+				_CGColorSpaceKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferCGColorSpaceKey");
+			}
+			return _CGColorSpaceKey;
+		}
+	}
+
+	[Field("kCVImageBufferChromaLocationBottomFieldKey", "CoreVideo")]
+	public static NSString ChromaLocationBottomFieldKey
+	{
+		get
+		{
+			if (_ChromaLocationBottomFieldKey == null)
+			{
+				_ChromaLocationBottomFieldKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferChromaLocationBottomFieldKey");
+			}
+			return _ChromaLocationBottomFieldKey;
+		}
+	}
+
+	[Field("kCVImageBufferChromaLocationTopFieldKey", "CoreVideo")]
+	public static NSString ChromaLocationTopFieldKey
+	{
+		get
+		{
+			if (_ChromaLocationTopFieldKey == null)
+			{
+				_ChromaLocationTopFieldKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferChromaLocationTopFieldKey");
+			}
+			return _ChromaLocationTopFieldKey;
+		}
+	}
+
+	[Field("kCVImageBufferChromaLocation_Bottom", "CoreVideo")]
+	public static NSString ChromaLocation_Bottom
+	{
+		get
+		{
+			if (_ChromaLocation_Bottom == null)
+			{
+				_ChromaLocation_Bottom = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferChromaLocation_Bottom");
+			}
+			return _ChromaLocation_Bottom;
+		}
+	}
+
+	[Field("kCVImageBufferChromaLocation_BottomLeft", "CoreVideo")]
+	public static NSString ChromaLocation_BottomLeft
+	{
+		get
+		{
+			if (_ChromaLocation_BottomLeft == null)
+			{
+				_ChromaLocation_BottomLeft = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferChromaLocation_BottomLeft");
+			}
+			return _ChromaLocation_BottomLeft;
+		}
+	}
+
+	[Field("kCVImageBufferChromaLocation_Center", "CoreVideo")]
+	public static NSString ChromaLocation_Center
+	{
+		get
+		{
+			if (_ChromaLocation_Center == null)
+			{
+				_ChromaLocation_Center = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferChromaLocation_Center");
+			}
+			return _ChromaLocation_Center;
+		}
+	}
+
+	[Field("kCVImageBufferChromaLocation_DV420", "CoreVideo")]
+	public static NSString ChromaLocation_DV420
+	{
+		get
+		{
+			if (_ChromaLocation_DV420 == null)
+			{
+				_ChromaLocation_DV420 = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferChromaLocation_DV420");
+			}
+			return _ChromaLocation_DV420;
+		}
+	}
+
+	[Field("kCVImageBufferChromaLocation_Left", "CoreVideo")]
+	public static NSString ChromaLocation_Left
+	{
+		get
+		{
+			if (_ChromaLocation_Left == null)
+			{
+				_ChromaLocation_Left = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferChromaLocation_Left");
+			}
+			return _ChromaLocation_Left;
+		}
+	}
+
+	[Field("kCVImageBufferChromaLocation_Top", "CoreVideo")]
+	public static NSString ChromaLocation_Top
+	{
+		get
+		{
+			if (_ChromaLocation_Top == null)
+			{
+				_ChromaLocation_Top = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferChromaLocation_Top");
+			}
+			return _ChromaLocation_Top;
+		}
+	}
+
+	[Field("kCVImageBufferChromaLocation_TopLeft", "CoreVideo")]
+	public static NSString ChromaLocation_TopLeft
+	{
+		get
+		{
+			if (_ChromaLocation_TopLeft == null)
+			{
+				_ChromaLocation_TopLeft = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferChromaLocation_TopLeft");
+			}
+			return _ChromaLocation_TopLeft;
+		}
+	}
+
+	[Field("kCVImageBufferChromaSubsamplingKey", "CoreVideo")]
+	public static NSString ChromaSubsamplingKey
+	{
+		get
+		{
+			if (_ChromaSubsamplingKey == null)
+			{
+				_ChromaSubsamplingKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferChromaSubsamplingKey");
+			}
+			return _ChromaSubsamplingKey;
+		}
+	}
+
+	[Field("kCVImageBufferChromaSubsampling_411", "CoreVideo")]
+	public static NSString ChromaSubsampling_411
+	{
+		get
+		{
+			if (_ChromaSubsampling_411 == null)
+			{
+				_ChromaSubsampling_411 = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferChromaSubsampling_411");
+			}
+			return _ChromaSubsampling_411;
+		}
+	}
+
+	[Field("kCVImageBufferChromaSubsampling_420", "CoreVideo")]
+	public static NSString ChromaSubsampling_420
+	{
+		get
+		{
+			if (_ChromaSubsampling_420 == null)
+			{
+				_ChromaSubsampling_420 = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferChromaSubsampling_420");
+			}
+			return _ChromaSubsampling_420;
+		}
+	}
+
+	[Field("kCVImageBufferChromaSubsampling_422", "CoreVideo")]
+	public static NSString ChromaSubsampling_422
+	{
+		get
+		{
+			if (_ChromaSubsampling_422 == null)
+			{
+				_ChromaSubsampling_422 = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferChromaSubsampling_422");
+			}
+			return _ChromaSubsampling_422;
+		}
+	}
+
+	[Field("kCVImageBufferCleanApertureHeightKey", "CoreVideo")]
+	public static NSString CleanApertureHeightKey
+	{
+		get
+		{
+			if (_CleanApertureHeightKey == null)
+			{
+				_CleanApertureHeightKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferCleanApertureHeightKey");
+			}
+			return _CleanApertureHeightKey;
+		}
+	}
+
+	[Field("kCVImageBufferCleanApertureHorizontalOffsetKey", "CoreVideo")]
+	public static NSString CleanApertureHorizontalOffsetKey
+	{
+		get
+		{
+			if (_CleanApertureHorizontalOffsetKey == null)
+			{
+				_CleanApertureHorizontalOffsetKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferCleanApertureHorizontalOffsetKey");
+			}
+			return _CleanApertureHorizontalOffsetKey;
+		}
+	}
+
+	[Field("kCVImageBufferCleanApertureKey", "CoreVideo")]
+	public static NSString CleanApertureKey
+	{
+		get
+		{
+			if (_CleanApertureKey == null)
+			{
+				_CleanApertureKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferCleanApertureKey");
+			}
+			return _CleanApertureKey;
+		}
+	}
+
+	[Field("kCVImageBufferCleanApertureVerticalOffsetKey", "CoreVideo")]
+	public static NSString CleanApertureVerticalOffsetKey
+	{
+		get
+		{
+			if (_CleanApertureVerticalOffsetKey == null)
+			{
+				_CleanApertureVerticalOffsetKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferCleanApertureVerticalOffsetKey");
+			}
+			return _CleanApertureVerticalOffsetKey;
+		}
+	}
+
+	[Field("kCVImageBufferCleanApertureWidthKey", "CoreVideo")]
+	public static NSString CleanApertureWidthKey
+	{
+		get
+		{
+			if (_CleanApertureWidthKey == null)
+			{
+				_CleanApertureWidthKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferCleanApertureWidthKey");
+			}
+			return _CleanApertureWidthKey;
+		}
+	}
+
+	[Field("kCVImageBufferColorPrimariesKey", "CoreVideo")]
+	public static NSString ColorPrimariesKey
+	{
+		get
+		{
+			if (_ColorPrimariesKey == null)
+			{
+				_ColorPrimariesKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferColorPrimariesKey");
+			}
+			return _ColorPrimariesKey;
+		}
+	}
+
+	[Field("kCVImageBufferContentLightLevelInfoKey", "CoreVideo")]
+	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+	public static NSString ContentLightLevelInfoKey
+	{
+		[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_ContentLightLevelInfoKey == null)
+			{
+				_ContentLightLevelInfoKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferContentLightLevelInfoKey");
+			}
+			return _ContentLightLevelInfoKey;
+		}
+	}
+
+	[Field("kCVImageBufferDisplayDimensionsKey", "CoreVideo")]
+	public static NSString DisplayDimensionsKey
+	{
+		get
+		{
+			if (_DisplayDimensionsKey == null)
+			{
+				_DisplayDimensionsKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferDisplayDimensionsKey");
+			}
+			return _DisplayDimensionsKey;
+		}
+	}
+
+	[Field("kCVImageBufferDisplayHeightKey", "CoreVideo")]
+	public static NSString DisplayHeightKey
+	{
+		get
+		{
+			if (_DisplayHeightKey == null)
+			{
+				_DisplayHeightKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferDisplayHeightKey");
+			}
+			return _DisplayHeightKey;
+		}
+	}
+
+	[Field("kCVImageBufferDisplayWidthKey", "CoreVideo")]
+	public static NSString DisplayWidthKey
+	{
+		get
+		{
+			if (_DisplayWidthKey == null)
+			{
+				_DisplayWidthKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferDisplayWidthKey");
+			}
+			return _DisplayWidthKey;
+		}
+	}
+
+	[Field("kCVImageBufferFieldCountKey", "CoreVideo")]
+	public static NSString FieldCountKey
+	{
+		get
+		{
+			if (_FieldCountKey == null)
+			{
+				_FieldCountKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferFieldCountKey");
+			}
+			return _FieldCountKey;
+		}
+	}
+
+	[Field("kCVImageBufferFieldDetailKey", "CoreVideo")]
+	public static NSString FieldDetailKey
+	{
+		get
+		{
+			if (_FieldDetailKey == null)
+			{
+				_FieldDetailKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferFieldDetailKey");
+			}
+			return _FieldDetailKey;
+		}
+	}
+
+	[Field("kCVImageBufferFieldDetailSpatialFirstLineEarly", "CoreVideo")]
+	public static NSString FieldDetailSpatialFirstLineEarly
+	{
+		get
+		{
+			if (_FieldDetailSpatialFirstLineEarly == null)
+			{
+				_FieldDetailSpatialFirstLineEarly = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferFieldDetailSpatialFirstLineEarly");
+			}
+			return _FieldDetailSpatialFirstLineEarly;
+		}
+	}
+
+	[Field("kCVImageBufferFieldDetailSpatialFirstLineLate", "CoreVideo")]
+	public static NSString FieldDetailSpatialFirstLineLate
+	{
+		get
+		{
+			if (_FieldDetailSpatialFirstLineLate == null)
+			{
+				_FieldDetailSpatialFirstLineLate = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferFieldDetailSpatialFirstLineLate");
+			}
+			return _FieldDetailSpatialFirstLineLate;
+		}
+	}
+
+	[Field("kCVImageBufferFieldDetailTemporalBottomFirst", "CoreVideo")]
+	public static NSString FieldDetailTemporalBottomFirst
+	{
+		get
+		{
+			if (_FieldDetailTemporalBottomFirst == null)
+			{
+				_FieldDetailTemporalBottomFirst = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferFieldDetailTemporalBottomFirst");
+			}
+			return _FieldDetailTemporalBottomFirst;
+		}
+	}
+
+	[Field("kCVImageBufferFieldDetailTemporalTopFirst", "CoreVideo")]
+	public static NSString FieldDetailTemporalTopFirst
+	{
+		get
+		{
+			if (_FieldDetailTemporalTopFirst == null)
+			{
+				_FieldDetailTemporalTopFirst = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferFieldDetailTemporalTopFirst");
+			}
+			return _FieldDetailTemporalTopFirst;
+		}
+	}
+
+	[Field("kCVImageBufferGammaLevelKey", "CoreVideo")]
+	public static NSString GammaLevelKey
+	{
+		get
+		{
+			if (_GammaLevelKey == null)
+			{
+				_GammaLevelKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferGammaLevelKey");
+			}
+			return _GammaLevelKey;
+		}
+	}
+
+	[Field("kCVImageBufferMasteringDisplayColorVolumeKey", "CoreVideo")]
+	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+	public static NSString MasteringDisplayColorVolumeKey
+	{
+		[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_MasteringDisplayColorVolumeKey == null)
+			{
+				_MasteringDisplayColorVolumeKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferMasteringDisplayColorVolumeKey");
+			}
+			return _MasteringDisplayColorVolumeKey;
+		}
+	}
+
+	[Field("kCVBufferMovieTimeKey", "CoreVideo")]
+	public new static NSString MovieTimeKey
+	{
+		get
+		{
+			if (_MovieTimeKey == null)
+			{
+				_MovieTimeKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVBufferMovieTimeKey");
+			}
+			return _MovieTimeKey;
+		}
+	}
+
+	[Field("kCVBufferNonPropagatedAttachmentsKey", "CoreVideo")]
+	public new static NSString NonPropagatedAttachmentsKey
+	{
+		get
+		{
+			if (_NonPropagatedAttachmentsKey == null)
+			{
+				_NonPropagatedAttachmentsKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVBufferNonPropagatedAttachmentsKey");
+			}
+			return _NonPropagatedAttachmentsKey;
+		}
+	}
+
+	[Field("kCVImageBufferPixelAspectRatioHorizontalSpacingKey", "CoreVideo")]
+	public static NSString PixelAspectRatioHorizontalSpacingKey
+	{
+		get
+		{
+			if (_PixelAspectRatioHorizontalSpacingKey == null)
+			{
+				_PixelAspectRatioHorizontalSpacingKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferPixelAspectRatioHorizontalSpacingKey");
+			}
+			return _PixelAspectRatioHorizontalSpacingKey;
+		}
+	}
+
+	[Field("kCVImageBufferPixelAspectRatioKey", "CoreVideo")]
+	public static NSString PixelAspectRatioKey
+	{
+		get
+		{
+			if (_PixelAspectRatioKey == null)
+			{
+				_PixelAspectRatioKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferPixelAspectRatioKey");
+			}
+			return _PixelAspectRatioKey;
+		}
+	}
+
+	[Field("kCVImageBufferPixelAspectRatioVerticalSpacingKey", "CoreVideo")]
+	public static NSString PixelAspectRatioVerticalSpacingKey
+	{
+		get
+		{
+			if (_PixelAspectRatioVerticalSpacingKey == null)
+			{
+				_PixelAspectRatioVerticalSpacingKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferPixelAspectRatioVerticalSpacingKey");
+			}
+			return _PixelAspectRatioVerticalSpacingKey;
+		}
+	}
+
+	[Field("kCVImageBufferPreferredCleanApertureKey", "CoreVideo")]
+	public static NSString PreferredCleanApertureKey
+	{
+		get
+		{
+			if (_PreferredCleanApertureKey == null)
+			{
+				_PreferredCleanApertureKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferPreferredCleanApertureKey");
+			}
+			return _PreferredCleanApertureKey;
+		}
+	}
+
+	[Field("kCVBufferPropagatedAttachmentsKey", "CoreVideo")]
+	public new static NSString PropagatedAttachmentsKey
+	{
+		get
+		{
+			if (_PropagatedAttachmentsKey == null)
+			{
+				_PropagatedAttachmentsKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVBufferPropagatedAttachmentsKey");
+			}
+			return _PropagatedAttachmentsKey;
+		}
+	}
+
+	[Field("kCVBufferTimeScaleKey", "CoreVideo")]
+	public new static NSString TimeScaleKey
+	{
+		get
+		{
+			if (_TimeScaleKey == null)
+			{
+				_TimeScaleKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVBufferTimeScaleKey");
+			}
+			return _TimeScaleKey;
+		}
+	}
+
+	[Field("kCVBufferTimeValueKey", "CoreVideo")]
+	public new static NSString TimeValueKey
+	{
+		get
+		{
+			if (_TimeValueKey == null)
+			{
+				_TimeValueKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVBufferTimeValueKey");
+			}
+			return _TimeValueKey;
+		}
+	}
+
+	[Field("kCVImageBufferTransferFunctionKey", "CoreVideo")]
+	public static NSString TransferFunctionKey
+	{
+		get
+		{
+			if (_TransferFunctionKey == null)
+			{
+				_TransferFunctionKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferTransferFunctionKey");
+			}
+			return _TransferFunctionKey;
+		}
+	}
+
+	[Field("kCVImageBufferYCbCrMatrixKey", "CoreVideo")]
+	public static NSString YCbCrMatrixKey
+	{
+		get
+		{
+			if (_YCbCrMatrixKey == null)
+			{
+				_YCbCrMatrixKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVImageBufferYCbCrMatrixKey");
+			}
+			return _YCbCrMatrixKey;
 		}
 	}
 
@@ -186,5 +983,117 @@ public class CVImageBuffer : CVBuffer
 	private static extern bool CVImageBufferIsFlipped(IntPtr imageBuffer);
 
 	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
-	private static extern IntPtr CVImageBufferGetColorSpace(IntPtr handle);
+	private static extern IntPtr CVImageBufferGetColorSpace(IntPtr imageBuffer);
+
+	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
+	private static extern IntPtr CVImageBufferCreateColorSpaceFromAttachments(IntPtr attachments);
+
+	public static CGColorSpace CreateFrom(NSDictionary attachments)
+	{
+		if (attachments == null)
+		{
+			throw new ArgumentNullException("attachments");
+		}
+		IntPtr intPtr = CVImageBufferCreateColorSpaceFromAttachments(attachments.Handle);
+		return (intPtr == IntPtr.Zero) ? null : new CGColorSpace(intPtr);
+	}
+
+	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	private static extern int CVYCbCrMatrixGetIntegerCodePointForString(IntPtr yCbCrMatrixString);
+
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	public static int GetCodePoint(CVImageBufferYCbCrMatrix yCbCrMatrix)
+	{
+		return CVYCbCrMatrixGetIntegerCodePointForString(yCbCrMatrix.GetConstant().Handle);
+	}
+
+	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	private static extern int CVColorPrimariesGetIntegerCodePointForString(IntPtr colorPrimariesString);
+
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	public static int GetCodePoint(CVImageBufferColorPrimaries color)
+	{
+		return CVColorPrimariesGetIntegerCodePointForString(color.GetConstant().Handle);
+	}
+
+	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	private static extern int CVTransferFunctionGetIntegerCodePointForString(IntPtr colorPrimariesString);
+
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	public static int GetCodePoint(CVImageBufferTransferFunction function)
+	{
+		return CVTransferFunctionGetIntegerCodePointForString(function.GetConstant().Handle);
+	}
+
+	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	private static extern IntPtr CVYCbCrMatrixGetStringForIntegerCodePoint(int yCbCrMatrixCodePoint);
+
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	public static CVImageBufferYCbCrMatrix GetYCbCrMatrixOption(int yCbCrMatrixCodePoint)
+	{
+		NSString nSObject = Runtime.GetNSObject<NSString>(CVYCbCrMatrixGetStringForIntegerCodePoint(yCbCrMatrixCodePoint));
+		return CVImageBufferYCbCrMatrixExtensions.GetValue(nSObject);
+	}
+
+	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	private static extern IntPtr CVColorPrimariesGetStringForIntegerCodePoint(int colorPrimariesCodePoint);
+
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	public static CVImageBufferColorPrimaries GetColorPrimariesOption(int colorPrimariesCodePoint)
+	{
+		NSString nSObject = Runtime.GetNSObject<NSString>(CVColorPrimariesGetStringForIntegerCodePoint(colorPrimariesCodePoint));
+		return CVImageBufferColorPrimariesExtensions.GetValue(nSObject);
+	}
+
+	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	private static extern IntPtr CVTransferFunctionGetStringForIntegerCodePoint(int transferFunctionCodePoint);
+
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	public static CVImageBufferTransferFunction GetTransferFunctionOption(int transferFunctionCodePoint)
+	{
+		NSString nSObject = Runtime.GetNSObject<NSString>(CVTransferFunctionGetStringForIntegerCodePoint(transferFunctionCodePoint));
+		return CVImageBufferTransferFunctionExtensions.GetValue(nSObject);
+	}
 }

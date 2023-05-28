@@ -6,158 +6,118 @@ using ObjCRuntime;
 
 namespace AppKit;
 
-[Register("NSDragDestination", true)]
-public class NSDraggingInfo : NSObject
+[Protocol]
+[Register("NSDraggingInfo", true)]
+public class NSDraggingInfo : NSObject, INSDraggingInfo, INativeObject, IDisposable
 {
-	private static readonly IntPtr selDraggingDestinationWindowHandle = Selector.GetHandle("draggingDestinationWindow");
-
-	private static readonly IntPtr selDraggingSourceOperationMaskHandle = Selector.GetHandle("draggingSourceOperationMask");
-
-	private static readonly IntPtr selDraggingLocationHandle = Selector.GetHandle("draggingLocation");
-
-	private static readonly IntPtr selDraggedImageLocationHandle = Selector.GetHandle("draggedImageLocation");
-
-	private static readonly IntPtr selDraggedImageHandle = Selector.GetHandle("draggedImage");
-
-	private static readonly IntPtr selDraggingPasteboardHandle = Selector.GetHandle("draggingPasteboard");
-
-	private static readonly IntPtr selDraggingSourceHandle = Selector.GetHandle("draggingSource");
-
-	private static readonly IntPtr selDraggingSequenceNumberHandle = Selector.GetHandle("draggingSequenceNumber");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAnimatesToDestination = "animatesToDestination";
 
 	private static readonly IntPtr selAnimatesToDestinationHandle = Selector.GetHandle("animatesToDestination");
 
-	private static readonly IntPtr selSetAnimatesToDestination_Handle = Selector.GetHandle("setAnimatesToDestination:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDraggedImage = "draggedImage";
 
-	private static readonly IntPtr selNumberOfValidItemsForDropHandle = Selector.GetHandle("numberOfValidItemsForDrop");
+	private static readonly IntPtr selDraggedImageHandle = Selector.GetHandle("draggedImage");
 
-	private static readonly IntPtr selSetNumberOfValidItemsForDrop_Handle = Selector.GetHandle("setNumberOfValidItemsForDrop:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDraggedImageLocation = "draggedImageLocation";
+
+	private static readonly IntPtr selDraggedImageLocationHandle = Selector.GetHandle("draggedImageLocation");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDraggingDestinationWindow = "draggingDestinationWindow";
+
+	private static readonly IntPtr selDraggingDestinationWindowHandle = Selector.GetHandle("draggingDestinationWindow");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDraggingFormation = "draggingFormation";
 
 	private static readonly IntPtr selDraggingFormationHandle = Selector.GetHandle("draggingFormation");
 
-	private static readonly IntPtr selSetDraggingFormation_Handle = Selector.GetHandle("setDraggingFormation:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDraggingLocation = "draggingLocation";
 
-	private static readonly IntPtr selSlideDraggedImageTo_Handle = Selector.GetHandle("slideDraggedImageTo:");
+	private static readonly IntPtr selDraggingLocationHandle = Selector.GetHandle("draggingLocation");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDraggingPasteboard = "draggingPasteboard";
+
+	private static readonly IntPtr selDraggingPasteboardHandle = Selector.GetHandle("draggingPasteboard");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDraggingSequenceNumber = "draggingSequenceNumber";
+
+	private static readonly IntPtr selDraggingSequenceNumberHandle = Selector.GetHandle("draggingSequenceNumber");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDraggingSource = "draggingSource";
+
+	private static readonly IntPtr selDraggingSourceHandle = Selector.GetHandle("draggingSource");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDraggingSourceOperationMask = "draggingSourceOperationMask";
+
+	private static readonly IntPtr selDraggingSourceOperationMaskHandle = Selector.GetHandle("draggingSourceOperationMask");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEnumerateDraggingItemsWithOptions_ForView_Classes_SearchOptions_UsingBlock_ = "enumerateDraggingItemsWithOptions:forView:classes:searchOptions:usingBlock:";
+
+	private static readonly IntPtr selEnumerateDraggingItemsWithOptions_ForView_Classes_SearchOptions_UsingBlock_Handle = Selector.GetHandle("enumerateDraggingItemsWithOptions:forView:classes:searchOptions:usingBlock:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selNamesOfPromisedFilesDroppedAtDestination_ = "namesOfPromisedFilesDroppedAtDestination:";
 
 	private static readonly IntPtr selNamesOfPromisedFilesDroppedAtDestination_Handle = Selector.GetHandle("namesOfPromisedFilesDroppedAtDestination:");
 
-	private static readonly IntPtr selEnumerateDraggingItemsWithOptionsForViewClassesSearchOptionsUsingBlock_Handle = Selector.GetHandle("enumerateDraggingItemsWithOptions:forView:classes:searchOptions:usingBlock:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selNumberOfValidItemsForDrop = "numberOfValidItemsForDrop";
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSDragDestination");
+	private static readonly IntPtr selNumberOfValidItemsForDropHandle = Selector.GetHandle("numberOfValidItemsForDrop");
 
-	private object __mt_DraggingDestinationWindow_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selResetSpringLoading = "resetSpringLoading";
 
-	private object __mt_DraggedImage_var;
+	private static readonly IntPtr selResetSpringLoadingHandle = Selector.GetHandle("resetSpringLoading");
 
-	private object __mt_DraggingPasteboard_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAnimatesToDestination_ = "setAnimatesToDestination:";
 
-	private object __mt_DraggingSource_var;
+	private static readonly IntPtr selSetAnimatesToDestination_Handle = Selector.GetHandle("setAnimatesToDestination:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDraggingFormation_ = "setDraggingFormation:";
+
+	private static readonly IntPtr selSetDraggingFormation_Handle = Selector.GetHandle("setDraggingFormation:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetNumberOfValidItemsForDrop_ = "setNumberOfValidItemsForDrop:";
+
+	private static readonly IntPtr selSetNumberOfValidItemsForDrop_Handle = Selector.GetHandle("setNumberOfValidItemsForDrop:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSlideDraggedImageTo_ = "slideDraggedImageTo:";
+
+	private static readonly IntPtr selSlideDraggedImageTo_Handle = Selector.GetHandle("slideDraggedImageTo:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSpringLoadingHighlight = "springLoadingHighlight";
+
+	private static readonly IntPtr selSpringLoadingHighlightHandle = Selector.GetHandle("springLoadingHighlight");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSDraggingInfo");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSWindow DraggingDestinationWindow
-	{
-		[Export("draggingDestinationWindow")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSWindow)(__mt_DraggingDestinationWindow_var = ((!IsDirectBinding) ? ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDraggingDestinationWindowHandle))) : ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDraggingDestinationWindowHandle)))));
-		}
-	}
-
-	public virtual NSDragOperation DraggingSourceOperationMask
-	{
-		[Export("draggingSourceOperationMask")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return (NSDragOperation)Messaging.UInt64_objc_msgSend(base.Handle, selDraggingSourceOperationMaskHandle);
-			}
-			return (NSDragOperation)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selDraggingSourceOperationMaskHandle);
-		}
-	}
-
-	public virtual CGPoint DraggingLocation
-	{
-		[Export("draggingLocation")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.CGPoint_objc_msgSend(base.Handle, selDraggingLocationHandle);
-			}
-			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selDraggingLocationHandle);
-		}
-	}
-
-	public virtual CGPoint DraggedImageLocation
-	{
-		[Export("draggedImageLocation")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.CGPoint_objc_msgSend(base.Handle, selDraggedImageLocationHandle);
-			}
-			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selDraggedImageLocationHandle);
-		}
-	}
-
-	public virtual NSImage DraggedImage
-	{
-		[Export("draggedImage")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSImage)(__mt_DraggedImage_var = ((!IsDirectBinding) ? ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDraggedImageHandle))) : ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDraggedImageHandle)))));
-		}
-	}
-
-	public virtual NSPasteboard DraggingPasteboard
-	{
-		[Export("draggingPasteboard")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSPasteboard)(__mt_DraggingPasteboard_var = ((!IsDirectBinding) ? ((NSPasteboard)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDraggingPasteboardHandle))) : ((NSPasteboard)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDraggingPasteboardHandle)))));
-		}
-	}
-
-	public virtual NSObject DraggingSource
-	{
-		[Export("draggingSource")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSObject)(__mt_DraggingSource_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDraggingSourceHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDraggingSourceHandle))));
-		}
-	}
-
-	public virtual long DraggingSequenceNumber
-	{
-		[Export("draggingSequenceNumber")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Int64_objc_msgSend(base.Handle, selDraggingSequenceNumberHandle);
-			}
-			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selDraggingSequenceNumberHandle);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool AnimatesToDestination
 	{
 		[Export("animatesToDestination")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selAnimatesToDestinationHandle);
 			}
@@ -167,7 +127,7 @@ public class NSDraggingInfo : NSObject
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetAnimatesToDestination_Handle, value);
 			}
@@ -178,40 +138,60 @@ public class NSDraggingInfo : NSObject
 		}
 	}
 
-	public virtual long NumberOfValidItemsForDrop
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Advice("Use 'NSDraggingItem' objects instead.")]
+	public virtual NSImage DraggedImage
 	{
-		[Export("numberOfValidItemsForDrop")]
+		[Export("draggedImage")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Int64_objc_msgSend(base.Handle, selNumberOfValidItemsForDropHandle);
+				return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSend(base.Handle, selDraggedImageHandle));
 			}
-			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selNumberOfValidItemsForDropHandle);
-		}
-		[Export("setNumberOfValidItemsForDrop:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetNumberOfValidItemsForDrop_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetNumberOfValidItemsForDrop_Handle, value);
-			}
+			return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDraggedImageHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGPoint DraggedImageLocation
+	{
+		[Export("draggedImageLocation")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.CGPoint_objc_msgSend(base.Handle, selDraggedImageLocationHandle);
+			}
+			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selDraggedImageLocationHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSWindow DraggingDestinationWindow
+	{
+		[Export("draggingDestinationWindow")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSend(base.Handle, selDraggingDestinationWindowHandle));
+			}
+			return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDraggingDestinationWindowHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDraggingFormation DraggingFormation
 	{
 		[Export("draggingFormation")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return (NSDraggingFormation)Messaging.Int64_objc_msgSend(base.Handle, selDraggingFormationHandle);
 			}
@@ -221,7 +201,7 @@ public class NSDraggingInfo : NSObject
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_Int64(base.Handle, selSetDraggingFormation_Handle, (long)value);
 			}
@@ -232,88 +212,177 @@ public class NSDraggingInfo : NSObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGPoint DraggingLocation
+	{
+		[Export("draggingLocation")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.CGPoint_objc_msgSend(base.Handle, selDraggingLocationHandle);
+			}
+			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selDraggingLocationHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSPasteboard DraggingPasteboard
+	{
+		[Export("draggingPasteboard")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSPasteboard>(Messaging.IntPtr_objc_msgSend(base.Handle, selDraggingPasteboardHandle));
+			}
+			return Runtime.GetNSObject<NSPasteboard>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDraggingPasteboardHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint DraggingSequenceNumber
+	{
+		[Export("draggingSequenceNumber")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nint_objc_msgSend(base.Handle, selDraggingSequenceNumberHandle);
+			}
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selDraggingSequenceNumberHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject DraggingSource
+	{
+		[Export("draggingSource")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDraggingSourceHandle));
+			}
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDraggingSourceHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDragOperation DraggingSourceOperationMask
+	{
+		[Export("draggingSourceOperationMask")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return (NSDragOperation)Messaging.UInt64_objc_msgSend(base.Handle, selDraggingSourceOperationMaskHandle);
+			}
+			return (NSDragOperation)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selDraggingSourceOperationMaskHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint NumberOfValidItemsForDrop
+	{
+		[Export("numberOfValidItemsForDrop")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nint_objc_msgSend(base.Handle, selNumberOfValidItemsForDropHandle);
+			}
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selNumberOfValidItemsForDropHandle);
+		}
+		[Export("setNumberOfValidItemsForDrop:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nint(base.Handle, selSetNumberOfValidItemsForDrop_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetNumberOfValidItemsForDrop_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	public virtual NSSpringLoadingHighlight SpringLoadingHighlight
+	{
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+		[Export("springLoadingHighlight")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return (NSSpringLoadingHighlight)Messaging.Int64_objc_msgSend(base.Handle, selSpringLoadingHighlightHandle);
+			}
+			return (NSSpringLoadingHighlight)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selSpringLoadingHighlightHandle);
+		}
+	}
+
+	public void EnumerateDraggingItems(NSDraggingItemEnumerationOptions enumOpts, NSView view, NSPasteboardReading[] classArray, NSDictionary searchOptions, NSDraggingEnumerator enumerator)
+	{
+		NSArray nSArray = NSArray.FromNSObjects(classArray);
+		EnumerateDraggingItems(enumOpts, view, nSArray.Handle, searchOptions, enumerator);
+		nSArray.Dispose();
+	}
+
+	public void EnumerateDraggingItems(NSDraggingItemEnumerationOptions enumOpts, NSView view, NSArray classArray, NSDictionary searchOptions, NSDraggingEnumerator enumerator)
+	{
+		EnumerateDraggingItems(enumOpts, view, classArray.Handle, searchOptions, enumerator);
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSDraggingInfo()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSDraggingInfo(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSDraggingInfo(NSObjectFlag t)
+	protected NSDraggingInfo(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSDraggingInfo(IntPtr handle)
+	protected internal NSDraggingInfo(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("slideDraggedImageTo:")]
-	public virtual void SlideDraggedImageTo(CGPoint screenPoint)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGPoint(base.Handle, selSlideDraggedImageTo_Handle, screenPoint);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selSlideDraggedImageTo_Handle, screenPoint);
-		}
-	}
-
-	[Export("namesOfPromisedFilesDroppedAtDestination:")]
-	public virtual string[] PromisedFilesDroppedAtDestination(NSUrl dropDestination)
-	{
-		NSApplication.EnsureUIThread();
-		if (dropDestination == null)
-		{
-			throw new ArgumentNullException("dropDestination");
-		}
-		if (IsDirectBinding)
-		{
-			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selNamesOfPromisedFilesDroppedAtDestination_Handle, dropDestination.Handle));
-		}
-		return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selNamesOfPromisedFilesDroppedAtDestination_Handle, dropDestination.Handle));
-	}
-
 	[Export("enumerateDraggingItemsWithOptions:forView:classes:searchOptions:usingBlock:")]
-	public unsafe virtual void EnumerateDraggingItems(NSDraggingItemEnumerationOptions enumOpts, NSView view, NSPasteboardReading[] classArray, NSDictionary searchOptions, NSDraggingEnumerator enumerator)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal unsafe virtual void EnumerateDraggingItems(NSDraggingItemEnumerationOptions enumOpts, NSView view, IntPtr classArray, NSDictionary searchOptions, [BlockProxy(typeof(Trampolines.NIDNSDraggingEnumerator))] NSDraggingEnumerator enumerator)
 	{
 		NSApplication.EnsureUIThread();
 		if (view == null)
 		{
 			throw new ArgumentNullException("view");
-		}
-		if (classArray == null)
-		{
-			throw new ArgumentNullException("classArray");
 		}
 		if (searchOptions == null)
 		{
@@ -323,31 +392,65 @@ public class NSDraggingInfo : NSObject
 		{
 			throw new ArgumentNullException("enumerator");
 		}
-		NSArray nSArray = NSArray.FromNSObjects(classArray);
 		BlockLiteral blockLiteral = default(BlockLiteral);
 		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlock(Trampolines.SDNSDraggingEnumerator.Handler, enumerator);
-		if (IsDirectBinding)
+		blockLiteral.SetupBlockUnsafe(Trampolines.SDNSDraggingEnumerator.Handler, enumerator);
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_UInt64_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selEnumerateDraggingItemsWithOptionsForViewClassesSearchOptionsUsingBlock_Handle, (ulong)enumOpts, view.Handle, nSArray.Handle, searchOptions.Handle, (IntPtr)ptr);
+			Messaging.void_objc_msgSend_UInt64_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selEnumerateDraggingItemsWithOptions_ForView_Classes_SearchOptions_UsingBlock_Handle, (ulong)enumOpts, view.Handle, classArray, searchOptions.Handle, (IntPtr)ptr);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_UInt64_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selEnumerateDraggingItemsWithOptionsForViewClassesSearchOptionsUsingBlock_Handle, (ulong)enumOpts, view.Handle, nSArray.Handle, searchOptions.Handle, (IntPtr)ptr);
+			Messaging.void_objc_msgSendSuper_UInt64_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selEnumerateDraggingItemsWithOptions_ForView_Classes_SearchOptions_UsingBlock_Handle, (ulong)enumOpts, view.Handle, classArray, searchOptions.Handle, (IntPtr)ptr);
 		}
-		nSArray.Dispose();
 		ptr->CleanupBlock();
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("namesOfPromisedFilesDroppedAtDestination:")]
+	[Deprecated(PlatformName.MacOSX, 10, 13, PlatformArchitecture.None, "Use NSFilePromiseProvider objects instead.")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string[] PromisedFilesDroppedAtDestination(NSUrl dropDestination)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		NSApplication.EnsureUIThread();
+		if (dropDestination == null)
 		{
-			__mt_DraggingDestinationWindow_var = null;
-			__mt_DraggedImage_var = null;
-			__mt_DraggingPasteboard_var = null;
-			__mt_DraggingSource_var = null;
+			throw new ArgumentNullException("dropDestination");
+		}
+		if (base.IsDirectBinding)
+		{
+			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selNamesOfPromisedFilesDroppedAtDestination_Handle, dropDestination.Handle));
+		}
+		return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selNamesOfPromisedFilesDroppedAtDestination_Handle, dropDestination.Handle));
+	}
+
+	[Export("resetSpringLoading")]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ResetSpringLoading()
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selResetSpringLoadingHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selResetSpringLoadingHandle);
+		}
+	}
+
+	[Export("slideDraggedImageTo:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SlideDraggedImageTo(CGPoint screenPoint)
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGPoint(base.Handle, selSlideDraggedImageTo_Handle, screenPoint);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selSlideDraggedImageTo_Handle, screenPoint);
 		}
 	}
 }

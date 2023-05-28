@@ -1,7 +1,11 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
+[Native]
 public enum NSApplicationActivationOptions : ulong
 {
-	ActivateAllWindows = 1uL,
+	Default,
+	ActivateAllWindows,
 	ActivateIgnoringOtherWindows
 }

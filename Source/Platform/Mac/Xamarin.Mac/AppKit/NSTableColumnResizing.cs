@@ -1,11 +1,13 @@
 using System;
+using ObjCRuntime;
 
 namespace AppKit;
 
 [Flags]
-public enum NSTableColumnResizing : ulong
+[Native]
+public enum NSTableColumnResizing : long
 {
-	None = 0uL,
-	Autoresizing = 1uL,
-	UserResizingMask = 2uL
+	None = -1L,
+	Autoresizing = 1L,
+	UserResizingMask = 2L
 }

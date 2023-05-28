@@ -7,30 +7,47 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Register("AVMutableTimedMetadataGroup", true)]
+[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
 public class AVMutableTimedMetadataGroup : AVTimedMetadataGroup
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selItems = "items";
+
 	private static readonly IntPtr selItemsHandle = Selector.GetHandle("items");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetItems_ = "setItems:";
 
 	private static readonly IntPtr selSetItems_Handle = Selector.GetHandle("setItems:");
 
-	private static readonly IntPtr selTimeRangeHandle = Selector.GetHandle("timeRange");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTimeRange_ = "setTimeRange:";
 
 	private static readonly IntPtr selSetTimeRange_Handle = Selector.GetHandle("setTimeRange:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("AVMutableTimedMetadataGroup");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTimeRange = "timeRange";
 
-	private object __mt_Items_var;
+	private static readonly IntPtr selTimeRangeHandle = Selector.GetHandle("timeRange");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVMutableTimedMetadataGroup");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public override AVMetadataItem[] Items
 	{
-		[Export("items")]
+		[Export("items", ArgumentSemantic.Copy)]
 		get
 		{
-			return (AVMetadataItem[])(__mt_Items_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<AVMetadataItem>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selItemsHandle)) : NSArray.ArrayFromHandle<AVMetadataItem>(Messaging.IntPtr_objc_msgSend(base.Handle, selItemsHandle))));
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<AVMetadataItem>(Messaging.IntPtr_objc_msgSend(base.Handle, selItemsHandle));
+			}
+			return NSArray.ArrayFromHandle<AVMetadataItem>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selItemsHandle));
 		}
-		[Export("setItems:")]
+		[Export("setItems:", ArgumentSemantic.Copy)]
 		set
 		{
 			if (value == null)
@@ -38,7 +55,7 @@ public class AVMutableTimedMetadataGroup : AVTimedMetadataGroup
 				throw new ArgumentNullException("value");
 			}
 			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetItems_Handle, nSArray.Handle);
 			}
@@ -47,17 +64,17 @@ public class AVMutableTimedMetadataGroup : AVTimedMetadataGroup
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetItems_Handle, nSArray.Handle);
 			}
 			nSArray.Dispose();
-			__mt_Items_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public override CMTimeRange TimeRange
 	{
 		[Export("timeRange")]
 		get
 		{
 			CMTimeRange retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.CMTimeRange_objc_msgSend_stret(out retval, base.Handle, selTimeRangeHandle);
 			}
@@ -70,7 +87,7 @@ public class AVMutableTimedMetadataGroup : AVTimedMetadataGroup
 		[Export("setTimeRange:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_CMTimeRange(base.Handle, selSetTimeRange_Handle, value);
 			}
@@ -81,54 +98,33 @@ public class AVMutableTimedMetadataGroup : AVTimedMetadataGroup
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public AVMutableTimedMetadataGroup()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public AVMutableTimedMetadataGroup(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVMutableTimedMetadataGroup(NSObjectFlag t)
+	protected AVMutableTimedMetadataGroup(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVMutableTimedMetadataGroup(IntPtr handle)
+	protected internal AVMutableTimedMetadataGroup(IntPtr handle)
 		: base(handle)
 	{
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_Items_var = null;
-		}
 	}
 }

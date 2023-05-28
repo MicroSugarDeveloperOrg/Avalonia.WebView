@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace WebKit;
 
-internal class IndexedContainerEnumerator<T> : IEnumerator<T>, IEnumerator, IDisposable
+internal class IndexedContainerEnumerator<T> : IEnumerator<T>, IDisposable, IEnumerator
 {
 	private IIndexedContainer<T> _container;
 

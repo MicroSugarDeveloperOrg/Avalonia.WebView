@@ -1,6 +1,9 @@
+using ObjCRuntime;
+
 namespace CoreVideo;
 
-public enum CVSMPTETimeType
+[Watch(4, 0)]
+public enum CVSMPTETimeType : uint
 {
 	Type24,
 	Type25,

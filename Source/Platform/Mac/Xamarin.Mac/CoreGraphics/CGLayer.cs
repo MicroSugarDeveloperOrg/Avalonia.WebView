@@ -47,10 +47,10 @@ public class CGLayer : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGLayerRelease(IntPtr handle);
+	private static extern void CGLayerRelease(IntPtr layer);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGLayerRetain(IntPtr handle);
+	private static extern IntPtr CGLayerRetain(IntPtr layer);
 
 	protected virtual void Dispose(bool disposing)
 	{
@@ -68,10 +68,10 @@ public class CGLayer : INativeObject, IDisposable
 	private static extern IntPtr CGLayerGetContext(IntPtr layer);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGLayerCreateWithContext(IntPtr context, CGSize size, IntPtr dictionary);
+	private static extern IntPtr CGLayerCreateWithContext(IntPtr context, CGSize size, IntPtr auxiliaryInfo);
 
 	public static CGLayer Create(CGContext context, CGSize size)
 	{
-		return new CGLayer(CGLayerCreateWithContext(context.Handle, size, IntPtr.Zero), owns: true);
+		return new CGLayer(CGLayerCreateWithContext(context?.Handle ?? IntPtr.Zero, size, IntPtr.Zero), owns: true);
 	}
 }

@@ -1,6 +1,9 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
-public enum NSMatrixMode
+[Native]
+public enum NSMatrixMode : ulong
 {
 	Radio,
 	Highlight,

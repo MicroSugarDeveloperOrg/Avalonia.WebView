@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
@@ -8,205 +7,391 @@ using ObjCRuntime;
 namespace AppKit;
 
 [Register("NSBezierPath", true)]
-public class NSBezierPath : NSObject
+public class NSBezierPath : NSObject, INSCoding, INativeObject, IDisposable, INSCopying, INSSecureCoding
 {
-	private static readonly IntPtr selIsEmptyHandle = Selector.GetHandle("isEmpty");
-
-	private static readonly IntPtr selCurrentPointHandle = Selector.GetHandle("currentPoint");
-
-	private static readonly IntPtr selControlPointBoundsHandle = Selector.GetHandle("controlPointBounds");
-
-	private static readonly IntPtr selBoundsHandle = Selector.GetHandle("bounds");
-
-	private static readonly IntPtr selElementCountHandle = Selector.GetHandle("elementCount");
-
-	private static readonly IntPtr selDefaultMiterLimitHandle = Selector.GetHandle("defaultMiterLimit");
-
-	private static readonly IntPtr selSetDefaultMiterLimit_Handle = Selector.GetHandle("setDefaultMiterLimit:");
-
-	private static readonly IntPtr selDefaultFlatnessHandle = Selector.GetHandle("defaultFlatness");
-
-	private static readonly IntPtr selSetDefaultFlatness_Handle = Selector.GetHandle("setDefaultFlatness:");
-
-	private static readonly IntPtr selDefaultWindingRuleHandle = Selector.GetHandle("defaultWindingRule");
-
-	private static readonly IntPtr selSetDefaultWindingRule_Handle = Selector.GetHandle("setDefaultWindingRule:");
-
-	private static readonly IntPtr selDefaultLineCapStyleHandle = Selector.GetHandle("defaultLineCapStyle");
-
-	private static readonly IntPtr selSetDefaultLineCapStyle_Handle = Selector.GetHandle("setDefaultLineCapStyle:");
-
-	private static readonly IntPtr selDefaultLineJoinStyleHandle = Selector.GetHandle("defaultLineJoinStyle");
-
-	private static readonly IntPtr selSetDefaultLineJoinStyle_Handle = Selector.GetHandle("setDefaultLineJoinStyle:");
-
-	private static readonly IntPtr selDefaultLineWidthHandle = Selector.GetHandle("defaultLineWidth");
-
-	private static readonly IntPtr selSetDefaultLineWidth_Handle = Selector.GetHandle("setDefaultLineWidth:");
-
-	private static readonly IntPtr selLineWidthHandle = Selector.GetHandle("lineWidth");
-
-	private static readonly IntPtr selSetLineWidth_Handle = Selector.GetHandle("setLineWidth:");
-
-	private static readonly IntPtr selLineCapStyleHandle = Selector.GetHandle("lineCapStyle");
-
-	private static readonly IntPtr selSetLineCapStyle_Handle = Selector.GetHandle("setLineCapStyle:");
-
-	private static readonly IntPtr selLineJoinStyleHandle = Selector.GetHandle("lineJoinStyle");
-
-	private static readonly IntPtr selSetLineJoinStyle_Handle = Selector.GetHandle("setLineJoinStyle:");
-
-	private static readonly IntPtr selWindingRuleHandle = Selector.GetHandle("windingRule");
-
-	private static readonly IntPtr selSetWindingRule_Handle = Selector.GetHandle("setWindingRule:");
-
-	private static readonly IntPtr selMiterLimitHandle = Selector.GetHandle("miterLimit");
-
-	private static readonly IntPtr selSetMiterLimit_Handle = Selector.GetHandle("setMiterLimit:");
-
-	private static readonly IntPtr selFlatnessHandle = Selector.GetHandle("flatness");
-
-	private static readonly IntPtr selSetFlatness_Handle = Selector.GetHandle("setFlatness:");
-
-	private static readonly IntPtr selBezierPathWithRect_Handle = Selector.GetHandle("bezierPathWithRect:");
-
-	private static readonly IntPtr selBezierPathWithOvalInRect_Handle = Selector.GetHandle("bezierPathWithOvalInRect:");
-
-	private static readonly IntPtr selBezierPathWithRoundedRectXRadiusYRadius_Handle = Selector.GetHandle("bezierPathWithRoundedRect:xRadius:yRadius:");
-
-	private static readonly IntPtr selFillRect_Handle = Selector.GetHandle("fillRect:");
-
-	private static readonly IntPtr selStrokeRect_Handle = Selector.GetHandle("strokeRect:");
-
-	private static readonly IntPtr selClipRect_Handle = Selector.GetHandle("clipRect:");
-
-	private static readonly IntPtr selStrokeLineFromPointToPoint_Handle = Selector.GetHandle("strokeLineFromPoint:toPoint:");
-
-	private static readonly IntPtr selDrawPackedGlyphsAtPoint_Handle = Selector.GetHandle("drawPackedGlyphs:atPoint:");
-
-	private static readonly IntPtr selMoveToPoint_Handle = Selector.GetHandle("moveToPoint:");
-
-	private static readonly IntPtr selLineToPoint_Handle = Selector.GetHandle("lineToPoint:");
-
-	private static readonly IntPtr selCurveToPointControlPoint1ControlPoint2_Handle = Selector.GetHandle("curveToPoint:controlPoint1:controlPoint2:");
-
-	private static readonly IntPtr selClosePathHandle = Selector.GetHandle("closePath");
-
-	private static readonly IntPtr selRemoveAllPointsHandle = Selector.GetHandle("removeAllPoints");
-
-	private static readonly IntPtr selRelativeMoveToPoint_Handle = Selector.GetHandle("relativeMoveToPoint:");
-
-	private static readonly IntPtr selRelativeLineToPoint_Handle = Selector.GetHandle("relativeLineToPoint:");
-
-	private static readonly IntPtr selRelativeCurveToPointControlPoint1ControlPoint2_Handle = Selector.GetHandle("relativeCurveToPoint:controlPoint1:controlPoint2:");
-
-	private static readonly IntPtr selGetLineDashCountPhase_Handle = Selector.GetHandle("getLineDash:count:phase:");
-
-	private static readonly IntPtr selSetLineDashCountPhase_Handle = Selector.GetHandle("setLineDash:count:phase:");
-
-	private static readonly IntPtr selStrokeHandle = Selector.GetHandle("stroke");
-
-	private static readonly IntPtr selFillHandle = Selector.GetHandle("fill");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAddClip = "addClip";
 
 	private static readonly IntPtr selAddClipHandle = Selector.GetHandle("addClip");
 
-	private static readonly IntPtr selSetClipHandle = Selector.GetHandle("setClip");
-
-	private static readonly IntPtr selBezierPathByFlatteningPathHandle = Selector.GetHandle("bezierPathByFlatteningPath");
-
-	private static readonly IntPtr selBezierPathByReversingPathHandle = Selector.GetHandle("bezierPathByReversingPath");
-
-	private static readonly IntPtr selTransformUsingAffineTransform_Handle = Selector.GetHandle("transformUsingAffineTransform:");
-
-	private static readonly IntPtr selElementAtIndexAssociatedPoints_Handle = Selector.GetHandle("elementAtIndex:associatedPoints:");
-
-	private static readonly IntPtr selElementAtIndex_Handle = Selector.GetHandle("elementAtIndex:");
-
-	private static readonly IntPtr selSetAssociatedPointsAtIndex_Handle = Selector.GetHandle("setAssociatedPoints:atIndex:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAppendBezierPath_ = "appendBezierPath:";
 
 	private static readonly IntPtr selAppendBezierPath_Handle = Selector.GetHandle("appendBezierPath:");
 
-	private static readonly IntPtr selAppendBezierPathWithRect_Handle = Selector.GetHandle("appendBezierPathWithRect:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAppendBezierPathWithArcFromPoint_ToPoint_Radius_ = "appendBezierPathWithArcFromPoint:toPoint:radius:";
 
-	private static readonly IntPtr selAppendBezierPathWithPointsCount_Handle = Selector.GetHandle("appendBezierPathWithPoints:count:");
+	private static readonly IntPtr selAppendBezierPathWithArcFromPoint_ToPoint_Radius_Handle = Selector.GetHandle("appendBezierPathWithArcFromPoint:toPoint:radius:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAppendBezierPathWithArcWithCenter_Radius_StartAngle_EndAngle_ = "appendBezierPathWithArcWithCenter:radius:startAngle:endAngle:";
+
+	private static readonly IntPtr selAppendBezierPathWithArcWithCenter_Radius_StartAngle_EndAngle_Handle = Selector.GetHandle("appendBezierPathWithArcWithCenter:radius:startAngle:endAngle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAppendBezierPathWithArcWithCenter_Radius_StartAngle_EndAngle_Clockwise_ = "appendBezierPathWithArcWithCenter:radius:startAngle:endAngle:clockwise:";
+
+	private static readonly IntPtr selAppendBezierPathWithArcWithCenter_Radius_StartAngle_EndAngle_Clockwise_Handle = Selector.GetHandle("appendBezierPathWithArcWithCenter:radius:startAngle:endAngle:clockwise:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAppendBezierPathWithCGGlyph_InFont_ = "appendBezierPathWithCGGlyph:inFont:";
+
+	private static readonly IntPtr selAppendBezierPathWithCGGlyph_InFont_Handle = Selector.GetHandle("appendBezierPathWithCGGlyph:inFont:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAppendBezierPathWithCGGlyphs_Count_InFont_ = "appendBezierPathWithCGGlyphs:count:inFont:";
+
+	private static readonly IntPtr selAppendBezierPathWithCGGlyphs_Count_InFont_Handle = Selector.GetHandle("appendBezierPathWithCGGlyphs:count:inFont:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAppendBezierPathWithGlyph_InFont_ = "appendBezierPathWithGlyph:inFont:";
+
+	private static readonly IntPtr selAppendBezierPathWithGlyph_InFont_Handle = Selector.GetHandle("appendBezierPathWithGlyph:inFont:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAppendBezierPathWithGlyphs_Count_InFont_ = "appendBezierPathWithGlyphs:count:inFont:";
+
+	private static readonly IntPtr selAppendBezierPathWithGlyphs_Count_InFont_Handle = Selector.GetHandle("appendBezierPathWithGlyphs:count:inFont:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAppendBezierPathWithOvalInRect_ = "appendBezierPathWithOvalInRect:";
 
 	private static readonly IntPtr selAppendBezierPathWithOvalInRect_Handle = Selector.GetHandle("appendBezierPathWithOvalInRect:");
 
-	private static readonly IntPtr selAppendBezierPathWithArcWithCenterRadiusStartAngleEndAngleClockwise_Handle = Selector.GetHandle("appendBezierPathWithArcWithCenter:radius:startAngle:endAngle:clockwise:");
-
-	private static readonly IntPtr selAppendBezierPathWithArcWithCenterRadiusStartAngleEndAngle_Handle = Selector.GetHandle("appendBezierPathWithArcWithCenter:radius:startAngle:endAngle:");
-
-	private static readonly IntPtr selAppendBezierPathWithArcFromPointToPointRadius_Handle = Selector.GetHandle("appendBezierPathWithArcFromPoint:toPoint:radius:");
-
-	private static readonly IntPtr selAppendBezierPathWithGlyphInFont_Handle = Selector.GetHandle("appendBezierPathWithGlyph:inFont:");
-
-	private static readonly IntPtr selAppendBezierPathWithGlyphsCountInFont_Handle = Selector.GetHandle("appendBezierPathWithGlyphs:count:inFont:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAppendBezierPathWithPackedGlyphs_ = "appendBezierPathWithPackedGlyphs:";
 
 	private static readonly IntPtr selAppendBezierPathWithPackedGlyphs_Handle = Selector.GetHandle("appendBezierPathWithPackedGlyphs:");
 
-	private static readonly IntPtr selAppendBezierPathWithRoundedRectXRadiusYRadius_Handle = Selector.GetHandle("appendBezierPathWithRoundedRect:xRadius:yRadius:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAppendBezierPathWithPoints_Count_ = "appendBezierPathWithPoints:count:";
+
+	private static readonly IntPtr selAppendBezierPathWithPoints_Count_Handle = Selector.GetHandle("appendBezierPathWithPoints:count:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAppendBezierPathWithRect_ = "appendBezierPathWithRect:";
+
+	private static readonly IntPtr selAppendBezierPathWithRect_Handle = Selector.GetHandle("appendBezierPathWithRect:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAppendBezierPathWithRoundedRect_XRadius_YRadius_ = "appendBezierPathWithRoundedRect:xRadius:yRadius:";
+
+	private static readonly IntPtr selAppendBezierPathWithRoundedRect_XRadius_YRadius_Handle = Selector.GetHandle("appendBezierPathWithRoundedRect:xRadius:yRadius:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBezierPathByFlatteningPath = "bezierPathByFlatteningPath";
+
+	private static readonly IntPtr selBezierPathByFlatteningPathHandle = Selector.GetHandle("bezierPathByFlatteningPath");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBezierPathByReversingPath = "bezierPathByReversingPath";
+
+	private static readonly IntPtr selBezierPathByReversingPathHandle = Selector.GetHandle("bezierPathByReversingPath");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBezierPathWithOvalInRect_ = "bezierPathWithOvalInRect:";
+
+	private static readonly IntPtr selBezierPathWithOvalInRect_Handle = Selector.GetHandle("bezierPathWithOvalInRect:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBezierPathWithRect_ = "bezierPathWithRect:";
+
+	private static readonly IntPtr selBezierPathWithRect_Handle = Selector.GetHandle("bezierPathWithRect:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBezierPathWithRoundedRect_XRadius_YRadius_ = "bezierPathWithRoundedRect:xRadius:yRadius:";
+
+	private static readonly IntPtr selBezierPathWithRoundedRect_XRadius_YRadius_Handle = Selector.GetHandle("bezierPathWithRoundedRect:xRadius:yRadius:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBounds = "bounds";
+
+	private static readonly IntPtr selBoundsHandle = Selector.GetHandle("bounds");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selClipRect_ = "clipRect:";
+
+	private static readonly IntPtr selClipRect_Handle = Selector.GetHandle("clipRect:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selClosePath = "closePath";
+
+	private static readonly IntPtr selClosePathHandle = Selector.GetHandle("closePath");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selContainsPoint_ = "containsPoint:";
 
 	private static readonly IntPtr selContainsPoint_Handle = Selector.GetHandle("containsPoint:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSBezierPath");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selControlPointBounds = "controlPointBounds";
+
+	private static readonly IntPtr selControlPointBoundsHandle = Selector.GetHandle("controlPointBounds");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCopyWithZone_ = "copyWithZone:";
+
+	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCurrentPoint = "currentPoint";
+
+	private static readonly IntPtr selCurrentPointHandle = Selector.GetHandle("currentPoint");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCurveToPoint_ControlPoint1_ControlPoint2_ = "curveToPoint:controlPoint1:controlPoint2:";
+
+	private static readonly IntPtr selCurveToPoint_ControlPoint1_ControlPoint2_Handle = Selector.GetHandle("curveToPoint:controlPoint1:controlPoint2:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDefaultFlatness = "defaultFlatness";
+
+	private static readonly IntPtr selDefaultFlatnessHandle = Selector.GetHandle("defaultFlatness");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDefaultLineCapStyle = "defaultLineCapStyle";
+
+	private static readonly IntPtr selDefaultLineCapStyleHandle = Selector.GetHandle("defaultLineCapStyle");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDefaultLineJoinStyle = "defaultLineJoinStyle";
+
+	private static readonly IntPtr selDefaultLineJoinStyleHandle = Selector.GetHandle("defaultLineJoinStyle");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDefaultLineWidth = "defaultLineWidth";
+
+	private static readonly IntPtr selDefaultLineWidthHandle = Selector.GetHandle("defaultLineWidth");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDefaultMiterLimit = "defaultMiterLimit";
+
+	private static readonly IntPtr selDefaultMiterLimitHandle = Selector.GetHandle("defaultMiterLimit");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDefaultWindingRule = "defaultWindingRule";
+
+	private static readonly IntPtr selDefaultWindingRuleHandle = Selector.GetHandle("defaultWindingRule");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDrawPackedGlyphs_AtPoint_ = "drawPackedGlyphs:atPoint:";
+
+	private static readonly IntPtr selDrawPackedGlyphs_AtPoint_Handle = Selector.GetHandle("drawPackedGlyphs:atPoint:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selElementAtIndex_ = "elementAtIndex:";
+
+	private static readonly IntPtr selElementAtIndex_Handle = Selector.GetHandle("elementAtIndex:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selElementAtIndex_AssociatedPoints_ = "elementAtIndex:associatedPoints:";
+
+	private static readonly IntPtr selElementAtIndex_AssociatedPoints_Handle = Selector.GetHandle("elementAtIndex:associatedPoints:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selElementCount = "elementCount";
+
+	private static readonly IntPtr selElementCountHandle = Selector.GetHandle("elementCount");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEncodeWithCoder_ = "encodeWithCoder:";
+
+	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFill = "fill";
+
+	private static readonly IntPtr selFillHandle = Selector.GetHandle("fill");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFillRect_ = "fillRect:";
+
+	private static readonly IntPtr selFillRect_Handle = Selector.GetHandle("fillRect:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFlatness = "flatness";
+
+	private static readonly IntPtr selFlatnessHandle = Selector.GetHandle("flatness");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGetLineDash_Count_Phase_ = "getLineDash:count:phase:";
+
+	private static readonly IntPtr selGetLineDash_Count_Phase_Handle = Selector.GetHandle("getLineDash:count:phase:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithCoder_ = "initWithCoder:";
+
+	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsEmpty = "isEmpty";
+
+	private static readonly IntPtr selIsEmptyHandle = Selector.GetHandle("isEmpty");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLineCapStyle = "lineCapStyle";
+
+	private static readonly IntPtr selLineCapStyleHandle = Selector.GetHandle("lineCapStyle");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLineJoinStyle = "lineJoinStyle";
+
+	private static readonly IntPtr selLineJoinStyleHandle = Selector.GetHandle("lineJoinStyle");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLineToPoint_ = "lineToPoint:";
+
+	private static readonly IntPtr selLineToPoint_Handle = Selector.GetHandle("lineToPoint:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLineWidth = "lineWidth";
+
+	private static readonly IntPtr selLineWidthHandle = Selector.GetHandle("lineWidth");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMiterLimit = "miterLimit";
+
+	private static readonly IntPtr selMiterLimitHandle = Selector.GetHandle("miterLimit");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMoveToPoint_ = "moveToPoint:";
+
+	private static readonly IntPtr selMoveToPoint_Handle = Selector.GetHandle("moveToPoint:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRelativeCurveToPoint_ControlPoint1_ControlPoint2_ = "relativeCurveToPoint:controlPoint1:controlPoint2:";
+
+	private static readonly IntPtr selRelativeCurveToPoint_ControlPoint1_ControlPoint2_Handle = Selector.GetHandle("relativeCurveToPoint:controlPoint1:controlPoint2:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRelativeLineToPoint_ = "relativeLineToPoint:";
+
+	private static readonly IntPtr selRelativeLineToPoint_Handle = Selector.GetHandle("relativeLineToPoint:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRelativeMoveToPoint_ = "relativeMoveToPoint:";
+
+	private static readonly IntPtr selRelativeMoveToPoint_Handle = Selector.GetHandle("relativeMoveToPoint:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveAllPoints = "removeAllPoints";
+
+	private static readonly IntPtr selRemoveAllPointsHandle = Selector.GetHandle("removeAllPoints");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAssociatedPoints_AtIndex_ = "setAssociatedPoints:atIndex:";
+
+	private static readonly IntPtr selSetAssociatedPoints_AtIndex_Handle = Selector.GetHandle("setAssociatedPoints:atIndex:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetClip = "setClip";
+
+	private static readonly IntPtr selSetClipHandle = Selector.GetHandle("setClip");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDefaultFlatness_ = "setDefaultFlatness:";
+
+	private static readonly IntPtr selSetDefaultFlatness_Handle = Selector.GetHandle("setDefaultFlatness:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDefaultLineCapStyle_ = "setDefaultLineCapStyle:";
+
+	private static readonly IntPtr selSetDefaultLineCapStyle_Handle = Selector.GetHandle("setDefaultLineCapStyle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDefaultLineJoinStyle_ = "setDefaultLineJoinStyle:";
+
+	private static readonly IntPtr selSetDefaultLineJoinStyle_Handle = Selector.GetHandle("setDefaultLineJoinStyle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDefaultLineWidth_ = "setDefaultLineWidth:";
+
+	private static readonly IntPtr selSetDefaultLineWidth_Handle = Selector.GetHandle("setDefaultLineWidth:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDefaultMiterLimit_ = "setDefaultMiterLimit:";
+
+	private static readonly IntPtr selSetDefaultMiterLimit_Handle = Selector.GetHandle("setDefaultMiterLimit:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDefaultWindingRule_ = "setDefaultWindingRule:";
+
+	private static readonly IntPtr selSetDefaultWindingRule_Handle = Selector.GetHandle("setDefaultWindingRule:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFlatness_ = "setFlatness:";
+
+	private static readonly IntPtr selSetFlatness_Handle = Selector.GetHandle("setFlatness:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLineCapStyle_ = "setLineCapStyle:";
+
+	private static readonly IntPtr selSetLineCapStyle_Handle = Selector.GetHandle("setLineCapStyle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLineDash_Count_Phase_ = "setLineDash:count:phase:";
+
+	private static readonly IntPtr selSetLineDash_Count_Phase_Handle = Selector.GetHandle("setLineDash:count:phase:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLineJoinStyle_ = "setLineJoinStyle:";
+
+	private static readonly IntPtr selSetLineJoinStyle_Handle = Selector.GetHandle("setLineJoinStyle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLineWidth_ = "setLineWidth:";
+
+	private static readonly IntPtr selSetLineWidth_Handle = Selector.GetHandle("setLineWidth:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMiterLimit_ = "setMiterLimit:";
+
+	private static readonly IntPtr selSetMiterLimit_Handle = Selector.GetHandle("setMiterLimit:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetWindingRule_ = "setWindingRule:";
+
+	private static readonly IntPtr selSetWindingRule_Handle = Selector.GetHandle("setWindingRule:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStroke = "stroke";
+
+	private static readonly IntPtr selStrokeHandle = Selector.GetHandle("stroke");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStrokeLineFromPoint_ToPoint_ = "strokeLineFromPoint:toPoint:";
+
+	private static readonly IntPtr selStrokeLineFromPoint_ToPoint_Handle = Selector.GetHandle("strokeLineFromPoint:toPoint:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStrokeRect_ = "strokeRect:";
+
+	private static readonly IntPtr selStrokeRect_Handle = Selector.GetHandle("strokeRect:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTransformUsingAffineTransform_ = "transformUsingAffineTransform:";
+
+	private static readonly IntPtr selTransformUsingAffineTransform_Handle = Selector.GetHandle("transformUsingAffineTransform:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selWindingRule = "windingRule";
+
+	private static readonly IntPtr selWindingRuleHandle = Selector.GetHandle("windingRule");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSBezierPath");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual bool IsEmpty
-	{
-		[Export("isEmpty")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsEmptyHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsEmptyHandle);
-		}
-	}
-
-	public virtual CGPoint CurrentPoint
-	{
-		[Export("currentPoint")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.CGPoint_objc_msgSend(base.Handle, selCurrentPointHandle);
-			}
-			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selCurrentPointHandle);
-		}
-	}
-
-	public virtual CGRect ControlPointBounds
-	{
-		[Export("controlPointBounds")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			CGRect retval;
-			if (IsDirectBinding)
-			{
-				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selControlPointBoundsHandle);
-			}
-			else
-			{
-				Messaging.CGRect_objc_msgSendSuper_stret(out retval, base.SuperHandle, selControlPointBoundsHandle);
-			}
-			return retval;
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGRect Bounds
 	{
 		[Export("bounds")]
 		get
 		{
-			NSApplication.EnsureUIThread();
 			CGRect retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selBoundsHandle);
 			}
@@ -218,324 +403,351 @@ public class NSBezierPath : NSObject
 		}
 	}
 
-	public virtual long ElementCount
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGRect ControlPointBounds
 	{
-		[Export("elementCount")]
+		[Export("controlPointBounds")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			CGRect retval;
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Int64_objc_msgSend(base.Handle, selElementCountHandle);
+				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selControlPointBoundsHandle);
 			}
-			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selElementCountHandle);
+			else
+			{
+				Messaging.CGRect_objc_msgSendSuper_stret(out retval, base.SuperHandle, selControlPointBoundsHandle);
+			}
+			return retval;
 		}
 	}
 
-	public static double DefaultMiterLimit
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGPoint CurrentPoint
 	{
-		[Export("defaultMiterLimit")]
+		[Export("currentPoint")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			return Messaging.Double_objc_msgSend(class_ptr, selDefaultMiterLimitHandle);
-		}
-		[Export("setDefaultMiterLimit:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			Messaging.void_objc_msgSend_Double(class_ptr, selSetDefaultMiterLimit_Handle, value);
+			if (base.IsDirectBinding)
+			{
+				return Messaging.CGPoint_objc_msgSend(base.Handle, selCurrentPointHandle);
+			}
+			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selCurrentPointHandle);
 		}
 	}
 
-	public static double DefaultFlatness
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static nfloat DefaultFlatness
 	{
 		[Export("defaultFlatness")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			return Messaging.Double_objc_msgSend(class_ptr, selDefaultFlatnessHandle);
+			return Messaging.nfloat_objc_msgSend(class_ptr, selDefaultFlatnessHandle);
 		}
 		[Export("setDefaultFlatness:")]
 		set
 		{
-			NSApplication.EnsureUIThread();
-			Messaging.void_objc_msgSend_Double(class_ptr, selSetDefaultFlatness_Handle, value);
+			Messaging.void_objc_msgSend_nfloat(class_ptr, selSetDefaultFlatness_Handle, value);
 		}
 	}
 
-	public static NSWindingRule DefaultWindingRule
-	{
-		[Export("defaultWindingRule")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSWindingRule)Messaging.int_objc_msgSend(class_ptr, selDefaultWindingRuleHandle);
-		}
-		[Export("setDefaultWindingRule:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			Messaging.void_objc_msgSend_int(class_ptr, selSetDefaultWindingRule_Handle, (int)value);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSLineCapStyle DefaultLineCapStyle
 	{
 		[Export("defaultLineCapStyle")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			return (NSLineCapStyle)Messaging.int_objc_msgSend(class_ptr, selDefaultLineCapStyleHandle);
+			return (NSLineCapStyle)Messaging.UInt64_objc_msgSend(class_ptr, selDefaultLineCapStyleHandle);
 		}
 		[Export("setDefaultLineCapStyle:")]
 		set
 		{
-			NSApplication.EnsureUIThread();
-			Messaging.void_objc_msgSend_int(class_ptr, selSetDefaultLineCapStyle_Handle, (int)value);
+			Messaging.void_objc_msgSend_UInt64(class_ptr, selSetDefaultLineCapStyle_Handle, (ulong)value);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSLineJoinStyle DefaultLineJoinStyle
 	{
 		[Export("defaultLineJoinStyle")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			return (NSLineJoinStyle)Messaging.int_objc_msgSend(class_ptr, selDefaultLineJoinStyleHandle);
+			return (NSLineJoinStyle)Messaging.UInt64_objc_msgSend(class_ptr, selDefaultLineJoinStyleHandle);
 		}
 		[Export("setDefaultLineJoinStyle:")]
 		set
 		{
-			NSApplication.EnsureUIThread();
-			Messaging.void_objc_msgSend_int(class_ptr, selSetDefaultLineJoinStyle_Handle, (int)value);
+			Messaging.void_objc_msgSend_UInt64(class_ptr, selSetDefaultLineJoinStyle_Handle, (ulong)value);
 		}
 	}
 
-	public static double DefaultLineWidth
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static nfloat DefaultLineWidth
 	{
 		[Export("defaultLineWidth")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			return Messaging.Double_objc_msgSend(class_ptr, selDefaultLineWidthHandle);
+			return Messaging.nfloat_objc_msgSend(class_ptr, selDefaultLineWidthHandle);
 		}
 		[Export("setDefaultLineWidth:")]
 		set
 		{
-			NSApplication.EnsureUIThread();
-			Messaging.void_objc_msgSend_Double(class_ptr, selSetDefaultLineWidth_Handle, value);
+			Messaging.void_objc_msgSend_nfloat(class_ptr, selSetDefaultLineWidth_Handle, value);
 		}
 	}
 
-	public virtual double LineWidth
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static nfloat DefaultMiterLimit
 	{
-		[Export("lineWidth")]
+		[Export("defaultMiterLimit")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selLineWidthHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selLineWidthHandle);
+			return Messaging.nfloat_objc_msgSend(class_ptr, selDefaultMiterLimitHandle);
 		}
-		[Export("setLineWidth:")]
+		[Export("setDefaultMiterLimit:")]
 		set
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			Messaging.void_objc_msgSend_nfloat(class_ptr, selSetDefaultMiterLimit_Handle, value);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSWindingRule DefaultWindingRule
+	{
+		[Export("defaultWindingRule")]
+		get
+		{
+			return (NSWindingRule)Messaging.UInt64_objc_msgSend(class_ptr, selDefaultWindingRuleHandle);
+		}
+		[Export("setDefaultWindingRule:")]
+		set
+		{
+			Messaging.void_objc_msgSend_UInt64(class_ptr, selSetDefaultWindingRule_Handle, (ulong)value);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint ElementCount
+	{
+		[Export("elementCount")]
+		get
+		{
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetLineWidth_Handle, value);
+				return Messaging.nint_objc_msgSend(base.Handle, selElementCountHandle);
+			}
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selElementCountHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat Flatness
+	{
+		[Export("flatness")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selFlatnessHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selFlatnessHandle);
+		}
+		[Export("setFlatness:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetFlatness_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetLineWidth_Handle, value);
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetFlatness_Handle, value);
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool IsEmpty
+	{
+		[Export("isEmpty")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsEmptyHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsEmptyHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSLineCapStyle LineCapStyle
 	{
 		[Export("lineCapStyle")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return (NSLineCapStyle)Messaging.int_objc_msgSend(base.Handle, selLineCapStyleHandle);
+				return (NSLineCapStyle)Messaging.UInt64_objc_msgSend(base.Handle, selLineCapStyleHandle);
 			}
-			return (NSLineCapStyle)Messaging.int_objc_msgSendSuper(base.SuperHandle, selLineCapStyleHandle);
+			return (NSLineCapStyle)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selLineCapStyleHandle);
 		}
 		[Export("setLineCapStyle:")]
 		set
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_int(base.Handle, selSetLineCapStyle_Handle, (int)value);
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetLineCapStyle_Handle, (ulong)value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetLineCapStyle_Handle, (int)value);
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetLineCapStyle_Handle, (ulong)value);
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSLineJoinStyle LineJoinStyle
 	{
 		[Export("lineJoinStyle")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return (NSLineJoinStyle)Messaging.int_objc_msgSend(base.Handle, selLineJoinStyleHandle);
+				return (NSLineJoinStyle)Messaging.UInt64_objc_msgSend(base.Handle, selLineJoinStyleHandle);
 			}
-			return (NSLineJoinStyle)Messaging.int_objc_msgSendSuper(base.SuperHandle, selLineJoinStyleHandle);
+			return (NSLineJoinStyle)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selLineJoinStyleHandle);
 		}
 		[Export("setLineJoinStyle:")]
 		set
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_int(base.Handle, selSetLineJoinStyle_Handle, (int)value);
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetLineJoinStyle_Handle, (ulong)value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetLineJoinStyle_Handle, (int)value);
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetLineJoinStyle_Handle, (ulong)value);
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat LineWidth
+	{
+		[Export("lineWidth")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selLineWidthHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selLineWidthHandle);
+		}
+		[Export("setLineWidth:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetLineWidth_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetLineWidth_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat MiterLimit
+	{
+		[Export("miterLimit")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selMiterLimitHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selMiterLimitHandle);
+		}
+		[Export("setMiterLimit:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetMiterLimit_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetMiterLimit_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSWindingRule WindingRule
 	{
 		[Export("windingRule")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return (NSWindingRule)Messaging.int_objc_msgSend(base.Handle, selWindingRuleHandle);
+				return (NSWindingRule)Messaging.UInt64_objc_msgSend(base.Handle, selWindingRuleHandle);
 			}
-			return (NSWindingRule)Messaging.int_objc_msgSendSuper(base.SuperHandle, selWindingRuleHandle);
+			return (NSWindingRule)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selWindingRuleHandle);
 		}
 		[Export("setWindingRule:")]
 		set
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_int(base.Handle, selSetWindingRule_Handle, (int)value);
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetWindingRule_Handle, (ulong)value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetWindingRule_Handle, (int)value);
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetWindingRule_Handle, (ulong)value);
 			}
 		}
 	}
 
-	public virtual double MiterLimit
+	public unsafe void GetLineDash(out nfloat[] pattern, out nfloat phase)
 	{
-		[Export("miterLimit")]
-		get
+		_GetLineDash(IntPtr.Zero, out var count, out phase);
+		pattern = new nfloat[(long)count];
+		fixed (nfloat* ptr = &pattern[0])
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selMiterLimitHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selMiterLimitHandle);
-		}
-		[Export("setMiterLimit:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetMiterLimit_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetMiterLimit_Handle, value);
-			}
+			_GetLineDash((IntPtr)ptr, out count, out phase);
 		}
 	}
 
-	public virtual double Flatness
-	{
-		[Export("flatness")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selFlatnessHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selFlatnessHandle);
-		}
-		[Export("setFlatness:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetFlatness_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetFlatness_Handle, value);
-			}
-		}
-	}
-
-	public unsafe void GetLineDash(out double[] pattern, out double phase)
-	{
-		_GetLineDash((IntPtr)(void*)null, out var count, out phase);
-		int num = (int)count;
-		double[] array = new double[num];
-		IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf(array[0]) * num);
-		_GetLineDash(intPtr, out count, out phase);
-		num = (int)count;
-		Marshal.Copy(intPtr, array, 0, num);
-		Marshal.FreeHGlobal(intPtr);
-		pattern = array;
-	}
-
-	public void SetLineDash(double[] pattern, double phase)
+	public unsafe void SetLineDash(nfloat[] pattern, nfloat phase)
 	{
 		if (pattern == null)
 		{
 			throw new ArgumentNullException("pattern");
 		}
-		IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf(pattern[0]) * pattern.Length);
-		Marshal.Copy(pattern, 0, intPtr, pattern.Length);
-		_SetLineDash(intPtr, pattern.Length, phase);
-		Marshal.FreeHGlobal(intPtr);
+		fixed (nfloat* ptr = &pattern[0])
+		{
+			_SetLineDash((IntPtr)ptr, pattern.Length, phase);
+		}
 	}
 
-	public NSBezierPathElement ElementAt(long index, out CGPoint[] points)
+	public unsafe NSBezierPathElement ElementAt(nint index, out CGPoint[] points)
 	{
-		IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(CGPoint)) * 3);
-		NSBezierPathElement nSBezierPathElement = _ElementAt(index, intPtr);
-		int num = 1;
-		if (nSBezierPathElement == NSBezierPathElement.CurveTo)
+		points = new CGPoint[3];
+		NSBezierPathElement nSBezierPathElement;
+		fixed (CGPoint* ptr = &points[0])
 		{
-			num = 3;
+			nSBezierPathElement = _ElementAt(index, (IntPtr)ptr);
 		}
-		points = new CGPoint[num];
-		IntPtr intPtr2 = intPtr;
-		for (int i = 0; i < num; i++)
+		if (nSBezierPathElement != NSBezierPathElement.CurveTo)
 		{
-			points[i] = (CGPoint)Marshal.PtrToStructure(intPtr2, typeof(CGPoint));
-			intPtr2 = (IntPtr)((long)intPtr2 + Marshal.SizeOf(points[i]));
+			Array.Resize(ref points, 1);
 		}
-		Marshal.FreeHGlobal(intPtr);
 		return nSBezierPathElement;
 	}
 
-	public void SetAssociatedPointsAtIndex(CGPoint[] points, long index)
+	public unsafe void SetAssociatedPointsAtIndex(CGPoint[] points, nint index)
 	{
 		if (points == null)
 		{
@@ -545,39 +757,36 @@ public class NSBezierPath : NSObject
 		{
 			throw new ArgumentException("points array is empty");
 		}
-		IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf(points[0]) * points.Length);
-		IntPtr intPtr2 = intPtr;
-		for (int i = 0; i < points.Length; i++)
+		fixed (CGPoint* ptr = &points[0])
 		{
-			Marshal.StructureToPtr(points[i], intPtr2, fDeleteOld: false);
-			intPtr2 = (IntPtr)((long)intPtr2 + Marshal.SizeOf(points[i]));
+			_SetAssociatedPointsAtIndex((IntPtr)ptr, index);
 		}
-		_SetAssociatedPointsAtIndex(intPtr, index);
-		Marshal.FreeHGlobal(intPtr);
 	}
 
+	public unsafe void Append(CGPoint[] points)
+	{
+		if (points == null)
+		{
+			throw new ArgumentNullException("points");
+		}
+		if (points.Length < 1)
+		{
+			throw new ArgumentException("points array is empty");
+		}
+		fixed (CGPoint* ptr = &points[0])
+		{
+			_AppendPathWithPoints((IntPtr)ptr, points.Length);
+		}
+	}
+
+	[Obsolete("Use 'Append (CGPoint[])' instead.")]
 	public void AppendPathWithPoints(CGPoint[] points)
 	{
-		if (points == null)
-		{
-			throw new ArgumentNullException("points");
-		}
-		if (points.Length < 1)
-		{
-			throw new ArgumentException("points array is empty");
-		}
-		IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf(points[0]) * points.Length);
-		IntPtr intPtr2 = intPtr;
-		for (int i = 0; i < points.Length; i++)
-		{
-			Marshal.StructureToPtr(points[i], intPtr2, fDeleteOld: false);
-			intPtr2 = (IntPtr)((long)intPtr2 + Marshal.SizeOf(points[i]));
-		}
-		_AppendPathWithPoints(intPtr, points.Length);
-		Marshal.FreeHGlobal(intPtr);
+		Append(points);
 	}
 
-	public void AppendPathWithGlyphs(uint[] glyphs, NSFont font)
+	[Obsolete("Use 'Append (uint[], NSFont)' instead.")]
+	public unsafe void AppendPathWithGlyphs(uint[] glyphs, NSFont font)
 	{
 		if (glyphs == null)
 		{
@@ -587,289 +796,81 @@ public class NSBezierPath : NSObject
 		{
 			throw new ArgumentException("glyphs array is empty");
 		}
-		int num = Marshal.SizeOf(glyphs[0]);
-		IntPtr intPtr = Marshal.AllocHGlobal(num * glyphs.Length);
-		IntPtr intPtr2 = intPtr;
-		for (int i = 0; i < glyphs.Length; i++)
+		fixed (uint* ptr = &glyphs[0])
 		{
-			Marshal.WriteIntPtr(intPtr2, (IntPtr)glyphs[i]);
-			intPtr2 = (IntPtr)((long)intPtr2 + num);
+			_AppendPathWithGlyphs((IntPtr)ptr, glyphs.Length, font);
 		}
-		_AppendPathWithGlyphs(intPtr, glyphs.Length, font);
-		Marshal.FreeHGlobal(intPtr);
 	}
 
+	[Mac(10, 13)]
+	public unsafe void Append(uint[] glyphs, NSFont font)
+	{
+		if (glyphs == null)
+		{
+			throw new ArgumentNullException("glyphs");
+		}
+		if (glyphs.Length < 1)
+		{
+			throw new ArgumentException("glyphs array is empty");
+		}
+		fixed (uint* ptr = &glyphs[0])
+		{
+			_AppendBezierPathWithCGGlyphs((IntPtr)ptr, glyphs.Length, font);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSBezierPath()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSBezierPath(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSBezierPath(NSObjectFlag t)
+	protected NSBezierPath(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSBezierPath(IntPtr handle)
+	protected internal NSBezierPath(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("bezierPathWithRect:")]
-	public static NSBezierPath FromRect(CGRect rect)
-	{
-		NSApplication.EnsureUIThread();
-		return (NSBezierPath)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_CGRect(class_ptr, selBezierPathWithRect_Handle, rect));
-	}
-
-	[Export("bezierPathWithOvalInRect:")]
-	public static NSBezierPath FromOvalInRect(CGRect rect)
-	{
-		NSApplication.EnsureUIThread();
-		return (NSBezierPath)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_CGRect(class_ptr, selBezierPathWithOvalInRect_Handle, rect));
-	}
-
-	[Export("bezierPathWithRoundedRect:xRadius:yRadius:")]
-	public static NSBezierPath FromRoundedRect(CGRect rect, double xRadius, double yRadius)
-	{
-		NSApplication.EnsureUIThread();
-		return (NSBezierPath)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_CGRect_Double_Double(class_ptr, selBezierPathWithRoundedRectXRadiusYRadius_Handle, rect, xRadius, yRadius));
-	}
-
-	[Export("fillRect:")]
-	public static void FillRect(CGRect rect)
-	{
-		NSApplication.EnsureUIThread();
-		Messaging.void_objc_msgSend_CGRect(class_ptr, selFillRect_Handle, rect);
-	}
-
-	[Export("strokeRect:")]
-	public static void StrokeRect(CGRect rect)
-	{
-		NSApplication.EnsureUIThread();
-		Messaging.void_objc_msgSend_CGRect(class_ptr, selStrokeRect_Handle, rect);
-	}
-
-	[Export("clipRect:")]
-	public static void ClipRect(CGRect rect)
-	{
-		NSApplication.EnsureUIThread();
-		Messaging.void_objc_msgSend_CGRect(class_ptr, selClipRect_Handle, rect);
-	}
-
-	[Export("strokeLineFromPoint:toPoint:")]
-	public static void StrokeLine(CGPoint point1, CGPoint point2)
-	{
-		NSApplication.EnsureUIThread();
-		Messaging.void_objc_msgSend_CGPoint_CGPoint(class_ptr, selStrokeLineFromPointToPoint_Handle, point1, point2);
-	}
-
-	[Export("drawPackedGlyphs:atPoint:")]
-	public static void DrawPackedGlyphsAtPoint(IntPtr packedGlyphs, CGPoint point)
-	{
-		NSApplication.EnsureUIThread();
-		Messaging.void_objc_msgSend_IntPtr_CGPoint(class_ptr, selDrawPackedGlyphsAtPoint_Handle, packedGlyphs, point);
-	}
-
-	[Export("moveToPoint:")]
-	public virtual void MoveTo(CGPoint point)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGPoint(base.Handle, selMoveToPoint_Handle, point);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selMoveToPoint_Handle, point);
-		}
-	}
-
-	[Export("lineToPoint:")]
-	public virtual void LineTo(CGPoint point)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGPoint(base.Handle, selLineToPoint_Handle, point);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selLineToPoint_Handle, point);
-		}
-	}
-
-	[Export("curveToPoint:controlPoint1:controlPoint2:")]
-	public virtual void CurveTo(CGPoint endPoint, CGPoint controlPoint1, CGPoint controlPoint2)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGPoint_CGPoint_CGPoint(base.Handle, selCurveToPointControlPoint1ControlPoint2_Handle, endPoint, controlPoint1, controlPoint2);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGPoint_CGPoint_CGPoint(base.SuperHandle, selCurveToPointControlPoint1ControlPoint2_Handle, endPoint, controlPoint1, controlPoint2);
-		}
-	}
-
-	[Export("closePath")]
-	public virtual void ClosePath()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selClosePathHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selClosePathHandle);
-		}
-	}
-
-	[Export("removeAllPoints")]
-	public virtual void RemoveAllPoints()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selRemoveAllPointsHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRemoveAllPointsHandle);
-		}
-	}
-
-	[Export("relativeMoveToPoint:")]
-	public virtual void RelativeMoveTo(CGPoint point)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGPoint(base.Handle, selRelativeMoveToPoint_Handle, point);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selRelativeMoveToPoint_Handle, point);
-		}
-	}
-
-	[Export("relativeLineToPoint:")]
-	public virtual void RelativeLineTo(CGPoint point)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGPoint(base.Handle, selRelativeLineToPoint_Handle, point);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selRelativeLineToPoint_Handle, point);
-		}
-	}
-
-	[Export("relativeCurveToPoint:controlPoint1:controlPoint2:")]
-	public virtual void RelativeCurveTo(CGPoint endPoint, CGPoint controlPoint1, CGPoint controlPoint2)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGPoint_CGPoint_CGPoint(base.Handle, selRelativeCurveToPointControlPoint1ControlPoint2_Handle, endPoint, controlPoint1, controlPoint2);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGPoint_CGPoint_CGPoint(base.SuperHandle, selRelativeCurveToPointControlPoint1ControlPoint2_Handle, endPoint, controlPoint1, controlPoint2);
-		}
-	}
-
-	[Export("getLineDash:count:phase:")]
-	internal virtual void _GetLineDash(IntPtr pattern, out long count, out double phase)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_out_Int64_out_Double(base.Handle, selGetLineDashCountPhase_Handle, pattern, out count, out phase);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_out_Int64_out_Double(base.SuperHandle, selGetLineDashCountPhase_Handle, pattern, out count, out phase);
-		}
-	}
-
-	[Export("setLineDash:count:phase:")]
-	internal virtual void _SetLineDash(IntPtr pattern, long count, double phase)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_Int64_Double(base.Handle, selSetLineDashCountPhase_Handle, pattern, count, phase);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_Int64_Double(base.SuperHandle, selSetLineDashCountPhase_Handle, pattern, count, phase);
-		}
-	}
-
-	[Export("stroke")]
-	public virtual void Stroke()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selStrokeHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selStrokeHandle);
-		}
-	}
-
-	[Export("fill")]
-	public virtual void Fill()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selFillHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selFillHandle);
-		}
-	}
-
 	[Export("addClip")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AddClip()
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selAddClipHandle);
 		}
@@ -879,105 +880,21 @@ public class NSBezierPath : NSObject
 		}
 	}
 
-	[Export("setClip")]
-	public virtual void SetClip()
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public void Append(NSBezierPath path)
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selSetClipHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selSetClipHandle);
-		}
-	}
-
-	[Export("bezierPathByFlatteningPath")]
-	public virtual NSBezierPath BezierPathByFlatteningPath()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return (NSBezierPath)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selBezierPathByFlatteningPathHandle));
-		}
-		return (NSBezierPath)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBezierPathByFlatteningPathHandle));
-	}
-
-	[Export("bezierPathByReversingPath")]
-	public virtual NSBezierPath BezierPathByReversingPath()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return (NSBezierPath)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selBezierPathByReversingPathHandle));
-		}
-		return (NSBezierPath)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBezierPathByReversingPathHandle));
-	}
-
-	[Export("transformUsingAffineTransform:")]
-	public virtual void TransformUsingAffineTransform(NSAffineTransform transform)
-	{
-		NSApplication.EnsureUIThread();
-		if (transform == null)
-		{
-			throw new ArgumentNullException("transform");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selTransformUsingAffineTransform_Handle, transform.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selTransformUsingAffineTransform_Handle, transform.Handle);
-		}
-	}
-
-	[Export("elementAtIndex:associatedPoints:")]
-	internal virtual NSBezierPathElement _ElementAt(long index, IntPtr points)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return (NSBezierPathElement)Messaging.int_objc_msgSend_Int64_IntPtr(base.Handle, selElementAtIndexAssociatedPoints_Handle, index, points);
-		}
-		return (NSBezierPathElement)Messaging.int_objc_msgSendSuper_Int64_IntPtr(base.SuperHandle, selElementAtIndexAssociatedPoints_Handle, index, points);
-	}
-
-	[Export("elementAtIndex:")]
-	public virtual NSBezierPathElement ElementAt(long index)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return (NSBezierPathElement)Messaging.int_objc_msgSend_Int64(base.Handle, selElementAtIndex_Handle, index);
-		}
-		return (NSBezierPathElement)Messaging.int_objc_msgSendSuper_Int64(base.SuperHandle, selElementAtIndex_Handle, index);
-	}
-
-	[Export("setAssociatedPoints:atIndex:")]
-	internal virtual void _SetAssociatedPointsAtIndex(IntPtr points, long index)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_Int64(base.Handle, selSetAssociatedPointsAtIndex_Handle, points, index);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_Int64(base.SuperHandle, selSetAssociatedPointsAtIndex_Handle, points, index);
-		}
+		AppendPath(path);
 	}
 
 	[Export("appendBezierPath:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AppendPath(NSBezierPath path)
 	{
-		NSApplication.EnsureUIThread();
 		if (path == null)
 		{
 			throw new ArgumentNullException("path");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAppendBezierPath_Handle, path.Handle);
 		}
@@ -987,39 +904,91 @@ public class NSBezierPath : NSObject
 		}
 	}
 
-	[Export("appendBezierPathWithRect:")]
-	public virtual void AppendPathWithRect(CGRect rect)
+	[Export("appendBezierPathWithArcWithCenter:radius:startAngle:endAngle:clockwise:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AppendPathWithArc(CGPoint center, nfloat radius, nfloat startAngle, nfloat endAngle, bool clockwise)
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_CGRect(base.Handle, selAppendBezierPathWithRect_Handle, rect);
+			Messaging.void_objc_msgSend_CGPoint_nfloat_nfloat_nfloat_bool(base.Handle, selAppendBezierPathWithArcWithCenter_Radius_StartAngle_EndAngle_Clockwise_Handle, center, radius, startAngle, endAngle, clockwise);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selAppendBezierPathWithRect_Handle, rect);
+			Messaging.void_objc_msgSendSuper_CGPoint_nfloat_nfloat_nfloat_bool(base.SuperHandle, selAppendBezierPathWithArcWithCenter_Radius_StartAngle_EndAngle_Clockwise_Handle, center, radius, startAngle, endAngle, clockwise);
 		}
 	}
 
-	[Export("appendBezierPathWithPoints:count:")]
-	internal virtual void _AppendPathWithPoints(IntPtr points, long count)
+	[Export("appendBezierPathWithArcWithCenter:radius:startAngle:endAngle:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AppendPathWithArc(CGPoint center, nfloat radius, nfloat startAngle, nfloat endAngle)
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_Int64(base.Handle, selAppendBezierPathWithPointsCount_Handle, points, count);
+			Messaging.void_objc_msgSend_CGPoint_nfloat_nfloat_nfloat(base.Handle, selAppendBezierPathWithArcWithCenter_Radius_StartAngle_EndAngle_Handle, center, radius, startAngle, endAngle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_Int64(base.SuperHandle, selAppendBezierPathWithPointsCount_Handle, points, count);
+			Messaging.void_objc_msgSendSuper_CGPoint_nfloat_nfloat_nfloat(base.SuperHandle, selAppendBezierPathWithArcWithCenter_Radius_StartAngle_EndAngle_Handle, center, radius, startAngle, endAngle);
+		}
+	}
+
+	[Export("appendBezierPathWithArcFromPoint:toPoint:radius:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AppendPathWithArc(CGPoint point1, CGPoint point2, nfloat radius)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGPoint_CGPoint_nfloat(base.Handle, selAppendBezierPathWithArcFromPoint_ToPoint_Radius_Handle, point1, point2, radius);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGPoint_CGPoint_nfloat(base.SuperHandle, selAppendBezierPathWithArcFromPoint_ToPoint_Radius_Handle, point1, point2, radius);
+		}
+	}
+
+	[Export("appendBezierPathWithCGGlyph:inFont:")]
+	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AppendPathWithCGGlyph(ushort glyph, NSFont font)
+	{
+		if (font == null)
+		{
+			throw new ArgumentNullException("font");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_UInt16_IntPtr(base.Handle, selAppendBezierPathWithCGGlyph_InFont_Handle, glyph, font.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_UInt16_IntPtr(base.SuperHandle, selAppendBezierPathWithCGGlyph_InFont_Handle, glyph, font.Handle);
+		}
+	}
+
+	[Export("appendBezierPathWithGlyph:inFont:")]
+	[Obsoleted(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, "Use 'AppendPathWithCGGlyph (CGGlyph, NSFont)' instead.")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AppendPathWithGlyph(uint glyph, NSFont font)
+	{
+		if (font == null)
+		{
+			throw new ArgumentNullException("font");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_UInt32_IntPtr(base.Handle, selAppendBezierPathWithGlyph_InFont_Handle, glyph, font.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_UInt32_IntPtr(base.SuperHandle, selAppendBezierPathWithGlyph_InFont_Handle, glyph, font.Handle);
 		}
 	}
 
 	[Export("appendBezierPathWithOvalInRect:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AppendPathWithOvalInRect(CGRect rect)
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_CGRect(base.Handle, selAppendBezierPathWithOvalInRect_Handle, rect);
 		}
@@ -1029,89 +998,12 @@ public class NSBezierPath : NSObject
 		}
 	}
 
-	[Export("appendBezierPathWithArcWithCenter:radius:startAngle:endAngle:clockwise:")]
-	public virtual void AppendPathWithArc(CGPoint center, double radius, double startAngle, double endAngle, bool clockwise)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGPoint_Double_Double_Double_bool(base.Handle, selAppendBezierPathWithArcWithCenterRadiusStartAngleEndAngleClockwise_Handle, center, radius, startAngle, endAngle, clockwise);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGPoint_Double_Double_Double_bool(base.SuperHandle, selAppendBezierPathWithArcWithCenterRadiusStartAngleEndAngleClockwise_Handle, center, radius, startAngle, endAngle, clockwise);
-		}
-	}
-
-	[Export("appendBezierPathWithArcWithCenter:radius:startAngle:endAngle:")]
-	public virtual void AppendPathWithArc(CGPoint center, double radius, double startAngle, double endAngle)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGPoint_Double_Double_Double(base.Handle, selAppendBezierPathWithArcWithCenterRadiusStartAngleEndAngle_Handle, center, radius, startAngle, endAngle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGPoint_Double_Double_Double(base.SuperHandle, selAppendBezierPathWithArcWithCenterRadiusStartAngleEndAngle_Handle, center, radius, startAngle, endAngle);
-		}
-	}
-
-	[Export("appendBezierPathWithArcFromPoint:toPoint:radius:")]
-	public virtual void AppendPathWithArc(CGPoint point1, CGPoint point2, double radius)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGPoint_CGPoint_Double(base.Handle, selAppendBezierPathWithArcFromPointToPointRadius_Handle, point1, point2, radius);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGPoint_CGPoint_Double(base.SuperHandle, selAppendBezierPathWithArcFromPointToPointRadius_Handle, point1, point2, radius);
-		}
-	}
-
-	[Export("appendBezierPathWithGlyph:inFont:")]
-	public virtual void AppendPathWithGlyph(ulong glyph, NSFont font)
-	{
-		NSApplication.EnsureUIThread();
-		if (font == null)
-		{
-			throw new ArgumentNullException("font");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_UInt64_IntPtr(base.Handle, selAppendBezierPathWithGlyphInFont_Handle, glyph, font.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_UInt64_IntPtr(base.SuperHandle, selAppendBezierPathWithGlyphInFont_Handle, glyph, font.Handle);
-		}
-	}
-
-	[Export("appendBezierPathWithGlyphs:count:inFont:")]
-	internal virtual void _AppendPathWithGlyphs(IntPtr glyphs, long count, NSFont font)
-	{
-		NSApplication.EnsureUIThread();
-		if (font == null)
-		{
-			throw new ArgumentNullException("font");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_Int64_IntPtr(base.Handle, selAppendBezierPathWithGlyphsCountInFont_Handle, glyphs, count, font.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_Int64_IntPtr(base.SuperHandle, selAppendBezierPathWithGlyphsCountInFont_Handle, glyphs, count, font.Handle);
-		}
-	}
-
 	[Export("appendBezierPathWithPackedGlyphs:")]
+	[Obsoleted(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, "Use 'Append (uint[], NSFont)' instead.")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AppendPathWithPackedGlyphs(IntPtr packedGlyphs)
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAppendBezierPathWithPackedGlyphs_Handle, packedGlyphs);
 		}
@@ -1121,28 +1013,438 @@ public class NSBezierPath : NSObject
 		}
 	}
 
-	[Export("appendBezierPathWithRoundedRect:xRadius:yRadius:")]
-	public virtual void AppendPathWithRoundedRect(CGRect rect, double xRadius, double yRadius)
+	[Export("appendBezierPathWithRect:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AppendPathWithRect(CGRect rect)
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_CGRect_Double_Double(base.Handle, selAppendBezierPathWithRoundedRectXRadiusYRadius_Handle, rect, xRadius, yRadius);
+			Messaging.void_objc_msgSend_CGRect(base.Handle, selAppendBezierPathWithRect_Handle, rect);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_CGRect_Double_Double(base.SuperHandle, selAppendBezierPathWithRoundedRectXRadiusYRadius_Handle, rect, xRadius, yRadius);
+			Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selAppendBezierPathWithRect_Handle, rect);
+		}
+	}
+
+	[Export("appendBezierPathWithRoundedRect:xRadius:yRadius:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AppendPathWithRoundedRect(CGRect rect, nfloat xRadius, nfloat yRadius)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGRect_nfloat_nfloat(base.Handle, selAppendBezierPathWithRoundedRect_XRadius_YRadius_Handle, rect, xRadius, yRadius);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGRect_nfloat_nfloat(base.SuperHandle, selAppendBezierPathWithRoundedRect_XRadius_YRadius_Handle, rect, xRadius, yRadius);
+		}
+	}
+
+	[Export("bezierPathByFlatteningPath")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSBezierPath BezierPathByFlatteningPath()
+	{
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<NSBezierPath>(Messaging.IntPtr_objc_msgSend(base.Handle, selBezierPathByFlatteningPathHandle));
+		}
+		return Runtime.GetNSObject<NSBezierPath>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBezierPathByFlatteningPathHandle));
+	}
+
+	[Export("bezierPathByReversingPath")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSBezierPath BezierPathByReversingPath()
+	{
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<NSBezierPath>(Messaging.IntPtr_objc_msgSend(base.Handle, selBezierPathByReversingPathHandle));
+		}
+		return Runtime.GetNSObject<NSBezierPath>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBezierPathByReversingPathHandle));
+	}
+
+	[Export("clipRect:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static void ClipRect(CGRect rect)
+	{
+		Messaging.void_objc_msgSend_CGRect(class_ptr, selClipRect_Handle, rect);
+	}
+
+	[Export("closePath")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ClosePath()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selClosePathHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selClosePathHandle);
 		}
 	}
 
 	[Export("containsPoint:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Contains(CGPoint point)
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend_CGPoint(base.Handle, selContainsPoint_Handle, point);
 		}
 		return Messaging.bool_objc_msgSendSuper_CGPoint(base.SuperHandle, selContainsPoint_Handle, point);
+	}
+
+	[Export("copyWithZone:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[return: Release]
+	public virtual NSObject Copy(NSZone? zone)
+	{
+		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
+		if (nSObject != null)
+		{
+			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
+		}
+		return nSObject;
+	}
+
+	[Export("curveToPoint:controlPoint1:controlPoint2:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void CurveTo(CGPoint endPoint, CGPoint controlPoint1, CGPoint controlPoint2)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGPoint_CGPoint_CGPoint(base.Handle, selCurveToPoint_ControlPoint1_ControlPoint2_Handle, endPoint, controlPoint1, controlPoint2);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGPoint_CGPoint_CGPoint(base.SuperHandle, selCurveToPoint_ControlPoint1_ControlPoint2_Handle, endPoint, controlPoint1, controlPoint2);
+		}
+	}
+
+	[Export("drawPackedGlyphs:atPoint:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static void DrawPackedGlyphsAtPoint(IntPtr packedGlyphs, CGPoint point)
+	{
+		Messaging.void_objc_msgSend_IntPtr_CGPoint(class_ptr, selDrawPackedGlyphs_AtPoint_Handle, packedGlyphs, point);
+	}
+
+	[Export("elementAtIndex:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSBezierPathElement ElementAt(nint index)
+	{
+		if (base.IsDirectBinding)
+		{
+			return (NSBezierPathElement)Messaging.UInt64_objc_msgSend_nint(base.Handle, selElementAtIndex_Handle, index);
+		}
+		return (NSBezierPathElement)Messaging.UInt64_objc_msgSendSuper_nint(base.SuperHandle, selElementAtIndex_Handle, index);
+	}
+
+	[Export("encodeWithCoder:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void EncodeTo(NSCoder encoder)
+	{
+		if (encoder == null)
+		{
+			throw new ArgumentNullException("encoder");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+	}
+
+	[Export("fill")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Fill()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selFillHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selFillHandle);
+		}
+	}
+
+	[Export("fillRect:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static void FillRect(CGRect rect)
+	{
+		Messaging.void_objc_msgSend_CGRect(class_ptr, selFillRect_Handle, rect);
+	}
+
+	[Export("bezierPathWithOvalInRect:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSBezierPath FromOvalInRect(CGRect rect)
+	{
+		return Runtime.GetNSObject<NSBezierPath>(Messaging.IntPtr_objc_msgSend_CGRect(class_ptr, selBezierPathWithOvalInRect_Handle, rect));
+	}
+
+	[Export("bezierPathWithRect:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSBezierPath FromRect(CGRect rect)
+	{
+		return Runtime.GetNSObject<NSBezierPath>(Messaging.IntPtr_objc_msgSend_CGRect(class_ptr, selBezierPathWithRect_Handle, rect));
+	}
+
+	[Export("bezierPathWithRoundedRect:xRadius:yRadius:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSBezierPath FromRoundedRect(CGRect rect, nfloat xRadius, nfloat yRadius)
+	{
+		return Runtime.GetNSObject<NSBezierPath>(Messaging.IntPtr_objc_msgSend_CGRect_nfloat_nfloat(class_ptr, selBezierPathWithRoundedRect_XRadius_YRadius_Handle, rect, xRadius, yRadius));
+	}
+
+	[Export("lineToPoint:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void LineTo(CGPoint point)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGPoint(base.Handle, selLineToPoint_Handle, point);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selLineToPoint_Handle, point);
+		}
+	}
+
+	[Export("moveToPoint:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void MoveTo(CGPoint point)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGPoint(base.Handle, selMoveToPoint_Handle, point);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selMoveToPoint_Handle, point);
+		}
+	}
+
+	[Export("relativeCurveToPoint:controlPoint1:controlPoint2:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RelativeCurveTo(CGPoint endPoint, CGPoint controlPoint1, CGPoint controlPoint2)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGPoint_CGPoint_CGPoint(base.Handle, selRelativeCurveToPoint_ControlPoint1_ControlPoint2_Handle, endPoint, controlPoint1, controlPoint2);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGPoint_CGPoint_CGPoint(base.SuperHandle, selRelativeCurveToPoint_ControlPoint1_ControlPoint2_Handle, endPoint, controlPoint1, controlPoint2);
+		}
+	}
+
+	[Export("relativeLineToPoint:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RelativeLineTo(CGPoint point)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGPoint(base.Handle, selRelativeLineToPoint_Handle, point);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selRelativeLineToPoint_Handle, point);
+		}
+	}
+
+	[Export("relativeMoveToPoint:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RelativeMoveTo(CGPoint point)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGPoint(base.Handle, selRelativeMoveToPoint_Handle, point);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selRelativeMoveToPoint_Handle, point);
+		}
+	}
+
+	[Export("removeAllPoints")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RemoveAllPoints()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selRemoveAllPointsHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRemoveAllPointsHandle);
+		}
+	}
+
+	[Export("setClip")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SetClip()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selSetClipHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selSetClipHandle);
+		}
+	}
+
+	[Export("stroke")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Stroke()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selStrokeHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selStrokeHandle);
+		}
+	}
+
+	[Export("strokeLineFromPoint:toPoint:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static void StrokeLine(CGPoint point1, CGPoint point2)
+	{
+		Messaging.void_objc_msgSend_CGPoint_CGPoint(class_ptr, selStrokeLineFromPoint_ToPoint_Handle, point1, point2);
+	}
+
+	[Export("strokeRect:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static void StrokeRect(CGRect rect)
+	{
+		Messaging.void_objc_msgSend_CGRect(class_ptr, selStrokeRect_Handle, rect);
+	}
+
+	[Export("transformUsingAffineTransform:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void TransformUsingAffineTransform(NSAffineTransform transform)
+	{
+		if (transform == null)
+		{
+			throw new ArgumentNullException("transform");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selTransformUsingAffineTransform_Handle, transform.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selTransformUsingAffineTransform_Handle, transform.Handle);
+		}
+	}
+
+	[Export("appendBezierPathWithCGGlyphs:count:inFont:")]
+	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal virtual void _AppendBezierPathWithCGGlyphs(IntPtr glyphs, nint count, NSFont font)
+	{
+		if (font == null)
+		{
+			throw new ArgumentNullException("font");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_nint_IntPtr(base.Handle, selAppendBezierPathWithCGGlyphs_Count_InFont_Handle, glyphs, count, font.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_nint_IntPtr(base.SuperHandle, selAppendBezierPathWithCGGlyphs_Count_InFont_Handle, glyphs, count, font.Handle);
+		}
+	}
+
+	[Export("appendBezierPathWithGlyphs:count:inFont:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal virtual void _AppendPathWithGlyphs(IntPtr glyphs, nint count, NSFont font)
+	{
+		if (font == null)
+		{
+			throw new ArgumentNullException("font");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_nint_IntPtr(base.Handle, selAppendBezierPathWithGlyphs_Count_InFont_Handle, glyphs, count, font.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_nint_IntPtr(base.SuperHandle, selAppendBezierPathWithGlyphs_Count_InFont_Handle, glyphs, count, font.Handle);
+		}
+	}
+
+	[Export("appendBezierPathWithPoints:count:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal virtual void _AppendPathWithPoints(IntPtr points, nint count)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_nint(base.Handle, selAppendBezierPathWithPoints_Count_Handle, points, count);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_nint(base.SuperHandle, selAppendBezierPathWithPoints_Count_Handle, points, count);
+		}
+	}
+
+	[Export("elementAtIndex:associatedPoints:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal virtual NSBezierPathElement _ElementAt(nint index, IntPtr points)
+	{
+		if (base.IsDirectBinding)
+		{
+			return (NSBezierPathElement)Messaging.UInt64_objc_msgSend_nint_IntPtr(base.Handle, selElementAtIndex_AssociatedPoints_Handle, index, points);
+		}
+		return (NSBezierPathElement)Messaging.UInt64_objc_msgSendSuper_nint_IntPtr(base.SuperHandle, selElementAtIndex_AssociatedPoints_Handle, index, points);
+	}
+
+	[Export("getLineDash:count:phase:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal virtual void _GetLineDash(IntPtr pattern, out nint count, out nfloat phase)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_out_nint_out_nfloat(base.Handle, selGetLineDash_Count_Phase_Handle, pattern, out count, out phase);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_out_nint_out_nfloat(base.SuperHandle, selGetLineDash_Count_Phase_Handle, pattern, out count, out phase);
+		}
+	}
+
+	[Export("setAssociatedPoints:atIndex:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal virtual void _SetAssociatedPointsAtIndex(IntPtr points, nint index)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_nint(base.Handle, selSetAssociatedPoints_AtIndex_Handle, points, index);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_nint(base.SuperHandle, selSetAssociatedPoints_AtIndex_Handle, points, index);
+		}
+	}
+
+	[Export("setLineDash:count:phase:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal virtual void _SetLineDash(IntPtr pattern, nint count, nfloat phase)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_nint_nfloat(base.Handle, selSetLineDash_Count_Phase_Handle, pattern, count, phase);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_nint_nfloat(base.SuperHandle, selSetLineDash_Count_Phase_Handle, pattern, count, phase);
+		}
 	}
 }

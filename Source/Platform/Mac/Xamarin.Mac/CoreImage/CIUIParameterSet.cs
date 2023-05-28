@@ -3,41 +3,20 @@ using ObjCRuntime;
 
 namespace CoreImage;
 
+[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
 public static class CIUIParameterSet
 {
-	private static NSString _Basic;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Advanced;
 
-	private static NSString _Intermediate;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Basic;
 
-	private static NSString _Advanced;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Development;
 
-	private static NSString _Development;
-
-	[Field("kCIUISetBasic", "Quartz")]
-	public static NSString Basic
-	{
-		get
-		{
-			if (_Basic == null)
-			{
-				_Basic = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIUISetBasic");
-			}
-			return _Basic;
-		}
-	}
-
-	[Field("kCIUISetIntermediate", "Quartz")]
-	public static NSString Intermediate
-	{
-		get
-		{
-			if (_Intermediate == null)
-			{
-				_Intermediate = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIUISetIntermediate");
-			}
-			return _Intermediate;
-		}
-	}
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Intermediate;
 
 	[Field("kCIUISetAdvanced", "Quartz")]
 	public static NSString Advanced
@@ -52,6 +31,19 @@ public static class CIUIParameterSet
 		}
 	}
 
+	[Field("kCIUISetBasic", "Quartz")]
+	public static NSString Basic
+	{
+		get
+		{
+			if (_Basic == null)
+			{
+				_Basic = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIUISetBasic");
+			}
+			return _Basic;
+		}
+	}
+
 	[Field("kCIUISetDevelopment", "Quartz")]
 	public static NSString Development
 	{
@@ -62,6 +54,19 @@ public static class CIUIParameterSet
 				_Development = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIUISetDevelopment");
 			}
 			return _Development;
+		}
+	}
+
+	[Field("kCIUISetIntermediate", "Quartz")]
+	public static NSString Intermediate
+	{
+		get
+		{
+			if (_Intermediate == null)
+			{
+				_Intermediate = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIUISetIntermediate");
+			}
+			return _Intermediate;
 		}
 	}
 }

@@ -5,90 +5,86 @@ using ObjCRuntime;
 
 namespace PdfKit;
 
-[Register("PdfViewDelegate", true)]
+[Protocol(Name = "PDFViewDelegate")]
+[Register("PDFViewDelegate", false)]
 [Model]
-public class PdfViewDelegate : NSObject
+[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+public class PdfViewDelegate : NSObject, IPdfViewDelegate, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public PdfViewDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
+		base.IsDirectBinding = false;
+		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public PdfViewDelegate(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public PdfViewDelegate(NSObjectFlag t)
+	protected PdfViewDelegate(NSObjectFlag t)
 		: base(t)
 	{
+		base.IsDirectBinding = false;
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public PdfViewDelegate(IntPtr handle)
+	protected internal PdfViewDelegate(IntPtr handle)
 		: base(handle)
 	{
+		base.IsDirectBinding = false;
 	}
 
-	[Export("PDFViewWillChangeScaleFactor:toScale:")]
-	public virtual float WillChangeScaleFactor(PdfView sender, float scale)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("PDFViewWillClickOnLink:withURL:")]
-	public virtual void WillClickOnLink(PdfView sender, NSUrl url)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("PDFViewPrintJobTitle:")]
-	public virtual string TitleOfPrintJob(PdfView sender)
+	[Export("PDFViewOpenPDF:forRemoteGoToAction:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void OpenPdf(PdfView sender, PdfActionRemoteGoTo action)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("PDFViewPerformFind:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void PerformFind(PdfView sender)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("PDFViewPerformGoToPage:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void PerformGoToPage(PdfView sender)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("PDFViewPerformPrint:")]
+	[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void PerformPrint(PdfView sender)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("PDFViewOpenPDF:forRemoteGoToAction:")]
-	public virtual void OpenPdf(PdfView sender, PdfActionRemoteGoTo action)
+	[Export("PDFViewPrintJobTitle:")]
+	[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string TitleOfPrintJob(PdfView sender)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("PDFViewWillChangeScaleFactor:toScale:")]
+	[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat WillChangeScaleFactor(PdfView sender, nfloat scale)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("PDFViewWillClickOnLink:withURL:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void WillClickOnLink(PdfView sender, NSUrl url)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

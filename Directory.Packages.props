@@ -11,6 +11,7 @@
     <PackageVersion Include="Microsoft.Extensions.FileProviders.Physical" Version="7.0.0" />
     <PackageVersion Include="Microsoft.Web.WebView2" Version="1.0.1829-prerelease" />
     <PackageVersion Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+    <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
     <PackageVersion Include="WebkitGtkSharp" Version="3.24.24.95" />
     <PackageVersion Include="XamarinMac" Version="1.0.0" />
     <PackageVersion Include="XamlNameReferenceGenerator" Version="1.5.1" />
@@ -54,6 +55,6 @@
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebView" Version="7.0.5" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net6.0-windows'">
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebView" Version="7.0.5" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebView" Version="6.0.16" />
   </ItemGroup>
 </Project>

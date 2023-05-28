@@ -6,33 +6,57 @@ using ObjCRuntime;
 namespace AppKit;
 
 [Register("NSOpenGLPixelBuffer", true)]
+[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
+[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'Metal' Framework instead.")]
 public class NSOpenGLPixelBuffer : NSObject
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCGLPBufferObj = "CGLPBufferObj";
+
 	private static readonly IntPtr selCGLPBufferObjHandle = Selector.GetHandle("CGLPBufferObj");
 
-	private static readonly IntPtr selPixelsWideHandle = Selector.GetHandle("pixelsWide");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithTextureTarget_TextureInternalFormat_TextureMaxMipMapLevel_PixelsWide_PixelsHigh_ = "initWithTextureTarget:textureInternalFormat:textureMaxMipMapLevel:pixelsWide:pixelsHigh:";
+
+	private static readonly IntPtr selInitWithTextureTarget_TextureInternalFormat_TextureMaxMipMapLevel_PixelsWide_PixelsHigh_Handle = Selector.GetHandle("initWithTextureTarget:textureInternalFormat:textureMaxMipMapLevel:pixelsWide:pixelsHigh:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPixelsHigh = "pixelsHigh";
 
 	private static readonly IntPtr selPixelsHighHandle = Selector.GetHandle("pixelsHigh");
 
-	private static readonly IntPtr selTextureTargetHandle = Selector.GetHandle("textureTarget");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPixelsWide = "pixelsWide";
+
+	private static readonly IntPtr selPixelsWideHandle = Selector.GetHandle("pixelsWide");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTextureInternalFormat = "textureInternalFormat";
 
 	private static readonly IntPtr selTextureInternalFormatHandle = Selector.GetHandle("textureInternalFormat");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTextureMaxMipMapLevel = "textureMaxMipMapLevel";
+
 	private static readonly IntPtr selTextureMaxMipMapLevelHandle = Selector.GetHandle("textureMaxMipMapLevel");
 
-	private static readonly IntPtr selInitWithTextureTargetTextureInternalFormatTextureMaxMipMapLevelPixelsWidePixelsHigh_Handle = Selector.GetHandle("initWithTextureTarget:textureInternalFormat:textureMaxMipMapLevel:pixelsWide:pixelsHigh:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTextureTarget = "textureTarget";
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSOpenGLPixelBuffer");
+	private static readonly IntPtr selTextureTargetHandle = Selector.GetHandle("textureTarget");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSOpenGLPixelBuffer");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual IntPtr CGLPBuffer
 	{
 		[Export("CGLPBufferObj")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.IntPtr_objc_msgSend(base.Handle, selCGLPBufferObjHandle);
 			}
@@ -40,27 +64,13 @@ public class NSOpenGLPixelBuffer : NSObject
 		}
 	}
 
-	public virtual int PixelsWide
-	{
-		[Export("pixelsWide")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.int_objc_msgSend(base.Handle, selPixelsWideHandle);
-			}
-			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selPixelsWideHandle);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual int PixelsHigh
 	{
 		[Export("pixelsHigh")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.int_objc_msgSend(base.Handle, selPixelsHighHandle);
 			}
@@ -68,41 +78,41 @@ public class NSOpenGLPixelBuffer : NSObject
 		}
 	}
 
-	public virtual NSGLTextureTarget TextureTarget
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual int PixelsWide
 	{
-		[Export("textureTarget")]
+		[Export("pixelsWide")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return (NSGLTextureTarget)Messaging.int_objc_msgSend(base.Handle, selTextureTargetHandle);
+				return Messaging.int_objc_msgSend(base.Handle, selPixelsWideHandle);
 			}
-			return (NSGLTextureTarget)Messaging.int_objc_msgSendSuper(base.SuperHandle, selTextureTargetHandle);
+			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selPixelsWideHandle);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSGLFormat TextureInternalFormat
 	{
 		[Export("textureInternalFormat")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return (NSGLFormat)Messaging.int_objc_msgSend(base.Handle, selTextureInternalFormatHandle);
+				return (NSGLFormat)Messaging.UInt32_objc_msgSend(base.Handle, selTextureInternalFormatHandle);
 			}
-			return (NSGLFormat)Messaging.int_objc_msgSendSuper(base.SuperHandle, selTextureInternalFormatHandle);
+			return (NSGLFormat)Messaging.UInt32_objc_msgSendSuper(base.SuperHandle, selTextureInternalFormatHandle);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual int TextureMaxMipMapLevel
 	{
 		[Export("textureMaxMipMapLevel")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.int_objc_msgSend(base.Handle, selTextureMaxMipMapLevelHandle);
 			}
@@ -110,60 +120,62 @@ public class NSOpenGLPixelBuffer : NSObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSGLTextureTarget TextureTarget
+	{
+		[Export("textureTarget")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return (NSGLTextureTarget)Messaging.UInt32_objc_msgSend(base.Handle, selTextureTargetHandle);
+			}
+			return (NSGLTextureTarget)Messaging.UInt32_objc_msgSendSuper(base.SuperHandle, selTextureTargetHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSOpenGLPixelBuffer()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSOpenGLPixelBuffer(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSOpenGLPixelBuffer(NSObjectFlag t)
+	protected NSOpenGLPixelBuffer(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSOpenGLPixelBuffer(IntPtr handle)
+	protected internal NSOpenGLPixelBuffer(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithTextureTarget:textureInternalFormat:textureMaxMipMapLevel:pixelsWide:pixelsHigh:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSOpenGLPixelBuffer(NSGLTextureTarget targetGlEnum, NSGLFormat format, int maxLevel, int pixelsWide, int pixelsHigh)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_int_int_int_int_int(base.Handle, selInitWithTextureTargetTextureInternalFormatTextureMaxMipMapLevelPixelsWidePixelsHigh_Handle, (int)targetGlEnum, (int)format, maxLevel, pixelsWide, pixelsHigh);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_UInt32_UInt32_int_int_int(base.Handle, selInitWithTextureTarget_TextureInternalFormat_TextureMaxMipMapLevel_PixelsWide_PixelsHigh_Handle, (uint)targetGlEnum, (uint)format, maxLevel, pixelsWide, pixelsHigh), "initWithTextureTarget:textureInternalFormat:textureMaxMipMapLevel:pixelsWide:pixelsHigh:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_int_int_int_int_int(base.SuperHandle, selInitWithTextureTargetTextureInternalFormatTextureMaxMipMapLevelPixelsWidePixelsHigh_Handle, (int)targetGlEnum, (int)format, maxLevel, pixelsWide, pixelsHigh);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_UInt32_UInt32_int_int_int(base.SuperHandle, selInitWithTextureTarget_TextureInternalFormat_TextureMaxMipMapLevel_PixelsWide_PixelsHigh_Handle, (uint)targetGlEnum, (uint)format, maxLevel, pixelsWide, pixelsHigh), "initWithTextureTarget:textureInternalFormat:textureMaxMipMapLevel:pixelsWide:pixelsHigh:");
 		}
 	}
 }

@@ -4,53 +4,39 @@ using ObjCRuntime;
 
 namespace Foundation;
 
-[Register("NSPortDelegate", true)]
+[Protocol]
+[Register("NSPortDelegate", false)]
 [Model]
-public class NSPortDelegate : NSObject
+public class NSPortDelegate : NSObject, INSPortDelegate, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSPortDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
+		base.IsDirectBinding = false;
+		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSPortDelegate(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSPortDelegate(NSObjectFlag t)
+	protected NSPortDelegate(NSObjectFlag t)
 		: base(t)
 	{
+		base.IsDirectBinding = false;
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSPortDelegate(IntPtr handle)
+	protected internal NSPortDelegate(IntPtr handle)
 		: base(handle)
 	{
+		base.IsDirectBinding = false;
 	}
 
 	[Export("handlePortMessage:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void MessageReceived(NSPortMessage message)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();

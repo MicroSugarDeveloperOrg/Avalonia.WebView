@@ -1,4 +1,4 @@
-﻿using ObjCRuntime;
+using ObjCRuntime;
 
 namespace AVFoundation;
 
@@ -9,8 +9,8 @@ namespace AVFoundation;
 [Native]
 public enum AVAudioEngineManualRenderingStatus : long
 {
-    Error = -1L,
-    Success,
-    InsufficientDataFromInputNode,
-    CannotDoInCurrentContext
+	Error = -1L,
+	Success,
+	InsufficientDataFromInputNode,
+	CannotDoInCurrentContext
 }

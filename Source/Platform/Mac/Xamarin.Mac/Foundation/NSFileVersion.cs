@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using ObjCRuntime;
 
 namespace Foundation;
@@ -8,151 +8,133 @@ namespace Foundation;
 [Register("NSFileVersion", true)]
 public class NSFileVersion : NSObject
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selURL = "URL";
+
 	private static readonly IntPtr selURLHandle = Selector.GetHandle("URL");
 
-	private static readonly IntPtr selLocalizedNameHandle = Selector.GetHandle("localizedName");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAddVersionOfItemAtURL_WithContentsOfURL_Options_Error_ = "addVersionOfItemAtURL:withContentsOfURL:options:error:";
 
-	private static readonly IntPtr selLocalizedNameOfSavingComputerHandle = Selector.GetHandle("localizedNameOfSavingComputer");
+	private static readonly IntPtr selAddVersionOfItemAtURL_WithContentsOfURL_Options_Error_Handle = Selector.GetHandle("addVersionOfItemAtURL:withContentsOfURL:options:error:");
 
-	private static readonly IntPtr selModificationDateHandle = Selector.GetHandle("modificationDate");
-
-	private static readonly IntPtr selPersistentIdentifierHandle = Selector.GetHandle("persistentIdentifier");
-
-	private static readonly IntPtr selIsConflictHandle = Selector.GetHandle("isConflict");
-
-	private static readonly IntPtr selIsResolvedHandle = Selector.GetHandle("isResolved");
-
-	private static readonly IntPtr selSetResolved_Handle = Selector.GetHandle("setResolved:");
-
-	private static readonly IntPtr selIsDiscardableHandle = Selector.GetHandle("isDiscardable");
-
-	private static readonly IntPtr selSetDiscardable_Handle = Selector.GetHandle("setDiscardable:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCurrentVersionOfItemAtURL_ = "currentVersionOfItemAtURL:";
 
 	private static readonly IntPtr selCurrentVersionOfItemAtURL_Handle = Selector.GetHandle("currentVersionOfItemAtURL:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGetNonlocalVersionsOfItemAtURL_CompletionHandler_ = "getNonlocalVersionsOfItemAtURL:completionHandler:";
+
+	private static readonly IntPtr selGetNonlocalVersionsOfItemAtURL_CompletionHandler_Handle = Selector.GetHandle("getNonlocalVersionsOfItemAtURL:completionHandler:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selHasLocalContents = "hasLocalContents";
+
+	private static readonly IntPtr selHasLocalContentsHandle = Selector.GetHandle("hasLocalContents");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selHasThumbnail = "hasThumbnail";
+
+	private static readonly IntPtr selHasThumbnailHandle = Selector.GetHandle("hasThumbnail");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsConflict = "isConflict";
+
+	private static readonly IntPtr selIsConflictHandle = Selector.GetHandle("isConflict");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsDiscardable = "isDiscardable";
+
+	private static readonly IntPtr selIsDiscardableHandle = Selector.GetHandle("isDiscardable");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsResolved = "isResolved";
+
+	private static readonly IntPtr selIsResolvedHandle = Selector.GetHandle("isResolved");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLocalizedName = "localizedName";
+
+	private static readonly IntPtr selLocalizedNameHandle = Selector.GetHandle("localizedName");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLocalizedNameOfSavingComputer = "localizedNameOfSavingComputer";
+
+	private static readonly IntPtr selLocalizedNameOfSavingComputerHandle = Selector.GetHandle("localizedNameOfSavingComputer");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selModificationDate = "modificationDate";
+
+	private static readonly IntPtr selModificationDateHandle = Selector.GetHandle("modificationDate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selOriginatorNameComponents = "originatorNameComponents";
+
+	private static readonly IntPtr selOriginatorNameComponentsHandle = Selector.GetHandle("originatorNameComponents");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selOtherVersionsOfItemAtURL_ = "otherVersionsOfItemAtURL:";
+
 	private static readonly IntPtr selOtherVersionsOfItemAtURL_Handle = Selector.GetHandle("otherVersionsOfItemAtURL:");
 
-	private static readonly IntPtr selUnresolvedConflictVersionsOfItemAtURL_Handle = Selector.GetHandle("unresolvedConflictVersionsOfItemAtURL:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPersistentIdentifier = "persistentIdentifier";
 
-	private static readonly IntPtr selVersionOfItemAtURLForPersistentIdentifier_Handle = Selector.GetHandle("versionOfItemAtURL:forPersistentIdentifier:");
+	private static readonly IntPtr selPersistentIdentifierHandle = Selector.GetHandle("persistentIdentifier");
 
-	private static readonly IntPtr selAddVersionOfItemAtURLWithContentsOfURLOptionsError_Handle = Selector.GetHandle("addVersionOfItemAtURL:withContentsOfURL:options:error:");
-
-	private static readonly IntPtr selTemporaryDirectoryURLForNewVersionOfItemAtURL_Handle = Selector.GetHandle("temporaryDirectoryURLForNewVersionOfItemAtURL:");
-
-	private static readonly IntPtr selReplaceItemAtURLOptionsError_Handle = Selector.GetHandle("replaceItemAtURL:options:error:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveAndReturnError_ = "removeAndReturnError:";
 
 	private static readonly IntPtr selRemoveAndReturnError_Handle = Selector.GetHandle("removeAndReturnError:");
 
-	private static readonly IntPtr selRemoveOtherVersionsOfItemAtURLError_Handle = Selector.GetHandle("removeOtherVersionsOfItemAtURL:error:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveOtherVersionsOfItemAtURL_Error_ = "removeOtherVersionsOfItemAtURL:error:";
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSFileVersion");
+	private static readonly IntPtr selRemoveOtherVersionsOfItemAtURL_Error_Handle = Selector.GetHandle("removeOtherVersionsOfItemAtURL:error:");
 
-	private object __mt_Url_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReplaceItemAtURL_Options_Error_ = "replaceItemAtURL:options:error:";
 
-	private object __mt_ModificationDate_var;
+	private static readonly IntPtr selReplaceItemAtURL_Options_Error_Handle = Selector.GetHandle("replaceItemAtURL:options:error:");
 
-	private object __mt_PersistentIdentifier_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDiscardable_ = "setDiscardable:";
+
+	private static readonly IntPtr selSetDiscardable_Handle = Selector.GetHandle("setDiscardable:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetResolved_ = "setResolved:";
+
+	private static readonly IntPtr selSetResolved_Handle = Selector.GetHandle("setResolved:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTemporaryDirectoryURLForNewVersionOfItemAtURL_ = "temporaryDirectoryURLForNewVersionOfItemAtURL:";
+
+	private static readonly IntPtr selTemporaryDirectoryURLForNewVersionOfItemAtURL_Handle = Selector.GetHandle("temporaryDirectoryURLForNewVersionOfItemAtURL:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selUnresolvedConflictVersionsOfItemAtURL_ = "unresolvedConflictVersionsOfItemAtURL:";
+
+	private static readonly IntPtr selUnresolvedConflictVersionsOfItemAtURL_Handle = Selector.GetHandle("unresolvedConflictVersionsOfItemAtURL:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selVersionOfItemAtURL_ForPersistentIdentifier_ = "versionOfItemAtURL:forPersistentIdentifier:";
+
+	private static readonly IntPtr selVersionOfItemAtURL_ForPersistentIdentifier_Handle = Selector.GetHandle("versionOfItemAtURL:forPersistentIdentifier:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSFileVersion");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSUrl Url
-	{
-		[Export("URL")]
-		get
-		{
-			return (NSUrl)(__mt_Url_var = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selURLHandle))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selURLHandle)))));
-		}
-	}
-
-	public virtual string LocalizedName
-	{
-		[Export("localizedName")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedNameHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizedNameHandle));
-		}
-	}
-
-	public virtual string LocalizedNameOfSavingComputer
-	{
-		[Export("localizedNameOfSavingComputer")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedNameOfSavingComputerHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizedNameOfSavingComputerHandle));
-		}
-	}
-
-	public virtual NSDate ModificationDate
-	{
-		[Export("modificationDate")]
-		get
-		{
-			return (NSDate)(__mt_ModificationDate_var = ((!IsDirectBinding) ? ((NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selModificationDateHandle))) : ((NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selModificationDateHandle)))));
-		}
-	}
-
-	public virtual NSObject PersistentIdentifier
-	{
-		[Export("persistentIdentifier")]
-		get
-		{
-			return (NSObject)(__mt_PersistentIdentifier_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPersistentIdentifierHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPersistentIdentifierHandle))));
-		}
-	}
-
-	public virtual bool IsConflict
-	{
-		[Export("isConflict")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsConflictHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsConflictHandle);
-		}
-	}
-
-	public virtual bool Resolved
-	{
-		[Export("isResolved")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsResolvedHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsResolvedHandle);
-		}
-		[Export("setResolved:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetResolved_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetResolved_Handle, value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Discardable
 	{
 		[Export("isDiscardable")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsDiscardableHandle);
 			}
@@ -161,7 +143,7 @@ public class NSFileVersion : NSObject
 		[Export("setDiscardable:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetDiscardable_Handle, value);
 			}
@@ -172,78 +154,190 @@ public class NSFileVersion : NSObject
 		}
 	}
 
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSFileVersion(NSCoder coder)
-		: base(NSObjectFlag.Empty)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
+	public virtual bool HasLocalContents
 	{
-		if (IsDirectBinding)
+		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
+		[Export("hasLocalContents")]
+		get
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selHasLocalContentsHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selHasLocalContentsHandle);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
+	public virtual bool HasThumbnail
+	{
+		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
+		[Export("hasThumbnail")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selHasThumbnailHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selHasThumbnailHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool IsConflict
+	{
+		[Export("isConflict")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsConflictHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsConflictHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string LocalizedName
+	{
+		[Export("localizedName", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedNameHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizedNameHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string LocalizedNameOfSavingComputer
+	{
+		[Export("localizedNameOfSavingComputer", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedNameOfSavingComputerHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizedNameOfSavingComputerHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDate ModificationDate
+	{
+		[Export("modificationDate", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSend(base.Handle, selModificationDateHandle));
+			}
+			return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selModificationDateHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+	[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
+	public virtual NSPersonNameComponents? OriginatorNameComponents
+	{
+		[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+		[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
+		[Export("originatorNameComponents", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSPersonNameComponents>(Messaging.IntPtr_objc_msgSend(base.Handle, selOriginatorNameComponentsHandle));
+			}
+			return Runtime.GetNSObject<NSPersonNameComponents>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOriginatorNameComponentsHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject PersistentIdentifier
+	{
+		[Export("persistentIdentifier", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPersistentIdentifierHandle));
+			}
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPersistentIdentifierHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Resolved
+	{
+		[Export("isResolved")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsResolvedHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsResolvedHandle);
+		}
+		[Export("setResolved:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetResolved_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetResolved_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSUrl Url
+	{
+		[Export("URL", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selURLHandle));
+			}
+			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selURLHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSFileVersion(NSObjectFlag t)
+	protected NSFileVersion(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSFileVersion(IntPtr handle)
+	protected internal NSFileVersion(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("currentVersionOfItemAtURL:")]
-	public static NSFileVersion GetCurrentVersion(NSUrl url)
-	{
-		if (url == null)
-		{
-			throw new ArgumentNullException("url");
-		}
-		return (NSFileVersion)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selCurrentVersionOfItemAtURL_Handle, url.Handle));
-	}
-
-	[Export("otherVersionsOfItemAtURL:")]
-	public static NSFileVersion[] GetOtherVersions(NSUrl url)
-	{
-		if (url == null)
-		{
-			throw new ArgumentNullException("url");
-		}
-		return NSArray.ArrayFromHandle<NSFileVersion>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selOtherVersionsOfItemAtURL_Handle, url.Handle));
-	}
-
-	[Export("unresolvedConflictVersionsOfItemAtURL:")]
-	public static NSFileVersion[] GetUnresolvedConflictVersions(NSUrl url)
-	{
-		if (url == null)
-		{
-			throw new ArgumentNullException("url");
-		}
-		return NSArray.ArrayFromHandle<NSFileVersion>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selUnresolvedConflictVersionsOfItemAtURL_Handle, url.Handle));
-	}
-
-	[Export("versionOfItemAtURL:forPersistentIdentifier:")]
-	public static NSFileVersion GetSpecificVersion(NSUrl url, NSObject persistentIdentifier)
-	{
-		if (url == null)
-		{
-			throw new ArgumentNullException("url");
-		}
-		if (persistentIdentifier == null)
-		{
-			throw new ArgumentNullException("persistentIdentifier");
-		}
-		return (NSFileVersion)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selVersionOfItemAtURLForPersistentIdentifier_Handle, url.Handle, persistentIdentifier.Handle));
-	}
-
 	[Export("addVersionOfItemAtURL:withContentsOfURL:options:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSFileVersion AddVersion(NSUrl url, NSUrl contentsURL, NSFileVersionAddingOptions options, out NSError outError)
 	{
 		if (url == null)
@@ -254,77 +348,147 @@ public class NSFileVersion : NSObject
 		{
 			throw new ArgumentNullException("contentsURL");
 		}
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		NSFileVersion result = (NSFileVersion)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_UInt64_IntPtr(class_ptr, selAddVersionOfItemAtURLWithContentsOfURLOptionsError_Handle, url.Handle, contentsURL.Handle, (ulong)options, intPtr));
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		outError = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
-		return result;
+		IntPtr arg = IntPtr.Zero;
+		NSFileVersion nSObject = Runtime.GetNSObject<NSFileVersion>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_UInt64_ref_IntPtr(class_ptr, selAddVersionOfItemAtURL_WithContentsOfURL_Options_Error_Handle, url.Handle, contentsURL.Handle, (ulong)options, ref arg));
+		outError = Runtime.GetNSObject<NSError>(arg);
+		return nSObject;
 	}
 
-	[Export("temporaryDirectoryURLForNewVersionOfItemAtURL:")]
-	public static NSUrl TemporaryDirectoryForItem(NSUrl url)
+	[Export("currentVersionOfItemAtURL:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSFileVersion GetCurrentVersion(NSUrl url)
 	{
 		if (url == null)
 		{
 			throw new ArgumentNullException("url");
 		}
-		return (NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selTemporaryDirectoryURLForNewVersionOfItemAtURL_Handle, url.Handle));
+		return Runtime.GetNSObject<NSFileVersion>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selCurrentVersionOfItemAtURL_Handle, url.Handle));
 	}
 
-	[Export("replaceItemAtURL:options:error:")]
-	public virtual NSUrl ReplaceItem(NSUrl url, NSFileVersionReplacingOptions options, out NSError error)
+	[Export("getNonlocalVersionsOfItemAtURL:completionHandler:")]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public unsafe static void GetNonlocalVersions(NSUrl url, [BlockProxy(typeof(Trampolines.NIDNSFileVersionNonlocalVersionsCompletionHandler))] NSFileVersionNonlocalVersionsCompletionHandler completionHandler)
 	{
 		if (url == null)
 		{
 			throw new ArgumentNullException("url");
 		}
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		NSUrl result = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_UInt64_IntPtr(base.SuperHandle, selReplaceItemAtURLOptionsError_Handle, url.Handle, (ulong)options, intPtr))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64_IntPtr(base.Handle, selReplaceItemAtURLOptionsError_Handle, url.Handle, (ulong)options, intPtr))));
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
-		return result;
+		if (completionHandler == null)
+		{
+			throw new ArgumentNullException("completionHandler");
+		}
+		BlockLiteral blockLiteral = default(BlockLiteral);
+		BlockLiteral* ptr = &blockLiteral;
+		blockLiteral.SetupBlockUnsafe(Trampolines.SDNSFileVersionNonlocalVersionsCompletionHandler.Handler, completionHandler);
+		Messaging.void_objc_msgSend_IntPtr_IntPtr(class_ptr, selGetNonlocalVersionsOfItemAtURL_CompletionHandler_Handle, url.Handle, (IntPtr)ptr);
+		ptr->CleanupBlock();
+	}
+
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static Task<NSFileVersion[]> GetNonlocalVersionsAsync(NSUrl url)
+	{
+		TaskCompletionSource<NSFileVersion[]> tcs = new TaskCompletionSource<NSFileVersion[]>();
+		GetNonlocalVersions(url, delegate(NSFileVersion[]? nonlocalFileVersions_, NSError? error_)
+		{
+			if (error_ != null)
+			{
+				tcs.SetException(new NSErrorException(error_));
+			}
+			else
+			{
+				tcs.SetResult(nonlocalFileVersions_);
+			}
+		});
+		return tcs.Task;
+	}
+
+	[Export("otherVersionsOfItemAtURL:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSFileVersion[] GetOtherVersions(NSUrl url)
+	{
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		return NSArray.ArrayFromHandle<NSFileVersion>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selOtherVersionsOfItemAtURL_Handle, url.Handle));
+	}
+
+	[Export("versionOfItemAtURL:forPersistentIdentifier:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSFileVersion GetSpecificVersion(NSUrl url, NSObject persistentIdentifier)
+	{
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		if (persistentIdentifier == null)
+		{
+			throw new ArgumentNullException("persistentIdentifier");
+		}
+		return Runtime.GetNSObject<NSFileVersion>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selVersionOfItemAtURL_ForPersistentIdentifier_Handle, url.Handle, persistentIdentifier.Handle));
+	}
+
+	[Export("unresolvedConflictVersionsOfItemAtURL:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSFileVersion[] GetUnresolvedConflictVersions(NSUrl url)
+	{
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		return NSArray.ArrayFromHandle<NSFileVersion>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selUnresolvedConflictVersionsOfItemAtURL_Handle, url.Handle));
 	}
 
 	[Export("removeAndReturnError:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Remove(out NSError outError)
 	{
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveAndReturnError_Handle, intPtr) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selRemoveAndReturnError_Handle, intPtr));
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		outError = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
+		IntPtr arg = IntPtr.Zero;
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_ref_IntPtr(base.SuperHandle, selRemoveAndReturnError_Handle, ref arg) : Messaging.bool_objc_msgSend_ref_IntPtr(base.Handle, selRemoveAndReturnError_Handle, ref arg));
+		outError = Runtime.GetNSObject<NSError>(arg);
 		return result;
 	}
 
 	[Export("removeOtherVersionsOfItemAtURL:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static bool RemoveOtherVersions(NSUrl url, out NSError outError)
 	{
 		if (url == null)
 		{
 			throw new ArgumentNullException("url");
 		}
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		bool result = Messaging.bool_objc_msgSend_IntPtr_IntPtr(class_ptr, selRemoveOtherVersionsOfItemAtURLError_Handle, url.Handle, intPtr);
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		outError = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
+		IntPtr arg = IntPtr.Zero;
+		bool result = Messaging.bool_objc_msgSend_IntPtr_ref_IntPtr(class_ptr, selRemoveOtherVersionsOfItemAtURL_Error_Handle, url.Handle, ref arg);
+		outError = Runtime.GetNSObject<NSError>(arg);
 		return result;
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("replaceItemAtURL:options:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSUrl ReplaceItem(NSUrl url, NSFileVersionReplacingOptions options, out NSError error)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		if (url == null)
 		{
-			__mt_Url_var = null;
-			__mt_ModificationDate_var = null;
-			__mt_PersistentIdentifier_var = null;
+			throw new ArgumentNullException("url");
 		}
+		IntPtr arg = IntPtr.Zero;
+		NSUrl result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_UInt64_ref_IntPtr(base.SuperHandle, selReplaceItemAtURL_Options_Error_Handle, url.Handle, (ulong)options, ref arg)) : Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64_ref_IntPtr(base.Handle, selReplaceItemAtURL_Options_Error_Handle, url.Handle, (ulong)options, ref arg)));
+		error = Runtime.GetNSObject<NSError>(arg);
+		return result;
+	}
+
+	[Export("temporaryDirectoryURLForNewVersionOfItemAtURL:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSUrl TemporaryDirectoryForItem(NSUrl url)
+	{
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selTemporaryDirectoryURLForNewVersionOfItemAtURL_Handle, url.Handle));
 	}
 }

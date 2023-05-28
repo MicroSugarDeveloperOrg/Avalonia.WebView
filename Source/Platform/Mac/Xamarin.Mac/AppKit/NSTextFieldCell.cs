@@ -8,232 +8,114 @@ namespace AppKit;
 [Register("NSTextFieldCell", true)]
 public class NSTextFieldCell : NSActionCell
 {
-	private static readonly IntPtr selBackgroundColorHandle = Selector.GetHandle("backgroundColor");
-
-	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
-
-	private static readonly IntPtr selDrawsBackgroundHandle = Selector.GetHandle("drawsBackground");
-
-	private static readonly IntPtr selSetDrawsBackground_Handle = Selector.GetHandle("setDrawsBackground:");
-
-	private static readonly IntPtr selTextColorHandle = Selector.GetHandle("textColor");
-
-	private static readonly IntPtr selSetTextColor_Handle = Selector.GetHandle("setTextColor:");
-
-	private static readonly IntPtr selBezelStyleHandle = Selector.GetHandle("bezelStyle");
-
-	private static readonly IntPtr selSetBezelStyle_Handle = Selector.GetHandle("setBezelStyle:");
-
-	private static readonly IntPtr selPlaceholderStringHandle = Selector.GetHandle("placeholderString");
-
-	private static readonly IntPtr selSetPlaceholderString_Handle = Selector.GetHandle("setPlaceholderString:");
-
-	private static readonly IntPtr selPlaceholderAttributedStringHandle = Selector.GetHandle("placeholderAttributedString");
-
-	private static readonly IntPtr selSetPlaceholderAttributedString_Handle = Selector.GetHandle("setPlaceholderAttributedString:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAllowedInputSourceLocales = "allowedInputSourceLocales";
 
 	private static readonly IntPtr selAllowedInputSourceLocalesHandle = Selector.GetHandle("allowedInputSourceLocales");
 
-	private static readonly IntPtr selSetAllowedInputSourceLocales_Handle = Selector.GetHandle("setAllowedInputSourceLocales:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBackgroundColor = "backgroundColor";
 
-	private static readonly IntPtr selWantsNotificationForMarkedTextHandle = Selector.GetHandle("wantsNotificationForMarkedText");
+	private static readonly IntPtr selBackgroundColorHandle = Selector.GetHandle("backgroundColor");
 
-	private static readonly IntPtr selSetWantsNotificationForMarkedText_Handle = Selector.GetHandle("setWantsNotificationForMarkedText:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBezelStyle = "bezelStyle";
 
-	private static readonly IntPtr selInitTextCell_Handle = Selector.GetHandle("initTextCell:");
+	private static readonly IntPtr selBezelStyleHandle = Selector.GetHandle("bezelStyle");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDrawsBackground = "drawsBackground";
+
+	private static readonly IntPtr selDrawsBackgroundHandle = Selector.GetHandle("drawsBackground");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitImageCell_ = "initImageCell:";
 
 	private static readonly IntPtr selInitImageCell_Handle = Selector.GetHandle("initImageCell:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitTextCell_ = "initTextCell:";
+
+	private static readonly IntPtr selInitTextCell_Handle = Selector.GetHandle("initTextCell:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPlaceholderAttributedString = "placeholderAttributedString";
+
+	private static readonly IntPtr selPlaceholderAttributedStringHandle = Selector.GetHandle("placeholderAttributedString");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPlaceholderString = "placeholderString";
+
+	private static readonly IntPtr selPlaceholderStringHandle = Selector.GetHandle("placeholderString");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAllowedInputSourceLocales_ = "setAllowedInputSourceLocales:";
+
+	private static readonly IntPtr selSetAllowedInputSourceLocales_Handle = Selector.GetHandle("setAllowedInputSourceLocales:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBackgroundColor_ = "setBackgroundColor:";
+
+	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBezelStyle_ = "setBezelStyle:";
+
+	private static readonly IntPtr selSetBezelStyle_Handle = Selector.GetHandle("setBezelStyle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDrawsBackground_ = "setDrawsBackground:";
+
+	private static readonly IntPtr selSetDrawsBackground_Handle = Selector.GetHandle("setDrawsBackground:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPlaceholderAttributedString_ = "setPlaceholderAttributedString:";
+
+	private static readonly IntPtr selSetPlaceholderAttributedString_Handle = Selector.GetHandle("setPlaceholderAttributedString:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPlaceholderString_ = "setPlaceholderString:";
+
+	private static readonly IntPtr selSetPlaceholderString_Handle = Selector.GetHandle("setPlaceholderString:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTextColor_ = "setTextColor:";
+
+	private static readonly IntPtr selSetTextColor_Handle = Selector.GetHandle("setTextColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetUpFieldEditorAttributes_ = "setUpFieldEditorAttributes:";
+
 	private static readonly IntPtr selSetUpFieldEditorAttributes_Handle = Selector.GetHandle("setUpFieldEditorAttributes:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSTextFieldCell");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetWantsNotificationForMarkedText_ = "setWantsNotificationForMarkedText:";
 
-	private object __mt_BackgroundColor_var;
+	private static readonly IntPtr selSetWantsNotificationForMarkedText_Handle = Selector.GetHandle("setWantsNotificationForMarkedText:");
 
-	private object __mt_TextColor_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTextColor = "textColor";
 
-	private object __mt_PlaceholderAttributedString_var;
+	private static readonly IntPtr selTextColorHandle = Selector.GetHandle("textColor");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selWantsNotificationForMarkedText = "wantsNotificationForMarkedText";
+
+	private static readonly IntPtr selWantsNotificationForMarkedTextHandle = Selector.GetHandle("wantsNotificationForMarkedText");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSTextFieldCell");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSColor BackgroundColor
-	{
-		[Export("backgroundColor")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSColor)(__mt_BackgroundColor_var = ((!IsDirectBinding) ? ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle))) : ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle)))));
-		}
-		[Export("setBackgroundColor:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBackgroundColor_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBackgroundColor_Handle, value.Handle);
-			}
-			__mt_BackgroundColor_var = value;
-		}
-	}
-
-	public virtual bool DrawsBackground
-	{
-		[Export("drawsBackground")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selDrawsBackgroundHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selDrawsBackgroundHandle);
-		}
-		[Export("setDrawsBackground:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetDrawsBackground_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetDrawsBackground_Handle, value);
-			}
-		}
-	}
-
-	public virtual NSColor TextColor
-	{
-		[Export("textColor")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSColor)(__mt_TextColor_var = ((!IsDirectBinding) ? ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextColorHandle))) : ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTextColorHandle)))));
-		}
-		[Export("setTextColor:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextColor_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextColor_Handle, value.Handle);
-			}
-			__mt_TextColor_var = value;
-		}
-	}
-
-	public virtual NSTextFieldBezelStyle BezelStyle
-	{
-		[Export("bezelStyle")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return (NSTextFieldBezelStyle)Messaging.int_objc_msgSend(base.Handle, selBezelStyleHandle);
-			}
-			return (NSTextFieldBezelStyle)Messaging.int_objc_msgSendSuper(base.SuperHandle, selBezelStyleHandle);
-		}
-		[Export("setBezelStyle:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_int(base.Handle, selSetBezelStyle_Handle, (int)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetBezelStyle_Handle, (int)value);
-			}
-		}
-	}
-
-	public virtual string PlaceholderString
-	{
-		[Export("placeholderString")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPlaceholderStringHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPlaceholderStringHandle));
-		}
-		[Export("setPlaceholderString:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPlaceholderString_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPlaceholderString_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	public virtual NSAttributedString PlaceholderAttributedString
-	{
-		[Export("placeholderAttributedString")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSAttributedString)(__mt_PlaceholderAttributedString_var = ((!IsDirectBinding) ? ((NSAttributedString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPlaceholderAttributedStringHandle))) : ((NSAttributedString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPlaceholderAttributedStringHandle)))));
-		}
-		[Export("setPlaceholderAttributedString:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPlaceholderAttributedString_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPlaceholderAttributedString_Handle, value.Handle);
-			}
-			__mt_PlaceholderAttributedString_var = value;
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string[] AllowedInputSourceLocales
 	{
 		[Export("allowedInputSourceLocales")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAllowedInputSourceLocalesHandle));
 			}
@@ -248,7 +130,7 @@ public class NSTextFieldCell : NSActionCell
 				throw new ArgumentNullException("value");
 			}
 			NSArray nSArray = NSArray.FromStrings(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAllowedInputSourceLocales_Handle, nSArray.Handle);
 			}
@@ -260,13 +142,200 @@ public class NSTextFieldCell : NSActionCell
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSColor BackgroundColor
+	{
+		[Export("backgroundColor", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle));
+			}
+			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle));
+		}
+		[Export("setBackgroundColor:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBackgroundColor_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBackgroundColor_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSTextFieldBezelStyle BezelStyle
+	{
+		[Export("bezelStyle")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return (NSTextFieldBezelStyle)Messaging.UInt64_objc_msgSend(base.Handle, selBezelStyleHandle);
+			}
+			return (NSTextFieldBezelStyle)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selBezelStyleHandle);
+		}
+		[Export("setBezelStyle:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetBezelStyle_Handle, (ulong)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetBezelStyle_Handle, (ulong)value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool DrawsBackground
+	{
+		[Export("drawsBackground")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selDrawsBackgroundHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selDrawsBackgroundHandle);
+		}
+		[Export("setDrawsBackground:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetDrawsBackground_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetDrawsBackground_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSAttributedString PlaceholderAttributedString
+	{
+		[Export("placeholderAttributedString", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSAttributedString>(Messaging.IntPtr_objc_msgSend(base.Handle, selPlaceholderAttributedStringHandle));
+			}
+			return Runtime.GetNSObject<NSAttributedString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPlaceholderAttributedStringHandle));
+		}
+		[Export("setPlaceholderAttributedString:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPlaceholderAttributedString_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPlaceholderAttributedString_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string PlaceholderString
+	{
+		[Export("placeholderString")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPlaceholderStringHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPlaceholderStringHandle));
+		}
+		[Export("setPlaceholderString:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPlaceholderString_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPlaceholderString_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSColor TextColor
+	{
+		[Export("textColor", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selTextColorHandle));
+			}
+			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextColorHandle));
+		}
+		[Export("setTextColor:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextColor_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextColor_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public override bool WantsNotificationForMarkedText
 	{
 		[Export("wantsNotificationForMarkedText")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selWantsNotificationForMarkedTextHandle);
 			}
@@ -276,7 +345,7 @@ public class NSTextFieldCell : NSActionCell
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetWantsNotificationForMarkedText_Handle, value);
 			}
@@ -287,49 +356,58 @@ public class NSTextFieldCell : NSActionCell
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSTextFieldCell()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSTextFieldCell(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTextFieldCell(NSObjectFlag t)
+	protected NSTextFieldCell(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTextFieldCell(IntPtr handle)
+	protected internal NSTextFieldCell(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initTextCell:")]
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSTextFieldCell(string aString)
 		: base(NSObjectFlag.Empty)
 	{
@@ -339,18 +417,19 @@ public class NSTextFieldCell : NSActionCell
 			throw new ArgumentNullException("aString");
 		}
 		IntPtr arg = NSString.CreateNative(aString);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitTextCell_Handle, arg);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitTextCell_Handle, arg), "initTextCell:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitTextCell_Handle, arg);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitTextCell_Handle, arg), "initTextCell:");
 		}
 		NSString.ReleaseNative(arg);
 	}
 
 	[Export("initImageCell:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSTextFieldCell(NSImage image)
 		: base(NSObjectFlag.Empty)
 	{
@@ -359,17 +438,18 @@ public class NSTextFieldCell : NSActionCell
 		{
 			throw new ArgumentNullException("image");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitImageCell_Handle, image.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitImageCell_Handle, image.Handle), "initImageCell:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitImageCell_Handle, image.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitImageCell_Handle, image.Handle), "initImageCell:");
 		}
 	}
 
 	[Export("setUpFieldEditorAttributes:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new virtual NSText SetUpFieldEditorAttributes(NSText textObj)
 	{
 		NSApplication.EnsureUIThread();
@@ -377,21 +457,10 @@ public class NSTextFieldCell : NSActionCell
 		{
 			throw new ArgumentNullException("textObj");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSText)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selSetUpFieldEditorAttributes_Handle, textObj.Handle));
+			return Runtime.GetNSObject<NSText>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selSetUpFieldEditorAttributes_Handle, textObj.Handle));
 		}
-		return (NSText)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetUpFieldEditorAttributes_Handle, textObj.Handle));
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_BackgroundColor_var = null;
-			__mt_TextColor_var = null;
-			__mt_PlaceholderAttributedString_var = null;
-		}
+		return Runtime.GetNSObject<NSText>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetUpFieldEditorAttributes_Handle, textObj.Handle));
 	}
 }

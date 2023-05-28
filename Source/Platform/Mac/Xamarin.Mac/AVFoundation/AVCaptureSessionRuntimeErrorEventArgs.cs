@@ -6,8 +6,10 @@ namespace AVFoundation;
 
 public class AVCaptureSessionRuntimeErrorEventArgs : NSNotificationEventArgs
 {
+	[Field("AVCaptureSessionErrorKey", "AVFoundation")]
 	private static IntPtr k0;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSError Error
 	{
 		get
@@ -16,12 +18,8 @@ public class AVCaptureSessionRuntimeErrorEventArgs : NSNotificationEventArgs
 			{
 				k0 = Dlfcn.GetIntPtr(Libraries.AVFoundation.Handle, "AVCaptureSessionErrorKey");
 			}
-			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k0);
-			if (intPtr == IntPtr.Zero)
-			{
-				return null;
-			}
-			return (NSError)Runtime.GetNSObject(intPtr);
+			IntPtr ptr = base.Notification.UserInfo?.LowlevelObjectForKey(k0) ?? IntPtr.Zero;
+			return Runtime.GetNSObject<NSError>(ptr);
 		}
 	}
 

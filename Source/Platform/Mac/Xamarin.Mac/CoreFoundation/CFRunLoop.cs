@@ -7,49 +7,47 @@ namespace CoreFoundation;
 
 public class CFRunLoop : INativeObject, IDisposable
 {
-	private static IntPtr CoreFoundationLibraryHandle = Dlfcn.dlopen("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", 0);
-
 	internal IntPtr handle;
 
-	private static NSString _CFDefaultRunLoopMode;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ModeCommon;
 
-	private static NSString _CFRunLoopCommonModes;
-
-	public const string ModeDefault = "kCFRunLoopDefaultMode";
-
-	public const string ModeCommon = "kCFRunLoopCommonModes";
-
-	public static NSString CFDefaultRunLoopMode
-	{
-		get
-		{
-			if (_CFDefaultRunLoopMode == null)
-			{
-				_CFDefaultRunLoopMode = Dlfcn.GetStringConstant(CoreFoundationLibraryHandle, "kCFRunLoopDefaultMode");
-			}
-			return _CFDefaultRunLoopMode;
-		}
-	}
-
-	public static NSString CFRunLoopCommonModes
-	{
-		get
-		{
-			if (_CFRunLoopCommonModes == null)
-			{
-				_CFRunLoopCommonModes = Dlfcn.GetStringConstant(CoreFoundationLibraryHandle, "kCFRunLoopCommonModes");
-			}
-			return _CFRunLoopCommonModes;
-		}
-	}
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ModeDefault;
 
 	public static CFRunLoop Current => new CFRunLoop(CFRunLoopGetCurrent());
 
 	public static CFRunLoop Main => new CFRunLoop(CFRunLoopGetMain());
 
-	public bool IsWaiting => CFRunLoopIsWaiting(handle) != 0;
+	public bool IsWaiting => CFRunLoopIsWaiting(handle);
 
 	public IntPtr Handle => handle;
+
+	[Field("kCFRunLoopCommonModes", "CoreFoundation")]
+	public static NSString ModeCommon
+	{
+		get
+		{
+			if (_ModeCommon == null)
+			{
+				_ModeCommon = Dlfcn.GetStringConstant(Libraries.CoreFoundation.Handle, "kCFRunLoopCommonModes");
+			}
+			return _ModeCommon;
+		}
+	}
+
+	[Field("kCFRunLoopDefaultMode", "CoreFoundation")]
+	public static NSString ModeDefault
+	{
+		get
+		{
+			if (_ModeDefault == null)
+			{
+				_ModeDefault = Dlfcn.GetStringConstant(Libraries.CoreFoundation.Handle, "kCFRunLoopDefaultMode");
+			}
+			return _ModeDefault;
+		}
+	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
 	private static extern IntPtr CFRunLoopGetCurrent();
@@ -66,7 +64,7 @@ public class CFRunLoop : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern void CFRunLoopStop(IntPtr loop);
+	private static extern void CFRunLoopStop(IntPtr rl);
 
 	public void Stop()
 	{
@@ -74,7 +72,7 @@ public class CFRunLoop : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern void CFRunLoopWakeUp(IntPtr loop);
+	private static extern void CFRunLoopWakeUp(IntPtr rl);
 
 	public void WakeUp()
 	{
@@ -82,10 +80,11 @@ public class CFRunLoop : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern int CFRunLoopIsWaiting(IntPtr loop);
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static extern bool CFRunLoopIsWaiting(IntPtr rl);
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern int CFRunLoopRunInMode(IntPtr mode, double seconds, int returnAfterSourceHandled);
+	private static extern int CFRunLoopRunInMode(IntPtr mode, double seconds, [MarshalAs(UnmanagedType.I1)] bool returnAfterSourceHandled);
 
 	public CFRunLoopExitReason RunInMode(NSString mode, double seconds, bool returnAfterSourceHandled)
 	{
@@ -93,27 +92,18 @@ public class CFRunLoop : INativeObject, IDisposable
 		{
 			throw new ArgumentNullException("mode");
 		}
-		return (CFRunLoopExitReason)CFRunLoopRunInMode(mode.Handle, seconds, returnAfterSourceHandled ? 1 : 0);
-	}
-
-	[Obsolete("Use the NSString version of CFRunLoop.RunInMode() instead.")]
-	public CFRunLoopExitReason RunInMode(string mode, double seconds, bool returnAfterSourceHandled)
-	{
-		if (mode == null)
-		{
-			throw new ArgumentNullException("mode");
-		}
-		CFString cFString = new CFString(mode);
-		int result = CFRunLoopRunInMode(cFString.Handle, seconds, returnAfterSourceHandled ? 1 : 0);
-		cFString.Dispose();
-		return (CFRunLoopExitReason)result;
+		return (CFRunLoopExitReason)CFRunLoopRunInMode(mode.Handle, seconds, returnAfterSourceHandled);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern void CFRunLoopAddSource(IntPtr loop, IntPtr source, IntPtr mode);
+	private static extern void CFRunLoopAddSource(IntPtr rl, IntPtr source, IntPtr mode);
 
 	public void AddSource(CFRunLoopSource source, NSString mode)
 	{
+		if (source == null)
+		{
+			throw new ArgumentNullException("source");
+		}
 		if (mode == null)
 		{
 			throw new ArgumentNullException("mode");
@@ -122,10 +112,15 @@ public class CFRunLoop : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern bool CFRunLoopContainsSource(IntPtr loop, IntPtr source, IntPtr mode);
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static extern bool CFRunLoopContainsSource(IntPtr rl, IntPtr source, IntPtr mode);
 
 	public bool ContainsSource(CFRunLoopSource source, NSString mode)
 	{
+		if (source == null)
+		{
+			throw new ArgumentNullException("source");
+		}
 		if (mode == null)
 		{
 			throw new ArgumentNullException("mode");
@@ -134,15 +129,19 @@ public class CFRunLoop : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern bool CFRunLoopRemoveSource(IntPtr loop, IntPtr source, IntPtr mode);
+	private static extern void CFRunLoopRemoveSource(IntPtr rl, IntPtr source, IntPtr mode);
 
-	public bool RemoveSource(CFRunLoopSource source, NSString mode)
+	public void RemoveSource(CFRunLoopSource source, NSString mode)
 	{
+		if (source == null)
+		{
+			throw new ArgumentNullException("source");
+		}
 		if (mode == null)
 		{
 			throw new ArgumentNullException("mode");
 		}
-		return CFRunLoopRemoveSource(handle, source.Handle, mode.Handle);
+		CFRunLoopRemoveSource(handle, source.Handle, mode.Handle);
 	}
 
 	internal CFRunLoop(IntPtr handle)
@@ -171,7 +170,7 @@ public class CFRunLoop : INativeObject, IDisposable
 		GC.SuppressFinalize(this);
 	}
 
-	public virtual void Dispose(bool disposing)
+	protected virtual void Dispose(bool disposing)
 	{
 		if (handle != IntPtr.Zero)
 		{
@@ -202,6 +201,6 @@ public class CFRunLoop : INativeObject, IDisposable
 		{
 			return false;
 		}
-		return cFRunLoop.Handle == Handle;
+		return cFRunLoop.Handle == handle;
 	}
 }

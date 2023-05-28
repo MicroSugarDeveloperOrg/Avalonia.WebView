@@ -7,83 +7,96 @@ using ObjCRuntime;
 namespace PdfKit;
 
 [Register("PDFAnnotationChoiceWidget", true)]
+[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
+[Deprecated(PlatformName.MacOSX, 10, 12, PlatformArchitecture.None, null)]
 public class PdfAnnotationChoiceWidget : PdfAnnotation
 {
-	private static readonly IntPtr selStringValueHandle = Selector.GetHandle("stringValue");
-
-	private static readonly IntPtr selSetStringValue_Handle = Selector.GetHandle("setStringValue:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBackgroundColor = "backgroundColor";
 
 	private static readonly IntPtr selBackgroundColorHandle = Selector.GetHandle("backgroundColor");
 
-	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
-
-	private static readonly IntPtr selFontHandle = Selector.GetHandle("font");
-
-	private static readonly IntPtr selSetFont_Handle = Selector.GetHandle("setFont:");
-
-	private static readonly IntPtr selFontColorHandle = Selector.GetHandle("fontColor");
-
-	private static readonly IntPtr selSetFontColor_Handle = Selector.GetHandle("setFontColor:");
-
-	private static readonly IntPtr selFieldNameHandle = Selector.GetHandle("fieldName");
-
-	private static readonly IntPtr selSetFieldName_Handle = Selector.GetHandle("setFieldName:");
-
-	private static readonly IntPtr selIsListChoiceHandle = Selector.GetHandle("isListChoice");
-
-	private static readonly IntPtr selSetIsListChoice_Handle = Selector.GetHandle("setIsListChoice:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selChoices = "choices";
 
 	private static readonly IntPtr selChoicesHandle = Selector.GetHandle("choices");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFieldName = "fieldName";
+
+	private static readonly IntPtr selFieldNameHandle = Selector.GetHandle("fieldName");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFont = "font";
+
+	private static readonly IntPtr selFontHandle = Selector.GetHandle("font");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFontColor = "fontColor";
+
+	private static readonly IntPtr selFontColorHandle = Selector.GetHandle("fontColor");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsListChoice = "isListChoice";
+
+	private static readonly IntPtr selIsListChoiceHandle = Selector.GetHandle("isListChoice");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBackgroundColor_ = "setBackgroundColor:";
+
+	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetChoices_ = "setChoices:";
+
 	private static readonly IntPtr selSetChoices_Handle = Selector.GetHandle("setChoices:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("PDFAnnotationChoiceWidget");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFieldName_ = "setFieldName:";
 
-	private object __mt_BackgroundColor_var;
+	private static readonly IntPtr selSetFieldName_Handle = Selector.GetHandle("setFieldName:");
 
-	private object __mt_Font_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFont_ = "setFont:";
 
-	private object __mt_FontColor_var;
+	private static readonly IntPtr selSetFont_Handle = Selector.GetHandle("setFont:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFontColor_ = "setFontColor:";
+
+	private static readonly IntPtr selSetFontColor_Handle = Selector.GetHandle("setFontColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetIsListChoice_ = "setIsListChoice:";
+
+	private static readonly IntPtr selSetIsListChoice_Handle = Selector.GetHandle("setIsListChoice:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetStringValue_ = "setStringValue:";
+
+	private static readonly IntPtr selSetStringValue_Handle = Selector.GetHandle("setStringValue:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStringValue = "stringValue";
+
+	private static readonly IntPtr selStringValueHandle = Selector.GetHandle("stringValue");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("PDFAnnotationChoiceWidget");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual string Text
-	{
-		[Export("stringValue")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selStringValueHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selStringValueHandle));
-		}
-		[Export("setStringValue:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetStringValue_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetStringValue_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	public virtual NSColor BackgroundColor
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual NSColor BackgroundColor
 	{
 		[Export("backgroundColor")]
 		get
 		{
-			return (NSColor)(__mt_BackgroundColor_var = ((!IsDirectBinding) ? ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle))) : ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle));
+			}
+			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle));
 		}
 		[Export("setBackgroundColor:")]
 		set
@@ -92,7 +105,7 @@ public class PdfAnnotationChoiceWidget : PdfAnnotation
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBackgroundColor_Handle, value.Handle);
 			}
@@ -100,124 +113,16 @@ public class PdfAnnotationChoiceWidget : PdfAnnotation
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBackgroundColor_Handle, value.Handle);
 			}
-			__mt_BackgroundColor_var = value;
 		}
 	}
 
-	public virtual NSFont Font
-	{
-		[Export("font")]
-		get
-		{
-			return (NSFont)(__mt_Font_var = ((!IsDirectBinding) ? ((NSFont)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFontHandle))) : ((NSFont)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFontHandle)))));
-		}
-		[Export("setFont:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFont_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFont_Handle, value.Handle);
-			}
-			__mt_Font_var = value;
-		}
-	}
-
-	public virtual NSColor FontColor
-	{
-		[Export("fontColor")]
-		get
-		{
-			return (NSColor)(__mt_FontColor_var = ((!IsDirectBinding) ? ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFontColorHandle))) : ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFontColorHandle)))));
-		}
-		[Export("setFontColor:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFontColor_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFontColor_Handle, value.Handle);
-			}
-			__mt_FontColor_var = value;
-		}
-	}
-
-	public virtual string FieldName
-	{
-		[Export("fieldName")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selFieldNameHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFieldNameHandle));
-		}
-		[Export("setFieldName:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFieldName_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFieldName_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	public virtual bool IsListChoice
-	{
-		[Export("isListChoice")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsListChoiceHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsListChoiceHandle);
-		}
-		[Export("setIsListChoice:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetIsListChoice_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetIsListChoice_Handle, value);
-			}
-		}
-	}
-
-	public virtual string[] Choices
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual string[] Choices
 	{
 		[Export("choices")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selChoicesHandle));
 			}
@@ -231,7 +136,7 @@ public class PdfAnnotationChoiceWidget : PdfAnnotation
 				throw new ArgumentNullException("value");
 			}
 			NSArray nSArray = NSArray.FromStrings(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetChoices_Handle, nSArray.Handle);
 			}
@@ -243,56 +148,200 @@ public class PdfAnnotationChoiceWidget : PdfAnnotation
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual string FieldName
+	{
+		[Export("fieldName")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selFieldNameHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFieldNameHandle));
+		}
+		[Export("setFieldName:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFieldName_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFieldName_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual NSFont Font
+	{
+		[Export("font")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSFont>(Messaging.IntPtr_objc_msgSend(base.Handle, selFontHandle));
+			}
+			return Runtime.GetNSObject<NSFont>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFontHandle));
+		}
+		[Export("setFont:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFont_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFont_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual NSColor FontColor
+	{
+		[Export("fontColor")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selFontColorHandle));
+			}
+			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFontColorHandle));
+		}
+		[Export("setFontColor:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFontColor_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFontColor_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool IsListChoice
+	{
+		[Export("isListChoice")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsListChoiceHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsListChoiceHandle);
+		}
+		[Export("setIsListChoice:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetIsListChoice_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetIsListChoice_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string Text
+	{
+		[Export("stringValue")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selStringValueHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selStringValueHandle));
+		}
+		[Export("setStringValue:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetStringValue_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetStringValue_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public PdfAnnotationChoiceWidget()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public PdfAnnotationChoiceWidget(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public PdfAnnotationChoiceWidget(NSObjectFlag t)
+	protected PdfAnnotationChoiceWidget(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public PdfAnnotationChoiceWidget(IntPtr handle)
+	protected internal PdfAnnotationChoiceWidget(IntPtr handle)
 		: base(handle)
 	{
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_BackgroundColor_var = null;
-			__mt_Font_var = null;
-			__mt_FontColor_var = null;
-		}
 	}
 }

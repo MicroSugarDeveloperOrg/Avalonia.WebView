@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using CoreGraphics;
 using CoreMedia;
 using Foundation;
@@ -9,98 +8,184 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Register("AVMutableCompositionTrack", true)]
+[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
 public class AVMutableCompositionTrack : AVCompositionTrack
 {
-	private static readonly IntPtr selSegmentsHandle = Selector.GetHandle("segments");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAddTrackAssociationToTrack_Type_ = "addTrackAssociationToTrack:type:";
 
-	private static readonly IntPtr selSetSegments_Handle = Selector.GetHandle("setSegments:");
+	private static readonly IntPtr selAddTrackAssociationToTrack_Type_Handle = Selector.GetHandle("addTrackAssociationToTrack:type:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selExtendedLanguageTag = "extendedLanguageTag";
 
 	private static readonly IntPtr selExtendedLanguageTagHandle = Selector.GetHandle("extendedLanguageTag");
 
-	private static readonly IntPtr selSetExtendedLanguageTag_Handle = Selector.GetHandle("setExtendedLanguageTag:");
-
-	private static readonly IntPtr selLanguageCodeHandle = Selector.GetHandle("languageCode");
-
-	private static readonly IntPtr selSetLanguageCode_Handle = Selector.GetHandle("setLanguageCode:");
-
-	private static readonly IntPtr selNaturalTimeScaleHandle = Selector.GetHandle("naturalTimeScale");
-
-	private static readonly IntPtr selSetNaturalTimeScale_Handle = Selector.GetHandle("setNaturalTimeScale:");
-
-	private static readonly IntPtr selPreferredTransformHandle = Selector.GetHandle("preferredTransform");
-
-	private static readonly IntPtr selSetPreferredTransform_Handle = Selector.GetHandle("setPreferredTransform:");
-
-	private static readonly IntPtr selPreferredVolumeHandle = Selector.GetHandle("preferredVolume");
-
-	private static readonly IntPtr selSetPreferredVolume_Handle = Selector.GetHandle("setPreferredVolume:");
-
-	private static readonly IntPtr selInsertTimeRangeOfTrackAtTimeError_Handle = Selector.GetHandle("insertTimeRange:ofTrack:atTime:error:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInsertEmptyTimeRange_ = "insertEmptyTimeRange:";
 
 	private static readonly IntPtr selInsertEmptyTimeRange_Handle = Selector.GetHandle("insertEmptyTimeRange:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInsertTimeRange_OfTrack_AtTime_Error_ = "insertTimeRange:ofTrack:atTime:error:";
+
+	private static readonly IntPtr selInsertTimeRange_OfTrack_AtTime_Error_Handle = Selector.GetHandle("insertTimeRange:ofTrack:atTime:error:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInsertTimeRanges_OfTracks_AtTime_Error_ = "insertTimeRanges:ofTracks:atTime:error:";
+
+	private static readonly IntPtr selInsertTimeRanges_OfTracks_AtTime_Error_Handle = Selector.GetHandle("insertTimeRanges:ofTracks:atTime:error:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsEnabled = "isEnabled";
+
+	private static readonly IntPtr selIsEnabledHandle = Selector.GetHandle("isEnabled");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLanguageCode = "languageCode";
+
+	private static readonly IntPtr selLanguageCodeHandle = Selector.GetHandle("languageCode");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selNaturalTimeScale = "naturalTimeScale";
+
+	private static readonly IntPtr selNaturalTimeScaleHandle = Selector.GetHandle("naturalTimeScale");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPreferredTransform = "preferredTransform";
+
+	private static readonly IntPtr selPreferredTransformHandle = Selector.GetHandle("preferredTransform");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPreferredVolume = "preferredVolume";
+
+	private static readonly IntPtr selPreferredVolumeHandle = Selector.GetHandle("preferredVolume");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveTimeRange_ = "removeTimeRange:";
+
 	private static readonly IntPtr selRemoveTimeRange_Handle = Selector.GetHandle("removeTimeRange:");
 
-	private static readonly IntPtr selScaleTimeRangeToDuration_Handle = Selector.GetHandle("scaleTimeRange:toDuration:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveTrackAssociationToTrack_Type_ = "removeTrackAssociationToTrack:type:";
 
-	private static readonly IntPtr selValidateTrackSegmentsError_Handle = Selector.GetHandle("validateTrackSegments:error:");
+	private static readonly IntPtr selRemoveTrackAssociationToTrack_Type_Handle = Selector.GetHandle("removeTrackAssociationToTrack:type:");
 
-	private static readonly IntPtr selInsertTimeRangesOfTracksAtTimeError_Handle = Selector.GetHandle("insertTimeRanges:ofTracks:atTime:error:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReplaceFormatDescription_WithFormatDescription_ = "replaceFormatDescription:withFormatDescription:";
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("AVMutableCompositionTrack");
+	private static readonly IntPtr selReplaceFormatDescription_WithFormatDescription_Handle = Selector.GetHandle("replaceFormatDescription:withFormatDescription:");
 
-	private object __mt_Segments_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selScaleTimeRange_ToDuration_ = "scaleTimeRange:toDuration:";
+
+	private static readonly IntPtr selScaleTimeRange_ToDuration_Handle = Selector.GetHandle("scaleTimeRange:toDuration:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSegments = "segments";
+
+	private static readonly IntPtr selSegmentsHandle = Selector.GetHandle("segments");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEnabled_ = "setEnabled:";
+
+	private static readonly IntPtr selSetEnabled_Handle = Selector.GetHandle("setEnabled:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetExtendedLanguageTag_ = "setExtendedLanguageTag:";
+
+	private static readonly IntPtr selSetExtendedLanguageTag_Handle = Selector.GetHandle("setExtendedLanguageTag:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLanguageCode_ = "setLanguageCode:";
+
+	private static readonly IntPtr selSetLanguageCode_Handle = Selector.GetHandle("setLanguageCode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetNaturalTimeScale_ = "setNaturalTimeScale:";
+
+	private static readonly IntPtr selSetNaturalTimeScale_Handle = Selector.GetHandle("setNaturalTimeScale:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPreferredTransform_ = "setPreferredTransform:";
+
+	private static readonly IntPtr selSetPreferredTransform_Handle = Selector.GetHandle("setPreferredTransform:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPreferredVolume_ = "setPreferredVolume:";
+
+	private static readonly IntPtr selSetPreferredVolume_Handle = Selector.GetHandle("setPreferredVolume:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetSegments_ = "setSegments:";
+
+	private static readonly IntPtr selSetSegments_Handle = Selector.GetHandle("setSegments:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selValidateTrackSegments_Error_ = "validateTrackSegments:error:";
+
+	private static readonly IntPtr selValidateTrackSegments_Error_Handle = Selector.GetHandle("validateTrackSegments:error:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVMutableCompositionTrack");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public new virtual AVCompositionTrackSegment[] Segments
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
+	[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
+	public new virtual bool Enabled
 	{
-		[Export("segments", ArgumentSemantic.Copy)]
+		[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
+		[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
+		[Export("isEnabled")]
 		get
 		{
-			return (AVCompositionTrackSegment[])(__mt_Segments_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<AVCompositionTrackSegment>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSegmentsHandle)) : NSArray.ArrayFromHandle<AVCompositionTrackSegment>(Messaging.IntPtr_objc_msgSend(base.Handle, selSegmentsHandle))));
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsEnabledHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsEnabledHandle);
 		}
-		[Export("setSegments:", ArgumentSemantic.Copy)]
+		[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
+		[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
+		[Export("setEnabled:")]
 		set
 		{
-			if (value == null)
+			if (base.IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
-			}
-			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSegments_Handle, nSArray.Handle);
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetEnabled_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSegments_Handle, nSArray.Handle);
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetEnabled_Handle, value);
 			}
-			nSArray.Dispose();
-			__mt_Segments_var = value;
 		}
 	}
 
-	public new virtual string ExtendedLanguageTag
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual string? ExtendedLanguageTag
 	{
-		[Export("extendedLanguageTag")]
+		[Export("extendedLanguageTag", ArgumentSemantic.Copy)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selExtendedLanguageTagHandle));
 			}
 			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selExtendedLanguageTagHandle));
 		}
-		[Export("setExtendedLanguageTag:")]
+		[Export("setExtendedLanguageTag:", ArgumentSemantic.Copy)]
 		set
 		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetExtendedLanguageTag_Handle, arg);
 			}
@@ -112,26 +197,23 @@ public class AVMutableCompositionTrack : AVCompositionTrack
 		}
 	}
 
-	public new virtual string LanguageCode
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual string? LanguageCode
 	{
-		[Export("languageCode")]
+		[Export("languageCode", ArgumentSemantic.Copy)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLanguageCodeHandle));
 			}
 			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLanguageCodeHandle));
 		}
-		[Export("setLanguageCode:")]
+		[Export("setLanguageCode:", ArgumentSemantic.Copy)]
 		set
 		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetLanguageCode_Handle, arg);
 			}
@@ -143,12 +225,13 @@ public class AVMutableCompositionTrack : AVCompositionTrack
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new virtual int NaturalTimeScale
 	{
 		[Export("naturalTimeScale")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.int_objc_msgSend(base.Handle, selNaturalTimeScaleHandle);
 			}
@@ -157,7 +240,7 @@ public class AVMutableCompositionTrack : AVCompositionTrack
 		[Export("setNaturalTimeScale:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_int(base.Handle, selSetNaturalTimeScale_Handle, value);
 			}
@@ -168,13 +251,14 @@ public class AVMutableCompositionTrack : AVCompositionTrack
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new virtual CGAffineTransform PreferredTransform
 	{
 		[Export("preferredTransform")]
 		get
 		{
 			CGAffineTransform retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.CGAffineTransform_objc_msgSend_stret(out retval, base.Handle, selPreferredTransformHandle);
 			}
@@ -187,7 +271,7 @@ public class AVMutableCompositionTrack : AVCompositionTrack
 		[Export("setPreferredTransform:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_CGAffineTransform(base.Handle, selSetPreferredTransform_Handle, value);
 			}
@@ -198,12 +282,13 @@ public class AVMutableCompositionTrack : AVCompositionTrack
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new virtual float PreferredVolume
 	{
 		[Export("preferredVolume")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.float_objc_msgSend(base.Handle, selPreferredVolumeHandle);
 			}
@@ -212,7 +297,7 @@ public class AVMutableCompositionTrack : AVCompositionTrack
 		[Export("setPreferredVolume:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_float(base.Handle, selSetPreferredVolume_Handle, value);
 			}
@@ -223,53 +308,86 @@ public class AVMutableCompositionTrack : AVCompositionTrack
 		}
 	}
 
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public AVMutableCompositionTrack(NSCoder coder)
-		: base(NSObjectFlag.Empty)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual AVCompositionTrackSegment[]? Segments
 	{
-		if (IsDirectBinding)
+		[Export("segments", ArgumentSemantic.Copy)]
+		get
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<AVCompositionTrackSegment>(Messaging.IntPtr_objc_msgSend(base.Handle, selSegmentsHandle));
+			}
+			return NSArray.ArrayFromHandle<AVCompositionTrackSegment>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSegmentsHandle));
 		}
-		else
+		[Export("setSegments:", ArgumentSemantic.Copy)]
+		set
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSegments_Handle, nSArray?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSegments_Handle, nSArray?.Handle ?? IntPtr.Zero);
+			}
+			nSArray?.Dispose();
 		}
 	}
 
+	[Obsolete("Use 'InsertTimeRanges' overload accepting an 'NSValue' array.")]
+	public virtual bool InsertTimeRanges(NSValue cmTimeRanges, AVAssetTrack[] tracks, CMTime startTime, out NSError error)
+	{
+		return InsertTimeRanges(new NSValue[1] { cmTimeRanges }, tracks, startTime, out error);
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVMutableCompositionTrack(NSObjectFlag t)
+	protected AVMutableCompositionTrack(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVMutableCompositionTrack(IntPtr handle)
+	protected internal AVMutableCompositionTrack(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("insertTimeRange:ofTrack:atTime:error:")]
-	public virtual bool InsertTimeRange(CMTimeRange timeRange, AVAssetTrack ofTrack, CMTime atTime, out NSError error)
+	[Export("addTrackAssociationToTrack:type:")]
+	[Introduced(PlatformName.TvOS, 12, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 14, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 12, 0, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AddTrackAssociation(AVCompositionTrack compositionTrack, string trackAssociationType)
 	{
-		if (ofTrack == null)
+		if (compositionTrack == null)
 		{
-			throw new ArgumentNullException("ofTrack");
+			throw new ArgumentNullException("compositionTrack");
 		}
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_CMTimeRange_IntPtr_CMTime_IntPtr(base.SuperHandle, selInsertTimeRangeOfTrackAtTimeError_Handle, timeRange, ofTrack.Handle, atTime, intPtr) : Messaging.bool_objc_msgSend_CMTimeRange_IntPtr_CMTime_IntPtr(base.Handle, selInsertTimeRangeOfTrackAtTimeError_Handle, timeRange, ofTrack.Handle, atTime, intPtr));
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
-		return result;
+		if (trackAssociationType == null)
+		{
+			throw new ArgumentNullException("trackAssociationType");
+		}
+		IntPtr arg = NSString.CreateNative(trackAssociationType);
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selAddTrackAssociationToTrack_Type_Handle, compositionTrack.Handle, arg);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selAddTrackAssociationToTrack_Type_Handle, compositionTrack.Handle, arg);
+		}
+		NSString.ReleaseNative(arg);
 	}
 
 	[Export("insertEmptyTimeRange:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void InsertEmptyTimeRange(CMTimeRange timeRange)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_CMTimeRange(base.Handle, selInsertEmptyTimeRange_Handle, timeRange);
 		}
@@ -279,52 +397,23 @@ public class AVMutableCompositionTrack : AVCompositionTrack
 		}
 	}
 
-	[Export("removeTimeRange:")]
-	public virtual void RemoveTimeRange(CMTimeRange timeRange)
+	[Export("insertTimeRange:ofTrack:atTime:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool InsertTimeRange(CMTimeRange timeRange, AVAssetTrack ofTrack, CMTime atTime, out NSError error)
 	{
-		if (IsDirectBinding)
+		if (ofTrack == null)
 		{
-			Messaging.void_objc_msgSend_CMTimeRange(base.Handle, selRemoveTimeRange_Handle, timeRange);
+			throw new ArgumentNullException("ofTrack");
 		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CMTimeRange(base.SuperHandle, selRemoveTimeRange_Handle, timeRange);
-		}
-	}
-
-	[Export("scaleTimeRange:toDuration:")]
-	public virtual void ScaleTimeRange(CMTimeRange timeRange, CMTime duration)
-	{
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CMTimeRange_CMTime(base.Handle, selScaleTimeRangeToDuration_Handle, timeRange, duration);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CMTimeRange_CMTime(base.SuperHandle, selScaleTimeRangeToDuration_Handle, timeRange, duration);
-		}
-	}
-
-	[Export("validateTrackSegments:error:")]
-	public virtual bool ValidateTrackSegments(AVCompositionTrackSegment[] trackSegments, out NSError error)
-	{
-		if (trackSegments == null)
-		{
-			throw new ArgumentNullException("trackSegments");
-		}
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		NSArray nSArray = NSArray.FromNSObjects(trackSegments);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selValidateTrackSegmentsError_Handle, nSArray.Handle, intPtr) : Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selValidateTrackSegmentsError_Handle, nSArray.Handle, intPtr));
-		nSArray.Dispose();
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
+		IntPtr arg = IntPtr.Zero;
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_CMTimeRange_IntPtr_CMTime_ref_IntPtr(base.SuperHandle, selInsertTimeRange_OfTrack_AtTime_Error_Handle, timeRange, ofTrack.Handle, atTime, ref arg) : Messaging.bool_objc_msgSend_CMTimeRange_IntPtr_CMTime_ref_IntPtr(base.Handle, selInsertTimeRange_OfTrack_AtTime_Error_Handle, timeRange, ofTrack.Handle, atTime, ref arg));
+		error = Runtime.GetNSObject<NSError>(arg);
 		return result;
 	}
 
 	[Export("insertTimeRanges:ofTracks:atTime:error:")]
-	public virtual bool InsertTimeRanges(NSValue cmTimeRanges, AVAssetTrack[] tracks, CMTime startTime, out NSError error)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool InsertTimeRanges(NSValue[] cmTimeRanges, AVAssetTrack[] tracks, CMTime startTime, out NSError error)
 	{
 		if (cmTimeRanges == null)
 		{
@@ -334,23 +423,105 @@ public class AVMutableCompositionTrack : AVCompositionTrack
 		{
 			throw new ArgumentNullException("tracks");
 		}
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		NSArray nSArray = NSArray.FromNSObjects(tracks);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_CMTime_IntPtr(base.SuperHandle, selInsertTimeRangesOfTracksAtTimeError_Handle, cmTimeRanges.Handle, nSArray.Handle, startTime, intPtr) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_CMTime_IntPtr(base.Handle, selInsertTimeRangesOfTracksAtTimeError_Handle, cmTimeRanges.Handle, nSArray.Handle, startTime, intPtr));
+		IntPtr arg = IntPtr.Zero;
+		NSArray nSArray = NSArray.FromNSObjects(cmTimeRanges);
+		NSArray nSArray2 = NSArray.FromNSObjects(tracks);
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_CMTime_ref_IntPtr(base.SuperHandle, selInsertTimeRanges_OfTracks_AtTime_Error_Handle, nSArray.Handle, nSArray2.Handle, startTime, ref arg) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_CMTime_ref_IntPtr(base.Handle, selInsertTimeRanges_OfTracks_AtTime_Error_Handle, nSArray.Handle, nSArray2.Handle, startTime, ref arg));
 		nSArray.Dispose();
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
+		nSArray2.Dispose();
+		error = Runtime.GetNSObject<NSError>(arg);
 		return result;
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("removeTimeRange:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RemoveTimeRange(CMTimeRange timeRange)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		if (base.IsDirectBinding)
 		{
-			__mt_Segments_var = null;
+			Messaging.void_objc_msgSend_CMTimeRange(base.Handle, selRemoveTimeRange_Handle, timeRange);
 		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CMTimeRange(base.SuperHandle, selRemoveTimeRange_Handle, timeRange);
+		}
+	}
+
+	[Export("removeTrackAssociationToTrack:type:")]
+	[Introduced(PlatformName.TvOS, 12, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 14, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 12, 0, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RemoveTrackAssociation(AVCompositionTrack compositionTrack, string trackAssociationType)
+	{
+		if (compositionTrack == null)
+		{
+			throw new ArgumentNullException("compositionTrack");
+		}
+		if (trackAssociationType == null)
+		{
+			throw new ArgumentNullException("trackAssociationType");
+		}
+		IntPtr arg = NSString.CreateNative(trackAssociationType);
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selRemoveTrackAssociationToTrack_Type_Handle, compositionTrack.Handle, arg);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selRemoveTrackAssociationToTrack_Type_Handle, compositionTrack.Handle, arg);
+		}
+		NSString.ReleaseNative(arg);
+	}
+
+	[Export("replaceFormatDescription:withFormatDescription:")]
+	[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ReplaceFormatDescription(CMFormatDescription originalFormatDescription, CMFormatDescription? replacementFormatDescription)
+	{
+		if (originalFormatDescription == null)
+		{
+			throw new ArgumentNullException("originalFormatDescription");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selReplaceFormatDescription_WithFormatDescription_Handle, originalFormatDescription.Handle, replacementFormatDescription?.Handle ?? IntPtr.Zero);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selReplaceFormatDescription_WithFormatDescription_Handle, originalFormatDescription.Handle, replacementFormatDescription?.Handle ?? IntPtr.Zero);
+		}
+	}
+
+	[Export("scaleTimeRange:toDuration:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ScaleTimeRange(CMTimeRange timeRange, CMTime duration)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CMTimeRange_CMTime(base.Handle, selScaleTimeRange_ToDuration_Handle, timeRange, duration);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CMTimeRange_CMTime(base.SuperHandle, selScaleTimeRange_ToDuration_Handle, timeRange, duration);
+		}
+	}
+
+	[Export("validateTrackSegments:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ValidateTrackSegments(AVCompositionTrackSegment[] trackSegments, out NSError error)
+	{
+		if (trackSegments == null)
+		{
+			throw new ArgumentNullException("trackSegments");
+		}
+		IntPtr arg = IntPtr.Zero;
+		NSArray nSArray = NSArray.FromNSObjects(trackSegments);
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_ref_IntPtr(base.SuperHandle, selValidateTrackSegments_Error_Handle, nSArray.Handle, ref arg) : Messaging.bool_objc_msgSend_IntPtr_ref_IntPtr(base.Handle, selValidateTrackSegments_Error_Handle, nSArray.Handle, ref arg));
+		nSArray.Dispose();
+		error = Runtime.GetNSObject<NSError>(arg);
+		return result;
 	}
 }

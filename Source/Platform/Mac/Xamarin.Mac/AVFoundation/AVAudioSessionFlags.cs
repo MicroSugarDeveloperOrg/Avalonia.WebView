@@ -3,9 +3,11 @@ using ObjCRuntime;
 
 namespace AVFoundation;
 
+[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
+[Deprecated(PlatformName.iOS, 6, 0, PlatformArchitecture.None, null)]
 [Flags]
-[Since(4, 0)]
-public enum AVAudioSessionFlags
+[Native]
+public enum AVAudioSessionFlags : ulong
 {
-	NotifyOthersOnDeactivation = 1
+	NotifyOthersOnDeactivation = 1uL
 }

@@ -1,5 +1,8 @@
+using ObjCRuntime;
+
 namespace CoreVideo;
 
+[Watch(4, 0)]
 public struct CVSMPTETime
 {
 	public short Subframes;

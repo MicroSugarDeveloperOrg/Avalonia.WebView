@@ -1,6 +1,9 @@
+using ObjCRuntime;
+
 namespace ImageKit;
 
-public enum IKScannerDeviceViewTransferMode
+[Native]
+public enum IKScannerDeviceViewTransferMode : long
 {
 	File,
 	Memory

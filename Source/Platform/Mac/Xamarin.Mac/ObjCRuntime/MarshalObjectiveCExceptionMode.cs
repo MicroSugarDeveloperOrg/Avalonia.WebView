@@ -1,9 +1,10 @@
-﻿namespace ObjCRuntime;
+namespace ObjCRuntime;
+
 public enum MarshalObjectiveCExceptionMode
 {
-    Default,
-    UnwindManagedCode,
-    ThrowManagedException,
-    Abort,
-    Disable
+	Default,
+	UnwindManagedCode,
+	ThrowManagedException,
+	Abort,
+	Disable
 }

@@ -6,9 +6,9 @@ namespace CoreMidi;
 
 public class MidiEntity : MidiObject
 {
-	public int Destinations => MIDIEntityGetNumberOfDestinations(handle);
+	public nint Destinations => MIDIEntityGetNumberOfDestinations(handle);
 
-	public int Sources => MIDIEntityGetNumberOfSources(handle);
+	public nint Sources => MIDIEntityGetNumberOfSources(handle);
 
 	public MidiDevice Device
 	{
@@ -118,15 +118,15 @@ public class MidiEntity : MidiObject
 		}
 	}
 
-	public int IsBroadcast
+	public bool IsBroadcast
 	{
 		get
 		{
-			return GetInt(MidiObject.kMIDIPropertyIsBroadcast);
+			return GetInt(MidiObject.kMIDIPropertyIsBroadcast) != 0;
 		}
 		set
 		{
-			SetInt(MidiObject.kMIDIPropertyIsBroadcast, value);
+			SetInt(MidiObject.kMIDIPropertyIsBroadcast, value ? 1 : 0);
 		}
 	}
 
@@ -425,41 +425,48 @@ public class MidiEntity : MidiObject
 		}
 	}
 
-	internal MidiEntity(IntPtr handle)
+	internal MidiEntity(int handle)
 		: base(handle)
 	{
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern IntPtr MIDIEntityGetDestination(IntPtr entity, int idx);
-
-	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern IntPtr MIDIEntityGetSource(IntPtr entity, int idx);
-
-	public MidiEndpoint GetDestination(int idx)
+	internal MidiEntity(int handle, bool owns)
+		: base(handle, owns)
 	{
-		if (MIDIEntityGetDestination(handle, idx) == IntPtr.Zero)
-		{
-			return null;
-		}
-		return new MidiEndpoint(handle, owns: false);
-	}
-
-	public MidiEndpoint GetSource(int idx)
-	{
-		if (MIDIEntityGetSource(handle, idx) == IntPtr.Zero)
-		{
-			return null;
-		}
-		return new MidiEndpoint(handle, owns: false);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIEntityGetNumberOfDestinations(IntPtr entity);
+	private static extern int MIDIEntityGetDestination(int entity, nint idx);
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIEntityGetNumberOfSources(IntPtr entity);
+	private static extern int MIDIEntityGetSource(int entity, nint idx);
+
+	public MidiEndpoint GetDestination(nint idx)
+	{
+		int num = MIDIEntityGetDestination(handle, idx);
+		if (num == 0)
+		{
+			return null;
+		}
+		return new MidiEndpoint(num, owns: false);
+	}
+
+	public MidiEndpoint GetSource(nint idx)
+	{
+		int num = MIDIEntityGetSource(handle, idx);
+		if (num == 0)
+		{
+			return null;
+		}
+		return new MidiEndpoint(num, owns: false);
+	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIEntityGetDevice(IntPtr handle, out IntPtr devRef);
+	private static extern nint MIDIEntityGetNumberOfDestinations(int entity);
+
+	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
+	private static extern nint MIDIEntityGetNumberOfSources(int entity);
+
+	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
+	private static extern int MIDIEntityGetDevice(int handle, out int devRef);
 }

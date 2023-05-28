@@ -4,13 +4,13 @@ namespace QTKit;
 
 public class QTCaptureFileSampleEventArgs : EventArgs
 {
-	public QTSampleBuffer SampleBuffer { get; set; }
-
 	public QTCaptureConnection Connection { get; set; }
+
+	public QTSampleBuffer SampleBuffer { get; set; }
 
 	public QTCaptureFileSampleEventArgs(QTSampleBuffer sampleBuffer, QTCaptureConnection connection)
 	{
-		SampleBuffer = sampleBuffer;
 		Connection = connection;
+		SampleBuffer = sampleBuffer;
 	}
 }

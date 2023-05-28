@@ -8,39 +8,44 @@ namespace AppKit;
 [Register("NSStatusBar", true)]
 public class NSStatusBar : NSObject
 {
-	private static readonly IntPtr selSystemStatusBarHandle = Selector.GetHandle("systemStatusBar");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsVertical = "isVertical";
 
 	private static readonly IntPtr selIsVerticalHandle = Selector.GetHandle("isVertical");
 
-	private static readonly IntPtr selThicknessHandle = Selector.GetHandle("thickness");
-
-	private static readonly IntPtr selStatusItemWithLength_Handle = Selector.GetHandle("statusItemWithLength:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveStatusItem_ = "removeStatusItem:";
 
 	private static readonly IntPtr selRemoveStatusItem_Handle = Selector.GetHandle("removeStatusItem:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSStatusBar");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStatusItemWithLength_ = "statusItemWithLength:";
 
-	private static object __mt_SystemStatusBar_var_static;
+	private static readonly IntPtr selStatusItemWithLength_Handle = Selector.GetHandle("statusItemWithLength:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSystemStatusBar = "systemStatusBar";
+
+	private static readonly IntPtr selSystemStatusBarHandle = Selector.GetHandle("systemStatusBar");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selThickness = "thickness";
+
+	private static readonly IntPtr selThicknessHandle = Selector.GetHandle("thickness");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSStatusBar");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public static NSStatusBar SystemStatusBar
-	{
-		[Export("systemStatusBar")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSStatusBar)(__mt_SystemStatusBar_var_static = (NSStatusBar)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selSystemStatusBarHandle)));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsVertical
 	{
 		[Export("isVertical")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsVerticalHandle);
 			}
@@ -48,74 +53,82 @@ public class NSStatusBar : NSObject
 		}
 	}
 
-	public virtual double Thickness
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSStatusBar SystemStatusBar
+	{
+		[Export("systemStatusBar")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return Runtime.GetNSObject<NSStatusBar>(Messaging.IntPtr_objc_msgSend(class_ptr, selSystemStatusBarHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat Thickness
 	{
 		[Export("thickness")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Double_objc_msgSend(base.Handle, selThicknessHandle);
+				return Messaging.nfloat_objc_msgSend(base.Handle, selThicknessHandle);
 			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selThicknessHandle);
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selThicknessHandle);
 		}
 	}
 
+	public NSStatusItem CreateStatusItem(NSStatusItemLength length)
+	{
+		return CreateStatusItem((float)length);
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSStatusBar()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSStatusBar(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSStatusBar(NSObjectFlag t)
+	protected NSStatusBar(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSStatusBar(IntPtr handle)
+	protected internal NSStatusBar(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("statusItemWithLength:")]
-	public virtual NSStatusItem CreateStatusItem(double length)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSStatusItem CreateStatusItem(nfloat length)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSStatusItem)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_Double(base.Handle, selStatusItemWithLength_Handle, length));
+			return Runtime.GetNSObject<NSStatusItem>(Messaging.IntPtr_objc_msgSend_nfloat(base.Handle, selStatusItemWithLength_Handle, length));
 		}
-		return (NSStatusItem)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_Double(base.SuperHandle, selStatusItemWithLength_Handle, length));
+		return Runtime.GetNSObject<NSStatusItem>(Messaging.IntPtr_objc_msgSendSuper_nfloat(base.SuperHandle, selStatusItemWithLength_Handle, length));
 	}
 
 	[Export("removeStatusItem:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void RemoveStatusItem(NSStatusItem item)
 	{
 		NSApplication.EnsureUIThread();
@@ -123,7 +136,7 @@ public class NSStatusBar : NSObject
 		{
 			throw new ArgumentNullException("item");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveStatusItem_Handle, item.Handle);
 		}

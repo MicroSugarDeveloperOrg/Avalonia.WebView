@@ -1,6 +1,10 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
-public enum NSPanelButtonType
+[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.None, "Use NSModalResponse instead.")]
+[Native]
+public enum NSPanelButtonType : long
 {
 	Cancel,
 	Ok

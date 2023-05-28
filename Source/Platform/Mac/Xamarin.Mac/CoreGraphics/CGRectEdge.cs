@@ -1,9 +1,9 @@
-﻿namespace CoreGraphics;
+namespace CoreGraphics;
 
 public enum CGRectEdge : uint
 {
-    MinXEdge,
-    MinYEdge,
-    MaxXEdge,
-    MaxYEdge
+	MinXEdge,
+	MinYEdge,
+	MaxXEdge,
+	MaxYEdge
 }

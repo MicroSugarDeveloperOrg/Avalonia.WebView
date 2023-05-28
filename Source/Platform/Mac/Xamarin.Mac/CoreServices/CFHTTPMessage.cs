@@ -1,5 +1,7 @@
 using System;
+using System.Net;
 using System.Runtime.InteropServices;
+using System.Security.Authentication;
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
@@ -10,12 +12,12 @@ public class CFHTTPMessage : CFType, INativeObject, IDisposable
 {
 	private struct CFStreamError
 	{
-		public int domain;
+		public nint domain;
 
 		public int code;
 	}
 
-	private enum ErrorHTTPAuthentication
+	private enum CFStreamErrorHTTPAuthentication
 	{
 		TypeUnsupported = -1000,
 		BadUserName = -1001,
@@ -28,28 +30,34 @@ public class CFHTTPMessage : CFType, INativeObject, IDisposable
 		Basic,
 		Negotiate,
 		NTLM,
-		Digest
+		Digest,
+		[Mac(10, 9)]
+		[iOS(7, 0)]
+		[Deprecated(PlatformName.iOS, 12, 0, PlatformArchitecture.None, "Not available anymore.")]
+		[Deprecated(PlatformName.TvOS, 12, 0, PlatformArchitecture.None, "Not available anymore.")]
+		[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Not available anymore.")]
+		OAuth1
 	}
 
 	internal IntPtr handle;
 
-	private static readonly NSString _HTTPVersion1_0;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? __AuthenticationAccountDomain;
 
-	private static readonly NSString _HTTPVersion1_1;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? __AuthenticationPassword;
 
-	private static readonly NSString _AuthenticationSchemeBasic;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? __AuthenticationUsername;
 
-	private static readonly NSString _AuthenticationSchemeNegotiate;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? __HTTPVersion1_0;
 
-	private static readonly NSString _AuthenticationSchemeNTLM;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? __HTTPVersion1_1;
 
-	private static readonly NSString _AuthenticationSchemeDigest;
-
-	private static readonly NSString _AuthenticationUsername;
-
-	private static readonly NSString _AuthenticationPassword;
-
-	private static readonly NSString _AuthenticationAccountDomain;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? __HTTPVersion2_0;
 
 	public IntPtr Handle
 	{
@@ -69,7 +77,7 @@ public class CFHTTPMessage : CFType, INativeObject, IDisposable
 		}
 	}
 
-	public CFIndex ResponseStatusCode
+	public HttpStatusCode ResponseStatusCode
 	{
 		get
 		{
@@ -77,7 +85,7 @@ public class CFHTTPMessage : CFType, INativeObject, IDisposable
 			{
 				throw new InvalidOperationException();
 			}
-			return CFHTTPMessageGetResponseStatusCode(Handle);
+			return (HttpStatusCode)(int)CFHTTPMessageGetResponseStatusCode(Handle);
 		}
 	}
 
@@ -107,7 +115,7 @@ public class CFHTTPMessage : CFType, INativeObject, IDisposable
 			IntPtr intPtr = CFHTTPMessageCopyVersion(handle);
 			try
 			{
-				if (intPtr.Equals((object?)(nint)_HTTPVersion1_0.Handle))
+				if (intPtr == _HTTPVersion1_0.Handle)
 				{
 					return HttpVersion.Version10;
 				}
@@ -132,6 +140,113 @@ public class CFHTTPMessage : CFType, INativeObject, IDisposable
 		}
 	}
 
+	[Field("kCFHTTPAuthenticationAccountDomain", "CFNetwork")]
+	internal static NSString _AuthenticationAccountDomain
+	{
+		get
+		{
+			if (__AuthenticationAccountDomain == null)
+			{
+				__AuthenticationAccountDomain = Dlfcn.GetStringConstant(Libraries.CFNetwork.Handle, "kCFHTTPAuthenticationAccountDomain");
+			}
+			return __AuthenticationAccountDomain;
+		}
+	}
+
+	[Field("kCFHTTPAuthenticationPassword", "CFNetwork")]
+	internal static NSString _AuthenticationPassword
+	{
+		get
+		{
+			if (__AuthenticationPassword == null)
+			{
+				__AuthenticationPassword = Dlfcn.GetStringConstant(Libraries.CFNetwork.Handle, "kCFHTTPAuthenticationPassword");
+			}
+			return __AuthenticationPassword;
+		}
+	}
+
+	[Field("kCFHTTPAuthenticationSchemeBasic", "CFNetwork")]
+	internal static IntPtr _AuthenticationSchemeBasic => Dlfcn.GetIntPtr(Libraries.CFNetwork.Handle, "kCFHTTPAuthenticationSchemeBasic");
+
+	[Field("kCFHTTPAuthenticationSchemeDigest", "CFNetwork")]
+	internal static IntPtr _AuthenticationSchemeDigest => Dlfcn.GetIntPtr(Libraries.CFNetwork.Handle, "kCFHTTPAuthenticationSchemeDigest");
+
+	[Field("kCFHTTPAuthenticationSchemeNTLM", "CFNetwork")]
+	internal static IntPtr _AuthenticationSchemeNTLM => Dlfcn.GetIntPtr(Libraries.CFNetwork.Handle, "kCFHTTPAuthenticationSchemeNTLM");
+
+	[Field("kCFHTTPAuthenticationSchemeNegotiate", "CFNetwork")]
+	internal static IntPtr _AuthenticationSchemeNegotiate => Dlfcn.GetIntPtr(Libraries.CFNetwork.Handle, "kCFHTTPAuthenticationSchemeNegotiate");
+
+	[Field("kCFHTTPAuthenticationSchemeOAuth1", "CFNetwork")]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+	internal static IntPtr _AuthenticationSchemeOAuth1
+	{
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			return Dlfcn.GetIntPtr(Libraries.CFNetwork.Handle, "kCFHTTPAuthenticationSchemeOAuth1");
+		}
+	}
+
+	[Field("kCFHTTPAuthenticationUsername", "CFNetwork")]
+	internal static NSString _AuthenticationUsername
+	{
+		get
+		{
+			if (__AuthenticationUsername == null)
+			{
+				__AuthenticationUsername = Dlfcn.GetStringConstant(Libraries.CFNetwork.Handle, "kCFHTTPAuthenticationUsername");
+			}
+			return __AuthenticationUsername;
+		}
+	}
+
+	[Field("kCFHTTPVersion1_0", "CFNetwork")]
+	internal static NSString _HTTPVersion1_0
+	{
+		get
+		{
+			if (__HTTPVersion1_0 == null)
+			{
+				__HTTPVersion1_0 = Dlfcn.GetStringConstant(Libraries.CFNetwork.Handle, "kCFHTTPVersion1_0");
+			}
+			return __HTTPVersion1_0;
+		}
+	}
+
+	[Field("kCFHTTPVersion1_1", "CFNetwork")]
+	internal static NSString _HTTPVersion1_1
+	{
+		get
+		{
+			if (__HTTPVersion1_1 == null)
+			{
+				__HTTPVersion1_1 = Dlfcn.GetStringConstant(Libraries.CFNetwork.Handle, "kCFHTTPVersion1_1");
+			}
+			return __HTTPVersion1_1;
+		}
+	}
+
+	[Field("kCFHTTPVersion2_0", "CFNetwork")]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	internal static NSString _HTTPVersion2_0
+	{
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			if (__HTTPVersion2_0 == null)
+			{
+				__HTTPVersion2_0 = Dlfcn.GetStringConstant(Libraries.CFNetwork.Handle, "kCFHTTPVersion2_0");
+			}
+			return __HTTPVersion2_0;
+		}
+	}
+
 	internal CFHTTPMessage(IntPtr handle)
 		: this(handle, owns: false)
 	{
@@ -146,43 +261,8 @@ public class CFHTTPMessage : CFType, INativeObject, IDisposable
 		this.handle = handle;
 	}
 
-	static CFHTTPMessage()
-	{
-		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork", 0);
-		if (intPtr == IntPtr.Zero)
-		{
-			throw new InvalidOperationException();
-		}
-		try
-		{
-			_HTTPVersion1_0 = GetStringConstant(intPtr, "kCFHTTPVersion1_0");
-			_HTTPVersion1_1 = GetStringConstant(intPtr, "kCFHTTPVersion1_1");
-			_AuthenticationSchemeBasic = GetStringConstant(intPtr, "kCFHTTPAuthenticationSchemeBasic");
-			_AuthenticationSchemeNegotiate = GetStringConstant(intPtr, "kCFHTTPAuthenticationSchemeNegotiate");
-			_AuthenticationSchemeNTLM = GetStringConstant(intPtr, "kCFHTTPAuthenticationSchemeNTLM");
-			_AuthenticationSchemeDigest = GetStringConstant(intPtr, "kCFHTTPAuthenticationSchemeDigest");
-			_AuthenticationUsername = GetStringConstant(intPtr, "kCFHTTPAuthenticationUsername");
-			_AuthenticationPassword = GetStringConstant(intPtr, "kCFHTTPAuthenticationPassword");
-			_AuthenticationAccountDomain = GetStringConstant(intPtr, "kCFHTTPAuthenticationAccountDomain");
-		}
-		finally
-		{
-			Dlfcn.dlclose(intPtr);
-		}
-	}
-
-	private static NSString GetStringConstant(IntPtr handle, string name)
-	{
-		NSString stringConstant = Dlfcn.GetStringConstant(handle, name);
-		if (stringConstant == null)
-		{
-			throw new InvalidOperationException($"Cannot get '{name}' property.");
-		}
-		return stringConstant;
-	}
-
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork", EntryPoint = "CFHTTPMessageGetTypeID")]
-	public static extern int GetTypeID();
+	public static extern nint GetTypeID();
 
 	~CFHTTPMessage()
 	{
@@ -222,52 +302,94 @@ public class CFHTTPMessage : CFType, INativeObject, IDisposable
 		{
 			return _HTTPVersion1_0.Handle;
 		}
+		if (version.Major == 2 && version.Minor == 0)
+		{
+			if (_HTTPVersion2_0 != null && _HTTPVersion2_0.Handle != IntPtr.Zero)
+			{
+				return _HTTPVersion2_0.Handle;
+			}
+			return _HTTPVersion1_1.Handle;
+		}
 		throw new ArgumentException();
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern IntPtr CFHTTPMessageCreateEmpty(IntPtr allocator, bool isRequest);
+	private static extern IntPtr CFHTTPMessageCreateEmpty(IntPtr alloc, bool isRequest);
 
 	public static CFHTTPMessage CreateEmpty(bool request)
 	{
 		IntPtr intPtr = CFHTTPMessageCreateEmpty(IntPtr.Zero, request);
-		if (intPtr == IntPtr.Zero)
-		{
-			return null;
-		}
-		return new CFHTTPMessage(intPtr);
+		return new CFHTTPMessage(intPtr, owns: true);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern IntPtr CFHTTPMessageCreateRequest(IntPtr allocator, IntPtr requestMethod, IntPtr url, IntPtr httpVersion);
+	private static extern IntPtr CFHTTPMessageCreateRequest(IntPtr alloc, IntPtr requestMethod, IntPtr url, IntPtr httpVersion);
 
 	public static CFHTTPMessage CreateRequest(CFUrl url, NSString method, Version version)
 	{
-		IntPtr intPtr = CFHTTPMessageCreateRequest(IntPtr.Zero, method.Handle, url.Handle, GetVersion(version));
-		if (intPtr == IntPtr.Zero)
+		if (url == null)
 		{
-			return null;
+			throw new ArgumentNullException("url");
 		}
-		return new CFHTTPMessage(intPtr);
+		if (method == null)
+		{
+			throw new ArgumentNullException("method");
+		}
+		IntPtr intPtr = CFHTTPMessageCreateRequest(IntPtr.Zero, method.Handle, url.Handle, GetVersion(version));
+		return new CFHTTPMessage(intPtr, owns: true);
+	}
+
+	public static CFHTTPMessage CreateRequest(Uri uri, string method)
+	{
+		return CreateRequest(uri, method, null);
+	}
+
+	public static CFHTTPMessage CreateRequest(Uri uri, string method, Version version)
+	{
+		if (uri == null)
+		{
+			throw new ArgumentNullException("uri");
+		}
+		CFUrl cFUrl = null;
+		NSString nSString = null;
+		string url = Uri.EscapeUriString(uri.ToString());
+		try
+		{
+			cFUrl = CFUrl.FromUrlString(url, null);
+			if (cFUrl == null)
+			{
+				throw new ArgumentException("Invalid URL.");
+			}
+			nSString = new NSString(method);
+			return CreateRequest(cFUrl, nSString, version);
+		}
+		finally
+		{
+			cFUrl?.Dispose();
+			if (nSString != null)
+			{
+				nSString.Dispose();
+			}
+		}
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern bool CFHTTPMessageIsRequest(IntPtr handle);
+	private static extern bool CFHTTPMessageIsRequest(IntPtr message);
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern CFIndex CFHTTPMessageGetResponseStatusCode(IntPtr handle);
+	private static extern nint CFHTTPMessageGetResponseStatusCode(IntPtr response);
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern IntPtr CFHTTPMessageCopyResponseStatusLine(IntPtr handle);
+	private static extern IntPtr CFHTTPMessageCopyResponseStatusLine(IntPtr response);
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern IntPtr CFHTTPMessageCopyVersion(IntPtr handle);
+	private static extern IntPtr CFHTTPMessageCopyVersion(IntPtr message);
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern bool CFHTTPMessageIsHeaderComplete(IntPtr handle);
+	private static extern bool CFHTTPMessageIsHeaderComplete(IntPtr message);
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern bool CFHTTPMessageAppendBytes(IntPtr message, ref byte[] newBytes, CFIndex numBytes);
+	private static extern bool CFHTTPMessageAppendBytes(IntPtr message, byte[] newBytes, nint numBytes);
 
 	public bool AppendBytes(byte[] bytes)
 	{
@@ -275,64 +397,67 @@ public class CFHTTPMessage : CFType, INativeObject, IDisposable
 		{
 			throw new ArgumentNullException("bytes");
 		}
-		return AppendBytes(bytes, bytes.Length);
+		return CFHTTPMessageAppendBytes(Handle, bytes, bytes.Length);
 	}
 
-	public bool AppendBytes(byte[] bytes, int count)
+	public bool AppendBytes(byte[] bytes, nint count)
 	{
 		if (bytes == null)
 		{
 			throw new ArgumentNullException("bytes");
 		}
-		return CFHTTPMessageAppendBytes(Handle, ref bytes, count);
+		return CFHTTPMessageAppendBytes(Handle, bytes, count);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern IntPtr CFHTTPMessageCopyAllHeaderFields(IntPtr handle);
+	private static extern IntPtr CFHTTPMessageCopyAllHeaderFields(IntPtr message);
 
 	public NSDictionary GetAllHeaderFields()
 	{
 		CheckHandle();
-		IntPtr intPtr = CFHTTPMessageCopyAllHeaderFields(handle);
-		if (intPtr == IntPtr.Zero)
-		{
-			return null;
-		}
-		return new NSDictionary(intPtr);
+		return Runtime.GetNSObject<NSDictionary>(CFHTTPMessageCopyAllHeaderFields(handle));
 	}
 
-	private InvalidOperationException GetException(ErrorHTTPAuthentication code)
+	private AuthenticationException GetException(CFStreamErrorHTTPAuthentication code)
 	{
 		switch (code)
 		{
-		case ErrorHTTPAuthentication.BadUserName:
-			throw new InvalidOperationException("Bad username.");
-		case ErrorHTTPAuthentication.BadPassword:
-			throw new InvalidOperationException("Bad password.");
-		case ErrorHTTPAuthentication.TypeUnsupported:
-			throw new InvalidOperationException("Authentication type not supported.");
+		case CFStreamErrorHTTPAuthentication.BadUserName:
+			throw new InvalidCredentialException("Bad username.");
+		case CFStreamErrorHTTPAuthentication.BadPassword:
+			throw new InvalidCredentialException("Bad password.");
+		case CFStreamErrorHTTPAuthentication.TypeUnsupported:
+			throw new AuthenticationException("Authentication type not supported.");
 		default:
-			throw new InvalidOperationException("Unknown error.");
+			throw new AuthenticationException("Unknown error.");
 		}
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern bool CFHTTPMessageApplyCredentials(IntPtr request, IntPtr auth, IntPtr user, IntPtr pass, out CFStreamError error);
+	private static extern bool CFHTTPMessageApplyCredentials(IntPtr request, IntPtr auth, IntPtr username, IntPtr password, out CFStreamError error);
 
-	public void ApplyCredentials(CFHTTPAuthentication auth, string userName, string password, string domain = null)
+	public void ApplyCredentials(CFHTTPAuthentication auth, NetworkCredential credential)
 	{
+		if (auth == null)
+		{
+			throw new ArgumentNullException("auth");
+		}
+		if (credential == null)
+		{
+			throw new ArgumentNullException("credential");
+		}
 		if (auth.RequiresAccountDomain)
 		{
-			ApplyCredentialDictionary(auth, userName, password, domain);
+			ApplyCredentialDictionary(auth, credential);
 			return;
 		}
-		CFString cFString = new CFString(userName);
-		CFString cFString2 = new CFString(password);
+		CFString cFString = new CFString(credential.UserName);
+		CFString cFString2 = new CFString(credential.Password);
 		try
 		{
 			if (!CFHTTPMessageApplyCredentials(Handle, auth.Handle, cFString.Handle, cFString2.Handle, out var error))
 			{
-				throw GetException((ErrorHTTPAuthentication)error.code);
+				throw GetException((CFStreamErrorHTTPAuthentication)error.code);
 			}
 		}
 		finally
@@ -344,46 +469,77 @@ public class CFHTTPMessage : CFType, INativeObject, IDisposable
 
 	internal static IntPtr GetAuthScheme(AuthenticationScheme scheme)
 	{
-		return scheme switch
+		switch (scheme)
 		{
-			AuthenticationScheme.Default => IntPtr.Zero, 
-			AuthenticationScheme.Basic => _AuthenticationSchemeBasic.Handle, 
-			AuthenticationScheme.Negotiate => _AuthenticationSchemeNegotiate.Handle, 
-			AuthenticationScheme.NTLM => _AuthenticationSchemeNTLM.Handle, 
-			AuthenticationScheme.Digest => _AuthenticationSchemeDigest.Handle, 
-			_ => throw new ArgumentException(), 
-		};
+		case AuthenticationScheme.Default:
+			return IntPtr.Zero;
+		case AuthenticationScheme.Basic:
+			return _AuthenticationSchemeBasic;
+		case AuthenticationScheme.Negotiate:
+			return _AuthenticationSchemeNegotiate;
+		case AuthenticationScheme.NTLM:
+			return _AuthenticationSchemeNTLM;
+		case AuthenticationScheme.Digest:
+			return _AuthenticationSchemeDigest;
+		case AuthenticationScheme.OAuth1:
+			if (_AuthenticationSchemeOAuth1 == IntPtr.Zero)
+			{
+				throw new NotSupportedException("Requires iOS 7.0 or macOS 10.9 and lower than iOS 12 or macOS 10.14");
+			}
+			return _AuthenticationSchemeOAuth1;
+		default:
+			throw new ArgumentException();
+		}
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern bool CFHTTPMessageAddAuthentication(IntPtr request, IntPtr response, IntPtr username, IntPtr password, IntPtr scheme, bool forProxy);
+	private static extern bool CFHTTPMessageAddAuthentication(IntPtr request, IntPtr authenticationFailureResponse, IntPtr username, IntPtr password, IntPtr authenticationScheme, bool forProxy);
 
 	public bool AddAuthentication(CFHTTPMessage failureResponse, NSString username, NSString password, AuthenticationScheme scheme, bool forProxy)
 	{
-		return CFHTTPMessageAddAuthentication(Handle, failureResponse.Handle, username.Handle, password.Handle, GetAuthScheme(scheme), forProxy);
+		if (username == null)
+		{
+			throw new ArgumentNullException("username");
+		}
+		if (password == null)
+		{
+			throw new ArgumentNullException("password");
+		}
+		return CFHTTPMessageAddAuthentication(Handle, failureResponse.GetHandle(), username.Handle, password.Handle, GetAuthScheme(scheme), forProxy);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
 	private static extern bool CFHTTPMessageApplyCredentialDictionary(IntPtr request, IntPtr auth, IntPtr dict, out CFStreamError error);
 
-	public void ApplyCredentialDictionary(CFHTTPAuthentication auth, string userName, string password, string domain = null)
+	public void ApplyCredentialDictionary(CFHTTPAuthentication auth, NetworkCredential credential)
 	{
+		if (auth == null)
+		{
+			throw new ArgumentNullException("auth");
+		}
+		if (credential == null)
+		{
+			throw new ArgumentNullException("credential");
+		}
 		NSString[] array = new NSString[3];
 		CFString[] array2 = new CFString[3];
 		array[0] = _AuthenticationUsername;
 		array[1] = _AuthenticationPassword;
 		array[2] = _AuthenticationAccountDomain;
-		array2[0] = userName;
-		array2[1] = password;
-		array2[2] = ((domain != null) ? ((CFString)domain) : null);
-		CFDictionary cFDictionary = CFDictionary.FromObjectsAndKeys(array2, array);
+		array2[0] = credential.UserName;
+		array2[1] = credential.Password;
+		array2[2] = ((credential.Domain != null) ? ((CFString)credential.Domain) : null);
+		INativeObject[] array3 = array2;
+		INativeObject[] objects = array3;
+		array3 = array;
+		CFDictionary cFDictionary = CFDictionary.FromObjectsAndKeys(objects, array3);
 		try
 		{
 			if (CFHTTPMessageApplyCredentialDictionary(Handle, auth.Handle, cFDictionary.Handle, out var error))
 			{
 				return;
 			}
-			throw GetException((ErrorHTTPAuthentication)error.code);
+			throw GetException((CFStreamErrorHTTPAuthentication)error.code);
 		}
 		finally
 		{
@@ -402,6 +558,10 @@ public class CFHTTPMessage : CFType, INativeObject, IDisposable
 
 	public void SetHeaderFieldValue(string name, string value)
 	{
+		if (name == null)
+		{
+			throw new ArgumentNullException("name");
+		}
 		NSString nSString = (NSString)name;
 		NSString nSString2 = ((value != null) ? ((NSString)value) : null);
 		IntPtr value2 = ((nSString2 != null) ? nSString2.Handle : IntPtr.Zero);
@@ -416,13 +576,12 @@ public class CFHTTPMessage : CFType, INativeObject, IDisposable
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
 	private static extern void CFHTTPMessageSetBody(IntPtr message, IntPtr data);
 
-	internal void SetBody(CFData data)
-	{
-		CFHTTPMessageSetBody(Handle, data.Handle);
-	}
-
 	public void SetBody(byte[] buffer)
 	{
+		if (buffer == null)
+		{
+			throw new ArgumentNullException("buffer");
+		}
 		using CFDataBuffer cFDataBuffer = new CFDataBuffer(buffer);
 		CFHTTPMessageSetBody(Handle, cFDataBuffer.Handle);
 	}

@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using CoreAnimation;
 using Foundation;
 using ObjCRuntime;
@@ -10,89 +9,117 @@ namespace AppKit;
 [Register("NSAnimationContext", true)]
 public class NSAnimationContext : NSObject
 {
-	private static readonly IntPtr selCurrentContextHandle = Selector.GetHandle("currentContext");
-
-	private static readonly IntPtr selDurationHandle = Selector.GetHandle("duration");
-
-	private static readonly IntPtr selSetDuration_Handle = Selector.GetHandle("setDuration:");
-
-	private static readonly IntPtr selCompletionHandlerHandle = Selector.GetHandle("completionHandler");
-
-	private static readonly IntPtr selSetCompletionHandler_Handle = Selector.GetHandle("setCompletionHandler:");
-
-	private static readonly IntPtr selTimingFunctionHandle = Selector.GetHandle("timingFunction");
-
-	private static readonly IntPtr selSetTimingFunction_Handle = Selector.GetHandle("setTimingFunction:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAllowsImplicitAnimation = "allowsImplicitAnimation";
 
 	private static readonly IntPtr selAllowsImplicitAnimationHandle = Selector.GetHandle("allowsImplicitAnimation");
 
-	private static readonly IntPtr selSetAllowsImplicitAnimation_Handle = Selector.GetHandle("setAllowsImplicitAnimation:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBeginGrouping = "beginGrouping";
 
 	private static readonly IntPtr selBeginGroupingHandle = Selector.GetHandle("beginGrouping");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCompletionHandler = "completionHandler";
+
+	private static readonly IntPtr selCompletionHandlerHandle = Selector.GetHandle("completionHandler");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCurrentContext = "currentContext";
+
+	private static readonly IntPtr selCurrentContextHandle = Selector.GetHandle("currentContext");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDuration = "duration";
+
+	private static readonly IntPtr selDurationHandle = Selector.GetHandle("duration");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEndGrouping = "endGrouping";
+
 	private static readonly IntPtr selEndGroupingHandle = Selector.GetHandle("endGrouping");
 
-	private static readonly IntPtr selRunAnimationGroupCompletionHandler_Handle = Selector.GetHandle("runAnimationGroup:completionHandler:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRunAnimationGroup_ = "runAnimationGroup:";
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSAnimationContext");
+	private static readonly IntPtr selRunAnimationGroup_Handle = Selector.GetHandle("runAnimationGroup:");
 
-	private static object __mt_CurrentContext_var_static;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRunAnimationGroup_CompletionHandler_ = "runAnimationGroup:completionHandler:";
 
-	private object __mt_TimingFunction_var;
+	private static readonly IntPtr selRunAnimationGroup_CompletionHandler_Handle = Selector.GetHandle("runAnimationGroup:completionHandler:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAllowsImplicitAnimation_ = "setAllowsImplicitAnimation:";
+
+	private static readonly IntPtr selSetAllowsImplicitAnimation_Handle = Selector.GetHandle("setAllowsImplicitAnimation:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCompletionHandler_ = "setCompletionHandler:";
+
+	private static readonly IntPtr selSetCompletionHandler_Handle = Selector.GetHandle("setCompletionHandler:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDuration_ = "setDuration:";
+
+	private static readonly IntPtr selSetDuration_Handle = Selector.GetHandle("setDuration:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTimingFunction_ = "setTimingFunction:";
+
+	private static readonly IntPtr selSetTimingFunction_Handle = Selector.GetHandle("setTimingFunction:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTimingFunction = "timingFunction";
+
+	private static readonly IntPtr selTimingFunctionHandle = Selector.GetHandle("timingFunction");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSAnimationContext");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public static NSAnimationContext CurrentContext
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool AllowsImplicitAnimation
 	{
-		[Export("currentContext")]
+		[Export("allowsImplicitAnimation")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSAnimationContext)(__mt_CurrentContext_var_static = (NSAnimationContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentContextHandle)));
-		}
-	}
-
-	public virtual double Duration
-	{
-		[Export("duration")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Double_objc_msgSend(base.Handle, selDurationHandle);
+				return Messaging.bool_objc_msgSend(base.Handle, selAllowsImplicitAnimationHandle);
 			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selDurationHandle);
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAllowsImplicitAnimationHandle);
 		}
-		[Export("setDuration:")]
+		[Export("setAllowsImplicitAnimation:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetDuration_Handle, value);
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsImplicitAnimation_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetDuration_Handle, value);
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAllowsImplicitAnimation_Handle, value);
 			}
 		}
 	}
 
-	public unsafe virtual NSAction CompletionHandler
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public unsafe virtual Action CompletionHandler
 	{
-		[Export("completionHandler")]
+		[Export("completionHandler", ArgumentSemantic.Copy)]
+		[return: DelegateProxy(typeof(Trampolines.SDAction))]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			BlockLiteral* ptr = (BlockLiteral*)((!IsDirectBinding) ? ((void*)Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCompletionHandlerHandle)) : ((void*)Messaging.IntPtr_objc_msgSend(base.Handle, selCompletionHandlerHandle)));
-			if (ptr == null)
-			{
-				return null;
-			}
-			return (NSAction)((ptr->global_handle != IntPtr.Zero) ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target);
+			IntPtr block = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCompletionHandlerHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selCompletionHandlerHandle));
+			return Trampolines.NIDAction.Create(block);
 		}
-		[Export("setCompletionHandler:")]
+		[Export("setCompletionHandler:", ArgumentSemantic.Copy)]
+		[param: BlockProxy(typeof(Trampolines.NIDAction))]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -102,8 +129,8 @@ public class NSAnimationContext : NSObject
 			}
 			BlockLiteral blockLiteral = default(BlockLiteral);
 			BlockLiteral* ptr = &blockLiteral;
-			blockLiteral.SetupBlock(Trampolines.SDNSAction.Handler, value);
-			if (IsDirectBinding)
+			blockLiteral.SetupBlockUnsafe(Trampolines.SDAction.Handler, value);
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCompletionHandler_Handle, (IntPtr)ptr);
 			}
@@ -115,15 +142,59 @@ public class NSAnimationContext : NSObject
 		}
 	}
 
-	public virtual CAMediaTimingFunction TimingFunction
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSAnimationContext CurrentContext
 	{
-		[Export("timingFunction")]
+		[Export("currentContext")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (CAMediaTimingFunction)(__mt_TimingFunction_var = ((!IsDirectBinding) ? ((CAMediaTimingFunction)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTimingFunctionHandle))) : ((CAMediaTimingFunction)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTimingFunctionHandle)))));
+			return Runtime.GetNSObject<NSAnimationContext>(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentContextHandle));
 		}
-		[Export("setTimingFunction:")]
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual double Duration
+	{
+		[Export("duration")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selDurationHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selDurationHandle);
+		}
+		[Export("setDuration:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Double(base.Handle, selSetDuration_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetDuration_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CAMediaTimingFunction TimingFunction
+	{
+		[Export("timingFunction", ArgumentSemantic.Retain)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<CAMediaTimingFunction>(Messaging.IntPtr_objc_msgSend(base.Handle, selTimingFunctionHandle));
+			}
+			return Runtime.GetNSObject<CAMediaTimingFunction>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTimingFunctionHandle));
+		}
+		[Export("setTimingFunction:", ArgumentSemantic.Retain)]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -131,7 +202,7 @@ public class NSAnimationContext : NSObject
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTimingFunction_Handle, value.Handle);
 			}
@@ -139,83 +210,42 @@ public class NSAnimationContext : NSObject
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTimingFunction_Handle, value.Handle);
 			}
-			__mt_TimingFunction_var = value;
 		}
 	}
 
-	[MountainLion]
-	public virtual bool AllowsImplicitAnimation
-	{
-		[MountainLion]
-		[Export("allowsImplicitAnimation")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAllowsImplicitAnimationHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAllowsImplicitAnimationHandle);
-		}
-		[MountainLion]
-		[Export("setAllowsImplicitAnimation:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsImplicitAnimation_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAllowsImplicitAnimation_Handle, value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSAnimationContext()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSAnimationContext(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSAnimationContext(NSObjectFlag t)
+	protected NSAnimationContext(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSAnimationContext(IntPtr handle)
+	protected internal NSAnimationContext(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("beginGrouping")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static void BeginGrouping()
 	{
 		NSApplication.EnsureUIThread();
@@ -223,6 +253,7 @@ public class NSAnimationContext : NSObject
 	}
 
 	[Export("endGrouping")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static void EndGrouping()
 	{
 		NSApplication.EnsureUIThread();
@@ -230,34 +261,50 @@ public class NSAnimationContext : NSObject
 	}
 
 	[Export("runAnimationGroup:completionHandler:")]
-	public unsafe static void RunAnimation(Action<NSAnimationContext> changes, NSAction completionHandler)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public unsafe static void RunAnimation([BlockProxy(typeof(Trampolines.NIDActionArity1V9))] Action<NSAnimationContext> changes, [BlockProxy(typeof(Trampolines.NIDAction))] Action? completionHandler)
 	{
 		NSApplication.EnsureUIThread();
 		if (changes == null)
 		{
 			throw new ArgumentNullException("changes");
 		}
+		BlockLiteral blockLiteral = default(BlockLiteral);
+		BlockLiteral* ptr = &blockLiteral;
+		blockLiteral.SetupBlockUnsafe(Trampolines.SDActionArity1V9.Handler, changes);
+		BlockLiteral* ptr2;
 		if (completionHandler == null)
 		{
-			throw new ArgumentNullException("completionHandler");
+			ptr2 = null;
+		}
+		else
+		{
+			BlockLiteral blockLiteral2 = default(BlockLiteral);
+			ptr2 = &blockLiteral2;
+			blockLiteral2.SetupBlockUnsafe(Trampolines.SDAction.Handler, completionHandler);
+		}
+		Messaging.void_objc_msgSend_IntPtr_IntPtr(class_ptr, selRunAnimationGroup_CompletionHandler_Handle, (IntPtr)ptr, (IntPtr)ptr2);
+		ptr->CleanupBlock();
+		if (ptr2 != null)
+		{
+			ptr2->CleanupBlock();
+		}
+	}
+
+	[Export("runAnimationGroup:")]
+	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public unsafe static void RunAnimation([BlockProxy(typeof(Trampolines.NIDActionArity1V9))] Action<NSAnimationContext> changes)
+	{
+		NSApplication.EnsureUIThread();
+		if (changes == null)
+		{
+			throw new ArgumentNullException("changes");
 		}
 		BlockLiteral blockLiteral = default(BlockLiteral);
 		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlock(Trampolines.SDActionArity1V0.Handler, changes);
-		BlockLiteral blockLiteral2 = default(BlockLiteral);
-		BlockLiteral* ptr2 = &blockLiteral2;
-		blockLiteral2.SetupBlock(Trampolines.SDNSAction.Handler, completionHandler);
-		Messaging.void_objc_msgSend_IntPtr_IntPtr(class_ptr, selRunAnimationGroupCompletionHandler_Handle, (IntPtr)ptr, (IntPtr)ptr2);
+		blockLiteral.SetupBlockUnsafe(Trampolines.SDActionArity1V9.Handler, changes);
+		Messaging.void_objc_msgSend_IntPtr(class_ptr, selRunAnimationGroup_Handle, (IntPtr)ptr);
 		ptr->CleanupBlock();
-		ptr2->CleanupBlock();
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_TimingFunction_var = null;
-		}
 	}
 }

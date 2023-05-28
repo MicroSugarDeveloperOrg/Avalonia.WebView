@@ -8,65 +8,56 @@ namespace QTKit;
 [Register("QTCaptureDeviceInput", true)]
 public class QTCaptureDeviceInput : QTCaptureInput
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDevice = "device";
+
 	private static readonly IntPtr selDeviceHandle = Selector.GetHandle("device");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDeviceInputWithDevice_ = "deviceInputWithDevice:";
 
 	private static readonly IntPtr selDeviceInputWithDevice_Handle = Selector.GetHandle("deviceInputWithDevice:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithDevice_ = "initWithDevice:";
+
 	private static readonly IntPtr selInitWithDevice_Handle = Selector.GetHandle("initWithDevice:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("QTCaptureDeviceInput");
-
-	private object __mt_Device_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("QTCaptureDeviceInput");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual QTCaptureDevice Device
 	{
 		[Export("device")]
 		get
 		{
-			return (QTCaptureDevice)(__mt_Device_var = ((!IsDirectBinding) ? ((QTCaptureDevice)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDeviceHandle))) : ((QTCaptureDevice)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDeviceHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<QTCaptureDevice>(Messaging.IntPtr_objc_msgSend(base.Handle, selDeviceHandle));
+			}
+			return Runtime.GetNSObject<QTCaptureDevice>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDeviceHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public QTCaptureDeviceInput(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public QTCaptureDeviceInput(NSObjectFlag t)
+	protected QTCaptureDeviceInput(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public QTCaptureDeviceInput(IntPtr handle)
+	protected internal QTCaptureDeviceInput(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("deviceInputWithDevice:")]
-	public static QTCaptureDeviceInput FromDevice(QTCaptureDevice device)
-	{
-		if (device == null)
-		{
-			throw new ArgumentNullException("device");
-		}
-		return (QTCaptureDeviceInput)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selDeviceInputWithDevice_Handle, device.Handle));
-	}
-
 	[Export("initWithDevice:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public QTCaptureDeviceInput(QTCaptureDevice device)
 		: base(NSObjectFlag.Empty)
 	{
@@ -74,22 +65,24 @@ public class QTCaptureDeviceInput : QTCaptureInput
 		{
 			throw new ArgumentNullException("device");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithDevice_Handle, device.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithDevice_Handle, device.Handle), "initWithDevice:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithDevice_Handle, device.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithDevice_Handle, device.Handle), "initWithDevice:");
 		}
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("deviceInputWithDevice:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static QTCaptureDeviceInput FromDevice(QTCaptureDevice device)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		if (device == null)
 		{
-			__mt_Device_var = null;
+			throw new ArgumentNullException("device");
 		}
+		return Runtime.GetNSObject<QTCaptureDeviceInput>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selDeviceInputWithDevice_Handle, device.Handle));
 	}
 }

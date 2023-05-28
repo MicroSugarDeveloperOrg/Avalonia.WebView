@@ -5,87 +5,224 @@ using ObjCRuntime;
 namespace Foundation;
 
 [Register("NSDecimalNumber", true)]
-public class NSDecimalNumber : NSNumber
+public class NSDecimalNumber : NSNumber, INSCoding, INativeObject, IDisposable, INSSecureCoding
 {
-	private static readonly IntPtr selDecimalValueHandle = Selector.GetHandle("decimalValue");
-
-	private static readonly IntPtr selZeroHandle = Selector.GetHandle("zero");
-
-	private static readonly IntPtr selOneHandle = Selector.GetHandle("one");
-
-	private static readonly IntPtr selMinimumDecimalNumberHandle = Selector.GetHandle("minimumDecimalNumber");
-
-	private static readonly IntPtr selMaximumDecimalNumberHandle = Selector.GetHandle("maximumDecimalNumber");
-
-	private static readonly IntPtr selNotANumberHandle = Selector.GetHandle("notANumber");
-
-	private static readonly IntPtr selDefaultBehaviorHandle = Selector.GetHandle("defaultBehavior");
-
-	private static readonly IntPtr selSetDefaultBehavior_Handle = Selector.GetHandle("setDefaultBehavior:");
-
-	private static readonly IntPtr selDoubleValueHandle = Selector.GetHandle("doubleValue");
-
-	private static readonly IntPtr selInitWithMantissaExponentIsNegative_Handle = Selector.GetHandle("initWithMantissa:exponent:isNegative:");
-
-	private static readonly IntPtr selInitWithDecimal_Handle = Selector.GetHandle("initWithDecimal:");
-
-	private static readonly IntPtr selInitWithString_Handle = Selector.GetHandle("initWithString:");
-
-	private static readonly IntPtr selInitWithStringLocale_Handle = Selector.GetHandle("initWithString:locale:");
-
-	private static readonly IntPtr selDescriptionWithLocale_Handle = Selector.GetHandle("descriptionWithLocale:");
-
-	private static readonly IntPtr selDecimalNumberByAdding_Handle = Selector.GetHandle("decimalNumberByAdding:");
-
-	private static readonly IntPtr selDecimalNumberByAddingWithBehavior_Handle = Selector.GetHandle("decimalNumberByAdding:withBehavior:");
-
-	private static readonly IntPtr selDecimalNumberBySubtracting_Handle = Selector.GetHandle("decimalNumberBySubtracting:");
-
-	private static readonly IntPtr selDecimalNumberBySubtractingWithBehavior_Handle = Selector.GetHandle("decimalNumberBySubtracting:withBehavior:");
-
-	private static readonly IntPtr selDecimalNumberByMultiplyingBy_Handle = Selector.GetHandle("decimalNumberByMultiplyingBy:");
-
-	private static readonly IntPtr selDecimalNumberByMultiplyingByWithBehavior_Handle = Selector.GetHandle("decimalNumberByMultiplyingBy:withBehavior:");
-
-	private static readonly IntPtr selDecimalNumberByDividingBy_Handle = Selector.GetHandle("decimalNumberByDividingBy:");
-
-	private static readonly IntPtr selDecimalNumberByDividingByWithBehavior_Handle = Selector.GetHandle("decimalNumberByDividingBy:withBehavior:");
-
-	private static readonly IntPtr selDecimalNumberByRaisingToPower_Handle = Selector.GetHandle("decimalNumberByRaisingToPower:");
-
-	private static readonly IntPtr selDecimalNumberByRaisingToPowerWithBehavior_Handle = Selector.GetHandle("decimalNumberByRaisingToPower:withBehavior:");
-
-	private static readonly IntPtr selDecimalNumberByMultiplyingByPowerOf10_Handle = Selector.GetHandle("decimalNumberByMultiplyingByPowerOf10:");
-
-	private static readonly IntPtr selDecimalNumberByMultiplyingByPowerOf10WithBehavior_Handle = Selector.GetHandle("decimalNumberByMultiplyingByPowerOf10:withBehavior:");
-
-	private static readonly IntPtr selDecimalNumberByRoundingAccordingToBehavior_Handle = Selector.GetHandle("decimalNumberByRoundingAccordingToBehavior:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCompare_ = "compare:";
 
 	private static readonly IntPtr selCompare_Handle = Selector.GetHandle("compare:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSDecimalNumber");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDecimalNumberByAdding_ = "decimalNumberByAdding:";
 
-	private static object __mt_Zero_var_static;
+	private static readonly IntPtr selDecimalNumberByAdding_Handle = Selector.GetHandle("decimalNumberByAdding:");
 
-	private static object __mt_One_var_static;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDecimalNumberByAdding_WithBehavior_ = "decimalNumberByAdding:withBehavior:";
 
-	private static object __mt_MinValue_var_static;
+	private static readonly IntPtr selDecimalNumberByAdding_WithBehavior_Handle = Selector.GetHandle("decimalNumberByAdding:withBehavior:");
 
-	private static object __mt_MaxValue_var_static;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDecimalNumberByDividingBy_ = "decimalNumberByDividingBy:";
 
-	private static object __mt_NaN_var_static;
+	private static readonly IntPtr selDecimalNumberByDividingBy_Handle = Selector.GetHandle("decimalNumberByDividingBy:");
 
-	private static object __mt_DefaultBehavior_var_static;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDecimalNumberByDividingBy_WithBehavior_ = "decimalNumberByDividingBy:withBehavior:";
+
+	private static readonly IntPtr selDecimalNumberByDividingBy_WithBehavior_Handle = Selector.GetHandle("decimalNumberByDividingBy:withBehavior:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDecimalNumberByMultiplyingBy_ = "decimalNumberByMultiplyingBy:";
+
+	private static readonly IntPtr selDecimalNumberByMultiplyingBy_Handle = Selector.GetHandle("decimalNumberByMultiplyingBy:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDecimalNumberByMultiplyingBy_WithBehavior_ = "decimalNumberByMultiplyingBy:withBehavior:";
+
+	private static readonly IntPtr selDecimalNumberByMultiplyingBy_WithBehavior_Handle = Selector.GetHandle("decimalNumberByMultiplyingBy:withBehavior:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDecimalNumberByMultiplyingByPowerOf10_ = "decimalNumberByMultiplyingByPowerOf10:";
+
+	private static readonly IntPtr selDecimalNumberByMultiplyingByPowerOf10_Handle = Selector.GetHandle("decimalNumberByMultiplyingByPowerOf10:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDecimalNumberByMultiplyingByPowerOf10_WithBehavior_ = "decimalNumberByMultiplyingByPowerOf10:withBehavior:";
+
+	private static readonly IntPtr selDecimalNumberByMultiplyingByPowerOf10_WithBehavior_Handle = Selector.GetHandle("decimalNumberByMultiplyingByPowerOf10:withBehavior:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDecimalNumberByRaisingToPower_ = "decimalNumberByRaisingToPower:";
+
+	private static readonly IntPtr selDecimalNumberByRaisingToPower_Handle = Selector.GetHandle("decimalNumberByRaisingToPower:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDecimalNumberByRaisingToPower_WithBehavior_ = "decimalNumberByRaisingToPower:withBehavior:";
+
+	private static readonly IntPtr selDecimalNumberByRaisingToPower_WithBehavior_Handle = Selector.GetHandle("decimalNumberByRaisingToPower:withBehavior:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDecimalNumberByRoundingAccordingToBehavior_ = "decimalNumberByRoundingAccordingToBehavior:";
+
+	private static readonly IntPtr selDecimalNumberByRoundingAccordingToBehavior_Handle = Selector.GetHandle("decimalNumberByRoundingAccordingToBehavior:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDecimalNumberBySubtracting_ = "decimalNumberBySubtracting:";
+
+	private static readonly IntPtr selDecimalNumberBySubtracting_Handle = Selector.GetHandle("decimalNumberBySubtracting:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDecimalNumberBySubtracting_WithBehavior_ = "decimalNumberBySubtracting:withBehavior:";
+
+	private static readonly IntPtr selDecimalNumberBySubtracting_WithBehavior_Handle = Selector.GetHandle("decimalNumberBySubtracting:withBehavior:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDecimalValue = "decimalValue";
+
+	private static readonly IntPtr selDecimalValueHandle = Selector.GetHandle("decimalValue");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDefaultBehavior = "defaultBehavior";
+
+	private static readonly IntPtr selDefaultBehaviorHandle = Selector.GetHandle("defaultBehavior");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDescriptionWithLocale_ = "descriptionWithLocale:";
+
+	private static readonly IntPtr selDescriptionWithLocale_Handle = Selector.GetHandle("descriptionWithLocale:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDoubleValue = "doubleValue";
+
+	private static readonly IntPtr selDoubleValueHandle = Selector.GetHandle("doubleValue");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEncodeWithCoder_ = "encodeWithCoder:";
+
+	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithCoder_ = "initWithCoder:";
+
+	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithDecimal_ = "initWithDecimal:";
+
+	private static readonly IntPtr selInitWithDecimal_Handle = Selector.GetHandle("initWithDecimal:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithMantissa_Exponent_IsNegative_ = "initWithMantissa:exponent:isNegative:";
+
+	private static readonly IntPtr selInitWithMantissa_Exponent_IsNegative_Handle = Selector.GetHandle("initWithMantissa:exponent:isNegative:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithString_ = "initWithString:";
+
+	private static readonly IntPtr selInitWithString_Handle = Selector.GetHandle("initWithString:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithString_Locale_ = "initWithString:locale:";
+
+	private static readonly IntPtr selInitWithString_Locale_Handle = Selector.GetHandle("initWithString:locale:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMaximumDecimalNumber = "maximumDecimalNumber";
+
+	private static readonly IntPtr selMaximumDecimalNumberHandle = Selector.GetHandle("maximumDecimalNumber");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMinimumDecimalNumber = "minimumDecimalNumber";
+
+	private static readonly IntPtr selMinimumDecimalNumberHandle = Selector.GetHandle("minimumDecimalNumber");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selNotANumber = "notANumber";
+
+	private static readonly IntPtr selNotANumberHandle = Selector.GetHandle("notANumber");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selOne = "one";
+
+	private static readonly IntPtr selOneHandle = Selector.GetHandle("one");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDefaultBehavior_ = "setDefaultBehavior:";
+
+	private static readonly IntPtr selSetDefaultBehavior_Handle = Selector.GetHandle("setDefaultBehavior:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selZero = "zero";
+
+	private static readonly IntPtr selZeroHandle = Selector.GetHandle("zero");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSDecimalNumber");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSObject DefaultBehavior
+	{
+		[Export("defaultBehavior", ArgumentSemantic.Retain)]
+		get
+		{
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selDefaultBehaviorHandle));
+		}
+		[Export("setDefaultBehavior:", ArgumentSemantic.Retain)]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			Messaging.void_objc_msgSend_IntPtr(class_ptr, selSetDefaultBehavior_Handle, value.Handle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override double DoubleValue
+	{
+		[Export("doubleValue")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selDoubleValueHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selDoubleValueHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSDecimalNumber MaxValue
+	{
+		[Export("maximumDecimalNumber", ArgumentSemantic.Copy)]
+		get
+		{
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend(class_ptr, selMaximumDecimalNumberHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSDecimalNumber MinValue
+	{
+		[Export("minimumDecimalNumber", ArgumentSemantic.Copy)]
+		get
+		{
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend(class_ptr, selMinimumDecimalNumberHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new virtual NSDecimal NSDecimalValue
 	{
 		[Export("decimalValue")]
 		get
 		{
 			NSDecimal retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.NSDecimal_objc_msgSend_stret(out retval, base.Handle, selDecimalValueHandle);
 			}
@@ -97,153 +234,116 @@ public class NSDecimalNumber : NSNumber
 		}
 	}
 
-	public static NSDecimalNumber Zero
-	{
-		[Export("zero")]
-		get
-		{
-			return (NSDecimalNumber)(__mt_Zero_var_static = (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selZeroHandle)));
-		}
-	}
-
-	public static NSDecimalNumber One
-	{
-		[Export("one")]
-		get
-		{
-			return (NSDecimalNumber)(__mt_One_var_static = (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selOneHandle)));
-		}
-	}
-
-	public static NSDecimalNumber MinValue
-	{
-		[Export("minimumDecimalNumber")]
-		get
-		{
-			return (NSDecimalNumber)(__mt_MinValue_var_static = (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selMinimumDecimalNumberHandle)));
-		}
-	}
-
-	public static NSDecimalNumber MaxValue
-	{
-		[Export("maximumDecimalNumber")]
-		get
-		{
-			return (NSDecimalNumber)(__mt_MaxValue_var_static = (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selMaximumDecimalNumberHandle)));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSDecimalNumber NaN
 	{
-		[Export("notANumber")]
+		[Export("notANumber", ArgumentSemantic.Copy)]
 		get
 		{
-			return (NSDecimalNumber)(__mt_NaN_var_static = (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selNotANumberHandle)));
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend(class_ptr, selNotANumberHandle));
 		}
 	}
 
-	public static NSObject DefaultBehavior
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSDecimalNumber One
 	{
-		[Export("defaultBehavior")]
+		[Export("one", ArgumentSemantic.Copy)]
 		get
 		{
-			return (NSObject)(__mt_DefaultBehavior_var_static = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selDefaultBehaviorHandle)));
-		}
-		[Export("setDefaultBehavior:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			Messaging.void_objc_msgSend_IntPtr(class_ptr, selSetDefaultBehavior_Handle, value.Handle);
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend(class_ptr, selOneHandle));
 		}
 	}
 
-	public new virtual double DoubleValue
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSDecimalNumber Zero
 	{
-		[Export("doubleValue")]
+		[Export("zero", ArgumentSemantic.Copy)]
 		get
 		{
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selDoubleValueHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selDoubleValueHandle);
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend(class_ptr, selZeroHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSDecimalNumber()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSDecimalNumber(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSDecimalNumber(NSObjectFlag t)
+	protected NSDecimalNumber(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSDecimalNumber(IntPtr handle)
+	protected internal NSDecimalNumber(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithMantissa:exponent:isNegative:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSDecimalNumber(long mantissa, short exponent, bool isNegative)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_Int64_short_bool(base.Handle, selInitWithMantissaExponentIsNegative_Handle, mantissa, exponent, isNegative);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_Int64_short_bool(base.Handle, selInitWithMantissa_Exponent_IsNegative_Handle, mantissa, exponent, isNegative), "initWithMantissa:exponent:isNegative:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_Int64_short_bool(base.SuperHandle, selInitWithMantissaExponentIsNegative_Handle, mantissa, exponent, isNegative);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_Int64_short_bool(base.SuperHandle, selInitWithMantissa_Exponent_IsNegative_Handle, mantissa, exponent, isNegative), "initWithMantissa:exponent:isNegative:");
 		}
 	}
 
 	[Export("initWithDecimal:")]
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSDecimalNumber(NSDecimal dec)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_NSDecimal(base.Handle, selInitWithDecimal_Handle, dec);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_NSDecimal(base.Handle, selInitWithDecimal_Handle, dec), "initWithDecimal:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_NSDecimal(base.SuperHandle, selInitWithDecimal_Handle, dec);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_NSDecimal(base.SuperHandle, selInitWithDecimal_Handle, dec), "initWithDecimal:");
 		}
 	}
 
 	[Export("initWithString:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSDecimalNumber(string numberValue)
 		: base(NSObjectFlag.Empty)
 	{
@@ -252,18 +352,19 @@ public class NSDecimalNumber : NSNumber
 			throw new ArgumentNullException("numberValue");
 		}
 		IntPtr arg = NSString.CreateNative(numberValue);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithString_Handle, arg);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithString_Handle, arg), "initWithString:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithString_Handle, arg);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithString_Handle, arg), "initWithString:");
 		}
 		NSString.ReleaseNative(arg);
 	}
 
 	[Export("initWithString:locale:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSDecimalNumber(string numberValue, NSObject locale)
 		: base(NSObjectFlag.Empty)
 	{
@@ -276,46 +377,34 @@ public class NSDecimalNumber : NSNumber
 			throw new ArgumentNullException("locale");
 		}
 		IntPtr arg = NSString.CreateNative(numberValue);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithStringLocale_Handle, arg, locale.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithString_Locale_Handle, arg, locale.Handle), "initWithString:locale:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithStringLocale_Handle, arg, locale.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithString_Locale_Handle, arg, locale.Handle), "initWithString:locale:");
 		}
 		NSString.ReleaseNative(arg);
 	}
 
-	[Export("descriptionWithLocale:")]
-	public new virtual string DescriptionWithLocale(NSLocale locale)
-	{
-		if (locale == null)
-		{
-			throw new ArgumentNullException("locale");
-		}
-		if (IsDirectBinding)
-		{
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDescriptionWithLocale_Handle, locale.Handle));
-		}
-		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDescriptionWithLocale_Handle, locale.Handle));
-	}
-
 	[Export("decimalNumberByAdding:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDecimalNumber Add(NSDecimalNumber d)
 	{
 		if (d == null)
 		{
 			throw new ArgumentNullException("d");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDecimalNumberByAdding_Handle, d.Handle));
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDecimalNumberByAdding_Handle, d.Handle));
 		}
-		return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDecimalNumberByAdding_Handle, d.Handle));
+		return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDecimalNumberByAdding_Handle, d.Handle));
 	}
 
 	[Export("decimalNumberByAdding:withBehavior:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDecimalNumber Add(NSDecimalNumber d, NSObject Behavior)
 	{
 		if (d == null)
@@ -326,92 +415,60 @@ public class NSDecimalNumber : NSNumber
 		{
 			throw new ArgumentNullException("Behavior");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selDecimalNumberByAddingWithBehavior_Handle, d.Handle, Behavior.Handle));
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selDecimalNumberByAdding_WithBehavior_Handle, d.Handle, Behavior.Handle));
 		}
-		return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selDecimalNumberByAddingWithBehavior_Handle, d.Handle, Behavior.Handle));
+		return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selDecimalNumberByAdding_WithBehavior_Handle, d.Handle, Behavior.Handle));
 	}
 
-	[Export("decimalNumberBySubtracting:")]
-	public virtual NSDecimalNumber Subtract(NSDecimalNumber d)
+	[Export("compare:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override nint Compare(NSNumber other)
 	{
-		if (d == null)
+		if (other == null)
 		{
-			throw new ArgumentNullException("d");
+			throw new ArgumentNullException("other");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDecimalNumberBySubtracting_Handle, d.Handle));
+			return Messaging.nint_objc_msgSend_IntPtr(base.Handle, selCompare_Handle, other.Handle);
 		}
-		return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDecimalNumberBySubtracting_Handle, d.Handle));
+		return Messaging.nint_objc_msgSendSuper_IntPtr(base.SuperHandle, selCompare_Handle, other.Handle);
 	}
 
-	[Export("decimalNumberBySubtracting:withBehavior:")]
-	public virtual NSDecimalNumber Subtract(NSDecimalNumber d, NSObject Behavior)
+	[Export("descriptionWithLocale:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override string DescriptionWithLocale(NSLocale locale)
 	{
-		if (d == null)
+		if (locale == null)
 		{
-			throw new ArgumentNullException("d");
+			throw new ArgumentNullException("locale");
 		}
-		if (Behavior == null)
+		if (base.IsDirectBinding)
 		{
-			throw new ArgumentNullException("Behavior");
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDescriptionWithLocale_Handle, locale.Handle));
 		}
-		if (IsDirectBinding)
-		{
-			return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selDecimalNumberBySubtractingWithBehavior_Handle, d.Handle, Behavior.Handle));
-		}
-		return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selDecimalNumberBySubtractingWithBehavior_Handle, d.Handle, Behavior.Handle));
-	}
-
-	[Export("decimalNumberByMultiplyingBy:")]
-	public virtual NSDecimalNumber Multiply(NSDecimalNumber d)
-	{
-		if (d == null)
-		{
-			throw new ArgumentNullException("d");
-		}
-		if (IsDirectBinding)
-		{
-			return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDecimalNumberByMultiplyingBy_Handle, d.Handle));
-		}
-		return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDecimalNumberByMultiplyingBy_Handle, d.Handle));
-	}
-
-	[Export("decimalNumberByMultiplyingBy:withBehavior:")]
-	public virtual NSDecimalNumber Multiply(NSDecimalNumber d, NSObject Behavior)
-	{
-		if (d == null)
-		{
-			throw new ArgumentNullException("d");
-		}
-		if (Behavior == null)
-		{
-			throw new ArgumentNullException("Behavior");
-		}
-		if (IsDirectBinding)
-		{
-			return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selDecimalNumberByMultiplyingByWithBehavior_Handle, d.Handle, Behavior.Handle));
-		}
-		return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selDecimalNumberByMultiplyingByWithBehavior_Handle, d.Handle, Behavior.Handle));
+		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDescriptionWithLocale_Handle, locale.Handle));
 	}
 
 	[Export("decimalNumberByDividingBy:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDecimalNumber Divide(NSDecimalNumber d)
 	{
 		if (d == null)
 		{
 			throw new ArgumentNullException("d");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDecimalNumberByDividingBy_Handle, d.Handle));
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDecimalNumberByDividingBy_Handle, d.Handle));
 		}
-		return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDecimalNumberByDividingBy_Handle, d.Handle));
+		return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDecimalNumberByDividingBy_Handle, d.Handle));
 	}
 
 	[Export("decimalNumberByDividingBy:withBehavior:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDecimalNumber Divide(NSDecimalNumber d, NSObject Behavior)
 	{
 		if (d == null)
@@ -422,86 +479,163 @@ public class NSDecimalNumber : NSNumber
 		{
 			throw new ArgumentNullException("Behavior");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selDecimalNumberByDividingByWithBehavior_Handle, d.Handle, Behavior.Handle));
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selDecimalNumberByDividingBy_WithBehavior_Handle, d.Handle, Behavior.Handle));
 		}
-		return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selDecimalNumberByDividingByWithBehavior_Handle, d.Handle, Behavior.Handle));
+		return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selDecimalNumberByDividingBy_WithBehavior_Handle, d.Handle, Behavior.Handle));
 	}
 
-	[Export("decimalNumberByRaisingToPower:")]
-	public virtual NSDecimalNumber RaiseTo(ulong power)
+	[Export("encodeWithCoder:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual void EncodeTo(NSCoder encoder)
 	{
-		if (IsDirectBinding)
+		if (encoder == null)
 		{
-			return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64(base.Handle, selDecimalNumberByRaisingToPower_Handle, power));
+			throw new ArgumentNullException("encoder");
 		}
-		return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_UInt64(base.SuperHandle, selDecimalNumberByRaisingToPower_Handle, power));
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
 	}
 
-	[Export("decimalNumberByRaisingToPower:withBehavior:")]
-	public virtual NSDecimalNumber RaiseTo(ulong power, NSObject Behavior)
+	[Export("decimalNumberByMultiplyingBy:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDecimalNumber Multiply(NSDecimalNumber d)
 	{
+		if (d == null)
+		{
+			throw new ArgumentNullException("d");
+		}
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDecimalNumberByMultiplyingBy_Handle, d.Handle));
+		}
+		return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDecimalNumberByMultiplyingBy_Handle, d.Handle));
+	}
+
+	[Export("decimalNumberByMultiplyingBy:withBehavior:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDecimalNumber Multiply(NSDecimalNumber d, NSObject Behavior)
+	{
+		if (d == null)
+		{
+			throw new ArgumentNullException("d");
+		}
 		if (Behavior == null)
 		{
 			throw new ArgumentNullException("Behavior");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64_IntPtr(base.Handle, selDecimalNumberByRaisingToPowerWithBehavior_Handle, power, Behavior.Handle));
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selDecimalNumberByMultiplyingBy_WithBehavior_Handle, d.Handle, Behavior.Handle));
 		}
-		return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_UInt64_IntPtr(base.SuperHandle, selDecimalNumberByRaisingToPowerWithBehavior_Handle, power, Behavior.Handle));
+		return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selDecimalNumberByMultiplyingBy_WithBehavior_Handle, d.Handle, Behavior.Handle));
 	}
 
 	[Export("decimalNumberByMultiplyingByPowerOf10:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDecimalNumber MultiplyPowerOf10(short power)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_short(base.Handle, selDecimalNumberByMultiplyingByPowerOf10_Handle, power));
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend_short(base.Handle, selDecimalNumberByMultiplyingByPowerOf10_Handle, power));
 		}
-		return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_short(base.SuperHandle, selDecimalNumberByMultiplyingByPowerOf10_Handle, power));
+		return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSendSuper_short(base.SuperHandle, selDecimalNumberByMultiplyingByPowerOf10_Handle, power));
 	}
 
 	[Export("decimalNumberByMultiplyingByPowerOf10:withBehavior:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDecimalNumber MultiplyPowerOf10(short power, NSObject Behavior)
 	{
 		if (Behavior == null)
 		{
 			throw new ArgumentNullException("Behavior");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_short_IntPtr(base.Handle, selDecimalNumberByMultiplyingByPowerOf10WithBehavior_Handle, power, Behavior.Handle));
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend_short_IntPtr(base.Handle, selDecimalNumberByMultiplyingByPowerOf10_WithBehavior_Handle, power, Behavior.Handle));
 		}
-		return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_short_IntPtr(base.SuperHandle, selDecimalNumberByMultiplyingByPowerOf10WithBehavior_Handle, power, Behavior.Handle));
+		return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSendSuper_short_IntPtr(base.SuperHandle, selDecimalNumberByMultiplyingByPowerOf10_WithBehavior_Handle, power, Behavior.Handle));
+	}
+
+	[Export("decimalNumberByRaisingToPower:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDecimalNumber RaiseTo(nuint power)
+	{
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend_nuint(base.Handle, selDecimalNumberByRaisingToPower_Handle, power));
+		}
+		return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSendSuper_nuint(base.SuperHandle, selDecimalNumberByRaisingToPower_Handle, power));
+	}
+
+	[Export("decimalNumberByRaisingToPower:withBehavior:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDecimalNumber RaiseTo(nuint power, NSObject Behavior)
+	{
+		if (Behavior == null)
+		{
+			throw new ArgumentNullException("Behavior");
+		}
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend_nuint_IntPtr(base.Handle, selDecimalNumberByRaisingToPower_WithBehavior_Handle, power, Behavior.Handle));
+		}
+		return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSendSuper_nuint_IntPtr(base.SuperHandle, selDecimalNumberByRaisingToPower_WithBehavior_Handle, power, Behavior.Handle));
 	}
 
 	[Export("decimalNumberByRoundingAccordingToBehavior:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDecimalNumber Rounding(NSObject behavior)
 	{
 		if (behavior == null)
 		{
 			throw new ArgumentNullException("behavior");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDecimalNumberByRoundingAccordingToBehavior_Handle, behavior.Handle));
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDecimalNumberByRoundingAccordingToBehavior_Handle, behavior.Handle));
 		}
-		return (NSDecimalNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDecimalNumberByRoundingAccordingToBehavior_Handle, behavior.Handle));
+		return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDecimalNumberByRoundingAccordingToBehavior_Handle, behavior.Handle));
 	}
 
-	[Export("compare:")]
-	public new virtual long Compare(NSNumber other)
+	[Export("decimalNumberBySubtracting:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDecimalNumber Subtract(NSDecimalNumber d)
 	{
-		if (other == null)
+		if (d == null)
 		{
-			throw new ArgumentNullException("other");
+			throw new ArgumentNullException("d");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return Messaging.Int64_objc_msgSend_IntPtr(base.Handle, selCompare_Handle, other.Handle);
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDecimalNumberBySubtracting_Handle, d.Handle));
 		}
-		return Messaging.Int64_objc_msgSendSuper_IntPtr(base.SuperHandle, selCompare_Handle, other.Handle);
+		return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDecimalNumberBySubtracting_Handle, d.Handle));
+	}
+
+	[Export("decimalNumberBySubtracting:withBehavior:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDecimalNumber Subtract(NSDecimalNumber d, NSObject Behavior)
+	{
+		if (d == null)
+		{
+			throw new ArgumentNullException("d");
+		}
+		if (Behavior == null)
+		{
+			throw new ArgumentNullException("Behavior");
+		}
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selDecimalNumberBySubtracting_WithBehavior_Handle, d.Handle, Behavior.Handle));
+		}
+		return Runtime.GetNSObject<NSDecimalNumber>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selDecimalNumberBySubtracting_WithBehavior_Handle, d.Handle, Behavior.Handle));
 	}
 }

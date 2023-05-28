@@ -3,11 +3,19 @@ using System.Runtime.InteropServices;
 using System.Text;
 using CoreFoundation;
 using Foundation;
+using ObjCRuntime;
 
 namespace Security;
 
-public static class SecKeyChain
+public class SecKeyChain : INativeObject
 {
+	public IntPtr Handle { get; internal set; }
+
+	internal SecKeyChain(IntPtr handle)
+	{
+		Handle = handle;
+	}
+
 	private static NSNumber SetLimit(NSMutableDictionary dict, int max)
 	{
 		NSNumber nSNumber = null;
@@ -37,7 +45,14 @@ public static class SecKeyChain
 		}
 		using NSMutableDictionary nSMutableDictionary = NSMutableDictionary.FromDictionary(query.queryDict);
 		SetLimit(nSMutableDictionary, 1);
-		nSMutableDictionary.LowlevelSetObject(CFBoolean.True.Handle, SecItem.ReturnData);
+		if (wantPersistentReference)
+		{
+			nSMutableDictionary.LowlevelSetObject(CFBoolean.TrueHandle, SecItem.ReturnPersistentRef);
+		}
+		else
+		{
+			nSMutableDictionary.LowlevelSetObject(CFBoolean.TrueHandle, SecItem.ReturnData);
+		}
 		status = SecItem.SecItemCopyMatching(nSMutableDictionary.Handle, out var result);
 		if (status == SecStatusCode.Success)
 		{
@@ -53,9 +68,17 @@ public static class SecKeyChain
 			throw new ArgumentNullException("query");
 		}
 		using NSMutableDictionary nSMutableDictionary = NSMutableDictionary.FromDictionary(query.queryDict);
-		SetLimit(nSMutableDictionary, max);
-		nSMutableDictionary.LowlevelSetObject(CFBoolean.True.Handle, SecItem.ReturnData);
+		NSNumber nSNumber = SetLimit(nSMutableDictionary, max);
+		if (wantPersistentReference)
+		{
+			nSMutableDictionary.LowlevelSetObject(CFBoolean.TrueHandle, SecItem.ReturnPersistentRef);
+		}
+		else
+		{
+			nSMutableDictionary.LowlevelSetObject(CFBoolean.TrueHandle, SecItem.ReturnData);
+		}
 		status = SecItem.SecItemCopyMatching(nSMutableDictionary.Handle, out var result);
+		nSNumber = null;
 		if (status == SecStatusCode.Success)
 		{
 			if (max == 1)
@@ -65,8 +88,8 @@ public static class SecKeyChain
 					new NSData(result, owns: false)
 				};
 			}
-			NSArray nSArray = new NSArray(result);
-			NSData[] array = new NSData[nSArray.Count];
+			using NSArray nSArray = new NSArray(result);
+			NSData[] array = new NSData[(ulong)nSArray.Count];
 			for (uint num = 0u; num < array.Length; num++)
 			{
 				array[num] = new NSData(nSArray.ValueAt(num), owns: false);
@@ -96,8 +119,8 @@ public static class SecKeyChain
 		}
 		using NSMutableDictionary nSMutableDictionary = NSMutableDictionary.FromDictionary(query.queryDict);
 		SetLimit(nSMutableDictionary, 1);
-		nSMutableDictionary.LowlevelSetObject(CFBoolean.True.Handle, SecItem.ReturnAttributes);
-		nSMutableDictionary.LowlevelSetObject(CFBoolean.True.Handle, SecItem.ReturnData);
+		nSMutableDictionary.LowlevelSetObject(CFBoolean.TrueHandle, SecItem.ReturnAttributes);
+		nSMutableDictionary.LowlevelSetObject(CFBoolean.TrueHandle, SecItem.ReturnData);
 		result = SecItem.SecItemCopyMatching(nSMutableDictionary.Handle, out var result2);
 		if (result == SecStatusCode.Success)
 		{
@@ -113,18 +136,56 @@ public static class SecKeyChain
 			throw new ArgumentNullException("query");
 		}
 		using NSMutableDictionary nSMutableDictionary = NSMutableDictionary.FromDictionary(query.queryDict);
-		nSMutableDictionary.LowlevelSetObject(CFBoolean.True.Handle, SecItem.ReturnAttributes);
-		SetLimit(nSMutableDictionary, max);
+		nSMutableDictionary.LowlevelSetObject(CFBoolean.TrueHandle, SecItem.ReturnAttributes);
+		nSMutableDictionary.LowlevelSetObject(CFBoolean.TrueHandle, SecItem.ReturnData);
+		NSNumber nSNumber = SetLimit(nSMutableDictionary, max);
 		result = SecItem.SecItemCopyMatching(nSMutableDictionary.Handle, out var result2);
+		nSNumber = null;
 		if (result == SecStatusCode.Success)
 		{
-			NSArray nSArray = new NSArray(result2);
-			SecRecord[] array = new SecRecord[nSArray.Count];
-			for (uint num = 0u; num < array.Length; num++)
+			using (NSArray nSArray = new NSArray(result2))
 			{
-				array[num] = new SecRecord(new NSMutableDictionary(nSArray.ValueAt(num), owns: false));
+				SecRecord[] array = new SecRecord[(ulong)nSArray.Count];
+				for (uint num = 0u; num < array.Length; num++)
+				{
+					array[num] = new SecRecord(new NSMutableDictionary(nSArray.ValueAt(num), owns: false));
+				}
+				return array;
 			}
-			return array;
+		}
+		return null;
+	}
+
+	public static INativeObject[] QueryAsReference(SecRecord query, int max, out SecStatusCode result)
+	{
+		if (query == null)
+		{
+			result = SecStatusCode.Param;
+			return null;
+		}
+		using NSMutableDictionary nSMutableDictionary = NSMutableDictionary.FromDictionary(query.queryDict);
+		nSMutableDictionary.LowlevelSetObject(CFBoolean.TrueHandle, SecItem.ReturnRef);
+		SetLimit(nSMutableDictionary, max);
+		result = SecItem.SecItemCopyMatching(nSMutableDictionary.Handle, out var result2);
+		if (result == SecStatusCode.Success && result2 != IntPtr.Zero)
+		{
+			return NSArray.ArrayFromHandle(result2, (Converter<IntPtr, INativeObject>)delegate(IntPtr p)
+			{
+				nint typeID = CFType.GetTypeID(p);
+				if (typeID == SecCertificate.GetTypeID())
+				{
+					return new SecCertificate(p, owns: true);
+				}
+				if (typeID == SecKey.GetTypeID())
+				{
+					return new SecKey(p, owns: true);
+				}
+				if (!(typeID == SecIdentity.GetTypeID()))
+				{
+					throw new Exception($"Unexpected type: 0x{typeID:x}");
+				}
+				return new SecIdentity(p, owns: true);
+			});
 		}
 		return null;
 	}
@@ -161,171 +222,82 @@ public static class SecKeyChain
 	}
 
 	[DllImport("/System/Library/Frameworks/Security.framework/Security")]
-	private static extern SecStatusCode SecKeychainAddGenericPassword(IntPtr keychain, int serviceNameLength, IntPtr serviceName, int accountNameLength, IntPtr accountName, int passwordLength, IntPtr passwordData, IntPtr itemRef);
+	private static extern SecStatusCode SecKeychainAddGenericPassword(IntPtr keychain, int serviceNameLength, byte[] serviceName, int accountNameLength, byte[] accountName, int passwordLength, byte[] passwordData, IntPtr itemRef);
 
 	[DllImport("/System/Library/Frameworks/Security.framework/Security")]
-	private static extern SecStatusCode SecKeychainFindGenericPassword(IntPtr keychainOrArray, int serviceNameLength, IntPtr serviceName, int accountNameLength, IntPtr accountName, out int passwordLength, out IntPtr passwordData, IntPtr itemRef);
+	private static extern SecStatusCode SecKeychainFindGenericPassword(IntPtr keychainOrArray, int serviceNameLength, byte[] serviceName, int accountNameLength, byte[] accountName, out int passwordLength, out IntPtr passwordData, IntPtr itemRef);
 
 	[DllImport("/System/Library/Frameworks/Security.framework/Security")]
-	private static extern SecStatusCode SecKeychainAddInternetPassword(IntPtr keychain, int serverNameLength, IntPtr serverName, int securityDomainLength, IntPtr securityDomain, int accountNameLength, IntPtr accountName, int pathLength, IntPtr path, short port, IntPtr protocol, IntPtr authenticationType, int passwordLength, IntPtr passwordData, IntPtr itemRef);
+	private static extern SecStatusCode SecKeychainAddInternetPassword(IntPtr keychain, int serverNameLength, byte[] serverName, int securityDomainLength, byte[] securityDomain, int accountNameLength, byte[] accountName, int pathLength, byte[] path, short port, IntPtr protocol, IntPtr authenticationType, int passwordLength, byte[] passwordData, IntPtr itemRef);
 
 	[DllImport("/System/Library/Frameworks/Security.framework/Security")]
-	private static extern SecStatusCode SecKeychainFindInternetPassword(IntPtr keychain, int serverNameLength, IntPtr serverName, int securityDomainLength, IntPtr securityDomain, int accountNameLength, IntPtr accountName, int pathLength, IntPtr path, short port, IntPtr protocol, IntPtr authenticationType, out int passwordLength, out IntPtr passwordData, IntPtr itemRef);
+	private static extern SecStatusCode SecKeychainFindInternetPassword(IntPtr keychain, int serverNameLength, byte[] serverName, int securityDomainLength, byte[] securityDomain, int accountNameLength, byte[] accountName, int pathLength, byte[] path, short port, IntPtr protocol, IntPtr authenticationType, out int passwordLength, out IntPtr passwordData, IntPtr itemRef);
 
 	[DllImport("/System/Library/Frameworks/Security.framework/Security")]
 	private static extern SecStatusCode SecKeychainItemFreeContent(IntPtr attrList, IntPtr data);
 
 	public static SecStatusCode AddInternetPassword(string serverName, string accountName, byte[] password, SecProtocol protocolType = SecProtocol.Http, short port = 0, string path = null, SecAuthenticationType authenticationType = SecAuthenticationType.Default, string securityDomain = null)
 	{
-		GCHandle gCHandle = default(GCHandle);
-		GCHandle gCHandle2 = default(GCHandle);
-		GCHandle gCHandle3 = default(GCHandle);
-		GCHandle gCHandle4 = default(GCHandle);
-		GCHandle gCHandle5 = default(GCHandle);
-		int serverNameLength = 0;
-		IntPtr serverName2 = IntPtr.Zero;
-		int securityDomainLength = 0;
-		IntPtr zero = IntPtr.Zero;
-		int accountNameLength = 0;
-		IntPtr accountName2 = IntPtr.Zero;
-		int pathLength = 0;
-		IntPtr path2 = IntPtr.Zero;
-		int passwordLength = 0;
-		IntPtr passwordData = IntPtr.Zero;
-		try
+		byte[] array = null;
+		byte[] array2 = null;
+		byte[] array3 = null;
+		byte[] array4 = null;
+		if (!string.IsNullOrEmpty(serverName))
 		{
-			if (!string.IsNullOrEmpty(serverName))
-			{
-				byte[] bytes = Encoding.UTF8.GetBytes(serverName);
-				serverNameLength = bytes.Length;
-				gCHandle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-				serverName2 = gCHandle.AddrOfPinnedObject();
-			}
-			if (!string.IsNullOrEmpty(securityDomain))
-			{
-				byte[] bytes2 = Encoding.UTF8.GetBytes(securityDomain);
-				securityDomainLength = bytes2.Length;
-				gCHandle2 = GCHandle.Alloc(bytes2, GCHandleType.Pinned);
-			}
-			if (!string.IsNullOrEmpty(accountName))
-			{
-				byte[] bytes3 = Encoding.UTF8.GetBytes(accountName);
-				accountNameLength = bytes3.Length;
-				gCHandle3 = GCHandle.Alloc(bytes3, GCHandleType.Pinned);
-				accountName2 = gCHandle3.AddrOfPinnedObject();
-			}
-			if (!string.IsNullOrEmpty(path))
-			{
-				byte[] bytes4 = Encoding.UTF8.GetBytes(path);
-				pathLength = bytes4.Length;
-				gCHandle4 = GCHandle.Alloc(bytes4, GCHandleType.Pinned);
-				path2 = gCHandle4.AddrOfPinnedObject();
-			}
-			if (password != null && password.Length != 0)
-			{
-				passwordLength = password.Length;
-				gCHandle5 = GCHandle.Alloc(password, GCHandleType.Pinned);
-				passwordData = gCHandle5.AddrOfPinnedObject();
-			}
-			return SecKeychainAddInternetPassword(IntPtr.Zero, serverNameLength, serverName2, securityDomainLength, zero, accountNameLength, accountName2, pathLength, path2, port, SecProtocolKeys.FromSecProtocol(protocolType), KeysAuthenticationType.FromSecAuthenticationType(authenticationType), passwordLength, passwordData, IntPtr.Zero);
+			array = Encoding.UTF8.GetBytes(serverName);
 		}
-		finally
+		if (!string.IsNullOrEmpty(securityDomain))
 		{
-			if (gCHandle.IsAllocated)
-			{
-				gCHandle.Free();
-			}
-			if (gCHandle3.IsAllocated)
-			{
-				gCHandle3.Free();
-			}
-			if (gCHandle5.IsAllocated)
-			{
-				gCHandle5.Free();
-			}
-			if (gCHandle2.IsAllocated)
-			{
-				gCHandle2.Free();
-			}
-			if (gCHandle4.IsAllocated)
-			{
-				gCHandle4.Free();
-			}
+			array2 = Encoding.UTF8.GetBytes(securityDomain);
 		}
+		if (!string.IsNullOrEmpty(accountName))
+		{
+			array3 = Encoding.UTF8.GetBytes(accountName);
+		}
+		if (!string.IsNullOrEmpty(path))
+		{
+			array4 = Encoding.UTF8.GetBytes(path);
+		}
+		return SecKeychainAddInternetPassword(IntPtr.Zero, (array != null) ? array.Length : 0, array, (array2 != null) ? array2.Length : 0, array2, (array3 != null) ? array3.Length : 0, array3, (array4 != null) ? array4.Length : 0, array4, port, SecProtocolKeys.FromSecProtocol(protocolType), KeysAuthenticationType.FromSecAuthenticationType(authenticationType), (password != null) ? password.Length : 0, password, IntPtr.Zero);
 	}
 
 	public static SecStatusCode FindInternetPassword(string serverName, string accountName, out byte[] password, SecProtocol protocolType = SecProtocol.Http, short port = 0, string path = null, SecAuthenticationType authenticationType = SecAuthenticationType.Default, string securityDomain = null)
 	{
 		password = null;
-		GCHandle gCHandle = default(GCHandle);
-		GCHandle gCHandle2 = default(GCHandle);
-		GCHandle gCHandle3 = default(GCHandle);
-		GCHandle gCHandle4 = default(GCHandle);
-		int serverNameLength = 0;
-		IntPtr serverName2 = IntPtr.Zero;
-		int securityDomainLength = 0;
-		IntPtr zero = IntPtr.Zero;
-		int accountNameLength = 0;
-		IntPtr accountName2 = IntPtr.Zero;
-		int pathLength = 0;
-		IntPtr path2 = IntPtr.Zero;
+		byte[] array = null;
+		byte[] array2 = null;
+		byte[] array3 = null;
+		byte[] array4 = null;
 		IntPtr passwordData = IntPtr.Zero;
 		try
 		{
 			if (!string.IsNullOrEmpty(serverName))
 			{
-				byte[] bytes = Encoding.UTF8.GetBytes(serverName);
-				serverNameLength = bytes.Length;
-				gCHandle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-				serverName2 = gCHandle.AddrOfPinnedObject();
+				array = Encoding.UTF8.GetBytes(serverName);
 			}
 			if (!string.IsNullOrEmpty(securityDomain))
 			{
-				byte[] bytes2 = Encoding.UTF8.GetBytes(securityDomain);
-				securityDomainLength = bytes2.Length;
-				gCHandle2 = GCHandle.Alloc(bytes2, GCHandleType.Pinned);
+				array2 = Encoding.UTF8.GetBytes(securityDomain);
 			}
 			if (!string.IsNullOrEmpty(accountName))
 			{
-				byte[] bytes3 = Encoding.UTF8.GetBytes(accountName);
-				accountNameLength = bytes3.Length;
-				gCHandle3 = GCHandle.Alloc(bytes3, GCHandleType.Pinned);
-				accountName2 = gCHandle3.AddrOfPinnedObject();
+				array3 = Encoding.UTF8.GetBytes(accountName);
 			}
 			if (!string.IsNullOrEmpty(path))
 			{
-				byte[] bytes4 = Encoding.UTF8.GetBytes(path);
-				pathLength = bytes4.Length;
-				gCHandle4 = GCHandle.Alloc(bytes4, GCHandleType.Pinned);
-				path2 = gCHandle4.AddrOfPinnedObject();
+				array4 = Encoding.UTF8.GetBytes(path);
 			}
 			int passwordLength = 0;
-			SecStatusCode num = SecKeychainFindInternetPassword(IntPtr.Zero, serverNameLength, serverName2, securityDomainLength, zero, accountNameLength, accountName2, pathLength, path2, port, SecProtocolKeys.FromSecProtocol(protocolType), KeysAuthenticationType.FromSecAuthenticationType(authenticationType), out passwordLength, out passwordData, IntPtr.Zero);
-			if (num == SecStatusCode.Success && passwordLength > 0)
+			SecStatusCode secStatusCode = SecKeychainFindInternetPassword(IntPtr.Zero, (array != null) ? array.Length : 0, array, (array2 != null) ? array2.Length : 0, array2, (array3 != null) ? array3.Length : 0, array3, (array4 != null) ? array4.Length : 0, array4, port, SecProtocolKeys.FromSecProtocol(protocolType), KeysAuthenticationType.FromSecAuthenticationType(authenticationType), out passwordLength, out passwordData, IntPtr.Zero);
+			if (secStatusCode == SecStatusCode.Success && passwordLength > 0)
 			{
 				password = new byte[passwordLength];
 				Marshal.Copy(passwordData, password, 0, passwordLength);
 			}
-			return num;
+			return secStatusCode;
 		}
 		finally
 		{
-			if (gCHandle.IsAllocated)
-			{
-				gCHandle.Free();
-			}
-			if (gCHandle3.IsAllocated)
-			{
-				gCHandle3.Free();
-			}
-			if (gCHandle2.IsAllocated)
-			{
-				gCHandle2.Free();
-			}
-			if (gCHandle4.IsAllocated)
-			{
-				gCHandle4.Free();
-			}
 			if (passwordData != IntPtr.Zero)
 			{
 				SecKeychainItemFreeContent(IntPtr.Zero, passwordData);
@@ -335,105 +307,116 @@ public static class SecKeyChain
 
 	public static SecStatusCode AddGenericPassword(string serviceName, string accountName, byte[] password)
 	{
-		GCHandle gCHandle = default(GCHandle);
-		GCHandle gCHandle2 = default(GCHandle);
-		GCHandle gCHandle3 = default(GCHandle);
-		int serviceNameLength = 0;
-		IntPtr serviceName2 = IntPtr.Zero;
-		int accountNameLength = 0;
-		IntPtr accountName2 = IntPtr.Zero;
-		int passwordLength = 0;
-		IntPtr passwordData = IntPtr.Zero;
-		try
+		byte[] array = null;
+		byte[] array2 = null;
+		if (!string.IsNullOrEmpty(serviceName))
 		{
-			if (!string.IsNullOrEmpty(serviceName))
-			{
-				byte[] bytes = Encoding.UTF8.GetBytes(serviceName);
-				serviceNameLength = bytes.Length;
-				gCHandle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-				serviceName2 = gCHandle.AddrOfPinnedObject();
-			}
-			if (!string.IsNullOrEmpty(accountName))
-			{
-				byte[] bytes2 = Encoding.UTF8.GetBytes(accountName);
-				accountNameLength = bytes2.Length;
-				gCHandle2 = GCHandle.Alloc(bytes2, GCHandleType.Pinned);
-				accountName2 = gCHandle2.AddrOfPinnedObject();
-			}
-			if (password != null && password.Length != 0)
-			{
-				passwordLength = password.Length;
-				gCHandle3 = GCHandle.Alloc(password, GCHandleType.Pinned);
-				passwordData = gCHandle3.AddrOfPinnedObject();
-			}
-			return SecKeychainAddGenericPassword(IntPtr.Zero, serviceNameLength, serviceName2, accountNameLength, accountName2, passwordLength, passwordData, IntPtr.Zero);
+			array = Encoding.UTF8.GetBytes(serviceName);
 		}
-		finally
+		if (!string.IsNullOrEmpty(accountName))
 		{
-			if (gCHandle.IsAllocated)
-			{
-				gCHandle.Free();
-			}
-			if (gCHandle2.IsAllocated)
-			{
-				gCHandle2.Free();
-			}
-			if (gCHandle3.IsAllocated)
-			{
-				gCHandle3.Free();
-			}
+			array2 = Encoding.UTF8.GetBytes(accountName);
 		}
+		return SecKeychainAddGenericPassword(IntPtr.Zero, (array != null) ? array.Length : 0, array, (array2 != null) ? array2.Length : 0, array2, (password != null) ? password.Length : 0, password, IntPtr.Zero);
 	}
 
 	public static SecStatusCode FindGenericPassword(string serviceName, string accountName, out byte[] password)
 	{
 		password = null;
-		GCHandle gCHandle = default(GCHandle);
-		GCHandle gCHandle2 = default(GCHandle);
-		int serviceNameLength = 0;
-		IntPtr serviceName2 = IntPtr.Zero;
-		int accountNameLength = 0;
-		IntPtr accountName2 = IntPtr.Zero;
+		byte[] array = null;
+		byte[] array2 = null;
 		IntPtr passwordData = IntPtr.Zero;
 		try
 		{
 			if (!string.IsNullOrEmpty(serviceName))
 			{
-				byte[] bytes = Encoding.UTF8.GetBytes(serviceName);
-				serviceNameLength = bytes.Length;
-				gCHandle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-				serviceName2 = gCHandle.AddrOfPinnedObject();
+				array = Encoding.UTF8.GetBytes(serviceName);
 			}
 			if (!string.IsNullOrEmpty(accountName))
 			{
-				byte[] bytes2 = Encoding.UTF8.GetBytes(accountName);
-				accountNameLength = bytes2.Length;
-				gCHandle2 = GCHandle.Alloc(bytes2, GCHandleType.Pinned);
-				accountName2 = gCHandle2.AddrOfPinnedObject();
+				array2 = Encoding.UTF8.GetBytes(accountName);
 			}
 			int passwordLength = 0;
-			SecStatusCode num = SecKeychainFindGenericPassword(IntPtr.Zero, serviceNameLength, serviceName2, accountNameLength, accountName2, out passwordLength, out passwordData, IntPtr.Zero);
-			if (num == SecStatusCode.Success && passwordLength > 0)
+			SecStatusCode secStatusCode = SecKeychainFindGenericPassword(IntPtr.Zero, (array != null) ? array.Length : 0, array, (array2 != null) ? array2.Length : 0, array2, out passwordLength, out passwordData, IntPtr.Zero);
+			if (secStatusCode == SecStatusCode.Success && passwordLength > 0)
 			{
 				password = new byte[passwordLength];
 				Marshal.Copy(passwordData, password, 0, passwordLength);
 			}
-			return num;
+			return secStatusCode;
 		}
 		finally
 		{
-			if (gCHandle.IsAllocated)
-			{
-				gCHandle.Free();
-			}
-			if (gCHandle2.IsAllocated)
-			{
-				gCHandle2.Free();
-			}
 			if (passwordData != IntPtr.Zero)
 			{
 				SecKeychainItemFreeContent(IntPtr.Zero, passwordData);
 			}
 		}
+	}
+
+	public static void AddIdentity(SecIdentity identity)
+	{
+		if (identity == null)
+		{
+			throw new ArgumentNullException("identity");
+		}
+		using SecRecord secRecord = new SecRecord();
+		secRecord.SetValueRef(identity);
+		SecStatusCode secStatusCode = Add(secRecord);
+		if (secStatusCode != SecStatusCode.DuplicateItem && secStatusCode != 0)
+		{
+			throw new InvalidOperationException(secStatusCode.ToString());
+		}
+	}
+
+	public static void RemoveIdentity(SecIdentity identity)
+	{
+		if (identity == null)
+		{
+			throw new ArgumentNullException("identity");
+		}
+		using SecRecord secRecord = new SecRecord();
+		secRecord.SetValueRef(identity);
+		SecStatusCode secStatusCode = Remove(secRecord);
+		if (secStatusCode != SecStatusCode.ItemNotFound && secStatusCode != 0)
+		{
+			throw new InvalidOperationException(secStatusCode.ToString());
+		}
+	}
+
+	public static SecIdentity FindIdentity(SecCertificate certificate, bool throwOnError = false)
+	{
+		if (certificate == null)
+		{
+			throw new ArgumentNullException("certificate");
+		}
+		SecIdentity secIdentity = FindIdentity((SecCertificate cert) => SecCertificate.Equals(certificate, cert));
+		if (!throwOnError || secIdentity != null)
+		{
+			return secIdentity;
+		}
+		throw new InvalidOperationException($"Could not find SecIdentity for certificate '{certificate.SubjectSummary}' in keychain.");
+	}
+
+	private static SecIdentity FindIdentity(Predicate<SecCertificate> filter)
+	{
+		using (SecRecord query = new SecRecord(SecKind.Identity))
+		{
+			SecStatusCode result;
+			INativeObject[] array = QueryAsReference(query, -1, out result);
+			if (result != 0 || array == null)
+			{
+				return null;
+			}
+			for (int i = 0; i < array.Length; i++)
+			{
+				SecIdentity secIdentity = (SecIdentity)array[i];
+				if (filter(secIdentity.Certificate))
+				{
+					return secIdentity;
+				}
+			}
+		}
+		return null;
 	}
 }

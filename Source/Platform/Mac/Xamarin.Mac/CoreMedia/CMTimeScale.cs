@@ -1,7 +1,9 @@
 using System;
+using ObjCRuntime;
 
 namespace CoreMedia;
 
+[Watch(6, 0)]
 public struct CMTimeScale
 {
 	public static readonly CMTimeScale MaxValue = new CMTimeScale(int.MaxValue);

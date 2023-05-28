@@ -12,7 +12,7 @@ public class CVDisplayLink : INativeObject, IDisposable
 
 	private delegate CVReturn CVDisplayLinkOutputCallback(IntPtr displayLink, ref CVTimeStamp inNow, ref CVTimeStamp inOutputTime, CVOptionFlags flagsIn, ref CVOptionFlags flagsOut, IntPtr displayLinkContext);
 
-	internal IntPtr handle;
+	private IntPtr handle;
 
 	private GCHandle callbackHandle;
 
@@ -79,24 +79,17 @@ public class CVDisplayLink : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
-	private static extern CVReturn CVDisplayLinkCreateWithActiveCGDisplays(IntPtr displayLinkOut);
+	private static extern CVReturn CVDisplayLinkCreateWithActiveCGDisplays(out IntPtr displayLinkOut);
 
 	public CVDisplayLink()
 	{
-		IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
-		try
+		IntPtr displayLinkOut;
+		CVReturn cVReturn = CVDisplayLinkCreateWithActiveCGDisplays(out displayLinkOut);
+		if (cVReturn != 0)
 		{
-			CVReturn cVReturn = CVDisplayLinkCreateWithActiveCGDisplays(intPtr);
-			if (cVReturn != 0)
-			{
-				throw new Exception("CVDisplayLink returned: " + cVReturn);
-			}
-			handle = Marshal.ReadIntPtr(intPtr);
+			throw new Exception("CVDisplayLink returned: " + cVReturn);
 		}
-		finally
-		{
-			Marshal.FreeHGlobal(intPtr);
-		}
+		handle = displayLinkOut;
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
@@ -161,9 +154,9 @@ public class CVDisplayLink : INativeObject, IDisposable
 
 	private static CVReturn OutputCallback(IntPtr displayLink, ref CVTimeStamp inNow, ref CVTimeStamp inOutputTime, CVOptionFlags flagsIn, ref CVOptionFlags flagsOut, IntPtr displayLinkContext)
 	{
-		DisplayLinkOutputCallback obj = (DisplayLinkOutputCallback)GCHandle.FromIntPtr(displayLinkContext).Target;
+		DisplayLinkOutputCallback displayLinkOutputCallback = (DisplayLinkOutputCallback)GCHandle.FromIntPtr(displayLinkContext).Target;
 		CVDisplayLink displayLink2 = new CVDisplayLink(displayLink, owns: false);
-		return obj(displayLink2, ref inNow, ref inOutputTime, flagsIn, ref flagsOut);
+		return displayLinkOutputCallback(displayLink2, ref inNow, ref inOutputTime, flagsIn, ref flagsOut);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]

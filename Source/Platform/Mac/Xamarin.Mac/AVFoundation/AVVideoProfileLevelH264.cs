@@ -8,5 +8,10 @@ public enum AVVideoProfileLevelH264
 	Main30,
 	Main31,
 	Main32,
-	Main41
+	Main41,
+	High40,
+	High41,
+	BaselineAutoLevel,
+	MainAutoLevel,
+	HighAutoLevel
 }

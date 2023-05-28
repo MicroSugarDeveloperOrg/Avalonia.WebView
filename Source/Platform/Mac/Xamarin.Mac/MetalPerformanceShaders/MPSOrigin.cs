@@ -1,11 +1,11 @@
-﻿namespace MetalPerformanceShaders;
+namespace MetalPerformanceShaders;
 
 [Mac(10, 13)]
 public struct MPSOrigin
 {
-    public double X;
+	public double X;
 
-    public double Y;
+	public double Y;
 
-    public double Z;
+	public double Z;
 }

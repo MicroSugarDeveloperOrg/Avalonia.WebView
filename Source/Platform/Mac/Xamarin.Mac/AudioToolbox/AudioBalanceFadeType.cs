@@ -1,6 +1,6 @@
 namespace AudioToolbox;
 
-public enum AudioBalanceFadeType
+public enum AudioBalanceFadeType : uint
 {
 	MaxUnityGain,
 	EqualPower

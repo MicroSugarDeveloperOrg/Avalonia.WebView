@@ -1,18 +1,24 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using AudioToolbox;
+using CoreFoundation;
 using Foundation;
+using ObjCRuntime;
 
 namespace AudioUnit;
 
-public class AUGraph : IDisposable
+public class AUGraph : INativeObject, IDisposable
 {
 	private readonly GCHandle gcHandle;
 
 	private IntPtr handle;
 
-	[Advice("Use Handle property instead")]
-	public IntPtr Handler => handle;
+	private HashSet<RenderDelegate> graphUserCallbacks = new HashSet<RenderDelegate>();
+
+	private Dictionary<uint, RenderDelegate> nodesCallbacks;
+
+	private static readonly CallbackShared CreateRenderCallback = RenderCallbackImpl;
 
 	public IntPtr Handle => handle;
 
@@ -43,16 +49,20 @@ public class AUGraph : IDisposable
 		}
 	}
 
-	public event EventHandler<AudioGraphEventArgs> RenderCallback;
+	[Preserve(Conditional = true)]
+	internal AUGraph(IntPtr handle, bool owns)
+	{
+		this.handle = handle;
+		if (!owns)
+		{
+			CFObject.CFRetain(this.handle);
+		}
+		gcHandle = GCHandle.Alloc(this);
+	}
 
 	internal AUGraph(IntPtr ptr)
 	{
 		handle = ptr;
-		int num = AUGraphAddRenderNotify(handle, renderCallback, GCHandle.ToIntPtr(gcHandle));
-		if (num != 0)
-		{
-			throw new ArgumentException($"Error code: {num}");
-		}
 		gcHandle = GCHandle.Alloc(this);
 	}
 
@@ -61,20 +71,76 @@ public class AUGraph : IDisposable
 		int num = NewAUGraph(ref handle);
 		if (num != 0)
 		{
-			throw new InvalidOperationException(string.Format("Cannot create new AUGraph. Error code:", num));
+			throw new InvalidOperationException($"Cannot create new AUGraph. Error code: {num}");
 		}
+		gcHandle = GCHandle.Alloc(this);
 	}
 
-	[MonoPInvokeCallback(typeof(AudioUnit.AURenderCallback))]
-	private static int renderCallback(IntPtr inRefCon, ref AudioUnitRenderActionFlags _ioActionFlags, ref AudioTimeStamp _inTimeStamp, int _inBusNumber, int _inNumberFrames, AudioBufferList _ioData)
+	public static AUGraph Create(out int errorCode)
+	{
+		IntPtr outGraph = IntPtr.Zero;
+		errorCode = NewAUGraph(ref outGraph);
+		if (errorCode != 0)
+		{
+			return null;
+		}
+		return new AUGraph(outGraph);
+	}
+
+	public AudioUnitStatus AddRenderNotify(RenderDelegate callback)
+	{
+		if (callback == null)
+		{
+			throw new ArgumentException("Callback can not be null");
+		}
+		AudioUnitStatus audioUnitStatus = AudioUnitStatus.NoError;
+		if (graphUserCallbacks.Count == 0)
+		{
+			audioUnitStatus = (AudioUnitStatus)AUGraphAddRenderNotify(handle, renderCallback, GCHandle.ToIntPtr(gcHandle));
+		}
+		if (audioUnitStatus == AudioUnitStatus.NoError)
+		{
+			graphUserCallbacks.Add(callback);
+		}
+		return audioUnitStatus;
+	}
+
+	public AudioUnitStatus RemoveRenderNotify(RenderDelegate callback)
+	{
+		if (callback == null)
+		{
+			throw new ArgumentException("Callback can not be null");
+		}
+		if (!graphUserCallbacks.Contains(callback))
+		{
+			throw new ArgumentException("Cannot unregister a callback that has not been registered");
+		}
+		AudioUnitStatus result = AudioUnitStatus.NoError;
+		if (graphUserCallbacks.Count == 0)
+		{
+			result = (AudioUnitStatus)AUGraphRemoveRenderNotify(handle, renderCallback, GCHandle.ToIntPtr(gcHandle));
+		}
+		graphUserCallbacks.Remove(callback);
+		return result;
+	}
+
+	[MonoPInvokeCallback(typeof(CallbackShared))]
+	private static AudioUnitStatus renderCallback(IntPtr inRefCon, ref AudioUnitRenderActionFlags _ioActionFlags, ref AudioTimeStamp _inTimeStamp, uint _inBusNumber, uint _inNumberFrames, IntPtr _ioData)
 	{
 		AUGraph aUGraph = (AUGraph)GCHandle.FromIntPtr(inRefCon).Target;
-		if (aUGraph.RenderCallback != null)
+		HashSet<RenderDelegate> hashSet = aUGraph.graphUserCallbacks;
+		if (hashSet.Count != 0)
 		{
-			AudioGraphEventArgs e = new AudioGraphEventArgs(_ioActionFlags, _inTimeStamp, _inBusNumber, _inNumberFrames, _ioData);
-			aUGraph.RenderCallback(aUGraph, e);
+			using (AudioBuffers data = new AudioBuffers(_ioData))
+			{
+				foreach (RenderDelegate item in hashSet)
+				{
+					item(_ioActionFlags, _inTimeStamp, _inBusNumber, _inNumberFrames, data);
+				}
+				return AudioUnitStatus.NoError;
+			}
 		}
-		return 0;
+		return AudioUnitStatus.InvalidParameter;
 	}
 
 	public void Open()
@@ -82,7 +148,7 @@ public class AUGraph : IDisposable
 		int num = AUGraphOpen(handle);
 		if (num != 0)
 		{
-			throw new InvalidOperationException(string.Format("Cannot open AUGraph. Error code:", num));
+			throw new InvalidOperationException($"Cannot open AUGraph. Error code: {num}");
 		}
 	}
 
@@ -94,10 +160,10 @@ public class AUGraph : IDisposable
 	public int AddNode(AudioComponentDescription description)
 	{
 		int outNode;
-		AUGraphError aUGraphError = AUGraphAddNode(handle, description, out outNode);
+		AUGraphError aUGraphError = AUGraphAddNode(handle, ref description, out outNode);
 		if (aUGraphError != 0)
 		{
-			throw new ArgumentException(string.Format("Error code:", aUGraphError));
+			throw new ArgumentException($"Error code: {aUGraphError}");
 		}
 		return outNode;
 	}
@@ -129,15 +195,43 @@ public class AUGraph : IDisposable
 
 	public AudioUnit GetNodeInfo(int node)
 	{
-		IntPtr outAudioUnit;
-		AUGraphError aUGraphError = AUGraphNodeInfo(handle, node, IntPtr.Zero, out outAudioUnit);
-		if (aUGraphError != 0)
+		AUGraphError error;
+		AudioUnit nodeInfo = GetNodeInfo(node, out error);
+		if (error != 0)
 		{
-			throw new ArgumentException($"Error code:{aUGraphError}");
+			throw new ArgumentException($"Error code:{error}");
 		}
-		if (outAudioUnit == IntPtr.Zero)
+		if (nodeInfo == null)
 		{
 			throw new InvalidOperationException("Can not get object instance");
+		}
+		return nodeInfo;
+	}
+
+	public AudioUnit GetNodeInfo(int node, out AUGraphError error)
+	{
+		if (Handle == IntPtr.Zero)
+		{
+			throw new ObjectDisposedException("AUGraph");
+		}
+		error = AUGraphNodeInfo(handle, node, IntPtr.Zero, out var outAudioUnit);
+		if (error != 0 || outAudioUnit == IntPtr.Zero)
+		{
+			return null;
+		}
+		return new AudioUnit(outAudioUnit);
+	}
+
+	public AudioUnit GetNodeInfo(int node, out AudioComponentDescription cd, out AUGraphError error)
+	{
+		if (Handle == IntPtr.Zero)
+		{
+			throw new ObjectDisposedException("AUGraph");
+		}
+		error = AUGraphNodeInfo(Handle, node, out cd, out var outAudioUnit);
+		if (error != 0 || outAudioUnit == IntPtr.Zero)
+		{
+			return null;
 		}
 		return new AudioUnit(outAudioUnit);
 	}
@@ -160,6 +254,31 @@ public class AUGraph : IDisposable
 	public AUGraphError DisconnectNodeInput(int destNode, uint destInputNumber)
 	{
 		return AUGraphDisconnectNodeInput(handle, destNode, destInputNumber);
+	}
+
+	public AUGraphError SetNodeInputCallback(int destNode, uint destInputNumber, RenderDelegate renderDelegate)
+	{
+		if (nodesCallbacks == null)
+		{
+			nodesCallbacks = new Dictionary<uint, RenderDelegate>();
+		}
+		nodesCallbacks[destInputNumber] = renderDelegate;
+		AURenderCallbackStruct inInputCallback = default(AURenderCallbackStruct);
+		inInputCallback.Proc = CreateRenderCallback;
+		inInputCallback.ProcRefCon = GCHandle.ToIntPtr(gcHandle);
+		return AUGraphSetNodeInputCallback(handle, destNode, destInputNumber, ref inInputCallback);
+	}
+
+	[MonoPInvokeCallback(typeof(CallbackShared))]
+	private static AudioUnitStatus RenderCallbackImpl(IntPtr clientData, ref AudioUnitRenderActionFlags actionFlags, ref AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, IntPtr data)
+	{
+		AUGraph aUGraph = (AUGraph)GCHandle.FromIntPtr(clientData).Target;
+		if (!aUGraph.nodesCallbacks.TryGetValue(busNumber, out var value))
+		{
+			return AudioUnitStatus.InvalidParameter;
+		}
+		using AudioBuffers data2 = new AudioBuffers(data);
+		return value(actionFlags, timeStamp, busNumber, numberFrames, data2);
 	}
 
 	public AUGraphError ClearConnections()
@@ -188,13 +307,22 @@ public class AUGraph : IDisposable
 		return AUGraphUpdate(handle, out outIsUpdated) == AUGraphError.OK && outIsUpdated;
 	}
 
+	public void LogAllNodes()
+	{
+		if (Handle == IntPtr.Zero)
+		{
+			throw new ObjectDisposedException("AUGraph");
+		}
+		CAShow(Handle);
+	}
+
 	public void Dispose()
 	{
 		Dispose(disposing: true);
 		GC.SuppressFinalize(this);
 	}
 
-	public virtual void Dispose(bool disposing)
+	protected virtual void Dispose(bool disposing)
 	{
 		if (handle != IntPtr.Zero)
 		{
@@ -218,7 +346,7 @@ public class AUGraph : IDisposable
 	private static extern int AUGraphOpen(IntPtr inGraph);
 
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
-	private static extern AUGraphError AUGraphAddNode(IntPtr inGraph, AudioComponentDescription inDescription, out int outNode);
+	private static extern AUGraphError AUGraphAddNode(IntPtr inGraph, ref AudioComponentDescription inDescription, out int outNode);
 
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
 	private static extern AUGraphError AUGraphRemoveNode(IntPtr inGraph, int inNode);
@@ -254,7 +382,10 @@ public class AUGraph : IDisposable
 	private static extern AUGraphError AUGraphInitialize(IntPtr inGraph);
 
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
-	private static extern int AUGraphAddRenderNotify(IntPtr inGraph, AudioUnit.AURenderCallback inCallback, IntPtr inRefCon);
+	private static extern int AUGraphAddRenderNotify(IntPtr inGraph, CallbackShared inCallback, IntPtr inRefCon);
+
+	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
+	private static extern int AUGraphRemoveRenderNotify(IntPtr inGraph, CallbackShared inCallback, IntPtr inRefCon);
 
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
 	private static extern AUGraphError AUGraphStart(IntPtr inGraph);
@@ -291,4 +422,7 @@ public class AUGraph : IDisposable
 
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
 	private static extern AUGraphError AUGraphUpdate(IntPtr inGraph, out bool outIsUpdated);
+
+	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
+	private static extern void CAShow(IntPtr handle);
 }

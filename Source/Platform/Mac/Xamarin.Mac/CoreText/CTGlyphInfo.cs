@@ -6,14 +6,20 @@ using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
 public class CTGlyphInfo : INativeObject, IDisposable
 {
 	internal IntPtr handle;
 
 	public IntPtr Handle => handle;
 
-	public string GlyphName => CFString.FetchString(CTGlyphInfoGetGlyphName(handle));
+	public string GlyphName
+	{
+		get
+		{
+			IntPtr intPtr = CTGlyphInfoGetGlyphName(handle);
+			return CFString.FetchString(intPtr);
+		}
+	}
 
 	public ushort CharacterIdentifier => CTGlyphInfoGetCharacterIdentifier(handle);
 
@@ -130,6 +136,22 @@ public class CTGlyphInfo : INativeObject, IDisposable
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
 	private static extern CTCharacterCollection CTGlyphInfoGetCharacterCollection(IntPtr glyphInfo);
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
+	[iOS(13, 0)]
+	[Mac(10, 15)]
+	[TV(13, 0)]
+	[Watch(6, 0)]
+	private static extern ushort CTGlyphInfoGetGlyph(IntPtr glyphInfo);
+
+	[iOS(13, 0)]
+	[Mac(10, 15)]
+	[TV(13, 0)]
+	[Watch(6, 0)]
+	public ushort GetGlyph()
+	{
+		return CTGlyphInfoGetGlyph(handle);
+	}
 
 	public override string ToString()
 	{

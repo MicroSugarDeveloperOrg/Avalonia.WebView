@@ -8,90 +8,91 @@ namespace CoreData;
 [Register("NSFetchedPropertyDescription", true)]
 public class NSFetchedPropertyDescription : NSPropertyDescription
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFetchRequest = "fetchRequest";
+
 	private static readonly IntPtr selFetchRequestHandle = Selector.GetHandle("fetchRequest");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFetchRequest_ = "setFetchRequest:";
 
 	private static readonly IntPtr selSetFetchRequest_Handle = Selector.GetHandle("setFetchRequest:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSFetchedPropertyDescription");
-
-	private object __mt_FetchRequest_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSFetchedPropertyDescription");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSFetchRequest FetchRequest
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSFetchRequest? FetchRequest
 	{
-		[Export("fetchRequest")]
+		[Export("fetchRequest", ArgumentSemantic.Retain)]
 		get
 		{
-			return (NSFetchRequest)(__mt_FetchRequest_var = ((!IsDirectBinding) ? ((NSFetchRequest)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFetchRequestHandle))) : ((NSFetchRequest)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFetchRequestHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSFetchRequest>(Messaging.IntPtr_objc_msgSend(base.Handle, selFetchRequestHandle));
+			}
+			return Runtime.GetNSObject<NSFetchRequest>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFetchRequestHandle));
 		}
-		[Export("setFetchRequest:")]
+		[Export("setFetchRequest:", ArgumentSemantic.Retain)]
 		set
 		{
-			if (value == null)
+			if (base.IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFetchRequest_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFetchRequest_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFetchRequest_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFetchRequest_Handle, value?.Handle ?? IntPtr.Zero);
 			}
-			__mt_FetchRequest_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSFetchedPropertyDescription()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSFetchedPropertyDescription(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSFetchedPropertyDescription(NSObjectFlag t)
+	protected NSFetchedPropertyDescription(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSFetchedPropertyDescription(IntPtr handle)
+	protected internal NSFetchedPropertyDescription(IntPtr handle)
 		: base(handle)
 	{
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_FetchRequest_var = null;
-		}
 	}
 }

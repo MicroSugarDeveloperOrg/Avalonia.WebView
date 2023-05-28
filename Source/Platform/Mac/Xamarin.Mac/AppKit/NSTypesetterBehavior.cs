@@ -1,5 +1,8 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
+[Native]
 public enum NSTypesetterBehavior : long
 {
 	Latest = -1L,

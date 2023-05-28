@@ -1,19 +1,21 @@
 using System;
+using ObjCRuntime;
 
 namespace AppKit;
 
 [Flags]
-public enum NSFontPanelMode
+[Native]
+public enum NSFontPanelMode : ulong
 {
-	FaceMask = 1,
-	SizeMask = 2,
-	CollectionMask = 4,
-	UnderlineEffectMask = 0x100,
-	StrikethroughEffectMask = 0x200,
-	TextColorEffectMask = 0x400,
-	DocumentColorEffectMask = 0x800,
-	ShadowEffectMask = 0x1000,
-	AllEffectsMask = 0xFFF00,
-	StandardMask = 0xFFFF,
-	AllModesMask = -1
+	FaceMask = 1uL,
+	SizeMask = 2uL,
+	CollectionMask = 4uL,
+	UnderlineEffectMask = 0x100uL,
+	StrikethroughEffectMask = 0x200uL,
+	TextColorEffectMask = 0x400uL,
+	DocumentColorEffectMask = 0x800uL,
+	ShadowEffectMask = 0x1000uL,
+	AllEffectsMask = 0xFFF00uL,
+	StandardMask = 0xFFFFuL,
+	AllModesMask = 0xFFFFFFFFuL
 }

@@ -1,6 +1,9 @@
+using ObjCRuntime;
+
 namespace ImageKit;
 
-public enum IKGroupStyle
+[Native]
+public enum IKGroupStyle : long
 {
 	Bezel,
 	Disclosure

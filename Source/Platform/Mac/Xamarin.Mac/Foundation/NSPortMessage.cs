@@ -7,63 +7,67 @@ namespace Foundation;
 [Register("NSPortMessage", true)]
 public class NSPortMessage : NSObject
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selComponents = "components";
+
 	private static readonly IntPtr selComponentsHandle = Selector.GetHandle("components");
 
-	private static readonly IntPtr selReceivePortHandle = Selector.GetHandle("receivePort");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithSendPort_ReceivePort_Components_ = "initWithSendPort:receivePort:components:";
 
-	private static readonly IntPtr selSendPortHandle = Selector.GetHandle("sendPort");
+	private static readonly IntPtr selInitWithSendPort_ReceivePort_Components_Handle = Selector.GetHandle("initWithSendPort:receivePort:components:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMsgid = "msgid";
 
 	private static readonly IntPtr selMsgidHandle = Selector.GetHandle("msgid");
 
-	private static readonly IntPtr selSetMsgid_Handle = Selector.GetHandle("setMsgid:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReceivePort = "receivePort";
 
-	private static readonly IntPtr selInitWithSendPortReceivePortComponents_Handle = Selector.GetHandle("initWithSendPort:receivePort:components:");
+	private static readonly IntPtr selReceivePortHandle = Selector.GetHandle("receivePort");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSendBeforeDate_ = "sendBeforeDate:";
 
 	private static readonly IntPtr selSendBeforeDate_Handle = Selector.GetHandle("sendBeforeDate:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSPortMessage");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSendPort = "sendPort";
 
-	private object __mt_Components_var;
+	private static readonly IntPtr selSendPortHandle = Selector.GetHandle("sendPort");
 
-	private object __mt_ReceivePort_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMsgid_ = "setMsgid:";
 
-	private object __mt_SendPort_var;
+	private static readonly IntPtr selSetMsgid_Handle = Selector.GetHandle("setMsgid:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSPortMessage");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSArray Components
 	{
 		[Export("components")]
 		get
 		{
-			return (NSArray)(__mt_Components_var = ((!IsDirectBinding) ? ((NSArray)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selComponentsHandle))) : ((NSArray)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selComponentsHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSArray>(Messaging.IntPtr_objc_msgSend(base.Handle, selComponentsHandle));
+			}
+			return Runtime.GetNSObject<NSArray>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selComponentsHandle));
 		}
 	}
 
-	public virtual NSPort ReceivePort
-	{
-		[Export("receivePort")]
-		get
-		{
-			return (NSPort)(__mt_ReceivePort_var = ((!IsDirectBinding) ? ((NSPort)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selReceivePortHandle))) : ((NSPort)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selReceivePortHandle)))));
-		}
-	}
-
-	public virtual NSPort SendPort
-	{
-		[Export("sendPort")]
-		get
-		{
-			return (NSPort)(__mt_SendPort_var = ((!IsDirectBinding) ? ((NSPort)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSendPortHandle))) : ((NSPort)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSendPortHandle)))));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual uint MsgId
 	{
 		[Export("msgid")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.UInt32_objc_msgSend(base.Handle, selMsgidHandle);
 			}
@@ -72,7 +76,7 @@ public class NSPortMessage : NSObject
 		[Export("setMsgid:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_UInt32(base.Handle, selSetMsgid_Handle, value);
 			}
@@ -83,49 +87,67 @@ public class NSPortMessage : NSObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSPort ReceivePort
+	{
+		[Export("receivePort")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSPort>(Messaging.IntPtr_objc_msgSend(base.Handle, selReceivePortHandle));
+			}
+			return Runtime.GetNSObject<NSPort>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selReceivePortHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSPort SendPort
+	{
+		[Export("sendPort")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSPort>(Messaging.IntPtr_objc_msgSend(base.Handle, selSendPortHandle));
+			}
+			return Runtime.GetNSObject<NSPort>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSendPortHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSPortMessage()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSPortMessage(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSPortMessage(NSObjectFlag t)
+	protected NSPortMessage(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSPortMessage(IntPtr handle)
+	protected internal NSPortMessage(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithSendPort:receivePort:components:")]
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSPortMessage(NSPort sendPort, NSPort recvPort, NSArray components)
 		: base(NSObjectFlag.Empty)
 	{
@@ -141,38 +163,28 @@ public class NSPortMessage : NSObject
 		{
 			throw new ArgumentNullException("components");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selInitWithSendPortReceivePortComponents_Handle, sendPort.Handle, recvPort.Handle, components.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selInitWithSendPort_ReceivePort_Components_Handle, sendPort.Handle, recvPort.Handle, components.Handle), "initWithSendPort:receivePort:components:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selInitWithSendPortReceivePortComponents_Handle, sendPort.Handle, recvPort.Handle, components.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selInitWithSendPort_ReceivePort_Components_Handle, sendPort.Handle, recvPort.Handle, components.Handle), "initWithSendPort:receivePort:components:");
 		}
 	}
 
 	[Export("sendBeforeDate:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool SendBefore(NSDate date)
 	{
 		if (date == null)
 		{
 			throw new ArgumentNullException("date");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selSendBeforeDate_Handle, date.Handle);
 		}
 		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selSendBeforeDate_Handle, date.Handle);
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_Components_var = null;
-			__mt_ReceivePort_var = null;
-			__mt_SendPort_var = null;
-		}
 	}
 }

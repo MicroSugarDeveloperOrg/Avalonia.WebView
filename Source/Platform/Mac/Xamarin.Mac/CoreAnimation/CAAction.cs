@@ -6,40 +6,27 @@ using ObjCRuntime;
 namespace CoreAnimation;
 
 [Protocol]
-[Register("CAAction", true)]
+[Register("CAAction", false)]
 [Model]
-public class CAAction : NSObject
+public abstract class CAAction : NSObject, ICAAction, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public CAAction(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public CAAction(NSObjectFlag t)
+	protected CAAction(NSObjectFlag t)
 		: base(t)
 	{
+		base.IsDirectBinding = false;
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public CAAction(IntPtr handle)
+	protected internal CAAction(IntPtr handle)
 		: base(handle)
 	{
+		base.IsDirectBinding = false;
 	}
 
 	[Export("runActionForKey:object:arguments:")]
-	public virtual void RunAction(string eventKey, NSObject obj, NSDictionary arguments)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public abstract void RunAction(string eventKey, NSObject obj, NSDictionary? arguments);
 }

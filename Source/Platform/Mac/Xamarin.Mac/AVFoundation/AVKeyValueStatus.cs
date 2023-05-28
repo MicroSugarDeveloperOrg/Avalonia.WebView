@@ -2,8 +2,9 @@ using ObjCRuntime;
 
 namespace AVFoundation;
 
-[Since(4, 0)]
-public enum AVKeyValueStatus
+[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
+[Native]
+public enum AVKeyValueStatus : long
 {
 	Unknown,
 	Loading,

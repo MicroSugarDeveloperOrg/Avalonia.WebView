@@ -1,6 +1,9 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
-public enum NSTitlePosition
+[Native]
+public enum NSTitlePosition : ulong
 {
 	NoTitle,
 	AboveTop,

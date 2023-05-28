@@ -1,17 +1,19 @@
 using System;
+using ObjCRuntime;
 
 namespace CoreVideo;
 
 [Flags]
-public enum CVTimeStampFlags
+[Watch(4, 0)]
+public enum CVTimeStampFlags : ulong
 {
-	VideoTimeValid = 1,
-	HostTimeValid = 2,
-	SMPTETimeValid = 4,
-	VideoRefreshPeriodValid = 8,
-	RateScalarValid = 0x10,
-	TopField = 0x10000,
-	BottomField = 0x20000,
-	VideoHostTimeValid = 3,
-	IsInterlaced = 0x30000
+	VideoTimeValid = 1uL,
+	HostTimeValid = 2uL,
+	SMPTETimeValid = 4uL,
+	VideoRefreshPeriodValid = 8uL,
+	RateScalarValid = 0x10uL,
+	TopField = 0x10000uL,
+	BottomField = 0x20000uL,
+	VideoHostTimeValid = 3uL,
+	IsInterlaced = 0x30000uL
 }

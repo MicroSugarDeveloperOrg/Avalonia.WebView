@@ -1,9 +1,6 @@
-﻿using Foundation;
-using ObjCRuntime;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Linq;
+using Foundation;
+using ObjCRuntime;
 
 namespace CoreData;
 

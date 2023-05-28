@@ -6,26 +6,68 @@ using ObjCRuntime;
 namespace CoreData;
 
 [Register("NSPersistentStoreRequest", true)]
-public class NSPersistentStoreRequest : NSObject
+public class NSPersistentStoreRequest : NSObject, INSCopying, INativeObject, IDisposable
 {
-	private static readonly IntPtr selRequestTypeHandle = Selector.GetHandle("requestType");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAffectedStores = "affectedStores";
 
 	private static readonly IntPtr selAffectedStoresHandle = Selector.GetHandle("affectedStores");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCopyWithZone_ = "copyWithZone:";
+
+	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRequestType = "requestType";
+
+	private static readonly IntPtr selRequestTypeHandle = Selector.GetHandle("requestType");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAffectedStores_ = "setAffectedStores:";
+
 	private static readonly IntPtr selSetAffectedStores_Handle = Selector.GetHandle("setAffectedStores:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSPersistentStoreRequest");
-
-	private object __mt_AffectedStores_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSPersistentStoreRequest");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSPersistentStore[]? AffectedStores
+	{
+		[Export("affectedStores", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<NSPersistentStore>(Messaging.IntPtr_objc_msgSend(base.Handle, selAffectedStoresHandle));
+			}
+			return NSArray.ArrayFromHandle<NSPersistentStore>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAffectedStoresHandle));
+		}
+		[Export("setAffectedStores:", ArgumentSemantic.Retain)]
+		set
+		{
+			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAffectedStores_Handle, nSArray?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAffectedStores_Handle, nSArray?.Handle ?? IntPtr.Zero);
+			}
+			nSArray?.Dispose();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSPersistentStoreRequestType RequestType
 	{
 		[Export("requestType")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return (NSPersistentStoreRequestType)Messaging.UInt64_objc_msgSend(base.Handle, selRequestTypeHandle);
 			}
@@ -33,82 +75,46 @@ public class NSPersistentStoreRequest : NSObject
 		}
 	}
 
-	public virtual NSPersistentStore[] AffectedStores
-	{
-		[Export("affectedStores")]
-		get
-		{
-			return (NSPersistentStore[])(__mt_AffectedStores_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSPersistentStore>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAffectedStoresHandle)) : NSArray.ArrayFromHandle<NSPersistentStore>(Messaging.IntPtr_objc_msgSend(base.Handle, selAffectedStoresHandle))));
-		}
-		[Export("setAffectedStores:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAffectedStores_Handle, nSArray.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAffectedStores_Handle, nSArray.Handle);
-			}
-			nSArray.Dispose();
-			__mt_AffectedStores_var = value;
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSPersistentStoreRequest()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSPersistentStoreRequest(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSPersistentStoreRequest(NSObjectFlag t)
+	protected NSPersistentStoreRequest(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSPersistentStoreRequest(IntPtr handle)
+	protected internal NSPersistentStoreRequest(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("copyWithZone:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[return: Release]
+	public virtual NSObject Copy(NSZone? zone)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
+		if (nSObject != null)
 		{
-			__mt_AffectedStores_var = null;
+			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
 		}
+		return nSObject;
 	}
 }

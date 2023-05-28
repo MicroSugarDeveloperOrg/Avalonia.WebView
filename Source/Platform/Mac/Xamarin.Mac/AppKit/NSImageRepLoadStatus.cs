@@ -1,5 +1,8 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
+[Native]
 public enum NSImageRepLoadStatus : long
 {
 	UnknownType = -1L,

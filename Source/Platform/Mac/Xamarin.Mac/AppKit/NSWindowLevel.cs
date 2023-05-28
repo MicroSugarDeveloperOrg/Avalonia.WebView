@@ -1,8 +1,12 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
+[Native]
 public enum NSWindowLevel : long
 {
 	Normal = 0L,
+	[Deprecated(PlatformName.MacOSX, 10, 13, PlatformArchitecture.None, null)]
 	Dock = 20L,
 	Floating = 3L,
 	MainMenu = 24L,

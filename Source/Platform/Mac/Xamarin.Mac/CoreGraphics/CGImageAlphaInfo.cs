@@ -1,6 +1,6 @@
 namespace CoreGraphics;
 
-public enum CGImageAlphaInfo
+public enum CGImageAlphaInfo : uint
 {
 	None,
 	PremultipliedLast,

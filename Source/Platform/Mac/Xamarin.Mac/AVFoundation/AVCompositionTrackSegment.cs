@@ -7,41 +7,70 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Register("AVCompositionTrackSegment", true)]
+[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
 public class AVCompositionTrackSegment : AVAssetTrackSegment
 {
-	private static readonly IntPtr selSourceURLHandle = Selector.GetHandle("sourceURL");
-
-	private static readonly IntPtr selSourceTrackIDHandle = Selector.GetHandle("sourceTrackID");
-
-	private static readonly IntPtr selCompositionTrackSegmentWithURLTrackIDSourceTimeRangeTargetTimeRange_Handle = Selector.GetHandle("compositionTrackSegmentWithURL:trackID:sourceTimeRange:targetTimeRange:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCompositionTrackSegmentWithTimeRange_ = "compositionTrackSegmentWithTimeRange:";
 
 	private static readonly IntPtr selCompositionTrackSegmentWithTimeRange_Handle = Selector.GetHandle("compositionTrackSegmentWithTimeRange:");
 
-	private static readonly IntPtr selInitWithURLTrackIDSourceTimeRangeTargetTimeRange_Handle = Selector.GetHandle("initWithURL:trackID:sourceTimeRange:targetTimeRange:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCompositionTrackSegmentWithURL_TrackID_SourceTimeRange_TargetTimeRange_ = "compositionTrackSegmentWithURL:trackID:sourceTimeRange:targetTimeRange:";
+
+	private static readonly IntPtr selCompositionTrackSegmentWithURL_TrackID_SourceTimeRange_TargetTimeRange_Handle = Selector.GetHandle("compositionTrackSegmentWithURL:trackID:sourceTimeRange:targetTimeRange:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithTimeRange_ = "initWithTimeRange:";
 
 	private static readonly IntPtr selInitWithTimeRange_Handle = Selector.GetHandle("initWithTimeRange:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("AVCompositionTrackSegment");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithURL_TrackID_SourceTimeRange_TargetTimeRange_ = "initWithURL:trackID:sourceTimeRange:targetTimeRange:";
 
-	private object __mt_SourceUrl_var;
+	private static readonly IntPtr selInitWithURL_TrackID_SourceTimeRange_TargetTimeRange_Handle = Selector.GetHandle("initWithURL:trackID:sourceTimeRange:targetTimeRange:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsEmpty = "isEmpty";
+
+	private static readonly IntPtr selIsEmptyHandle = Selector.GetHandle("isEmpty");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSourceTrackID = "sourceTrackID";
+
+	private static readonly IntPtr selSourceTrackIDHandle = Selector.GetHandle("sourceTrackID");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSourceURL = "sourceURL";
+
+	private static readonly IntPtr selSourceURLHandle = Selector.GetHandle("sourceURL");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVCompositionTrackSegment");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSUrl SourceUrl
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual bool Empty
 	{
-		[Export("sourceURL")]
+		[Export("isEmpty")]
 		get
 		{
-			return (NSUrl)(__mt_SourceUrl_var = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSourceURLHandle))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSourceURLHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsEmptyHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsEmptyHandle);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual int SourceTrackID
 	{
 		[Export("sourceTrackID")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.int_objc_msgSend(base.Handle, selSourceTrackIDHandle);
 			}
@@ -49,65 +78,53 @@ public class AVCompositionTrackSegment : AVAssetTrackSegment
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSUrl? SourceUrl
+	{
+		[Export("sourceURL")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selSourceURLHandle));
+			}
+			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSourceURLHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public AVCompositionTrackSegment()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public AVCompositionTrackSegment(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVCompositionTrackSegment(NSObjectFlag t)
+	protected AVCompositionTrackSegment(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVCompositionTrackSegment(IntPtr handle)
+	protected internal AVCompositionTrackSegment(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("compositionTrackSegmentWithURL:trackID:sourceTimeRange:targetTimeRange:")]
-	public static IntPtr FromUrl(NSUrl url, int trackID, CMTimeRange sourceTimeRange, CMTimeRange targetTimeRange)
-	{
-		if (url == null)
-		{
-			throw new ArgumentNullException("url");
-		}
-		return Messaging.IntPtr_objc_msgSend_IntPtr_int_CMTimeRange_CMTimeRange(class_ptr, selCompositionTrackSegmentWithURLTrackIDSourceTimeRangeTargetTimeRange_Handle, url.Handle, trackID, sourceTimeRange, targetTimeRange);
-	}
-
-	[Export("compositionTrackSegmentWithTimeRange:")]
-	public static IntPtr FromTimeRange(CMTimeRange timeRange)
-	{
-		return Messaging.IntPtr_objc_msgSend_CMTimeRange(class_ptr, selCompositionTrackSegmentWithTimeRange_Handle, timeRange);
-	}
-
 	[Export("initWithURL:trackID:sourceTimeRange:targetTimeRange:")]
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public AVCompositionTrackSegment(NSUrl URL, int trackID, CMTimeRange sourceTimeRange, CMTimeRange targetTimeRange)
 		: base(NSObjectFlag.Empty)
 	{
@@ -115,36 +132,47 @@ public class AVCompositionTrackSegment : AVAssetTrackSegment
 		{
 			throw new ArgumentNullException("URL");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_int_CMTimeRange_CMTimeRange(base.Handle, selInitWithURLTrackIDSourceTimeRangeTargetTimeRange_Handle, URL.Handle, trackID, sourceTimeRange, targetTimeRange);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_int_CMTimeRange_CMTimeRange(base.Handle, selInitWithURL_TrackID_SourceTimeRange_TargetTimeRange_Handle, URL.Handle, trackID, sourceTimeRange, targetTimeRange), "initWithURL:trackID:sourceTimeRange:targetTimeRange:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_int_CMTimeRange_CMTimeRange(base.SuperHandle, selInitWithURLTrackIDSourceTimeRangeTargetTimeRange_Handle, URL.Handle, trackID, sourceTimeRange, targetTimeRange);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_int_CMTimeRange_CMTimeRange(base.SuperHandle, selInitWithURL_TrackID_SourceTimeRange_TargetTimeRange_Handle, URL.Handle, trackID, sourceTimeRange, targetTimeRange), "initWithURL:trackID:sourceTimeRange:targetTimeRange:");
 		}
 	}
 
 	[Export("initWithTimeRange:")]
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public AVCompositionTrackSegment(CMTimeRange timeRange)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_CMTimeRange(base.Handle, selInitWithTimeRange_Handle, timeRange);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_CMTimeRange(base.Handle, selInitWithTimeRange_Handle, timeRange), "initWithTimeRange:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CMTimeRange(base.SuperHandle, selInitWithTimeRange_Handle, timeRange);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CMTimeRange(base.SuperHandle, selInitWithTimeRange_Handle, timeRange), "initWithTimeRange:");
 		}
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("compositionTrackSegmentWithTimeRange:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static IntPtr FromTimeRange(CMTimeRange timeRange)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		return Messaging.IntPtr_objc_msgSend_CMTimeRange(class_ptr, selCompositionTrackSegmentWithTimeRange_Handle, timeRange);
+	}
+
+	[Export("compositionTrackSegmentWithURL:trackID:sourceTimeRange:targetTimeRange:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static IntPtr FromUrl(NSUrl url, int trackID, CMTimeRange sourceTimeRange, CMTimeRange targetTimeRange)
+	{
+		if (url == null)
 		{
-			__mt_SourceUrl_var = null;
+			throw new ArgumentNullException("url");
 		}
+		return Messaging.IntPtr_objc_msgSend_IntPtr_int_CMTimeRange_CMTimeRange(class_ptr, selCompositionTrackSegmentWithURL_TrackID_SourceTimeRange_TargetTimeRange_Handle, url.Handle, trackID, sourceTimeRange, targetTimeRange);
 	}
 }

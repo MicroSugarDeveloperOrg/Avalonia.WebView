@@ -1,29 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
 public class CTFontFeatures
 {
 	public NSDictionary Dictionary { get; private set; }
-
-	[Advice("Use FeatureGroup property instead")]
-	public NSNumber Identifier
-	{
-		get
-		{
-			return (NSNumber)Dictionary[CTFontFeatureKey.Identifier];
-		}
-		set
-		{
-			Adapter.SetValue(Dictionary, CTFontFeatureKey.Identifier, value);
-		}
-	}
 
 	public string Name
 	{
@@ -59,13 +44,13 @@ public class CTFontFeatures
 		}
 		set
 		{
-			List<CTFontFeatureSelectors> source;
-			if (value == null || (source = new List<CTFontFeatureSelectors>(value)).Count == 0)
+			List<CTFontFeatureSelectors> list;
+			if (value == null || (list = new List<CTFontFeatureSelectors>(value)).Count == 0)
 			{
 				Adapter.SetValue((IDictionary<NSObject, NSObject>)Dictionary, (NSObject)CTFontFeatureKey.Selectors, (NSObject)null);
 				return;
 			}
-			Adapter.SetValue(Dictionary, CTFontFeatureKey.Selectors, NSArray.FromNSObjects(((IEnumerable<CTFontFeatureSelectors>)source).Select((Func<CTFontFeatureSelectors, NSObject>)((CTFontFeatureSelectors e) => e.Dictionary)).ToList()));
+			Adapter.SetValue(Dictionary, CTFontFeatureKey.Selectors, NSArray.FromNSObjects((IList<NSObject>)list.ConvertAll((Converter<CTFontFeatureSelectors, NSObject>)((CTFontFeatureSelectors e) => e.Dictionary))));
 		}
 	}
 

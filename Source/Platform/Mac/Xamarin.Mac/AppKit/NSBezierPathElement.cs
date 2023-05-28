@@ -1,6 +1,9 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
-public enum NSBezierPathElement
+[Native]
+public enum NSBezierPathElement : ulong
 {
 	MoveTo,
 	LineTo,

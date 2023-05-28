@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 
 namespace CoreText;
@@ -5,13 +6,13 @@ namespace CoreText;
 [StructLayout(LayoutKind.Sequential)]
 internal class CTRunDelegateCallbacks
 {
-	public CTRunDelegateVersion version;
+	public nint version;
 
 	public CTRunDelegateDeallocateCallback dealloc;
 
-	public CTRunDelegateGetAscentCallback getAscent;
+	public CTRunDelegateGetCallback getAscent;
 
-	public CTRunDelegateGetDescentCallback getDescent;
+	public CTRunDelegateGetCallback getDescent;
 
-	public CTRunDelegateGetWidthCallback getWidth;
+	public CTRunDelegateGetCallback getWidth;
 }

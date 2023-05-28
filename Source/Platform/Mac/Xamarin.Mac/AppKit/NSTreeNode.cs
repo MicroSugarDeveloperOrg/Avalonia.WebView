@@ -8,63 +8,94 @@ namespace AppKit;
 [Register("NSTreeNode", true)]
 public class NSTreeNode : NSObject
 {
-	private static readonly IntPtr selRepresentedObjectHandle = Selector.GetHandle("representedObject");
-
-	private static readonly IntPtr selIndexPathHandle = Selector.GetHandle("indexPath");
-
-	private static readonly IntPtr selIsLeafHandle = Selector.GetHandle("isLeaf");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selChildNodes = "childNodes";
 
 	private static readonly IntPtr selChildNodesHandle = Selector.GetHandle("childNodes");
 
-	private static readonly IntPtr selParentNodeHandle = Selector.GetHandle("parentNode");
-
-	private static readonly IntPtr selTreeNodeWithRepresentedObject_Handle = Selector.GetHandle("treeNodeWithRepresentedObject:");
-
-	private static readonly IntPtr selInitWithRepresentedObject_Handle = Selector.GetHandle("initWithRepresentedObject:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDescendantNodeAtIndexPath_ = "descendantNodeAtIndexPath:";
 
 	private static readonly IntPtr selDescendantNodeAtIndexPath_Handle = Selector.GetHandle("descendantNodeAtIndexPath:");
 
-	private static readonly IntPtr selSortWithSortDescriptorsRecursively_Handle = Selector.GetHandle("sortWithSortDescriptors:recursively:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIndexPath = "indexPath";
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSTreeNode");
+	private static readonly IntPtr selIndexPathHandle = Selector.GetHandle("indexPath");
 
-	private object __mt_RepresentedObject_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithRepresentedObject_ = "initWithRepresentedObject:";
 
-	private object __mt_IndexPath_var;
+	private static readonly IntPtr selInitWithRepresentedObject_Handle = Selector.GetHandle("initWithRepresentedObject:");
 
-	private object __mt_Children_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsLeaf = "isLeaf";
 
-	private object __mt_ParentNode_var;
+	private static readonly IntPtr selIsLeafHandle = Selector.GetHandle("isLeaf");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selParentNode = "parentNode";
+
+	private static readonly IntPtr selParentNodeHandle = Selector.GetHandle("parentNode");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRepresentedObject = "representedObject";
+
+	private static readonly IntPtr selRepresentedObjectHandle = Selector.GetHandle("representedObject");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSortWithSortDescriptors_Recursively_ = "sortWithSortDescriptors:recursively:";
+
+	private static readonly IntPtr selSortWithSortDescriptors_Recursively_Handle = Selector.GetHandle("sortWithSortDescriptors:recursively:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTreeNodeWithRepresentedObject_ = "treeNodeWithRepresentedObject:";
+
+	private static readonly IntPtr selTreeNodeWithRepresentedObject_Handle = Selector.GetHandle("treeNodeWithRepresentedObject:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSTreeNode");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSObject RepresentedObject
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSTreeNode[] Children
 	{
-		[Export("representedObject")]
+		[Export("childNodes")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSObject)(__mt_RepresentedObject_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRepresentedObjectHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selRepresentedObjectHandle))));
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<NSTreeNode>(Messaging.IntPtr_objc_msgSend(base.Handle, selChildNodesHandle));
+			}
+			return NSArray.ArrayFromHandle<NSTreeNode>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selChildNodesHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSIndexPath IndexPath
 	{
 		[Export("indexPath")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSIndexPath)(__mt_IndexPath_var = ((!IsDirectBinding) ? ((NSIndexPath)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selIndexPathHandle))) : ((NSIndexPath)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selIndexPathHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSIndexPath>(Messaging.IntPtr_objc_msgSend(base.Handle, selIndexPathHandle));
+			}
+			return Runtime.GetNSObject<NSIndexPath>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selIndexPathHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsLeaf
 	{
 		[Export("isLeaf")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsLeafHandle);
 			}
@@ -72,80 +103,69 @@ public class NSTreeNode : NSObject
 		}
 	}
 
-	public virtual NSTreeNode[] Children
-	{
-		[Export("childNodes")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSTreeNode[])(__mt_Children_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSTreeNode>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selChildNodesHandle)) : NSArray.ArrayFromHandle<NSTreeNode>(Messaging.IntPtr_objc_msgSend(base.Handle, selChildNodesHandle))));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSTreeNode ParentNode
 	{
 		[Export("parentNode")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSTreeNode)(__mt_ParentNode_var = ((!IsDirectBinding) ? ((NSTreeNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selParentNodeHandle))) : ((NSTreeNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selParentNodeHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSTreeNode>(Messaging.IntPtr_objc_msgSend(base.Handle, selParentNodeHandle));
+			}
+			return Runtime.GetNSObject<NSTreeNode>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selParentNodeHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject RepresentedObject
+	{
+		[Export("representedObject")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selRepresentedObjectHandle));
+			}
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRepresentedObjectHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSTreeNode()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSTreeNode(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTreeNode(NSObjectFlag t)
+	protected NSTreeNode(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTreeNode(IntPtr handle)
+	protected internal NSTreeNode(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("treeNodeWithRepresentedObject:")]
-	public static NSTreeNode FromRepresentedObject(NSObject modelObject)
-	{
-		NSApplication.EnsureUIThread();
-		if (modelObject == null)
-		{
-			throw new ArgumentNullException("modelObject");
-		}
-		return (NSTreeNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selTreeNodeWithRepresentedObject_Handle, modelObject.Handle));
-	}
-
 	[Export("initWithRepresentedObject:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSTreeNode(NSObject modelObject)
 		: base(NSObjectFlag.Empty)
 	{
@@ -154,17 +174,18 @@ public class NSTreeNode : NSObject
 		{
 			throw new ArgumentNullException("modelObject");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithRepresentedObject_Handle, modelObject.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithRepresentedObject_Handle, modelObject.Handle), "initWithRepresentedObject:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithRepresentedObject_Handle, modelObject.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithRepresentedObject_Handle, modelObject.Handle), "initWithRepresentedObject:");
 		}
 	}
 
 	[Export("descendantNodeAtIndexPath:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSTreeNode DescendantNode(NSIndexPath atIndexPath)
 	{
 		NSApplication.EnsureUIThread();
@@ -172,14 +193,27 @@ public class NSTreeNode : NSObject
 		{
 			throw new ArgumentNullException("atIndexPath");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSTreeNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDescendantNodeAtIndexPath_Handle, atIndexPath.Handle));
+			return Runtime.GetNSObject<NSTreeNode>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDescendantNodeAtIndexPath_Handle, atIndexPath.Handle));
 		}
-		return (NSTreeNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDescendantNodeAtIndexPath_Handle, atIndexPath.Handle));
+		return Runtime.GetNSObject<NSTreeNode>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDescendantNodeAtIndexPath_Handle, atIndexPath.Handle));
+	}
+
+	[Export("treeNodeWithRepresentedObject:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSTreeNode FromRepresentedObject(NSObject modelObject)
+	{
+		NSApplication.EnsureUIThread();
+		if (modelObject == null)
+		{
+			throw new ArgumentNullException("modelObject");
+		}
+		return Runtime.GetNSObject<NSTreeNode>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selTreeNodeWithRepresentedObject_Handle, modelObject.Handle));
 	}
 
 	[Export("sortWithSortDescriptors:recursively:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SortWithSortDescriptors(NSSortDescriptor[] sortDescriptors, bool recursively)
 	{
 		NSApplication.EnsureUIThread();
@@ -188,26 +222,14 @@ public class NSTreeNode : NSObject
 			throw new ArgumentNullException("sortDescriptors");
 		}
 		NSArray nSArray = NSArray.FromNSObjects(sortDescriptors);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selSortWithSortDescriptorsRecursively_Handle, nSArray.Handle, recursively);
+			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selSortWithSortDescriptors_Recursively_Handle, nSArray.Handle, recursively);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selSortWithSortDescriptorsRecursively_Handle, nSArray.Handle, recursively);
+			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selSortWithSortDescriptors_Recursively_Handle, nSArray.Handle, recursively);
 		}
 		nSArray.Dispose();
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_RepresentedObject_var = null;
-			__mt_IndexPath_var = null;
-			__mt_Children_var = null;
-			__mt_ParentNode_var = null;
-		}
 	}
 }

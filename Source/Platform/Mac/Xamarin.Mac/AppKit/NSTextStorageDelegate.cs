@@ -5,60 +5,66 @@ using ObjCRuntime;
 
 namespace AppKit;
 
-[Register("NSTextStorageDelegate", true)]
+[Protocol]
+[Register("NSTextStorageDelegate", false)]
 [Model]
-public class NSTextStorageDelegate : NSObject
+public class NSTextStorageDelegate : NSObject, INSTextStorageDelegate, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSTextStorageDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
+		NSApplication.EnsureUIThread();
+		base.IsDirectBinding = false;
+		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSTextStorageDelegate(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTextStorageDelegate(NSObjectFlag t)
+	protected NSTextStorageDelegate(NSObjectFlag t)
 		: base(t)
 	{
+		base.IsDirectBinding = false;
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTextStorageDelegate(IntPtr handle)
+	protected internal NSTextStorageDelegate(IntPtr handle)
 		: base(handle)
 	{
+		base.IsDirectBinding = false;
 	}
 
-	[Export("textStorageWillProcessEditing:")]
-	public virtual void TextStorageWillProcessEditing(NSNotification notification)
+	[Export("textStorage:didProcessEditing:range:changeInLength:")]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void DidProcessEditing(NSTextStorage textStorage, NSTextStorageEditActions editedMask, NSRange editedRange, nint delta)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("textStorageDidProcessEditing:")]
+	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, "Use DidProcessEditing instead.")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void TextStorageDidProcessEditing(NSNotification notification)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("textStorageWillProcessEditing:")]
+	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, "Use WillProcessEditing instead.")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void TextStorageWillProcessEditing(NSNotification notification)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("textStorage:willProcessEditing:range:changeInLength:")]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void WillProcessEditing(NSTextStorage textStorage, NSTextStorageEditActions editedMask, NSRange editedRange, nint delta)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

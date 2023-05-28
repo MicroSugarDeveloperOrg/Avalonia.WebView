@@ -6,7 +6,6 @@ using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
 public class CTTypesetter : INativeObject, IDisposable
 {
 	internal IntPtr handle;
@@ -105,33 +104,33 @@ public class CTTypesetter : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern int CTTypesetterSuggestLineBreakWithOffset(IntPtr typesetter, int startIndex, double width, double offset);
+	private static extern nint CTTypesetterSuggestLineBreakWithOffset(IntPtr typesetter, nint startIndex, double width, double offset);
 
-	public int SuggestLineBreak(int startIndex, double width, double offset)
+	public nint SuggestLineBreak(int startIndex, double width, double offset)
 	{
 		return CTTypesetterSuggestLineBreakWithOffset(handle, startIndex, width, offset);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern int CTTypesetterSuggestLineBreak(IntPtr typesetter, int startIndex, double width);
+	private static extern nint CTTypesetterSuggestLineBreak(IntPtr typesetter, nint startIndex, double width);
 
-	public int SuggestLineBreak(int startIndex, double width)
+	public nint SuggestLineBreak(int startIndex, double width)
 	{
 		return CTTypesetterSuggestLineBreak(handle, startIndex, width);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern int CTTypesetterSuggestClusterBreakWithOffset(IntPtr typesetter, int startIndex, double width, double offset);
+	private static extern nint CTTypesetterSuggestClusterBreakWithOffset(IntPtr typesetter, nint startIndex, double width, double offset);
 
-	public int SuggestClusterBreak(int startIndex, double width, double offset)
+	public nint SuggestClusterBreak(int startIndex, double width, double offset)
 	{
 		return CTTypesetterSuggestClusterBreakWithOffset(handle, startIndex, width, offset);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern int CTTypesetterSuggestClusterBreak(IntPtr typesetter, int startIndex, double width);
+	private static extern nint CTTypesetterSuggestClusterBreak(IntPtr typesetter, nint startIndex, double width);
 
-	public int SuggestClusterBreak(int startIndex, double width)
+	public nint SuggestClusterBreak(int startIndex, double width)
 	{
 		return CTTypesetterSuggestClusterBreak(handle, startIndex, width);
 	}

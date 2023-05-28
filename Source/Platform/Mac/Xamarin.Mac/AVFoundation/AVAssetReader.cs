@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using CoreMedia;
 using Foundation;
 using ObjCRuntime;
@@ -8,80 +7,138 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Register("AVAssetReader", true)]
+[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
 public class AVAssetReader : NSObject
 {
-	private static readonly IntPtr selAssetHandle = Selector.GetHandle("asset");
-
-	private static readonly IntPtr selStatusHandle = Selector.GetHandle("status");
-
-	private static readonly IntPtr selErrorHandle = Selector.GetHandle("error");
-
-	private static readonly IntPtr selTimeRangeHandle = Selector.GetHandle("timeRange");
-
-	private static readonly IntPtr selSetTimeRange_Handle = Selector.GetHandle("setTimeRange:");
-
-	private static readonly IntPtr selOutputsHandle = Selector.GetHandle("outputs");
-
-	private static readonly IntPtr selAssetReaderWithAssetError_Handle = Selector.GetHandle("assetReaderWithAsset:error:");
-
-	private static readonly IntPtr selInitWithAssetError_Handle = Selector.GetHandle("initWithAsset:error:");
-
-	private static readonly IntPtr selCanAddOutput_Handle = Selector.GetHandle("canAddOutput:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAddOutput_ = "addOutput:";
 
 	private static readonly IntPtr selAddOutput_Handle = Selector.GetHandle("addOutput:");
 
-	private static readonly IntPtr selStartReadingHandle = Selector.GetHandle("startReading");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAsset = "asset";
+
+	private static readonly IntPtr selAssetHandle = Selector.GetHandle("asset");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAssetReaderWithAsset_Error_ = "assetReaderWithAsset:error:";
+
+	private static readonly IntPtr selAssetReaderWithAsset_Error_Handle = Selector.GetHandle("assetReaderWithAsset:error:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCanAddOutput_ = "canAddOutput:";
+
+	private static readonly IntPtr selCanAddOutput_Handle = Selector.GetHandle("canAddOutput:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCancelReading = "cancelReading";
 
 	private static readonly IntPtr selCancelReadingHandle = Selector.GetHandle("cancelReading");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("AVAssetReader");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selError = "error";
 
-	private object __mt_Asset_var;
+	private static readonly IntPtr selErrorHandle = Selector.GetHandle("error");
 
-	private object __mt_Error_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithAsset_Error_ = "initWithAsset:error:";
 
-	private object __mt_Outputs_var;
+	private static readonly IntPtr selInitWithAsset_Error_Handle = Selector.GetHandle("initWithAsset:error:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selOutputs = "outputs";
+
+	private static readonly IntPtr selOutputsHandle = Selector.GetHandle("outputs");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTimeRange_ = "setTimeRange:";
+
+	private static readonly IntPtr selSetTimeRange_Handle = Selector.GetHandle("setTimeRange:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStartReading = "startReading";
+
+	private static readonly IntPtr selStartReadingHandle = Selector.GetHandle("startReading");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStatus = "status";
+
+	private static readonly IntPtr selStatusHandle = Selector.GetHandle("status");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTimeRange = "timeRange";
+
+	private static readonly IntPtr selTimeRangeHandle = Selector.GetHandle("timeRange");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVAssetReader");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual AVAsset Asset
 	{
-		[Export("asset")]
+		[Export("asset", ArgumentSemantic.Retain)]
 		get
 		{
-			return (AVAsset)(__mt_Asset_var = ((!IsDirectBinding) ? ((AVAsset)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAssetHandle))) : ((AVAsset)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAssetHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<AVAsset>(Messaging.IntPtr_objc_msgSend(base.Handle, selAssetHandle));
+			}
+			return Runtime.GetNSObject<AVAsset>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAssetHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSError? Error
+	{
+		[Export("error")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSError>(Messaging.IntPtr_objc_msgSend(base.Handle, selErrorHandle));
+			}
+			return Runtime.GetNSObject<NSError>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selErrorHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual AVAssetReaderOutput[] Outputs
+	{
+		[Export("outputs")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<AVAssetReaderOutput>(Messaging.IntPtr_objc_msgSend(base.Handle, selOutputsHandle));
+			}
+			return NSArray.ArrayFromHandle<AVAssetReaderOutput>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOutputsHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual AVAssetReaderStatus Status
 	{
 		[Export("status")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return (AVAssetReaderStatus)Messaging.int_objc_msgSend(base.Handle, selStatusHandle);
+				return (AVAssetReaderStatus)Messaging.Int64_objc_msgSend(base.Handle, selStatusHandle);
 			}
-			return (AVAssetReaderStatus)Messaging.int_objc_msgSendSuper(base.SuperHandle, selStatusHandle);
+			return (AVAssetReaderStatus)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selStatusHandle);
 		}
 	}
 
-	public virtual NSError Error
-	{
-		[Export("error")]
-		get
-		{
-			return (NSError)(__mt_Error_var = ((!IsDirectBinding) ? ((NSError)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selErrorHandle))) : ((NSError)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selErrorHandle)))));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CMTimeRange TimeRange
 	{
 		[Export("timeRange")]
 		get
 		{
 			CMTimeRange retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.CMTimeRange_objc_msgSend_stret(out retval, base.Handle, selTimeRangeHandle);
 			}
@@ -94,7 +151,7 @@ public class AVAssetReader : NSObject
 		[Export("setTimeRange:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_CMTimeRange(base.Handle, selSetTimeRange_Handle, value);
 			}
@@ -105,59 +162,23 @@ public class AVAssetReader : NSObject
 		}
 	}
 
-	public virtual AVAssetReaderOutput[] Outputs
-	{
-		[Export("outputs")]
-		get
-		{
-			return (AVAssetReaderOutput[])(__mt_Outputs_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<AVAssetReaderOutput>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOutputsHandle)) : NSArray.ArrayFromHandle<AVAssetReaderOutput>(Messaging.IntPtr_objc_msgSend(base.Handle, selOutputsHandle))));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public AVAssetReader(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVAssetReader(NSObjectFlag t)
+	protected AVAssetReader(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVAssetReader(IntPtr handle)
+	protected internal AVAssetReader(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("assetReaderWithAsset:error:")]
-	public static AVAssetReader FromAsset(AVAsset asset, out NSError error)
-	{
-		if (asset == null)
-		{
-			throw new ArgumentNullException("asset");
-		}
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		AVAssetReader result = (AVAssetReader)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selAssetReaderWithAssetError_Handle, asset.Handle, intPtr));
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
-		return result;
-	}
-
 	[Export("initWithAsset:error:")]
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public AVAssetReader(AVAsset asset, out NSError error)
 		: base(NSObjectFlag.Empty)
 	{
@@ -165,43 +186,27 @@ public class AVAssetReader : NSObject
 		{
 			throw new ArgumentNullException("asset");
 		}
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		if (IsDirectBinding)
+		IntPtr arg = IntPtr.Zero;
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithAssetError_Handle, asset.Handle, intPtr);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_ref_IntPtr(base.Handle, selInitWithAsset_Error_Handle, asset.Handle, ref arg), "initWithAsset:error:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithAssetError_Handle, asset.Handle, intPtr);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_ref_IntPtr(base.SuperHandle, selInitWithAsset_Error_Handle, asset.Handle, ref arg), "initWithAsset:error:");
 		}
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
-	}
-
-	[Export("canAddOutput:")]
-	public virtual bool CanAddOutput(AVAssetReaderOutput output)
-	{
-		if (output == null)
-		{
-			throw new ArgumentNullException("output");
-		}
-		if (IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selCanAddOutput_Handle, output.Handle);
-		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selCanAddOutput_Handle, output.Handle);
+		error = Runtime.GetNSObject<NSError>(arg);
 	}
 
 	[Export("addOutput:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AddOutput(AVAssetReaderOutput output)
 	{
 		if (output == null)
 		{
 			throw new ArgumentNullException("output");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddOutput_Handle, output.Handle);
 		}
@@ -211,20 +216,26 @@ public class AVAssetReader : NSObject
 		}
 	}
 
-	[Export("startReading")]
-	public virtual bool StartReading()
+	[Export("canAddOutput:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool CanAddOutput(AVAssetReaderOutput output)
 	{
-		if (IsDirectBinding)
+		if (output == null)
 		{
-			return Messaging.bool_objc_msgSend(base.Handle, selStartReadingHandle);
+			throw new ArgumentNullException("output");
 		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selStartReadingHandle);
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selCanAddOutput_Handle, output.Handle);
+		}
+		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selCanAddOutput_Handle, output.Handle);
 	}
 
 	[Export("cancelReading")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void CancelReading()
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selCancelReadingHandle);
 		}
@@ -234,14 +245,28 @@ public class AVAssetReader : NSObject
 		}
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("assetReaderWithAsset:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static AVAssetReader? FromAsset(AVAsset asset, out NSError error)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		if (asset == null)
 		{
-			__mt_Asset_var = null;
-			__mt_Error_var = null;
-			__mt_Outputs_var = null;
+			throw new ArgumentNullException("asset");
 		}
+		IntPtr arg = IntPtr.Zero;
+		AVAssetReader nSObject = Runtime.GetNSObject<AVAssetReader>(Messaging.IntPtr_objc_msgSend_IntPtr_ref_IntPtr(class_ptr, selAssetReaderWithAsset_Error_Handle, asset.Handle, ref arg));
+		error = Runtime.GetNSObject<NSError>(arg);
+		return nSObject;
+	}
+
+	[Export("startReading")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool StartReading()
+	{
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selStartReadingHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selStartReadingHandle);
 	}
 }

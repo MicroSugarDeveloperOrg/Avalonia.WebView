@@ -18,22 +18,11 @@ public static class CFExceptionDataKey
 
 	static CFExceptionDataKey()
 	{
-		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", 0);
-		if (intPtr == IntPtr.Zero)
-		{
-			return;
-		}
-		try
-		{
-			Description = Dlfcn.GetStringConstant(intPtr, "kCFErrorDescriptionKey");
-			LocalizedDescription = Dlfcn.GetStringConstant(intPtr, "kCFErrorLocalizedDescriptionKey");
-			LocalizedFailureReason = Dlfcn.GetStringConstant(intPtr, "kCFErrorLocalizedFailureReasonKey");
-			LocalizedRecoverySuggestion = Dlfcn.GetStringConstant(intPtr, "kCFErrorLocalizedRecoverySuggestionKey");
-			UnderlyingError = Dlfcn.GetStringConstant(intPtr, "kCFErrorUnderlyingErrorKey");
-		}
-		finally
-		{
-			Dlfcn.dlclose(intPtr);
-		}
+		IntPtr handle = Libraries.CoreFoundation.Handle;
+		Description = Dlfcn.GetStringConstant(handle, "kCFErrorDescriptionKey");
+		LocalizedDescription = Dlfcn.GetStringConstant(handle, "kCFErrorLocalizedDescriptionKey");
+		LocalizedFailureReason = Dlfcn.GetStringConstant(handle, "kCFErrorLocalizedFailureReasonKey");
+		LocalizedRecoverySuggestion = Dlfcn.GetStringConstant(handle, "kCFErrorLocalizedRecoverySuggestionKey");
+		UnderlyingError = Dlfcn.GetStringConstant(handle, "kCFErrorUnderlyingErrorKey");
 	}
 }

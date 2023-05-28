@@ -6,55 +6,42 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Protocol]
-[Register("AVAsynchronousKeyValueLoading", true)]
+[Register("AVAsynchronousKeyValueLoading", false)]
 [Model]
-public abstract class AVAsynchronousKeyValueLoading : NSObject
+[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
+public abstract class AVAsynchronousKeyValueLoading : NSObject, IAVAsynchronousKeyValueLoading, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
-	public AVAsynchronousKeyValueLoading()
+	protected AVAsynchronousKeyValueLoading()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
+		base.IsDirectBinding = false;
+		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public AVAsynchronousKeyValueLoading(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVAsynchronousKeyValueLoading(NSObjectFlag t)
+	protected AVAsynchronousKeyValueLoading(NSObjectFlag t)
 		: base(t)
 	{
+		base.IsDirectBinding = false;
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVAsynchronousKeyValueLoading(IntPtr handle)
+	protected internal AVAsynchronousKeyValueLoading(IntPtr handle)
 		: base(handle)
 	{
+		base.IsDirectBinding = false;
 	}
 
-	[Export("statusOfValueForKey:error:")]
-	public abstract AVKeyValueStatus StatusOfValueForKeyerror(string key, IntPtr outError);
-
 	[Export("loadValuesAsynchronouslyForKeys:completionHandler:")]
-	public abstract void LoadValuesAsynchronously(string[] keys, NSAction handler);
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public abstract void LoadValuesAsynchronously(string[] keys, [BlockProxy(typeof(Trampolines.NIDAction))] Action? handler);
+
+	[Export("statusOfValueForKey:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public abstract AVKeyValueStatus StatusOfValueForKeyerror(string key, IntPtr outError);
 }

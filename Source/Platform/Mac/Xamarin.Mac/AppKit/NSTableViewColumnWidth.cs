@@ -1,3 +1,5 @@
+using System;
+
 namespace AppKit;
 
-public delegate double NSTableViewColumnWidth(NSTableView tableView, long column);
+public delegate nfloat NSTableViewColumnWidth(NSTableView tableView, nint column);

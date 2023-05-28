@@ -1,4 +1,4 @@
-﻿using ObjCRuntime;
+using ObjCRuntime;
 using OpenTK;
 
 namespace GameplayKit;
@@ -8,7 +8,7 @@ namespace GameplayKit;
 [Mac(10, 12)]
 public struct GKBox
 {
-    public Vector3 Min;
+	public Vector3 Min;
 
-    public Vector3 Max;
+	public Vector3 Max;
 }

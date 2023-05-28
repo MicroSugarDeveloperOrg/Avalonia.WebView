@@ -1,8 +1,14 @@
+using ObjCRuntime;
+
 namespace Foundation;
 
-public enum NSUserNotificationActivationType
+[Native]
+[Advice("'NSUserNotification' usages should be replaced with 'UserNotifications' framework.")]
+public enum NSUserNotificationActivationType : long
 {
 	None,
 	ContentsClicked,
-	ActionButtonClicked
+	ActionButtonClicked,
+	Replied,
+	AdditionalActionClicked
 }

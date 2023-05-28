@@ -56,11 +56,11 @@ public class Authorization : INativeObject, IDisposable
 
 	private static void EncodeString(ref AuthorizationItem item, string key, string value)
 	{
-		item.name = Messaging.NativeUtf8FromString(key);
+		item.name = Marshal.StringToHGlobalAuto(key);
 		if (value != null)
 		{
-			item.value = Messaging.NativeUtf8FromString(value);
-			item.valueLen = (IntPtr)value.Length;
+			item.value = Marshal.StringToHGlobalAuto(value);
+			item.valueLen = value.Length;
 		}
 	}
 
@@ -77,35 +77,38 @@ public class Authorization : INativeObject, IDisposable
 			if (parameters != null)
 			{
 				ptr = &authorizationItemSet;
-				authorizationItemSet.ptrToAuthorization = (AuthorizationItem*)(void*)Marshal.AllocHGlobal(sizeof(AuthorizationItem) * 3);
+				authorizationItemSet.ptrToAuthorization = (AuthorizationItem*)(void*)Marshal.AllocHGlobal(sizeof(AuthorizationItem) * 2);
 				if (parameters.PathToSystemPrivilegeTool != null)
 				{
 					EncodeString(ref authorizationItemSet.ptrToAuthorization[authorizationItemSet.count++], "system.privilege.admin", parameters.PathToSystemPrivilegeTool);
-				}
-				if (parameters.Prompt != null)
-				{
-					EncodeString(ref authorizationItemSet.ptrToAuthorization[authorizationItemSet.count++], "prompt", parameters.Prompt);
 				}
 				if (parameters.IconPath != null)
 				{
 					EncodeString(ref authorizationItemSet.ptrToAuthorization[authorizationItemSet.count++], "prompt", parameters.IconPath);
 				}
 			}
-			if (environment != null)
+			if (environment != null || (parameters != null && parameters.Prompt != null))
 			{
 				ptr3 = &authorizationItemSet2;
-				authorizationItemSet2.ptrToAuthorization = (AuthorizationItem*)(void*)Marshal.AllocHGlobal(sizeof(AuthorizationItem) * 3);
-				if (environment.Username != null)
+				authorizationItemSet2.ptrToAuthorization = (AuthorizationItem*)(void*)Marshal.AllocHGlobal(sizeof(AuthorizationItem) * 4);
+				if (environment != null)
 				{
-					EncodeString(ref authorizationItemSet2.ptrToAuthorization[authorizationItemSet2.count++], "username", environment.Username);
+					if (environment.Username != null)
+					{
+						EncodeString(ref authorizationItemSet2.ptrToAuthorization[authorizationItemSet2.count++], "username", environment.Username);
+					}
+					if (environment.Password != null)
+					{
+						EncodeString(ref authorizationItemSet2.ptrToAuthorization[authorizationItemSet2.count++], "password", environment.Password);
+					}
+					if (environment.AddToSharedCredentialPool)
+					{
+						EncodeString(ref authorizationItemSet2.ptrToAuthorization[authorizationItemSet2.count++], "shared", null);
+					}
 				}
-				if (environment.Password != null)
+				if (parameters != null && parameters.Prompt != null)
 				{
-					EncodeString(ref authorizationItemSet2.ptrToAuthorization[authorizationItemSet2.count++], "password", environment.Password);
-				}
-				if (environment.AddToSharedCredentialPool)
-				{
-					EncodeString(ref authorizationItemSet2.ptrToAuthorization[authorizationItemSet2.count++], "shared", null);
+					EncodeString(ref authorizationItemSet2.ptrToAuthorization[authorizationItemSet2.count++], "prompt", parameters.Prompt);
 				}
 			}
 			if (AuthorizationCreate(ptr, ptr3, flags, out var auth) != 0)

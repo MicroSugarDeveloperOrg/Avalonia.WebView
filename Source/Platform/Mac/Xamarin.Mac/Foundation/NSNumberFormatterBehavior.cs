@@ -1,5 +1,8 @@
+using ObjCRuntime;
+
 namespace Foundation;
 
+[Native]
 public enum NSNumberFormatterBehavior : ulong
 {
 	Default = 0uL,

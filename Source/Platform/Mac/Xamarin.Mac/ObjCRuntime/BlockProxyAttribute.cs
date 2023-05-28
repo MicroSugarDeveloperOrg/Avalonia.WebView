@@ -1,11 +1,14 @@
-﻿namespace ObjCRuntime;
+using System;
+
+namespace ObjCRuntime;
+
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
 public sealed class BlockProxyAttribute : Attribute
 {
-    public Type Type { get; set; }
+	public Type Type { get; set; }
 
-    public BlockProxyAttribute(Type t)
-    {
-        Type = t;
-    }
+	public BlockProxyAttribute(Type t)
+	{
+		Type = t;
+	}
 }

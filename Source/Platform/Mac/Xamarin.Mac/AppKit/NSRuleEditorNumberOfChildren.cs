@@ -1,5 +1,6 @@
+using System;
 using Foundation;
 
 namespace AppKit;
 
-public delegate long NSRuleEditorNumberOfChildren(NSRuleEditor editor, NSObject criterion, NSRuleEditorRowType rowType);
+public delegate nint NSRuleEditorNumberOfChildren(NSRuleEditor editor, NSObject criterion, NSRuleEditorRowType rowType);

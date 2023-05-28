@@ -6,7 +6,6 @@ using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
 public class CTFontDescriptor : INativeObject, IDisposable
 {
 	internal IntPtr handle;
@@ -52,9 +51,9 @@ public class CTFontDescriptor : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern IntPtr CTFontDescriptorCreateWithNameAndSize(IntPtr name, double size);
+	private static extern IntPtr CTFontDescriptorCreateWithNameAndSize(IntPtr name, nfloat size);
 
-	public CTFontDescriptor(string name, double size)
+	public CTFontDescriptor(string name, nfloat size)
 	{
 		if (name == null)
 		{
@@ -117,9 +116,9 @@ public class CTFontDescriptor : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern IntPtr CTFontDescriptorCreateCopyWithVariation(IntPtr original, IntPtr variationIdentifier, double variationValue);
+	private static extern IntPtr CTFontDescriptorCreateCopyWithVariation(IntPtr original, IntPtr variationIdentifier, nfloat variationValue);
 
-	public CTFontDescriptor WithVariation(uint variationIdentifier, double variationValue)
+	public CTFontDescriptor WithVariation(uint variationIdentifier, nfloat variationValue)
 	{
 		using NSNumber nSNumber = new NSNumber(variationIdentifier);
 		return CreateDescriptor(CTFontDescriptorCreateCopyWithVariation(handle, nSNumber.Handle, variationValue));
@@ -127,20 +126,6 @@ public class CTFontDescriptor : INativeObject, IDisposable
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
 	private static extern IntPtr CTFontDescriptorCreateCopyWithFeature(IntPtr original, IntPtr featureTypeIdentifier, IntPtr featureSelectorIdentifier);
-
-	[Advice("Use WithFeature with specific selector")]
-	public CTFontDescriptor WithFeature(NSNumber featureTypeIdentifier, NSNumber featureSelectorIdentifier)
-	{
-		if (featureTypeIdentifier == null)
-		{
-			throw new ArgumentNullException("featureTypeIdentifier");
-		}
-		if (featureSelectorIdentifier == null)
-		{
-			throw new ArgumentNullException("featureSelectorIdentifier");
-		}
-		return CreateDescriptor(CTFontDescriptorCreateCopyWithFeature(handle, featureTypeIdentifier.Handle, featureSelectorIdentifier.Handle));
-	}
 
 	public CTFontDescriptor WithFeature(CTFontFeatureAllTypographicFeatures.Selector featureSelector)
 	{
@@ -155,12 +140,6 @@ public class CTFontDescriptor : INativeObject, IDisposable
 	public CTFontDescriptor WithFeature(CTFontFeatureCursiveConnection.Selector featureSelector)
 	{
 		return WithFeature(FontFeatureGroup.CursiveConnection, (int)featureSelector);
-	}
-
-	[Obsolete("Deprecated")]
-	public CTFontDescriptor WithFeature(CTFontFeatureLetterCase.Selector featureSelector)
-	{
-		return WithFeature(FontFeatureGroup.LetterCase, (int)featureSelector);
 	}
 
 	public CTFontDescriptor WithFeature(CTFontFeatureVerticalSubstitutionConnection.Selector featureSelector)
@@ -397,9 +376,9 @@ public class CTFontDescriptor : INativeObject, IDisposable
 		{
 			return null;
 		}
-		NSDictionary obj = (NSDictionary)Runtime.GetNSObject(intPtr);
-		obj.Release();
-		return new CTFontDescriptorAttributes(obj);
+		NSDictionary nSDictionary = (NSDictionary)Runtime.GetNSObject(intPtr);
+		nSDictionary.DangerousRelease();
+		return new CTFontDescriptorAttributes(nSDictionary);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
@@ -411,7 +390,9 @@ public class CTFontDescriptor : INativeObject, IDisposable
 		{
 			throw new ArgumentNullException("attribute");
 		}
-		return Runtime.GetNSObject(CTFontDescriptorCopyAttribute(handle, attribute.Handle));
+		NSObject nSObject = Runtime.GetNSObject(CTFontDescriptorCopyAttribute(handle, attribute.Handle));
+		nSObject.DangerousRelease();
+		return nSObject;
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
@@ -419,7 +400,9 @@ public class CTFontDescriptor : INativeObject, IDisposable
 
 	public NSObject GetLocalizedAttribute(NSString attribute)
 	{
-		return Runtime.GetNSObject(CTFontDescriptorCopyLocalizedAttribute(handle, attribute.Handle, IntPtr.Zero));
+		NSObject nSObject = Runtime.GetNSObject(CTFontDescriptorCopyLocalizedAttribute(handle, attribute.Handle, IntPtr.Zero));
+		nSObject.DangerousRelease();
+		return nSObject;
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
@@ -429,6 +412,7 @@ public class CTFontDescriptor : INativeObject, IDisposable
 	{
 		IntPtr language2;
 		NSObject nSObject = Runtime.GetNSObject(CTFontDescriptorCopyLocalizedAttribute(handle, attribute.Handle, out language2));
+		nSObject.DangerousRelease();
 		language = (NSString)Runtime.GetNSObject(language2);
 		if (language2 != IntPtr.Zero)
 		{
@@ -438,13 +422,12 @@ public class CTFontDescriptor : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
+	[Mac(10, 9)]
 	private static extern bool CTFontDescriptorMatchFontDescriptorsWithProgressHandler(IntPtr descriptors, IntPtr mandatoryAttributes, Func<CTFontDescriptorMatchingState, IntPtr, bool> progressHandler);
 
-	[Since(6, 0)]
+	[Mac(10, 9)]
 	public static bool MatchFontDescriptors(CTFontDescriptor[] descriptors, NSSet mandatoryAttributes, Func<CTFontDescriptorMatchingState, IntPtr, bool> progressHandler)
 	{
-		IntPtr mandatoryAttributes2 = mandatoryAttributes?.Handle ?? IntPtr.Zero;
-		using CFArray cFArray = CFArray.FromNativeObjects(descriptors);
-		return CTFontDescriptorMatchFontDescriptorsWithProgressHandler(cFArray.Handle, mandatoryAttributes2, progressHandler);
+		throw new NotImplementedException();
 	}
 }

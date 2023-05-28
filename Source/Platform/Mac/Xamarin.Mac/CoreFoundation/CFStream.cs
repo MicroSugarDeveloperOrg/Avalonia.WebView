@@ -1,4 +1,6 @@
 using System;
+using System.Net;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using CoreServices;
 using Foundation;
@@ -23,7 +25,7 @@ public abstract class CFStream : CFType, INativeObject, IDisposable
 		}
 	}
 
-	protected delegate void CFStreamCallback(IntPtr s, CFStreamEventType type, IntPtr info);
+	protected delegate void CFStreamCallback(IntPtr s, nint type, IntPtr info);
 
 	private IntPtr handle;
 
@@ -39,6 +41,34 @@ public abstract class CFStream : CFType, INativeObject, IDisposable
 
 	public IntPtr Handle => handle;
 
+	[iOS(7, 0)]
+	[Mac(10, 9)]
+	public DispatchQueue ReadDispatchQueue
+	{
+		get
+		{
+			return new DispatchQueue(CFReadStreamCopyDispatchQueue(handle));
+		}
+		set
+		{
+			CFReadStreamSetDispatchQueue(handle, (value == null) ? IntPtr.Zero : value.Handle);
+		}
+	}
+
+	[iOS(7, 0)]
+	[Mac(10, 9)]
+	public DispatchQueue WriteDispatchQueue
+	{
+		get
+		{
+			return new DispatchQueue(CFWriteStreamCopyDispatchQueue(handle));
+		}
+		set
+		{
+			CFWriteStreamSetDispatchQueue(handle, (value == null) ? IntPtr.Zero : value.Handle);
+		}
+	}
+
 	public event EventHandler<StreamEventArgs> OpenCompletedEvent;
 
 	public event EventHandler<StreamEventArgs> HasBytesAvailableEvent;
@@ -50,49 +80,105 @@ public abstract class CFStream : CFType, INativeObject, IDisposable
 	public event EventHandler<StreamEventArgs> ClosedEvent;
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern void CFStreamCreatePairWithSocket(IntPtr allocator, CFSocketNativeHandle socket, out IntPtr read, out IntPtr write);
+	internal static extern void CFStreamCreatePairWithSocket(IntPtr allocator, CFSocketNativeHandle sock, out IntPtr readStream, out IntPtr writeStream);
+
+	public static void CreatePairWithSocket(CFSocket socket, out CFReadStream readStream, out CFWriteStream writeStream)
+	{
+		if (socket == null)
+		{
+			throw new ArgumentNullException("socket");
+		}
+		CFStreamCreatePairWithSocket(IntPtr.Zero, socket.GetNative(), out var readStream2, out var writeStream2);
+		readStream = new CFReadStream(readStream2);
+		writeStream = new CFWriteStream(writeStream2);
+	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern void CFStreamCreatePairWithSocketToHost(IntPtr allocator, IntPtr host, int port, out IntPtr read, out IntPtr write);
+	internal static extern void CFStreamCreatePairWithPeerSocketSignature(IntPtr allocator, ref CFSocketSignature sig, out IntPtr readStream, out IntPtr writeStream);
+
+	public static void CreatePairWithPeerSocketSignature(AddressFamily family, SocketType type, ProtocolType proto, IPEndPoint endpoint, out CFReadStream readStream, out CFWriteStream writeStream)
+	{
+		using CFSocketAddress address = new CFSocketAddress(endpoint);
+		CFSocketSignature sig = new CFSocketSignature(family, type, proto, address);
+		CFStreamCreatePairWithPeerSocketSignature(IntPtr.Zero, ref sig, out var readStream2, out var writeStream2);
+		readStream = new CFReadStream(readStream2);
+		writeStream = new CFWriteStream(writeStream2);
+	}
+
+	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
+	internal static extern void CFStreamCreatePairWithSocketToCFHost(IntPtr allocator, IntPtr host, int port, out IntPtr readStream, out IntPtr writeStream);
+
+	public static void CreatePairWithSocketToHost(IPEndPoint endpoint, out CFReadStream readStream, out CFWriteStream writeStream)
+	{
+		using CFHost cFHost = CFHost.Create(endpoint);
+		CFStreamCreatePairWithSocketToCFHost(IntPtr.Zero, cFHost.Handle, endpoint.Port, out var readStream2, out var writeStream2);
+		readStream = ((readStream2 == IntPtr.Zero) ? null : new CFReadStream(readStream2));
+		writeStream = ((writeStream2 == IntPtr.Zero) ? null : new CFWriteStream(writeStream2));
+	}
+
+	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
+	internal static extern void CFStreamCreatePairWithSocketToHost(IntPtr allocator, IntPtr host, int port, out IntPtr readStream, out IntPtr writeStream);
 
 	public static void CreatePairWithSocketToHost(string host, int port, out CFReadStream readStream, out CFWriteStream writeStream)
 	{
 		using CFString cFString = new CFString(host);
-		CFStreamCreatePairWithSocketToHost(IntPtr.Zero, cFString.Handle, port, out var read, out var write);
-		readStream = new CFReadStream(read);
-		writeStream = new CFWriteStream(write);
+		CFStreamCreatePairWithSocketToHost(IntPtr.Zero, cFString.Handle, port, out var readStream2, out var writeStream2);
+		readStream = ((readStream2 == IntPtr.Zero) ? null : new CFReadStream(readStream2));
+		writeStream = ((writeStream2 == IntPtr.Zero) ? null : new CFWriteStream(writeStream2));
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern IntPtr CFReadStreamCreateForHTTPRequest(IntPtr alloc, IntPtr request);
+	[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, null)]
+	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
+	internal static extern IntPtr CFReadStreamCreateForHTTPRequest(IntPtr alloc, IntPtr request);
 
+	[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, "Use 'NSUrlSession'.")]
+	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, "Use 'NSUrlSession'.")]
 	public static CFHTTPStream CreateForHTTPRequest(CFHTTPMessage request)
 	{
-		IntPtr intPtr = CFReadStreamCreateForHTTPRequest(IntPtr.Zero, request.Handle);
-		if (intPtr == IntPtr.Zero)
+		if (request == null)
 		{
-			return null;
+			throw new ArgumentNullException("request");
 		}
+		IntPtr intPtr = CFReadStreamCreateForHTTPRequest(IntPtr.Zero, request.Handle);
 		return new CFHTTPStream(intPtr);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern IntPtr CFReadStreamCreateForStreamedHTTPRequest(IntPtr alloc, IntPtr request, IntPtr body);
+	internal static extern IntPtr CFReadStreamCreateForStreamedHTTPRequest(IntPtr alloc, IntPtr requestHeaders, IntPtr requestBody);
 
 	public static CFHTTPStream CreateForStreamedHTTPRequest(CFHTTPMessage request, CFReadStream body)
 	{
-		IntPtr intPtr = CFReadStreamCreateForStreamedHTTPRequest(IntPtr.Zero, request.Handle, body.Handle);
-		if (intPtr == IntPtr.Zero)
+		if (request == null)
 		{
-			return null;
+			throw new ArgumentNullException("request");
 		}
+		if (body == null)
+		{
+			throw new ArgumentNullException("body");
+		}
+		IntPtr intPtr = CFReadStreamCreateForStreamedHTTPRequest(IntPtr.Zero, request.Handle, body.Handle);
+		return new CFHTTPStream(intPtr);
+	}
+
+	public static CFHTTPStream CreateForStreamedHTTPRequest(CFHTTPMessage request, NSInputStream body)
+	{
+		if (request == null)
+		{
+			throw new ArgumentNullException("request");
+		}
+		if (body == null)
+		{
+			throw new ArgumentNullException("body");
+		}
+		IntPtr intPtr = CFReadStreamCreateForStreamedHTTPRequest(IntPtr.Zero, request.Handle, body.Handle);
 		return new CFHTTPStream(intPtr);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern void CFStreamCreateBoundPair(IntPtr alloc, out IntPtr readStream, out IntPtr writeStream, CFIndex transferBufferSize);
+	internal static extern void CFStreamCreateBoundPair(IntPtr alloc, out IntPtr readStream, out IntPtr writeStream, nint transferBufferSize);
 
-	public static void CreateBoundPair(out CFReadStream readStream, out CFWriteStream writeStream, int bufferSize)
+	public static void CreateBoundPair(out CFReadStream readStream, out CFWriteStream writeStream, nint bufferSize)
 	{
 		CFStreamCreateBoundPair(IntPtr.Zero, out var readStream2, out var writeStream2, bufferSize);
 		readStream = new CFReadStream(readStream2);
@@ -184,42 +270,27 @@ public abstract class CFStream : CFType, INativeObject, IDisposable
 
 	protected virtual void OnOpenCompleted(StreamEventArgs args)
 	{
-		if (this.OpenCompletedEvent != null)
-		{
-			this.OpenCompletedEvent(this, args);
-		}
+		this.OpenCompletedEvent?.Invoke(this, args);
 	}
 
 	protected virtual void OnHasBytesAvailableEvent(StreamEventArgs args)
 	{
-		if (this.HasBytesAvailableEvent != null)
-		{
-			this.HasBytesAvailableEvent(this, args);
-		}
+		this.HasBytesAvailableEvent?.Invoke(this, args);
 	}
 
 	protected virtual void OnCanAcceptBytesEvent(StreamEventArgs args)
 	{
-		if (this.CanAcceptBytesEvent != null)
-		{
-			this.CanAcceptBytesEvent(this, args);
-		}
+		this.CanAcceptBytesEvent?.Invoke(this, args);
 	}
 
 	protected virtual void OnErrorEvent(StreamEventArgs args)
 	{
-		if (this.ErrorEvent != null)
-		{
-			this.ErrorEvent(this, args);
-		}
+		this.ErrorEvent?.Invoke(this, args);
 	}
 
 	protected virtual void OnClosedEvent(StreamEventArgs args)
 	{
-		if (this.ClosedEvent != null)
-		{
-			this.ClosedEvent(this, args);
-		}
+		this.ClosedEvent?.Invoke(this, args);
 	}
 
 	protected abstract void ScheduleWithRunLoop(CFRunLoop loop, NSString mode);
@@ -227,25 +298,35 @@ public abstract class CFStream : CFType, INativeObject, IDisposable
 	protected abstract void UnscheduleFromRunLoop(CFRunLoop loop, NSString mode);
 
 	[MonoPInvokeCallback(typeof(CFStreamCallback))]
-	private static void OnCallback(IntPtr s, CFStreamEventType type, IntPtr info)
+	private static void OnCallback(IntPtr s, nint type, IntPtr info)
 	{
-		(GCHandle.FromIntPtr(info).Target as CFStream).OnCallback(type);
+		CFStream cFStream = GCHandle.FromIntPtr(info).Target as CFStream;
+		cFStream.OnCallback((CFStreamEventType)(long)type);
 	}
 
 	protected virtual void OnCallback(CFStreamEventType type)
 	{
 		StreamEventArgs args = new StreamEventArgs(type);
+		CFStreamEventType num = type - 1;
+		if (num <= (CFStreamEventType.OpenCompleted | CFStreamEventType.HasBytesAvailable))
+		{
+			switch (num)
+			{
+			case CFStreamEventType.None:
+				OnOpenCompleted(args);
+				return;
+			case CFStreamEventType.OpenCompleted | CFStreamEventType.HasBytesAvailable:
+				OnCanAcceptBytesEvent(args);
+				return;
+			case CFStreamEventType.OpenCompleted:
+				OnHasBytesAvailableEvent(args);
+				return;
+			case CFStreamEventType.HasBytesAvailable:
+				return;
+			}
+		}
 		switch (type)
 		{
-		case CFStreamEventType.OpenCompleted:
-			OnOpenCompleted(args);
-			break;
-		case CFStreamEventType.CanAcceptBytes:
-			OnCanAcceptBytesEvent(args);
-			break;
-		case CFStreamEventType.HasBytesAvailable:
-			OnHasBytesAvailableEvent(args);
-			break;
 		case CFStreamEventType.ErrorOccurred:
 			OnErrorEvent(args);
 			break;
@@ -271,7 +352,7 @@ public abstract class CFStream : CFType, INativeObject, IDisposable
 		try
 		{
 			Marshal.StructureToPtr(structure, intPtr, fDeleteOld: false);
-			if (!DoSetClient(OnCallback, (int)cFStreamEventType, intPtr))
+			if (!DoSetClient(OnCallback, (nint)(long)cFStreamEventType, intPtr))
 			{
 				throw new InvalidOperationException("Stream does not support async events.");
 			}
@@ -283,7 +364,7 @@ public abstract class CFStream : CFType, INativeObject, IDisposable
 		ScheduleWithRunLoop(runLoop, runLoopMode);
 	}
 
-	protected abstract bool DoSetClient(CFStreamCallback callback, CFIndex eventTypes, IntPtr context);
+	protected abstract bool DoSetClient(CFStreamCallback callback, nint eventTypes, IntPtr context);
 
 	protected CFStream(IntPtr handle)
 	{
@@ -326,4 +407,24 @@ public abstract class CFStream : CFType, INativeObject, IDisposable
 			handle = IntPtr.Zero;
 		}
 	}
+
+	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+	[iOS(7, 0)]
+	[Mac(10, 9)]
+	private static extern void CFReadStreamSetDispatchQueue(IntPtr stream, IntPtr queue);
+
+	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+	[iOS(7, 0)]
+	[Mac(10, 9)]
+	private static extern void CFWriteStreamSetDispatchQueue(IntPtr stream, IntPtr queue);
+
+	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+	[iOS(7, 0)]
+	[Mac(10, 9)]
+	private static extern IntPtr CFReadStreamCopyDispatchQueue(IntPtr stream);
+
+	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+	[iOS(7, 0)]
+	[Mac(10, 9)]
+	private static extern IntPtr CFWriteStreamCopyDispatchQueue(IntPtr stream);
 }

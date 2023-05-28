@@ -6,9 +6,13 @@ namespace CoreGraphics;
 
 public class CGPDFDictionary : INativeObject
 {
-	private delegate void ApplierFunction(string key, IntPtr pdfObject, IntPtr info);
+	private delegate void ApplierFunction(string key, IntPtr value, IntPtr info);
+
+	public delegate void ApplyCallback(string key, object value, object info);
 
 	internal IntPtr handle;
+
+	private static readonly ApplierFunction applyblock_handler = ApplyBridge;
 
 	public IntPtr Handle => handle;
 
@@ -20,10 +24,10 @@ public class CGPDFDictionary : INativeObject
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGPDFDictionaryGetCount(IntPtr handle);
+	private static extern nint CGPDFDictionaryGetCount(IntPtr dict);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern bool CGPDFDictionaryGetBoolean(IntPtr handle, string key, out bool result);
+	private static extern bool CGPDFDictionaryGetBoolean(IntPtr dict, string key, out bool value);
 
 	public bool GetBoolean(string key, out bool result)
 	{
@@ -35,9 +39,9 @@ public class CGPDFDictionary : INativeObject
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern bool CGPDFDictionaryGetInteger(IntPtr handle, string key, out int result);
+	private static extern bool CGPDFDictionaryGetInteger(IntPtr dict, string key, out nint value);
 
-	public bool GetInt(string key, out int result)
+	public bool GetInt(string key, out nint result)
 	{
 		if (key == null)
 		{
@@ -47,9 +51,9 @@ public class CGPDFDictionary : INativeObject
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern bool CGPDFDictionaryGetNumber(IntPtr handle, string key, out double result);
+	private static extern bool CGPDFDictionaryGetNumber(IntPtr dict, string key, out nfloat value);
 
-	public bool GetFloat(string key, out double result)
+	public bool GetFloat(string key, out nfloat result)
 	{
 		if (key == null)
 		{
@@ -59,7 +63,7 @@ public class CGPDFDictionary : INativeObject
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern bool CGPDFDictionaryGetName(IntPtr handle, string key, out IntPtr result);
+	private static extern bool CGPDFDictionaryGetName(IntPtr dict, string key, out IntPtr value);
 
 	public bool GetName(string key, out string result)
 	{
@@ -67,17 +71,14 @@ public class CGPDFDictionary : INativeObject
 		{
 			throw new ArgumentNullException("key");
 		}
-		if (!CGPDFDictionaryGetName(handle, key, out var result2))
-		{
-			result = null;
-			return false;
-		}
-		result = Marshal.PtrToStringAnsi(result2);
-		return true;
+		IntPtr value;
+		bool flag = CGPDFDictionaryGetName(handle, key, out value);
+		result = (flag ? Marshal.PtrToStringAnsi(value) : null);
+		return flag;
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern bool CGPDFDictionaryGetDictionary(IntPtr handle, string key, out IntPtr result);
+	private static extern bool CGPDFDictionaryGetDictionary(IntPtr dict, string key, out IntPtr result);
 
 	public bool GetDictionary(string key, out CGPDFDictionary result)
 	{
@@ -85,17 +86,14 @@ public class CGPDFDictionary : INativeObject
 		{
 			throw new ArgumentNullException("key");
 		}
-		if (!CGPDFDictionaryGetDictionary(handle, key, out var result2))
-		{
-			result = null;
-			return false;
-		}
-		result = new CGPDFDictionary(result2);
-		return true;
+		IntPtr result2;
+		bool flag = CGPDFDictionaryGetDictionary(handle, key, out result2);
+		result = (flag ? new CGPDFDictionary(result2) : null);
+		return flag;
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern bool CGPDFDictionaryGetStream(IntPtr handle, string key, out IntPtr result);
+	private static extern bool CGPDFDictionaryGetStream(IntPtr dict, string key, out IntPtr value);
 
 	public bool GetStream(string key, out CGPDFStream result)
 	{
@@ -103,17 +101,14 @@ public class CGPDFDictionary : INativeObject
 		{
 			throw new ArgumentNullException("key");
 		}
-		if (!CGPDFDictionaryGetStream(handle, key, out var result2))
-		{
-			result = null;
-			return false;
-		}
-		result = new CGPDFStream(result2);
-		return true;
+		IntPtr value;
+		bool flag = CGPDFDictionaryGetStream(handle, key, out value);
+		result = (flag ? new CGPDFStream(value) : null);
+		return flag;
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern bool CGPDFDictionaryGetArray(IntPtr handle, string key, out IntPtr result);
+	private static extern bool CGPDFDictionaryGetArray(IntPtr dict, string key, out IntPtr value);
 
 	public bool GetArray(string key, out CGPDFArray array)
 	{
@@ -121,113 +116,51 @@ public class CGPDFDictionary : INativeObject
 		{
 			throw new ArgumentNullException("key");
 		}
-		if (!CGPDFDictionaryGetArray(handle, key, out var result))
-		{
-			array = null;
-			return false;
-		}
-		array = new CGPDFArray(result);
-		return true;
+		IntPtr value;
+		bool flag = CGPDFDictionaryGetArray(handle, key, out value);
+		array = (flag ? new CGPDFArray(value) : null);
+		return flag;
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGPDFDictionaryApplyFunction(IntPtr dictRef, ApplierFunction function, IntPtr info);
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern int CGPDFObjectGetType(IntPtr pdfobj);
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern bool CGPDFObjectGetValue(IntPtr pdfobj, int type, out byte bvar);
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern bool CGPDFObjectGetValue(IntPtr pdfobj, int type, out int ivar);
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern bool CGPDFObjectGetValue(IntPtr pdfobj, int type, out float rvar);
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern bool CGPDFObjectGetValue(IntPtr pdfobj, int type, out IntPtr ptrvar);
-
-	private static object MapFromCGPdfObject(IntPtr pdfObj)
-	{
-		IntPtr ptrvar;
-		switch (CGPDFObjectGetType(pdfObj))
-		{
-		case 1:
-			return null;
-		case 2:
-		{
-			if (CGPDFObjectGetValue(pdfObj, 2, out byte bvar))
-			{
-				return bvar != 0;
-			}
-			return null;
-		}
-		case 3:
-		{
-			if (CGPDFObjectGetValue(pdfObj, 3, out int ivar))
-			{
-				return ivar;
-			}
-			return null;
-		}
-		case 4:
-		{
-			if (CGPDFObjectGetValue(pdfObj, 4, out float rvar))
-			{
-				return rvar;
-			}
-			return null;
-		}
-		case 5:
-			if (CGPDFObjectGetValue(pdfObj, 5, out ptrvar))
-			{
-				return Marshal.PtrToStringAnsi(ptrvar);
-			}
-			return null;
-		case 6:
-			if (CGPDFObjectGetValue(pdfObj, 6, out ptrvar))
-			{
-				return CGPDFString.ToString(ptrvar);
-			}
-			return null;
-		case 7:
-			if (CGPDFObjectGetValue(pdfObj, 7, out ptrvar))
-			{
-				return new CGPDFArray(ptrvar);
-			}
-			return null;
-		case 8:
-			if (CGPDFObjectGetValue(pdfObj, 8, out ptrvar))
-			{
-				return new CGPDFDictionary(ptrvar);
-			}
-			return null;
-		case 9:
-			if (CGPDFObjectGetValue(pdfObj, 9, out ptrvar))
-			{
-				return new CGPDFStream(ptrvar);
-			}
-			return null;
-		default:
-			return null;
-		}
-	}
+	private static extern void CGPDFDictionaryApplyFunction(IntPtr dic, ApplierFunction function, IntPtr info);
 
 	private static void ApplyBridge(string key, IntPtr pdfObject, IntPtr info)
 	{
-		((Action<string, object>)GCHandle.FromIntPtr(info).Target)(key, MapFromCGPdfObject(pdfObject));
+		Tuple<ApplyCallback, object> tuple = (Tuple<ApplyCallback, object>)GCHandle.FromIntPtr(info).Target;
+		ApplyCallback item = tuple.Item1;
+		item(key, CGPDFObject.FromHandle(pdfObject), tuple.Item2);
 	}
 
-	public void Apply(Action<string, object> callback)
+	public void Apply(ApplyCallback callback, object info = null)
+	{
+		Tuple<ApplyCallback, object> value = new Tuple<ApplyCallback, object>(callback, info);
+		GCHandle value2 = GCHandle.Alloc(value);
+		try
+		{
+			CGPDFDictionaryApplyFunction(Handle, applyblock_handler, GCHandle.ToIntPtr(value2));
+		}
+		finally
+		{
+			value2.Free();
+		}
+	}
+
+	private static void ApplyBridge2(string key, IntPtr pdfObject, IntPtr info)
+	{
+		Action<string, CGPDFObject> action = (Action<string, CGPDFObject>)GCHandle.FromIntPtr(info).Target;
+		action(key, new CGPDFObject(pdfObject));
+	}
+
+	public void Apply(Action<string, CGPDFObject> callback)
 	{
 		GCHandle value = GCHandle.Alloc(callback);
-		CGPDFDictionaryApplyFunction(Handle, ApplyBridge, GCHandle.ToIntPtr(value));
+		CGPDFDictionaryApplyFunction(Handle, ApplyBridge2, GCHandle.ToIntPtr(value));
 		value.Free();
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern bool CGPDFDictionaryGetString(IntPtr handle, string key, out IntPtr result);
+	private static extern bool CGPDFDictionaryGetString(IntPtr dict, string key, out IntPtr value);
 
 	public bool GetString(string key, out string result)
 	{
@@ -235,12 +168,9 @@ public class CGPDFDictionary : INativeObject
 		{
 			throw new ArgumentNullException("key");
 		}
-		if (CGPDFDictionaryGetString(handle, key, out var result2))
-		{
-			result = CGPDFString.ToString(result2);
-			return true;
-		}
-		result = null;
-		return false;
+		IntPtr value;
+		bool flag = CGPDFDictionaryGetString(handle, key, out value);
+		result = (flag ? CGPDFString.ToString(value) : null);
+		return flag;
 	}
 }

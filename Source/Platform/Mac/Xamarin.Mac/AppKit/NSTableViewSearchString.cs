@@ -1,3 +1,5 @@
+using System;
+
 namespace AppKit;
 
-public delegate long NSTableViewSearchString(NSTableView tableView, long startRow, long endRow, string searchString);
+public delegate nint NSTableViewSearchString(NSTableView tableView, nint startRow, nint endRow, string searchString);

@@ -6,100 +6,224 @@ using ObjCRuntime;
 namespace PdfKit;
 
 [Register("PDFOutline", true)]
+[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
 public class PdfOutline : NSObject
 {
-	private static readonly IntPtr selDocumentHandle = Selector.GetHandle("document");
-
-	private static readonly IntPtr selParentHandle = Selector.GetHandle("parent");
-
-	private static readonly IntPtr selNumberOfChildrenHandle = Selector.GetHandle("numberOfChildren");
-
-	private static readonly IntPtr selIndexHandle = Selector.GetHandle("index");
-
-	private static readonly IntPtr selLabelHandle = Selector.GetHandle("label");
-
-	private static readonly IntPtr selSetLabel_Handle = Selector.GetHandle("setLabel:");
-
-	private static readonly IntPtr selIsOpenHandle = Selector.GetHandle("isOpen");
-
-	private static readonly IntPtr selSetIsOpen_Handle = Selector.GetHandle("setIsOpen:");
-
-	private static readonly IntPtr selDestinationHandle = Selector.GetHandle("destination");
-
-	private static readonly IntPtr selSetDestination_Handle = Selector.GetHandle("setDestination:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAction = "action";
 
 	private static readonly IntPtr selActionHandle = Selector.GetHandle("action");
 
-	private static readonly IntPtr selSetAction_Handle = Selector.GetHandle("setAction:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selChildAtIndex_ = "childAtIndex:";
 
 	private static readonly IntPtr selChildAtIndex_Handle = Selector.GetHandle("childAtIndex:");
 
-	private static readonly IntPtr selInsertChildAtIndex_Handle = Selector.GetHandle("insertChild:atIndex:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDestination = "destination";
+
+	private static readonly IntPtr selDestinationHandle = Selector.GetHandle("destination");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDocument = "document";
+
+	private static readonly IntPtr selDocumentHandle = Selector.GetHandle("document");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIndex = "index";
+
+	private static readonly IntPtr selIndexHandle = Selector.GetHandle("index");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInit = "init";
+
+	private static readonly IntPtr selInitHandle = Selector.GetHandle("init");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInsertChild_AtIndex_ = "insertChild:atIndex:";
+
+	private static readonly IntPtr selInsertChild_AtIndex_Handle = Selector.GetHandle("insertChild:atIndex:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsOpen = "isOpen";
+
+	private static readonly IntPtr selIsOpenHandle = Selector.GetHandle("isOpen");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLabel = "label";
+
+	private static readonly IntPtr selLabelHandle = Selector.GetHandle("label");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selNumberOfChildren = "numberOfChildren";
+
+	private static readonly IntPtr selNumberOfChildrenHandle = Selector.GetHandle("numberOfChildren");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selParent = "parent";
+
+	private static readonly IntPtr selParentHandle = Selector.GetHandle("parent");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveFromParent = "removeFromParent";
 
 	private static readonly IntPtr selRemoveFromParentHandle = Selector.GetHandle("removeFromParent");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("PDFOutline");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAction_ = "setAction:";
 
-	private object __mt_Document_var;
+	private static readonly IntPtr selSetAction_Handle = Selector.GetHandle("setAction:");
 
-	private object __mt_Parent_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDestination_ = "setDestination:";
 
-	private object __mt_Destination_var;
+	private static readonly IntPtr selSetDestination_Handle = Selector.GetHandle("setDestination:");
 
-	private object __mt_Action_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetIsOpen_ = "setIsOpen:";
+
+	private static readonly IntPtr selSetIsOpen_Handle = Selector.GetHandle("setIsOpen:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLabel_ = "setLabel:";
+
+	private static readonly IntPtr selSetLabel_Handle = Selector.GetHandle("setLabel:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("PDFOutline");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+	public virtual PdfAction? Action
+	{
+		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+		[Export("action")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<PdfAction>(Messaging.IntPtr_objc_msgSend(base.Handle, selActionHandle));
+			}
+			return Runtime.GetNSObject<PdfAction>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selActionHandle));
+		}
+		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+		[Export("setAction:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAction_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAction_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint ChildrenCount
+	{
+		[Export("numberOfChildren")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nint_objc_msgSend(base.Handle, selNumberOfChildrenHandle);
+			}
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selNumberOfChildrenHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual PdfDestination? Destination
+	{
+		[Export("destination")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<PdfDestination>(Messaging.IntPtr_objc_msgSend(base.Handle, selDestinationHandle));
+			}
+			return Runtime.GetNSObject<PdfDestination>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDestinationHandle));
+		}
+		[Export("setDestination:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDestination_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDestination_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual PdfDocument Document
 	{
 		[Export("document")]
 		get
 		{
-			return (PdfDocument)(__mt_Document_var = ((!IsDirectBinding) ? ((PdfDocument)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDocumentHandle))) : ((PdfDocument)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDocumentHandle)))));
-		}
-	}
-
-	public virtual PdfOutline Parent
-	{
-		[Export("parent")]
-		get
-		{
-			return (PdfOutline)(__mt_Parent_var = ((!IsDirectBinding) ? ((PdfOutline)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selParentHandle))) : ((PdfOutline)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selParentHandle)))));
-		}
-	}
-
-	public virtual int ChildrenCount
-	{
-		[Export("numberOfChildren")]
-		get
-		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.int_objc_msgSend(base.Handle, selNumberOfChildrenHandle);
+				return Runtime.GetNSObject<PdfDocument>(Messaging.IntPtr_objc_msgSend(base.Handle, selDocumentHandle));
 			}
-			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selNumberOfChildrenHandle);
+			return Runtime.GetNSObject<PdfDocument>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDocumentHandle));
 		}
 	}
 
-	public virtual int Index
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint Index
 	{
 		[Export("index")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.int_objc_msgSend(base.Handle, selIndexHandle);
+				return Messaging.nint_objc_msgSend(base.Handle, selIndexHandle);
 			}
-			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selIndexHandle);
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selIndexHandle);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool IsOpen
+	{
+		[Export("isOpen")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsOpenHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsOpenHandle);
+		}
+		[Export("setIsOpen:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetIsOpen_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetIsOpen_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string Label
 	{
 		[Export("label")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLabelHandle));
 			}
@@ -113,7 +237,7 @@ public class PdfOutline : NSObject
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetLabel_Handle, arg);
 			}
@@ -125,174 +249,90 @@ public class PdfOutline : NSObject
 		}
 	}
 
-	public virtual bool IsOpen
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual PdfOutline? Parent
 	{
-		[Export("isOpen")]
+		[Export("parent")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsOpenHandle);
+				return Runtime.GetNSObject<PdfOutline>(Messaging.IntPtr_objc_msgSend(base.Handle, selParentHandle));
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsOpenHandle);
-		}
-		[Export("setIsOpen:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetIsOpen_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetIsOpen_Handle, value);
-			}
+			return Runtime.GetNSObject<PdfOutline>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selParentHandle));
 		}
 	}
 
-	public virtual PdfDestination Destination
-	{
-		[Export("destination")]
-		get
-		{
-			return (PdfDestination)(__mt_Destination_var = ((!IsDirectBinding) ? ((PdfDestination)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDestinationHandle))) : ((PdfDestination)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDestinationHandle)))));
-		}
-		[Export("setDestination:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDestination_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDestination_Handle, value.Handle);
-			}
-			__mt_Destination_var = value;
-		}
-	}
-
-	public virtual PdfAction Action
-	{
-		[Export("action")]
-		get
-		{
-			return (PdfAction)(__mt_Action_var = ((!IsDirectBinding) ? ((PdfAction)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selActionHandle))) : ((PdfAction)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selActionHandle)))));
-		}
-		[Export("setAction:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAction_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAction_Handle, value.Handle);
-			}
-			__mt_Action_var = value;
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("init")]
-	public PdfOutline()
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public PdfOutline(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public PdfOutline(NSObjectFlag t)
+	protected PdfOutline(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public PdfOutline(IntPtr handle)
+	protected internal PdfOutline(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("childAtIndex:")]
-	public virtual PdfOutline Child(int index)
+	[Export("init")]
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public PdfOutline()
+		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (PdfOutline)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_int(base.Handle, selChildAtIndex_Handle, index));
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selInitHandle), "init");
 		}
-		return (PdfOutline)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_int(base.SuperHandle, selChildAtIndex_Handle, index));
+		else
+		{
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInitHandle), "init");
+		}
+	}
+
+	[Export("childAtIndex:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual PdfOutline? Child(nint index)
+	{
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<PdfOutline>(Messaging.IntPtr_objc_msgSend_nint(base.Handle, selChildAtIndex_Handle, index));
+		}
+		return Runtime.GetNSObject<PdfOutline>(Messaging.IntPtr_objc_msgSendSuper_nint(base.SuperHandle, selChildAtIndex_Handle, index));
 	}
 
 	[Export("insertChild:atIndex:")]
-	public virtual void InsertChild(PdfOutline child, int index)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void InsertChild(PdfOutline child, nint index)
 	{
 		if (child == null)
 		{
 			throw new ArgumentNullException("child");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_int(base.Handle, selInsertChildAtIndex_Handle, child.Handle, index);
+			Messaging.void_objc_msgSend_IntPtr_nint(base.Handle, selInsertChild_AtIndex_Handle, child.Handle, index);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_int(base.SuperHandle, selInsertChildAtIndex_Handle, child.Handle, index);
+			Messaging.void_objc_msgSendSuper_IntPtr_nint(base.SuperHandle, selInsertChild_AtIndex_Handle, child.Handle, index);
 		}
 	}
 
 	[Export("removeFromParent")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void RemoveFromParent()
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selRemoveFromParentHandle);
 		}
 		else
 		{
 			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRemoveFromParentHandle);
-		}
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_Document_var = null;
-			__mt_Parent_var = null;
-			__mt_Destination_var = null;
-			__mt_Action_var = null;
 		}
 	}
 }

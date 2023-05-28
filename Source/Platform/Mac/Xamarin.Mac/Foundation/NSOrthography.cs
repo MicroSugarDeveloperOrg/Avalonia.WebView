@@ -5,84 +5,75 @@ using ObjCRuntime;
 namespace Foundation;
 
 [Register("NSOrthography", true)]
-public class NSOrthography : NSObject
+public class NSOrthography : NSObject, INSCoding, INativeObject, IDisposable, INSCopying, INSSecureCoding
 {
-	private static readonly IntPtr selDominantScriptHandle = Selector.GetHandle("dominantScript");
-
-	private static readonly IntPtr selLanguageMapHandle = Selector.GetHandle("languageMap");
-
-	private static readonly IntPtr selDominantLanguageHandle = Selector.GetHandle("dominantLanguage");
-
-	private static readonly IntPtr selAllScriptsHandle = Selector.GetHandle("allScripts");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAllLanguages = "allLanguages";
 
 	private static readonly IntPtr selAllLanguagesHandle = Selector.GetHandle("allLanguages");
 
-	private static readonly IntPtr selLanguagesForScript_Handle = Selector.GetHandle("languagesForScript:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAllScripts = "allScripts";
+
+	private static readonly IntPtr selAllScriptsHandle = Selector.GetHandle("allScripts");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCopyWithZone_ = "copyWithZone:";
+
+	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDominantLanguage = "dominantLanguage";
+
+	private static readonly IntPtr selDominantLanguageHandle = Selector.GetHandle("dominantLanguage");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDominantLanguageForScript_ = "dominantLanguageForScript:";
 
 	private static readonly IntPtr selDominantLanguageForScript_Handle = Selector.GetHandle("dominantLanguageForScript:");
 
-	private static readonly IntPtr selInitWithDominantScriptLanguageMap_Handle = Selector.GetHandle("initWithDominantScript:languageMap:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDominantScript = "dominantScript";
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSOrthography");
+	private static readonly IntPtr selDominantScriptHandle = Selector.GetHandle("dominantScript");
 
-	private object __mt_LanguageMap_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEncodeWithCoder_ = "encodeWithCoder:";
+
+	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithCoder_ = "initWithCoder:";
+
+	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithDominantScript_LanguageMap_ = "initWithDominantScript:languageMap:";
+
+	private static readonly IntPtr selInitWithDominantScript_LanguageMap_Handle = Selector.GetHandle("initWithDominantScript:languageMap:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLanguageMap = "languageMap";
+
+	private static readonly IntPtr selLanguageMapHandle = Selector.GetHandle("languageMap");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLanguagesForScript_ = "languagesForScript:";
+
+	private static readonly IntPtr selLanguagesForScript_Handle = Selector.GetHandle("languagesForScript:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSOrthography");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual string DominantScript
-	{
-		[Export("dominantScript")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDominantScriptHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDominantScriptHandle));
-		}
-	}
-
-	public virtual NSDictionary LanguageMap
-	{
-		[Export("languageMap")]
-		get
-		{
-			return (NSDictionary)(__mt_LanguageMap_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLanguageMapHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selLanguageMapHandle)))));
-		}
-	}
-
-	public virtual string DominantLanguage
-	{
-		[Export("dominantLanguage")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDominantLanguageHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDominantLanguageHandle));
-		}
-	}
-
-	public virtual string[] AllScripts
-	{
-		[Export("allScripts")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAllScriptsHandle));
-			}
-			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAllScriptsHandle));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string[] AllLanguages
 	{
 		[Export("allLanguages")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAllLanguagesHandle));
 			}
@@ -90,61 +81,97 @@ public class NSOrthography : NSObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string[] AllScripts
+	{
+		[Export("allScripts")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAllScriptsHandle));
+			}
+			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAllScriptsHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string DominantLanguage
+	{
+		[Export("dominantLanguage")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDominantLanguageHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDominantLanguageHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string DominantScript
+	{
+		[Export("dominantScript")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDominantScriptHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDominantScriptHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary LanguageMap
+	{
+		[Export("languageMap")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selLanguageMapHandle));
+			}
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLanguageMapHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSOrthography(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSOrthography(NSObjectFlag t)
+	protected NSOrthography(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSOrthography(IntPtr handle)
+	protected internal NSOrthography(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("languagesForScript:")]
-	public virtual string[] LanguagesForScript(string script)
-	{
-		if (script == null)
-		{
-			throw new ArgumentNullException("script");
-		}
-		IntPtr arg = NSString.CreateNative(script);
-		string[] result = ((!IsDirectBinding) ? NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selLanguagesForScript_Handle, arg)) : NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selLanguagesForScript_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("dominantLanguageForScript:")]
-	public virtual string DominantLanguageForScript(string script)
-	{
-		if (script == null)
-		{
-			throw new ArgumentNullException("script");
-		}
-		IntPtr arg = NSString.CreateNative(script);
-		string result = ((!IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDominantLanguageForScript_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDominantLanguageForScript_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
 	[Export("initWithDominantScript:languageMap:")]
-	public NSOrthography(string dominantScript, NSDictionary languageMap)
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public NSOrthography(string dominantScript, NSDictionary? languageMap)
 		: base(NSObjectFlag.Empty)
 	{
 		if (dominantScript == null)
@@ -152,23 +179,73 @@ public class NSOrthography : NSObject
 			throw new ArgumentNullException("dominantScript");
 		}
 		IntPtr arg = NSString.CreateNative(dominantScript);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithDominantScriptLanguageMap_Handle, arg, languageMap?.Handle ?? IntPtr.Zero);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithDominantScript_LanguageMap_Handle, arg, languageMap?.Handle ?? IntPtr.Zero), "initWithDominantScript:languageMap:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithDominantScriptLanguageMap_Handle, arg, languageMap?.Handle ?? IntPtr.Zero);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithDominantScript_LanguageMap_Handle, arg, languageMap?.Handle ?? IntPtr.Zero), "initWithDominantScript:languageMap:");
 		}
 		NSString.ReleaseNative(arg);
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("copyWithZone:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[return: Release]
+	public virtual NSObject Copy(NSZone? zone)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
+		if (nSObject != null)
 		{
-			__mt_LanguageMap_var = null;
+			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
 		}
+		return nSObject;
+	}
+
+	[Export("dominantLanguageForScript:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string DominantLanguageForScript(string script)
+	{
+		if (script == null)
+		{
+			throw new ArgumentNullException("script");
+		}
+		IntPtr arg = NSString.CreateNative(script);
+		string result = ((!base.IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDominantLanguageForScript_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDominantLanguageForScript_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("encodeWithCoder:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void EncodeTo(NSCoder encoder)
+	{
+		if (encoder == null)
+		{
+			throw new ArgumentNullException("encoder");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+	}
+
+	[Export("languagesForScript:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string[] LanguagesForScript(string script)
+	{
+		if (script == null)
+		{
+			throw new ArgumentNullException("script");
+		}
+		IntPtr arg = NSString.CreateNative(script);
+		string[] result = ((!base.IsDirectBinding) ? NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selLanguagesForScript_Handle, arg)) : NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selLanguagesForScript_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
 	}
 }

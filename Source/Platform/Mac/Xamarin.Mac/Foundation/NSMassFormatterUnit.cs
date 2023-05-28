@@ -1,4 +1,4 @@
-﻿using ObjCRuntime;
+using ObjCRuntime;
 
 namespace Foundation;
 
@@ -7,9 +7,9 @@ namespace Foundation;
 [Native]
 public enum NSMassFormatterUnit : long
 {
-    Gram = 11L,
-    Kilogram = 14L,
-    Ounce = 1537L,
-    Pound = 1538L,
-    Stone = 1539L
+	Gram = 11L,
+	Kilogram = 14L,
+	Ounce = 1537L,
+	Pound = 1538L,
+	Stone = 1539L
 }

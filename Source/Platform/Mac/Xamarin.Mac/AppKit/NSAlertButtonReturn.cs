@@ -1,8 +1,11 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
-public enum NSAlertButtonReturn
+[Native]
+public enum NSAlertButtonReturn : long
 {
-	First = 1000,
+	First = 1000L,
 	Second,
 	Third
 }

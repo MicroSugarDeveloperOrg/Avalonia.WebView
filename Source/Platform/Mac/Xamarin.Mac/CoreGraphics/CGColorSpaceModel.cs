@@ -9,5 +9,6 @@ public enum CGColorSpaceModel
 	Lab,
 	DeviceN,
 	Indexed,
-	Pattern
+	Pattern,
+	Xyz
 }

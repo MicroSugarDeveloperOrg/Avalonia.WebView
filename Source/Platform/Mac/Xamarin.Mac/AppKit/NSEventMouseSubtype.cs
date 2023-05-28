@@ -1,6 +1,9 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
-public enum NSEventMouseSubtype
+[Native]
+public enum NSEventMouseSubtype : ulong
 {
 	Mouse,
 	TablePoint,

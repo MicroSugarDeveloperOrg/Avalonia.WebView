@@ -1,9 +1,9 @@
 using System;
-using System.Runtime.InteropServices;
+using ObjCRuntime;
 
 namespace AudioToolbox;
 
-[StructLayout(LayoutKind.Sequential, Pack = 4)]
+[Watch(6, 0)]
 public struct AudioFormat
 {
 	public AudioStreamBasicDescription AudioStreamBasicDescription;
@@ -34,6 +34,6 @@ public struct AudioFormat
 
 	public override string ToString()
 	{
-		return string.Concat(AudioChannelLayoutTag, ":", AudioStreamBasicDescription.ToString());
+		return AudioChannelLayoutTag.ToString() + ":" + AudioStreamBasicDescription.ToString();
 	}
 }

@@ -38,7 +38,7 @@ public sealed class NSUrlProtocolClient : NSObject
 
 	public void ReceivedResponse(NSUrlProtocol protocol, NSUrlResponse response, NSUrlCacheStoragePolicy policy)
 	{
-		Messaging.void_objc_msgSend_intptr_intptr_nuint(base.Handle, Selector.GetHandle("URLProtocol:didReceiveResponse:cacheStoragePolicy:"), protocol.Handle, response.Handle, (ulong)policy);
+		Messaging.void_objc_msgSend_IntPtr_IntPtr_int(base.Handle, Selector.GetHandle("URLProtocol:didReceiveResponse:cacheStoragePolicy:"), protocol.Handle, response.Handle, (int)policy);
 	}
 
 	public void DataLoaded(NSUrlProtocol protocol, NSData data)

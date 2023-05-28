@@ -1,6 +1,6 @@
 namespace CoreLocation;
 
-public enum CLDeviceOrientation
+public enum CLDeviceOrientation : uint
 {
 	Unknown,
 	Portrait,

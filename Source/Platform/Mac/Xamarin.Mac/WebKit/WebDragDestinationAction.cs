@@ -3,12 +3,12 @@ using System;
 namespace WebKit;
 
 [Flags]
-public enum WebDragDestinationAction : uint
+public enum WebDragDestinationAction : ulong
 {
-	None = 0u,
-	DHTML = 1u,
-	Image = 2u,
-	Link = 4u,
-	Selection = 8u,
-	Any = uint.MaxValue
+	None = 0uL,
+	DHTML = 1uL,
+	Image = 2uL,
+	Link = 4uL,
+	Selection = 8uL,
+	Any = ulong.MaxValue
 }

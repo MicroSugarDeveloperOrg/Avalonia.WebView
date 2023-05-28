@@ -23,7 +23,7 @@ public class CGImageProperties : DictionaryContainer
 	{
 		get
 		{
-			string nSStringValue = GetNSStringValue(ImageIO.CGImageProperties.ColorModel);
+			NSString nSStringValue = GetNSStringValue(ImageIO.CGImageProperties.ColorModel);
 			if (nSStringValue == ImageIO.CGImageProperties.ColorModelRGB)
 			{
 				return CGImageColorModel.RGB;
@@ -64,32 +64,6 @@ public class CGImageProperties : DictionaryContainer
 		set
 		{
 			SetNumberValue(ImageIO.CGImageProperties.Depth, value);
-		}
-	}
-
-	[Obsolete("Use the DPIHeightF property")]
-	public int? DPIHeight
-	{
-		get
-		{
-			return GetInt32Value(ImageIO.CGImageProperties.DPIHeight);
-		}
-		set
-		{
-			SetNumberValue(ImageIO.CGImageProperties.DPIHeight, value);
-		}
-	}
-
-	[Obsolete("Use the DPIWidthF property")]
-	public int? DPIWidth
-	{
-		get
-		{
-			return GetInt32Value(ImageIO.CGImageProperties.DPIWidth);
-		}
-		set
-		{
-			SetNumberValue(ImageIO.CGImageProperties.DPIWidth, value);
 		}
 	}
 
@@ -206,11 +180,7 @@ public class CGImageProperties : DictionaryContainer
 		get
 		{
 			NSDictionary nSDictionary = GetNSDictionary(ImageIO.CGImageProperties.ExifDictionary);
-			if (nSDictionary != null)
-			{
-				return new CGImagePropertiesExif(nSDictionary);
-			}
-			return null;
+			return (nSDictionary == null) ? null : new CGImagePropertiesExif(nSDictionary);
 		}
 	}
 
@@ -219,11 +189,7 @@ public class CGImageProperties : DictionaryContainer
 		get
 		{
 			NSDictionary nSDictionary = GetNSDictionary(ImageIO.CGImageProperties.GPSDictionary);
-			if (nSDictionary != null)
-			{
-				return new CGImagePropertiesGps(nSDictionary);
-			}
-			return null;
+			return (nSDictionary == null) ? null : new CGImagePropertiesGps(nSDictionary);
 		}
 	}
 
@@ -232,11 +198,7 @@ public class CGImageProperties : DictionaryContainer
 		get
 		{
 			NSDictionary nSDictionary = GetNSDictionary(ImageIO.CGImageProperties.IPTCDictionary);
-			if (nSDictionary != null)
-			{
-				return new CGImagePropertiesIptc(nSDictionary);
-			}
-			return null;
+			return (nSDictionary == null) ? null : new CGImagePropertiesIptc(nSDictionary);
 		}
 	}
 
@@ -245,11 +207,7 @@ public class CGImageProperties : DictionaryContainer
 		get
 		{
 			NSDictionary nSDictionary = GetNSDictionary(ImageIO.CGImageProperties.PNGDictionary);
-			if (nSDictionary != null)
-			{
-				return new CGImagePropertiesPng(nSDictionary);
-			}
-			return null;
+			return (nSDictionary == null) ? null : new CGImagePropertiesPng(nSDictionary);
 		}
 	}
 
@@ -258,11 +216,7 @@ public class CGImageProperties : DictionaryContainer
 		get
 		{
 			NSDictionary nSDictionary = GetNSDictionary(ImageIO.CGImageProperties.JFIFDictionary);
-			if (nSDictionary != null)
-			{
-				return new CGImagePropertiesJfif(nSDictionary);
-			}
-			return null;
+			return (nSDictionary == null) ? null : new CGImagePropertiesJfif(nSDictionary);
 		}
 	}
 
@@ -271,11 +225,7 @@ public class CGImageProperties : DictionaryContainer
 		get
 		{
 			NSDictionary nSDictionary = GetNSDictionary(ImageIO.CGImageProperties.TIFFDictionary);
-			if (nSDictionary != null)
-			{
-				return new CGImagePropertiesTiff(nSDictionary);
-			}
-			return null;
+			return (nSDictionary == null) ? null : new CGImagePropertiesTiff(nSDictionary);
 		}
 	}
 

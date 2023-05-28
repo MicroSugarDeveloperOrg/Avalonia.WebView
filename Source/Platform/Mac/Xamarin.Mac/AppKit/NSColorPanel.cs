@@ -8,103 +8,153 @@ namespace AppKit;
 [Register("NSColorPanel", true)]
 public class NSColorPanel : NSPanel
 {
-	private static readonly IntPtr selSharedColorPanelHandle = Selector.GetHandle("sharedColorPanel");
+	public new static class Notifications
+	{
+		public static NSObject ObserveColorChanged(EventHandler<NSNotificationEventArgs> handler)
+		{
+			EventHandler<NSNotificationEventArgs> handler2 = handler;
+			return NSNotificationCenter.DefaultCenter.AddObserver(ColorChangedNotification, delegate(NSNotification notification)
+			{
+				handler2(null, new NSNotificationEventArgs(notification));
+			});
+		}
 
-	private static readonly IntPtr selSharedColorPanelExistsHandle = Selector.GetHandle("sharedColorPanelExists");
+		public static NSObject ObserveColorChanged(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
+		{
+			EventHandler<NSNotificationEventArgs> handler2 = handler;
+			return NSNotificationCenter.DefaultCenter.AddObserver(ColorChangedNotification, delegate(NSNotification notification)
+			{
+				handler2(null, new NSNotificationEventArgs(notification));
+			}, objectToObserve);
+		}
+	}
 
-	private static readonly IntPtr selAlphaHandle = Selector.GetHandle("alpha");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAccessoryView = "accessoryView";
 
 	private static readonly IntPtr selAccessoryViewHandle = Selector.GetHandle("accessoryView");
 
-	private static readonly IntPtr selSetAccessoryView_Handle = Selector.GetHandle("setAccessoryView:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAlpha = "alpha";
 
-	private static readonly IntPtr selIsContinuousHandle = Selector.GetHandle("isContinuous");
+	private static readonly IntPtr selAlphaHandle = Selector.GetHandle("alpha");
 
-	private static readonly IntPtr selSetContinuous_Handle = Selector.GetHandle("setContinuous:");
-
-	private static readonly IntPtr selShowsAlphaHandle = Selector.GetHandle("showsAlpha");
-
-	private static readonly IntPtr selSetShowsAlpha_Handle = Selector.GetHandle("setShowsAlpha:");
-
-	private static readonly IntPtr selModeHandle = Selector.GetHandle("mode");
-
-	private static readonly IntPtr selSetMode_Handle = Selector.GetHandle("setMode:");
-
-	private static readonly IntPtr selColorHandle = Selector.GetHandle("color");
-
-	private static readonly IntPtr selSetColor_Handle = Selector.GetHandle("setColor:");
-
-	private static readonly IntPtr selDragColorWithEventFromView_Handle = Selector.GetHandle("dragColor:withEvent:fromView:");
-
-	private static readonly IntPtr selSetPickerMask_Handle = Selector.GetHandle("setPickerMask:");
-
-	private static readonly IntPtr selSetPickerMode_Handle = Selector.GetHandle("setPickerMode:");
-
-	private static readonly IntPtr selSetAction_Handle = Selector.GetHandle("setAction:");
-
-	private static readonly IntPtr selSetTarget_Handle = Selector.GetHandle("setTarget:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAttachColorList_ = "attachColorList:";
 
 	private static readonly IntPtr selAttachColorList_Handle = Selector.GetHandle("attachColorList:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selColor = "color";
+
+	private static readonly IntPtr selColorHandle = Selector.GetHandle("color");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDetachColorList_ = "detachColorList:";
+
 	private static readonly IntPtr selDetachColorList_Handle = Selector.GetHandle("detachColorList:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSColorPanel");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDragColor_WithEvent_FromView_ = "dragColor:withEvent:fromView:";
 
-	private static object __mt_SharedColorPanel_var_static;
+	private static readonly IntPtr selDragColor_WithEvent_FromView_Handle = Selector.GetHandle("dragColor:withEvent:fromView:");
 
-	private object __mt_AccessoryView_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsContinuous = "isContinuous";
 
-	private object __mt_Color_var;
+	private static readonly IntPtr selIsContinuousHandle = Selector.GetHandle("isContinuous");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMode = "mode";
+
+	private static readonly IntPtr selModeHandle = Selector.GetHandle("mode");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAccessoryView_ = "setAccessoryView:";
+
+	private static readonly IntPtr selSetAccessoryView_Handle = Selector.GetHandle("setAccessoryView:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAction_ = "setAction:";
+
+	private static readonly IntPtr selSetAction_Handle = Selector.GetHandle("setAction:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetColor_ = "setColor:";
+
+	private static readonly IntPtr selSetColor_Handle = Selector.GetHandle("setColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetContinuous_ = "setContinuous:";
+
+	private static readonly IntPtr selSetContinuous_Handle = Selector.GetHandle("setContinuous:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMode_ = "setMode:";
+
+	private static readonly IntPtr selSetMode_Handle = Selector.GetHandle("setMode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPickerMask_ = "setPickerMask:";
+
+	private static readonly IntPtr selSetPickerMask_Handle = Selector.GetHandle("setPickerMask:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPickerMode_ = "setPickerMode:";
+
+	private static readonly IntPtr selSetPickerMode_Handle = Selector.GetHandle("setPickerMode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetShowsAlpha_ = "setShowsAlpha:";
+
+	private static readonly IntPtr selSetShowsAlpha_Handle = Selector.GetHandle("setShowsAlpha:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTarget_ = "setTarget:";
+
+	private static readonly IntPtr selSetTarget_Handle = Selector.GetHandle("setTarget:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSharedColorPanel = "sharedColorPanel";
+
+	private static readonly IntPtr selSharedColorPanelHandle = Selector.GetHandle("sharedColorPanel");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSharedColorPanelExists = "sharedColorPanelExists";
+
+	private static readonly IntPtr selSharedColorPanelExistsHandle = Selector.GetHandle("sharedColorPanelExists");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selShowsAlpha = "showsAlpha";
+
+	private static readonly IntPtr selShowsAlphaHandle = Selector.GetHandle("showsAlpha");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSColorPanel");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ColorChangedNotification;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public static NSColorPanel SharedColorPanel
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSView? AccessoryView
 	{
-		[Export("sharedColorPanel")]
+		[Export("accessoryView", ArgumentSemantic.Retain)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSColorPanel)(__mt_SharedColorPanel_var_static = (NSColorPanel)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selSharedColorPanelHandle)));
-		}
-	}
-
-	public static bool SharedColorPanelExists
-	{
-		[Export("sharedColorPanelExists")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return Messaging.bool_objc_msgSend(class_ptr, selSharedColorPanelExistsHandle);
-		}
-	}
-
-	public virtual double Alpha
-	{
-		[Export("alpha")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Double_objc_msgSend(base.Handle, selAlphaHandle);
+				return Runtime.GetNSObject<NSView>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessoryViewHandle));
 			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selAlphaHandle);
+			return Runtime.GetNSObject<NSView>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessoryViewHandle));
 		}
-	}
-
-	public virtual NSView AccessoryView
-	{
-		[Export("accessoryView")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSView)(__mt_AccessoryView_var = ((!IsDirectBinding) ? ((NSView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessoryViewHandle))) : ((NSView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessoryViewHandle)))));
-		}
-		[Export("setAccessoryView:")]
+		[Export("setAccessoryView:", ArgumentSemantic.Retain)]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessoryView_Handle, value?.Handle ?? IntPtr.Zero);
 			}
@@ -112,17 +162,64 @@ public class NSColorPanel : NSPanel
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessoryView_Handle, value?.Handle ?? IntPtr.Zero);
 			}
-			__mt_AccessoryView_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat Alpha
+	{
+		[Export("alpha")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selAlphaHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selAlphaHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSColor Color
+	{
+		[Export("color", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selColorHandle));
+			}
+			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selColorHandle));
+		}
+		[Export("setColor:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetColor_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetColor_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Continuous
 	{
 		[Export("isContinuous")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsContinuousHandle);
 			}
@@ -132,7 +229,7 @@ public class NSColorPanel : NSPanel
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetContinuous_Handle, value);
 			}
@@ -143,13 +240,64 @@ public class NSColorPanel : NSPanel
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSColorPanelMode Mode
+	{
+		[Export("mode")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return (NSColorPanelMode)Messaging.Int64_objc_msgSend(base.Handle, selModeHandle);
+			}
+			return (NSColorPanelMode)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selModeHandle);
+		}
+		[Export("setMode:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetMode_Handle, (long)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetMode_Handle, (long)value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSColorPanel SharedColorPanel
+	{
+		[Export("sharedColorPanel")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return Runtime.GetNSObject<NSColorPanel>(Messaging.IntPtr_objc_msgSend(class_ptr, selSharedColorPanelHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static bool SharedColorPanelExists
+	{
+		[Export("sharedColorPanelExists")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return Messaging.bool_objc_msgSend(class_ptr, selSharedColorPanelExistsHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool ShowsAlpha
 	{
 		[Export("showsAlpha")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selShowsAlphaHandle);
 			}
@@ -159,7 +307,7 @@ public class NSColorPanel : NSPanel
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetShowsAlpha_Handle, value);
 			}
@@ -170,104 +318,109 @@ public class NSColorPanel : NSPanel
 		}
 	}
 
-	public virtual NSColorPanelFlags Mode
+	[Field("NSColorPanelColorDidChangeNotification", "AppKit")]
+	[Advice("Use NSColorPanel.Notifications.ObserveColorChanged helper method instead.")]
+	public static NSString ColorChangedNotification
 	{
-		[Export("mode")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (_ColorChangedNotification == null)
 			{
-				return (NSColorPanelFlags)Messaging.int_objc_msgSend(base.Handle, selModeHandle);
+				_ColorChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSColorPanelColorDidChangeNotification");
 			}
-			return (NSColorPanelFlags)Messaging.int_objc_msgSendSuper(base.SuperHandle, selModeHandle);
-		}
-		[Export("setMode:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_int(base.Handle, selSetMode_Handle, (int)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetMode_Handle, (int)value);
-			}
+			return _ColorChangedNotification;
 		}
 	}
 
-	public virtual NSColor Color
-	{
-		[Export("color")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSColor)(__mt_Color_var = ((!IsDirectBinding) ? ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selColorHandle))) : ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selColorHandle)))));
-		}
-		[Export("setColor:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetColor_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetColor_Handle, value.Handle);
-			}
-			__mt_Color_var = value;
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSColorPanel()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSColorPanel(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSColorPanel(NSObjectFlag t)
+	protected NSColorPanel(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSColorPanel(IntPtr handle)
+	protected internal NSColorPanel(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("attachColorList:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AttachColorList(NSColorList colorList)
+	{
+		NSApplication.EnsureUIThread();
+		if (colorList == null)
+		{
+			throw new ArgumentNullException("colorList");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAttachColorList_Handle, colorList.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAttachColorList_Handle, colorList.Handle);
+		}
+	}
+
+	[Export("detachColorList:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void DetachColorList(NSColorList colorList)
+	{
+		NSApplication.EnsureUIThread();
+		if (colorList == null)
+		{
+			throw new ArgumentNullException("colorList");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selDetachColorList_Handle, colorList.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selDetachColorList_Handle, colorList.Handle);
+		}
+	}
+
 	[Export("dragColor:withEvent:fromView:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static bool DragColor(NSColor color, NSEvent theEvent, NSView sourceView)
 	{
 		NSApplication.EnsureUIThread();
@@ -283,28 +436,15 @@ public class NSColorPanel : NSPanel
 		{
 			throw new ArgumentNullException("sourceView");
 		}
-		return Messaging.bool_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selDragColorWithEventFromView_Handle, color.Handle, theEvent.Handle, sourceView.Handle);
-	}
-
-	[Export("setPickerMask:")]
-	public static void SetPickerStyle(NSColorPanelFlags mask)
-	{
-		NSApplication.EnsureUIThread();
-		Messaging.void_objc_msgSend_int(class_ptr, selSetPickerMask_Handle, (int)mask);
-	}
-
-	[Export("setPickerMode:")]
-	public static void SetPickerMode(NSColorPanelMode mode)
-	{
-		NSApplication.EnsureUIThread();
-		Messaging.void_objc_msgSend_Int64(class_ptr, selSetPickerMode_Handle, (long)mode);
+		return Messaging.bool_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selDragColor_WithEvent_FromView_Handle, color.Handle, theEvent.Handle, sourceView.Handle);
 	}
 
 	[Export("setAction:")]
-	public virtual void SetAction(Selector aSelector)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SetAction(Selector? aSelector)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAction_Handle, (aSelector == null) ? IntPtr.Zero : aSelector.Handle);
 		}
@@ -314,63 +454,34 @@ public class NSColorPanel : NSPanel
 		}
 	}
 
-	[Export("setTarget:")]
-	public virtual void SetTarget(NSObject anObject)
+	[Export("setPickerMode:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static void SetPickerMode(NSColorPanelMode mode)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		Messaging.void_objc_msgSend_Int64(class_ptr, selSetPickerMode_Handle, (long)mode);
+	}
+
+	[Export("setPickerMask:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static void SetPickerStyle(NSColorPanelFlags mask)
+	{
+		NSApplication.EnsureUIThread();
+		Messaging.void_objc_msgSend_UInt64(class_ptr, selSetPickerMask_Handle, (ulong)mask);
+	}
+
+	[Export("setTarget:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SetTarget(NSObject? anObject)
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTarget_Handle, anObject?.Handle ?? IntPtr.Zero);
 		}
 		else
 		{
 			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTarget_Handle, anObject?.Handle ?? IntPtr.Zero);
-		}
-	}
-
-	[Export("attachColorList:")]
-	public virtual void AttachColorList(NSColorList colorList)
-	{
-		NSApplication.EnsureUIThread();
-		if (colorList == null)
-		{
-			throw new ArgumentNullException("colorList");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAttachColorList_Handle, colorList.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAttachColorList_Handle, colorList.Handle);
-		}
-	}
-
-	[Export("detachColorList:")]
-	public virtual void DetachColorList(NSColorList colorList)
-	{
-		NSApplication.EnsureUIThread();
-		if (colorList == null)
-		{
-			throw new ArgumentNullException("colorList");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selDetachColorList_Handle, colorList.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selDetachColorList_Handle, colorList.Handle);
-		}
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_AccessoryView_var = null;
-			__mt_Color_var = null;
 		}
 	}
 }

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using CoreGraphics;
 using CoreImage;
 using Foundation;
@@ -8,556 +9,1002 @@ using ObjCRuntime;
 namespace CoreAnimation;
 
 [Register("CALayer", true)]
-public class CALayer : NSObject
+public class CALayer : NSObject, ICAMediaTiming, INativeObject, IDisposable, INSCoding, INSSecureCoding
 {
 	private const string selInitWithLayer = "initWithLayer:";
 
-	private static readonly IntPtr selPresentationLayerHandle = Selector.GetHandle("presentationLayer");
+	private WeakReference calayerdelegate;
 
-	private static readonly IntPtr selModelLayerHandle = Selector.GetHandle("modelLayer");
-
-	private static readonly IntPtr selBoundsHandle = Selector.GetHandle("bounds");
-
-	private static readonly IntPtr selSetBounds_Handle = Selector.GetHandle("setBounds:");
-
-	private static readonly IntPtr selZPositionHandle = Selector.GetHandle("zPosition");
-
-	private static readonly IntPtr selSetZPosition_Handle = Selector.GetHandle("setZPosition:");
-
-	private static readonly IntPtr selAnchorPointHandle = Selector.GetHandle("anchorPoint");
-
-	private static readonly IntPtr selSetAnchorPoint_Handle = Selector.GetHandle("setAnchorPoint:");
-
-	private static readonly IntPtr selAnchorPointZHandle = Selector.GetHandle("anchorPointZ");
-
-	private static readonly IntPtr selSetAnchorPointZ_Handle = Selector.GetHandle("setAnchorPointZ:");
-
-	private static readonly IntPtr selPositionHandle = Selector.GetHandle("position");
-
-	private static readonly IntPtr selSetPosition_Handle = Selector.GetHandle("setPosition:");
-
-	private static readonly IntPtr selTransformHandle = Selector.GetHandle("transform");
-
-	private static readonly IntPtr selSetTransform_Handle = Selector.GetHandle("setTransform:");
-
-	private static readonly IntPtr selAffineTransformHandle = Selector.GetHandle("affineTransform");
-
-	private static readonly IntPtr selSetAffineTransform_Handle = Selector.GetHandle("setAffineTransform:");
-
-	private static readonly IntPtr selFrameHandle = Selector.GetHandle("frame");
-
-	private static readonly IntPtr selSetFrame_Handle = Selector.GetHandle("setFrame:");
-
-	private static readonly IntPtr selIsHiddenHandle = Selector.GetHandle("isHidden");
-
-	private static readonly IntPtr selSetHidden_Handle = Selector.GetHandle("setHidden:");
-
-	private static readonly IntPtr selIsDoubleSidedHandle = Selector.GetHandle("isDoubleSided");
-
-	private static readonly IntPtr selSetDoubleSided_Handle = Selector.GetHandle("setDoubleSided:");
-
-	private static readonly IntPtr selIsGeometryFlippedHandle = Selector.GetHandle("isGeometryFlipped");
-
-	private static readonly IntPtr selSetGeometryFlipped_Handle = Selector.GetHandle("setGeometryFlipped:");
-
-	private static readonly IntPtr selContentsAreFlippedHandle = Selector.GetHandle("contentsAreFlipped");
-
-	private static readonly IntPtr selSuperlayerHandle = Selector.GetHandle("superlayer");
-
-	private static readonly IntPtr selSublayersHandle = Selector.GetHandle("sublayers");
-
-	private static readonly IntPtr selSetSublayers_Handle = Selector.GetHandle("setSublayers:");
-
-	private static readonly IntPtr selSublayerTransformHandle = Selector.GetHandle("sublayerTransform");
-
-	private static readonly IntPtr selSetSublayerTransform_Handle = Selector.GetHandle("setSublayerTransform:");
-
-	private static readonly IntPtr selMaskHandle = Selector.GetHandle("mask");
-
-	private static readonly IntPtr selSetMask_Handle = Selector.GetHandle("setMask:");
-
-	private static readonly IntPtr selMasksToBoundsHandle = Selector.GetHandle("masksToBounds");
-
-	private static readonly IntPtr selSetMasksToBounds_Handle = Selector.GetHandle("setMasksToBounds:");
-
-	private static readonly IntPtr selContentsHandle = Selector.GetHandle("contents");
-
-	private static readonly IntPtr selSetContents_Handle = Selector.GetHandle("setContents:");
-
-	private static readonly IntPtr selLayoutManagerHandle = Selector.GetHandle("layoutManager");
-
-	private static readonly IntPtr selSetLayoutManager_Handle = Selector.GetHandle("setLayoutManager:");
-
-	private static readonly IntPtr selContentsScaleHandle = Selector.GetHandle("contentsScale");
-
-	private static readonly IntPtr selSetContentsScale_Handle = Selector.GetHandle("setContentsScale:");
-
-	private static readonly IntPtr selContentsRectHandle = Selector.GetHandle("contentsRect");
-
-	private static readonly IntPtr selSetContentsRect_Handle = Selector.GetHandle("setContentsRect:");
-
-	private static readonly IntPtr selContentsGravityHandle = Selector.GetHandle("contentsGravity");
-
-	private static readonly IntPtr selSetContentsGravity_Handle = Selector.GetHandle("setContentsGravity:");
-
-	private static readonly IntPtr selContentsCenterHandle = Selector.GetHandle("contentsCenter");
-
-	private static readonly IntPtr selSetContentsCenter_Handle = Selector.GetHandle("setContentsCenter:");
-
-	private static readonly IntPtr selMinificationFilterHandle = Selector.GetHandle("minificationFilter");
-
-	private static readonly IntPtr selSetMinificationFilter_Handle = Selector.GetHandle("setMinificationFilter:");
-
-	private static readonly IntPtr selMagnificationFilterHandle = Selector.GetHandle("magnificationFilter");
-
-	private static readonly IntPtr selSetMagnificationFilter_Handle = Selector.GetHandle("setMagnificationFilter:");
-
-	private static readonly IntPtr selIsOpaqueHandle = Selector.GetHandle("isOpaque");
-
-	private static readonly IntPtr selSetOpaque_Handle = Selector.GetHandle("setOpaque:");
-
-	private static readonly IntPtr selNeedsDisplayHandle = Selector.GetHandle("needsDisplay");
-
-	private static readonly IntPtr selNeedsDisplayOnBoundsChangeHandle = Selector.GetHandle("needsDisplayOnBoundsChange");
-
-	private static readonly IntPtr selSetNeedsDisplayOnBoundsChange_Handle = Selector.GetHandle("setNeedsDisplayOnBoundsChange:");
-
-	private static readonly IntPtr selBackgroundColorHandle = Selector.GetHandle("backgroundColor");
-
-	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
-
-	private static readonly IntPtr selCornerRadiusHandle = Selector.GetHandle("cornerRadius");
-
-	private static readonly IntPtr selSetCornerRadius_Handle = Selector.GetHandle("setCornerRadius:");
-
-	private static readonly IntPtr selBorderWidthHandle = Selector.GetHandle("borderWidth");
-
-	private static readonly IntPtr selSetBorderWidth_Handle = Selector.GetHandle("setBorderWidth:");
-
-	private static readonly IntPtr selBorderColorHandle = Selector.GetHandle("borderColor");
-
-	private static readonly IntPtr selSetBorderColor_Handle = Selector.GetHandle("setBorderColor:");
-
-	private static readonly IntPtr selOpacityHandle = Selector.GetHandle("opacity");
-
-	private static readonly IntPtr selSetOpacity_Handle = Selector.GetHandle("setOpacity:");
-
-	private static readonly IntPtr selEdgeAntialiasingMaskHandle = Selector.GetHandle("edgeAntialiasingMask");
-
-	private static readonly IntPtr selSetEdgeAntialiasingMask_Handle = Selector.GetHandle("setEdgeAntialiasingMask:");
-
-	private static readonly IntPtr selActionsHandle = Selector.GetHandle("actions");
-
-	private static readonly IntPtr selSetActions_Handle = Selector.GetHandle("setActions:");
-
-	private static readonly IntPtr selAnimationKeysHandle = Selector.GetHandle("animationKeys");
-
-	private static readonly IntPtr selNameHandle = Selector.GetHandle("name");
-
-	private static readonly IntPtr selSetName_Handle = Selector.GetHandle("setName:");
-
-	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
-
-	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
-
-	private static readonly IntPtr selBeginTimeHandle = Selector.GetHandle("beginTime");
-
-	private static readonly IntPtr selSetBeginTime_Handle = Selector.GetHandle("setBeginTime:");
-
-	private static readonly IntPtr selDurationHandle = Selector.GetHandle("duration");
-
-	private static readonly IntPtr selSetDuration_Handle = Selector.GetHandle("setDuration:");
-
-	private static readonly IntPtr selSpeedHandle = Selector.GetHandle("speed");
-
-	private static readonly IntPtr selSetSpeed_Handle = Selector.GetHandle("setSpeed:");
-
-	private static readonly IntPtr selTimeOffsetHandle = Selector.GetHandle("timeOffset");
-
-	private static readonly IntPtr selSetTimeOffset_Handle = Selector.GetHandle("setTimeOffset:");
-
-	private static readonly IntPtr selRepeatCountHandle = Selector.GetHandle("repeatCount");
-
-	private static readonly IntPtr selSetRepeatCount_Handle = Selector.GetHandle("setRepeatCount:");
-
-	private static readonly IntPtr selRepeatDurationHandle = Selector.GetHandle("repeatDuration");
-
-	private static readonly IntPtr selSetRepeatDuration_Handle = Selector.GetHandle("setRepeatDuration:");
-
-	private static readonly IntPtr selAutoreversesHandle = Selector.GetHandle("autoreverses");
-
-	private static readonly IntPtr selSetAutoreverses_Handle = Selector.GetHandle("setAutoreverses:");
-
-	private static readonly IntPtr selFillModeHandle = Selector.GetHandle("fillMode");
-
-	private static readonly IntPtr selSetFillMode_Handle = Selector.GetHandle("setFillMode:");
-
-	private static readonly IntPtr selShadowColorHandle = Selector.GetHandle("shadowColor");
-
-	private static readonly IntPtr selSetShadowColor_Handle = Selector.GetHandle("setShadowColor:");
-
-	private static readonly IntPtr selShadowOffsetHandle = Selector.GetHandle("shadowOffset");
-
-	private static readonly IntPtr selSetShadowOffset_Handle = Selector.GetHandle("setShadowOffset:");
-
-	private static readonly IntPtr selShadowOpacityHandle = Selector.GetHandle("shadowOpacity");
-
-	private static readonly IntPtr selSetShadowOpacity_Handle = Selector.GetHandle("setShadowOpacity:");
-
-	private static readonly IntPtr selShadowRadiusHandle = Selector.GetHandle("shadowRadius");
-
-	private static readonly IntPtr selSetShadowRadius_Handle = Selector.GetHandle("setShadowRadius:");
-
-	private static readonly IntPtr selVisibleRectHandle = Selector.GetHandle("visibleRect");
-
-	private static readonly IntPtr selAutoresizingMaskHandle = Selector.GetHandle("autoresizingMask");
-
-	private static readonly IntPtr selSetAutoresizingMask_Handle = Selector.GetHandle("setAutoresizingMask:");
-
-	private static readonly IntPtr selConstraintsHandle = Selector.GetHandle("constraints");
-
-	private static readonly IntPtr selSetConstraints_Handle = Selector.GetHandle("setConstraints:");
-
-	private static readonly IntPtr selFiltersHandle = Selector.GetHandle("filters");
-
-	private static readonly IntPtr selSetFilters_Handle = Selector.GetHandle("setFilters:");
-
-	private static readonly IntPtr selLayerHandle = Selector.GetHandle("layer");
-
-	private static readonly IntPtr selDefaultValueForKey_Handle = Selector.GetHandle("defaultValueForKey:");
-
-	private static readonly IntPtr selNeedsDisplayForKey_Handle = Selector.GetHandle("needsDisplayForKey:");
-
-	private static readonly IntPtr selRemoveFromSuperlayerHandle = Selector.GetHandle("removeFromSuperlayer");
-
-	private static readonly IntPtr selAddSublayer_Handle = Selector.GetHandle("addSublayer:");
-
-	private static readonly IntPtr selInsertSublayerAtIndex_Handle = Selector.GetHandle("insertSublayer:atIndex:");
-
-	private static readonly IntPtr selInsertSublayerBelow_Handle = Selector.GetHandle("insertSublayer:below:");
-
-	private static readonly IntPtr selInsertSublayerAbove_Handle = Selector.GetHandle("insertSublayer:above:");
-
-	private static readonly IntPtr selReplaceSublayerWith_Handle = Selector.GetHandle("replaceSublayer:with:");
-
-	private static readonly IntPtr selConvertPointFromLayer_Handle = Selector.GetHandle("convertPoint:fromLayer:");
-
-	private static readonly IntPtr selConvertPointToLayer_Handle = Selector.GetHandle("convertPoint:toLayer:");
-
-	private static readonly IntPtr selConvertRectFromLayer_Handle = Selector.GetHandle("convertRect:fromLayer:");
-
-	private static readonly IntPtr selConvertRectToLayer_Handle = Selector.GetHandle("convertRect:toLayer:");
-
-	private static readonly IntPtr selConvertTimeFromLayer_Handle = Selector.GetHandle("convertTime:fromLayer:");
-
-	private static readonly IntPtr selConvertTimeToLayer_Handle = Selector.GetHandle("convertTime:toLayer:");
-
-	private static readonly IntPtr selHitTest_Handle = Selector.GetHandle("hitTest:");
-
-	private static readonly IntPtr selContainsPoint_Handle = Selector.GetHandle("containsPoint:");
-
-	private static readonly IntPtr selDisplayHandle = Selector.GetHandle("display");
-
-	private static readonly IntPtr selSetNeedsDisplayHandle = Selector.GetHandle("setNeedsDisplay");
-
-	private static readonly IntPtr selSetNeedsDisplayInRect_Handle = Selector.GetHandle("setNeedsDisplayInRect:");
-
-	private static readonly IntPtr selDisplayIfNeededHandle = Selector.GetHandle("displayIfNeeded");
-
-	private static readonly IntPtr selDrawInContext_Handle = Selector.GetHandle("drawInContext:");
-
-	private static readonly IntPtr selRenderInContext_Handle = Selector.GetHandle("renderInContext:");
-
-	private static readonly IntPtr selPreferredFrameSizeHandle = Selector.GetHandle("preferredFrameSize");
-
-	private static readonly IntPtr selSetNeedsLayoutHandle = Selector.GetHandle("setNeedsLayout");
-
-	private static readonly IntPtr selNeedsLayoutHandle = Selector.GetHandle("needsLayout");
-
-	private static readonly IntPtr selLayoutIfNeededHandle = Selector.GetHandle("layoutIfNeeded");
-
-	private static readonly IntPtr selLayoutSublayersHandle = Selector.GetHandle("layoutSublayers");
-
-	private static readonly IntPtr selDefaultActionForKey_Handle = Selector.GetHandle("defaultActionForKey:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selActionForKey_ = "actionForKey:";
 
 	private static readonly IntPtr selActionForKey_Handle = Selector.GetHandle("actionForKey:");
 
-	private static readonly IntPtr selAddAnimationForKey_Handle = Selector.GetHandle("addAnimation:forKey:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selActions = "actions";
 
-	private static readonly IntPtr selRemoveAllAnimationsHandle = Selector.GetHandle("removeAllAnimations");
+	private static readonly IntPtr selActionsHandle = Selector.GetHandle("actions");
 
-	private static readonly IntPtr selRemoveAnimationForKey_Handle = Selector.GetHandle("removeAnimationForKey:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAddAnimation_ForKey_ = "addAnimation:forKey:";
 
-	private static readonly IntPtr selAnimationForKey_Handle = Selector.GetHandle("animationForKey:");
+	private static readonly IntPtr selAddAnimation_ForKey_Handle = Selector.GetHandle("addAnimation:forKey:");
 
-	private static readonly IntPtr selScrollPoint_Handle = Selector.GetHandle("scrollPoint:");
-
-	private static readonly IntPtr selScrollRectToVisible_Handle = Selector.GetHandle("scrollRectToVisible:");
-
-	private static readonly IntPtr selResizeSublayersWithOldSize_Handle = Selector.GetHandle("resizeSublayersWithOldSize:");
-
-	private static readonly IntPtr selResizeWithOldSuperlayerSize_Handle = Selector.GetHandle("resizeWithOldSuperlayerSize:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAddConstraint_ = "addConstraint:";
 
 	private static readonly IntPtr selAddConstraint_Handle = Selector.GetHandle("addConstraint:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("CALayer");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAddSublayer_ = "addSublayer:";
 
-	private object __mt_PresentationLayer_var;
+	private static readonly IntPtr selAddSublayer_Handle = Selector.GetHandle("addSublayer:");
 
-	private object __mt_ModelLayer_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAffineTransform = "affineTransform";
 
-	private object __mt_SuperLayer_var;
+	private static readonly IntPtr selAffineTransformHandle = Selector.GetHandle("affineTransform");
 
-	private object __mt_Sublayers_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAllowsEdgeAntialiasing = "allowsEdgeAntialiasing";
 
-	private object __mt_Mask_var;
+	private static readonly IntPtr selAllowsEdgeAntialiasingHandle = Selector.GetHandle("allowsEdgeAntialiasing");
 
-	private object __mt_LayoutManager_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAllowsGroupOpacity = "allowsGroupOpacity";
 
-	private object __mt_Actions_var;
+	private static readonly IntPtr selAllowsGroupOpacityHandle = Selector.GetHandle("allowsGroupOpacity");
 
-	private object __mt_WeakDelegate_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAnchorPoint = "anchorPoint";
 
-	private object __mt_Constraints_var;
+	private static readonly IntPtr selAnchorPointHandle = Selector.GetHandle("anchorPoint");
 
-	private object __mt_Filters_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAnchorPointZ = "anchorPointZ";
 
-	private static NSString _Transition;
+	private static readonly IntPtr selAnchorPointZHandle = Selector.GetHandle("anchorPointZ");
 
-	private static NSString _GravityCenter;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAnimationForKey_ = "animationForKey:";
 
-	private static NSString _GravityTop;
+	private static readonly IntPtr selAnimationForKey_Handle = Selector.GetHandle("animationForKey:");
 
-	private static NSString _GravityBottom;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAnimationKeys = "animationKeys";
 
-	private static NSString _GravityLeft;
+	private static readonly IntPtr selAnimationKeysHandle = Selector.GetHandle("animationKeys");
 
-	private static NSString _GravityRight;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAutoresizingMask = "autoresizingMask";
 
-	private static NSString _GravityTopLeft;
+	private static readonly IntPtr selAutoresizingMaskHandle = Selector.GetHandle("autoresizingMask");
 
-	private static NSString _GravityTopRight;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAutoreverses = "autoreverses";
 
-	private static NSString _GravityBottomLeft;
+	private static readonly IntPtr selAutoreversesHandle = Selector.GetHandle("autoreverses");
 
-	private static NSString _GravityBottomRight;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBackgroundColor = "backgroundColor";
 
-	private static NSString _GravityResize;
+	private static readonly IntPtr selBackgroundColorHandle = Selector.GetHandle("backgroundColor");
 
-	private static NSString _GravityResizeAspect;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBackgroundFilters = "backgroundFilters";
 
-	private static NSString _GravityResizeAspectFill;
+	private static readonly IntPtr selBackgroundFiltersHandle = Selector.GetHandle("backgroundFilters");
 
-	private static NSString _FilterNearest;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBeginTime = "beginTime";
 
-	private static NSString _FilterLinear;
+	private static readonly IntPtr selBeginTimeHandle = Selector.GetHandle("beginTime");
 
-	private static NSString _FilterTrilinear;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBorderColor = "borderColor";
 
-	private static NSString _OnOrderIn;
+	private static readonly IntPtr selBorderColorHandle = Selector.GetHandle("borderColor");
 
-	private static NSString _OnOrderOut;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBorderWidth = "borderWidth";
 
-	[Obsolete("Use BeginTime instead")]
-	public double CFTimeInterval
+	private static readonly IntPtr selBorderWidthHandle = Selector.GetHandle("borderWidth");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBounds = "bounds";
+
+	private static readonly IntPtr selBoundsHandle = Selector.GetHandle("bounds");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCompositingFilter = "compositingFilter";
+
+	private static readonly IntPtr selCompositingFilterHandle = Selector.GetHandle("compositingFilter");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selConstraints = "constraints";
+
+	private static readonly IntPtr selConstraintsHandle = Selector.GetHandle("constraints");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selContainsPoint_ = "containsPoint:";
+
+	private static readonly IntPtr selContainsPoint_Handle = Selector.GetHandle("containsPoint:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selContents = "contents";
+
+	private static readonly IntPtr selContentsHandle = Selector.GetHandle("contents");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selContentsAreFlipped = "contentsAreFlipped";
+
+	private static readonly IntPtr selContentsAreFlippedHandle = Selector.GetHandle("contentsAreFlipped");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selContentsCenter = "contentsCenter";
+
+	private static readonly IntPtr selContentsCenterHandle = Selector.GetHandle("contentsCenter");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selContentsFormat = "contentsFormat";
+
+	private static readonly IntPtr selContentsFormatHandle = Selector.GetHandle("contentsFormat");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selContentsGravity = "contentsGravity";
+
+	private static readonly IntPtr selContentsGravityHandle = Selector.GetHandle("contentsGravity");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selContentsRect = "contentsRect";
+
+	private static readonly IntPtr selContentsRectHandle = Selector.GetHandle("contentsRect");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selContentsScale = "contentsScale";
+
+	private static readonly IntPtr selContentsScaleHandle = Selector.GetHandle("contentsScale");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selConvertPoint_FromLayer_ = "convertPoint:fromLayer:";
+
+	private static readonly IntPtr selConvertPoint_FromLayer_Handle = Selector.GetHandle("convertPoint:fromLayer:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selConvertPoint_ToLayer_ = "convertPoint:toLayer:";
+
+	private static readonly IntPtr selConvertPoint_ToLayer_Handle = Selector.GetHandle("convertPoint:toLayer:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selConvertRect_FromLayer_ = "convertRect:fromLayer:";
+
+	private static readonly IntPtr selConvertRect_FromLayer_Handle = Selector.GetHandle("convertRect:fromLayer:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selConvertRect_ToLayer_ = "convertRect:toLayer:";
+
+	private static readonly IntPtr selConvertRect_ToLayer_Handle = Selector.GetHandle("convertRect:toLayer:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selConvertTime_FromLayer_ = "convertTime:fromLayer:";
+
+	private static readonly IntPtr selConvertTime_FromLayer_Handle = Selector.GetHandle("convertTime:fromLayer:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selConvertTime_ToLayer_ = "convertTime:toLayer:";
+
+	private static readonly IntPtr selConvertTime_ToLayer_Handle = Selector.GetHandle("convertTime:toLayer:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCornerCurve = "cornerCurve";
+
+	private static readonly IntPtr selCornerCurveHandle = Selector.GetHandle("cornerCurve");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCornerCurveExpansionFactor_ = "cornerCurveExpansionFactor:";
+
+	private static readonly IntPtr selCornerCurveExpansionFactor_Handle = Selector.GetHandle("cornerCurveExpansionFactor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCornerRadius = "cornerRadius";
+
+	private static readonly IntPtr selCornerRadiusHandle = Selector.GetHandle("cornerRadius");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDefaultActionForKey_ = "defaultActionForKey:";
+
+	private static readonly IntPtr selDefaultActionForKey_Handle = Selector.GetHandle("defaultActionForKey:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDefaultValueForKey_ = "defaultValueForKey:";
+
+	private static readonly IntPtr selDefaultValueForKey_Handle = Selector.GetHandle("defaultValueForKey:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDelegate = "delegate";
+
+	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDisplay = "display";
+
+	private static readonly IntPtr selDisplayHandle = Selector.GetHandle("display");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDisplayIfNeeded = "displayIfNeeded";
+
+	private static readonly IntPtr selDisplayIfNeededHandle = Selector.GetHandle("displayIfNeeded");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDrawInContext_ = "drawInContext:";
+
+	private static readonly IntPtr selDrawInContext_Handle = Selector.GetHandle("drawInContext:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDrawsAsynchronously = "drawsAsynchronously";
+
+	private static readonly IntPtr selDrawsAsynchronouslyHandle = Selector.GetHandle("drawsAsynchronously");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDuration = "duration";
+
+	private static readonly IntPtr selDurationHandle = Selector.GetHandle("duration");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEdgeAntialiasingMask = "edgeAntialiasingMask";
+
+	private static readonly IntPtr selEdgeAntialiasingMaskHandle = Selector.GetHandle("edgeAntialiasingMask");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEncodeWithCoder_ = "encodeWithCoder:";
+
+	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFillMode = "fillMode";
+
+	private static readonly IntPtr selFillModeHandle = Selector.GetHandle("fillMode");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFilters = "filters";
+
+	private static readonly IntPtr selFiltersHandle = Selector.GetHandle("filters");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFrame = "frame";
+
+	private static readonly IntPtr selFrameHandle = Selector.GetHandle("frame");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selHitTest_ = "hitTest:";
+
+	private static readonly IntPtr selHitTest_Handle = Selector.GetHandle("hitTest:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithCoder_ = "initWithCoder:";
+
+	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInsertSublayer_Above_ = "insertSublayer:above:";
+
+	private static readonly IntPtr selInsertSublayer_Above_Handle = Selector.GetHandle("insertSublayer:above:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInsertSublayer_AtIndex_ = "insertSublayer:atIndex:";
+
+	private static readonly IntPtr selInsertSublayer_AtIndex_Handle = Selector.GetHandle("insertSublayer:atIndex:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInsertSublayer_Below_ = "insertSublayer:below:";
+
+	private static readonly IntPtr selInsertSublayer_Below_Handle = Selector.GetHandle("insertSublayer:below:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsDoubleSided = "isDoubleSided";
+
+	private static readonly IntPtr selIsDoubleSidedHandle = Selector.GetHandle("isDoubleSided");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsGeometryFlipped = "isGeometryFlipped";
+
+	private static readonly IntPtr selIsGeometryFlippedHandle = Selector.GetHandle("isGeometryFlipped");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsHidden = "isHidden";
+
+	private static readonly IntPtr selIsHiddenHandle = Selector.GetHandle("isHidden");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsOpaque = "isOpaque";
+
+	private static readonly IntPtr selIsOpaqueHandle = Selector.GetHandle("isOpaque");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLayer = "layer";
+
+	private static readonly IntPtr selLayerHandle = Selector.GetHandle("layer");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLayoutIfNeeded = "layoutIfNeeded";
+
+	private static readonly IntPtr selLayoutIfNeededHandle = Selector.GetHandle("layoutIfNeeded");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLayoutManager = "layoutManager";
+
+	private static readonly IntPtr selLayoutManagerHandle = Selector.GetHandle("layoutManager");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLayoutSublayers = "layoutSublayers";
+
+	private static readonly IntPtr selLayoutSublayersHandle = Selector.GetHandle("layoutSublayers");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMagnificationFilter = "magnificationFilter";
+
+	private static readonly IntPtr selMagnificationFilterHandle = Selector.GetHandle("magnificationFilter");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMask = "mask";
+
+	private static readonly IntPtr selMaskHandle = Selector.GetHandle("mask");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMaskedCorners = "maskedCorners";
+
+	private static readonly IntPtr selMaskedCornersHandle = Selector.GetHandle("maskedCorners");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMasksToBounds = "masksToBounds";
+
+	private static readonly IntPtr selMasksToBoundsHandle = Selector.GetHandle("masksToBounds");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMinificationFilter = "minificationFilter";
+
+	private static readonly IntPtr selMinificationFilterHandle = Selector.GetHandle("minificationFilter");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMinificationFilterBias = "minificationFilterBias";
+
+	private static readonly IntPtr selMinificationFilterBiasHandle = Selector.GetHandle("minificationFilterBias");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selModelLayer = "modelLayer";
+
+	private static readonly IntPtr selModelLayerHandle = Selector.GetHandle("modelLayer");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selName = "name";
+
+	private static readonly IntPtr selNameHandle = Selector.GetHandle("name");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selNeedsDisplay = "needsDisplay";
+
+	private static readonly IntPtr selNeedsDisplayHandle = Selector.GetHandle("needsDisplay");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selNeedsDisplayForKey_ = "needsDisplayForKey:";
+
+	private static readonly IntPtr selNeedsDisplayForKey_Handle = Selector.GetHandle("needsDisplayForKey:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selNeedsDisplayOnBoundsChange = "needsDisplayOnBoundsChange";
+
+	private static readonly IntPtr selNeedsDisplayOnBoundsChangeHandle = Selector.GetHandle("needsDisplayOnBoundsChange");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selNeedsLayout = "needsLayout";
+
+	private static readonly IntPtr selNeedsLayoutHandle = Selector.GetHandle("needsLayout");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selOpacity = "opacity";
+
+	private static readonly IntPtr selOpacityHandle = Selector.GetHandle("opacity");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPosition = "position";
+
+	private static readonly IntPtr selPositionHandle = Selector.GetHandle("position");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPreferredFrameSize = "preferredFrameSize";
+
+	private static readonly IntPtr selPreferredFrameSizeHandle = Selector.GetHandle("preferredFrameSize");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPresentationLayer = "presentationLayer";
+
+	private static readonly IntPtr selPresentationLayerHandle = Selector.GetHandle("presentationLayer");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRasterizationScale = "rasterizationScale";
+
+	private static readonly IntPtr selRasterizationScaleHandle = Selector.GetHandle("rasterizationScale");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveAllAnimations = "removeAllAnimations";
+
+	private static readonly IntPtr selRemoveAllAnimationsHandle = Selector.GetHandle("removeAllAnimations");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveAnimationForKey_ = "removeAnimationForKey:";
+
+	private static readonly IntPtr selRemoveAnimationForKey_Handle = Selector.GetHandle("removeAnimationForKey:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveFromSuperlayer = "removeFromSuperlayer";
+
+	private static readonly IntPtr selRemoveFromSuperlayerHandle = Selector.GetHandle("removeFromSuperlayer");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRenderInContext_ = "renderInContext:";
+
+	private static readonly IntPtr selRenderInContext_Handle = Selector.GetHandle("renderInContext:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRepeatCount = "repeatCount";
+
+	private static readonly IntPtr selRepeatCountHandle = Selector.GetHandle("repeatCount");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRepeatDuration = "repeatDuration";
+
+	private static readonly IntPtr selRepeatDurationHandle = Selector.GetHandle("repeatDuration");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReplaceSublayer_With_ = "replaceSublayer:with:";
+
+	private static readonly IntPtr selReplaceSublayer_With_Handle = Selector.GetHandle("replaceSublayer:with:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selResizeSublayersWithOldSize_ = "resizeSublayersWithOldSize:";
+
+	private static readonly IntPtr selResizeSublayersWithOldSize_Handle = Selector.GetHandle("resizeSublayersWithOldSize:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selResizeWithOldSuperlayerSize_ = "resizeWithOldSuperlayerSize:";
+
+	private static readonly IntPtr selResizeWithOldSuperlayerSize_Handle = Selector.GetHandle("resizeWithOldSuperlayerSize:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selScrollPoint_ = "scrollPoint:";
+
+	private static readonly IntPtr selScrollPoint_Handle = Selector.GetHandle("scrollPoint:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selScrollRectToVisible_ = "scrollRectToVisible:";
+
+	private static readonly IntPtr selScrollRectToVisible_Handle = Selector.GetHandle("scrollRectToVisible:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetActions_ = "setActions:";
+
+	private static readonly IntPtr selSetActions_Handle = Selector.GetHandle("setActions:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAffineTransform_ = "setAffineTransform:";
+
+	private static readonly IntPtr selSetAffineTransform_Handle = Selector.GetHandle("setAffineTransform:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAllowsEdgeAntialiasing_ = "setAllowsEdgeAntialiasing:";
+
+	private static readonly IntPtr selSetAllowsEdgeAntialiasing_Handle = Selector.GetHandle("setAllowsEdgeAntialiasing:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAllowsGroupOpacity_ = "setAllowsGroupOpacity:";
+
+	private static readonly IntPtr selSetAllowsGroupOpacity_Handle = Selector.GetHandle("setAllowsGroupOpacity:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAnchorPoint_ = "setAnchorPoint:";
+
+	private static readonly IntPtr selSetAnchorPoint_Handle = Selector.GetHandle("setAnchorPoint:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAnchorPointZ_ = "setAnchorPointZ:";
+
+	private static readonly IntPtr selSetAnchorPointZ_Handle = Selector.GetHandle("setAnchorPointZ:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAutoresizingMask_ = "setAutoresizingMask:";
+
+	private static readonly IntPtr selSetAutoresizingMask_Handle = Selector.GetHandle("setAutoresizingMask:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAutoreverses_ = "setAutoreverses:";
+
+	private static readonly IntPtr selSetAutoreverses_Handle = Selector.GetHandle("setAutoreverses:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBackgroundColor_ = "setBackgroundColor:";
+
+	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBackgroundFilters_ = "setBackgroundFilters:";
+
+	private static readonly IntPtr selSetBackgroundFilters_Handle = Selector.GetHandle("setBackgroundFilters:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBeginTime_ = "setBeginTime:";
+
+	private static readonly IntPtr selSetBeginTime_Handle = Selector.GetHandle("setBeginTime:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBorderColor_ = "setBorderColor:";
+
+	private static readonly IntPtr selSetBorderColor_Handle = Selector.GetHandle("setBorderColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBorderWidth_ = "setBorderWidth:";
+
+	private static readonly IntPtr selSetBorderWidth_Handle = Selector.GetHandle("setBorderWidth:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBounds_ = "setBounds:";
+
+	private static readonly IntPtr selSetBounds_Handle = Selector.GetHandle("setBounds:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCompositingFilter_ = "setCompositingFilter:";
+
+	private static readonly IntPtr selSetCompositingFilter_Handle = Selector.GetHandle("setCompositingFilter:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetConstraints_ = "setConstraints:";
+
+	private static readonly IntPtr selSetConstraints_Handle = Selector.GetHandle("setConstraints:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetContents_ = "setContents:";
+
+	private static readonly IntPtr selSetContents_Handle = Selector.GetHandle("setContents:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetContentsCenter_ = "setContentsCenter:";
+
+	private static readonly IntPtr selSetContentsCenter_Handle = Selector.GetHandle("setContentsCenter:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetContentsFormat_ = "setContentsFormat:";
+
+	private static readonly IntPtr selSetContentsFormat_Handle = Selector.GetHandle("setContentsFormat:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetContentsGravity_ = "setContentsGravity:";
+
+	private static readonly IntPtr selSetContentsGravity_Handle = Selector.GetHandle("setContentsGravity:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetContentsRect_ = "setContentsRect:";
+
+	private static readonly IntPtr selSetContentsRect_Handle = Selector.GetHandle("setContentsRect:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetContentsScale_ = "setContentsScale:";
+
+	private static readonly IntPtr selSetContentsScale_Handle = Selector.GetHandle("setContentsScale:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCornerCurve_ = "setCornerCurve:";
+
+	private static readonly IntPtr selSetCornerCurve_Handle = Selector.GetHandle("setCornerCurve:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCornerRadius_ = "setCornerRadius:";
+
+	private static readonly IntPtr selSetCornerRadius_Handle = Selector.GetHandle("setCornerRadius:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDelegate_ = "setDelegate:";
+
+	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDoubleSided_ = "setDoubleSided:";
+
+	private static readonly IntPtr selSetDoubleSided_Handle = Selector.GetHandle("setDoubleSided:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDrawsAsynchronously_ = "setDrawsAsynchronously:";
+
+	private static readonly IntPtr selSetDrawsAsynchronously_Handle = Selector.GetHandle("setDrawsAsynchronously:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDuration_ = "setDuration:";
+
+	private static readonly IntPtr selSetDuration_Handle = Selector.GetHandle("setDuration:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEdgeAntialiasingMask_ = "setEdgeAntialiasingMask:";
+
+	private static readonly IntPtr selSetEdgeAntialiasingMask_Handle = Selector.GetHandle("setEdgeAntialiasingMask:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFillMode_ = "setFillMode:";
+
+	private static readonly IntPtr selSetFillMode_Handle = Selector.GetHandle("setFillMode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFilters_ = "setFilters:";
+
+	private static readonly IntPtr selSetFilters_Handle = Selector.GetHandle("setFilters:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFrame_ = "setFrame:";
+
+	private static readonly IntPtr selSetFrame_Handle = Selector.GetHandle("setFrame:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetGeometryFlipped_ = "setGeometryFlipped:";
+
+	private static readonly IntPtr selSetGeometryFlipped_Handle = Selector.GetHandle("setGeometryFlipped:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetHidden_ = "setHidden:";
+
+	private static readonly IntPtr selSetHidden_Handle = Selector.GetHandle("setHidden:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLayoutManager_ = "setLayoutManager:";
+
+	private static readonly IntPtr selSetLayoutManager_Handle = Selector.GetHandle("setLayoutManager:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMagnificationFilter_ = "setMagnificationFilter:";
+
+	private static readonly IntPtr selSetMagnificationFilter_Handle = Selector.GetHandle("setMagnificationFilter:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMask_ = "setMask:";
+
+	private static readonly IntPtr selSetMask_Handle = Selector.GetHandle("setMask:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMaskedCorners_ = "setMaskedCorners:";
+
+	private static readonly IntPtr selSetMaskedCorners_Handle = Selector.GetHandle("setMaskedCorners:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMasksToBounds_ = "setMasksToBounds:";
+
+	private static readonly IntPtr selSetMasksToBounds_Handle = Selector.GetHandle("setMasksToBounds:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMinificationFilter_ = "setMinificationFilter:";
+
+	private static readonly IntPtr selSetMinificationFilter_Handle = Selector.GetHandle("setMinificationFilter:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMinificationFilterBias_ = "setMinificationFilterBias:";
+
+	private static readonly IntPtr selSetMinificationFilterBias_Handle = Selector.GetHandle("setMinificationFilterBias:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetName_ = "setName:";
+
+	private static readonly IntPtr selSetName_Handle = Selector.GetHandle("setName:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetNeedsDisplay = "setNeedsDisplay";
+
+	private static readonly IntPtr selSetNeedsDisplayHandle = Selector.GetHandle("setNeedsDisplay");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetNeedsDisplayInRect_ = "setNeedsDisplayInRect:";
+
+	private static readonly IntPtr selSetNeedsDisplayInRect_Handle = Selector.GetHandle("setNeedsDisplayInRect:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetNeedsDisplayOnBoundsChange_ = "setNeedsDisplayOnBoundsChange:";
+
+	private static readonly IntPtr selSetNeedsDisplayOnBoundsChange_Handle = Selector.GetHandle("setNeedsDisplayOnBoundsChange:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetNeedsLayout = "setNeedsLayout";
+
+	private static readonly IntPtr selSetNeedsLayoutHandle = Selector.GetHandle("setNeedsLayout");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetOpacity_ = "setOpacity:";
+
+	private static readonly IntPtr selSetOpacity_Handle = Selector.GetHandle("setOpacity:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetOpaque_ = "setOpaque:";
+
+	private static readonly IntPtr selSetOpaque_Handle = Selector.GetHandle("setOpaque:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPosition_ = "setPosition:";
+
+	private static readonly IntPtr selSetPosition_Handle = Selector.GetHandle("setPosition:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetRasterizationScale_ = "setRasterizationScale:";
+
+	private static readonly IntPtr selSetRasterizationScale_Handle = Selector.GetHandle("setRasterizationScale:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetRepeatCount_ = "setRepeatCount:";
+
+	private static readonly IntPtr selSetRepeatCount_Handle = Selector.GetHandle("setRepeatCount:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetRepeatDuration_ = "setRepeatDuration:";
+
+	private static readonly IntPtr selSetRepeatDuration_Handle = Selector.GetHandle("setRepeatDuration:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetShadowColor_ = "setShadowColor:";
+
+	private static readonly IntPtr selSetShadowColor_Handle = Selector.GetHandle("setShadowColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetShadowOffset_ = "setShadowOffset:";
+
+	private static readonly IntPtr selSetShadowOffset_Handle = Selector.GetHandle("setShadowOffset:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetShadowOpacity_ = "setShadowOpacity:";
+
+	private static readonly IntPtr selSetShadowOpacity_Handle = Selector.GetHandle("setShadowOpacity:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetShadowPath_ = "setShadowPath:";
+
+	private static readonly IntPtr selSetShadowPath_Handle = Selector.GetHandle("setShadowPath:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetShadowRadius_ = "setShadowRadius:";
+
+	private static readonly IntPtr selSetShadowRadius_Handle = Selector.GetHandle("setShadowRadius:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetShouldRasterize_ = "setShouldRasterize:";
+
+	private static readonly IntPtr selSetShouldRasterize_Handle = Selector.GetHandle("setShouldRasterize:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetSpeed_ = "setSpeed:";
+
+	private static readonly IntPtr selSetSpeed_Handle = Selector.GetHandle("setSpeed:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetStyle_ = "setStyle:";
+
+	private static readonly IntPtr selSetStyle_Handle = Selector.GetHandle("setStyle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetSublayerTransform_ = "setSublayerTransform:";
+
+	private static readonly IntPtr selSetSublayerTransform_Handle = Selector.GetHandle("setSublayerTransform:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetSublayers_ = "setSublayers:";
+
+	private static readonly IntPtr selSetSublayers_Handle = Selector.GetHandle("setSublayers:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTimeOffset_ = "setTimeOffset:";
+
+	private static readonly IntPtr selSetTimeOffset_Handle = Selector.GetHandle("setTimeOffset:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTransform_ = "setTransform:";
+
+	private static readonly IntPtr selSetTransform_Handle = Selector.GetHandle("setTransform:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetZPosition_ = "setZPosition:";
+
+	private static readonly IntPtr selSetZPosition_Handle = Selector.GetHandle("setZPosition:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selShadowColor = "shadowColor";
+
+	private static readonly IntPtr selShadowColorHandle = Selector.GetHandle("shadowColor");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selShadowOffset = "shadowOffset";
+
+	private static readonly IntPtr selShadowOffsetHandle = Selector.GetHandle("shadowOffset");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selShadowOpacity = "shadowOpacity";
+
+	private static readonly IntPtr selShadowOpacityHandle = Selector.GetHandle("shadowOpacity");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selShadowPath = "shadowPath";
+
+	private static readonly IntPtr selShadowPathHandle = Selector.GetHandle("shadowPath");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selShadowRadius = "shadowRadius";
+
+	private static readonly IntPtr selShadowRadiusHandle = Selector.GetHandle("shadowRadius");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selShouldRasterize = "shouldRasterize";
+
+	private static readonly IntPtr selShouldRasterizeHandle = Selector.GetHandle("shouldRasterize");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSpeed = "speed";
+
+	private static readonly IntPtr selSpeedHandle = Selector.GetHandle("speed");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStyle = "style";
+
+	private static readonly IntPtr selStyleHandle = Selector.GetHandle("style");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSublayerTransform = "sublayerTransform";
+
+	private static readonly IntPtr selSublayerTransformHandle = Selector.GetHandle("sublayerTransform");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSublayers = "sublayers";
+
+	private static readonly IntPtr selSublayersHandle = Selector.GetHandle("sublayers");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSuperlayer = "superlayer";
+
+	private static readonly IntPtr selSuperlayerHandle = Selector.GetHandle("superlayer");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTimeOffset = "timeOffset";
+
+	private static readonly IntPtr selTimeOffsetHandle = Selector.GetHandle("timeOffset");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTransform = "transform";
+
+	private static readonly IntPtr selTransformHandle = Selector.GetHandle("transform");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selVisibleRect = "visibleRect";
+
+	private static readonly IntPtr selVisibleRectHandle = Selector.GetHandle("visibleRect");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selZPosition = "zPosition";
+
+	private static readonly IntPtr selZPositionHandle = Selector.GetHandle("zPosition");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("CALayer");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_WeakDelegate_var;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FilterLinear;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FilterNearest;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FilterTrilinear;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GravityBottom;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GravityBottomLeft;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GravityBottomRight;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GravityCenter;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GravityLeft;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GravityResize;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GravityResizeAspect;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GravityResizeAspectFill;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GravityRight;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GravityTop;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GravityTopLeft;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _GravityTopRight;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _OnOrderIn;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _OnOrderOut;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Transition;
+
+	[Obsolete("Use 'AutoresizingMask' instead.")]
+	public virtual CAAutoresizingMask AutoresizinMask
 	{
 		get
 		{
-			return BeginTime;
+			return AutoresizingMask;
 		}
 		set
 		{
-			BeginTime = value;
+			AutoresizingMask = value;
+		}
+	}
+
+	[Watch(3, 0)]
+	[TV(10, 0)]
+	[Mac(10, 12)]
+	[iOS(10, 0)]
+	public CAContentsFormat ContentsFormat
+	{
+		get
+		{
+			return CAContentsFormatExtensions.GetValue(_ContentsFormat);
+		}
+		set
+		{
+			_ContentsFormat = value.GetConstant();
 		}
 	}
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual CALayer PresentationLayer
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary? Actions
 	{
-		[Export("presentationLayer")]
+		[Export("actions", ArgumentSemantic.Copy)]
 		get
 		{
-			return (CALayer)(__mt_PresentationLayer_var = ((!IsDirectBinding) ? ((CALayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPresentationLayerHandle))) : ((CALayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPresentationLayerHandle)))));
-		}
-	}
-
-	public virtual CALayer ModelLayer
-	{
-		[Export("modelLayer")]
-		get
-		{
-			return (CALayer)(__mt_ModelLayer_var = ((!IsDirectBinding) ? ((CALayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selModelLayerHandle))) : ((CALayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selModelLayerHandle)))));
-		}
-	}
-
-	public virtual CGRect Bounds
-	{
-		[Export("bounds")]
-		get
-		{
-			CGRect retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selBoundsHandle);
+				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selActionsHandle));
 			}
-			else
-			{
-				Messaging.CGRect_objc_msgSendSuper_stret(out retval, base.SuperHandle, selBoundsHandle);
-			}
-			return retval;
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selActionsHandle));
 		}
-		[Export("setBounds:")]
+		[Export("setActions:", ArgumentSemantic.Copy)]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_CGRect(base.Handle, selSetBounds_Handle, value);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetActions_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selSetBounds_Handle, value);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetActions_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 		}
 	}
 
-	public virtual double ZPosition
-	{
-		[Export("zPosition")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selZPositionHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selZPositionHandle);
-		}
-		[Export("setZPosition:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetZPosition_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetZPosition_Handle, value);
-			}
-		}
-	}
-
-	public virtual CGPoint AnchorPoint
-	{
-		[Export("anchorPoint")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.CGPoint_objc_msgSend(base.Handle, selAnchorPointHandle);
-			}
-			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selAnchorPointHandle);
-		}
-		[Export("setAnchorPoint:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_CGPoint(base.Handle, selSetAnchorPoint_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selSetAnchorPoint_Handle, value);
-			}
-		}
-	}
-
-	public virtual double AnchorPointZ
-	{
-		[Export("anchorPointZ")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selAnchorPointZHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selAnchorPointZHandle);
-		}
-		[Export("setAnchorPointZ:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetAnchorPointZ_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetAnchorPointZ_Handle, value);
-			}
-		}
-	}
-
-	public virtual CGPoint Position
-	{
-		[Export("position")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.CGPoint_objc_msgSend(base.Handle, selPositionHandle);
-			}
-			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selPositionHandle);
-		}
-		[Export("setPosition:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_CGPoint(base.Handle, selSetPosition_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selSetPosition_Handle, value);
-			}
-		}
-	}
-
-	public virtual CATransform3D Transform
-	{
-		[Export("transform")]
-		get
-		{
-			CATransform3D retval;
-			if (IsDirectBinding)
-			{
-				Messaging.CATransform3D_objc_msgSend_stret(out retval, base.Handle, selTransformHandle);
-			}
-			else
-			{
-				Messaging.CATransform3D_objc_msgSendSuper_stret(out retval, base.SuperHandle, selTransformHandle);
-			}
-			return retval;
-		}
-		[Export("setTransform:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_CATransform3D(base.Handle, selSetTransform_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_CATransform3D(base.SuperHandle, selSetTransform_Handle, value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGAffineTransform AffineTransform
 	{
 		[Export("affineTransform")]
 		get
 		{
 			CGAffineTransform retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.CGAffineTransform_objc_msgSend_stret(out retval, base.Handle, selAffineTransformHandle);
 			}
@@ -570,7 +1017,7 @@ public class CALayer : NSObject
 		[Export("setAffineTransform:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_CGAffineTransform(base.Handle, selSetAffineTransform_Handle, value);
 			}
@@ -581,141 +1028,388 @@ public class CALayer : NSObject
 		}
 	}
 
-	public virtual CGRect Frame
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public virtual bool AllowsEdgeAntialiasing
 	{
-		[Export("frame")]
+		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("allowsEdgeAntialiasing")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selAllowsEdgeAntialiasingHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAllowsEdgeAntialiasingHandle);
+		}
+		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("setAllowsEdgeAntialiasing:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsEdgeAntialiasing_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAllowsEdgeAntialiasing_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public virtual bool AllowsGroupOpacity
+	{
+		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("allowsGroupOpacity")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selAllowsGroupOpacityHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAllowsGroupOpacityHandle);
+		}
+		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("setAllowsGroupOpacity:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsGroupOpacity_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAllowsGroupOpacity_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGPoint AnchorPoint
+	{
+		[Export("anchorPoint")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.CGPoint_objc_msgSend(base.Handle, selAnchorPointHandle);
+			}
+			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selAnchorPointHandle);
+		}
+		[Export("setAnchorPoint:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_CGPoint(base.Handle, selSetAnchorPoint_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selSetAnchorPoint_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat AnchorPointZ
+	{
+		[Export("anchorPointZ")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selAnchorPointZHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selAnchorPointZHandle);
+		}
+		[Export("setAnchorPointZ:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetAnchorPointZ_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetAnchorPointZ_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string[]? AnimationKeys
+	{
+		[Export("animationKeys")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAnimationKeysHandle));
+			}
+			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAnimationKeysHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool AutoReverses
+	{
+		[Export("autoreverses")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selAutoreversesHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAutoreversesHandle);
+		}
+		[Export("setAutoreverses:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetAutoreverses_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAutoreverses_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CAAutoresizingMask AutoresizingMask
+	{
+		[Export("autoresizingMask")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return (CAAutoresizingMask)Messaging.UInt32_objc_msgSend(base.Handle, selAutoresizingMaskHandle);
+			}
+			return (CAAutoresizingMask)Messaging.UInt32_objc_msgSendSuper(base.SuperHandle, selAutoresizingMaskHandle);
+		}
+		[Export("setAutoresizingMask:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt32(base.Handle, selSetAutoresizingMask_Handle, (uint)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt32(base.SuperHandle, selSetAutoresizingMask_Handle, (uint)value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGColor? BackgroundColor
+	{
+		[Export("backgroundColor")]
+		get
+		{
+			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle));
+			return (intPtr == IntPtr.Zero) ? null : new CGColor(intPtr);
+		}
+		[Export("setBackgroundColor:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBackgroundColor_Handle, (value == null) ? IntPtr.Zero : value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBackgroundColor_Handle, (value == null) ? IntPtr.Zero : value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CIFilter[]? BackgroundFilters
+	{
+		[Export("backgroundFilters", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<CIFilter>(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundFiltersHandle));
+			}
+			return NSArray.ArrayFromHandle<CIFilter>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundFiltersHandle));
+		}
+		[Export("setBackgroundFilters:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBackgroundFilters_Handle, nSArray?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBackgroundFilters_Handle, nSArray?.Handle ?? IntPtr.Zero);
+			}
+			nSArray?.Dispose();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual double BeginTime
+	{
+		[Export("beginTime")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selBeginTimeHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selBeginTimeHandle);
+		}
+		[Export("setBeginTime:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Double(base.Handle, selSetBeginTime_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetBeginTime_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGColor BorderColor
+	{
+		[Export("borderColor")]
+		get
+		{
+			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBorderColorHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selBorderColorHandle));
+			return (intPtr == IntPtr.Zero) ? null : new CGColor(intPtr);
+		}
+		[Export("setBorderColor:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBorderColor_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBorderColor_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat BorderWidth
+	{
+		[Export("borderWidth")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selBorderWidthHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selBorderWidthHandle);
+		}
+		[Export("setBorderWidth:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetBorderWidth_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetBorderWidth_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGRect Bounds
+	{
+		[Export("bounds")]
 		get
 		{
 			CGRect retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selFrameHandle);
+				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selBoundsHandle);
 			}
 			else
 			{
-				Messaging.CGRect_objc_msgSendSuper_stret(out retval, base.SuperHandle, selFrameHandle);
+				Messaging.CGRect_objc_msgSendSuper_stret(out retval, base.SuperHandle, selBoundsHandle);
 			}
 			return retval;
 		}
-		[Export("setFrame:")]
+		[Export("setBounds:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_CGRect(base.Handle, selSetFrame_Handle, value);
+				Messaging.void_objc_msgSend_CGRect(base.Handle, selSetBounds_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selSetFrame_Handle, value);
+				Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selSetBounds_Handle, value);
 			}
 		}
 	}
 
-	public virtual bool Hidden
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? CompositingFilter
 	{
-		[Export("isHidden")]
+		[Export("compositingFilter", ArgumentSemantic.Retain)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsHiddenHandle);
+				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCompositingFilterHandle));
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsHiddenHandle);
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCompositingFilterHandle));
 		}
-		[Export("setHidden:")]
+		[Export("setCompositingFilter:", ArgumentSemantic.Retain)]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetHidden_Handle, value);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCompositingFilter_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetHidden_Handle, value);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCompositingFilter_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 		}
 	}
 
-	public virtual bool DoubleSided
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CAConstraint[] Constraints
 	{
-		[Export("isDoubleSided")]
+		[Export("constraints")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsDoubleSidedHandle);
+				return NSArray.ArrayFromHandle<CAConstraint>(Messaging.IntPtr_objc_msgSend(base.Handle, selConstraintsHandle));
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsDoubleSidedHandle);
+			return NSArray.ArrayFromHandle<CAConstraint>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selConstraintsHandle));
 		}
-		[Export("setDoubleSided:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetDoubleSided_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetDoubleSided_Handle, value);
-			}
-		}
-	}
-
-	public virtual bool GeometryFlipped
-	{
-		[Export("isGeometryFlipped")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsGeometryFlippedHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsGeometryFlippedHandle);
-		}
-		[Export("setGeometryFlipped:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetGeometryFlipped_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetGeometryFlipped_Handle, value);
-			}
-		}
-	}
-
-	public virtual bool ContentsAreFlipped
-	{
-		[Export("contentsAreFlipped")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selContentsAreFlippedHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selContentsAreFlippedHandle);
-		}
-	}
-
-	public virtual CALayer SuperLayer
-	{
-		[Export("superlayer")]
-		get
-		{
-			return (CALayer)(__mt_SuperLayer_var = ((!IsDirectBinding) ? ((CALayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSuperlayerHandle))) : ((CALayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSuperlayerHandle)))));
-		}
-	}
-
-	public virtual CALayer[] Sublayers
-	{
-		[Export("sublayers", ArgumentSemantic.Copy)]
-		get
-		{
-			return (CALayer[])(__mt_Sublayers_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<CALayer>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSublayersHandle)) : NSArray.ArrayFromHandle<CALayer>(Messaging.IntPtr_objc_msgSend(base.Handle, selSublayersHandle))));
-		}
-		[Export("setSublayers:", ArgumentSemantic.Copy)]
+		[Export("setConstraints:")]
 		set
 		{
 			if (value == null)
@@ -723,111 +1417,32 @@ public class CALayer : NSObject
 				throw new ArgumentNullException("value");
 			}
 			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSublayers_Handle, nSArray.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetConstraints_Handle, nSArray.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSublayers_Handle, nSArray.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetConstraints_Handle, nSArray.Handle);
 			}
 			nSArray.Dispose();
-			__mt_Sublayers_var = value;
 		}
 	}
 
-	public virtual CATransform3D SublayerTransform
-	{
-		[Export("sublayerTransform")]
-		get
-		{
-			CATransform3D retval;
-			if (IsDirectBinding)
-			{
-				Messaging.CATransform3D_objc_msgSend_stret(out retval, base.Handle, selSublayerTransformHandle);
-			}
-			else
-			{
-				Messaging.CATransform3D_objc_msgSendSuper_stret(out retval, base.SuperHandle, selSublayerTransformHandle);
-			}
-			return retval;
-		}
-		[Export("setSublayerTransform:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_CATransform3D(base.Handle, selSetSublayerTransform_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_CATransform3D(base.SuperHandle, selSetSublayerTransform_Handle, value);
-			}
-		}
-	}
-
-	public virtual CALayer Mask
-	{
-		[Export("mask", ArgumentSemantic.Retain)]
-		get
-		{
-			return (CALayer)(__mt_Mask_var = ((!IsDirectBinding) ? ((CALayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMaskHandle))) : ((CALayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMaskHandle)))));
-		}
-		[Export("setMask:", ArgumentSemantic.Retain)]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMask_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMask_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			__mt_Mask_var = value;
-		}
-	}
-
-	public virtual bool MasksToBounds
-	{
-		[Export("masksToBounds")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selMasksToBoundsHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selMasksToBoundsHandle);
-		}
-		[Export("setMasksToBounds:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetMasksToBounds_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetMasksToBounds_Handle, value);
-			}
-		}
-	}
-
-	public virtual CGImage Contents
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual CGImage? Contents
 	{
 		[Export("contents", ArgumentSemantic.Retain)]
 		get
 		{
-			if (IsDirectBinding)
-			{
-				return new CGImage(Messaging.IntPtr_objc_msgSend(base.Handle, selContentsHandle));
-			}
-			return new CGImage(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContentsHandle));
+			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContentsHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selContentsHandle));
+			return (intPtr == IntPtr.Zero) ? null : new CGImage(intPtr);
 		}
 		[Export("setContents:", ArgumentSemantic.Retain)]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetContents_Handle, value?.Handle ?? IntPtr.Zero);
 			}
@@ -838,93 +1453,58 @@ public class CALayer : NSObject
 		}
 	}
 
-	public virtual NSObject LayoutManager
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ContentsAreFlipped
 	{
-		[Export("layoutManager")]
+		[Export("contentsAreFlipped")]
 		get
 		{
-			return (NSObject)(__mt_LayoutManager_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLayoutManagerHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selLayoutManagerHandle))));
-		}
-		[Export("setLayoutManager:")]
-		set
-		{
-			if (value == null)
+			if (base.IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
+				return Messaging.bool_objc_msgSend(base.Handle, selContentsAreFlippedHandle);
 			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetLayoutManager_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetLayoutManager_Handle, value.Handle);
-			}
-			__mt_LayoutManager_var = value;
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selContentsAreFlippedHandle);
 		}
 	}
 
-	public virtual double ContentsScale
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGRect ContentsCenter
 	{
-		[Export("contentsScale")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selContentsScaleHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selContentsScaleHandle);
-		}
-		[Export("setContentsScale:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetContentsScale_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetContentsScale_Handle, value);
-			}
-		}
-	}
-
-	public virtual CGRect ContentsRect
-	{
-		[Export("contentsRect")]
+		[Export("contentsCenter")]
 		get
 		{
 			CGRect retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selContentsRectHandle);
+				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selContentsCenterHandle);
 			}
 			else
 			{
-				Messaging.CGRect_objc_msgSendSuper_stret(out retval, base.SuperHandle, selContentsRectHandle);
+				Messaging.CGRect_objc_msgSendSuper_stret(out retval, base.SuperHandle, selContentsCenterHandle);
 			}
 			return retval;
 		}
-		[Export("setContentsRect:")]
+		[Export("setContentsCenter:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_CGRect(base.Handle, selSetContentsRect_Handle, value);
+				Messaging.void_objc_msgSend_CGRect(base.Handle, selSetContentsCenter_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selSetContentsRect_Handle, value);
+				Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selSetContentsCenter_Handle, value);
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string ContentsGravity
 	{
 		[Export("contentsGravity", ArgumentSemantic.Copy)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selContentsGravityHandle));
 			}
@@ -938,7 +1518,7 @@ public class CALayer : NSObject
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetContentsGravity_Handle, arg);
 			}
@@ -950,48 +1530,264 @@ public class CALayer : NSObject
 		}
 	}
 
-	public virtual CGRect ContentsCenter
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGRect ContentsRect
 	{
-		[Export("contentsCenter")]
+		[Export("contentsRect")]
 		get
 		{
 			CGRect retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selContentsCenterHandle);
+				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selContentsRectHandle);
 			}
 			else
 			{
-				Messaging.CGRect_objc_msgSendSuper_stret(out retval, base.SuperHandle, selContentsCenterHandle);
+				Messaging.CGRect_objc_msgSendSuper_stret(out retval, base.SuperHandle, selContentsRectHandle);
 			}
 			return retval;
 		}
-		[Export("setContentsCenter:")]
+		[Export("setContentsRect:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_CGRect(base.Handle, selSetContentsCenter_Handle, value);
+				Messaging.void_objc_msgSend_CGRect(base.Handle, selSetContentsRect_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selSetContentsCenter_Handle, value);
+				Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selSetContentsRect_Handle, value);
 			}
 		}
 	}
 
-	public virtual string MinificationFilter
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat ContentsScale
 	{
-		[Export("minificationFilter", ArgumentSemantic.Copy)]
+		[Export("contentsScale")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMinificationFilterHandle));
+				return Messaging.nfloat_objc_msgSend(base.Handle, selContentsScaleHandle);
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMinificationFilterHandle));
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selContentsScaleHandle);
 		}
-		[Export("setMinificationFilter:", ArgumentSemantic.Copy)]
+		[Export("setContentsScale:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetContentsScale_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetContentsScale_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
+	[BindAs(typeof(CACornerCurve), OriginalType = typeof(NSString))]
+	public virtual CACornerCurve CornerCurve
+	{
+		[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
+		[Export("cornerCurve")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return CACornerCurveExtensions.GetValue(Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSend(base.Handle, selCornerCurveHandle)));
+			}
+			return CACornerCurveExtensions.GetValue(Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCornerCurveHandle)));
+		}
+		[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
+		[Export("setCornerCurve:")]
+		set
+		{
+			NSString constant = value.GetConstant();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCornerCurve_Handle, (constant == null) ? IntPtr.Zero : constant.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCornerCurve_Handle, (constant == null) ? IntPtr.Zero : constant.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat CornerRadius
+	{
+		[Export("cornerRadius")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selCornerRadiusHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selCornerRadiusHandle);
+		}
+		[Export("setCornerRadius:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetCornerRadius_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetCornerRadius_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public ICALayerDelegate Delegate
+	{
+		get
+		{
+			return WeakDelegate as ICALayerDelegate;
+		}
+		set
+		{
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
+			{
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			WeakDelegate = nSObject;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool DoubleSided
+	{
+		[Export("isDoubleSided")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsDoubleSidedHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsDoubleSidedHandle);
+		}
+		[Export("setDoubleSided:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetDoubleSided_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetDoubleSided_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool DrawsAsynchronously
+	{
+		[Export("drawsAsynchronously")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selDrawsAsynchronouslyHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selDrawsAsynchronouslyHandle);
+		}
+		[Export("setDrawsAsynchronously:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetDrawsAsynchronously_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetDrawsAsynchronously_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual double Duration
+	{
+		[Export("duration")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selDurationHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selDurationHandle);
+		}
+		[Export("setDuration:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Double(base.Handle, selSetDuration_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetDuration_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CAEdgeAntialiasingMask EdgeAntialiasingMask
+	{
+		[Export("edgeAntialiasingMask")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return (CAEdgeAntialiasingMask)Messaging.UInt32_objc_msgSend(base.Handle, selEdgeAntialiasingMaskHandle);
+			}
+			return (CAEdgeAntialiasingMask)Messaging.UInt32_objc_msgSendSuper(base.SuperHandle, selEdgeAntialiasingMaskHandle);
+		}
+		[Export("setEdgeAntialiasingMask:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt32(base.Handle, selSetEdgeAntialiasingMask_Handle, (uint)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt32(base.SuperHandle, selSetEdgeAntialiasingMask_Handle, (uint)value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string FillMode
+	{
+		[Export("fillMode", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selFillModeHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFillModeHandle));
+		}
+		[Export("setFillMode:", ArgumentSemantic.Copy)]
 		set
 		{
 			if (value == null)
@@ -999,24 +1795,166 @@ public class CALayer : NSObject
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMinificationFilter_Handle, arg);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFillMode_Handle, arg);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMinificationFilter_Handle, arg);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFillMode_Handle, arg);
 			}
 			NSString.ReleaseNative(arg);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CIFilter[]? Filters
+	{
+		[Export("filters", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<CIFilter>(Messaging.IntPtr_objc_msgSend(base.Handle, selFiltersHandle));
+			}
+			return NSArray.ArrayFromHandle<CIFilter>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFiltersHandle));
+		}
+		[Export("setFilters:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFilters_Handle, nSArray?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFilters_Handle, nSArray?.Handle ?? IntPtr.Zero);
+			}
+			nSArray?.Dispose();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGRect Frame
+	{
+		[Export("frame")]
+		get
+		{
+			CGRect retval;
+			if (base.IsDirectBinding)
+			{
+				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selFrameHandle);
+			}
+			else
+			{
+				Messaging.CGRect_objc_msgSendSuper_stret(out retval, base.SuperHandle, selFrameHandle);
+			}
+			return retval;
+		}
+		[Export("setFrame:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_CGRect(base.Handle, selSetFrame_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selSetFrame_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool GeometryFlipped
+	{
+		[Export("isGeometryFlipped")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsGeometryFlippedHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsGeometryFlippedHandle);
+		}
+		[Export("setGeometryFlipped:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetGeometryFlipped_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetGeometryFlipped_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Hidden
+	{
+		[Export("isHidden")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsHiddenHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsHiddenHandle);
+		}
+		[Export("setHidden:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetHidden_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetHidden_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject LayoutManager
+	{
+		[Export("layoutManager", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selLayoutManagerHandle));
+			}
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLayoutManagerHandle));
+		}
+		[Export("setLayoutManager:", ArgumentSemantic.Retain)]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetLayoutManager_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetLayoutManager_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string MagnificationFilter
 	{
 		[Export("magnificationFilter", ArgumentSemantic.Copy)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMagnificationFilterHandle));
 			}
@@ -1030,7 +1968,7 @@ public class CALayer : NSObject
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMagnificationFilter_Handle, arg);
 			}
@@ -1042,264 +1980,175 @@ public class CALayer : NSObject
 		}
 	}
 
-	public virtual bool Opaque
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CALayer? Mask
 	{
-		[Export("isOpaque")]
+		[Export("mask", ArgumentSemantic.Retain)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsOpaqueHandle);
+				return Runtime.GetNSObject<CALayer>(Messaging.IntPtr_objc_msgSend(base.Handle, selMaskHandle));
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsOpaqueHandle);
+			return Runtime.GetNSObject<CALayer>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMaskHandle));
 		}
-		[Export("setOpaque:")]
+		[Export("setMask:", ArgumentSemantic.Retain)]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetOpaque_Handle, value);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMask_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetOpaque_Handle, value);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMask_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 		}
 	}
 
-	public virtual bool NeedsDisplay
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+	public virtual CACornerMask MaskedCorners
 	{
-		[Export("needsDisplay")]
+		[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+		[Export("maskedCorners", ArgumentSemantic.Assign)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selNeedsDisplayHandle);
+				return (CACornerMask)Messaging.UInt64_objc_msgSend(base.Handle, selMaskedCornersHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selNeedsDisplayHandle);
+			return (CACornerMask)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selMaskedCornersHandle);
 		}
-	}
-
-	public virtual bool NeedsDisplayOnBoundsChange
-	{
-		[Export("needsDisplayOnBoundsChange")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selNeedsDisplayOnBoundsChangeHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selNeedsDisplayOnBoundsChangeHandle);
-		}
-		[Export("setNeedsDisplayOnBoundsChange:")]
+		[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+		[Export("setMaskedCorners:", ArgumentSemantic.Assign)]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetNeedsDisplayOnBoundsChange_Handle, value);
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetMaskedCorners_Handle, (ulong)value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetNeedsDisplayOnBoundsChange_Handle, value);
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetMaskedCorners_Handle, (ulong)value);
 			}
 		}
 	}
 
-	public virtual CGColor BackgroundColor
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool MasksToBounds
 	{
-		[Export("backgroundColor")]
+		[Export("masksToBounds")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return new CGColor(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle));
+				return Messaging.bool_objc_msgSend(base.Handle, selMasksToBoundsHandle);
 			}
-			return new CGColor(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle));
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selMasksToBoundsHandle);
 		}
-		[Export("setBackgroundColor:")]
+		[Export("setMasksToBounds:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBackgroundColor_Handle, value.Handle);
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetMasksToBounds_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBackgroundColor_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetMasksToBounds_Handle, value);
 			}
 		}
 	}
 
-	public virtual double CornerRadius
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string MinificationFilter
 	{
-		[Export("cornerRadius")]
+		[Export("minificationFilter", ArgumentSemantic.Copy)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Double_objc_msgSend(base.Handle, selCornerRadiusHandle);
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMinificationFilterHandle));
 			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selCornerRadiusHandle);
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMinificationFilterHandle));
 		}
-		[Export("setCornerRadius:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetCornerRadius_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetCornerRadius_Handle, value);
-			}
-		}
-	}
-
-	public virtual double BorderWidth
-	{
-		[Export("borderWidth")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selBorderWidthHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selBorderWidthHandle);
-		}
-		[Export("setBorderWidth:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetBorderWidth_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetBorderWidth_Handle, value);
-			}
-		}
-	}
-
-	public virtual CGColor BorderColor
-	{
-		[Export("borderColor")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return new CGColor(Messaging.IntPtr_objc_msgSend(base.Handle, selBorderColorHandle));
-			}
-			return new CGColor(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBorderColorHandle));
-		}
-		[Export("setBorderColor:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBorderColor_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBorderColor_Handle, value.Handle);
-			}
-		}
-	}
-
-	public virtual float Opacity
-	{
-		[Export("opacity")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.float_objc_msgSend(base.Handle, selOpacityHandle);
-			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selOpacityHandle);
-		}
-		[Export("setOpacity:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_float(base.Handle, selSetOpacity_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetOpacity_Handle, value);
-			}
-		}
-	}
-
-	public virtual CAEdgeAntialiasingMask EdgeAntialiasingMask
-	{
-		[Export("edgeAntialiasingMask")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return (CAEdgeAntialiasingMask)Messaging.int_objc_msgSend(base.Handle, selEdgeAntialiasingMaskHandle);
-			}
-			return (CAEdgeAntialiasingMask)Messaging.int_objc_msgSendSuper(base.SuperHandle, selEdgeAntialiasingMaskHandle);
-		}
-		[Export("setEdgeAntialiasingMask:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_int(base.Handle, selSetEdgeAntialiasingMask_Handle, (int)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetEdgeAntialiasingMask_Handle, (int)value);
-			}
-		}
-	}
-
-	public virtual NSDictionary Actions
-	{
-		[Export("actions", ArgumentSemantic.Copy)]
-		get
-		{
-			return (NSDictionary)(__mt_Actions_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selActionsHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selActionsHandle)))));
-		}
-		[Export("setActions:", ArgumentSemantic.Copy)]
+		[Export("setMinificationFilter:", ArgumentSemantic.Copy)]
 		set
 		{
 			if (value == null)
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetActions_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMinificationFilter_Handle, arg);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetActions_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMinificationFilter_Handle, arg);
 			}
-			__mt_Actions_var = value;
+			NSString.ReleaseNative(arg);
 		}
 	}
 
-	public virtual string[] AnimationKeys
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual float MinificationFilterBias
 	{
-		[Export("animationKeys")]
+		[Export("minificationFilterBias")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAnimationKeysHandle));
+				return Messaging.float_objc_msgSend(base.Handle, selMinificationFilterBiasHandle);
 			}
-			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAnimationKeysHandle));
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selMinificationFilterBiasHandle);
+		}
+		[Export("setMinificationFilterBias:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_float(base.Handle, selSetMinificationFilterBias_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetMinificationFilterBias_Handle, value);
+			}
 		}
 	}
 
-	public virtual string Name
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CALayer ModelLayer
+	{
+		[Export("modelLayer")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<CALayer>(Messaging.IntPtr_objc_msgSend(base.Handle, selModelLayerHandle));
+			}
+			return Runtime.GetNSObject<CALayer>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selModelLayerHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string? Name
 	{
 		[Export("name", ArgumentSemantic.Copy)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNameHandle));
 			}
@@ -1308,12 +2157,8 @@ public class CALayer : NSObject
 		[Export("setName:", ArgumentSemantic.Copy)]
 		set
 		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetName_Handle, arg);
 			}
@@ -1325,146 +2170,171 @@ public class CALayer : NSObject
 		}
 	}
 
-	public virtual NSObject WeakDelegate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool NeedsDisplay
 	{
-		[Export("delegate", ArgumentSemantic.Assign)]
+		[Export("needsDisplay")]
 		get
 		{
-			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selNeedsDisplayHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selNeedsDisplayHandle);
 		}
-		[Export("setDelegate:", ArgumentSemantic.Assign)]
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool NeedsDisplayOnBoundsChange
+	{
+		[Export("needsDisplayOnBoundsChange")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selNeedsDisplayOnBoundsChangeHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selNeedsDisplayOnBoundsChangeHandle);
+		}
+		[Export("setNeedsDisplayOnBoundsChange:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetNeedsDisplayOnBoundsChange_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetNeedsDisplayOnBoundsChange_Handle, value);
 			}
-			__mt_WeakDelegate_var = value;
 		}
 	}
 
-	public CALayerDelegate Delegate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual float Opacity
 	{
+		[Export("opacity")]
 		get
 		{
-			return WeakDelegate as CALayerDelegate;
-		}
-		set
-		{
-			WeakDelegate = value;
-		}
-	}
-
-	public virtual double BeginTime
-	{
-		[Export("beginTime")]
-		get
-		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Double_objc_msgSend(base.Handle, selBeginTimeHandle);
+				return Messaging.float_objc_msgSend(base.Handle, selOpacityHandle);
 			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selBeginTimeHandle);
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selOpacityHandle);
 		}
-		[Export("setBeginTime:")]
+		[Export("setOpacity:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetBeginTime_Handle, value);
+				Messaging.void_objc_msgSend_float(base.Handle, selSetOpacity_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetBeginTime_Handle, value);
+				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetOpacity_Handle, value);
 			}
 		}
 	}
 
-	public virtual double Duration
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Opaque
 	{
-		[Export("duration")]
+		[Export("isOpaque")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Double_objc_msgSend(base.Handle, selDurationHandle);
+				return Messaging.bool_objc_msgSend(base.Handle, selIsOpaqueHandle);
 			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selDurationHandle);
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsOpaqueHandle);
 		}
-		[Export("setDuration:")]
+		[Export("setOpaque:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetDuration_Handle, value);
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetOpaque_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetDuration_Handle, value);
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetOpaque_Handle, value);
 			}
 		}
 	}
 
-	public virtual float Speed
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGPoint Position
 	{
-		[Export("speed")]
+		[Export("position")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.float_objc_msgSend(base.Handle, selSpeedHandle);
+				return Messaging.CGPoint_objc_msgSend(base.Handle, selPositionHandle);
 			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selSpeedHandle);
+			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selPositionHandle);
 		}
-		[Export("setSpeed:")]
+		[Export("setPosition:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_float(base.Handle, selSetSpeed_Handle, value);
+				Messaging.void_objc_msgSend_CGPoint(base.Handle, selSetPosition_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetSpeed_Handle, value);
+				Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selSetPosition_Handle, value);
 			}
 		}
 	}
 
-	public virtual double TimeOffset
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CALayer PresentationLayer
 	{
-		[Export("timeOffset")]
+		[Export("presentationLayer")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Double_objc_msgSend(base.Handle, selTimeOffsetHandle);
+				return Runtime.GetNSObject<CALayer>(Messaging.IntPtr_objc_msgSend(base.Handle, selPresentationLayerHandle));
 			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selTimeOffsetHandle);
+			return Runtime.GetNSObject<CALayer>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPresentationLayerHandle));
 		}
-		[Export("setTimeOffset:")]
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat RasterizationScale
+	{
+		[Export("rasterizationScale")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selRasterizationScaleHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selRasterizationScaleHandle);
+		}
+		[Export("setRasterizationScale:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetTimeOffset_Handle, value);
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetRasterizationScale_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetTimeOffset_Handle, value);
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetRasterizationScale_Handle, value);
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual float RepeatCount
 	{
 		[Export("repeatCount")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.float_objc_msgSend(base.Handle, selRepeatCountHandle);
 			}
@@ -1473,7 +2343,7 @@ public class CALayer : NSObject
 		[Export("setRepeatCount:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_float(base.Handle, selSetRepeatCount_Handle, value);
 			}
@@ -1484,12 +2354,13 @@ public class CALayer : NSObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual double RepeatDuration
 	{
 		[Export("repeatDuration")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.Double_objc_msgSend(base.Handle, selRepeatDurationHandle);
 			}
@@ -1498,7 +2369,7 @@ public class CALayer : NSObject
 		[Export("setRepeatDuration:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_Double(base.Handle, selSetRepeatDuration_Handle, value);
 			}
@@ -1509,78 +2380,23 @@ public class CALayer : NSObject
 		}
 	}
 
-	public virtual bool AutoReverses
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGColor ShadowColor
 	{
-		[Export("autoreverses")]
+		[Export("shadowColor")]
 		get
 		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAutoreversesHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAutoreversesHandle);
+			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selShadowColorHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selShadowColorHandle));
+			return (intPtr == IntPtr.Zero) ? null : new CGColor(intPtr);
 		}
-		[Export("setAutoreverses:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAutoreverses_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAutoreverses_Handle, value);
-			}
-		}
-	}
-
-	public virtual string FillMode
-	{
-		[Export("fillMode")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selFillModeHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFillModeHandle));
-		}
-		[Export("setFillMode:")]
+		[Export("setShadowColor:")]
 		set
 		{
 			if (value == null)
 			{
 				throw new ArgumentNullException("value");
 			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFillMode_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFillMode_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[Since(3, 2)]
-	public virtual CGColor ShadowColor
-	{
-		[Export("shadowColor")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return new CGColor(Messaging.IntPtr_objc_msgSend(base.Handle, selShadowColorHandle));
-			}
-			return new CGColor(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selShadowColorHandle));
-		}
-		[Export("setShadowColor:")]
-		set
-		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetShadowColor_Handle, value.Handle);
 			}
@@ -1591,13 +2407,13 @@ public class CALayer : NSObject
 		}
 	}
 
-	[Since(3, 2)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGSize ShadowOffset
 	{
 		[Export("shadowOffset")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.CGSize_objc_msgSend(base.Handle, selShadowOffsetHandle);
 			}
@@ -1606,7 +2422,7 @@ public class CALayer : NSObject
 		[Export("setShadowOffset:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_CGSize(base.Handle, selSetShadowOffset_Handle, value);
 			}
@@ -1617,13 +2433,13 @@ public class CALayer : NSObject
 		}
 	}
 
-	[Since(3, 2)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual float ShadowOpacity
 	{
 		[Export("shadowOpacity")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.float_objc_msgSend(base.Handle, selShadowOpacityHandle);
 			}
@@ -1632,7 +2448,7 @@ public class CALayer : NSObject
 		[Export("setShadowOpacity:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_float(base.Handle, selSetShadowOpacity_Handle, value);
 			}
@@ -1643,39 +2459,271 @@ public class CALayer : NSObject
 		}
 	}
 
-	[Since(3, 2)]
-	public virtual double ShadowRadius
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGPath? ShadowPath
 	{
-		[Export("shadowRadius")]
+		[Export("shadowPath")]
 		get
 		{
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selShadowRadiusHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selShadowRadiusHandle);
+			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selShadowPathHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selShadowPathHandle));
+			return (intPtr == IntPtr.Zero) ? null : new CGPath(intPtr);
 		}
-		[Export("setShadowRadius:")]
+		[Export("setShadowPath:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetShadowRadius_Handle, value);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetShadowPath_Handle, (value == null) ? IntPtr.Zero : value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetShadowRadius_Handle, value);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetShadowPath_Handle, (value == null) ? IntPtr.Zero : value.Handle);
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat ShadowRadius
+	{
+		[Export("shadowRadius")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selShadowRadiusHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selShadowRadiusHandle);
+		}
+		[Export("setShadowRadius:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetShadowRadius_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetShadowRadius_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ShouldRasterize
+	{
+		[Export("shouldRasterize")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selShouldRasterizeHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selShouldRasterizeHandle);
+		}
+		[Export("setShouldRasterize:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetShouldRasterize_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetShouldRasterize_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual float Speed
+	{
+		[Export("speed")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.float_objc_msgSend(base.Handle, selSpeedHandle);
+			}
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selSpeedHandle);
+		}
+		[Export("setSpeed:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_float(base.Handle, selSetSpeed_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetSpeed_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary? Style
+	{
+		[Export("style", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selStyleHandle));
+			}
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selStyleHandle));
+		}
+		[Export("setStyle:", ArgumentSemantic.Copy)]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetStyle_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetStyle_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CATransform3D SublayerTransform
+	{
+		[Export("sublayerTransform")]
+		get
+		{
+			CATransform3D retval;
+			if (base.IsDirectBinding)
+			{
+				Messaging.CATransform3D_objc_msgSend_stret(out retval, base.Handle, selSublayerTransformHandle);
+			}
+			else
+			{
+				Messaging.CATransform3D_objc_msgSendSuper_stret(out retval, base.SuperHandle, selSublayerTransformHandle);
+			}
+			return retval;
+		}
+		[Export("setSublayerTransform:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_CATransform3D(base.Handle, selSetSublayerTransform_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_CATransform3D(base.SuperHandle, selSetSublayerTransform_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CALayer[]? Sublayers
+	{
+		[Export("sublayers", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<CALayer>(Messaging.IntPtr_objc_msgSend(base.Handle, selSublayersHandle));
+			}
+			return NSArray.ArrayFromHandle<CALayer>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSublayersHandle));
+		}
+		[Export("setSublayers:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSublayers_Handle, nSArray?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSublayers_Handle, nSArray?.Handle ?? IntPtr.Zero);
+			}
+			nSArray?.Dispose();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CALayer SuperLayer
+	{
+		[Export("superlayer")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<CALayer>(Messaging.IntPtr_objc_msgSend(base.Handle, selSuperlayerHandle));
+			}
+			return Runtime.GetNSObject<CALayer>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSuperlayerHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual double TimeOffset
+	{
+		[Export("timeOffset")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selTimeOffsetHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selTimeOffsetHandle);
+		}
+		[Export("setTimeOffset:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Double(base.Handle, selSetTimeOffset_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetTimeOffset_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CATransform3D Transform
+	{
+		[Export("transform")]
+		get
+		{
+			CATransform3D retval;
+			if (base.IsDirectBinding)
+			{
+				Messaging.CATransform3D_objc_msgSend_stret(out retval, base.Handle, selTransformHandle);
+			}
+			else
+			{
+				Messaging.CATransform3D_objc_msgSendSuper_stret(out retval, base.SuperHandle, selTransformHandle);
+			}
+			return retval;
+		}
+		[Export("setTransform:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_CATransform3D(base.Handle, selSetTransform_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_CATransform3D(base.SuperHandle, selSetTransform_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGRect VisibleRect
 	{
 		[Export("visibleRect")]
 		get
 		{
 			CGRect retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selVisibleRectHandle);
 			}
@@ -1687,123 +2735,162 @@ public class CALayer : NSObject
 		}
 	}
 
-	public virtual CAAutoresizingMask AutoresizinMask
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakDelegate
 	{
-		[Export("autoresizingMask")]
+		[Export("delegate", ArgumentSemantic.Weak)]
 		get
 		{
-			if (IsDirectBinding)
-			{
-				return (CAAutoresizingMask)Messaging.int_objc_msgSend(base.Handle, selAutoresizingMaskHandle);
-			}
-			return (CAAutoresizingMask)Messaging.int_objc_msgSendSuper(base.SuperHandle, selAutoresizingMaskHandle);
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
+			MarkDirty();
+			__mt_WeakDelegate_var = nSObject;
+			return nSObject;
 		}
-		[Export("setAutoresizingMask:")]
+		[Export("setDelegate:", ArgumentSemantic.Weak)]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_int(base.Handle, selSetAutoresizingMask_Handle, (int)value);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetAutoresizingMask_Handle, (int)value);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			SetCALayerDelegate(value as CALayerDelegate);
+			MarkDirty();
+			__mt_WeakDelegate_var = value;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat ZPosition
+	{
+		[Export("zPosition")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selZPositionHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selZPositionHandle);
+		}
+		[Export("setZPosition:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetZPosition_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetZPosition_Handle, value);
 			}
 		}
 	}
 
-	public virtual CAConstraint[] Constraints
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal IntPtr _Contents
 	{
-		[Export("constraints")]
 		get
 		{
-			return (CAConstraint[])(__mt_Constraints_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<CAConstraint>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selConstraintsHandle)) : NSArray.ArrayFromHandle<CAConstraint>(Messaging.IntPtr_objc_msgSend(base.Handle, selConstraintsHandle))));
+			if (base.IsDirectBinding)
+			{
+				return Messaging.IntPtr_objc_msgSend(base.Handle, selContentsHandle);
+			}
+			return Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContentsHandle);
 		}
-		[Export("setConstraints:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetContents_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetContents_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.WatchOS, 3, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
+	internal virtual NSString _ContentsFormat
+	{
+		[Introduced(PlatformName.WatchOS, 3, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
+		[Export("contentsFormat")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSend(base.Handle, selContentsFormatHandle));
+			}
+			return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContentsFormatHandle));
+		}
+		[Introduced(PlatformName.WatchOS, 3, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
+		[Export("setContentsFormat:")]
 		set
 		{
 			if (value == null)
 			{
 				throw new ArgumentNullException("value");
 			}
-			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetConstraints_Handle, nSArray.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetContentsFormat_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetConstraints_Handle, nSArray.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetContentsFormat_Handle, value.Handle);
 			}
-			nSArray.Dispose();
-			__mt_Constraints_var = value;
 		}
 	}
 
-	public virtual CIFilter[] Filters
+	[Field("kCAFilterLinear", "CoreAnimation")]
+	public static NSString FilterLinear
 	{
-		[Export("filters")]
 		get
 		{
-			return (CIFilter[])(__mt_Filters_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<CIFilter>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFiltersHandle)) : NSArray.ArrayFromHandle<CIFilter>(Messaging.IntPtr_objc_msgSend(base.Handle, selFiltersHandle))));
-		}
-		[Export("setFilters:")]
-		set
-		{
-			if (value == null)
+			if (_FilterLinear == null)
 			{
-				throw new ArgumentNullException("value");
+				_FilterLinear = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAFilterLinear");
 			}
-			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFilters_Handle, nSArray.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFilters_Handle, nSArray.Handle);
-			}
-			nSArray.Dispose();
-			__mt_Filters_var = value;
+			return _FilterLinear;
 		}
 	}
 
-	[Field("kCATransition", "CoreAnimation")]
-	public static NSString Transition
+	[Field("kCAFilterNearest", "CoreAnimation")]
+	public static NSString FilterNearest
 	{
 		get
 		{
-			if (_Transition == null)
+			if (_FilterNearest == null)
 			{
-				_Transition = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCATransition");
+				_FilterNearest = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAFilterNearest");
 			}
-			return _Transition;
+			return _FilterNearest;
 		}
 	}
 
-	[Field("kCAGravityCenter", "CoreAnimation")]
-	public static NSString GravityCenter
+	[Field("kCAFilterTrilinear", "CoreAnimation")]
+	public static NSString FilterTrilinear
 	{
 		get
 		{
-			if (_GravityCenter == null)
+			if (_FilterTrilinear == null)
 			{
-				_GravityCenter = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAGravityCenter");
+				_FilterTrilinear = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAFilterTrilinear");
 			}
-			return _GravityCenter;
-		}
-	}
-
-	[Field("kCAGravityTop", "CoreAnimation")]
-	public static NSString GravityTop
-	{
-		get
-		{
-			if (_GravityTop == null)
-			{
-				_GravityTop = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAGravityTop");
-			}
-			return _GravityTop;
+			return _FilterTrilinear;
 		}
 	}
 
@@ -1817,58 +2904,6 @@ public class CALayer : NSObject
 				_GravityBottom = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAGravityBottom");
 			}
 			return _GravityBottom;
-		}
-	}
-
-	[Field("kCAGravityLeft", "CoreAnimation")]
-	public static NSString GravityLeft
-	{
-		get
-		{
-			if (_GravityLeft == null)
-			{
-				_GravityLeft = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAGravityLeft");
-			}
-			return _GravityLeft;
-		}
-	}
-
-	[Field("kCAGravityRight", "CoreAnimation")]
-	public static NSString GravityRight
-	{
-		get
-		{
-			if (_GravityRight == null)
-			{
-				_GravityRight = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAGravityRight");
-			}
-			return _GravityRight;
-		}
-	}
-
-	[Field("kCAGravityTopLeft", "CoreAnimation")]
-	public static NSString GravityTopLeft
-	{
-		get
-		{
-			if (_GravityTopLeft == null)
-			{
-				_GravityTopLeft = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAGravityTopLeft");
-			}
-			return _GravityTopLeft;
-		}
-	}
-
-	[Field("kCAGravityTopRight", "CoreAnimation")]
-	public static NSString GravityTopRight
-	{
-		get
-		{
-			if (_GravityTopRight == null)
-			{
-				_GravityTopRight = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAGravityTopRight");
-			}
-			return _GravityTopRight;
 		}
 	}
 
@@ -1895,6 +2930,32 @@ public class CALayer : NSObject
 				_GravityBottomRight = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAGravityBottomRight");
 			}
 			return _GravityBottomRight;
+		}
+	}
+
+	[Field("kCAGravityCenter", "CoreAnimation")]
+	public static NSString GravityCenter
+	{
+		get
+		{
+			if (_GravityCenter == null)
+			{
+				_GravityCenter = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAGravityCenter");
+			}
+			return _GravityCenter;
+		}
+	}
+
+	[Field("kCAGravityLeft", "CoreAnimation")]
+	public static NSString GravityLeft
+	{
+		get
+		{
+			if (_GravityLeft == null)
+			{
+				_GravityLeft = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAGravityLeft");
+			}
+			return _GravityLeft;
 		}
 	}
 
@@ -1937,42 +2998,55 @@ public class CALayer : NSObject
 		}
 	}
 
-	[Field("kCAFilterNearest", "CoreAnimation")]
-	public static NSString FilterNearest
+	[Field("kCAGravityRight", "CoreAnimation")]
+	public static NSString GravityRight
 	{
 		get
 		{
-			if (_FilterNearest == null)
+			if (_GravityRight == null)
 			{
-				_FilterNearest = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAFilterNearest");
+				_GravityRight = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAGravityRight");
 			}
-			return _FilterNearest;
+			return _GravityRight;
 		}
 	}
 
-	[Field("kCAFilterLinear", "CoreAnimation")]
-	public static NSString FilterLinear
+	[Field("kCAGravityTop", "CoreAnimation")]
+	public static NSString GravityTop
 	{
 		get
 		{
-			if (_FilterLinear == null)
+			if (_GravityTop == null)
 			{
-				_FilterLinear = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAFilterLinear");
+				_GravityTop = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAGravityTop");
 			}
-			return _FilterLinear;
+			return _GravityTop;
 		}
 	}
 
-	[Field("kCAFilterTrilinear", "CoreAnimation")]
-	public static NSString FilterTrilinear
+	[Field("kCAGravityTopLeft", "CoreAnimation")]
+	public static NSString GravityTopLeft
 	{
 		get
 		{
-			if (_FilterTrilinear == null)
+			if (_GravityTopLeft == null)
 			{
-				_FilterTrilinear = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAFilterTrilinear");
+				_GravityTopLeft = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAGravityTopLeft");
 			}
-			return _FilterTrilinear;
+			return _GravityTopLeft;
+		}
+	}
+
+	[Field("kCAGravityTopRight", "CoreAnimation")]
+	public static NSString GravityTopRight
+	{
+		get
+		{
+			if (_GravityTopRight == null)
+			{
+				_GravityTopRight = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAGravityTopRight");
+			}
+			return _GravityTopRight;
 		}
 	}
 
@@ -2002,123 +3076,200 @@ public class CALayer : NSObject
 		}
 	}
 
+	[Field("kCATransition", "CoreAnimation")]
+	public static NSString Transition
+	{
+		get
+		{
+			if (_Transition == null)
+			{
+				_Transition = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCATransition");
+			}
+			return _Transition;
+		}
+	}
+
 	[Export("initWithLayer:")]
 	public CALayer(CALayer other)
 	{
 		if (GetType() == typeof(CALayer))
 		{
-			Messaging.intptr_objc_msgSend_intptr(base.Handle, Selector.GetHandle("initWithLayer:"), other.Handle);
-			return;
+			Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.GetHandle("initWithLayer:"), other.Handle);
 		}
-		Messaging.intptr_objc_msgSendSuper_intptr(base.SuperHandle, Selector.GetHandle("initWithLayer:"), other.Handle);
-		Clone(other);
+		else
+		{
+			Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.GetHandle("initWithLayer:"), other.Handle);
+			Clone(other);
+		}
+		MarkDirtyIfDerived();
+	}
+
+	private void MarkDirtyIfDerived()
+	{
+		if (!(GetType() == typeof(CALayer)))
+		{
+			MarkDirty(allowCustomTypes: true);
+		}
 	}
 
 	public virtual void Clone(CALayer other)
 	{
 	}
 
-	[Obsolete("Use ConvertRectFromLayer instead")]
-	public CGRect ConvertRectfromLayer(CGRect rect, CALayer layer)
+	private void SetCALayerDelegate(CALayerDelegate value)
 	{
-		return ConvertRectFromLayer(rect, layer);
+		if (calayerdelegate != null)
+		{
+			CALayerDelegate cALayerDelegate = (CALayerDelegate)calayerdelegate.Target;
+			if (cALayerDelegate == value)
+			{
+				return;
+			}
+			cALayerDelegate.SetCALayer(null);
+		}
+		if (value == null)
+		{
+			calayerdelegate = null;
+			return;
+		}
+		calayerdelegate = new WeakReference(value);
+		value.SetCALayer(this);
 	}
 
+	private void OnDispose()
+	{
+		if (calayerdelegate != null)
+		{
+			CALayerDelegate cALayerDelegate = (CALayerDelegate)calayerdelegate.Target;
+			if (cALayerDelegate != null)
+			{
+				WeakDelegate = null;
+			}
+		}
+	}
+
+	public T GetContentsAs<T>() where T : NSObject
+	{
+		return Runtime.GetNSObject<T>(_Contents);
+	}
+
+	public void SetContents(NSObject value)
+	{
+		_Contents = value?.Handle ?? IntPtr.Zero;
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public CALayer()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
+		MarkDirtyIfDerived();
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public CALayer(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
+		MarkDirtyIfDerived();
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public CALayer(NSObjectFlag t)
+	protected CALayer(NSObjectFlag t)
 		: base(t)
 	{
+		MarkDirtyIfDerived();
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public CALayer(IntPtr handle)
+	protected internal CALayer(IntPtr handle)
 		: base(handle)
 	{
+		MarkDirtyIfDerived();
 	}
 
-	[Export("layer")]
-	public static CALayer Create()
+	[Export("actionForKey:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject ActionForKey(string eventKey)
 	{
-		return (CALayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selLayerHandle));
-	}
-
-	[Export("defaultValueForKey:")]
-	public static NSObject DefaultValue(string key)
-	{
-		if (key == null)
+		if (eventKey == null)
 		{
-			throw new ArgumentNullException("key");
+			throw new ArgumentNullException("eventKey");
 		}
-		IntPtr arg = NSString.CreateNative(key);
-		NSObject nSObject = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selDefaultValueForKey_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return nSObject;
-	}
-
-	[Export("needsDisplayForKey:")]
-	public static bool NeedsDisplayForKey(string key)
-	{
-		if (key == null)
-		{
-			throw new ArgumentNullException("key");
-		}
-		IntPtr arg = NSString.CreateNative(key);
-		bool result = Messaging.bool_objc_msgSend_IntPtr(class_ptr, selNeedsDisplayForKey_Handle, arg);
+		IntPtr arg = NSString.CreateNative(eventKey);
+		NSObject result = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selActionForKey_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selActionForKey_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
-	[Export("removeFromSuperlayer")]
-	public virtual void RemoveFromSuperLayer()
+	[Export("addAnimation:forKey:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AddAnimation(CAAnimation animation, string? key)
 	{
-		if (IsDirectBinding)
+		if (animation == null)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selRemoveFromSuperlayerHandle);
+			throw new ArgumentNullException("animation");
+		}
+		IntPtr arg = NSString.CreateNative(key);
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selAddAnimation_ForKey_Handle, animation.Handle, arg);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRemoveFromSuperlayerHandle);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selAddAnimation_ForKey_Handle, animation.Handle, arg);
+		}
+		NSString.ReleaseNative(arg);
+	}
+
+	[Export("addConstraint:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AddConstraint(CAConstraint c)
+	{
+		if (c == null)
+		{
+			throw new ArgumentNullException("c");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddConstraint_Handle, c.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAddConstraint_Handle, c.Handle);
 		}
 	}
 
 	[Export("addSublayer:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AddSublayer(CALayer layer)
 	{
 		if (layer == null)
 		{
 			throw new ArgumentNullException("layer");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddSublayer_Handle, layer.Handle);
 		}
@@ -2126,321 +3277,118 @@ public class CALayer : NSObject
 		{
 			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAddSublayer_Handle, layer.Handle);
 		}
-		_ = Sublayers;
 	}
 
-	[Export("insertSublayer:atIndex:")]
-	public virtual void InsertSublayer(CALayer layer, int index)
+	[Export("animationForKey:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CAAnimation AnimationForKey(string key)
 	{
-		if (layer == null)
+		if (key == null)
 		{
-			throw new ArgumentNullException("layer");
+			throw new ArgumentNullException("key");
 		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_int(base.Handle, selInsertSublayerAtIndex_Handle, layer.Handle, index);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_int(base.SuperHandle, selInsertSublayerAtIndex_Handle, layer.Handle, index);
-		}
-		_ = Sublayers;
-	}
-
-	[Export("insertSublayer:below:")]
-	public virtual void InsertSublayerBelow(CALayer layer, CALayer sibling)
-	{
-		if (layer == null)
-		{
-			throw new ArgumentNullException("layer");
-		}
-		if (sibling == null)
-		{
-			throw new ArgumentNullException("sibling");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selInsertSublayerBelow_Handle, layer.Handle, sibling.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInsertSublayerBelow_Handle, layer.Handle, sibling.Handle);
-		}
-		_ = Sublayers;
-	}
-
-	[Export("insertSublayer:above:")]
-	public virtual void InsertSublayerAbove(CALayer layer, CALayer sibling)
-	{
-		if (layer == null)
-		{
-			throw new ArgumentNullException("layer");
-		}
-		if (sibling == null)
-		{
-			throw new ArgumentNullException("sibling");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selInsertSublayerAbove_Handle, layer.Handle, sibling.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInsertSublayerAbove_Handle, layer.Handle, sibling.Handle);
-		}
-		_ = Sublayers;
-	}
-
-	[Export("replaceSublayer:with:")]
-	public virtual void ReplaceSublayer(CALayer layer, CALayer with)
-	{
-		if (layer == null)
-		{
-			throw new ArgumentNullException("layer");
-		}
-		if (with == null)
-		{
-			throw new ArgumentNullException("with");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selReplaceSublayerWith_Handle, layer.Handle, with.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selReplaceSublayerWith_Handle, layer.Handle, with.Handle);
-		}
-		_ = Sublayers;
-	}
-
-	[Export("convertPoint:fromLayer:")]
-	public virtual CGPoint ConvertPointFromLayer(CGPoint point, CALayer layer)
-	{
-		if (IsDirectBinding)
-		{
-			return Messaging.CGPoint_objc_msgSend_CGPoint_IntPtr(base.Handle, selConvertPointFromLayer_Handle, point, layer?.Handle ?? IntPtr.Zero);
-		}
-		return Messaging.CGPoint_objc_msgSendSuper_CGPoint_IntPtr(base.SuperHandle, selConvertPointFromLayer_Handle, point, layer?.Handle ?? IntPtr.Zero);
-	}
-
-	[Export("convertPoint:toLayer:")]
-	public virtual CGPoint ConvertPointToLayer(CGPoint point, CALayer layer)
-	{
-		if (IsDirectBinding)
-		{
-			return Messaging.CGPoint_objc_msgSend_CGPoint_IntPtr(base.Handle, selConvertPointToLayer_Handle, point, layer?.Handle ?? IntPtr.Zero);
-		}
-		return Messaging.CGPoint_objc_msgSendSuper_CGPoint_IntPtr(base.SuperHandle, selConvertPointToLayer_Handle, point, layer?.Handle ?? IntPtr.Zero);
-	}
-
-	[Export("convertRect:fromLayer:")]
-	public virtual CGRect ConvertRectFromLayer(CGRect rect, CALayer layer)
-	{
-		CGRect retval;
-		if (IsDirectBinding)
-		{
-			Messaging.CGRect_objc_msgSend_stret_CGRect_IntPtr(out retval, base.Handle, selConvertRectFromLayer_Handle, rect, layer?.Handle ?? IntPtr.Zero);
-		}
-		else
-		{
-			Messaging.CGRect_objc_msgSendSuper_stret_CGRect_IntPtr(out retval, base.SuperHandle, selConvertRectFromLayer_Handle, rect, layer?.Handle ?? IntPtr.Zero);
-		}
-		return retval;
-	}
-
-	[Export("convertRect:toLayer:")]
-	public virtual CGRect ConvertRectToLayer(CGRect rect, CALayer layer)
-	{
-		CGRect retval;
-		if (IsDirectBinding)
-		{
-			Messaging.CGRect_objc_msgSend_stret_CGRect_IntPtr(out retval, base.Handle, selConvertRectToLayer_Handle, rect, layer?.Handle ?? IntPtr.Zero);
-		}
-		else
-		{
-			Messaging.CGRect_objc_msgSendSuper_stret_CGRect_IntPtr(out retval, base.SuperHandle, selConvertRectToLayer_Handle, rect, layer?.Handle ?? IntPtr.Zero);
-		}
-		return retval;
-	}
-
-	[Export("convertTime:fromLayer:")]
-	public virtual double ConvertTimeFromLayer(double timeInterval, CALayer layer)
-	{
-		if (IsDirectBinding)
-		{
-			return Messaging.Double_objc_msgSend_Double_IntPtr(base.Handle, selConvertTimeFromLayer_Handle, timeInterval, layer?.Handle ?? IntPtr.Zero);
-		}
-		return Messaging.Double_objc_msgSendSuper_Double_IntPtr(base.SuperHandle, selConvertTimeFromLayer_Handle, timeInterval, layer?.Handle ?? IntPtr.Zero);
-	}
-
-	[Export("convertTime:toLayer:")]
-	public virtual double ConvertTimeToLayer(double timeInterval, CALayer layer)
-	{
-		if (IsDirectBinding)
-		{
-			return Messaging.Double_objc_msgSend_Double_IntPtr(base.Handle, selConvertTimeToLayer_Handle, timeInterval, layer?.Handle ?? IntPtr.Zero);
-		}
-		return Messaging.Double_objc_msgSendSuper_Double_IntPtr(base.SuperHandle, selConvertTimeToLayer_Handle, timeInterval, layer?.Handle ?? IntPtr.Zero);
-	}
-
-	[Export("hitTest:")]
-	public virtual CALayer HitTest(CGPoint p)
-	{
-		if (IsDirectBinding)
-		{
-			return (CALayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_CGPoint(base.Handle, selHitTest_Handle, p));
-		}
-		return (CALayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_CGPoint(base.SuperHandle, selHitTest_Handle, p));
+		IntPtr arg = NSString.CreateNative(key);
+		CAAnimation result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<CAAnimation>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAnimationForKey_Handle, arg)) : Runtime.GetNSObject<CAAnimation>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAnimationForKey_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
 	}
 
 	[Export("containsPoint:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Contains(CGPoint p)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend_CGPoint(base.Handle, selContainsPoint_Handle, p);
 		}
 		return Messaging.bool_objc_msgSendSuper_CGPoint(base.SuperHandle, selContainsPoint_Handle, p);
 	}
 
-	[Export("display")]
-	public virtual void Display()
+	[Export("convertPoint:fromLayer:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGPoint ConvertPointFromLayer(CGPoint point, CALayer? layer)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selDisplayHandle);
+			return Messaging.CGPoint_objc_msgSend_CGPoint_IntPtr(base.Handle, selConvertPoint_FromLayer_Handle, point, layer?.Handle ?? IntPtr.Zero);
+		}
+		return Messaging.CGPoint_objc_msgSendSuper_CGPoint_IntPtr(base.SuperHandle, selConvertPoint_FromLayer_Handle, point, layer?.Handle ?? IntPtr.Zero);
+	}
+
+	[Export("convertPoint:toLayer:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGPoint ConvertPointToLayer(CGPoint point, CALayer? layer)
+	{
+		if (base.IsDirectBinding)
+		{
+			return Messaging.CGPoint_objc_msgSend_CGPoint_IntPtr(base.Handle, selConvertPoint_ToLayer_Handle, point, layer?.Handle ?? IntPtr.Zero);
+		}
+		return Messaging.CGPoint_objc_msgSendSuper_CGPoint_IntPtr(base.SuperHandle, selConvertPoint_ToLayer_Handle, point, layer?.Handle ?? IntPtr.Zero);
+	}
+
+	[Export("convertRect:fromLayer:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGRect ConvertRectFromLayer(CGRect rect, CALayer? layer)
+	{
+		CGRect retval;
+		if (base.IsDirectBinding)
+		{
+			Messaging.CGRect_objc_msgSend_stret_CGRect_IntPtr(out retval, base.Handle, selConvertRect_FromLayer_Handle, rect, layer?.Handle ?? IntPtr.Zero);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDisplayHandle);
+			Messaging.CGRect_objc_msgSendSuper_stret_CGRect_IntPtr(out retval, base.SuperHandle, selConvertRect_FromLayer_Handle, rect, layer?.Handle ?? IntPtr.Zero);
 		}
+		return retval;
 	}
 
-	[Export("setNeedsDisplay")]
-	public virtual void SetNeedsDisplay()
+	[Export("convertRect:toLayer:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGRect ConvertRectToLayer(CGRect rect, CALayer? layer)
 	{
-		if (IsDirectBinding)
+		CGRect retval;
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selSetNeedsDisplayHandle);
+			Messaging.CGRect_objc_msgSend_stret_CGRect_IntPtr(out retval, base.Handle, selConvertRect_ToLayer_Handle, rect, layer?.Handle ?? IntPtr.Zero);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selSetNeedsDisplayHandle);
+			Messaging.CGRect_objc_msgSendSuper_stret_CGRect_IntPtr(out retval, base.SuperHandle, selConvertRect_ToLayer_Handle, rect, layer?.Handle ?? IntPtr.Zero);
 		}
+		return retval;
 	}
 
-	[Export("setNeedsDisplayInRect:")]
-	public virtual void SetNeedsDisplayInRect(CGRect r)
+	[Export("convertTime:fromLayer:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual double ConvertTimeFromLayer(double timeInterval, CALayer? layer)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_CGRect(base.Handle, selSetNeedsDisplayInRect_Handle, r);
+			return Messaging.Double_objc_msgSend_Double_IntPtr(base.Handle, selConvertTime_FromLayer_Handle, timeInterval, layer?.Handle ?? IntPtr.Zero);
 		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selSetNeedsDisplayInRect_Handle, r);
-		}
+		return Messaging.Double_objc_msgSendSuper_Double_IntPtr(base.SuperHandle, selConvertTime_FromLayer_Handle, timeInterval, layer?.Handle ?? IntPtr.Zero);
 	}
 
-	[Export("displayIfNeeded")]
-	public virtual void DisplayIfNeeded()
+	[Export("convertTime:toLayer:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual double ConvertTimeToLayer(double timeInterval, CALayer? layer)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selDisplayIfNeededHandle);
+			return Messaging.Double_objc_msgSend_Double_IntPtr(base.Handle, selConvertTime_ToLayer_Handle, timeInterval, layer?.Handle ?? IntPtr.Zero);
 		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDisplayIfNeededHandle);
-		}
+		return Messaging.Double_objc_msgSendSuper_Double_IntPtr(base.SuperHandle, selConvertTime_ToLayer_Handle, timeInterval, layer?.Handle ?? IntPtr.Zero);
 	}
 
-	[Export("drawInContext:")]
-	public virtual void DrawInContext(CGContext ctx)
+	[Export("layer")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static CALayer Create()
 	{
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selDrawInContext_Handle, ctx.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selDrawInContext_Handle, ctx.Handle);
-		}
-	}
-
-	[Export("renderInContext:")]
-	public virtual void RenderInContext(CGContext ctx)
-	{
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRenderInContext_Handle, ctx.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRenderInContext_Handle, ctx.Handle);
-		}
-	}
-
-	[Export("preferredFrameSize")]
-	public virtual CGSize PreferredFrameSize()
-	{
-		if (IsDirectBinding)
-		{
-			return Messaging.CGSize_objc_msgSend(base.Handle, selPreferredFrameSizeHandle);
-		}
-		return Messaging.CGSize_objc_msgSendSuper(base.SuperHandle, selPreferredFrameSizeHandle);
-	}
-
-	[Export("setNeedsLayout")]
-	public virtual void SetNeedsLayout()
-	{
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selSetNeedsLayoutHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selSetNeedsLayoutHandle);
-		}
-	}
-
-	[Export("needsLayout")]
-	public virtual bool NeedsLayout()
-	{
-		if (IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selNeedsLayoutHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selNeedsLayoutHandle);
-	}
-
-	[Export("layoutIfNeeded")]
-	public virtual void LayoutIfNeeded()
-	{
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selLayoutIfNeededHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selLayoutIfNeededHandle);
-		}
-	}
-
-	[Export("layoutSublayers")]
-	public virtual void LayoutSublayers()
-	{
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selLayoutSublayersHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selLayoutSublayersHandle);
-		}
+		return Runtime.GetNSObject<CALayer>(Messaging.IntPtr_objc_msgSend(class_ptr, selLayerHandle));
 	}
 
 	[Export("defaultActionForKey:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSObject DefaultActionForKey(string eventKey)
 	{
 		if (eventKey == null)
@@ -2453,42 +3401,234 @@ public class CALayer : NSObject
 		return nSObject;
 	}
 
-	[Export("actionForKey:")]
-	public virtual NSObject ActionForKey(string eventKey)
+	[Export("defaultValueForKey:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSObject DefaultValue(string? key)
 	{
-		if (eventKey == null)
+		IntPtr arg = NSString.CreateNative(key);
+		NSObject nSObject = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selDefaultValueForKey_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return nSObject;
+	}
+
+	[Export("display")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Display()
+	{
+		if (base.IsDirectBinding)
 		{
-			throw new ArgumentNullException("eventKey");
+			Messaging.void_objc_msgSend(base.Handle, selDisplayHandle);
 		}
-		IntPtr arg = NSString.CreateNative(eventKey);
-		NSObject result = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selActionForKey_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selActionForKey_Handle, arg)));
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDisplayHandle);
+		}
+	}
+
+	[Export("displayIfNeeded")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void DisplayIfNeeded()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selDisplayIfNeededHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDisplayIfNeededHandle);
+		}
+	}
+
+	[Export("drawInContext:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void DrawInContext(CGContext ctx)
+	{
+		if (ctx == null)
+		{
+			throw new ArgumentNullException("ctx");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selDrawInContext_Handle, ctx.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selDrawInContext_Handle, ctx.Handle);
+		}
+	}
+
+	[Export("encodeWithCoder:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void EncodeTo(NSCoder encoder)
+	{
+		if (encoder == null)
+		{
+			throw new ArgumentNullException("encoder");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+	}
+
+	[Export("cornerCurveExpansionFactor:")]
+	[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static nfloat GetCornerCurveExpansionFactor([BindAs(typeof(CACornerCurve), OriginalType = typeof(NSString))] CACornerCurve curve)
+	{
+		NSString constant = curve.GetConstant();
+		return Messaging.nfloat_objc_msgSend_IntPtr(class_ptr, selCornerCurveExpansionFactor_Handle, (constant == null) ? IntPtr.Zero : constant.Handle);
+	}
+
+	[Export("hitTest:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CALayer HitTest(CGPoint p)
+	{
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<CALayer>(Messaging.IntPtr_objc_msgSend_CGPoint(base.Handle, selHitTest_Handle, p));
+		}
+		return Runtime.GetNSObject<CALayer>(Messaging.IntPtr_objc_msgSendSuper_CGPoint(base.SuperHandle, selHitTest_Handle, p));
+	}
+
+	[Export("insertSublayer:atIndex:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void InsertSublayer(CALayer layer, int index)
+	{
+		if (layer == null)
+		{
+			throw new ArgumentNullException("layer");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_int(base.Handle, selInsertSublayer_AtIndex_Handle, layer.Handle, index);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_int(base.SuperHandle, selInsertSublayer_AtIndex_Handle, layer.Handle, index);
+		}
+	}
+
+	[Export("insertSublayer:above:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void InsertSublayerAbove(CALayer layer, CALayer sibling)
+	{
+		if (layer == null)
+		{
+			throw new ArgumentNullException("layer");
+		}
+		if (sibling == null)
+		{
+			throw new ArgumentNullException("sibling");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selInsertSublayer_Above_Handle, layer.Handle, sibling.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInsertSublayer_Above_Handle, layer.Handle, sibling.Handle);
+		}
+	}
+
+	[Export("insertSublayer:below:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void InsertSublayerBelow(CALayer layer, CALayer sibling)
+	{
+		if (layer == null)
+		{
+			throw new ArgumentNullException("layer");
+		}
+		if (sibling == null)
+		{
+			throw new ArgumentNullException("sibling");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selInsertSublayer_Below_Handle, layer.Handle, sibling.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInsertSublayer_Below_Handle, layer.Handle, sibling.Handle);
+		}
+	}
+
+	[Export("layoutIfNeeded")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void LayoutIfNeeded()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selLayoutIfNeededHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selLayoutIfNeededHandle);
+		}
+	}
+
+	[Export("layoutSublayers")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void LayoutSublayers()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selLayoutSublayersHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selLayoutSublayersHandle);
+		}
+	}
+
+	[Export("needsDisplayForKey:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static bool NeedsDisplayForKey(string key)
+	{
+		if (key == null)
+		{
+			throw new ArgumentNullException("key");
+		}
+		IntPtr arg = NSString.CreateNative(key);
+		bool result = Messaging.bool_objc_msgSend_IntPtr(class_ptr, selNeedsDisplayForKey_Handle, arg);
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
-	[Export("addAnimation:forKey:")]
-	public virtual void AddAnimation(CAAnimation animation, string key)
+	[Export("needsLayout")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool NeedsLayout()
 	{
-		if (animation == null)
+		if (base.IsDirectBinding)
 		{
-			throw new ArgumentNullException("animation");
+			return Messaging.bool_objc_msgSend(base.Handle, selNeedsLayoutHandle);
 		}
-		IntPtr arg = NSString.CreateNative(key);
-		if (IsDirectBinding)
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selNeedsLayoutHandle);
+	}
+
+	[Export("preferredFrameSize")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGSize PreferredFrameSize()
+	{
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selAddAnimationForKey_Handle, animation.Handle, arg);
+			return Messaging.CGSize_objc_msgSend(base.Handle, selPreferredFrameSizeHandle);
 		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selAddAnimationForKey_Handle, animation.Handle, arg);
-		}
-		NSString.ReleaseNative(arg);
+		return Messaging.CGSize_objc_msgSendSuper(base.SuperHandle, selPreferredFrameSizeHandle);
 	}
 
 	[Export("removeAllAnimations")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void RemoveAllAnimations()
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selRemoveAllAnimationsHandle);
 		}
@@ -2499,6 +3639,7 @@ public class CALayer : NSObject
 	}
 
 	[Export("removeAnimationForKey:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void RemoveAnimation(string key)
 	{
 		if (key == null)
@@ -2506,7 +3647,7 @@ public class CALayer : NSObject
 			throw new ArgumentNullException("key");
 		}
 		IntPtr arg = NSString.CreateNative(key);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveAnimationForKey_Handle, arg);
 		}
@@ -2517,23 +3658,93 @@ public class CALayer : NSObject
 		NSString.ReleaseNative(arg);
 	}
 
-	[Export("animationForKey:")]
-	public virtual CAAnimation AnimationForKey(string key)
+	[Export("removeFromSuperlayer")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RemoveFromSuperLayer()
 	{
-		if (key == null)
+		if (base.IsDirectBinding)
 		{
-			throw new ArgumentNullException("key");
+			Messaging.void_objc_msgSend(base.Handle, selRemoveFromSuperlayerHandle);
 		}
-		IntPtr arg = NSString.CreateNative(key);
-		CAAnimation result = ((!IsDirectBinding) ? ((CAAnimation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAnimationForKey_Handle, arg))) : ((CAAnimation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAnimationForKey_Handle, arg))));
-		NSString.ReleaseNative(arg);
-		return result;
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRemoveFromSuperlayerHandle);
+		}
+	}
+
+	[Export("renderInContext:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RenderInContext(CGContext ctx)
+	{
+		if (ctx == null)
+		{
+			throw new ArgumentNullException("ctx");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRenderInContext_Handle, ctx.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRenderInContext_Handle, ctx.Handle);
+		}
+	}
+
+	[Export("replaceSublayer:with:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ReplaceSublayer(CALayer layer, CALayer with)
+	{
+		if (layer == null)
+		{
+			throw new ArgumentNullException("layer");
+		}
+		if (with == null)
+		{
+			throw new ArgumentNullException("with");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selReplaceSublayer_With_Handle, layer.Handle, with.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selReplaceSublayer_With_Handle, layer.Handle, with.Handle);
+		}
+	}
+
+	[Export("resizeWithOldSuperlayerSize:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Resize(CGSize oldSuperlayerSize)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGSize(base.Handle, selResizeWithOldSuperlayerSize_Handle, oldSuperlayerSize);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGSize(base.SuperHandle, selResizeWithOldSuperlayerSize_Handle, oldSuperlayerSize);
+		}
+	}
+
+	[Export("resizeSublayersWithOldSize:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ResizeSublayers(CGSize oldSize)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGSize(base.Handle, selResizeSublayersWithOldSize_Handle, oldSize);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGSize(base.SuperHandle, selResizeSublayersWithOldSize_Handle, oldSize);
+		}
 	}
 
 	[Export("scrollPoint:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ScrollPoint(CGPoint p)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_CGPoint(base.Handle, selScrollPoint_Handle, p);
 		}
@@ -2544,9 +3755,10 @@ public class CALayer : NSObject
 	}
 
 	[Export("scrollRectToVisible:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ScrollRectToVisible(CGRect r)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_CGRect(base.Handle, selScrollRectToVisible_Handle, r);
 		}
@@ -2556,64 +3768,56 @@ public class CALayer : NSObject
 		}
 	}
 
-	[Export("resizeSublayersWithOldSize:")]
-	public virtual void ResizeSublayers(CGSize oldSize)
+	[Export("setNeedsDisplay")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SetNeedsDisplay()
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_CGSize(base.Handle, selResizeSublayersWithOldSize_Handle, oldSize);
+			Messaging.void_objc_msgSend(base.Handle, selSetNeedsDisplayHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_CGSize(base.SuperHandle, selResizeSublayersWithOldSize_Handle, oldSize);
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selSetNeedsDisplayHandle);
 		}
 	}
 
-	[Export("resizeWithOldSuperlayerSize:")]
-	public virtual void Resize(CGSize oldSuperlayerSize)
+	[Export("setNeedsDisplayInRect:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SetNeedsDisplayInRect(CGRect r)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_CGSize(base.Handle, selResizeWithOldSuperlayerSize_Handle, oldSuperlayerSize);
+			Messaging.void_objc_msgSend_CGRect(base.Handle, selSetNeedsDisplayInRect_Handle, r);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_CGSize(base.SuperHandle, selResizeWithOldSuperlayerSize_Handle, oldSuperlayerSize);
+			Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selSetNeedsDisplayInRect_Handle, r);
 		}
 	}
 
-	[Export("addConstraint:")]
-	public virtual void AddConstraint(CAConstraint c)
+	[Export("setNeedsLayout")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SetNeedsLayout()
 	{
-		if (c == null)
+		if (base.IsDirectBinding)
 		{
-			throw new ArgumentNullException("c");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddConstraint_Handle, c.Handle);
+			Messaging.void_objc_msgSend(base.Handle, selSetNeedsLayoutHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAddConstraint_Handle, c.Handle);
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selSetNeedsLayoutHandle);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
+		OnDispose();
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
-			__mt_PresentationLayer_var = null;
-			__mt_ModelLayer_var = null;
-			__mt_SuperLayer_var = null;
-			__mt_Sublayers_var = null;
-			__mt_Mask_var = null;
-			__mt_LayoutManager_var = null;
-			__mt_Actions_var = null;
 			__mt_WeakDelegate_var = null;
-			__mt_Constraints_var = null;
-			__mt_Filters_var = null;
 		}
 	}
 }

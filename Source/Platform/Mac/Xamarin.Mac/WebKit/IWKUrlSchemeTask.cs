@@ -1,8 +1,8 @@
-﻿using Foundation;
+using System;
+using Foundation;
 using ObjCRuntime;
 
 namespace WebKit;
-
 
 [Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
 [Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
@@ -14,30 +14,30 @@ namespace WebKit;
 [ProtocolMember(IsRequired = true, IsProperty = true, IsStatic = false, Name = "Request", Selector = "request", PropertyType = typeof(NSUrlRequest), GetterSelector = "request", ArgumentSemantic = ArgumentSemantic.Copy)]
 public interface IWKUrlSchemeTask : INativeObject, IDisposable
 {
-    [Preserve(Conditional = true)]
-    NSUrlRequest Request
-    {
-        [Export("request", ArgumentSemantic.Copy)]
-        get;
-    }
+	[Preserve(Conditional = true)]
+	NSUrlRequest Request
+	{
+		[Export("request", ArgumentSemantic.Copy)]
+		get;
+	}
 
-    [BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-    [Export("didReceiveResponse:")]
-    [Preserve(Conditional = true)]
-    void DidReceiveResponse(NSUrlResponse response);
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export("didReceiveResponse:")]
+	[Preserve(Conditional = true)]
+	void DidReceiveResponse(NSUrlResponse response);
 
-    [BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-    [Export("didReceiveData:")]
-    [Preserve(Conditional = true)]
-    void DidReceiveData(NSData data);
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export("didReceiveData:")]
+	[Preserve(Conditional = true)]
+	void DidReceiveData(NSData data);
 
-    [BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-    [Export("didFinish")]
-    [Preserve(Conditional = true)]
-    void DidFinish();
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export("didFinish")]
+	[Preserve(Conditional = true)]
+	void DidFinish();
 
-    [BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-    [Export("didFailWithError:")]
-    [Preserve(Conditional = true)]
-    void DidFailWithError(NSError error);
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export("didFailWithError:")]
+	[Preserve(Conditional = true)]
+	void DidFailWithError(NSError error);
 }

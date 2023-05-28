@@ -3,8 +3,8 @@ using ObjCRuntime;
 
 namespace Foundation;
 
-[Since(4, 0)]
 [Flags]
+[Native]
 public enum NSFileManagerItemReplacementOptions : ulong
 {
 	None = 0uL,

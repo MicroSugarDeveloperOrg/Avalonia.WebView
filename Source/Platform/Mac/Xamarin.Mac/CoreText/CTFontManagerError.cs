@@ -1,14 +1,25 @@
+using ObjCRuntime;
+
 namespace CoreText;
 
-public enum CTFontManagerError
+[Native]
+public enum CTFontManagerError : long
 {
-	None = 0,
-	FileNotFount = 101,
-	InsufficientPermissions = 102,
-	UnrecognizedFormat = 103,
-	InvalidFontData = 104,
-	AlreadyRegistered = 105,
-	NotRegistered = 201,
-	InUse = 202,
-	SystemRequired = 202
+	None = 0L,
+	FileNotFount = 101L,
+	InsufficientPermissions = 102L,
+	UnrecognizedFormat = 103L,
+	InvalidFontData = 104L,
+	AlreadyRegistered = 105L,
+	ExceededResourceLimit = 106L,
+	AssetNotFound = 107L,
+	NotRegistered = 201L,
+	InUse = 202L,
+	SystemRequired = 203L,
+	RegistrationFailed = 301L,
+	MissingEntitlement = 302L,
+	InsufficientInfo = 303L,
+	CancelledByUser = 304L,
+	DuplicatedName = 305L,
+	InvalidFilePath = 306L
 }

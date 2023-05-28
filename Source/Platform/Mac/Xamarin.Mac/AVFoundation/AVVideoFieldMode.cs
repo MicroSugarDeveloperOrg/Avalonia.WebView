@@ -1,6 +1,11 @@
+using ObjCRuntime;
+
 namespace AVFoundation;
 
-public enum AVVideoFieldMode
+[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
+[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+[Native]
+public enum AVVideoFieldMode : long
 {
 	Both,
 	TopOnly,

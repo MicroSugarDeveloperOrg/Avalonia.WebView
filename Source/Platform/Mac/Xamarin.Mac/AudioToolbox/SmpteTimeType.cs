@@ -1,6 +1,6 @@
 namespace AudioToolbox;
 
-public enum SmpteTimeType
+public enum SmpteTimeType : uint
 {
 	None,
 	Type24,

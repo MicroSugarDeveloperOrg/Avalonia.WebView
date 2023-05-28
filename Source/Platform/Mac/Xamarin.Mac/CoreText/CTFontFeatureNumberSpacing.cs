@@ -12,7 +12,7 @@ public class CTFontFeatureNumberSpacing : CTFontFeatureSelectors
 		QuarterWidthNumbers
 	}
 
-	public Selector Feature => Feature;
+	public Selector Feature => (Selector)base.FeatureWeak;
 
 	public CTFontFeatureNumberSpacing(NSDictionary dictionary)
 		: base(dictionary)

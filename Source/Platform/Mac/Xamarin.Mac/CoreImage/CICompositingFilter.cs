@@ -1,40 +1,67 @@
 using System;
+using System.ComponentModel;
+using Foundation;
+using ObjCRuntime;
 
 namespace CoreImage;
 
 public abstract class CICompositingFilter : CIFilter
 {
-	public CIImage Image
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public CIImage? InputImage
 	{
 		get
 		{
-			return GetInputImage();
+			return ValueForKey("inputImage") as CIImage;
 		}
 		set
 		{
-			SetInputImage(value);
+			SetValue("inputImage", value);
 		}
 	}
 
-	public CIImage BackgroundImage
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public CIImage? BackgroundImage
 	{
 		get
 		{
-			return GetBackgroundImage();
+			return ValueForKey("inputBackgroundImage") as CIImage;
 		}
 		set
 		{
-			SetBackgroundImage(value);
+			SetValue("inputBackgroundImage", value);
 		}
 	}
 
-	protected CICompositingFilter(string name)
-		: base(name)
-	{
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected CICompositingFilter(IntPtr handle)
 		: base(handle)
+	{
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	protected CICompositingFilter(NSObjectFlag t)
+		: base(t)
+	{
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	[Export("initWithCoder:")]
+	public CICompositingFilter(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (coder == null)
+		{
+			throw new ArgumentNullException("coder");
+		}
+		InitializeHandle((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.GetHandle("initWithCoder:"), coder.Handle) : Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.GetHandle("initWithCoder:"), coder.Handle), "initWithCoder:");
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	protected CICompositingFilter(string name)
+		: base(CIFilter.CreateFilter(name))
 	{
 	}
 }

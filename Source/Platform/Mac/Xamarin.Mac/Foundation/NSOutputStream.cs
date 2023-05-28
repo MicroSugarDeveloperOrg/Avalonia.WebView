@@ -10,80 +10,100 @@ public class NSOutputStream : NSStream
 {
 	private const string selWriteMaxLength = "write:maxLength:";
 
-	private static readonly IntPtr selInitToMemoryHandle = Selector.GetHandle("initToMemory");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selHasSpaceAvailable = "hasSpaceAvailable";
 
 	private static readonly IntPtr selHasSpaceAvailableHandle = Selector.GetHandle("hasSpaceAvailable");
 
-	private static readonly IntPtr selInitToFileAtPathAppend_Handle = Selector.GetHandle("initToFileAtPath:append:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitToFileAtPath_Append_ = "initToFileAtPath:append:";
+
+	private static readonly IntPtr selInitToFileAtPath_Append_Handle = Selector.GetHandle("initToFileAtPath:append:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitToMemory = "initToMemory";
+
+	private static readonly IntPtr selInitToMemoryHandle = Selector.GetHandle("initToMemory");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selOutputStreamToFileAtPath_Append_ = "outputStreamToFileAtPath:append:";
+
+	private static readonly IntPtr selOutputStreamToFileAtPath_Append_Handle = Selector.GetHandle("outputStreamToFileAtPath:append:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selOutputStreamToMemory = "outputStreamToMemory";
 
 	private static readonly IntPtr selOutputStreamToMemoryHandle = Selector.GetHandle("outputStreamToMemory");
 
-	private static readonly IntPtr selOutputStreamToFileAtPathAppend_Handle = Selector.GetHandle("outputStreamToFileAtPath:append:");
-
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSOutputStream");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSOutputStream");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public int Write(byte[] buffer, uint len)
+	public nint Write(byte[] buffer)
+	{
+		if (buffer == null)
+		{
+			throw new ArgumentNullException("buffer");
+		}
+		return Write(buffer, (nuint)buffer.Length);
+	}
+
+	public nint Write(byte[] buffer, nuint len)
 	{
 		return objc_msgSend(base.Handle, Selector.GetHandle("write:maxLength:"), buffer, len);
 	}
 
-	[DllImport("/usr/lib/libobjc.dylib")]
-	private static extern int objc_msgSend(IntPtr handle, IntPtr sel, [In][Out] byte[] buffer, uint len);
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSOutputStream(NSCoder coder)
-		: base(NSObjectFlag.Empty)
+	public unsafe nint Write(byte[] buffer, int offset, nuint len)
 	{
-		if (IsDirectBinding)
+		if (offset + (long)len > buffer.Length)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			throw new ArgumentException();
 		}
-		else
+		fixed (byte* ptr = &buffer[offset])
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			return objc_msgSend(base.Handle, Selector.GetHandle("write:maxLength:"), (IntPtr)ptr, len);
 		}
 	}
 
+	[DllImport("/usr/lib/libobjc.dylib")]
+	private static extern nint objc_msgSend(IntPtr handle, IntPtr sel, [In][Out] byte[] buffer, nuint len);
+
+	[DllImport("/usr/lib/libobjc.dylib")]
+	private static extern nint objc_msgSend(IntPtr handle, IntPtr sel, IntPtr buffer, nuint len);
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSOutputStream(NSObjectFlag t)
+	protected NSOutputStream(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSOutputStream(IntPtr handle)
+	protected internal NSOutputStream(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initToMemory")]
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSOutputStream()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, selInitToMemoryHandle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selInitToMemoryHandle), "initToMemory");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInitToMemoryHandle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInitToMemoryHandle), "initToMemory");
 		}
-	}
-
-	[Export("hasSpaceAvailable")]
-	public virtual bool HasSpaceAvailable()
-	{
-		if (IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selHasSpaceAvailableHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selHasSpaceAvailableHandle);
 	}
 
 	[Export("initToFileAtPath:append:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSOutputStream(string path, bool shouldAppend)
 		: base(NSObjectFlag.Empty)
 	{
@@ -92,24 +112,19 @@ public class NSOutputStream : NSStream
 			throw new ArgumentNullException("path");
 		}
 		IntPtr arg = NSString.CreateNative(path);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_bool(base.Handle, selInitToFileAtPathAppend_Handle, arg, shouldAppend);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_bool(base.Handle, selInitToFileAtPath_Append_Handle, arg, shouldAppend), "initToFileAtPath:append:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selInitToFileAtPathAppend_Handle, arg, shouldAppend);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selInitToFileAtPath_Append_Handle, arg, shouldAppend), "initToFileAtPath:append:");
 		}
 		NSString.ReleaseNative(arg);
 	}
 
-	[Export("outputStreamToMemory")]
-	public static NSObject OutputStreamToMemory()
-	{
-		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selOutputStreamToMemoryHandle));
-	}
-
 	[Export("outputStreamToFileAtPath:append:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSOutputStream CreateFile(string path, bool shouldAppend)
 	{
 		if (path == null)
@@ -117,8 +132,26 @@ public class NSOutputStream : NSStream
 			throw new ArgumentNullException("path");
 		}
 		IntPtr arg = NSString.CreateNative(path);
-		NSOutputStream result = (NSOutputStream)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_bool(class_ptr, selOutputStreamToFileAtPathAppend_Handle, arg, shouldAppend));
+		NSOutputStream nSObject = Runtime.GetNSObject<NSOutputStream>(Messaging.IntPtr_objc_msgSend_IntPtr_bool(class_ptr, selOutputStreamToFileAtPath_Append_Handle, arg, shouldAppend));
 		NSString.ReleaseNative(arg);
-		return result;
+		return nSObject;
+	}
+
+	[Export("hasSpaceAvailable")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool HasSpaceAvailable()
+	{
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selHasSpaceAvailableHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selHasSpaceAvailableHandle);
+	}
+
+	[Export("outputStreamToMemory")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSObject OutputStreamToMemory()
+	{
+		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selOutputStreamToMemoryHandle));
 	}
 }

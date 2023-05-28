@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
+using ObjCRuntime;
 
 namespace AVFoundation;
 
@@ -8,12 +9,12 @@ namespace AVFoundation;
 [NoTV]
 public struct AVSampleCursorSyncInfo
 {
-    [MarshalAs(UnmanagedType.I1)]
-    public bool IsFullSync;
+	[MarshalAs(UnmanagedType.I1)]
+	public bool IsFullSync;
 
-    [MarshalAs(UnmanagedType.I1)]
-    public bool IsPartialSync;
+	[MarshalAs(UnmanagedType.I1)]
+	public bool IsPartialSync;
 
-    [MarshalAs(UnmanagedType.I1)]
-    public bool IsDroppable;
+	[MarshalAs(UnmanagedType.I1)]
+	public bool IsDroppable;
 }

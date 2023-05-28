@@ -6,19 +6,20 @@ namespace Foundation;
 [Register("NSAutoreleasePool", true)]
 public class NSAutoreleasePool : NSObject, IDisposable
 {
-	public override IntPtr ClassHandle => Class.GetHandle("NSAutoreleasePool");
+	public override IntPtr ClassHandle => ObjCRuntime.Class.GetHandle("NSAutoreleasePool");
 
 	[Export("init")]
 	public NSAutoreleasePool()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		base.IsDirectBinding = GetType() == typeof(NSAutoreleasePool);
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.intptr_objc_msgSend(base.Handle, Selector.GetHandle("init"));
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.GetHandle("init"));
 		}
 		else
 		{
-			base.Handle = Messaging.intptr_objc_msgSendSuper(base.SuperHandle, Selector.GetHandle("init"));
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.GetHandle("init"));
 		}
 	}
 
@@ -30,10 +31,5 @@ public class NSAutoreleasePool : NSObject, IDisposable
 	public NSAutoreleasePool(IntPtr handle)
 		: base(handle)
 	{
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
 	}
 }

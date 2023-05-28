@@ -6,9 +6,11 @@ namespace AppKit;
 
 public class NSWorkspaceFileOperationEventArgs : NSNotificationEventArgs
 {
+	[Field("NSOperationNumber", "AppKit")]
 	private static IntPtr k0;
 
-	public int FileType
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public nint FileType
 	{
 		get
 		{
@@ -16,13 +18,13 @@ public class NSWorkspaceFileOperationEventArgs : NSNotificationEventArgs
 			{
 				k0 = Dlfcn.GetIntPtr(Libraries.AppKit.Handle, "NSOperationNumber");
 			}
-			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k0);
+			IntPtr intPtr = base.Notification.UserInfo?.LowlevelObjectForKey(k0) ?? IntPtr.Zero;
 			if (intPtr == IntPtr.Zero)
 			{
-				return 0;
+				return default(nint);
 			}
-			using NSNumber nSNumber = new NSNumber(intPtr);
-			return nSNumber.Int32Value;
+			using NSNumber nSNumber = Runtime.GetNSObject<NSNumber>(intPtr);
+			return nSNumber.NIntValue;
 		}
 	}
 

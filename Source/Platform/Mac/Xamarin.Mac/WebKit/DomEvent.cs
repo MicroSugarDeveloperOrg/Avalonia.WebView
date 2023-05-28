@@ -6,98 +6,96 @@ using ObjCRuntime;
 namespace WebKit;
 
 [Register("DOMEvent", true)]
+[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
 public class DomEvent : DomObject
 {
-	private static readonly IntPtr selTypeHandle = Selector.GetHandle("type");
-
-	private static readonly IntPtr selTargetHandle = Selector.GetHandle("target");
-
-	private static readonly IntPtr selCurrentTargetHandle = Selector.GetHandle("currentTarget");
-
-	private static readonly IntPtr selEventPhaseHandle = Selector.GetHandle("eventPhase");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBubbles = "bubbles";
 
 	private static readonly IntPtr selBubblesHandle = Selector.GetHandle("bubbles");
 
-	private static readonly IntPtr selCancelableHandle = Selector.GetHandle("cancelable");
-
-	private static readonly IntPtr selTimeStampHandle = Selector.GetHandle("timeStamp");
-
-	private static readonly IntPtr selSrcElementHandle = Selector.GetHandle("srcElement");
-
-	private static readonly IntPtr selReturnValueHandle = Selector.GetHandle("returnValue");
-
-	private static readonly IntPtr selSetReturnValue_Handle = Selector.GetHandle("setReturnValue:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCancelBubble = "cancelBubble";
 
 	private static readonly IntPtr selCancelBubbleHandle = Selector.GetHandle("cancelBubble");
 
-	private static readonly IntPtr selSetCancelBubble_Handle = Selector.GetHandle("setCancelBubble:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCancelable = "cancelable";
 
-	private static readonly IntPtr selStopPropagationHandle = Selector.GetHandle("stopPropagation");
+	private static readonly IntPtr selCancelableHandle = Selector.GetHandle("cancelable");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCurrentTarget = "currentTarget";
+
+	private static readonly IntPtr selCurrentTargetHandle = Selector.GetHandle("currentTarget");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEventPhase = "eventPhase";
+
+	private static readonly IntPtr selEventPhaseHandle = Selector.GetHandle("eventPhase");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitEvent_CanBubbleArg_CancelableArg_ = "initEvent:canBubbleArg:cancelableArg:";
+
+	private static readonly IntPtr selInitEvent_CanBubbleArg_CancelableArg_Handle = Selector.GetHandle("initEvent:canBubbleArg:cancelableArg:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPreventDefault = "preventDefault";
 
 	private static readonly IntPtr selPreventDefaultHandle = Selector.GetHandle("preventDefault");
 
-	private static readonly IntPtr selInitEventCanBubbleArgCancelableArg_Handle = Selector.GetHandle("initEvent:canBubbleArg:cancelableArg:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReturnValue = "returnValue";
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("DOMEvent");
+	private static readonly IntPtr selReturnValueHandle = Selector.GetHandle("returnValue");
 
-	private object __mt_Target_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCancelBubble_ = "setCancelBubble:";
 
-	private object __mt_CurrentTarget_var;
+	private static readonly IntPtr selSetCancelBubble_Handle = Selector.GetHandle("setCancelBubble:");
 
-	private object __mt_SourceElement_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetReturnValue_ = "setReturnValue:";
+
+	private static readonly IntPtr selSetReturnValue_Handle = Selector.GetHandle("setReturnValue:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSrcElement = "srcElement";
+
+	private static readonly IntPtr selSrcElementHandle = Selector.GetHandle("srcElement");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStopPropagation = "stopPropagation";
+
+	private static readonly IntPtr selStopPropagationHandle = Selector.GetHandle("stopPropagation");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTarget = "target";
+
+	private static readonly IntPtr selTargetHandle = Selector.GetHandle("target");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTimeStamp = "timeStamp";
+
+	private static readonly IntPtr selTimeStampHandle = Selector.GetHandle("timeStamp");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selType = "type";
+
+	private static readonly IntPtr selTypeHandle = Selector.GetHandle("type");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("DOMEvent");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual string Type
-	{
-		[Export("type")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selTypeHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTypeHandle));
-		}
-	}
-
-	public virtual NSObject Target
-	{
-		[Export("target")]
-		get
-		{
-			return (NSObject)(__mt_Target_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTargetHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTargetHandle))));
-		}
-	}
-
-	public virtual NSObject CurrentTarget
-	{
-		[Export("currentTarget")]
-		get
-		{
-			return (NSObject)(__mt_CurrentTarget_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrentTargetHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrentTargetHandle))));
-		}
-	}
-
-	public virtual DomEventPhase EventPhase
-	{
-		[Export("eventPhase")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return (DomEventPhase)Messaging.UInt16_objc_msgSend(base.Handle, selEventPhaseHandle);
-			}
-			return (DomEventPhase)Messaging.UInt16_objc_msgSendSuper(base.SuperHandle, selEventPhaseHandle);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Bubbles
 	{
 		[Export("bubbles")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selBubblesHandle);
 			}
@@ -105,72 +103,13 @@ public class DomEvent : DomObject
 		}
 	}
 
-	public virtual bool Cancelable
-	{
-		[Export("cancelable")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selCancelableHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCancelableHandle);
-		}
-	}
-
-	public virtual ulong TimeStamp
-	{
-		[Export("timeStamp")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.UInt64_objc_msgSend(base.Handle, selTimeStampHandle);
-			}
-			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selTimeStampHandle);
-		}
-	}
-
-	public virtual NSObject SourceElement
-	{
-		[Export("srcElement")]
-		get
-		{
-			return (NSObject)(__mt_SourceElement_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSrcElementHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSrcElementHandle))));
-		}
-	}
-
-	public virtual bool ReturnValue
-	{
-		[Export("returnValue")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selReturnValueHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selReturnValueHandle);
-		}
-		[Export("setReturnValue:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetReturnValue_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetReturnValue_Handle, value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool CancelBubble
 	{
 		[Export("cancelBubble")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selCancelBubbleHandle);
 			}
@@ -179,7 +118,7 @@ public class DomEvent : DomObject
 		[Export("setCancelBubble:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetCancelBubble_Handle, value);
 			}
@@ -190,50 +129,191 @@ public class DomEvent : DomObject
 		}
 	}
 
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public DomEvent(NSCoder coder)
-		: base(NSObjectFlag.Empty)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Cancelable
 	{
-		if (IsDirectBinding)
+		[Export("cancelable")]
+		get
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selCancelableHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCancelableHandle);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual IDomEventTarget CurrentTarget
+	{
+		[Export("currentTarget", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetINativeObject<IDomEventTarget>(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrentTargetHandle), owns: false);
+			}
+			return Runtime.GetINativeObject<IDomEventTarget>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrentTargetHandle), owns: false);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomEventPhase EventPhase
+	{
+		[Export("eventPhase")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return (DomEventPhase)Messaging.UInt16_objc_msgSend(base.Handle, selEventPhaseHandle);
+			}
+			return (DomEventPhase)Messaging.UInt16_objc_msgSendSuper(base.SuperHandle, selEventPhaseHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ReturnValue
+	{
+		[Export("returnValue")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selReturnValueHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selReturnValueHandle);
+		}
+		[Export("setReturnValue:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetReturnValue_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetReturnValue_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual IDomEventTarget SourceElement
+	{
+		[Export("srcElement", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetINativeObject<IDomEventTarget>(Messaging.IntPtr_objc_msgSend(base.Handle, selSrcElementHandle), owns: false);
+			}
+			return Runtime.GetINativeObject<IDomEventTarget>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSrcElementHandle), owns: false);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual IDomEventTarget Target
+	{
+		[Export("target", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetINativeObject<IDomEventTarget>(Messaging.IntPtr_objc_msgSend(base.Handle, selTargetHandle), owns: false);
+			}
+			return Runtime.GetINativeObject<IDomEventTarget>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTargetHandle), owns: false);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual ulong TimeStamp
+	{
+		[Export("timeStamp")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selTimeStampHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selTimeStampHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string Type
+	{
+		[Export("type", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selTypeHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTypeHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public DomEvent(NSObjectFlag t)
+	protected DomEvent(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public DomEvent(IntPtr handle)
+	protected internal DomEvent(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("stopPropagation")]
-	public virtual void StopPropagation()
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public DomEvent(string eventTypeArg, bool canBubbleArg, bool cancelableArg)
+		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (eventTypeArg == null)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selStopPropagationHandle);
+			throw new ArgumentNullException("eventTypeArg");
+		}
+		IntPtr arg = NSString.CreateNative(eventTypeArg);
+		if (base.IsDirectBinding)
+		{
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_bool_bool(base.Handle, selInitEvent_CanBubbleArg_CancelableArg_Handle, arg, canBubbleArg, cancelableArg), "initEvent:canBubbleArg:cancelableArg:");
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selStopPropagationHandle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool_bool(base.SuperHandle, selInitEvent_CanBubbleArg_CancelableArg_Handle, arg, canBubbleArg, cancelableArg), "initEvent:canBubbleArg:cancelableArg:");
 		}
+		NSString.ReleaseNative(arg);
+	}
+
+	[Export("initEvent:canBubbleArg:cancelableArg:")]
+	[Obsolete("Use the constructor instead.", false)]
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void InitEvent(string eventTypeArg, bool canBubbleArg, bool cancelableArg)
+	{
+		if (eventTypeArg == null)
+		{
+			throw new ArgumentNullException("eventTypeArg");
+		}
+		IntPtr arg = NSString.CreateNative(eventTypeArg);
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_bool_bool(base.Handle, selInitEvent_CanBubbleArg_CancelableArg_Handle, arg, canBubbleArg, cancelableArg);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_bool_bool(base.SuperHandle, selInitEvent_CanBubbleArg_CancelableArg_Handle, arg, canBubbleArg, cancelableArg);
+		}
+		NSString.ReleaseNative(arg);
 	}
 
 	[Export("preventDefault")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void PreventDefault()
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selPreventDefaultHandle);
 		}
@@ -243,33 +323,17 @@ public class DomEvent : DomObject
 		}
 	}
 
-	[Export("initEvent:canBubbleArg:cancelableArg:")]
-	public virtual void InitEvent(string eventTypeArg, bool canBubbleArg, bool cancelableArg)
+	[Export("stopPropagation")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void StopPropagation()
 	{
-		if (eventTypeArg == null)
+		if (base.IsDirectBinding)
 		{
-			throw new ArgumentNullException("eventTypeArg");
-		}
-		IntPtr arg = NSString.CreateNative(eventTypeArg);
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_bool_bool(base.Handle, selInitEventCanBubbleArgCancelableArg_Handle, arg, canBubbleArg, cancelableArg);
+			Messaging.void_objc_msgSend(base.Handle, selStopPropagationHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_bool_bool(base.SuperHandle, selInitEventCanBubbleArgCancelableArg_Handle, arg, canBubbleArg, cancelableArg);
-		}
-		NSString.ReleaseNative(arg);
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_Target_var = null;
-			__mt_CurrentTarget_var = null;
-			__mt_SourceElement_var = null;
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selStopPropagationHandle);
 		}
 	}
 }

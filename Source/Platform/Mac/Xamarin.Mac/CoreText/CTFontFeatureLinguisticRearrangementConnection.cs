@@ -10,7 +10,7 @@ public class CTFontFeatureLinguisticRearrangementConnection : CTFontFeatureSelec
 		LinguisticRearrangementOff
 	}
 
-	public Selector Feature => Feature;
+	public Selector Feature => (Selector)base.FeatureWeak;
 
 	public CTFontFeatureLinguisticRearrangementConnection(NSDictionary dictionary)
 		: base(dictionary)

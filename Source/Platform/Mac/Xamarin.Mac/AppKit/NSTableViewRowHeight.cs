@@ -1,3 +1,5 @@
+using System;
+
 namespace AppKit;
 
-public delegate double NSTableViewRowHeight(NSTableView tableView, long row);
+public delegate nfloat NSTableViewRowHeight(NSTableView tableView, nint row);

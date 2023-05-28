@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using Foundation;
+using ObjCRuntime;
 
 namespace AudioToolbox;
 
@@ -29,7 +30,7 @@ public class AudioFileStream : IDisposable
 	[Advice("Use DataFormat")]
 	public AudioStreamBasicDescription StreamBasicDescription => DataFormat;
 
-	public AudioStreamBasicDescription DataFormat => GetProperty<AudioStreamBasicDescription>(AudioFileStreamProperty.DataFormat) ?? default(AudioStreamBasicDescription);
+	public AudioStreamBasicDescription DataFormat => GetProperty<AudioStreamBasicDescription>(AudioFileStreamProperty.DataFormat).GetValueOrDefault();
 
 	public unsafe AudioFormat[] FormatList
 	{
@@ -64,13 +65,10 @@ public class AudioFileStream : IDisposable
 			IntPtr property = GetProperty(AudioFileStreamProperty.MagicCookieData, out size);
 			if (property == IntPtr.Zero)
 			{
-				return new byte[0];
+				return Array.Empty<byte>();
 			}
 			byte[] array = new byte[size];
-			for (int i = 0; i < array.Length; i++)
-			{
-				array[i] = Marshal.ReadByte(property, i);
-			}
+			Marshal.Copy(property, array, 0, size);
 			Marshal.FreeHGlobal(property);
 			return array;
 		}
@@ -143,9 +141,9 @@ public class AudioFileStream : IDisposable
 	[MonoPInvokeCallback(typeof(AudioFileStream_PacketsProc))]
 	private static void InPackets(IntPtr clientData, int numberBytes, int numberPackets, IntPtr inputData, IntPtr packetDescriptions)
 	{
-		AudioFileStream obj = GCHandle.FromIntPtr(clientData).Target as AudioFileStream;
+		AudioFileStream audioFileStream = GCHandle.FromIntPtr(clientData).Target as AudioFileStream;
 		AudioStreamPacketDescription[] packetDescriptions2 = AudioFile.PacketDescriptionFrom(numberPackets, packetDescriptions);
-		obj.OnPacketDecoded(numberBytes, inputData, packetDescriptions2);
+		audioFileStream.OnPacketDecoded(numberBytes, inputData, packetDescriptions2);
 	}
 
 	protected virtual void OnPacketDecoded(int numberOfBytes, IntPtr inputData, AudioStreamPacketDescription[] packetDescriptions)
@@ -167,7 +165,8 @@ public class AudioFileStream : IDisposable
 	[MonoPInvokeCallback(typeof(AudioFileStream_PropertyListenerProc))]
 	private static void PropertyListener(IntPtr clientData, IntPtr audioFileStream, AudioFileStreamProperty propertyID, ref AudioFileStreamPropertyFlag ioFlags)
 	{
-		(GCHandle.FromIntPtr(clientData).Target as AudioFileStream).OnPropertyFound(propertyID, ref ioFlags);
+		AudioFileStream audioFileStream2 = GCHandle.FromIntPtr(clientData).Target as AudioFileStream;
+		audioFileStream2.OnPropertyFound(propertyID, ref ioFlags);
 	}
 
 	public AudioFileStream(AudioFileType fileTypeHint)
@@ -188,6 +187,10 @@ public class AudioFileStream : IDisposable
 
 	public AudioFileStreamStatus ParseBytes(int size, IntPtr data, bool discontinuity)
 	{
+		if (data == IntPtr.Zero)
+		{
+			throw new ArgumentNullException("data");
+		}
 		return LastError = AudioFileStreamParseBytes(handle, size, data, discontinuity ? 1u : 0u);
 	}
 
@@ -246,13 +249,17 @@ public class AudioFileStream : IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
-	private static extern AudioFileStreamStatus AudioFileStreamGetPropertyInfo(IntPtr inAudioFileStream, AudioFileStreamProperty inPropertyID, out int outPropertyDataSize, out int isWritable);
+	private static extern AudioFileStreamStatus AudioFileStreamGetPropertyInfo(IntPtr inAudioFileStream, AudioFileStreamProperty inPropertyID, out int outPropertyDataSize, [MarshalAs(UnmanagedType.I1)] out bool isWritable);
 
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
 	private static extern AudioFileStreamStatus AudioFileStreamGetProperty(IntPtr inAudioFileStream, AudioFileStreamProperty inPropertyID, ref int ioPropertyDataSize, IntPtr outPropertyData);
 
 	public bool GetProperty(AudioFileStreamProperty property, ref int dataSize, IntPtr outPropertyData)
 	{
+		if (outPropertyData == IntPtr.Zero)
+		{
+			throw new ArgumentNullException("outPropertyData");
+		}
 		return AudioFileStreamGetProperty(handle, property, ref dataSize, outPropertyData) == AudioFileStreamStatus.Ok;
 	}
 
@@ -345,6 +352,10 @@ public class AudioFileStream : IDisposable
 
 	public bool SetProperty(AudioFileStreamProperty property, int dataSize, IntPtr propertyData)
 	{
+		if (propertyData == IntPtr.Zero)
+		{
+			throw new ArgumentNullException("propertyData");
+		}
 		LastError = AudioFileStreamSetProperty(handle, property, dataSize, propertyData);
 		return LastError == AudioFileStreamStatus.Ok;
 	}

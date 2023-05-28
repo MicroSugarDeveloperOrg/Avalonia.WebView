@@ -1,11 +1,8 @@
-﻿using AddressBook;
+using System;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Linq;
+
 namespace AppKit;
 
 [Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
@@ -22,81 +19,81 @@ namespace AppKit;
 [ProtocolMember(IsRequired = true, IsProperty = true, IsStatic = false, Name = "RepresentedElementKind", Selector = "representedElementKind", PropertyType = typeof(string), GetterSelector = "representedElementKind", ArgumentSemantic = ArgumentSemantic.None)]
 public interface INSCollectionLayoutVisibleItem : INativeObject, IDisposable
 {
-    [Preserve(Conditional = true)]
-    nfloat Alpha
-    {
-        [Export("alpha")]
-        get;
-        [Export("setAlpha:")]
-        set;
-    }
+	[Preserve(Conditional = true)]
+	nfloat Alpha
+	{
+		[Export("alpha")]
+		get;
+		[Export("setAlpha:")]
+		set;
+	}
 
-    [Preserve(Conditional = true)]
-    nint ZIndex
-    {
-        [Export("zIndex")]
-        get;
-        [Export("setZIndex:")]
-        set;
-    }
+	[Preserve(Conditional = true)]
+	nint ZIndex
+	{
+		[Export("zIndex")]
+		get;
+		[Export("setZIndex:")]
+		set;
+	}
 
-    [Preserve(Conditional = true)]
-    bool Hidden
-    {
-        [Export("isHidden")]
-        get;
-        [Export("setHidden:")]
-        set;
-    }
+	[Preserve(Conditional = true)]
+	bool Hidden
+	{
+		[Export("isHidden")]
+		get;
+		[Export("setHidden:")]
+		set;
+	}
 
-    [Preserve(Conditional = true)]
-    CGPoint Center
-    {
-        [Export("center", ArgumentSemantic.Assign)]
-        get;
-        [Export("setCenter:", ArgumentSemantic.Assign)]
-        set;
-    }
+	[Preserve(Conditional = true)]
+	CGPoint Center
+	{
+		[Export("center", ArgumentSemantic.Assign)]
+		get;
+		[Export("setCenter:", ArgumentSemantic.Assign)]
+		set;
+	}
 
-    [Preserve(Conditional = true)]
-    string Name
-    {
-        [Export("name")]
-        get;
-    }
+	[Preserve(Conditional = true)]
+	string Name
+	{
+		[Export("name")]
+		get;
+	}
 
-    [Preserve(Conditional = true)]
-    NSIndexPath IndexPath
-    {
-        [Export("indexPath")]
-        get;
-    }
+	[Preserve(Conditional = true)]
+	NSIndexPath IndexPath
+	{
+		[Export("indexPath")]
+		get;
+	}
 
-    [Preserve(Conditional = true)]
-    CGRect Frame
-    {
-        [Export("frame")]
-        get;
-    }
+	[Preserve(Conditional = true)]
+	CGRect Frame
+	{
+		[Export("frame")]
+		get;
+	}
 
-    [Preserve(Conditional = true)]
-    CGRect Bounds
-    {
-        [Export("bounds")]
-        get;
-    }
+	[Preserve(Conditional = true)]
+	CGRect Bounds
+	{
+		[Export("bounds")]
+		get;
+	}
 
-    [Preserve(Conditional = true)]
-    NSCollectionElementCategory RepresentedElementCategory
-    {
-        [Export("representedElementCategory")]
-        get;
-    }
+	[Preserve(Conditional = true)]
+	NSCollectionElementCategory RepresentedElementCategory
+	{
+		[Export("representedElementCategory")]
+		get;
+	}
 
-    [Preserve(Conditional = true)]
-    string? RepresentedElementKind
-    {
-        [Export("representedElementKind")]
-        get;
-    }
+	[Preserve(Conditional = true)]
+	string? RepresentedElementKind
+	{
+		[Export("representedElementKind")]
+		get;
+	}
 }

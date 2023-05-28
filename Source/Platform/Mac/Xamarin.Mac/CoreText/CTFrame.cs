@@ -7,7 +7,6 @@ using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
 public class CTFrame : INativeObject, IDisposable
 {
 	internal IntPtr handle;
@@ -69,11 +68,7 @@ public class CTFrame : INativeObject, IDisposable
 	public CGPath GetPath()
 	{
 		IntPtr intPtr = CTFrameGetPath(handle);
-		if (!(intPtr == IntPtr.Zero))
-		{
-			return new CGPath(intPtr, owns: false);
-		}
-		return null;
+		return (intPtr == IntPtr.Zero) ? null : new CGPath(intPtr, owns: false);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
@@ -82,11 +77,7 @@ public class CTFrame : INativeObject, IDisposable
 	public CTFrameAttributes GetFrameAttributes()
 	{
 		NSDictionary nSDictionary = (NSDictionary)Runtime.GetNSObject(CTFrameGetFrameAttributes(handle));
-		if (nSDictionary != null)
-		{
-			return new CTFrameAttributes(nSDictionary);
-		}
-		return null;
+		return (nSDictionary == null) ? null : new CTFrameAttributes(nSDictionary);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
@@ -111,7 +102,7 @@ public class CTFrame : INativeObject, IDisposable
 		{
 			throw new ArgumentNullException("origins");
 		}
-		if (range.Length != 0L && (ulong)origins.Length < range.Length)
+		if (range.Length != 0 && origins.Length < range.Length)
 		{
 			throw new ArgumentException("origins must contain at least range.Length elements.", "origins");
 		}

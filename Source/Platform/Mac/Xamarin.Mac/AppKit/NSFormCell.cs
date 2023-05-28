@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 
@@ -8,63 +9,166 @@ namespace AppKit;
 [Register("NSFormCell", true)]
 public class NSFormCell : NSActionCell
 {
-	private static readonly IntPtr selIsOpaqueHandle = Selector.GetHandle("isOpaque");
-
-	private static readonly IntPtr selTitleWidthHandle = Selector.GetHandle("titleWidth");
-
-	private static readonly IntPtr selSetTitleWidth_Handle = Selector.GetHandle("setTitleWidth:");
-
-	private static readonly IntPtr selTitleHandle = Selector.GetHandle("title");
-
-	private static readonly IntPtr selSetTitle_Handle = Selector.GetHandle("setTitle:");
-
-	private static readonly IntPtr selTitleFontHandle = Selector.GetHandle("titleFont");
-
-	private static readonly IntPtr selSetTitleFont_Handle = Selector.GetHandle("setTitleFont:");
-
-	private static readonly IntPtr selTitleAlignmentHandle = Selector.GetHandle("titleAlignment");
-
-	private static readonly IntPtr selSetTitleAlignment_Handle = Selector.GetHandle("setTitleAlignment:");
-
-	private static readonly IntPtr selPlaceholderStringHandle = Selector.GetHandle("placeholderString");
-
-	private static readonly IntPtr selSetPlaceholderString_Handle = Selector.GetHandle("setPlaceholderString:");
-
-	private static readonly IntPtr selPlaceholderAttributedStringHandle = Selector.GetHandle("placeholderAttributedString");
-
-	private static readonly IntPtr selSetPlaceholderAttributedString_Handle = Selector.GetHandle("setPlaceholderAttributedString:");
-
-	private static readonly IntPtr selTitleBaseWritingDirectionHandle = Selector.GetHandle("titleBaseWritingDirection");
-
-	private static readonly IntPtr selSetTitleBaseWritingDirection_Handle = Selector.GetHandle("setTitleBaseWritingDirection:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAttributedTitle = "attributedTitle";
 
 	private static readonly IntPtr selAttributedTitleHandle = Selector.GetHandle("attributedTitle");
 
-	private static readonly IntPtr selSetAttributedTitle_Handle = Selector.GetHandle("setAttributedTitle:");
-
-	private static readonly IntPtr selInitTextCell_Handle = Selector.GetHandle("initTextCell:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitImageCell_ = "initImageCell:";
 
 	private static readonly IntPtr selInitImageCell_Handle = Selector.GetHandle("initImageCell:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitTextCell_ = "initTextCell:";
+
+	private static readonly IntPtr selInitTextCell_Handle = Selector.GetHandle("initTextCell:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsOpaque = "isOpaque";
+
+	private static readonly IntPtr selIsOpaqueHandle = Selector.GetHandle("isOpaque");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPlaceholderAttributedString = "placeholderAttributedString";
+
+	private static readonly IntPtr selPlaceholderAttributedStringHandle = Selector.GetHandle("placeholderAttributedString");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPlaceholderString = "placeholderString";
+
+	private static readonly IntPtr selPlaceholderStringHandle = Selector.GetHandle("placeholderString");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPreferredTextFieldWidth = "preferredTextFieldWidth";
+
+	private static readonly IntPtr selPreferredTextFieldWidthHandle = Selector.GetHandle("preferredTextFieldWidth");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAttributedTitle_ = "setAttributedTitle:";
+
+	private static readonly IntPtr selSetAttributedTitle_Handle = Selector.GetHandle("setAttributedTitle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPlaceholderAttributedString_ = "setPlaceholderAttributedString:";
+
+	private static readonly IntPtr selSetPlaceholderAttributedString_Handle = Selector.GetHandle("setPlaceholderAttributedString:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPlaceholderString_ = "setPlaceholderString:";
+
+	private static readonly IntPtr selSetPlaceholderString_Handle = Selector.GetHandle("setPlaceholderString:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPreferredTextFieldWidth_ = "setPreferredTextFieldWidth:";
+
+	private static readonly IntPtr selSetPreferredTextFieldWidth_Handle = Selector.GetHandle("setPreferredTextFieldWidth:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTitle_ = "setTitle:";
+
+	private static readonly IntPtr selSetTitle_Handle = Selector.GetHandle("setTitle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTitleAlignment_ = "setTitleAlignment:";
+
+	private static readonly IntPtr selSetTitleAlignment_Handle = Selector.GetHandle("setTitleAlignment:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTitleBaseWritingDirection_ = "setTitleBaseWritingDirection:";
+
+	private static readonly IntPtr selSetTitleBaseWritingDirection_Handle = Selector.GetHandle("setTitleBaseWritingDirection:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTitleFont_ = "setTitleFont:";
+
+	private static readonly IntPtr selSetTitleFont_Handle = Selector.GetHandle("setTitleFont:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTitleWidth_ = "setTitleWidth:";
+
+	private static readonly IntPtr selSetTitleWidth_Handle = Selector.GetHandle("setTitleWidth:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTitleWithMnemonic_ = "setTitleWithMnemonic:";
+
 	private static readonly IntPtr selSetTitleWithMnemonic_Handle = Selector.GetHandle("setTitleWithMnemonic:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSFormCell");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTitle = "title";
 
-	private object __mt_TitleFont_var;
+	private static readonly IntPtr selTitleHandle = Selector.GetHandle("title");
 
-	private object __mt_PlaceholderAttributedString_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTitleAlignment = "titleAlignment";
 
-	private object __mt_AttributedTitle_var;
+	private static readonly IntPtr selTitleAlignmentHandle = Selector.GetHandle("titleAlignment");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTitleBaseWritingDirection = "titleBaseWritingDirection";
+
+	private static readonly IntPtr selTitleBaseWritingDirectionHandle = Selector.GetHandle("titleBaseWritingDirection");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTitleFont = "titleFont";
+
+	private static readonly IntPtr selTitleFontHandle = Selector.GetHandle("titleFont");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTitleWidth = "titleWidth";
+
+	private static readonly IntPtr selTitleWidthHandle = Selector.GetHandle("titleWidth");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTitleWidth_ = "titleWidth:";
+
+	private static readonly IntPtr selTitleWidth_Handle = Selector.GetHandle("titleWidth:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSFormCell");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSAttributedString AttributedTitle
+	{
+		[Export("attributedTitle")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSAttributedString>(Messaging.IntPtr_objc_msgSend(base.Handle, selAttributedTitleHandle));
+			}
+			return Runtime.GetNSObject<NSAttributedString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAttributedTitleHandle));
+		}
+		[Export("setAttributedTitle:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAttributedTitle_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAttributedTitle_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new virtual bool IsOpaque
 	{
 		[Export("isOpaque")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsOpaqueHandle);
 			}
@@ -72,46 +176,20 @@ public class NSFormCell : NSActionCell
 		}
 	}
 
-	public virtual double TitleWidth
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSAttributedString PlaceholderAttributedString
 	{
-		[Export("titleWidth")]
+		[Export("placeholderAttributedString", ArgumentSemantic.Copy)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Double_objc_msgSend(base.Handle, selTitleWidthHandle);
+				return Runtime.GetNSObject<NSAttributedString>(Messaging.IntPtr_objc_msgSend(base.Handle, selPlaceholderAttributedStringHandle));
 			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selTitleWidthHandle);
+			return Runtime.GetNSObject<NSAttributedString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPlaceholderAttributedStringHandle));
 		}
-		[Export("setTitleWidth:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetTitleWidth_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetTitleWidth_Handle, value);
-			}
-		}
-	}
-
-	public new virtual string Title
-	{
-		[Export("title")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selTitleHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTitleHandle));
-		}
-		[Export("setTitle:")]
+		[Export("setPlaceholderAttributedString:", ArgumentSemantic.Copy)]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -119,81 +197,25 @@ public class NSFormCell : NSActionCell
 			{
 				throw new ArgumentNullException("value");
 			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTitle_Handle, arg);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPlaceholderAttributedString_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTitle_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	public virtual NSFont TitleFont
-	{
-		[Export("titleFont")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSFont)(__mt_TitleFont_var = ((!IsDirectBinding) ? ((NSFont)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTitleFontHandle))) : ((NSFont)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTitleFontHandle)))));
-		}
-		[Export("setTitleFont:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTitleFont_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTitleFont_Handle, value.Handle);
-			}
-			__mt_TitleFont_var = value;
-		}
-	}
-
-	public virtual NSTextAlignment TitleAlignment
-	{
-		[Export("titleAlignment")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return (NSTextAlignment)Messaging.UInt64_objc_msgSend(base.Handle, selTitleAlignmentHandle);
-			}
-			return (NSTextAlignment)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selTitleAlignmentHandle);
-		}
-		[Export("setTitleAlignment:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetTitleAlignment_Handle, (ulong)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetTitleAlignment_Handle, (ulong)value);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPlaceholderAttributedString_Handle, value.Handle);
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string PlaceholderString
 	{
 		[Export("placeholderString")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPlaceholderStringHandle));
 			}
@@ -208,7 +230,7 @@ public class NSFormCell : NSActionCell
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPlaceholderString_Handle, arg);
 			}
@@ -220,15 +242,48 @@ public class NSFormCell : NSActionCell
 		}
 	}
 
-	public virtual NSAttributedString PlaceholderAttributedString
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat PreferredTextFieldWidth
 	{
-		[Export("placeholderAttributedString")]
+		[Export("preferredTextFieldWidth")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSAttributedString)(__mt_PlaceholderAttributedString_var = ((!IsDirectBinding) ? ((NSAttributedString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPlaceholderAttributedStringHandle))) : ((NSAttributedString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPlaceholderAttributedStringHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selPreferredTextFieldWidthHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selPreferredTextFieldWidthHandle);
 		}
-		[Export("setPlaceholderAttributedString:")]
+		[Export("setPreferredTextFieldWidth:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetPreferredTextFieldWidth_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetPreferredTextFieldWidth_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual string Title
+	{
+		[Export("title")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selTitleHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTitleHandle));
+		}
+		[Export("setTitle:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -236,25 +291,55 @@ public class NSFormCell : NSActionCell
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPlaceholderAttributedString_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTitle_Handle, arg);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPlaceholderAttributedString_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTitle_Handle, arg);
 			}
-			__mt_PlaceholderAttributedString_var = value;
+			NSString.ReleaseNative(arg);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSTextAlignment TitleAlignment
+	{
+		[Export("titleAlignment")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return (NSTextAlignment)Messaging.UInt64_objc_msgSend(base.Handle, selTitleAlignmentHandle);
+			}
+			return (NSTextAlignment)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selTitleAlignmentHandle);
+		}
+		[Export("setTitleAlignment:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetTitleAlignment_Handle, (ulong)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetTitleAlignment_Handle, (ulong)value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSWritingDirection TitleBaseWritingDirection
 	{
 		[Export("titleBaseWritingDirection")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return (NSWritingDirection)Messaging.Int64_objc_msgSend(base.Handle, selTitleBaseWritingDirectionHandle);
 			}
@@ -264,7 +349,7 @@ public class NSFormCell : NSActionCell
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_Int64(base.Handle, selSetTitleBaseWritingDirection_Handle, (long)value);
 			}
@@ -275,15 +360,20 @@ public class NSFormCell : NSActionCell
 		}
 	}
 
-	public virtual NSAttributedString AttributedTitle
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSFont TitleFont
 	{
-		[Export("attributedTitle")]
+		[Export("titleFont", ArgumentSemantic.Retain)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSAttributedString)(__mt_AttributedTitle_var = ((!IsDirectBinding) ? ((NSAttributedString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAttributedTitleHandle))) : ((NSAttributedString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAttributedTitleHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSFont>(Messaging.IntPtr_objc_msgSend(base.Handle, selTitleFontHandle));
+			}
+			return Runtime.GetNSObject<NSFont>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTitleFontHandle));
 		}
-		[Export("setAttributedTitle:")]
+		[Export("setTitleFont:", ArgumentSemantic.Retain)]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -291,61 +381,97 @@ public class NSFormCell : NSActionCell
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAttributedTitle_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTitleFont_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAttributedTitle_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTitleFont_Handle, value.Handle);
 			}
-			__mt_AttributedTitle_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat TitleWidth
+	{
+		[Export("titleWidth")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selTitleWidthHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selTitleWidthHandle);
+		}
+		[Export("setTitleWidth:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetTitleWidth_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetTitleWidth_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSFormCell()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSFormCell(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSFormCell(NSObjectFlag t)
+	protected NSFormCell(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSFormCell(IntPtr handle)
+	protected internal NSFormCell(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initTextCell:")]
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSFormCell(string aString)
 		: base(NSObjectFlag.Empty)
 	{
@@ -355,18 +481,19 @@ public class NSFormCell : NSActionCell
 			throw new ArgumentNullException("aString");
 		}
 		IntPtr arg = NSString.CreateNative(aString);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitTextCell_Handle, arg);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitTextCell_Handle, arg), "initTextCell:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitTextCell_Handle, arg);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitTextCell_Handle, arg), "initTextCell:");
 		}
 		NSString.ReleaseNative(arg);
 	}
 
 	[Export("initImageCell:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSFormCell(NSImage image)
 		: base(NSObjectFlag.Empty)
 	{
@@ -375,31 +502,19 @@ public class NSFormCell : NSActionCell
 		{
 			throw new ArgumentNullException("image");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitImageCell_Handle, image.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitImageCell_Handle, image.Handle), "initImageCell:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitImageCell_Handle, image.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitImageCell_Handle, image.Handle), "initImageCell:");
 		}
-	}
-
-	[Export("initTextCell:")]
-	public virtual IntPtr ConstrainScrollPoint(string aString)
-	{
-		NSApplication.EnsureUIThread();
-		if (aString == null)
-		{
-			throw new ArgumentNullException("aString");
-		}
-		IntPtr arg = NSString.CreateNative(aString);
-		IntPtr result = ((!IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitTextCell_Handle, arg) : Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitTextCell_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
 	}
 
 	[Export("setTitleWithMnemonic:")]
+	[Deprecated(PlatformName.MacOSX, 10, 8, PlatformArchitecture.All, "Set Title instead.")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new virtual void SetTitleWithMnemonic(string stringWithAmpersand)
 	{
 		NSApplication.EnsureUIThread();
@@ -408,7 +523,7 @@ public class NSFormCell : NSActionCell
 			throw new ArgumentNullException("stringWithAmpersand");
 		}
 		IntPtr arg = NSString.CreateNative(stringWithAmpersand);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTitleWithMnemonic_Handle, arg);
 		}
@@ -419,14 +534,15 @@ public class NSFormCell : NSActionCell
 		NSString.ReleaseNative(arg);
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("titleWidth:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat TitleWidthConstraintedToSize(CGSize aSize)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			__mt_TitleFont_var = null;
-			__mt_PlaceholderAttributedString_var = null;
-			__mt_AttributedTitle_var = null;
+			return Messaging.nfloat_objc_msgSend_CGSize(base.Handle, selTitleWidth_Handle, aSize);
 		}
+		return Messaging.nfloat_objc_msgSendSuper_CGSize(base.SuperHandle, selTitleWidth_Handle, aSize);
 	}
 }

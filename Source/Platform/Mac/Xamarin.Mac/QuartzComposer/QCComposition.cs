@@ -6,152 +6,180 @@ using ObjCRuntime;
 namespace QuartzComposer;
 
 [Register("QCComposition", true)]
-public class QCComposition : NSObject
+[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, null)]
+public class QCComposition : NSObject, INSCopying, INativeObject, IDisposable
 {
-	private static readonly IntPtr selProtocolsHandle = Selector.GetHandle("protocols");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAttributes = "attributes";
 
 	private static readonly IntPtr selAttributesHandle = Selector.GetHandle("attributes");
 
-	private static readonly IntPtr selInputKeysHandle = Selector.GetHandle("inputKeys");
-
-	private static readonly IntPtr selOutputKeysHandle = Selector.GetHandle("outputKeys");
-
-	private static readonly IntPtr selIdentifierHandle = Selector.GetHandle("identifier");
-
-	private static readonly IntPtr selCompositionWithFile_Handle = Selector.GetHandle("compositionWithFile:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCompositionWithData_ = "compositionWithData:";
 
 	private static readonly IntPtr selCompositionWithData_Handle = Selector.GetHandle("compositionWithData:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("QCComposition");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCompositionWithFile_ = "compositionWithFile:";
 
-	private object __mt_Attributes_var;
+	private static readonly IntPtr selCompositionWithFile_Handle = Selector.GetHandle("compositionWithFile:");
 
-	private static NSString _AttributeNameKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCopyWithZone_ = "copyWithZone:";
 
-	private static NSString _AttributeDescriptionKey;
+	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
 
-	private static NSString _AttributeCopyrightKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIdentifier = "identifier";
 
-	private static NSString _AttributeBuiltInKey;
+	private static readonly IntPtr selIdentifierHandle = Selector.GetHandle("identifier");
 
-	private static NSString _AttributeIsTimeDependentKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInputKeys = "inputKeys";
 
-	private static NSString _AttributeHasConsumersKey;
+	private static readonly IntPtr selInputKeysHandle = Selector.GetHandle("inputKeys");
 
-	private static NSString _AttributeCategoryKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selOutputKeys = "outputKeys";
 
-	private static NSString _CategoryDistortion;
+	private static readonly IntPtr selOutputKeysHandle = Selector.GetHandle("outputKeys");
 
-	private static NSString _CategoryStylize;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selProtocols = "protocols";
 
-	private static NSString _CategoryUtility;
+	private static readonly IntPtr selProtocolsHandle = Selector.GetHandle("protocols");
 
-	private static NSString _InputImageKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("QCComposition");
 
-	private static NSString _InputSourceImageKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _AttributeBuiltInKey;
 
-	private static NSString _InputDestinationImageKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _AttributeCategoryKey;
 
-	private static NSString _InputRSSFeedURLKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _AttributeCopyrightKey;
 
-	private static NSString _InputRSSArticleDurationKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _AttributeDescriptionKey;
 
-	private static NSString _InputPreviewModeKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _AttributeHasConsumersKey;
 
-	private static NSString _InputXKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _AttributeIsTimeDependentKey;
 
-	private static NSString _InputYKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _AttributeNameKey;
 
-	private static NSString _InputScreenImageKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _CategoryDistortion;
 
-	private static NSString _InputAudioPeakKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _CategoryStylize;
 
-	private static NSString _InputAudioSpectrumKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _CategoryUtility;
 
-	private static NSString _InputTrackPositionKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputAudioPeakKey;
 
-	private static NSString _InputTrackInfoKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputAudioSpectrumKey;
 
-	private static NSString _InputTrackSignalKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputDestinationImageKey;
 
-	private static NSString _InputPrimaryColorKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputImageKey;
 
-	private static NSString _InputSecondaryColorKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputPaceKey;
 
-	private static NSString _InputPaceKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputPreviewModeKey;
 
-	private static NSString _OutputImageKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputPrimaryColorKey;
 
-	private static NSString _OutputWebPageURLKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputRSSArticleDurationKey;
 
-	private static NSString _ProtocolGraphicAnimation;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputRSSFeedURLKey;
 
-	private static NSString _ProtocolGraphicTransition;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputScreenImageKey;
 
-	private static NSString _ProtocolImageFilter;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputSecondaryColorKey;
 
-	private static NSString _ProtocolScreenSaver;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputSourceImageKey;
 
-	private static NSString _ProtocolRSSVisualizer;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputTrackInfoKey;
 
-	private static NSString _ProtocolMusicVisualizer;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputTrackPositionKey;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputTrackSignalKey;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputXKey;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _InputYKey;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _OutputImageKey;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _OutputWebPageURLKey;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ProtocolGraphicAnimation;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ProtocolGraphicTransition;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ProtocolImageFilter;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ProtocolMusicVisualizer;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ProtocolRSSVisualizer;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ProtocolScreenSaver;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual string[] Protocols
-	{
-		[Export("protocols")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selProtocolsHandle));
-			}
-			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selProtocolsHandle));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDictionary Attributes
 	{
 		[Export("attributes")]
 		get
 		{
-			return (NSDictionary)(__mt_Attributes_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAttributesHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAttributesHandle)))));
-		}
-	}
-
-	public virtual string[] InputKeys
-	{
-		[Export("inputKeys")]
-		get
-		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selInputKeysHandle));
+				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selAttributesHandle));
 			}
-			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInputKeysHandle));
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAttributesHandle));
 		}
 	}
 
-	public virtual string[] OutputKeys
-	{
-		[Export("outputKeys")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selOutputKeysHandle));
-			}
-			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOutputKeysHandle));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string Identifier
 	{
 		[Export("identifier")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selIdentifierHandle));
 			}
@@ -159,42 +187,45 @@ public class QCComposition : NSObject
 		}
 	}
 
-	[Field("QCCompositionAttributeNameKey", "QuartzComposer")]
-	public static NSString AttributeNameKey
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string[] InputKeys
 	{
+		[Export("inputKeys")]
 		get
 		{
-			if (_AttributeNameKey == null)
+			if (base.IsDirectBinding)
 			{
-				_AttributeNameKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionAttributeNameKey");
+				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selInputKeysHandle));
 			}
-			return _AttributeNameKey;
+			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInputKeysHandle));
 		}
 	}
 
-	[Field("QCCompositionAttributeDescriptionKey", "QuartzComposer")]
-	public static NSString AttributeDescriptionKey
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string[] OutputKeys
 	{
+		[Export("outputKeys")]
 		get
 		{
-			if (_AttributeDescriptionKey == null)
+			if (base.IsDirectBinding)
 			{
-				_AttributeDescriptionKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionAttributeDescriptionKey");
+				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selOutputKeysHandle));
 			}
-			return _AttributeDescriptionKey;
+			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOutputKeysHandle));
 		}
 	}
 
-	[Field("QCCompositionAttributeCopyrightKey", "QuartzComposer")]
-	public static NSString AttributeCopyrightKey
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string[] Protocols
 	{
+		[Export("protocols")]
 		get
 		{
-			if (_AttributeCopyrightKey == null)
+			if (base.IsDirectBinding)
 			{
-				_AttributeCopyrightKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionAttributeCopyrightKey");
+				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selProtocolsHandle));
 			}
-			return _AttributeCopyrightKey;
+			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selProtocolsHandle));
 		}
 	}
 
@@ -211,16 +242,42 @@ public class QCComposition : NSObject
 		}
 	}
 
-	[Field("QCCompositionAttributeIsTimeDependentKey", "QuartzComposer")]
-	public static NSString AttributeIsTimeDependentKey
+	[Field("QCCompositionAttributeCategoryKey", "QuartzComposer")]
+	public static NSString AttributeCategoryKey
 	{
 		get
 		{
-			if (_AttributeIsTimeDependentKey == null)
+			if (_AttributeCategoryKey == null)
 			{
-				_AttributeIsTimeDependentKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionAttributeIsTimeDependentKey");
+				_AttributeCategoryKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionAttributeCategoryKey");
 			}
-			return _AttributeIsTimeDependentKey;
+			return _AttributeCategoryKey;
+		}
+	}
+
+	[Field("QCCompositionAttributeCopyrightKey", "QuartzComposer")]
+	public static NSString AttributeCopyrightKey
+	{
+		get
+		{
+			if (_AttributeCopyrightKey == null)
+			{
+				_AttributeCopyrightKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionAttributeCopyrightKey");
+			}
+			return _AttributeCopyrightKey;
+		}
+	}
+
+	[Field("QCCompositionAttributeDescriptionKey", "QuartzComposer")]
+	public static NSString AttributeDescriptionKey
+	{
+		get
+		{
+			if (_AttributeDescriptionKey == null)
+			{
+				_AttributeDescriptionKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionAttributeDescriptionKey");
+			}
+			return _AttributeDescriptionKey;
 		}
 	}
 
@@ -237,16 +294,29 @@ public class QCComposition : NSObject
 		}
 	}
 
-	[Field("QCCompositionAttributeCategoryKey", "QuartzComposer")]
-	public static NSString AttributeCategoryKey
+	[Field("QCCompositionAttributeIsTimeDependentKey", "QuartzComposer")]
+	public static NSString AttributeIsTimeDependentKey
 	{
 		get
 		{
-			if (_AttributeCategoryKey == null)
+			if (_AttributeIsTimeDependentKey == null)
 			{
-				_AttributeCategoryKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionAttributeCategoryKey");
+				_AttributeIsTimeDependentKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionAttributeIsTimeDependentKey");
 			}
-			return _AttributeCategoryKey;
+			return _AttributeIsTimeDependentKey;
+		}
+	}
+
+	[Field("QCCompositionAttributeNameKey", "QuartzComposer")]
+	public static NSString AttributeNameKey
+	{
+		get
+		{
+			if (_AttributeNameKey == null)
+			{
+				_AttributeNameKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionAttributeNameKey");
+			}
+			return _AttributeNameKey;
 		}
 	}
 
@@ -289,123 +359,6 @@ public class QCComposition : NSObject
 		}
 	}
 
-	[Field("QCCompositionInputImageKey", "QuartzComposer")]
-	public static NSString InputImageKey
-	{
-		get
-		{
-			if (_InputImageKey == null)
-			{
-				_InputImageKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputImageKey");
-			}
-			return _InputImageKey;
-		}
-	}
-
-	[Field("QCCompositionInputSourceImageKey", "QuartzComposer")]
-	public static NSString InputSourceImageKey
-	{
-		get
-		{
-			if (_InputSourceImageKey == null)
-			{
-				_InputSourceImageKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputSourceImageKey");
-			}
-			return _InputSourceImageKey;
-		}
-	}
-
-	[Field("QCCompositionInputDestinationImageKey", "QuartzComposer")]
-	public static NSString InputDestinationImageKey
-	{
-		get
-		{
-			if (_InputDestinationImageKey == null)
-			{
-				_InputDestinationImageKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputDestinationImageKey");
-			}
-			return _InputDestinationImageKey;
-		}
-	}
-
-	[Field("QCCompositionInputRSSFeedURLKey", "QuartzComposer")]
-	public static NSString InputRSSFeedURLKey
-	{
-		get
-		{
-			if (_InputRSSFeedURLKey == null)
-			{
-				_InputRSSFeedURLKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputRSSFeedURLKey");
-			}
-			return _InputRSSFeedURLKey;
-		}
-	}
-
-	[Field("QCCompositionInputRSSArticleDurationKey", "QuartzComposer")]
-	public static NSString InputRSSArticleDurationKey
-	{
-		get
-		{
-			if (_InputRSSArticleDurationKey == null)
-			{
-				_InputRSSArticleDurationKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputRSSArticleDurationKey");
-			}
-			return _InputRSSArticleDurationKey;
-		}
-	}
-
-	[Field("QCCompositionInputPreviewModeKey", "QuartzComposer")]
-	public static NSString InputPreviewModeKey
-	{
-		get
-		{
-			if (_InputPreviewModeKey == null)
-			{
-				_InputPreviewModeKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputPreviewModeKey");
-			}
-			return _InputPreviewModeKey;
-		}
-	}
-
-	[Field("QCCompositionInputXKey", "QuartzComposer")]
-	public static NSString InputXKey
-	{
-		get
-		{
-			if (_InputXKey == null)
-			{
-				_InputXKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputXKey");
-			}
-			return _InputXKey;
-		}
-	}
-
-	[Field("QCCompositionInputYKey", "QuartzComposer")]
-	public static NSString InputYKey
-	{
-		get
-		{
-			if (_InputYKey == null)
-			{
-				_InputYKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputYKey");
-			}
-			return _InputYKey;
-		}
-	}
-
-	[Field("QCCompositionInputScreenImageKey", "QuartzComposer")]
-	public static NSString InputScreenImageKey
-	{
-		get
-		{
-			if (_InputScreenImageKey == null)
-			{
-				_InputScreenImageKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputScreenImageKey");
-			}
-			return _InputScreenImageKey;
-		}
-	}
-
 	[Field("QCCompositionInputAudioPeakKey", "QuartzComposer")]
 	public static NSString InputAudioPeakKey
 	{
@@ -432,42 +385,55 @@ public class QCComposition : NSObject
 		}
 	}
 
-	[Field("QCCompositionInputTrackPositionKey", "QuartzComposer")]
-	public static NSString InputTrackPositionKey
+	[Field("QCCompositionInputDestinationImageKey", "QuartzComposer")]
+	public static NSString InputDestinationImageKey
 	{
 		get
 		{
-			if (_InputTrackPositionKey == null)
+			if (_InputDestinationImageKey == null)
 			{
-				_InputTrackPositionKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputTrackPositionKey");
+				_InputDestinationImageKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputDestinationImageKey");
 			}
-			return _InputTrackPositionKey;
+			return _InputDestinationImageKey;
 		}
 	}
 
-	[Field("QCCompositionInputTrackInfoKey", "QuartzComposer")]
-	public static NSString InputTrackInfoKey
+	[Field("QCCompositionInputImageKey", "QuartzComposer")]
+	public static NSString InputImageKey
 	{
 		get
 		{
-			if (_InputTrackInfoKey == null)
+			if (_InputImageKey == null)
 			{
-				_InputTrackInfoKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputTrackInfoKey");
+				_InputImageKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputImageKey");
 			}
-			return _InputTrackInfoKey;
+			return _InputImageKey;
 		}
 	}
 
-	[Field("QCCompositionInputTrackSignalKey", "QuartzComposer")]
-	public static NSString InputTrackSignalKey
+	[Field("QCCompositionInputPaceKey", "QuartzComposer")]
+	public static NSString InputPaceKey
 	{
 		get
 		{
-			if (_InputTrackSignalKey == null)
+			if (_InputPaceKey == null)
 			{
-				_InputTrackSignalKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputTrackSignalKey");
+				_InputPaceKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputPaceKey");
 			}
-			return _InputTrackSignalKey;
+			return _InputPaceKey;
+		}
+	}
+
+	[Field("QCCompositionInputPreviewModeKey", "QuartzComposer")]
+	public static NSString InputPreviewModeKey
+	{
+		get
+		{
+			if (_InputPreviewModeKey == null)
+			{
+				_InputPreviewModeKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputPreviewModeKey");
+			}
+			return _InputPreviewModeKey;
 		}
 	}
 
@@ -484,6 +450,49 @@ public class QCComposition : NSObject
 		}
 	}
 
+	[Field("QCCompositionInputRSSArticleDurationKey", "QuartzComposer")]
+	[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'Metal' instead.")]
+	public static NSString InputRSSArticleDurationKey
+	{
+		[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'Metal' instead.")]
+		get
+		{
+			if (_InputRSSArticleDurationKey == null)
+			{
+				_InputRSSArticleDurationKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputRSSArticleDurationKey");
+			}
+			return _InputRSSArticleDurationKey;
+		}
+	}
+
+	[Field("QCCompositionInputRSSFeedURLKey", "QuartzComposer")]
+	[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'Metal' instead.")]
+	public static NSString InputRSSFeedURLKey
+	{
+		[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'Metal' instead.")]
+		get
+		{
+			if (_InputRSSFeedURLKey == null)
+			{
+				_InputRSSFeedURLKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputRSSFeedURLKey");
+			}
+			return _InputRSSFeedURLKey;
+		}
+	}
+
+	[Field("QCCompositionInputScreenImageKey", "QuartzComposer")]
+	public static NSString InputScreenImageKey
+	{
+		get
+		{
+			if (_InputScreenImageKey == null)
+			{
+				_InputScreenImageKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputScreenImageKey");
+			}
+			return _InputScreenImageKey;
+		}
+	}
+
 	[Field("QCCompositionInputSecondaryColorKey", "QuartzComposer")]
 	public static NSString InputSecondaryColorKey
 	{
@@ -497,16 +506,81 @@ public class QCComposition : NSObject
 		}
 	}
 
-	[Field("QCCompositionInputPaceKey", "QuartzComposer")]
-	public static NSString InputPaceKey
+	[Field("QCCompositionInputSourceImageKey", "QuartzComposer")]
+	public static NSString InputSourceImageKey
 	{
 		get
 		{
-			if (_InputPaceKey == null)
+			if (_InputSourceImageKey == null)
 			{
-				_InputPaceKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputPaceKey");
+				_InputSourceImageKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputSourceImageKey");
 			}
-			return _InputPaceKey;
+			return _InputSourceImageKey;
+		}
+	}
+
+	[Field("QCCompositionInputTrackInfoKey", "QuartzComposer")]
+	public static NSString InputTrackInfoKey
+	{
+		get
+		{
+			if (_InputTrackInfoKey == null)
+			{
+				_InputTrackInfoKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputTrackInfoKey");
+			}
+			return _InputTrackInfoKey;
+		}
+	}
+
+	[Field("QCCompositionInputTrackPositionKey", "QuartzComposer")]
+	public static NSString InputTrackPositionKey
+	{
+		get
+		{
+			if (_InputTrackPositionKey == null)
+			{
+				_InputTrackPositionKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputTrackPositionKey");
+			}
+			return _InputTrackPositionKey;
+		}
+	}
+
+	[Field("QCCompositionInputTrackSignalKey", "QuartzComposer")]
+	public static NSString InputTrackSignalKey
+	{
+		get
+		{
+			if (_InputTrackSignalKey == null)
+			{
+				_InputTrackSignalKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputTrackSignalKey");
+			}
+			return _InputTrackSignalKey;
+		}
+	}
+
+	[Field("QCCompositionInputXKey", "QuartzComposer")]
+	public static NSString InputXKey
+	{
+		get
+		{
+			if (_InputXKey == null)
+			{
+				_InputXKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputXKey");
+			}
+			return _InputXKey;
+		}
+	}
+
+	[Field("QCCompositionInputYKey", "QuartzComposer")]
+	public static NSString InputYKey
+	{
+		get
+		{
+			if (_InputYKey == null)
+			{
+				_InputYKey = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionInputYKey");
+			}
+			return _InputYKey;
 		}
 	}
 
@@ -575,32 +649,6 @@ public class QCComposition : NSObject
 		}
 	}
 
-	[Field("QCCompositionProtocolScreenSaver", "QuartzComposer")]
-	public static NSString ProtocolScreenSaver
-	{
-		get
-		{
-			if (_ProtocolScreenSaver == null)
-			{
-				_ProtocolScreenSaver = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionProtocolScreenSaver");
-			}
-			return _ProtocolScreenSaver;
-		}
-	}
-
-	[Field("QCCompositionProtocolRSSVisualizer", "QuartzComposer")]
-	public static NSString ProtocolRSSVisualizer
-	{
-		get
-		{
-			if (_ProtocolRSSVisualizer == null)
-			{
-				_ProtocolRSSVisualizer = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionProtocolRSSVisualizer");
-			}
-			return _ProtocolRSSVisualizer;
-		}
-	}
-
 	[Field("QCCompositionProtocolMusicVisualizer", "QuartzComposer")]
 	public static NSString ProtocolMusicVisualizer
 	{
@@ -614,49 +662,79 @@ public class QCComposition : NSObject
 		}
 	}
 
+	[Field("QCCompositionProtocolRSSVisualizer", "QuartzComposer")]
+	[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'Metal' instead.")]
+	public static NSString ProtocolRSSVisualizer
+	{
+		[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'Metal' instead.")]
+		get
+		{
+			if (_ProtocolRSSVisualizer == null)
+			{
+				_ProtocolRSSVisualizer = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionProtocolRSSVisualizer");
+			}
+			return _ProtocolRSSVisualizer;
+		}
+	}
+
+	[Field("QCCompositionProtocolScreenSaver", "QuartzComposer")]
+	public static NSString ProtocolScreenSaver
+	{
+		get
+		{
+			if (_ProtocolScreenSaver == null)
+			{
+				_ProtocolScreenSaver = Dlfcn.GetStringConstant(Libraries.QuartzComposer.Handle, "QCCompositionProtocolScreenSaver");
+			}
+			return _ProtocolScreenSaver;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public QCComposition()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public QCComposition(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public QCComposition(NSObjectFlag t)
+	protected QCComposition(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public QCComposition(IntPtr handle)
+	protected internal QCComposition(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("copyWithZone:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[return: Release]
+	public virtual NSObject Copy(NSZone? zone)
+	{
+		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
+		if (nSObject != null)
+		{
+			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
+		}
+		return nSObject;
+	}
+
 	[Export("compositionWithFile:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static QCComposition GetComposition(string path)
 	{
 		if (path == null)
@@ -664,27 +742,19 @@ public class QCComposition : NSObject
 			throw new ArgumentNullException("path");
 		}
 		IntPtr arg = NSString.CreateNative(path);
-		QCComposition result = (QCComposition)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selCompositionWithFile_Handle, arg));
+		QCComposition nSObject = Runtime.GetNSObject<QCComposition>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selCompositionWithFile_Handle, arg));
 		NSString.ReleaseNative(arg);
-		return result;
+		return nSObject;
 	}
 
 	[Export("compositionWithData:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static QCComposition GetComposition(NSData data)
 	{
 		if (data == null)
 		{
 			throw new ArgumentNullException("data");
 		}
-		return (QCComposition)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selCompositionWithData_Handle, data.Handle));
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_Attributes_var = null;
-		}
+		return Runtime.GetNSObject<QCComposition>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selCompositionWithData_Handle, data.Handle));
 	}
 }

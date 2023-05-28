@@ -1,0 +1,3 @@
+namespace AudioUnit;
+
+public delegate void AUScheduledAudioFileRegionCompletionHandler(AUScheduledAudioFileRegion audioFileRegion, AudioUnitStatus status);

@@ -6,102 +6,116 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Register("AVPlayerItemErrorLog", true)]
-public class AVPlayerItemErrorLog : NSObject
+[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
+public class AVPlayerItemErrorLog : NSObject, INSCopying, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCopyWithZone_ = "copyWithZone:";
+
+	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEvents = "events";
+
 	private static readonly IntPtr selEventsHandle = Selector.GetHandle("events");
 
-	private static readonly IntPtr selExtendedLogDataStringEncodingHandle = Selector.GetHandle("extendedLogDataStringEncoding");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selExtendedLogData = "extendedLogData";
 
 	private static readonly IntPtr selExtendedLogDataHandle = Selector.GetHandle("extendedLogData");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("AVPlayerItemErrorLog");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selExtendedLogDataStringEncoding = "extendedLogDataStringEncoding";
 
-	private object __mt_Events_var;
+	private static readonly IntPtr selExtendedLogDataStringEncodingHandle = Selector.GetHandle("extendedLogDataStringEncoding");
 
-	private object __mt_ExtendedLogData_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVPlayerItemErrorLog");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual AVPlayerItemErrorLogEvent[] Events
 	{
 		[Export("events")]
 		get
 		{
-			return (AVPlayerItemErrorLogEvent[])(__mt_Events_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<AVPlayerItemErrorLogEvent>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEventsHandle)) : NSArray.ArrayFromHandle<AVPlayerItemErrorLogEvent>(Messaging.IntPtr_objc_msgSend(base.Handle, selEventsHandle))));
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<AVPlayerItemErrorLogEvent>(Messaging.IntPtr_objc_msgSend(base.Handle, selEventsHandle));
+			}
+			return NSArray.ArrayFromHandle<AVPlayerItemErrorLogEvent>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEventsHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSData? ExtendedLogData
+	{
+		[Export("extendedLogData")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSend(base.Handle, selExtendedLogDataHandle));
+			}
+			return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selExtendedLogDataHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSStringEncoding ExtendedLogDataStringEncoding
 	{
 		[Export("extendedLogDataStringEncoding")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return (NSStringEncoding)Messaging.UInt32_objc_msgSend(base.Handle, selExtendedLogDataStringEncodingHandle);
+				return (NSStringEncoding)Messaging.UInt64_objc_msgSend(base.Handle, selExtendedLogDataStringEncodingHandle);
 			}
-			return (NSStringEncoding)Messaging.UInt32_objc_msgSendSuper(base.SuperHandle, selExtendedLogDataStringEncodingHandle);
+			return (NSStringEncoding)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selExtendedLogDataStringEncodingHandle);
 		}
 	}
 
-	public virtual NSData ExtendedLogData
-	{
-		[Export("extendedLogData")]
-		get
-		{
-			return (NSData)(__mt_ExtendedLogData_var = ((!IsDirectBinding) ? ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selExtendedLogDataHandle))) : ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selExtendedLogDataHandle)))));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public AVPlayerItemErrorLog()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public AVPlayerItemErrorLog(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVPlayerItemErrorLog(NSObjectFlag t)
+	protected AVPlayerItemErrorLog(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVPlayerItemErrorLog(IntPtr handle)
+	protected internal AVPlayerItemErrorLog(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("copyWithZone:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[return: Release]
+	public virtual NSObject Copy(NSZone? zone)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
+		if (nSObject != null)
 		{
-			__mt_Events_var = null;
-			__mt_ExtendedLogData_var = null;
+			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
 		}
+		return nSObject;
 	}
 }

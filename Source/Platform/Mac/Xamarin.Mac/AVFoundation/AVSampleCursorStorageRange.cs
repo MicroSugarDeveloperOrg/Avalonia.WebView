@@ -1,4 +1,6 @@
-﻿namespace AVFoundation;
+using ObjCRuntime;
+
+namespace AVFoundation;
 
 [Mac(10, 10)]
 [NoiOS]
@@ -6,7 +8,7 @@
 [NoTV]
 public struct AVSampleCursorStorageRange
 {
-    public long Offset;
+	public long Offset;
 
-    public long Length;
+	public long Length;
 }

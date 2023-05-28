@@ -7,37 +7,40 @@ using ObjCRuntime;
 namespace AppKit;
 
 [Register("NSSharingService", true)]
-[MountainLion]
 public class NSSharingService : NSObject
 {
 	[Register]
-	private sealed class _NSSharingServiceDelegate : NSSharingServiceDelegate
+	internal class _NSSharingServiceDelegate : NSObject, INSSharingServiceDelegate, INativeObject, IDisposable
 	{
-		internal EventHandler<NSSharingServiceItemsEventArgs> willShareItems;
+		internal NSSharingServiceAnchoringViewForSharingService? createAnchoringView;
 
-		internal EventHandler<NSSharingServiceDidFailToShareItemsEventArgs> didFailToShareItems;
+		internal EventHandler<NSSharingServiceDidFailToShareItemsEventArgs>? didFailToShareItems;
 
-		internal EventHandler<NSSharingServiceItemsEventArgs> didShareItems;
+		internal EventHandler<NSSharingServiceItemsEventArgs>? didShareItems;
 
-		internal NSSharingServiceSourceFrameOnScreenForShareItem sourceFrameOnScreenForShareItem;
+		internal NSSharingServiceSourceFrameOnScreenForShareItem? sourceFrameOnScreenForShareItem;
 
-		internal NSSharingServiceTransitionImageForShareItem transitionImageForShareItem;
+		internal NSSharingServiceSourceWindowForShareItems? sourceWindowForShareItems;
 
-		internal NSSharingServiceSourceWindowForShareItems sourceWindowForShareItems;
+		internal NSSharingServiceTransitionImageForShareItem? transitionImageForShareItem;
 
-		[Preserve(Conditional = true)]
-		public override void WillShareItems(NSSharingService sharingService, NSObject[] items)
+		internal EventHandler<NSSharingServiceItemsEventArgs>? willShareItems;
+
+		public _NSSharingServiceDelegate()
 		{
-			EventHandler<NSSharingServiceItemsEventArgs> eventHandler = willShareItems;
-			if (eventHandler != null)
-			{
-				NSSharingServiceItemsEventArgs e = new NSSharingServiceItemsEventArgs(items);
-				eventHandler(sharingService, e);
-			}
+			base.IsDirectBinding = false;
 		}
 
 		[Preserve(Conditional = true)]
-		public override void DidFailToShareItems(NSSharingService sharingService, NSObject[] items, NSError error)
+		[Export("anchoringViewForSharingService:showRelativeToRect:preferredEdge:")]
+		public NSView CreateAnchoringView(NSSharingService sharingService, ref CGRect positioningRect, ref NSRectEdge preferredEdge)
+		{
+			return createAnchoringView?.Invoke(sharingService, ref positioningRect, ref preferredEdge);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("sharingService:didFailToShareItems:error:")]
+		public void DidFailToShareItems(NSSharingService sharingService, NSObject[] items, NSError error)
 		{
 			EventHandler<NSSharingServiceDidFailToShareItemsEventArgs> eventHandler = didFailToShareItems;
 			if (eventHandler != null)
@@ -48,7 +51,8 @@ public class NSSharingService : NSObject
 		}
 
 		[Preserve(Conditional = true)]
-		public override void DidShareItems(NSSharingService sharingService, NSObject[] items)
+		[Export("sharingService:didShareItems:")]
+		public void DidShareItems(NSSharingService sharingService, NSObject[] items)
 		{
 			EventHandler<NSSharingServiceItemsEventArgs> eventHandler = didShareItems;
 			if (eventHandler != null)
@@ -59,7 +63,8 @@ public class NSSharingService : NSObject
 		}
 
 		[Preserve(Conditional = true)]
-		public override CGRect SourceFrameOnScreenForShareItem(NSSharingService sharingService, NSPasteboardWriting item)
+		[Export("sharingService:sourceFrameOnScreenForShareItem:")]
+		public CGRect SourceFrameOnScreenForShareItem(NSSharingService sharingService, INSPasteboardWriting item)
 		{
 			NSSharingServiceSourceFrameOnScreenForShareItem nSSharingServiceSourceFrameOnScreenForShareItem = sourceFrameOnScreenForShareItem;
 			if (nSSharingServiceSourceFrameOnScreenForShareItem != null)
@@ -70,121 +75,375 @@ public class NSSharingService : NSObject
 		}
 
 		[Preserve(Conditional = true)]
-		public override NSImage TransitionImageForShareItem(NSSharingService sharingService, NSPasteboardWriting item, CGRect contentRect)
+		[Export("sharingService:sourceWindowForShareItems:sharingContentScope:")]
+		public NSWindow SourceWindowForShareItems(NSSharingService sharingService, NSObject[] items, NSSharingContentScope sharingContentScope)
+		{
+			return sourceWindowForShareItems?.Invoke(sharingService, items, sharingContentScope);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("sharingService:transitionImageForShareItem:contentRect:")]
+		public NSImage TransitionImageForShareItem(NSSharingService sharingService, INSPasteboardWriting item, CGRect contentRect)
 		{
 			return transitionImageForShareItem?.Invoke(sharingService, item, contentRect);
 		}
 
 		[Preserve(Conditional = true)]
-		public override NSWindow SourceWindowForShareItems(NSSharingService sharingService, NSObject[] items, NSSharingContentScope sharingContentScope)
+		[Export("sharingService:willShareItems:")]
+		public void WillShareItems(NSSharingService sharingService, NSObject[] items)
 		{
-			return sourceWindowForShareItems?.Invoke(sharingService, items, sharingContentScope);
+			EventHandler<NSSharingServiceItemsEventArgs> eventHandler = willShareItems;
+			if (eventHandler != null)
+			{
+				NSSharingServiceItemsEventArgs e = new NSSharingServiceItemsEventArgs(items);
+				eventHandler(sharingService, e);
+			}
 		}
 	}
 
-	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAccountName = "accountName";
 
-	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
+	private static readonly IntPtr selAccountNameHandle = Selector.GetHandle("accountName");
 
-	private static readonly IntPtr selTitleHandle = Selector.GetHandle("title");
-
-	private static readonly IntPtr selImageHandle = Selector.GetHandle("image");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAlternateImage = "alternateImage";
 
 	private static readonly IntPtr selAlternateImageHandle = Selector.GetHandle("alternateImage");
 
-	private static readonly IntPtr selSharingServicesForItems_Handle = Selector.GetHandle("sharingServicesForItems:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAttachmentFileURLs = "attachmentFileURLs";
 
-	private static readonly IntPtr selSharingServiceNamed_Handle = Selector.GetHandle("sharingServiceNamed:");
+	private static readonly IntPtr selAttachmentFileURLsHandle = Selector.GetHandle("attachmentFileURLs");
 
-	private static readonly IntPtr selInitWithTitleImageAlternateImageHandler_Handle = Selector.GetHandle("initWithTitle:image:alternateImage:handler:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCanPerformWithItems_ = "canPerformWithItems:";
 
 	private static readonly IntPtr selCanPerformWithItems_Handle = Selector.GetHandle("canPerformWithItems:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDelegate = "delegate";
+
+	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImage = "image";
+
+	private static readonly IntPtr selImageHandle = Selector.GetHandle("image");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithTitle_Image_AlternateImage_Handler_ = "initWithTitle:image:alternateImage:handler:";
+
+	private static readonly IntPtr selInitWithTitle_Image_AlternateImage_Handler_Handle = Selector.GetHandle("initWithTitle:image:alternateImage:handler:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMenuItemTitle = "menuItemTitle";
+
+	private static readonly IntPtr selMenuItemTitleHandle = Selector.GetHandle("menuItemTitle");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMessageBody = "messageBody";
+
+	private static readonly IntPtr selMessageBodyHandle = Selector.GetHandle("messageBody");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPerformWithItems_ = "performWithItems:";
+
 	private static readonly IntPtr selPerformWithItems_Handle = Selector.GetHandle("performWithItems:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSSharingService");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPermanentLink = "permanentLink";
 
-	private object __mt_WeakDelegate_var;
+	private static readonly IntPtr selPermanentLinkHandle = Selector.GetHandle("permanentLink");
 
-	private object __mt_Image_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRecipients = "recipients";
 
-	private object __mt_AlternateImage_var;
+	private static readonly IntPtr selRecipientsHandle = Selector.GetHandle("recipients");
 
-	private static NSString _NSSharingServiceNamePostOnFacebook;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDelegate_ = "setDelegate:";
 
-	private static NSString _NSSharingServiceNamePostOnTwitter;
+	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
 
-	private static NSString _NSSharingServiceNamePostOnSinaWeibo;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMenuItemTitle_ = "setMenuItemTitle:";
 
-	private static NSString _NSSharingServiceNameComposeEmail;
+	private static readonly IntPtr selSetMenuItemTitle_Handle = Selector.GetHandle("setMenuItemTitle:");
 
-	private static NSString _NSSharingServiceNameComposeMessage;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetRecipients_ = "setRecipients:";
 
-	private static NSString _NSSharingServiceNameSendViaAirDrop;
+	private static readonly IntPtr selSetRecipients_Handle = Selector.GetHandle("setRecipients:");
 
-	private static NSString _NSSharingServiceNameAddToSafariReadingList;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetSubject_ = "setSubject:";
 
-	private static NSString _NSSharingServiceNameAddToIPhoto;
+	private static readonly IntPtr selSetSubject_Handle = Selector.GetHandle("setSubject:");
 
-	private static NSString _NSSharingServiceNameAddToAperture;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSharingServiceNamed_ = "sharingServiceNamed:";
 
-	private static NSString _NSSharingServiceNameUseAsTwitterProfileImage;
+	private static readonly IntPtr selSharingServiceNamed_Handle = Selector.GetHandle("sharingServiceNamed:");
 
-	private static NSString _NSSharingServiceNameUseAsDesktopPicture;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSharingServicesForItems_ = "sharingServicesForItems:";
 
-	private static NSString _NSSharingServiceNamePostImageOnFlickr;
+	private static readonly IntPtr selSharingServicesForItems_Handle = Selector.GetHandle("sharingServicesForItems:");
 
-	private static NSString _NSSharingServiceNamePostVideoOnVimeo;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSubject = "subject";
 
-	private static NSString _NSSharingServiceNamePostVideoOnYouku;
+	private static readonly IntPtr selSubjectHandle = Selector.GetHandle("subject");
 
-	private static NSString _NSSharingServiceNamePostVideoOnTudou;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTitle = "title";
+
+	private static readonly IntPtr selTitleHandle = Selector.GetHandle("title");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSSharingService");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_WeakDelegate_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSObject WeakDelegate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public virtual string AccountName
 	{
-		[Export("delegate")]
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("accountName")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccountNameHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccountNameHandle));
 		}
-		[Export("setDelegate:")]
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSImage AlternateImage
+	{
+		[Export("alternateImage", ArgumentSemantic.Retain)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSend(base.Handle, selAlternateImageHandle));
+			}
+			return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAlternateImageHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public virtual NSUrl[] AttachmentFileUrls
+	{
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("attachmentFileURLs", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selAttachmentFileURLsHandle));
+			}
+			return NSArray.ArrayFromHandle<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAttachmentFileURLsHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public INSSharingServiceDelegate? Delegate
+	{
+		get
+		{
+			return WeakDelegate as INSSharingServiceDelegate;
+		}
+		set
+		{
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
+			{
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			WeakDelegate = nSObject;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSImage Image
+	{
+		[Export("image", ArgumentSemantic.Retain)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSend(base.Handle, selImageHandle));
+			}
+			return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selImageHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public virtual string MenuItemTitle
+	{
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("menuItemTitle")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMenuItemTitleHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMenuItemTitleHandle));
+		}
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("setMenuItemTitle:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMenuItemTitle_Handle, arg);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMenuItemTitle_Handle, arg);
 			}
-			__mt_WeakDelegate_var = value;
+			NSString.ReleaseNative(arg);
 		}
 	}
 
-	public NSSharingServiceDelegate Delegate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public virtual string MessageBody
 	{
-		get
-		{
-			return WeakDelegate as NSSharingServiceDelegate;
-		}
-		set
-		{
-			WeakDelegate = value;
-		}
-	}
-
-	public virtual string Title
-	{
-		[Export("title")]
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("messageBody")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMessageBodyHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMessageBodyHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public virtual NSUrl PermanentLink
+	{
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("permanentLink", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selPermanentLinkHandle));
+			}
+			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPermanentLinkHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public virtual NSObject[] Recipients
+	{
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("recipients", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selRecipientsHandle));
+			}
+			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRecipientsHandle));
+		}
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("setRecipients:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			NSArray nSArray = NSArray.FromNSObjects(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetRecipients_Handle, nSArray.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetRecipients_Handle, nSArray.Handle);
+			}
+			nSArray.Dispose();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public virtual string Subject
+	{
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("subject")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSubjectHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSubjectHandle));
+		}
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("setSubject:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSubject_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSubject_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string Title
+	{
+		[Export("title", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selTitleHandle));
 			}
@@ -192,222 +451,51 @@ public class NSSharingService : NSObject
 		}
 	}
 
-	public virtual NSImage Image
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakDelegate
 	{
-		[Export("image")]
+		[Export("delegate", ArgumentSemantic.Assign)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSImage)(__mt_Image_var = ((!IsDirectBinding) ? ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selImageHandle))) : ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selImageHandle)))));
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
+			MarkDirty();
+			__mt_WeakDelegate_var = nSObject;
+			return nSObject;
 		}
-	}
-
-	public virtual NSImage AlternateImage
-	{
-		[Export("alternateImage")]
-		get
+		[Export("setDelegate:", ArgumentSemantic.Assign)]
+		set
 		{
+			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakDelegate_var, value, GetInternalEventDelegateType);
 			NSApplication.EnsureUIThread();
-			return (NSImage)(__mt_AlternateImage_var = ((!IsDirectBinding) ? ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAlternateImageHandle))) : ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAlternateImageHandle)))));
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			MarkDirty();
+			__mt_WeakDelegate_var = value;
 		}
 	}
 
-	[Field("NSSharingServiceNamePostOnFacebook", "AppKit")]
-	internal static NSString NSSharingServiceNamePostOnFacebook
+	internal virtual Type GetInternalEventDelegateType => typeof(_NSSharingServiceDelegate);
+
+	public NSSharingServiceAnchoringViewForSharingService? CreateAnchoringView
 	{
 		get
 		{
-			if (_NSSharingServiceNamePostOnFacebook == null)
-			{
-				_NSSharingServiceNamePostOnFacebook = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSSharingServiceNamePostOnFacebook");
-			}
-			return _NSSharingServiceNamePostOnFacebook;
+			return EnsureNSSharingServiceDelegate().createAnchoringView;
 		}
-	}
-
-	[Field("NSSharingServiceNamePostOnTwitter", "AppKit")]
-	internal static NSString NSSharingServiceNamePostOnTwitter
-	{
-		get
+		set
 		{
-			if (_NSSharingServiceNamePostOnTwitter == null)
-			{
-				_NSSharingServiceNamePostOnTwitter = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSSharingServiceNamePostOnTwitter");
-			}
-			return _NSSharingServiceNamePostOnTwitter;
+			EnsureNSSharingServiceDelegate().createAnchoringView = value;
 		}
 	}
 
-	[Field("NSSharingServiceNamePostOnSinaWeibo", "AppKit")]
-	internal static NSString NSSharingServiceNamePostOnSinaWeibo
-	{
-		get
-		{
-			if (_NSSharingServiceNamePostOnSinaWeibo == null)
-			{
-				_NSSharingServiceNamePostOnSinaWeibo = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSSharingServiceNamePostOnSinaWeibo");
-			}
-			return _NSSharingServiceNamePostOnSinaWeibo;
-		}
-	}
-
-	[Field("NSSharingServiceNameComposeEmail", "AppKit")]
-	internal static NSString NSSharingServiceNameComposeEmail
-	{
-		get
-		{
-			if (_NSSharingServiceNameComposeEmail == null)
-			{
-				_NSSharingServiceNameComposeEmail = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSSharingServiceNameComposeEmail");
-			}
-			return _NSSharingServiceNameComposeEmail;
-		}
-	}
-
-	[Field("NSSharingServiceNameComposeMessage", "AppKit")]
-	internal static NSString NSSharingServiceNameComposeMessage
-	{
-		get
-		{
-			if (_NSSharingServiceNameComposeMessage == null)
-			{
-				_NSSharingServiceNameComposeMessage = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSSharingServiceNameComposeMessage");
-			}
-			return _NSSharingServiceNameComposeMessage;
-		}
-	}
-
-	[Field("NSSharingServiceNameSendViaAirDrop", "AppKit")]
-	internal static NSString NSSharingServiceNameSendViaAirDrop
-	{
-		get
-		{
-			if (_NSSharingServiceNameSendViaAirDrop == null)
-			{
-				_NSSharingServiceNameSendViaAirDrop = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSSharingServiceNameSendViaAirDrop");
-			}
-			return _NSSharingServiceNameSendViaAirDrop;
-		}
-	}
-
-	[Field("NSSharingServiceNameAddToSafariReadingList", "AppKit")]
-	internal static NSString NSSharingServiceNameAddToSafariReadingList
-	{
-		get
-		{
-			if (_NSSharingServiceNameAddToSafariReadingList == null)
-			{
-				_NSSharingServiceNameAddToSafariReadingList = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSSharingServiceNameAddToSafariReadingList");
-			}
-			return _NSSharingServiceNameAddToSafariReadingList;
-		}
-	}
-
-	[Field("NSSharingServiceNameAddToIPhoto", "AppKit")]
-	internal static NSString NSSharingServiceNameAddToIPhoto
-	{
-		get
-		{
-			if (_NSSharingServiceNameAddToIPhoto == null)
-			{
-				_NSSharingServiceNameAddToIPhoto = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSSharingServiceNameAddToIPhoto");
-			}
-			return _NSSharingServiceNameAddToIPhoto;
-		}
-	}
-
-	[Field("NSSharingServiceNameAddToAperture", "AppKit")]
-	internal static NSString NSSharingServiceNameAddToAperture
-	{
-		get
-		{
-			if (_NSSharingServiceNameAddToAperture == null)
-			{
-				_NSSharingServiceNameAddToAperture = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSSharingServiceNameAddToAperture");
-			}
-			return _NSSharingServiceNameAddToAperture;
-		}
-	}
-
-	[Field("NSSharingServiceNameUseAsTwitterProfileImage", "AppKit")]
-	internal static NSString NSSharingServiceNameUseAsTwitterProfileImage
-	{
-		get
-		{
-			if (_NSSharingServiceNameUseAsTwitterProfileImage == null)
-			{
-				_NSSharingServiceNameUseAsTwitterProfileImage = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSSharingServiceNameUseAsTwitterProfileImage");
-			}
-			return _NSSharingServiceNameUseAsTwitterProfileImage;
-		}
-	}
-
-	[Field("NSSharingServiceNameUseAsDesktopPicture", "AppKit")]
-	internal static NSString NSSharingServiceNameUseAsDesktopPicture
-	{
-		get
-		{
-			if (_NSSharingServiceNameUseAsDesktopPicture == null)
-			{
-				_NSSharingServiceNameUseAsDesktopPicture = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSSharingServiceNameUseAsDesktopPicture");
-			}
-			return _NSSharingServiceNameUseAsDesktopPicture;
-		}
-	}
-
-	[Field("NSSharingServiceNamePostImageOnFlickr", "AppKit")]
-	internal static NSString NSSharingServiceNamePostImageOnFlickr
-	{
-		get
-		{
-			if (_NSSharingServiceNamePostImageOnFlickr == null)
-			{
-				_NSSharingServiceNamePostImageOnFlickr = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSSharingServiceNamePostImageOnFlickr");
-			}
-			return _NSSharingServiceNamePostImageOnFlickr;
-		}
-	}
-
-	[Field("NSSharingServiceNamePostVideoOnVimeo", "AppKit")]
-	internal static NSString NSSharingServiceNamePostVideoOnVimeo
-	{
-		get
-		{
-			if (_NSSharingServiceNamePostVideoOnVimeo == null)
-			{
-				_NSSharingServiceNamePostVideoOnVimeo = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSSharingServiceNamePostVideoOnVimeo");
-			}
-			return _NSSharingServiceNamePostVideoOnVimeo;
-		}
-	}
-
-	[Field("NSSharingServiceNamePostVideoOnYouku", "AppKit")]
-	internal static NSString NSSharingServiceNamePostVideoOnYouku
-	{
-		get
-		{
-			if (_NSSharingServiceNamePostVideoOnYouku == null)
-			{
-				_NSSharingServiceNamePostVideoOnYouku = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSSharingServiceNamePostVideoOnYouku");
-			}
-			return _NSSharingServiceNamePostVideoOnYouku;
-		}
-	}
-
-	[Field("NSSharingServiceNamePostVideoOnTudou", "AppKit")]
-	internal static NSString NSSharingServiceNamePostVideoOnTudou
-	{
-		get
-		{
-			if (_NSSharingServiceNamePostVideoOnTudou == null)
-			{
-				_NSSharingServiceNamePostVideoOnTudou = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSSharingServiceNamePostVideoOnTudou");
-			}
-			return _NSSharingServiceNamePostVideoOnTudou;
-		}
-	}
-
-	public NSSharingServiceSourceFrameOnScreenForShareItem SourceFrameOnScreenForShareItem
+	public NSSharingServiceSourceFrameOnScreenForShareItem? SourceFrameOnScreenForShareItem
 	{
 		get
 		{
@@ -419,19 +507,7 @@ public class NSSharingService : NSObject
 		}
 	}
 
-	public NSSharingServiceTransitionImageForShareItem TransitionImageForShareItem
-	{
-		get
-		{
-			return EnsureNSSharingServiceDelegate().transitionImageForShareItem;
-		}
-		set
-		{
-			EnsureNSSharingServiceDelegate().transitionImageForShareItem = value;
-		}
-	}
-
-	public NSSharingServiceSourceWindowForShareItems SourceWindowForShareItems
+	public NSSharingServiceSourceWindowForShareItems? SourceWindowForShareItems
 	{
 		get
 		{
@@ -443,17 +519,15 @@ public class NSSharingService : NSObject
 		}
 	}
 
-	public event EventHandler<NSSharingServiceItemsEventArgs> WillShareItems
+	public NSSharingServiceTransitionImageForShareItem? TransitionImageForShareItem
 	{
-		add
+		get
 		{
-			_NSSharingServiceDelegate nSSharingServiceDelegate = EnsureNSSharingServiceDelegate();
-			nSSharingServiceDelegate.willShareItems = (EventHandler<NSSharingServiceItemsEventArgs>)System.Delegate.Combine(nSSharingServiceDelegate.willShareItems, value);
+			return EnsureNSSharingServiceDelegate().transitionImageForShareItem;
 		}
-		remove
+		set
 		{
-			_NSSharingServiceDelegate nSSharingServiceDelegate = EnsureNSSharingServiceDelegate();
-			nSSharingServiceDelegate.willShareItems = (EventHandler<NSSharingServiceItemsEventArgs>)System.Delegate.Remove(nSSharingServiceDelegate.willShareItems, value);
+			EnsureNSSharingServiceDelegate().transitionImageForShareItem = value;
 		}
 	}
 
@@ -485,98 +559,65 @@ public class NSSharingService : NSObject
 		}
 	}
 
-	public static NSSharingService GetSharingService(NSSharingServiceName service)
+	public event EventHandler<NSSharingServiceItemsEventArgs> WillShareItems
 	{
-		return service switch
+		add
 		{
-			NSSharingServiceName.PostOnFacebook => GetSharingService(NSSharingServiceNamePostOnFacebook), 
-			NSSharingServiceName.PostOnTwitter => GetSharingService(NSSharingServiceNamePostOnTwitter), 
-			NSSharingServiceName.PostOnSinaWeibo => GetSharingService(NSSharingServiceNamePostOnSinaWeibo), 
-			NSSharingServiceName.ComposeEmail => GetSharingService(NSSharingServiceNameComposeEmail), 
-			NSSharingServiceName.ComposeMessage => GetSharingService(NSSharingServiceNameComposeMessage), 
-			NSSharingServiceName.SendViaAirDrop => GetSharingService(NSSharingServiceNameSendViaAirDrop), 
-			NSSharingServiceName.AddToSafariReadingList => GetSharingService(NSSharingServiceNameAddToSafariReadingList), 
-			NSSharingServiceName.AddToIPhoto => GetSharingService(NSSharingServiceNameAddToIPhoto), 
-			NSSharingServiceName.AddToAperture => GetSharingService(NSSharingServiceNameAddToAperture), 
-			NSSharingServiceName.UseAsTwitterProfileImage => GetSharingService(NSSharingServiceNameUseAsTwitterProfileImage), 
-			NSSharingServiceName.UseAsDesktopPicture => GetSharingService(NSSharingServiceNameUseAsDesktopPicture), 
-			NSSharingServiceName.PostImageOnFlickr => GetSharingService(NSSharingServiceNamePostImageOnFlickr), 
-			NSSharingServiceName.PostVideoOnVimeo => GetSharingService(NSSharingServiceNamePostVideoOnVimeo), 
-			NSSharingServiceName.PostVideoOnYouku => GetSharingService(NSSharingServiceNamePostVideoOnYouku), 
-			NSSharingServiceName.PostVideoOnTudou => GetSharingService(NSSharingServiceNamePostVideoOnTudou), 
-			_ => null, 
-		};
+			_NSSharingServiceDelegate nSSharingServiceDelegate = EnsureNSSharingServiceDelegate();
+			nSSharingServiceDelegate.willShareItems = (EventHandler<NSSharingServiceItemsEventArgs>)System.Delegate.Combine(nSSharingServiceDelegate.willShareItems, value);
+		}
+		remove
+		{
+			_NSSharingServiceDelegate nSSharingServiceDelegate = EnsureNSSharingServiceDelegate();
+			nSSharingServiceDelegate.willShareItems = (EventHandler<NSSharingServiceItemsEventArgs>)System.Delegate.Remove(nSSharingServiceDelegate.willShareItems, value);
+		}
 	}
 
+	public static NSSharingService GetSharingService(NSSharingServiceName service)
+	{
+		NSString constant = service.GetConstant();
+		if (constant == null)
+		{
+			return null;
+		}
+		return GetSharingService(constant);
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSSharingService()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSSharingService(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSSharingService(NSObjectFlag t)
+	protected NSSharingService(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSSharingService(IntPtr handle)
+	protected internal NSSharingService(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("sharingServicesForItems:")]
-	public static NSSharingService[] SharingServicesForItems(NSObject[] items)
-	{
-		NSApplication.EnsureUIThread();
-		if (items == null)
-		{
-			throw new ArgumentNullException("items");
-		}
-		NSArray nSArray = NSArray.FromNSObjects(items);
-		NSSharingService[] result = NSArray.ArrayFromHandle<NSSharingService>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selSharingServicesForItems_Handle, nSArray.Handle));
-		nSArray.Dispose();
-		return result;
-	}
-
-	[Export("sharingServiceNamed:")]
-	public static NSSharingService GetSharingService(NSString serviceName)
-	{
-		NSApplication.EnsureUIThread();
-		if (serviceName == null)
-		{
-			throw new ArgumentNullException("serviceName");
-		}
-		return (NSSharingService)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selSharingServiceNamed_Handle, serviceName.Handle));
-	}
-
 	[Export("initWithTitle:image:alternateImage:handler:")]
-	public unsafe NSSharingService(string title, NSImage image, NSImage alternateImage, NSSharingServiceHandler handler)
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public unsafe NSSharingService(string title, NSImage image, NSImage alternateImage, [BlockProxy(typeof(Trampolines.NIDNSSharingServiceHandler))] NSSharingServiceHandler handler)
 		: base(NSObjectFlag.Empty)
 	{
 		NSApplication.EnsureUIThread();
@@ -599,30 +640,44 @@ public class NSSharingService : NSObject
 		IntPtr arg = NSString.CreateNative(title);
 		BlockLiteral blockLiteral = default(BlockLiteral);
 		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlock(Trampolines.SDNSSharingServiceHandler.Handler, handler);
-		if (IsDirectBinding)
+		blockLiteral.SetupBlockUnsafe(Trampolines.SDNSSharingServiceHandler.Handler, handler);
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selInitWithTitleImageAlternateImageHandler_Handle, arg, image.Handle, alternateImage.Handle, (IntPtr)ptr);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selInitWithTitle_Image_AlternateImage_Handler_Handle, arg, image.Handle, alternateImage.Handle, (IntPtr)ptr), "initWithTitle:image:alternateImage:handler:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selInitWithTitleImageAlternateImageHandler_Handle, arg, image.Handle, alternateImage.Handle, (IntPtr)ptr);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selInitWithTitle_Image_AlternateImage_Handler_Handle, arg, image.Handle, alternateImage.Handle, (IntPtr)ptr), "initWithTitle:image:alternateImage:handler:");
 		}
 		NSString.ReleaseNative(arg);
 		ptr->CleanupBlock();
 	}
 
 	[Export("canPerformWithItems:")]
-	public virtual bool CanPerformWithItems(NSObject[] items)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool CanPerformWithItems(NSObject[]? items)
 	{
 		NSApplication.EnsureUIThread();
 		NSArray nSArray = ((items == null) ? null : NSArray.FromNSObjects(items));
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selCanPerformWithItems_Handle, nSArray?.Handle ?? IntPtr.Zero) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selCanPerformWithItems_Handle, nSArray?.Handle ?? IntPtr.Zero));
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selCanPerformWithItems_Handle, nSArray?.Handle ?? IntPtr.Zero) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selCanPerformWithItems_Handle, nSArray?.Handle ?? IntPtr.Zero));
 		nSArray?.Dispose();
 		return result;
 	}
 
+	[Export("sharingServiceNamed:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSSharingService GetSharingService(NSString serviceName)
+	{
+		NSApplication.EnsureUIThread();
+		if (serviceName == null)
+		{
+			throw new ArgumentNullException("serviceName");
+		}
+		return Runtime.GetNSObject<NSSharingService>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selSharingServiceNamed_Handle, serviceName.Handle));
+	}
+
 	[Export("performWithItems:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void PerformWithItems(NSObject[] items)
 	{
 		NSApplication.EnsureUIThread();
@@ -631,7 +686,7 @@ public class NSSharingService : NSObject
 			throw new ArgumentNullException("items");
 		}
 		NSArray nSArray = NSArray.FromNSObjects(items);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selPerformWithItems_Handle, nSArray.Handle);
 		}
@@ -642,24 +697,47 @@ public class NSSharingService : NSObject
 		nSArray.Dispose();
 	}
 
-	private _NSSharingServiceDelegate EnsureNSSharingServiceDelegate()
+	[Export("sharingServicesForItems:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSSharingService[] SharingServicesForItems(NSObject[] items)
 	{
-		NSObject nSObject = WeakDelegate;
-		if (nSObject == null || !(nSObject is _NSSharingServiceDelegate))
+		NSApplication.EnsureUIThread();
+		if (items == null)
 		{
-			nSObject = (WeakDelegate = new _NSSharingServiceDelegate());
+			throw new ArgumentNullException("items");
 		}
-		return (_NSSharingServiceDelegate)nSObject;
+		NSArray nSArray = NSArray.FromNSObjects(items);
+		NSSharingService[] result = NSArray.ArrayFromHandle<NSSharingService>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selSharingServicesForItems_Handle, nSArray.Handle));
+		nSArray.Dispose();
+		return result;
 	}
 
+	internal virtual _NSSharingServiceDelegate CreateInternalEventDelegateType()
+	{
+		return new _NSSharingServiceDelegate();
+	}
+
+	internal _NSSharingServiceDelegate EnsureNSSharingServiceDelegate()
+	{
+		if (WeakDelegate != null)
+		{
+			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakDelegate, GetInternalEventDelegateType);
+		}
+		_NSSharingServiceDelegate nSSharingServiceDelegate = Delegate as _NSSharingServiceDelegate;
+		if (nSSharingServiceDelegate == null)
+		{
+			nSSharingServiceDelegate = (_NSSharingServiceDelegate)(Delegate = CreateInternalEventDelegateType());
+		}
+		return nSSharingServiceDelegate;
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
 			__mt_WeakDelegate_var = null;
-			__mt_Image_var = null;
-			__mt_AlternateImage_var = null;
 		}
 	}
 }

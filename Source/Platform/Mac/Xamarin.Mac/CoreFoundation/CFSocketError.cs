@@ -1,8 +1,11 @@
+using ObjCRuntime;
+
 namespace CoreFoundation;
 
-public enum CFSocketError
+[Native]
+public enum CFSocketError : long
 {
-	Success = 0,
-	Error = -1,
-	Timeout = -2
+	Success = 0L,
+	Error = -1L,
+	Timeout = -2L
 }

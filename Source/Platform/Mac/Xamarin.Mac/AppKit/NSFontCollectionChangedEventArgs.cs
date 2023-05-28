@@ -6,12 +6,16 @@ namespace AppKit;
 
 public class NSFontCollectionChangedEventArgs : NSNotificationEventArgs
 {
+	[Field("NSFontCollectionActionKey", "AppKit")]
 	private static IntPtr k0;
 
+	[Field("NSFontCollectionNameKey", "AppKit")]
 	private static IntPtr k1;
 
+	[Field("NSFontCollectionOldNameKey", "AppKit")]
 	private static IntPtr k2;
 
+	[Field("NSFontCollectionVisibilityKey", "AppKit")]
 	private static IntPtr k3;
 
 	public NSFontCollectionAction Action
@@ -36,6 +40,7 @@ public class NSFontCollectionChangedEventArgs : NSNotificationEventArgs
 
 	public NSFontCollectionVisibility Visibility => (NSFontCollectionVisibility)(int)_Visibility;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	internal NSString _Action
 	{
 		get
@@ -44,15 +49,12 @@ public class NSFontCollectionChangedEventArgs : NSNotificationEventArgs
 			{
 				k0 = Dlfcn.GetIntPtr(Libraries.AppKit.Handle, "NSFontCollectionActionKey");
 			}
-			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k0);
-			if (intPtr == IntPtr.Zero)
-			{
-				return null;
-			}
-			return (NSString)Runtime.GetNSObject(intPtr);
+			IntPtr ptr = base.Notification.UserInfo?.LowlevelObjectForKey(k0) ?? IntPtr.Zero;
+			return Runtime.GetNSObject<NSString>(ptr);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public string Name
 	{
 		get
@@ -61,15 +63,12 @@ public class NSFontCollectionChangedEventArgs : NSNotificationEventArgs
 			{
 				k1 = Dlfcn.GetIntPtr(Libraries.AppKit.Handle, "NSFontCollectionNameKey");
 			}
-			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k1);
-			if (intPtr == IntPtr.Zero)
-			{
-				return null;
-			}
-			return NSString.FromHandle(intPtr);
+			IntPtr usrhandle = base.Notification.UserInfo?.LowlevelObjectForKey(k1) ?? IntPtr.Zero;
+			return NSString.FromHandle(usrhandle);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public string OldName
 	{
 		get
@@ -78,15 +77,12 @@ public class NSFontCollectionChangedEventArgs : NSNotificationEventArgs
 			{
 				k2 = Dlfcn.GetIntPtr(Libraries.AppKit.Handle, "NSFontCollectionOldNameKey");
 			}
-			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k2);
-			if (intPtr == IntPtr.Zero)
-			{
-				return null;
-			}
-			return NSString.FromHandle(intPtr);
+			IntPtr usrhandle = base.Notification.UserInfo?.LowlevelObjectForKey(k2) ?? IntPtr.Zero;
+			return NSString.FromHandle(usrhandle);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	internal NSNumber _Visibility
 	{
 		get
@@ -95,12 +91,8 @@ public class NSFontCollectionChangedEventArgs : NSNotificationEventArgs
 			{
 				k3 = Dlfcn.GetIntPtr(Libraries.AppKit.Handle, "NSFontCollectionVisibilityKey");
 			}
-			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k3);
-			if (intPtr == IntPtr.Zero)
-			{
-				return null;
-			}
-			return (NSNumber)Runtime.GetNSObject(intPtr);
+			IntPtr ptr = base.Notification.UserInfo?.LowlevelObjectForKey(k3) ?? IntPtr.Zero;
+			return Runtime.GetNSObject<NSNumber>(ptr);
 		}
 	}
 

@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
@@ -14,26 +13,20 @@ public class CGPDFStream : INativeObject
 
 	public CGPDFDictionary Dictionary => new CGPDFDictionary(CGPDFStreamGetDictionary(handle));
 
-	public NSData Data
-	{
-		get
-		{
-			int format;
-			IntPtr obj = CGPDFStreamCopyData(handle, out format);
-			NSData result = new NSData(obj);
-			CFObject.CFRelease(obj);
-			return result;
-		}
-	}
-
 	internal CGPDFStream(IntPtr handle)
 	{
 		this.handle = handle;
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGPDFStreamGetDictionary(IntPtr handle);
+	private static extern IntPtr CGPDFStreamGetDictionary(IntPtr stream);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGPDFStreamCopyData(IntPtr handle, out int format);
+	private static extern IntPtr CGPDFStreamCopyData(IntPtr stream, out CGPDFDataFormat format);
+
+	public NSData GetData(out CGPDFDataFormat format)
+	{
+		IntPtr ptr = CGPDFStreamCopyData(handle, out format);
+		return Runtime.GetNSObject<NSData>(ptr, owns: true);
+	}
 }

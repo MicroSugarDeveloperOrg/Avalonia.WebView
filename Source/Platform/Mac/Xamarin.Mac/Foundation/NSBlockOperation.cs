@@ -7,86 +7,73 @@ namespace Foundation;
 [Register("NSBlockOperation", true)]
 public class NSBlockOperation : NSOperation
 {
-	private static readonly IntPtr selExecutionBlocksHandle = Selector.GetHandle("executionBlocks");
-
-	private static readonly IntPtr selBlockOperationWithBlock_Handle = Selector.GetHandle("blockOperationWithBlock:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAddExecutionBlock_ = "addExecutionBlock:";
 
 	private static readonly IntPtr selAddExecutionBlock_Handle = Selector.GetHandle("addExecutionBlock:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSBlockOperation");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBlockOperationWithBlock_ = "blockOperationWithBlock:";
 
-	private object __mt_ExecutionBlocks_var;
+	private static readonly IntPtr selBlockOperationWithBlock_Handle = Selector.GetHandle("blockOperationWithBlock:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selExecutionBlocks = "executionBlocks";
+
+	private static readonly IntPtr selExecutionBlocksHandle = Selector.GetHandle("executionBlocks");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSBlockOperation");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSObject[] ExecutionBlocks
 	{
 		[Export("executionBlocks")]
 		get
 		{
-			return (NSObject[])(__mt_ExecutionBlocks_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selExecutionBlocksHandle)) : NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selExecutionBlocksHandle))));
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selExecutionBlocksHandle));
+			}
+			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selExecutionBlocksHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSBlockOperation()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSBlockOperation(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSBlockOperation(NSObjectFlag t)
+	protected NSBlockOperation(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSBlockOperation(IntPtr handle)
+	protected internal NSBlockOperation(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("blockOperationWithBlock:")]
-	public unsafe static NSBlockOperation Create(NSAction method)
-	{
-		if (method == null)
-		{
-			throw new ArgumentNullException("method");
-		}
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlock(Trampolines.SDNSAction.Handler, method);
-		NSBlockOperation result = (NSBlockOperation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selBlockOperationWithBlock_Handle, (IntPtr)ptr));
-		ptr->CleanupBlock();
-		return result;
-	}
-
 	[Export("addExecutionBlock:")]
-	public unsafe virtual void AddExecutionBlock(NSAction method)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public unsafe virtual void AddExecutionBlock([BlockProxy(typeof(Trampolines.NIDAction))] Action method)
 	{
 		if (method == null)
 		{
@@ -94,8 +81,8 @@ public class NSBlockOperation : NSOperation
 		}
 		BlockLiteral blockLiteral = default(BlockLiteral);
 		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlock(Trampolines.SDNSAction.Handler, method);
-		if (IsDirectBinding)
+		blockLiteral.SetupBlockUnsafe(Trampolines.SDAction.Handler, method);
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddExecutionBlock_Handle, (IntPtr)ptr);
 		}
@@ -106,12 +93,19 @@ public class NSBlockOperation : NSOperation
 		ptr->CleanupBlock();
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("blockOperationWithBlock:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public unsafe static NSBlockOperation Create([BlockProxy(typeof(Trampolines.NIDAction))] Action method)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		if (method == null)
 		{
-			__mt_ExecutionBlocks_var = null;
+			throw new ArgumentNullException("method");
 		}
+		BlockLiteral blockLiteral = default(BlockLiteral);
+		BlockLiteral* ptr = &blockLiteral;
+		blockLiteral.SetupBlockUnsafe(Trampolines.SDAction.Handler, method);
+		NSBlockOperation nSObject = Runtime.GetNSObject<NSBlockOperation>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selBlockOperationWithBlock_Handle, (IntPtr)ptr));
+		ptr->CleanupBlock();
+		return nSObject;
 	}
 }

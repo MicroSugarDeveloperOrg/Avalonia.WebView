@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using CoreGraphics;
 using Foundation;
@@ -8,7 +7,6 @@ using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
 public class CTFontDescriptorAttributes
 {
 	public NSDictionary Dictionary { get; private set; }
@@ -95,11 +93,7 @@ public class CTFontDescriptorAttributes
 		get
 		{
 			NSDictionary nSDictionary = (NSDictionary)Dictionary[CTFontDescriptorAttributeKey.Variation];
-			if (nSDictionary != null)
-			{
-				return new CTFontVariation(nSDictionary);
-			}
-			return null;
+			return (nSDictionary == null) ? null : new CTFontVariation(nSDictionary);
 		}
 		set
 		{
@@ -137,7 +131,7 @@ public class CTFontDescriptorAttributes
 				Adapter.SetValue((IDictionary<NSObject, NSObject>)Dictionary, (NSObject)CTFontDescriptorAttributeKey.Matrix, (NSObject)null);
 				return;
 			}
-			byte[] array = new byte[Marshal.SizeOf(typeof(CGAffineTransform))];
+			byte[] array = new byte[sizeof(CGAffineTransform)];
 			fixed (byte* ptr = array)
 			{
 				Marshal.StructureToPtr(value.Value, (IntPtr)ptr, fDeleteOld: false);
@@ -214,13 +208,13 @@ public class CTFontDescriptorAttributes
 		}
 		set
 		{
-			List<CTFontFeatures> source;
-			if (value == null || (source = new List<CTFontFeatures>(value)).Count == 0)
+			List<CTFontFeatures> list;
+			if (value == null || (list = new List<CTFontFeatures>(value)).Count == 0)
 			{
 				Adapter.SetValue((IDictionary<NSObject, NSObject>)Dictionary, (NSObject)CTFontDescriptorAttributeKey.Features, (NSObject)null);
 				return;
 			}
-			Adapter.SetValue(Dictionary, CTFontDescriptorAttributeKey.Features, NSArray.FromNSObjects(((IEnumerable<CTFontFeatures>)source).Select((Func<CTFontFeatures, NSObject>)((CTFontFeatures e) => e.Dictionary)).ToList()));
+			Adapter.SetValue(Dictionary, CTFontDescriptorAttributeKey.Features, NSArray.FromNSObjects((IList<NSObject>)list.ConvertAll((Converter<CTFontFeatures, NSObject>)((CTFontFeatures e) => e.Dictionary))));
 		}
 	}
 
@@ -232,13 +226,13 @@ public class CTFontDescriptorAttributes
 		}
 		set
 		{
-			List<CTFontFeatureSettings> source;
-			if (value == null || (source = new List<CTFontFeatureSettings>(value)).Count == 0)
+			List<CTFontFeatureSettings> list;
+			if (value == null || (list = new List<CTFontFeatureSettings>(value)).Count == 0)
 			{
 				Adapter.SetValue((IDictionary<NSObject, NSObject>)Dictionary, (NSObject)CTFontDescriptorAttributeKey.Features, (NSObject)null);
 				return;
 			}
-			Adapter.SetValue(Dictionary, CTFontDescriptorAttributeKey.FeatureSettings, NSArray.FromNSObjects(((IEnumerable<CTFontFeatureSettings>)source).Select((Func<CTFontFeatureSettings, NSObject>)((CTFontFeatureSettings e) => e.Dictionary)).ToList()));
+			Adapter.SetValue(Dictionary, CTFontDescriptorAttributeKey.FeatureSettings, NSArray.FromNSObjects((IList<NSObject>)list.ConvertAll((Converter<CTFontFeatureSettings, NSObject>)((CTFontFeatureSettings e) => e.Dictionary))));
 		}
 	}
 
@@ -259,11 +253,7 @@ public class CTFontDescriptorAttributes
 		get
 		{
 			uint? uInt32Value = Adapter.GetUInt32Value(Dictionary, CTFontDescriptorAttributeKey.FontOrientation);
-			if (uInt32Value.HasValue)
-			{
-				return (CTFontOrientation)uInt32Value.Value;
-			}
-			return null;
+			return (!uInt32Value.HasValue) ? null : new CTFontOrientation?((CTFontOrientation)uInt32Value.Value);
 		}
 		set
 		{
@@ -276,11 +266,7 @@ public class CTFontDescriptorAttributes
 		get
 		{
 			uint? uInt32Value = Adapter.GetUInt32Value(Dictionary, CTFontDescriptorAttributeKey.FontFormat);
-			if (uInt32Value.HasValue)
-			{
-				return (CTFontFormat)uInt32Value.Value;
-			}
-			return null;
+			return (!uInt32Value.HasValue) ? null : new CTFontFormat?((CTFontFormat)uInt32Value.Value);
 		}
 		set
 		{
@@ -288,15 +274,16 @@ public class CTFontDescriptorAttributes
 		}
 	}
 
-	public NSNumber RegistrationScope
+	public CTFontManagerScope? RegistrationScope
 	{
 		get
 		{
-			return (NSNumber)Dictionary[CTFontDescriptorAttributeKey.RegistrationScope];
+			nuint? unsignedIntegerValue = Adapter.GetUnsignedIntegerValue(Dictionary, CTFontDescriptorAttributeKey.RegistrationScope);
+			return (!unsignedIntegerValue.HasValue) ? null : new CTFontManagerScope?((CTFontManagerScope)(ulong)unsignedIntegerValue.Value);
 		}
 		set
 		{
-			Adapter.SetValue(Dictionary, CTFontDescriptorAttributeKey.RegistrationScope, value);
+			Adapter.SetValue(Dictionary, CTFontDescriptorAttributeKey.RegistrationScope, value.HasValue ? new nuint?((nuint)(ulong)value.Value) : null);
 		}
 	}
 
@@ -305,11 +292,7 @@ public class CTFontDescriptorAttributes
 		get
 		{
 			uint? uInt32Value = Adapter.GetUInt32Value(Dictionary, CTFontDescriptorAttributeKey.Priority);
-			if (uInt32Value.HasValue)
-			{
-				return (CTFontPriority)uInt32Value.Value;
-			}
-			return null;
+			return (!uInt32Value.HasValue) ? null : new CTFontPriority?((CTFontPriority)uInt32Value.Value);
 		}
 		set
 		{

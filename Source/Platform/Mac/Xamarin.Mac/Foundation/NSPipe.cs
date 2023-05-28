@@ -7,93 +7,88 @@ namespace Foundation;
 [Register("NSPipe", true)]
 public class NSPipe : NSObject
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFileHandleForReading = "fileHandleForReading";
+
 	private static readonly IntPtr selFileHandleForReadingHandle = Selector.GetHandle("fileHandleForReading");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFileHandleForWriting = "fileHandleForWriting";
 
 	private static readonly IntPtr selFileHandleForWritingHandle = Selector.GetHandle("fileHandleForWriting");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPipe = "pipe";
+
 	private static readonly IntPtr selPipeHandle = Selector.GetHandle("pipe");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSPipe");
-
-	private object __mt_ReadHandle_var;
-
-	private object __mt_WriteHandle_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSPipe");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSFileHandle ReadHandle
 	{
 		[Export("fileHandleForReading")]
 		get
 		{
-			return (NSFileHandle)(__mt_ReadHandle_var = ((!IsDirectBinding) ? ((NSFileHandle)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileHandleForReadingHandle))) : ((NSFileHandle)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFileHandleForReadingHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSFileHandle>(Messaging.IntPtr_objc_msgSend(base.Handle, selFileHandleForReadingHandle));
+			}
+			return Runtime.GetNSObject<NSFileHandle>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileHandleForReadingHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSFileHandle WriteHandle
 	{
 		[Export("fileHandleForWriting")]
 		get
 		{
-			return (NSFileHandle)(__mt_WriteHandle_var = ((!IsDirectBinding) ? ((NSFileHandle)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileHandleForWritingHandle))) : ((NSFileHandle)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFileHandleForWritingHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSFileHandle>(Messaging.IntPtr_objc_msgSend(base.Handle, selFileHandleForWritingHandle));
+			}
+			return Runtime.GetNSObject<NSFileHandle>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileHandleForWritingHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSPipe()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSPipe(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSPipe(NSObjectFlag t)
+	protected NSPipe(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSPipe(IntPtr handle)
+	protected internal NSPipe(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("pipe")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSPipe Create()
 	{
-		return (NSPipe)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selPipeHandle));
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_ReadHandle_var = null;
-			__mt_WriteHandle_var = null;
-		}
+		return Runtime.GetNSObject<NSPipe>(Messaging.IntPtr_objc_msgSend(class_ptr, selPipeHandle));
 	}
 }

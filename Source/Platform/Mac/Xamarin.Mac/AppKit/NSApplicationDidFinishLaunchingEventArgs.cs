@@ -6,10 +6,13 @@ namespace AppKit;
 
 public class NSApplicationDidFinishLaunchingEventArgs : NSNotificationEventArgs
 {
+	[Field("NSApplicationLaunchIsDefaultLaunchKey", "AppKit")]
 	private static IntPtr k0;
 
+	[Field("NSApplicationLaunchUserNotificationKey", "AppKit")]
 	private static IntPtr k1;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public bool IsLaunchDefault
 	{
 		get
@@ -18,16 +21,17 @@ public class NSApplicationDidFinishLaunchingEventArgs : NSNotificationEventArgs
 			{
 				k0 = Dlfcn.GetIntPtr(Libraries.AppKit.Handle, "NSApplicationLaunchIsDefaultLaunchKey");
 			}
-			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k0);
+			IntPtr intPtr = base.Notification.UserInfo?.LowlevelObjectForKey(k0) ?? IntPtr.Zero;
 			if (intPtr == IntPtr.Zero)
 			{
 				return false;
 			}
-			using NSNumber nSNumber = new NSNumber(intPtr);
+			using NSNumber nSNumber = Runtime.GetNSObject<NSNumber>(intPtr);
 			return nSNumber.BoolValue;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public bool IsLaunchFromUserNotification
 	{
 		get
@@ -36,11 +40,13 @@ public class NSApplicationDidFinishLaunchingEventArgs : NSNotificationEventArgs
 			{
 				k1 = Dlfcn.GetIntPtr(Libraries.AppKit.Handle, "NSApplicationLaunchUserNotificationKey");
 			}
-			if (base.Notification.UserInfo == null)
+			NSDictionary userInfo = base.Notification.UserInfo;
+			if (userInfo == null)
 			{
 				return false;
 			}
-			return base.Notification.UserInfo.LowlevelObjectForKey(k1) != IntPtr.Zero;
+			IntPtr intPtr = userInfo.LowlevelObjectForKey(k1);
+			return intPtr != IntPtr.Zero;
 		}
 	}
 

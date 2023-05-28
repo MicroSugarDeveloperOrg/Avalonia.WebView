@@ -1,5 +1,8 @@
+using ObjCRuntime;
+
 namespace Foundation;
 
+[Native]
 public enum NSDateFormatterStyle : ulong
 {
 	None,

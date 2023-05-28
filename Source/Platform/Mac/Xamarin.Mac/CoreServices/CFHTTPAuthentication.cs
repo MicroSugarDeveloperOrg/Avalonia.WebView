@@ -41,7 +41,7 @@ public class CFHTTPAuthentication : CFType, INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork", EntryPoint = "CFHTTPAuthenticationGetTypeID")]
-	public static extern int GetTypeID();
+	public static extern nint GetTypeID();
 
 	~CFHTTPAuthentication()
 	{
@@ -72,10 +72,14 @@ public class CFHTTPAuthentication : CFType, INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern IntPtr CFHTTPAuthenticationCreateFromResponse(IntPtr allocator, IntPtr response);
+	private static extern IntPtr CFHTTPAuthenticationCreateFromResponse(IntPtr alloc, IntPtr response);
 
 	public static CFHTTPAuthentication CreateFromResponse(CFHTTPMessage response)
 	{
+		if (response == null)
+		{
+			throw new ArgumentNullException("response");
+		}
 		if (response.IsRequest)
 		{
 			throw new InvalidOperationException();
@@ -85,17 +89,21 @@ public class CFHTTPAuthentication : CFType, INativeObject, IDisposable
 		{
 			return null;
 		}
-		return new CFHTTPAuthentication(intPtr);
+		return new CFHTTPAuthentication(intPtr, owns: true);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern bool CFHTTPAuthenticationIsValid(IntPtr handle, IntPtr error);
+	private static extern bool CFHTTPAuthenticationIsValid(IntPtr auth, IntPtr error);
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern bool CFHTTPAuthenticationAppliesToRequest(IntPtr handle, IntPtr request);
+	private static extern bool CFHTTPAuthenticationAppliesToRequest(IntPtr auth, IntPtr request);
 
 	public bool AppliesToRequest(CFHTTPMessage request)
 	{
+		if (request == null)
+		{
+			throw new ArgumentNullException("request");
+		}
 		if (!request.IsRequest)
 		{
 			throw new InvalidOperationException();
@@ -104,16 +112,16 @@ public class CFHTTPAuthentication : CFType, INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern bool CFHTTPAuthenticationRequiresAccountDomain(IntPtr handle);
+	private static extern bool CFHTTPAuthenticationRequiresAccountDomain(IntPtr auth);
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern bool CFHTTPAuthenticationRequiresOrderedRequests(IntPtr handle);
+	private static extern bool CFHTTPAuthenticationRequiresOrderedRequests(IntPtr auth);
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern bool CFHTTPAuthenticationRequiresUserNameAndPassword(IntPtr handle);
+	private static extern bool CFHTTPAuthenticationRequiresUserNameAndPassword(IntPtr auth);
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern IntPtr CFHTTPAuthenticationCopyMethod(IntPtr handle);
+	private static extern IntPtr CFHTTPAuthenticationCopyMethod(IntPtr auth);
 
 	public string GetMethod()
 	{

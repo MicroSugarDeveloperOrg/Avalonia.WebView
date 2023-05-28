@@ -10,7 +10,7 @@ internal class CFData : INativeObject, IDisposable
 
 	public IntPtr Handle => handle;
 
-	public int Length => CFDataGetLength(handle);
+	public nint Length => CFDataGetLength(handle);
 
 	public IntPtr Bytes => CFDataGetBytePtr(handle);
 
@@ -40,7 +40,7 @@ internal class CFData : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFDataGetTypeID")]
-	public static extern int GetTypeID();
+	public static extern nint GetTypeID();
 
 	protected virtual void Dispose(bool disposing)
 	{
@@ -51,37 +51,38 @@ internal class CFData : INativeObject, IDisposable
 		}
 	}
 
-	public static CFData FromDataNoCopy(IntPtr buffer, int length)
+	public static CFData FromDataNoCopy(IntPtr buffer, nint length)
 	{
 		return new CFData(CFDataCreateWithBytesNoCopy(IntPtr.Zero, buffer, length, CFAllocator.null_ptr), owns: true);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFDataCreateWithBytesNoCopy(IntPtr allocator, IntPtr bytes, int len, IntPtr deallocator);
+	private static extern IntPtr CFDataCreateWithBytesNoCopy(IntPtr allocator, IntPtr bytes, nint length, IntPtr bytesDeallocator);
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern CFIndex CFDataGetLength(IntPtr data);
+	private static extern nint CFDataGetLength(IntPtr theData);
 
 	public byte[] GetBuffer()
 	{
-		byte[] array = new byte[Length];
-		Marshal.Copy(CFDataGetBytePtr(handle), array, 0, array.Length);
+		byte[] array = new byte[(long)Length];
+		IntPtr source = CFDataGetBytePtr(handle);
+		Marshal.Copy(source, array, 0, array.Length);
 		return array;
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFDataGetBytePtr(IntPtr data);
+	private static extern IntPtr CFDataGetBytePtr(IntPtr theData);
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFDataCreate(IntPtr allocator, IntPtr bytes, CFIndex len);
+	private static extern IntPtr CFDataCreate(IntPtr allocator, IntPtr bytes, nint length);
 
-	public static CFData FromData(IntPtr buffer, int length)
+	public static CFData FromData(IntPtr buffer, nint length)
 	{
 		return new CFData(CFDataCreate(IntPtr.Zero, buffer, length), owns: true);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFDataCreateCopy(IntPtr allocator, IntPtr data);
+	private static extern IntPtr CFDataCreateCopy(IntPtr allocator, IntPtr theData);
 
 	public CFData Copy()
 	{

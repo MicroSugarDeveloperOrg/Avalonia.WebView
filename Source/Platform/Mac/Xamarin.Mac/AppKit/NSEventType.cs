@@ -1,5 +1,8 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
+[Native]
 public enum NSEventType : ulong
 {
 	LeftMouseDown = 1uL,
@@ -32,5 +35,7 @@ public enum NSEventType : ulong
 	BeginGesture = 19uL,
 	EndGesture = 20uL,
 	SmartMagnify = 32uL,
-	QuickLook = 33uL
+	QuickLook = 33uL,
+	Pressure = 34uL,
+	DirectTouch = 37uL
 }

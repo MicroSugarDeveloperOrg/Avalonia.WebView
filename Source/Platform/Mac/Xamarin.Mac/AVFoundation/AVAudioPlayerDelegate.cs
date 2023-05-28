@@ -6,60 +6,47 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Protocol]
-[Register("AVAudioPlayerDelegate", true)]
+[Register("AVAudioPlayerDelegate", false)]
 [Model]
-public class AVAudioPlayerDelegate : NSObject
+[Introduced(PlatformName.WatchOS, 3, 0, PlatformArchitecture.All, null)]
+public class AVAudioPlayerDelegate : NSObject, IAVAudioPlayerDelegate, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public AVAudioPlayerDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
+		base.IsDirectBinding = false;
+		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public AVAudioPlayerDelegate(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVAudioPlayerDelegate(NSObjectFlag t)
+	protected AVAudioPlayerDelegate(NSObjectFlag t)
 		: base(t)
 	{
+		base.IsDirectBinding = false;
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVAudioPlayerDelegate(IntPtr handle)
+	protected internal AVAudioPlayerDelegate(IntPtr handle)
 		: base(handle)
 	{
+		base.IsDirectBinding = false;
 	}
 
-	[Export("audioPlayerDidFinishPlaying:successfully:")]
-	public virtual void FinishedPlaying(AVAudioPlayer player, bool flag)
+	[Export("audioPlayerDecodeErrorDidOccur:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void DecoderError(AVAudioPlayer player, NSError? error)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("audioPlayerDecodeErrorDidOccur:error:")]
-	public virtual void DecoderError(AVAudioPlayer player, NSError error)
+	[Export("audioPlayerDidFinishPlaying:successfully:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void FinishedPlaying(AVAudioPlayer player, bool flag)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

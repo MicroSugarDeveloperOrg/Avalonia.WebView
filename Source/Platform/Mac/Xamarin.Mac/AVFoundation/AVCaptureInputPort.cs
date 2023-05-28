@@ -7,56 +7,67 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Register("AVCaptureInputPort", true)]
+[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
 public class AVCaptureInputPort : NSObject
 {
-	private static readonly IntPtr selMediaTypeHandle = Selector.GetHandle("mediaType");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selClock = "clock";
+
+	private static readonly IntPtr selClockHandle = Selector.GetHandle("clock");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFormatDescription = "formatDescription";
 
 	private static readonly IntPtr selFormatDescriptionHandle = Selector.GetHandle("formatDescription");
 
-	private static readonly IntPtr selIsEnabledHandle = Selector.GetHandle("isEnabled");
-
-	private static readonly IntPtr selSetEnabled_Handle = Selector.GetHandle("setEnabled:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInput = "input";
 
 	private static readonly IntPtr selInputHandle = Selector.GetHandle("input");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("AVCaptureInputPort");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsEnabled = "isEnabled";
 
-	private object __mt_Input_var;
+	private static readonly IntPtr selIsEnabledHandle = Selector.GetHandle("isEnabled");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMediaType = "mediaType";
+
+	private static readonly IntPtr selMediaTypeHandle = Selector.GetHandle("mediaType");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEnabled_ = "setEnabled:";
+
+	private static readonly IntPtr selSetEnabled_Handle = Selector.GetHandle("setEnabled:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVCaptureInputPort");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual string MediaType
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	public virtual CMClock? Clock
 	{
-		[Export("mediaType")]
+		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+		[Export("clock", ArgumentSemantic.Copy)]
 		get
 		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMediaTypeHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMediaTypeHandle));
+			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selClockHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selClockHandle));
+			return (intPtr == IntPtr.Zero) ? null : new CMClock(intPtr);
 		}
 	}
 
-	public virtual CMFormatDescription FormatDescription
-	{
-		[Export("formatDescription")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return new CMFormatDescription(Messaging.IntPtr_objc_msgSend(base.Handle, selFormatDescriptionHandle));
-			}
-			return new CMFormatDescription(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFormatDescriptionHandle));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Enabled
 	{
 		[Export("isEnabled")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsEnabledHandle);
 			}
@@ -65,7 +76,7 @@ public class AVCaptureInputPort : NSObject
 		[Export("setEnabled:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetEnabled_Handle, value);
 			}
@@ -76,63 +87,64 @@ public class AVCaptureInputPort : NSObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CMFormatDescription? FormatDescription
+	{
+		[Export("formatDescription")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return CMFormatDescription.Create(Messaging.IntPtr_objc_msgSend(base.Handle, selFormatDescriptionHandle));
+			}
+			return CMFormatDescription.Create(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFormatDescriptionHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual AVCaptureInput Input
 	{
 		[Export("input")]
 		get
 		{
-			return (AVCaptureInput)(__mt_Input_var = ((!IsDirectBinding) ? ((AVCaptureInput)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInputHandle))) : ((AVCaptureInput)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selInputHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<AVCaptureInput>(Messaging.IntPtr_objc_msgSend(base.Handle, selInputHandle));
+			}
+			return Runtime.GetNSObject<AVCaptureInput>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInputHandle));
 		}
 	}
 
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("init")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string MediaType
+	{
+		[Export("mediaType")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMediaTypeHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMediaTypeHandle));
+		}
+	}
+
+	[Obsolete("Valid instance of this type cannot be directly created.")]
 	public AVCaptureInputPort()
-		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public AVCaptureInputPort(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVCaptureInputPort(NSObjectFlag t)
+	protected AVCaptureInputPort(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVCaptureInputPort(IntPtr handle)
+	protected internal AVCaptureInputPort(IntPtr handle)
 		: base(handle)
 	{
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_Input_var = null;
-		}
 	}
 }

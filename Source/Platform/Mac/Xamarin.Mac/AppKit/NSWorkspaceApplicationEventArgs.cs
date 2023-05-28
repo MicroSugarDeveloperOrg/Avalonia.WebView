@@ -6,8 +6,10 @@ namespace AppKit;
 
 public class NSWorkspaceApplicationEventArgs : NSNotificationEventArgs
 {
+	[Field("NSWorkspaceApplicationKey", "AppKit")]
 	private static IntPtr k0;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSRunningApplication Application
 	{
 		get
@@ -16,12 +18,8 @@ public class NSWorkspaceApplicationEventArgs : NSNotificationEventArgs
 			{
 				k0 = Dlfcn.GetIntPtr(Libraries.AppKit.Handle, "NSWorkspaceApplicationKey");
 			}
-			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k0);
-			if (intPtr == IntPtr.Zero)
-			{
-				return null;
-			}
-			return (NSRunningApplication)Runtime.GetNSObject(intPtr);
+			IntPtr ptr = base.Notification.UserInfo?.LowlevelObjectForKey(k0) ?? IntPtr.Zero;
+			return Runtime.GetNSObject<NSRunningApplication>(ptr);
 		}
 	}
 

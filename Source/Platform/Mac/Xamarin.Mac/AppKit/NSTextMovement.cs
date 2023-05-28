@@ -1,14 +1,17 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
-public enum NSTextMovement : ulong
+[Native]
+public enum NSTextMovement : long
 {
-	Other = 0uL,
-	Return = 16uL,
-	Tab = 17uL,
-	Backtab = 18uL,
-	Left = 19uL,
-	Right = 20uL,
-	Up = 21uL,
-	Down = 22uL,
-	Cancel = 23uL
+	Other = 0L,
+	Return = 16L,
+	Tab = 17L,
+	Backtab = 18L,
+	Left = 19L,
+	Right = 20L,
+	Up = 21L,
+	Down = 22L,
+	Cancel = 23L
 }

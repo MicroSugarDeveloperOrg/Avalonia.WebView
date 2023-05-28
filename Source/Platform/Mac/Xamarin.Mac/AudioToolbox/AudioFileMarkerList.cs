@@ -22,7 +22,8 @@ public class AudioFileMarkerList : IDisposable
 			{
 				throw new ArgumentOutOfRangeException("index");
 			}
-			return *(AudioFileMarker*)((byte*)(void*)ptr + (nint)8 * (nint)sizeof(AudioFileMarker) + (nint)(index * sizeof(AudioFileMarker)) * (nint)sizeof(AudioFileMarker));
+			AudioFileMarker* ptr = (AudioFileMarker*)((byte*)(void*)this.ptr + (nint)8 * (nint)sizeof(AudioFileMarker) + (nint)(index * sizeof(AudioFileMarker)) * (nint)sizeof(AudioFileMarker));
+			return *ptr;
 		}
 	}
 
@@ -35,7 +36,6 @@ public class AudioFileMarkerList : IDisposable
 	~AudioFileMarkerList()
 	{
 		Dispose(disposing: false);
-		GC.SuppressFinalize(this);
 	}
 
 	public void Dispose()
@@ -53,6 +53,7 @@ public class AudioFileMarkerList : IDisposable
 			}
 			Marshal.FreeHGlobal(ptr);
 			ptr = IntPtr.Zero;
+			GC.SuppressFinalize(this);
 		}
 	}
 }

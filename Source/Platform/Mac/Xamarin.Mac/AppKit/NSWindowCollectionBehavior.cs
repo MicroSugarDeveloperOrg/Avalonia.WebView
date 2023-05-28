@@ -4,6 +4,7 @@ using ObjCRuntime;
 namespace AppKit;
 
 [Flags]
+[Native]
 public enum NSWindowCollectionBehavior : ulong
 {
 	Default = 0uL,
@@ -16,8 +17,9 @@ public enum NSWindowCollectionBehavior : ulong
 	IgnoresCycle = 0x40uL,
 	FullScreenPrimary = 0x80uL,
 	FullScreenAuxiliary = 0x100uL,
-	[ElCapitan]
+	FullScreenNone = 0x200uL,
+	[Mac(10, 11)]
 	FullScreenAllowsTiling = 0x800uL,
-	[ElCapitan]
+	[Mac(10, 11)]
 	FullScreenDisallowsTiling = 0x1000uL
 }

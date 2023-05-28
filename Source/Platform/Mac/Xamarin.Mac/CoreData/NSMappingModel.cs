@@ -8,32 +8,54 @@ namespace CoreData;
 [Register("NSMappingModel", true)]
 public class NSMappingModel : NSObject
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEntityMappings = "entityMappings";
+
 	private static readonly IntPtr selEntityMappingsHandle = Selector.GetHandle("entityMappings");
 
-	private static readonly IntPtr selSetEntityMappings_Handle = Selector.GetHandle("setEntityMappings:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEntityMappingsByName = "entityMappingsByName";
 
 	private static readonly IntPtr selEntityMappingsByNameHandle = Selector.GetHandle("entityMappingsByName");
 
-	private static readonly IntPtr selMappingModelFromBundlesForSourceModelDestinationModel_Handle = Selector.GetHandle("mappingModelFromBundles:forSourceModel:destinationModel:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInferredMappingModelForSourceModel_DestinationModel_Error_ = "inferredMappingModelForSourceModel:destinationModel:error:";
+
+	private static readonly IntPtr selInferredMappingModelForSourceModel_DestinationModel_Error_Handle = Selector.GetHandle("inferredMappingModelForSourceModel:destinationModel:error:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithContentsOfURL_ = "initWithContentsOfURL:";
 
 	private static readonly IntPtr selInitWithContentsOfURL_Handle = Selector.GetHandle("initWithContentsOfURL:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSMappingModel");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMappingModelFromBundles_ForSourceModel_DestinationModel_ = "mappingModelFromBundles:forSourceModel:destinationModel:";
 
-	private object __mt_EntityMappings_var;
+	private static readonly IntPtr selMappingModelFromBundles_ForSourceModel_DestinationModel_Handle = Selector.GetHandle("mappingModelFromBundles:forSourceModel:destinationModel:");
 
-	private object __mt_EntityMappingsByName_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEntityMappings_ = "setEntityMappings:";
+
+	private static readonly IntPtr selSetEntityMappings_Handle = Selector.GetHandle("setEntityMappings:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSMappingModel");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSEntityMapping[] EntityMappings
 	{
-		[Export("entityMappings")]
+		[Export("entityMappings", ArgumentSemantic.Retain)]
 		get
 		{
-			return (NSEntityMapping[])(__mt_EntityMappings_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSEntityMapping>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntityMappingsHandle)) : NSArray.ArrayFromHandle<NSEntityMapping>(Messaging.IntPtr_objc_msgSend(base.Handle, selEntityMappingsHandle))));
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<NSEntityMapping>(Messaging.IntPtr_objc_msgSend(base.Handle, selEntityMappingsHandle));
+			}
+			return NSArray.ArrayFromHandle<NSEntityMapping>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntityMappingsHandle));
 		}
-		[Export("setEntityMappings:")]
+		[Export("setEntityMappings:", ArgumentSemantic.Retain)]
 		set
 		{
 			if (value == null)
@@ -41,7 +63,7 @@ public class NSMappingModel : NSObject
 				throw new ArgumentNullException("value");
 			}
 			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetEntityMappings_Handle, nSArray.Handle);
 			}
@@ -50,63 +72,93 @@ public class NSMappingModel : NSObject
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetEntityMappings_Handle, nSArray.Handle);
 			}
 			nSArray.Dispose();
-			__mt_EntityMappings_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDictionary EntityMappingsByName
 	{
-		[Export("entityMappingsByName")]
+		[Export("entityMappingsByName", ArgumentSemantic.Copy)]
 		get
 		{
-			return (NSDictionary)(__mt_EntityMappingsByName_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntityMappingsByNameHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selEntityMappingsByNameHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selEntityMappingsByNameHandle));
+			}
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntityMappingsByNameHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSMappingModel()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSMappingModel(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSMappingModel(NSObjectFlag t)
+	protected NSMappingModel(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSMappingModel(IntPtr handle)
+	protected internal NSMappingModel(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("initWithContentsOfURL:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public NSMappingModel(NSUrl url)
+		: base(NSObjectFlag.Empty)
+	{
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		if (base.IsDirectBinding)
+		{
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithContentsOfURL_Handle, url.Handle), "initWithContentsOfURL:");
+		}
+		else
+		{
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithContentsOfURL_Handle, url.Handle), "initWithContentsOfURL:");
+		}
+	}
+
+	[Export("inferredMappingModelForSourceModel:destinationModel:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSMappingModel? GetInferredMappingModel(NSManagedObjectModel source, NSManagedObjectModel destination, out NSError error)
+	{
+		if (source == null)
+		{
+			throw new ArgumentNullException("source");
+		}
+		if (destination == null)
+		{
+			throw new ArgumentNullException("destination");
+		}
+		IntPtr arg = IntPtr.Zero;
+		NSMappingModel nSObject = Runtime.GetNSObject<NSMappingModel>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_ref_IntPtr(class_ptr, selInferredMappingModelForSourceModel_DestinationModel_Error_Handle, source.Handle, destination.Handle, ref arg));
+		error = Runtime.GetNSObject<NSError>(arg);
+		return nSObject;
+	}
+
 	[Export("mappingModelFromBundles:forSourceModel:destinationModel:")]
-	public static NSMappingModel MappingModelFromBundles(NSBundle[] bundles, NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSMappingModel? MappingModelFromBundles(NSBundle[] bundles, NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel)
 	{
 		if (bundles == null)
 		{
@@ -121,36 +173,8 @@ public class NSMappingModel : NSObject
 			throw new ArgumentNullException("destinationModel");
 		}
 		NSArray nSArray = NSArray.FromNSObjects(bundles);
-		NSMappingModel result = (NSMappingModel)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selMappingModelFromBundlesForSourceModelDestinationModel_Handle, nSArray.Handle, sourceModel.Handle, destinationModel.Handle));
+		NSMappingModel nSObject = Runtime.GetNSObject<NSMappingModel>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selMappingModelFromBundles_ForSourceModel_DestinationModel_Handle, nSArray.Handle, sourceModel.Handle, destinationModel.Handle));
 		nSArray.Dispose();
-		return result;
-	}
-
-	[Export("initWithContentsOfURL:")]
-	public NSMappingModel(NSUrl url)
-		: base(NSObjectFlag.Empty)
-	{
-		if (url == null)
-		{
-			throw new ArgumentNullException("url");
-		}
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithContentsOfURL_Handle, url.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithContentsOfURL_Handle, url.Handle);
-		}
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_EntityMappings_var = null;
-			__mt_EntityMappingsByName_var = null;
-		}
+		return nSObject;
 	}
 }

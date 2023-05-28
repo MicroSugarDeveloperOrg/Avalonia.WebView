@@ -12,20 +12,9 @@ internal static class CTBaselineFondID
 
 	static CTBaselineFondID()
 	{
-		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText", 0);
-		if (intPtr == IntPtr.Zero)
-		{
-			return;
-		}
-		try
-		{
-			Reference = Dlfcn.GetStringConstant(intPtr, "kCTBaselineReferenceFont");
-			Original = Dlfcn.GetStringConstant(intPtr, "kCTBaselineOriginalFont");
-		}
-		finally
-		{
-			Dlfcn.dlclose(intPtr);
-		}
+		IntPtr handle = Libraries.CoreText.Handle;
+		Reference = Dlfcn.GetStringConstant(handle, "kCTBaselineReferenceFont");
+		Original = Dlfcn.GetStringConstant(handle, "kCTBaselineOriginalFont");
 	}
 
 	public static NSString ToNSString(CTBaselineFont key)

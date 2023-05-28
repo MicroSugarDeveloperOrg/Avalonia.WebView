@@ -4,9 +4,9 @@ namespace ImageKit;
 
 public class IKImageBrowserViewIndexEventArgs : EventArgs
 {
-	public int Index { get; set; }
+	public nint Index { get; set; }
 
-	public IKImageBrowserViewIndexEventArgs(int index)
+	public IKImageBrowserViewIndexEventArgs(nint index)
 	{
 		Index = index;
 	}

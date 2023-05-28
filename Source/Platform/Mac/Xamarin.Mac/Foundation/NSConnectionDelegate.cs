@@ -4,84 +4,79 @@ using ObjCRuntime;
 
 namespace Foundation;
 
-[Register("NSConnectionDelegate", true)]
+[Protocol]
+[Register("NSConnectionDelegate", false)]
 [Model]
-public class NSConnectionDelegate : NSObject
+[Deprecated(PlatformName.MacOSX, 10, 13, PlatformArchitecture.None, "Use 'NSXpcConnection' instead.")]
+[Deprecated(PlatformName.iOS, 11, 0, PlatformArchitecture.None, "Use 'NSXpcConnection' instead.")]
+[Deprecated(PlatformName.WatchOS, 2, 0, PlatformArchitecture.None, "Use 'NSXpcConnection' instead.")]
+[Deprecated(PlatformName.TvOS, 11, 0, PlatformArchitecture.None, "Use 'NSXpcConnection' instead.")]
+public class NSConnectionDelegate : NSObject, INSConnectionDelegate, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSConnectionDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
+		base.IsDirectBinding = false;
+		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSConnectionDelegate(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSConnectionDelegate(NSObjectFlag t)
+	protected NSConnectionDelegate(NSObjectFlag t)
 		: base(t)
 	{
+		base.IsDirectBinding = false;
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSConnectionDelegate(IntPtr handle)
+	protected internal NSConnectionDelegate(IntPtr handle)
 		: base(handle)
 	{
+		base.IsDirectBinding = false;
+	}
+
+	[Export("makeNewConnection:sender:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool AllowNewConnection(NSConnection newConnection, NSConnection parentConnection)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("authenticateComponents:withData:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool AuthenticateComponents(NSArray components, NSData authenticationData)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("authenticationDataForComponents:")]
-	public virtual NSData GetAuthenticationData(NSArray components)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("connection:shouldMakeNewConnection:")]
-	public virtual bool ShouldMakeNewConnection(NSConnection parentConnection, NSConnection newConnection)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("connection:handleRequest:")]
-	public virtual bool HandleRequest(NSConnection connection, NSDistantObjectRequest request)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
 	[Export("createConversationForConnection:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSObject CreateConversation(NSConnection connection)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("makeNewConnection:sender:")]
-	public virtual bool AllowNewConnection(NSConnection newConnection, NSConnection parentConnection)
+	[Export("authenticationDataForComponents:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSData GetAuthenticationData(NSArray components)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("connection:handleRequest:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool HandleRequest(NSConnection connection, NSDistantObjectRequest request)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("connection:shouldMakeNewConnection:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ShouldMakeNewConnection(NSConnection parentConnection, NSConnection newConnection)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

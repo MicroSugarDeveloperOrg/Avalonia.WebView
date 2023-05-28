@@ -1,17 +1,12 @@
 using System;
 using System.Runtime.InteropServices;
 using Foundation;
-using ObjCRuntime;
 
 namespace CoreFoundation;
 
-public class CFString : INativeObject, IDisposable
+public class CFString : NativeObject
 {
-	internal IntPtr handle;
-
 	internal string str;
-
-	public IntPtr Handle => handle;
 
 	public int Length
 	{
@@ -21,27 +16,31 @@ public class CFString : INativeObject, IDisposable
 			{
 				return str.Length;
 			}
-			return CFStringGetLength(handle);
+			return (int)CFStringGetLength(base.Handle);
 		}
 	}
 
-	public char this[int p]
+	public char this[nint p]
 	{
 		get
 		{
 			if (str != null)
 			{
-				return str[p];
+				return str[(int)p];
 			}
-			return CFStringGetCharacterAtIndex(handle, p);
+			return CFStringGetCharacterAtIndex(base.Handle, p);
 		}
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", CharSet = CharSet.Unicode)]
-	private static extern IntPtr CFStringCreateWithCharacters(IntPtr allocator, string str, int count);
+	protected CFString()
+	{
+	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", CharSet = CharSet.Unicode)]
-	private static extern int CFStringGetLength(IntPtr handle);
+	private static extern IntPtr CFStringCreateWithCharacters(IntPtr allocator, string str, nint count);
+
+	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", CharSet = CharSet.Unicode)]
+	private static extern nint CFStringGetLength(IntPtr handle);
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", CharSet = CharSet.Unicode)]
 	private static extern IntPtr CFStringGetCharactersPtr(IntPtr handle);
@@ -49,39 +48,27 @@ public class CFString : INativeObject, IDisposable
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", CharSet = CharSet.Unicode)]
 	private static extern IntPtr CFStringGetCharacters(IntPtr handle, CFRange range, IntPtr buffer);
 
+	internal static IntPtr LowLevelCreate(string str)
+	{
+		if (str == null)
+		{
+			return IntPtr.Zero;
+		}
+		return CFStringCreateWithCharacters(IntPtr.Zero, str, str.Length);
+	}
+
 	public CFString(string str)
 	{
 		if (str == null)
 		{
 			throw new ArgumentNullException("str");
 		}
-		handle = CFStringCreateWithCharacters(IntPtr.Zero, str, str.Length);
+		base.Handle = CFStringCreateWithCharacters(IntPtr.Zero, str, str.Length);
 		this.str = str;
 	}
 
-	~CFString()
-	{
-		Dispose(disposing: false);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText", EntryPoint = "CFStringGetTypeID")]
-	public static extern int GetTypeID();
-
-	public void Dispose()
-	{
-		Dispose(disposing: true);
-		GC.SuppressFinalize(this);
-	}
-
-	public virtual void Dispose(bool disposing)
-	{
-		str = null;
-		if (handle != IntPtr.Zero)
-		{
-			CFObject.CFRelease(handle);
-			handle = IntPtr.Zero;
-		}
-	}
+	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFStringGetTypeID")]
+	public static extern nint GetTypeID();
 
 	public CFString(IntPtr handle)
 		: this(handle, owns: false)
@@ -89,13 +76,9 @@ public class CFString : INativeObject, IDisposable
 	}
 
 	[Preserve(Conditional = true)]
-	internal CFString(IntPtr handle, bool owns)
+	protected internal CFString(IntPtr handle, bool owns)
+		: base(handle, owns)
 	{
-		this.handle = handle;
-		if (!owns)
-		{
-			CFObject.CFRetain(handle);
-		}
 	}
 
 	internal unsafe static string FetchString(IntPtr handle)
@@ -104,7 +87,7 @@ public class CFString : INativeObject, IDisposable
 		{
 			return null;
 		}
-		int num = CFStringGetLength(handle);
+		int num = (int)CFStringGetLength(handle);
 		IntPtr intPtr = CFStringGetCharactersPtr(handle);
 		IntPtr intPtr2 = IntPtr.Zero;
 		if (intPtr == IntPtr.Zero)
@@ -122,11 +105,21 @@ public class CFString : INativeObject, IDisposable
 		return result;
 	}
 
+	internal static string FetchString(IntPtr handle, bool releaseHandle)
+	{
+		string result = FetchString(handle);
+		if (releaseHandle && handle != IntPtr.Zero)
+		{
+			CFObject.CFRelease(handle);
+		}
+		return result;
+	}
+
 	public static implicit operator string(CFString x)
 	{
 		if (x.str == null)
 		{
-			x.str = FetchString(x.handle);
+			x.str = FetchString(x.Handle);
 		}
 		return x.str;
 	}
@@ -137,7 +130,7 @@ public class CFString : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", CharSet = CharSet.Unicode)]
-	private static extern char CFStringGetCharacterAtIndex(IntPtr handle, int p);
+	private static extern char CFStringGetCharacterAtIndex(IntPtr handle, nint p);
 
 	public override string ToString()
 	{
@@ -145,6 +138,6 @@ public class CFString : INativeObject, IDisposable
 		{
 			return str;
 		}
-		return FetchString(handle);
+		return FetchString(base.Handle);
 	}
 }

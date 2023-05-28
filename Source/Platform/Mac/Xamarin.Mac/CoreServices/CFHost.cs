@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Runtime.InteropServices;
 using CoreFoundation;
 using ObjCRuntime;
@@ -37,11 +38,20 @@ internal class CFHost : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
-	private static extern IntPtr CFHostCreateWithName(IntPtr allocator, IntPtr name);
+	private static extern IntPtr CFHostCreateWithAddress(IntPtr allocator, IntPtr addr);
+
+	public static CFHost Create(IPEndPoint endpoint)
+	{
+		using CFSocketAddress cFSocketAddress = new CFSocketAddress(endpoint);
+		return new CFHost(CFHostCreateWithAddress(IntPtr.Zero, cFSocketAddress.Handle));
+	}
+
+	[DllImport("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork")]
+	private static extern IntPtr CFHostCreateWithName(IntPtr allocator, IntPtr hostname);
 
 	public static CFHost Create(string name)
 	{
-		CFString cFString = new CFString(name);
+		using CFString cFString = new CFString(name);
 		return new CFHost(CFHostCreateWithName(IntPtr.Zero, cFString.Handle));
 	}
 }

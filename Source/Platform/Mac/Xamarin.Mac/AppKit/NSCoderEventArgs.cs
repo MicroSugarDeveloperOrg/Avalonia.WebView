@@ -5,10 +5,10 @@ namespace AppKit;
 
 public class NSCoderEventArgs : EventArgs
 {
-	public NSCoder Encoder { get; set; }
+	public NSCoder State { get; set; }
 
-	public NSCoderEventArgs(NSCoder encoder)
+	public NSCoderEventArgs(NSCoder state)
 	{
-		Encoder = encoder;
+		State = state;
 	}
 }

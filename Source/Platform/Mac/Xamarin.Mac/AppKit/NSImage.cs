@@ -8,51 +8,29 @@ using ObjCRuntime;
 namespace AppKit;
 
 [Register("NSImage", true)]
-public class NSImage : NSObject
+public class NSImage : NSObject, INSCoding, INativeObject, IDisposable, INSCopying, INSPasteboardReading, INSPasteboardWriting, INSSecureCoding
 {
 	[Register]
-	private sealed class _NSImageDelegate : NSImageDelegate
+	internal class _NSImageDelegate : NSObject, INSImageDelegate, INativeObject, IDisposable
 	{
-		internal NSImageRect imageDidNotDraw;
+		internal EventHandler<NSImagePartialEventArgs>? didLoadPartOfRepresentation;
 
-		internal EventHandler<NSImageLoadEventArgs> willLoadRepresentation;
+		internal EventHandler<NSImageLoadRepresentationEventArgs>? didLoadRepresentation;
 
-		internal EventHandler<NSImageLoadEventArgs> didLoadRepresentationHeader;
+		internal EventHandler<NSImageLoadEventArgs>? didLoadRepresentationHeader;
 
-		internal EventHandler<NSImagePartialEventArgs> didLoadPartOfRepresentation;
+		internal NSImageRect? imageDidNotDraw;
 
-		internal EventHandler<NSImageLoadRepresentationEventArgs> didLoadRepresentation;
+		internal EventHandler<NSImageLoadEventArgs>? willLoadRepresentation;
 
-		[Preserve(Conditional = true)]
-		public override NSImage ImageDidNotDraw(NSObject sender, CGRect aRect)
+		public _NSImageDelegate()
 		{
-			return imageDidNotDraw?.Invoke(sender, aRect);
+			base.IsDirectBinding = false;
 		}
 
 		[Preserve(Conditional = true)]
-		public override void WillLoadRepresentation(NSImage image, NSImageRep rep)
-		{
-			EventHandler<NSImageLoadEventArgs> eventHandler = willLoadRepresentation;
-			if (eventHandler != null)
-			{
-				NSImageLoadEventArgs e = new NSImageLoadEventArgs(rep);
-				eventHandler(image, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void DidLoadRepresentationHeader(NSImage image, NSImageRep rep)
-		{
-			EventHandler<NSImageLoadEventArgs> eventHandler = didLoadRepresentationHeader;
-			if (eventHandler != null)
-			{
-				NSImageLoadEventArgs e = new NSImageLoadEventArgs(rep);
-				eventHandler(image, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void DidLoadPartOfRepresentation(NSImage image, NSImageRep rep, long rows)
+		[Export("image:didLoadPartOfRepresentation:withValidRows:")]
+		public void DidLoadPartOfRepresentation(NSImage image, NSImageRep rep, nint rows)
 		{
 			EventHandler<NSImagePartialEventArgs> eventHandler = didLoadPartOfRepresentation;
 			if (eventHandler != null)
@@ -63,7 +41,8 @@ public class NSImage : NSObject
 		}
 
 		[Preserve(Conditional = true)]
-		public override void DidLoadRepresentation(NSImage image, NSImageRep rep, NSImageLoadStatus status)
+		[Export("image:didLoadRepresentation:withStatus:")]
+		public void DidLoadRepresentation(NSImage image, NSImageRep rep, NSImageLoadStatus status)
 		{
 			EventHandler<NSImageLoadRepresentationEventArgs> eventHandler = didLoadRepresentation;
 			if (eventHandler != null)
@@ -72,213 +51,439 @@ public class NSImage : NSObject
 				eventHandler(image, e);
 			}
 		}
+
+		[Preserve(Conditional = true)]
+		[Export("image:didLoadRepresentationHeader:")]
+		public void DidLoadRepresentationHeader(NSImage image, NSImageRep rep)
+		{
+			EventHandler<NSImageLoadEventArgs> eventHandler = didLoadRepresentationHeader;
+			if (eventHandler != null)
+			{
+				NSImageLoadEventArgs e = new NSImageLoadEventArgs(rep);
+				eventHandler(image, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("imageDidNotDraw:inRect:")]
+		public NSImage ImageDidNotDraw(NSObject sender, CGRect aRect)
+		{
+			return imageDidNotDraw?.Invoke(sender, aRect);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("image:willLoadRepresentation:")]
+		public void WillLoadRepresentation(NSImage image, NSImageRep rep)
+		{
+			EventHandler<NSImageLoadEventArgs> eventHandler = willLoadRepresentation;
+			if (eventHandler != null)
+			{
+				NSImageLoadEventArgs e = new NSImageLoadEventArgs(rep);
+				eventHandler(image, e);
+			}
+		}
 	}
 
-	private object __mt_reps_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCGImageForProposedRect_Context_Hints_ = "CGImageForProposedRect:context:hints:";
 
-	private static readonly IntPtr selIsValidHandle = Selector.GetHandle("isValid");
+	private static readonly IntPtr selCGImageForProposedRect_Context_Hints_Handle = Selector.GetHandle("CGImageForProposedRect:context:hints:");
 
-	private static readonly IntPtr selImageFileTypesHandle = Selector.GetHandle("imageFileTypes");
-
-	private static readonly IntPtr selImagePasteboardTypesHandle = Selector.GetHandle("imagePasteboardTypes");
-
-	private static readonly IntPtr selImageTypesHandle = Selector.GetHandle("imageTypes");
-
-	private static readonly IntPtr selImageUnfilteredTypesHandle = Selector.GetHandle("imageUnfilteredTypes");
-
-	private static readonly IntPtr selAccessibilityDescriptionHandle = Selector.GetHandle("accessibilityDescription");
-
-	private static readonly IntPtr selSetAccessibilityDescription_Handle = Selector.GetHandle("setAccessibilityDescription:");
-
-	private static readonly IntPtr selSizeHandle = Selector.GetHandle("size");
-
-	private static readonly IntPtr selSetSize_Handle = Selector.GetHandle("setSize:");
-
-	private static readonly IntPtr selBackgroundColorHandle = Selector.GetHandle("backgroundColor");
-
-	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
-
-	private static readonly IntPtr selUsesEPSOnResolutionMismatchHandle = Selector.GetHandle("usesEPSOnResolutionMismatch");
-
-	private static readonly IntPtr selSetUsesEPSOnResolutionMismatch_Handle = Selector.GetHandle("setUsesEPSOnResolutionMismatch:");
-
-	private static readonly IntPtr selPrefersColorMatchHandle = Selector.GetHandle("prefersColorMatch");
-
-	private static readonly IntPtr selSetPrefersColorMatch_Handle = Selector.GetHandle("setPrefersColorMatch:");
-
-	private static readonly IntPtr selMatchesOnMultipleResolutionHandle = Selector.GetHandle("matchesOnMultipleResolution");
-
-	private static readonly IntPtr selSetMatchesOnMultipleResolution_Handle = Selector.GetHandle("setMatchesOnMultipleResolution:");
-
-	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
-
-	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
-
-	private static readonly IntPtr selCacheModeHandle = Selector.GetHandle("cacheMode");
-
-	private static readonly IntPtr selSetCacheMode_Handle = Selector.GetHandle("setCacheMode:");
-
-	private static readonly IntPtr selAlignmentRectHandle = Selector.GetHandle("alignmentRect");
-
-	private static readonly IntPtr selSetAlignmentRect_Handle = Selector.GetHandle("setAlignmentRect:");
-
-	private static readonly IntPtr selIsTemplateHandle = Selector.GetHandle("isTemplate");
-
-	private static readonly IntPtr selSetTemplate_Handle = Selector.GetHandle("setTemplate:");
-
-	private static readonly IntPtr selIsFlippedHandle = Selector.GetHandle("isFlipped");
-
-	private static readonly IntPtr selSetFlipped_Handle = Selector.GetHandle("setFlipped:");
-
-	private static readonly IntPtr selImageNamed_Handle = Selector.GetHandle("imageNamed:");
-
-	private static readonly IntPtr selInitWithSize_Handle = Selector.GetHandle("initWithSize:");
-
-	private static readonly IntPtr selInitWithData_Handle = Selector.GetHandle("initWithData:");
-
-	private static readonly IntPtr selInitWithContentsOfFile_Handle = Selector.GetHandle("initWithContentsOfFile:");
-
-	private static readonly IntPtr selInitWithContentsOfURL_Handle = Selector.GetHandle("initWithContentsOfURL:");
-
-	private static readonly IntPtr selInitWithPasteboard_Handle = Selector.GetHandle("initWithPasteboard:");
-
-	private static readonly IntPtr selDrawAtPointFromRectOperationFraction_Handle = Selector.GetHandle("drawAtPoint:fromRect:operation:fraction:");
-
-	private static readonly IntPtr selDrawInRectFromRectOperationFraction_Handle = Selector.GetHandle("drawInRect:fromRect:operation:fraction:");
-
-	private static readonly IntPtr selDrawInRectFromRectOperationFractionRespectFlippedHints_Handle = Selector.GetHandle("drawInRect:fromRect:operation:fraction:respectFlipped:hints:");
-
-	private static readonly IntPtr selDrawRepresentationInRect_Handle = Selector.GetHandle("drawRepresentation:inRect:");
-
-	private static readonly IntPtr selRecacheHandle = Selector.GetHandle("recache");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTIFFRepresentation = "TIFFRepresentation";
 
 	private static readonly IntPtr selTIFFRepresentationHandle = Selector.GetHandle("TIFFRepresentation");
 
-	private static readonly IntPtr selTIFFRepresentationUsingCompressionFactor_Handle = Selector.GetHandle("TIFFRepresentationUsingCompression:factor:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTIFFRepresentationUsingCompression_Factor_ = "TIFFRepresentationUsingCompression:factor:";
 
-	private static readonly IntPtr selRepresentationsHandle = Selector.GetHandle("representations");
+	private static readonly IntPtr selTIFFRepresentationUsingCompression_Factor_Handle = Selector.GetHandle("TIFFRepresentationUsingCompression:factor:");
 
-	private static readonly IntPtr selAddRepresentations_Handle = Selector.GetHandle("addRepresentations:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAccessibilityDescription = "accessibilityDescription";
+
+	private static readonly IntPtr selAccessibilityDescriptionHandle = Selector.GetHandle("accessibilityDescription");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAddRepresentation_ = "addRepresentation:";
 
 	private static readonly IntPtr selAddRepresentation_Handle = Selector.GetHandle("addRepresentation:");
 
-	private static readonly IntPtr selRemoveRepresentation_Handle = Selector.GetHandle("removeRepresentation:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAddRepresentations_ = "addRepresentations:";
 
-	private static readonly IntPtr selLockFocusHandle = Selector.GetHandle("lockFocus");
+	private static readonly IntPtr selAddRepresentations_Handle = Selector.GetHandle("addRepresentations:");
 
-	private static readonly IntPtr selLockFocusFlipped_Handle = Selector.GetHandle("lockFocusFlipped:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAlignmentRect = "alignmentRect";
 
-	private static readonly IntPtr selUnlockFocusHandle = Selector.GetHandle("unlockFocus");
+	private static readonly IntPtr selAlignmentRectHandle = Selector.GetHandle("alignmentRect");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBackgroundColor = "backgroundColor";
+
+	private static readonly IntPtr selBackgroundColorHandle = Selector.GetHandle("backgroundColor");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBestRepresentationForDevice_ = "bestRepresentationForDevice:";
 
 	private static readonly IntPtr selBestRepresentationForDevice_Handle = Selector.GetHandle("bestRepresentationForDevice:");
 
-	private static readonly IntPtr selImageUnfilteredFileTypesHandle = Selector.GetHandle("imageUnfilteredFileTypes");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBestRepresentationForRect_Context_Hints_ = "bestRepresentationForRect:context:hints:";
 
-	private static readonly IntPtr selImageUnfilteredPasteboardTypesHandle = Selector.GetHandle("imageUnfilteredPasteboardTypes");
+	private static readonly IntPtr selBestRepresentationForRect_Context_Hints_Handle = Selector.GetHandle("bestRepresentationForRect:context:hints:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCacheMode = "cacheMode";
+
+	private static readonly IntPtr selCacheModeHandle = Selector.GetHandle("cacheMode");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCanInitWithPasteboard_ = "canInitWithPasteboard:";
 
 	private static readonly IntPtr selCanInitWithPasteboard_Handle = Selector.GetHandle("canInitWithPasteboard:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCancelIncrementalLoad = "cancelIncrementalLoad";
+
 	private static readonly IntPtr selCancelIncrementalLoadHandle = Selector.GetHandle("cancelIncrementalLoad");
 
-	private static readonly IntPtr selInitWithCGImageSize_Handle = Selector.GetHandle("initWithCGImage:size:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCapInsets = "capInsets";
 
-	private static readonly IntPtr selCGImageForProposedRectContextHints_Handle = Selector.GetHandle("CGImageForProposedRect:context:hints:");
+	private static readonly IntPtr selCapInsetsHandle = Selector.GetHandle("capInsets");
 
-	private static readonly IntPtr selBestRepresentationForRectContextHints_Handle = Selector.GetHandle("bestRepresentationForRect:context:hints:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCopyWithZone_ = "copyWithZone:";
 
-	private static readonly IntPtr selHitTestRectWithImageDestinationRectContextHintsFlipped_Handle = Selector.GetHandle("hitTestRect:withImageDestinationRect:context:hints:flipped:");
+	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDelegate = "delegate";
+
+	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDrawAtPoint_FromRect_Operation_Fraction_ = "drawAtPoint:fromRect:operation:fraction:";
+
+	private static readonly IntPtr selDrawAtPoint_FromRect_Operation_Fraction_Handle = Selector.GetHandle("drawAtPoint:fromRect:operation:fraction:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDrawInRect_ = "drawInRect:";
+
+	private static readonly IntPtr selDrawInRect_Handle = Selector.GetHandle("drawInRect:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDrawInRect_FromRect_Operation_Fraction_ = "drawInRect:fromRect:operation:fraction:";
+
+	private static readonly IntPtr selDrawInRect_FromRect_Operation_Fraction_Handle = Selector.GetHandle("drawInRect:fromRect:operation:fraction:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDrawInRect_FromRect_Operation_Fraction_RespectFlipped_Hints_ = "drawInRect:fromRect:operation:fraction:respectFlipped:hints:";
+
+	private static readonly IntPtr selDrawInRect_FromRect_Operation_Fraction_RespectFlipped_Hints_Handle = Selector.GetHandle("drawInRect:fromRect:operation:fraction:respectFlipped:hints:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDrawRepresentation_InRect_ = "drawRepresentation:inRect:";
+
+	private static readonly IntPtr selDrawRepresentation_InRect_Handle = Selector.GetHandle("drawRepresentation:inRect:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEncodeWithCoder_ = "encodeWithCoder:";
+
+	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selHitTestRect_WithImageDestinationRect_Context_Hints_Flipped_ = "hitTestRect:withImageDestinationRect:context:hints:flipped:";
+
+	private static readonly IntPtr selHitTestRect_WithImageDestinationRect_Context_Hints_Flipped_Handle = Selector.GetHandle("hitTestRect:withImageDestinationRect:context:hints:flipped:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImageFileTypes = "imageFileTypes";
+
+	private static readonly IntPtr selImageFileTypesHandle = Selector.GetHandle("imageFileTypes");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImageNamed_ = "imageNamed:";
+
+	private static readonly IntPtr selImageNamed_Handle = Selector.GetHandle("imageNamed:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImagePasteboardTypes = "imagePasteboardTypes";
+
+	private static readonly IntPtr selImagePasteboardTypesHandle = Selector.GetHandle("imagePasteboardTypes");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImageTypes = "imageTypes";
+
+	private static readonly IntPtr selImageTypesHandle = Selector.GetHandle("imageTypes");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImageUnfilteredFileTypes = "imageUnfilteredFileTypes";
+
+	private static readonly IntPtr selImageUnfilteredFileTypesHandle = Selector.GetHandle("imageUnfilteredFileTypes");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImageUnfilteredPasteboardTypes = "imageUnfilteredPasteboardTypes";
+
+	private static readonly IntPtr selImageUnfilteredPasteboardTypesHandle = Selector.GetHandle("imageUnfilteredPasteboardTypes");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImageUnfilteredTypes = "imageUnfilteredTypes";
+
+	private static readonly IntPtr selImageUnfilteredTypesHandle = Selector.GetHandle("imageUnfilteredTypes");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImageWithSize_Flipped_DrawingHandler_ = "imageWithSize:flipped:drawingHandler:";
+
+	private static readonly IntPtr selImageWithSize_Flipped_DrawingHandler_Handle = Selector.GetHandle("imageWithSize:flipped:drawingHandler:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitByReferencingFile_ = "initByReferencingFile:";
+
+	private static readonly IntPtr selInitByReferencingFile_Handle = Selector.GetHandle("initByReferencingFile:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithCGImage_Size_ = "initWithCGImage:size:";
+
+	private static readonly IntPtr selInitWithCGImage_Size_Handle = Selector.GetHandle("initWithCGImage:size:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithCoder_ = "initWithCoder:";
+
+	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithContentsOfFile_ = "initWithContentsOfFile:";
+
+	private static readonly IntPtr selInitWithContentsOfFile_Handle = Selector.GetHandle("initWithContentsOfFile:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithContentsOfURL_ = "initWithContentsOfURL:";
+
+	private static readonly IntPtr selInitWithContentsOfURL_Handle = Selector.GetHandle("initWithContentsOfURL:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithData_ = "initWithData:";
+
+	private static readonly IntPtr selInitWithData_Handle = Selector.GetHandle("initWithData:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithDataIgnoringOrientation_ = "initWithDataIgnoringOrientation:";
+
+	private static readonly IntPtr selInitWithDataIgnoringOrientation_Handle = Selector.GetHandle("initWithDataIgnoringOrientation:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithPasteboard_ = "initWithPasteboard:";
+
+	private static readonly IntPtr selInitWithPasteboard_Handle = Selector.GetHandle("initWithPasteboard:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithSize_ = "initWithSize:";
+
+	private static readonly IntPtr selInitWithSize_Handle = Selector.GetHandle("initWithSize:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsFlipped = "isFlipped";
+
+	private static readonly IntPtr selIsFlippedHandle = Selector.GetHandle("isFlipped");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsTemplate = "isTemplate";
+
+	private static readonly IntPtr selIsTemplateHandle = Selector.GetHandle("isTemplate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsValid = "isValid";
+
+	private static readonly IntPtr selIsValidHandle = Selector.GetHandle("isValid");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLayerContentsForContentsScale_ = "layerContentsForContentsScale:";
+
+	private static readonly IntPtr selLayerContentsForContentsScale_Handle = Selector.GetHandle("layerContentsForContentsScale:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLockFocus = "lockFocus";
+
+	private static readonly IntPtr selLockFocusHandle = Selector.GetHandle("lockFocus");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLockFocusFlipped_ = "lockFocusFlipped:";
+
+	private static readonly IntPtr selLockFocusFlipped_Handle = Selector.GetHandle("lockFocusFlipped:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMatchesOnMultipleResolution = "matchesOnMultipleResolution";
+
+	private static readonly IntPtr selMatchesOnMultipleResolutionHandle = Selector.GetHandle("matchesOnMultipleResolution");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMatchesOnlyOnBestFittingAxis = "matchesOnlyOnBestFittingAxis";
+
+	private static readonly IntPtr selMatchesOnlyOnBestFittingAxisHandle = Selector.GetHandle("matchesOnlyOnBestFittingAxis");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selName = "name";
 
 	private static readonly IntPtr selNameHandle = Selector.GetHandle("name");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPasteboardPropertyListForType_ = "pasteboardPropertyListForType:";
+
+	private static readonly IntPtr selPasteboardPropertyListForType_Handle = Selector.GetHandle("pasteboardPropertyListForType:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPrefersColorMatch = "prefersColorMatch";
+
+	private static readonly IntPtr selPrefersColorMatchHandle = Selector.GetHandle("prefersColorMatch");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReadableTypesForPasteboard_ = "readableTypesForPasteboard:";
+
+	private static readonly IntPtr selReadableTypesForPasteboard_Handle = Selector.GetHandle("readableTypesForPasteboard:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReadingOptionsForType_Pasteboard_ = "readingOptionsForType:pasteboard:";
+
+	private static readonly IntPtr selReadingOptionsForType_Pasteboard_Handle = Selector.GetHandle("readingOptionsForType:pasteboard:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRecache = "recache";
+
+	private static readonly IntPtr selRecacheHandle = Selector.GetHandle("recache");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRecommendedLayerContentsScale_ = "recommendedLayerContentsScale:";
+
+	private static readonly IntPtr selRecommendedLayerContentsScale_Handle = Selector.GetHandle("recommendedLayerContentsScale:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveRepresentation_ = "removeRepresentation:";
+
+	private static readonly IntPtr selRemoveRepresentation_Handle = Selector.GetHandle("removeRepresentation:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRepresentations = "representations";
+
+	private static readonly IntPtr selRepresentationsHandle = Selector.GetHandle("representations");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selResizingMode = "resizingMode";
+
+	private static readonly IntPtr selResizingModeHandle = Selector.GetHandle("resizingMode");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAccessibilityDescription_ = "setAccessibilityDescription:";
+
+	private static readonly IntPtr selSetAccessibilityDescription_Handle = Selector.GetHandle("setAccessibilityDescription:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAlignmentRect_ = "setAlignmentRect:";
+
+	private static readonly IntPtr selSetAlignmentRect_Handle = Selector.GetHandle("setAlignmentRect:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBackgroundColor_ = "setBackgroundColor:";
+
+	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCacheMode_ = "setCacheMode:";
+
+	private static readonly IntPtr selSetCacheMode_Handle = Selector.GetHandle("setCacheMode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCapInsets_ = "setCapInsets:";
+
+	private static readonly IntPtr selSetCapInsets_Handle = Selector.GetHandle("setCapInsets:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDelegate_ = "setDelegate:";
+
+	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFlipped_ = "setFlipped:";
+
+	private static readonly IntPtr selSetFlipped_Handle = Selector.GetHandle("setFlipped:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMatchesOnMultipleResolution_ = "setMatchesOnMultipleResolution:";
+
+	private static readonly IntPtr selSetMatchesOnMultipleResolution_Handle = Selector.GetHandle("setMatchesOnMultipleResolution:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMatchesOnlyOnBestFittingAxis_ = "setMatchesOnlyOnBestFittingAxis:";
+
+	private static readonly IntPtr selSetMatchesOnlyOnBestFittingAxis_Handle = Selector.GetHandle("setMatchesOnlyOnBestFittingAxis:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetName_ = "setName:";
+
 	private static readonly IntPtr selSetName_Handle = Selector.GetHandle("setName:");
 
-	private static readonly IntPtr selSizeWithAttributes_Handle = Selector.GetHandle("sizeWithAttributes:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPrefersColorMatch_ = "setPrefersColorMatch:";
 
-	private static readonly IntPtr selDrawInRectWithAttributes_Handle = Selector.GetHandle("drawInRect:withAttributes:");
+	private static readonly IntPtr selSetPrefersColorMatch_Handle = Selector.GetHandle("setPrefersColorMatch:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSImage");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetResizingMode_ = "setResizingMode:";
 
-	private object __mt_BackgroundColor_var;
+	private static readonly IntPtr selSetResizingMode_Handle = Selector.GetHandle("setResizingMode:");
 
-	private object __mt_WeakDelegate_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetSize_ = "setSize:";
 
-	private static NSString _NSImageNameQuickLookTemplate;
+	private static readonly IntPtr selSetSize_Handle = Selector.GetHandle("setSize:");
 
-	private static NSString _NSImageNameBluetoothTemplate;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTemplate_ = "setTemplate:";
 
-	private static NSString _NSImageNameIChatTheaterTemplate;
+	private static readonly IntPtr selSetTemplate_Handle = Selector.GetHandle("setTemplate:");
 
-	private static NSString _NSImageNameSlideshowTemplate;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetUsesEPSOnResolutionMismatch_ = "setUsesEPSOnResolutionMismatch:";
 
-	private static NSString _NSImageNameActionTemplate;
+	private static readonly IntPtr selSetUsesEPSOnResolutionMismatch_Handle = Selector.GetHandle("setUsesEPSOnResolutionMismatch:");
 
-	private static NSString _NSImageNameSmartBadgeTemplate;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSize = "size";
 
-	private static NSString _NSImageNamePathTemplate;
+	private static readonly IntPtr selSizeHandle = Selector.GetHandle("size");
 
-	private static NSString _NSImageNameInvalidDataFreestandingTemplate;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selUnlockFocus = "unlockFocus";
 
-	private static NSString _NSImageNameLockLockedTemplate;
+	private static readonly IntPtr selUnlockFocusHandle = Selector.GetHandle("unlockFocus");
 
-	private static NSString _NSImageNameLockUnlockedTemplate;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selUsesEPSOnResolutionMismatch = "usesEPSOnResolutionMismatch";
 
-	private static NSString _NSImageNameGoRightTemplate;
+	private static readonly IntPtr selUsesEPSOnResolutionMismatchHandle = Selector.GetHandle("usesEPSOnResolutionMismatch");
 
-	private static NSString _NSImageNameGoLeftTemplate;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selWritableTypesForPasteboard_ = "writableTypesForPasteboard:";
 
-	private static NSString _NSImageNameRightFacingTriangleTemplate;
+	private static readonly IntPtr selWritableTypesForPasteboard_Handle = Selector.GetHandle("writableTypesForPasteboard:");
 
-	private static NSString _NSImageNameLeftFacingTriangleTemplate;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selWritingOptionsForType_Pasteboard_ = "writingOptionsForType:pasteboard:";
 
-	private static NSString _NSImageNameAddTemplate;
+	private static readonly IntPtr selWritingOptionsForType_Pasteboard_Handle = Selector.GetHandle("writingOptionsForType:pasteboard:");
 
-	private static NSString _NSImageNameRemoveTemplate;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selXamarinselector_Removed_ = "xamarinselector:removed:";
 
-	private static NSString _NSImageNameRevealFreestandingTemplate;
+	private static readonly IntPtr selXamarinselector_Removed_Handle = Selector.GetHandle("xamarinselector:removed:");
 
-	private static NSString _NSImageNameFollowLinkFreestandingTemplate;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSImage");
 
-	private static NSString _NSImageNameEnterFullScreenTemplate;
-
-	private static NSString _NSImageNameExitFullScreenTemplate;
-
-	private static NSString _NSImageNameStopProgressTemplate;
-
-	private static NSString _NSImageNameStopProgressFreestandingTemplate;
-
-	private static NSString _NSImageNameRefreshTemplate;
-
-	private static NSString _NSImageNameRefreshFreestandingTemplate;
-
-	private static NSString _NSImageNameFolder;
-
-	private static NSString _NSImageNameTrashEmpty;
-
-	private static NSString _NSImageNameTrashFull;
-
-	private static NSString _NSImageNameHomeTemplate;
-
-	private static NSString _NSImageNameBookmarksTemplate;
-
-	private static NSString _NSImageNameCaution;
-
-	private static NSString _NSImageNameStatusAvailable;
-
-	private static NSString _NSImageNameStatusPartiallyAvailable;
-
-	private static NSString _NSImageNameStatusUnavailable;
-
-	private static NSString _NSImageNameStatusNone;
-
-	private static NSString _NSImageNameApplicationIcon;
-
-	private static NSString _NSImageNameMenuOnStateTemplate;
-
-	private static NSString _NSImageNameMenuMixedStateTemplate;
-
-	private static NSString _NSImageNameUserGuest;
-
-	private static NSString _NSImageNameMobileMe;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_WeakDelegate_var;
 
 	public CGImage CGImage
 	{
@@ -303,67 +508,13 @@ public class NSImage : NSObject
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual bool IsValid
-	{
-		[Export("isValid")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsValidHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsValidHandle);
-		}
-	}
-
-	public static string[] ImageFileTypes
-	{
-		[Export("imageFileTypes")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(class_ptr, selImageFileTypesHandle));
-		}
-	}
-
-	public static string[] ImagePasteboardTypes
-	{
-		[Export("imagePasteboardTypes")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(class_ptr, selImagePasteboardTypesHandle));
-		}
-	}
-
-	public static string[] ImageTypes
-	{
-		[Export("imageTypes")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(class_ptr, selImageTypesHandle));
-		}
-	}
-
-	public static string[] ImageUnfilteredTypes
-	{
-		[Export("imageUnfilteredTypes")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(class_ptr, selImageUnfilteredTypesHandle));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string AccessibilityDescription
 	{
 		[Export("accessibilityDescription")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityDescriptionHandle));
 			}
@@ -372,13 +523,12 @@ public class NSImage : NSObject
 		[Export("setAccessibilityDescription:")]
 		set
 		{
-			NSApplication.EnsureUIThread();
 			if (value == null)
 			{
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityDescription_Handle, arg);
 			}
@@ -390,213 +540,14 @@ public class NSImage : NSObject
 		}
 	}
 
-	public virtual CGSize Size
-	{
-		[Export("size")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.CGSize_objc_msgSend(base.Handle, selSizeHandle);
-			}
-			return Messaging.CGSize_objc_msgSendSuper(base.SuperHandle, selSizeHandle);
-		}
-		[Export("setSize:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_CGSize(base.Handle, selSetSize_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_CGSize(base.SuperHandle, selSetSize_Handle, value);
-			}
-		}
-	}
-
-	public virtual NSColor BackgroundColor
-	{
-		[Export("backgroundColor")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSColor)(__mt_BackgroundColor_var = ((!IsDirectBinding) ? ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle))) : ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle)))));
-		}
-		[Export("setBackgroundColor:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBackgroundColor_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBackgroundColor_Handle, value.Handle);
-			}
-			__mt_BackgroundColor_var = value;
-		}
-	}
-
-	public virtual bool UsesEpsOnResolutionMismatch
-	{
-		[Export("usesEPSOnResolutionMismatch")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selUsesEPSOnResolutionMismatchHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selUsesEPSOnResolutionMismatchHandle);
-		}
-		[Export("setUsesEPSOnResolutionMismatch:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetUsesEPSOnResolutionMismatch_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetUsesEPSOnResolutionMismatch_Handle, value);
-			}
-		}
-	}
-
-	public virtual bool PrefersColorMatch
-	{
-		[Export("prefersColorMatch")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selPrefersColorMatchHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selPrefersColorMatchHandle);
-		}
-		[Export("setPrefersColorMatch:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetPrefersColorMatch_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetPrefersColorMatch_Handle, value);
-			}
-		}
-	}
-
-	public virtual bool MatchesOnMultipleResolution
-	{
-		[Export("matchesOnMultipleResolution")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selMatchesOnMultipleResolutionHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selMatchesOnMultipleResolutionHandle);
-		}
-		[Export("setMatchesOnMultipleResolution:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetMatchesOnMultipleResolution_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetMatchesOnMultipleResolution_Handle, value);
-			}
-		}
-	}
-
-	public virtual NSObject WeakDelegate
-	{
-		[Export("delegate")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
-		}
-		[Export("setDelegate:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			__mt_WeakDelegate_var = value;
-		}
-	}
-
-	public NSImageDelegate Delegate
-	{
-		get
-		{
-			return WeakDelegate as NSImageDelegate;
-		}
-		set
-		{
-			WeakDelegate = value;
-		}
-	}
-
-	public virtual NSImageCacheMode CacheMode
-	{
-		[Export("cacheMode")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return (NSImageCacheMode)Messaging.UInt64_objc_msgSend(base.Handle, selCacheModeHandle);
-			}
-			return (NSImageCacheMode)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selCacheModeHandle);
-		}
-		[Export("setCacheMode:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetCacheMode_Handle, (ulong)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetCacheMode_Handle, (ulong)value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGRect AlignmentRect
 	{
 		[Export("alignmentRect")]
 		get
 		{
-			NSApplication.EnsureUIThread();
 			CGRect retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selAlignmentRectHandle);
 			}
@@ -609,8 +560,7 @@ public class NSImage : NSObject
 		[Export("setAlignmentRect:")]
 		set
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_CGRect(base.Handle, selSetAlignmentRect_Handle, value);
 			}
@@ -621,51 +571,133 @@ public class NSImage : NSObject
 		}
 	}
 
-	public virtual bool Template
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSColor BackgroundColor
 	{
-		[Export("isTemplate")]
+		[Export("backgroundColor", ArgumentSemantic.Copy)]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsTemplateHandle);
+				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle));
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsTemplateHandle);
+			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle));
 		}
-		[Export("setTemplate:")]
+		[Export("setBackgroundColor:", ArgumentSemantic.Copy)]
 		set
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetTemplate_Handle, value);
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBackgroundColor_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetTemplate_Handle, value);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBackgroundColor_Handle, value.Handle);
 			}
 		}
 	}
 
-	[Obsolete("On 10.6 and newer use DrawInRect with respectContextIsFlipped instead", false)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSImageCacheMode CacheMode
+	{
+		[Export("cacheMode")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return (NSImageCacheMode)Messaging.UInt64_objc_msgSend(base.Handle, selCacheModeHandle);
+			}
+			return (NSImageCacheMode)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selCacheModeHandle);
+		}
+		[Export("setCacheMode:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetCacheMode_Handle, (ulong)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetCacheMode_Handle, (ulong)value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	public virtual NSEdgeInsets CapInsets
+	{
+		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		[Export("capInsets")]
+		get
+		{
+			NSEdgeInsets retval;
+			if (base.IsDirectBinding)
+			{
+				Messaging.NSEdgeInsets_objc_msgSend_stret(out retval, base.Handle, selCapInsetsHandle);
+			}
+			else
+			{
+				Messaging.NSEdgeInsets_objc_msgSendSuper_stret(out retval, base.SuperHandle, selCapInsetsHandle);
+			}
+			return retval;
+		}
+		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		[Export("setCapInsets:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_NSEdgeInsets(base.Handle, selSetCapInsets_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_NSEdgeInsets(base.SuperHandle, selSetCapInsets_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public INSImageDelegate Delegate
+	{
+		get
+		{
+			return WeakDelegate as INSImageDelegate;
+		}
+		set
+		{
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
+			{
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			WeakDelegate = nSObject;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Deprecated(PlatformName.MacOSX, 10, 6, PlatformArchitecture.All, "Use DrawInRect with respectContextIsFlipped instead.")]
 	public virtual bool Flipped
 	{
+		[Deprecated(PlatformName.MacOSX, 10, 6, PlatformArchitecture.All, "Use DrawInRect with respectContextIsFlipped instead.")]
 		[Export("isFlipped")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsFlippedHandle);
 			}
 			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsFlippedHandle);
 		}
+		[Deprecated(PlatformName.MacOSX, 10, 6, PlatformArchitecture.All, "Use DrawInRect with respectContextIsFlipped instead.")]
 		[Export("setFlipped:")]
 		set
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetFlipped_Handle, value);
 			}
@@ -676,514 +708,280 @@ public class NSImage : NSObject
 		}
 	}
 
-	[Field("NSImageNameQuickLookTemplate", "AppKit")]
-	internal static NSString NSImageNameQuickLookTemplate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	public static string[] ImageFileTypes
 	{
+		[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		[Export("imageFileTypes")]
 		get
 		{
-			if (_NSImageNameQuickLookTemplate == null)
-			{
-				_NSImageNameQuickLookTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameQuickLookTemplate");
-			}
-			return _NSImageNameQuickLookTemplate;
+			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(class_ptr, selImageFileTypesHandle));
 		}
 	}
 
-	[Field("NSImageNameBluetoothTemplate", "AppKit")]
-	internal static NSString NSImageNameBluetoothTemplate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	public static string[] ImagePasteboardTypes
 	{
+		[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		[Export("imagePasteboardTypes")]
 		get
 		{
-			if (_NSImageNameBluetoothTemplate == null)
-			{
-				_NSImageNameBluetoothTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameBluetoothTemplate");
-			}
-			return _NSImageNameBluetoothTemplate;
+			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(class_ptr, selImagePasteboardTypesHandle));
 		}
 	}
 
-	[Field("NSImageNameIChatTheaterTemplate", "AppKit")]
-	internal static NSString NSImageNameIChatTheaterTemplate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static string[] ImageTypes
 	{
+		[Export("imageTypes", ArgumentSemantic.Copy)]
 		get
 		{
-			if (_NSImageNameIChatTheaterTemplate == null)
-			{
-				_NSImageNameIChatTheaterTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameIChatTheaterTemplate");
-			}
-			return _NSImageNameIChatTheaterTemplate;
+			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(class_ptr, selImageTypesHandle));
 		}
 	}
 
-	[Field("NSImageNameSlideshowTemplate", "AppKit")]
-	internal static NSString NSImageNameSlideshowTemplate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static string[] ImageUnfilteredTypes
 	{
+		[Export("imageUnfilteredTypes", ArgumentSemantic.Copy)]
 		get
 		{
-			if (_NSImageNameSlideshowTemplate == null)
-			{
-				_NSImageNameSlideshowTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameSlideshowTemplate");
-			}
-			return _NSImageNameSlideshowTemplate;
+			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(class_ptr, selImageUnfilteredTypesHandle));
 		}
 	}
 
-	[Field("NSImageNameActionTemplate", "AppKit")]
-	internal static NSString NSImageNameActionTemplate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool IsValid
 	{
+		[Export("isValid")]
 		get
 		{
-			if (_NSImageNameActionTemplate == null)
+			if (base.IsDirectBinding)
 			{
-				_NSImageNameActionTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameActionTemplate");
+				return Messaging.bool_objc_msgSend(base.Handle, selIsValidHandle);
 			}
-			return _NSImageNameActionTemplate;
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsValidHandle);
 		}
 	}
 
-	[Field("NSImageNameSmartBadgeTemplate", "AppKit")]
-	internal static NSString NSImageNameSmartBadgeTemplate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool MatchesOnMultipleResolution
 	{
+		[Export("matchesOnMultipleResolution")]
 		get
 		{
-			if (_NSImageNameSmartBadgeTemplate == null)
+			if (base.IsDirectBinding)
 			{
-				_NSImageNameSmartBadgeTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameSmartBadgeTemplate");
+				return Messaging.bool_objc_msgSend(base.Handle, selMatchesOnMultipleResolutionHandle);
 			}
-			return _NSImageNameSmartBadgeTemplate;
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selMatchesOnMultipleResolutionHandle);
+		}
+		[Export("setMatchesOnMultipleResolution:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetMatchesOnMultipleResolution_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetMatchesOnMultipleResolution_Handle, value);
+			}
 		}
 	}
 
-	[Field("NSImageNamePathTemplate", "AppKit")]
-	internal static NSString NSImageNamePathTemplate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool MatchesOnlyOnBestFittingAxis
 	{
+		[Export("matchesOnlyOnBestFittingAxis")]
 		get
 		{
-			if (_NSImageNamePathTemplate == null)
+			if (base.IsDirectBinding)
 			{
-				_NSImageNamePathTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNamePathTemplate");
+				return Messaging.bool_objc_msgSend(base.Handle, selMatchesOnlyOnBestFittingAxisHandle);
 			}
-			return _NSImageNamePathTemplate;
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selMatchesOnlyOnBestFittingAxisHandle);
+		}
+		[Export("setMatchesOnlyOnBestFittingAxis:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetMatchesOnlyOnBestFittingAxis_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetMatchesOnlyOnBestFittingAxis_Handle, value);
+			}
 		}
 	}
 
-	[Field("NSImageNameInvalidDataFreestandingTemplate", "AppKit")]
-	internal static NSString NSImageNameInvalidDataFreestandingTemplate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool PrefersColorMatch
 	{
+		[Export("prefersColorMatch")]
 		get
 		{
-			if (_NSImageNameInvalidDataFreestandingTemplate == null)
+			if (base.IsDirectBinding)
 			{
-				_NSImageNameInvalidDataFreestandingTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameInvalidDataFreestandingTemplate");
+				return Messaging.bool_objc_msgSend(base.Handle, selPrefersColorMatchHandle);
 			}
-			return _NSImageNameInvalidDataFreestandingTemplate;
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selPrefersColorMatchHandle);
+		}
+		[Export("setPrefersColorMatch:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetPrefersColorMatch_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetPrefersColorMatch_Handle, value);
+			}
 		}
 	}
 
-	[Field("NSImageNameLockLockedTemplate", "AppKit")]
-	internal static NSString NSImageNameLockLockedTemplate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	public virtual NSImageResizingMode ResizingMode
 	{
+		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		[Export("resizingMode")]
 		get
 		{
-			if (_NSImageNameLockLockedTemplate == null)
+			if (base.IsDirectBinding)
 			{
-				_NSImageNameLockLockedTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameLockLockedTemplate");
+				return (NSImageResizingMode)Messaging.Int64_objc_msgSend(base.Handle, selResizingModeHandle);
 			}
-			return _NSImageNameLockLockedTemplate;
+			return (NSImageResizingMode)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selResizingModeHandle);
+		}
+		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		[Export("setResizingMode:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetResizingMode_Handle, (long)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetResizingMode_Handle, (long)value);
+			}
 		}
 	}
 
-	[Field("NSImageNameLockUnlockedTemplate", "AppKit")]
-	internal static NSString NSImageNameLockUnlockedTemplate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGSize Size
 	{
+		[Export("size")]
 		get
 		{
-			if (_NSImageNameLockUnlockedTemplate == null)
+			if (base.IsDirectBinding)
 			{
-				_NSImageNameLockUnlockedTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameLockUnlockedTemplate");
+				return Messaging.CGSize_objc_msgSend(base.Handle, selSizeHandle);
 			}
-			return _NSImageNameLockUnlockedTemplate;
+			return Messaging.CGSize_objc_msgSendSuper(base.SuperHandle, selSizeHandle);
+		}
+		[Export("setSize:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_CGSize(base.Handle, selSetSize_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_CGSize(base.SuperHandle, selSetSize_Handle, value);
+			}
 		}
 	}
 
-	[Field("NSImageNameGoRightTemplate", "AppKit")]
-	internal static NSString NSImageNameGoRightTemplate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Template
 	{
+		[Export("isTemplate")]
 		get
 		{
-			if (_NSImageNameGoRightTemplate == null)
+			if (base.IsDirectBinding)
 			{
-				_NSImageNameGoRightTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameGoRightTemplate");
+				return Messaging.bool_objc_msgSend(base.Handle, selIsTemplateHandle);
 			}
-			return _NSImageNameGoRightTemplate;
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsTemplateHandle);
+		}
+		[Export("setTemplate:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetTemplate_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetTemplate_Handle, value);
+			}
 		}
 	}
 
-	[Field("NSImageNameGoLeftTemplate", "AppKit")]
-	internal static NSString NSImageNameGoLeftTemplate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool UsesEpsOnResolutionMismatch
 	{
+		[Export("usesEPSOnResolutionMismatch")]
 		get
 		{
-			if (_NSImageNameGoLeftTemplate == null)
+			if (base.IsDirectBinding)
 			{
-				_NSImageNameGoLeftTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameGoLeftTemplate");
+				return Messaging.bool_objc_msgSend(base.Handle, selUsesEPSOnResolutionMismatchHandle);
 			}
-			return _NSImageNameGoLeftTemplate;
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selUsesEPSOnResolutionMismatchHandle);
+		}
+		[Export("setUsesEPSOnResolutionMismatch:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetUsesEPSOnResolutionMismatch_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetUsesEPSOnResolutionMismatch_Handle, value);
+			}
 		}
 	}
 
-	[Field("NSImageNameRightFacingTriangleTemplate", "AppKit")]
-	internal static NSString NSImageNameRightFacingTriangleTemplate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakDelegate
 	{
+		[Export("delegate", ArgumentSemantic.Assign)]
 		get
 		{
-			if (_NSImageNameRightFacingTriangleTemplate == null)
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
+			MarkDirty();
+			__mt_WeakDelegate_var = nSObject;
+			return nSObject;
+		}
+		[Export("setDelegate:", ArgumentSemantic.Assign)]
+		set
+		{
+			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakDelegate_var, value, GetInternalEventDelegateType);
+			if (base.IsDirectBinding)
 			{
-				_NSImageNameRightFacingTriangleTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameRightFacingTriangleTemplate");
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
-			return _NSImageNameRightFacingTriangleTemplate;
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			MarkDirty();
+			__mt_WeakDelegate_var = value;
 		}
 	}
 
-	[Field("NSImageNameLeftFacingTriangleTemplate", "AppKit")]
-	internal static NSString NSImageNameLeftFacingTriangleTemplate
-	{
-		get
-		{
-			if (_NSImageNameLeftFacingTriangleTemplate == null)
-			{
-				_NSImageNameLeftFacingTriangleTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameLeftFacingTriangleTemplate");
-			}
-			return _NSImageNameLeftFacingTriangleTemplate;
-		}
-	}
+	internal virtual Type GetInternalEventDelegateType => typeof(_NSImageDelegate);
 
-	[Field("NSImageNameAddTemplate", "AppKit")]
-	internal static NSString NSImageNameAddTemplate
-	{
-		get
-		{
-			if (_NSImageNameAddTemplate == null)
-			{
-				_NSImageNameAddTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameAddTemplate");
-			}
-			return _NSImageNameAddTemplate;
-		}
-	}
-
-	[Field("NSImageNameRemoveTemplate", "AppKit")]
-	internal static NSString NSImageNameRemoveTemplate
-	{
-		get
-		{
-			if (_NSImageNameRemoveTemplate == null)
-			{
-				_NSImageNameRemoveTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameRemoveTemplate");
-			}
-			return _NSImageNameRemoveTemplate;
-		}
-	}
-
-	[Field("NSImageNameRevealFreestandingTemplate", "AppKit")]
-	internal static NSString NSImageNameRevealFreestandingTemplate
-	{
-		get
-		{
-			if (_NSImageNameRevealFreestandingTemplate == null)
-			{
-				_NSImageNameRevealFreestandingTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameRevealFreestandingTemplate");
-			}
-			return _NSImageNameRevealFreestandingTemplate;
-		}
-	}
-
-	[Field("NSImageNameFollowLinkFreestandingTemplate", "AppKit")]
-	internal static NSString NSImageNameFollowLinkFreestandingTemplate
-	{
-		get
-		{
-			if (_NSImageNameFollowLinkFreestandingTemplate == null)
-			{
-				_NSImageNameFollowLinkFreestandingTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameFollowLinkFreestandingTemplate");
-			}
-			return _NSImageNameFollowLinkFreestandingTemplate;
-		}
-	}
-
-	[Field("NSImageNameEnterFullScreenTemplate", "AppKit")]
-	internal static NSString NSImageNameEnterFullScreenTemplate
-	{
-		get
-		{
-			if (_NSImageNameEnterFullScreenTemplate == null)
-			{
-				_NSImageNameEnterFullScreenTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameEnterFullScreenTemplate");
-			}
-			return _NSImageNameEnterFullScreenTemplate;
-		}
-	}
-
-	[Field("NSImageNameExitFullScreenTemplate", "AppKit")]
-	internal static NSString NSImageNameExitFullScreenTemplate
-	{
-		get
-		{
-			if (_NSImageNameExitFullScreenTemplate == null)
-			{
-				_NSImageNameExitFullScreenTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameExitFullScreenTemplate");
-			}
-			return _NSImageNameExitFullScreenTemplate;
-		}
-	}
-
-	[Field("NSImageNameStopProgressTemplate", "AppKit")]
-	internal static NSString NSImageNameStopProgressTemplate
-	{
-		get
-		{
-			if (_NSImageNameStopProgressTemplate == null)
-			{
-				_NSImageNameStopProgressTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameStopProgressTemplate");
-			}
-			return _NSImageNameStopProgressTemplate;
-		}
-	}
-
-	[Field("NSImageNameStopProgressFreestandingTemplate", "AppKit")]
-	internal static NSString NSImageNameStopProgressFreestandingTemplate
-	{
-		get
-		{
-			if (_NSImageNameStopProgressFreestandingTemplate == null)
-			{
-				_NSImageNameStopProgressFreestandingTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameStopProgressFreestandingTemplate");
-			}
-			return _NSImageNameStopProgressFreestandingTemplate;
-		}
-	}
-
-	[Field("NSImageNameRefreshTemplate", "AppKit")]
-	internal static NSString NSImageNameRefreshTemplate
-	{
-		get
-		{
-			if (_NSImageNameRefreshTemplate == null)
-			{
-				_NSImageNameRefreshTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameRefreshTemplate");
-			}
-			return _NSImageNameRefreshTemplate;
-		}
-	}
-
-	[Field("NSImageNameRefreshFreestandingTemplate", "AppKit")]
-	internal static NSString NSImageNameRefreshFreestandingTemplate
-	{
-		get
-		{
-			if (_NSImageNameRefreshFreestandingTemplate == null)
-			{
-				_NSImageNameRefreshFreestandingTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameRefreshFreestandingTemplate");
-			}
-			return _NSImageNameRefreshFreestandingTemplate;
-		}
-	}
-
-	[Field("NSImageNameFolder", "AppKit")]
-	internal static NSString NSImageNameFolder
-	{
-		get
-		{
-			if (_NSImageNameFolder == null)
-			{
-				_NSImageNameFolder = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameFolder");
-			}
-			return _NSImageNameFolder;
-		}
-	}
-
-	[Field("NSImageNameTrashEmpty", "AppKit")]
-	internal static NSString NSImageNameTrashEmpty
-	{
-		get
-		{
-			if (_NSImageNameTrashEmpty == null)
-			{
-				_NSImageNameTrashEmpty = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameTrashEmpty");
-			}
-			return _NSImageNameTrashEmpty;
-		}
-	}
-
-	[Field("NSImageNameTrashFull", "AppKit")]
-	internal static NSString NSImageNameTrashFull
-	{
-		get
-		{
-			if (_NSImageNameTrashFull == null)
-			{
-				_NSImageNameTrashFull = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameTrashFull");
-			}
-			return _NSImageNameTrashFull;
-		}
-	}
-
-	[Field("NSImageNameHomeTemplate", "AppKit")]
-	internal static NSString NSImageNameHomeTemplate
-	{
-		get
-		{
-			if (_NSImageNameHomeTemplate == null)
-			{
-				_NSImageNameHomeTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameHomeTemplate");
-			}
-			return _NSImageNameHomeTemplate;
-		}
-	}
-
-	[Field("NSImageNameBookmarksTemplate", "AppKit")]
-	internal static NSString NSImageNameBookmarksTemplate
-	{
-		get
-		{
-			if (_NSImageNameBookmarksTemplate == null)
-			{
-				_NSImageNameBookmarksTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameBookmarksTemplate");
-			}
-			return _NSImageNameBookmarksTemplate;
-		}
-	}
-
-	[Field("NSImageNameCaution", "AppKit")]
-	internal static NSString NSImageNameCaution
-	{
-		get
-		{
-			if (_NSImageNameCaution == null)
-			{
-				_NSImageNameCaution = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameCaution");
-			}
-			return _NSImageNameCaution;
-		}
-	}
-
-	[Field("NSImageNameStatusAvailable", "AppKit")]
-	internal static NSString NSImageNameStatusAvailable
-	{
-		get
-		{
-			if (_NSImageNameStatusAvailable == null)
-			{
-				_NSImageNameStatusAvailable = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameStatusAvailable");
-			}
-			return _NSImageNameStatusAvailable;
-		}
-	}
-
-	[Field("NSImageNameStatusPartiallyAvailable", "AppKit")]
-	internal static NSString NSImageNameStatusPartiallyAvailable
-	{
-		get
-		{
-			if (_NSImageNameStatusPartiallyAvailable == null)
-			{
-				_NSImageNameStatusPartiallyAvailable = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameStatusPartiallyAvailable");
-			}
-			return _NSImageNameStatusPartiallyAvailable;
-		}
-	}
-
-	[Field("NSImageNameStatusUnavailable", "AppKit")]
-	internal static NSString NSImageNameStatusUnavailable
-	{
-		get
-		{
-			if (_NSImageNameStatusUnavailable == null)
-			{
-				_NSImageNameStatusUnavailable = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameStatusUnavailable");
-			}
-			return _NSImageNameStatusUnavailable;
-		}
-	}
-
-	[Field("NSImageNameStatusNone", "AppKit")]
-	internal static NSString NSImageNameStatusNone
-	{
-		get
-		{
-			if (_NSImageNameStatusNone == null)
-			{
-				_NSImageNameStatusNone = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameStatusNone");
-			}
-			return _NSImageNameStatusNone;
-		}
-	}
-
-	[Field("NSImageNameApplicationIcon", "AppKit")]
-	internal static NSString NSImageNameApplicationIcon
-	{
-		get
-		{
-			if (_NSImageNameApplicationIcon == null)
-			{
-				_NSImageNameApplicationIcon = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameApplicationIcon");
-			}
-			return _NSImageNameApplicationIcon;
-		}
-	}
-
-	[Field("NSImageNameMenuOnStateTemplate", "AppKit")]
-	internal static NSString NSImageNameMenuOnStateTemplate
-	{
-		get
-		{
-			if (_NSImageNameMenuOnStateTemplate == null)
-			{
-				_NSImageNameMenuOnStateTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameMenuOnStateTemplate");
-			}
-			return _NSImageNameMenuOnStateTemplate;
-		}
-	}
-
-	[Field("NSImageNameMenuMixedStateTemplate", "AppKit")]
-	internal static NSString NSImageNameMenuMixedStateTemplate
-	{
-		get
-		{
-			if (_NSImageNameMenuMixedStateTemplate == null)
-			{
-				_NSImageNameMenuMixedStateTemplate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameMenuMixedStateTemplate");
-			}
-			return _NSImageNameMenuMixedStateTemplate;
-		}
-	}
-
-	[Field("NSImageNameUserGuest", "AppKit")]
-	internal static NSString NSImageNameUserGuest
-	{
-		get
-		{
-			if (_NSImageNameUserGuest == null)
-			{
-				_NSImageNameUserGuest = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameUserGuest");
-			}
-			return _NSImageNameUserGuest;
-		}
-	}
-
-	[Field("NSImageNameMobileMe", "AppKit")]
-	internal static NSString NSImageNameMobileMe
-	{
-		get
-		{
-			if (_NSImageNameMobileMe == null)
-			{
-				_NSImageNameMobileMe = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSImageNameMobileMe");
-			}
-			return _NSImageNameMobileMe;
-		}
-	}
-
-	public NSImageRect ImageDidNotDraw
+	public NSImageRect? ImageDidNotDraw
 	{
 		get
 		{
@@ -1192,34 +990,6 @@ public class NSImage : NSObject
 		set
 		{
 			EnsureNSImageDelegate().imageDidNotDraw = value;
-		}
-	}
-
-	public event EventHandler<NSImageLoadEventArgs> WillLoadRepresentation
-	{
-		add
-		{
-			_NSImageDelegate nSImageDelegate = EnsureNSImageDelegate();
-			nSImageDelegate.willLoadRepresentation = (EventHandler<NSImageLoadEventArgs>)System.Delegate.Combine(nSImageDelegate.willLoadRepresentation, value);
-		}
-		remove
-		{
-			_NSImageDelegate nSImageDelegate = EnsureNSImageDelegate();
-			nSImageDelegate.willLoadRepresentation = (EventHandler<NSImageLoadEventArgs>)System.Delegate.Remove(nSImageDelegate.willLoadRepresentation, value);
-		}
-	}
-
-	public event EventHandler<NSImageLoadEventArgs> DidLoadRepresentationHeader
-	{
-		add
-		{
-			_NSImageDelegate nSImageDelegate = EnsureNSImageDelegate();
-			nSImageDelegate.didLoadRepresentationHeader = (EventHandler<NSImageLoadEventArgs>)System.Delegate.Combine(nSImageDelegate.didLoadRepresentationHeader, value);
-		}
-		remove
-		{
-			_NSImageDelegate nSImageDelegate = EnsureNSImageDelegate();
-			nSImageDelegate.didLoadRepresentationHeader = (EventHandler<NSImageLoadEventArgs>)System.Delegate.Remove(nSImageDelegate.didLoadRepresentationHeader, value);
 		}
 	}
 
@@ -1251,342 +1021,238 @@ public class NSImage : NSObject
 		}
 	}
 
+	public event EventHandler<NSImageLoadEventArgs> DidLoadRepresentationHeader
+	{
+		add
+		{
+			_NSImageDelegate nSImageDelegate = EnsureNSImageDelegate();
+			nSImageDelegate.didLoadRepresentationHeader = (EventHandler<NSImageLoadEventArgs>)System.Delegate.Combine(nSImageDelegate.didLoadRepresentationHeader, value);
+		}
+		remove
+		{
+			_NSImageDelegate nSImageDelegate = EnsureNSImageDelegate();
+			nSImageDelegate.didLoadRepresentationHeader = (EventHandler<NSImageLoadEventArgs>)System.Delegate.Remove(nSImageDelegate.didLoadRepresentationHeader, value);
+		}
+	}
+
+	public event EventHandler<NSImageLoadEventArgs> WillLoadRepresentation
+	{
+		add
+		{
+			_NSImageDelegate nSImageDelegate = EnsureNSImageDelegate();
+			nSImageDelegate.willLoadRepresentation = (EventHandler<NSImageLoadEventArgs>)System.Delegate.Combine(nSImageDelegate.willLoadRepresentation, value);
+		}
+		remove
+		{
+			_NSImageDelegate nSImageDelegate = EnsureNSImageDelegate();
+			nSImageDelegate.willLoadRepresentation = (EventHandler<NSImageLoadEventArgs>)System.Delegate.Remove(nSImageDelegate.willLoadRepresentation, value);
+		}
+	}
+
 	public static NSImage FromStream(Stream stream)
 	{
 		using NSData data = NSData.FromStream(stream);
 		return new NSImage(data);
 	}
 
-	public static NSImage ImageNamed(NSImageName name)
+	public NSImage(string fileName, bool lazy)
 	{
-		return name switch
+		if (lazy)
 		{
-			NSImageName.QuickLookTemplate => ImageNamed(NSImageNameQuickLookTemplate), 
-			NSImageName.BluetoothTemplate => ImageNamed(NSImageNameBluetoothTemplate), 
-			NSImageName.IChatTheaterTemplate => ImageNamed(NSImageNameIChatTheaterTemplate), 
-			NSImageName.SlideshowTemplate => ImageNamed(NSImageNameSlideshowTemplate), 
-			NSImageName.ActionTemplate => ImageNamed(NSImageNameActionTemplate), 
-			NSImageName.SmartBadgeTemplate => ImageNamed(NSImageNameSmartBadgeTemplate), 
-			NSImageName.PathTemplate => ImageNamed(NSImageNamePathTemplate), 
-			NSImageName.InvalidDataFreestandingTemplate => ImageNamed(NSImageNameInvalidDataFreestandingTemplate), 
-			NSImageName.LockLockedTemplate => ImageNamed(NSImageNameLockLockedTemplate), 
-			NSImageName.LockUnlockedTemplate => ImageNamed(NSImageNameLockUnlockedTemplate), 
-			NSImageName.GoRightTemplate => ImageNamed(NSImageNameGoRightTemplate), 
-			NSImageName.GoLeftTemplate => ImageNamed(NSImageNameGoLeftTemplate), 
-			NSImageName.RightFacingTriangleTemplate => ImageNamed(NSImageNameRightFacingTriangleTemplate), 
-			NSImageName.LeftFacingTriangleTemplate => ImageNamed(NSImageNameLeftFacingTriangleTemplate), 
-			NSImageName.AddTemplate => ImageNamed(NSImageNameAddTemplate), 
-			NSImageName.RemoveTemplate => ImageNamed(NSImageNameRemoveTemplate), 
-			NSImageName.RevealFreestandingTemplate => ImageNamed(NSImageNameRevealFreestandingTemplate), 
-			NSImageName.FollowLinkFreestandingTemplate => ImageNamed(NSImageNameFollowLinkFreestandingTemplate), 
-			NSImageName.EnterFullScreenTemplate => ImageNamed(NSImageNameEnterFullScreenTemplate), 
-			NSImageName.ExitFullScreenTemplate => ImageNamed(NSImageNameExitFullScreenTemplate), 
-			NSImageName.StopProgressTemplate => ImageNamed(NSImageNameStopProgressTemplate), 
-			NSImageName.StopProgressFreestandingTemplate => ImageNamed(NSImageNameStopProgressFreestandingTemplate), 
-			NSImageName.RefreshTemplate => ImageNamed(NSImageNameRefreshTemplate), 
-			NSImageName.RefreshFreestandingTemplate => ImageNamed(NSImageNameRefreshFreestandingTemplate), 
-			NSImageName.Folder => ImageNamed(NSImageNameFolder), 
-			NSImageName.TrashEmpty => ImageNamed(NSImageNameTrashEmpty), 
-			NSImageName.TrashFull => ImageNamed(NSImageNameTrashFull), 
-			NSImageName.HomeTemplate => ImageNamed(NSImageNameHomeTemplate), 
-			NSImageName.BookmarksTemplate => ImageNamed(NSImageNameBookmarksTemplate), 
-			NSImageName.Caution => ImageNamed(NSImageNameCaution), 
-			NSImageName.StatusAvailable => ImageNamed(NSImageNameStatusAvailable), 
-			NSImageName.StatusPartiallyAvailable => ImageNamed(NSImageNameStatusPartiallyAvailable), 
-			NSImageName.StatusUnavailable => ImageNamed(NSImageNameStatusUnavailable), 
-			NSImageName.StatusNone => ImageNamed(NSImageNameStatusNone), 
-			NSImageName.ApplicationIcon => ImageNamed(NSImageNameApplicationIcon), 
-			NSImageName.MenuOnStateTemplate => ImageNamed(NSImageNameMenuOnStateTemplate), 
-			NSImageName.MenuMixedStateTemplate => ImageNamed(NSImageNameMenuMixedStateTemplate), 
-			NSImageName.UserGuest => ImageNamed(NSImageNameUserGuest), 
-			NSImageName.MobileMe => ImageNamed(NSImageNameMobileMe), 
-			_ => throw new ArgumentException("Invalid enum value", "name"), 
-		};
+			base.Handle = InitByReferencingFile(fileName);
+		}
+		else
+		{
+			base.Handle = InitWithContentsOfFile(fileName);
+		}
 	}
 
+	public NSImage(NSData data, bool ignoresOrientation)
+	{
+		if (ignoresOrientation)
+		{
+			base.Handle = InitWithDataIgnoringOrientation(data);
+		}
+		else
+		{
+			base.Handle = InitWithData(data);
+		}
+	}
+
+	public static NSImage ImageNamed(NSImageName name)
+	{
+		return ImageNamed(name.GetConstant());
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSImage()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSImage(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSImage(NSObjectFlag t)
+	protected NSImage(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSImage(IntPtr handle)
+	protected internal NSImage(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("imageNamed:")]
-	public static NSImage ImageNamed(string name)
-	{
-		NSApplication.EnsureUIThread();
-		if (name == null)
-		{
-			throw new ArgumentNullException("name");
-		}
-		IntPtr arg = NSString.CreateNative(name);
-		NSImage result = (NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selImageNamed_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
 	[Export("initWithSize:")]
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSImage(CGSize aSize)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_CGSize(base.Handle, selInitWithSize_Handle, aSize);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGSize(base.Handle, selInitWithSize_Handle, aSize), "initWithSize:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CGSize(base.SuperHandle, selInitWithSize_Handle, aSize);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGSize(base.SuperHandle, selInitWithSize_Handle, aSize), "initWithSize:");
 		}
 	}
 
 	[Export("initWithData:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSImage(NSData data)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
 		if (data == null)
 		{
 			throw new ArgumentNullException("data");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithData_Handle, data.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithData_Handle, data.Handle), "initWithData:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithData_Handle, data.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithData_Handle, data.Handle), "initWithData:");
 		}
 	}
 
 	[Export("initWithContentsOfFile:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSImage(string fileName)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
 		if (fileName == null)
 		{
 			throw new ArgumentNullException("fileName");
 		}
 		IntPtr arg = NSString.CreateNative(fileName);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithContentsOfFile_Handle, arg);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithContentsOfFile_Handle, arg), "initWithContentsOfFile:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithContentsOfFile_Handle, arg);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithContentsOfFile_Handle, arg), "initWithContentsOfFile:");
 		}
 		NSString.ReleaseNative(arg);
 	}
 
 	[Export("initWithContentsOfURL:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSImage(NSUrl url)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
 		if (url == null)
 		{
 			throw new ArgumentNullException("url");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithContentsOfURL_Handle, url.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithContentsOfURL_Handle, url.Handle), "initWithContentsOfURL:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithContentsOfURL_Handle, url.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithContentsOfURL_Handle, url.Handle), "initWithContentsOfURL:");
 		}
 	}
 
 	[Export("initWithPasteboard:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSImage(NSPasteboard pasteboard)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
 		if (pasteboard == null)
 		{
 			throw new ArgumentNullException("pasteboard");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithPasteboard_Handle, pasteboard.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithPasteboard_Handle, pasteboard.Handle), "initWithPasteboard:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithPasteboard_Handle, pasteboard.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithPasteboard_Handle, pasteboard.Handle), "initWithPasteboard:");
 		}
 	}
 
-	[Export("drawAtPoint:fromRect:operation:fraction:")]
-	public virtual void Draw(CGPoint point, CGRect fromRect, NSCompositingOperation op, double delta)
+	[Export("initWithCGImage:size:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public NSImage(CGImage cgImage, CGSize size)
+		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (cgImage == null)
 		{
-			Messaging.void_objc_msgSend_CGPoint_CGRect_UInt64_Double(base.Handle, selDrawAtPointFromRectOperationFraction_Handle, point, fromRect, (ulong)op, delta);
+			throw new ArgumentNullException("cgImage");
+		}
+		if (base.IsDirectBinding)
+		{
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_CGSize(base.Handle, selInitWithCGImage_Size_Handle, cgImage.Handle, size), "initWithCGImage:size:");
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_CGPoint_CGRect_UInt64_Double(base.SuperHandle, selDrawAtPointFromRectOperationFraction_Handle, point, fromRect, (ulong)op, delta);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_CGSize(base.SuperHandle, selInitWithCGImage_Size_Handle, cgImage.Handle, size), "initWithCGImage:size:");
 		}
-	}
-
-	[Export("drawInRect:fromRect:operation:fraction:")]
-	public virtual void Draw(CGRect rect, CGRect fromRect, NSCompositingOperation op, double delta)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGRect_CGRect_UInt64_Double(base.Handle, selDrawInRectFromRectOperationFraction_Handle, rect, fromRect, (ulong)op, delta);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGRect_CGRect_UInt64_Double(base.SuperHandle, selDrawInRectFromRectOperationFraction_Handle, rect, fromRect, (ulong)op, delta);
-		}
-	}
-
-	[Export("drawInRect:fromRect:operation:fraction:respectFlipped:hints:")]
-	public virtual void Draw(CGRect dstSpacePortionRect, CGRect srcSpacePortionRect, NSCompositingOperation op, double requestedAlpha, bool respectContextIsFlipped, NSDictionary hints)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGRect_CGRect_UInt64_Double_bool_IntPtr(base.Handle, selDrawInRectFromRectOperationFractionRespectFlippedHints_Handle, dstSpacePortionRect, srcSpacePortionRect, (ulong)op, requestedAlpha, respectContextIsFlipped, hints?.Handle ?? IntPtr.Zero);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGRect_CGRect_UInt64_Double_bool_IntPtr(base.SuperHandle, selDrawInRectFromRectOperationFractionRespectFlippedHints_Handle, dstSpacePortionRect, srcSpacePortionRect, (ulong)op, requestedAlpha, respectContextIsFlipped, hints?.Handle ?? IntPtr.Zero);
-		}
-	}
-
-	[Export("drawRepresentation:inRect:")]
-	public virtual bool Draw(NSImageRep imageRep, CGRect rect)
-	{
-		NSApplication.EnsureUIThread();
-		if (imageRep == null)
-		{
-			throw new ArgumentNullException("imageRep");
-		}
-		if (IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_IntPtr_CGRect(base.Handle, selDrawRepresentationInRect_Handle, imageRep.Handle, rect);
-		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr_CGRect(base.SuperHandle, selDrawRepresentationInRect_Handle, imageRep.Handle, rect);
-	}
-
-	[Export("recache")]
-	public virtual void Recache()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selRecacheHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRecacheHandle);
-		}
-	}
-
-	[Export("TIFFRepresentation")]
-	public virtual NSData AsTiff()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return (NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTIFFRepresentationHandle));
-		}
-		return (NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTIFFRepresentationHandle));
-	}
-
-	[Export("TIFFRepresentationUsingCompression:factor:")]
-	public virtual NSData AsTiff(NSTiffCompression comp, double aFloat)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return (NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64_Double(base.Handle, selTIFFRepresentationUsingCompressionFactor_Handle, (ulong)comp, aFloat));
-		}
-		return (NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_UInt64_Double(base.SuperHandle, selTIFFRepresentationUsingCompressionFactor_Handle, (ulong)comp, aFloat));
-	}
-
-	[Export("representations")]
-	public virtual NSImageRep[] Representations()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return NSArray.ArrayFromHandle<NSImageRep>(Messaging.IntPtr_objc_msgSend(base.Handle, selRepresentationsHandle));
-		}
-		return NSArray.ArrayFromHandle<NSImageRep>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRepresentationsHandle));
-	}
-
-	[Export("addRepresentations:")]
-	public virtual void AddRepresentations(NSImageRep[] imageReps)
-	{
-		NSApplication.EnsureUIThread();
-		if (imageReps == null)
-		{
-			throw new ArgumentNullException("imageReps");
-		}
-		NSArray nSArray = NSArray.FromNSObjects(imageReps);
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddRepresentations_Handle, nSArray.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAddRepresentations_Handle, nSArray.Handle);
-		}
-		__mt_reps_var = Representations();
-		nSArray.Dispose();
 	}
 
 	[Export("addRepresentation:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AddRepresentation(NSImageRep imageRep)
 	{
-		NSApplication.EnsureUIThread();
 		if (imageRep == null)
 		{
 			throw new ArgumentNullException("imageRep");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddRepresentation_Handle, imageRep.Handle);
 		}
@@ -1594,33 +1260,465 @@ public class NSImage : NSObject
 		{
 			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAddRepresentation_Handle, imageRep.Handle);
 		}
-		__mt_reps_var = Representations();
 	}
 
-	[Export("removeRepresentation:")]
-	public virtual void RemoveRepresentation(NSImageRep imageRep)
+	[Export("addRepresentations:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AddRepresentations(NSImageRep[] imageReps)
 	{
-		NSApplication.EnsureUIThread();
+		if (imageReps == null)
+		{
+			throw new ArgumentNullException("imageReps");
+		}
+		NSArray nSArray = NSArray.FromNSObjects(imageReps);
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddRepresentations_Handle, nSArray.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAddRepresentations_Handle, nSArray.Handle);
+		}
+		nSArray.Dispose();
+	}
+
+	[Export("CGImageForProposedRect:context:hints:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGImage AsCGImage(ref CGRect proposedDestRect, NSGraphicsContext? referenceContext, NSDictionary? hints)
+	{
+		IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper_ref_CGRect_IntPtr_IntPtr(base.SuperHandle, selCGImageForProposedRect_Context_Hints_Handle, ref proposedDestRect, referenceContext?.Handle ?? IntPtr.Zero, hints?.Handle ?? IntPtr.Zero) : Messaging.IntPtr_objc_msgSend_ref_CGRect_IntPtr_IntPtr(base.Handle, selCGImageForProposedRect_Context_Hints_Handle, ref proposedDestRect, referenceContext?.Handle ?? IntPtr.Zero, hints?.Handle ?? IntPtr.Zero));
+		return (intPtr == IntPtr.Zero) ? null : new CGImage(intPtr);
+	}
+
+	[Export("TIFFRepresentation")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSData AsTiff()
+	{
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSend(base.Handle, selTIFFRepresentationHandle));
+		}
+		return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTIFFRepresentationHandle));
+	}
+
+	[Export("TIFFRepresentationUsingCompression:factor:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSData AsTiff(NSTiffCompression comp, float aFloat)
+	{
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSend_UInt64_float(base.Handle, selTIFFRepresentationUsingCompression_Factor_Handle, (ulong)comp, aFloat));
+		}
+		return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSendSuper_UInt64_float(base.SuperHandle, selTIFFRepresentationUsingCompression_Factor_Handle, (ulong)comp, aFloat));
+	}
+
+	[Export("bestRepresentationForRect:context:hints:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSImageRep BestRepresentation(CGRect rect, NSGraphicsContext? referenceContext, NSDictionary? hints)
+	{
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<NSImageRep>(Messaging.IntPtr_objc_msgSend_CGRect_IntPtr_IntPtr(base.Handle, selBestRepresentationForRect_Context_Hints_Handle, rect, referenceContext?.Handle ?? IntPtr.Zero, hints?.Handle ?? IntPtr.Zero));
+		}
+		return Runtime.GetNSObject<NSImageRep>(Messaging.IntPtr_objc_msgSendSuper_CGRect_IntPtr_IntPtr(base.SuperHandle, selBestRepresentationForRect_Context_Hints_Handle, rect, referenceContext?.Handle ?? IntPtr.Zero, hints?.Handle ?? IntPtr.Zero));
+	}
+
+	[Export("bestRepresentationForDevice:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSImageRep BestRepresentationForDevice(NSDictionary? deviceDescription)
+	{
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<NSImageRep>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selBestRepresentationForDevice_Handle, deviceDescription?.Handle ?? IntPtr.Zero));
+		}
+		return Runtime.GetNSObject<NSImageRep>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selBestRepresentationForDevice_Handle, deviceDescription?.Handle ?? IntPtr.Zero));
+	}
+
+	[Export("canInitWithPasteboard:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static bool CanInitWithPasteboard(NSPasteboard pasteboard)
+	{
+		if (pasteboard == null)
+		{
+			throw new ArgumentNullException("pasteboard");
+		}
+		return Messaging.bool_objc_msgSend_IntPtr(class_ptr, selCanInitWithPasteboard_Handle, pasteboard.Handle);
+	}
+
+	[Export("cancelIncrementalLoad")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void CancelIncrementalLoad()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selCancelIncrementalLoadHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selCancelIncrementalLoadHandle);
+		}
+	}
+
+	[Export("copyWithZone:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[return: Release]
+	public virtual NSObject Copy(NSZone? zone)
+	{
+		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
+		if (nSObject != null)
+		{
+			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
+		}
+		return nSObject;
+	}
+
+	[Export("drawAtPoint:fromRect:operation:fraction:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Draw(CGPoint point, CGRect fromRect, NSCompositingOperation op, nfloat delta)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGPoint_CGRect_UInt64_nfloat(base.Handle, selDrawAtPoint_FromRect_Operation_Fraction_Handle, point, fromRect, (ulong)op, delta);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGPoint_CGRect_UInt64_nfloat(base.SuperHandle, selDrawAtPoint_FromRect_Operation_Fraction_Handle, point, fromRect, (ulong)op, delta);
+		}
+	}
+
+	[Export("drawInRect:fromRect:operation:fraction:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Draw(CGRect rect, CGRect fromRect, NSCompositingOperation op, nfloat delta)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGRect_CGRect_UInt64_nfloat(base.Handle, selDrawInRect_FromRect_Operation_Fraction_Handle, rect, fromRect, (ulong)op, delta);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGRect_CGRect_UInt64_nfloat(base.SuperHandle, selDrawInRect_FromRect_Operation_Fraction_Handle, rect, fromRect, (ulong)op, delta);
+		}
+	}
+
+	[Export("drawInRect:fromRect:operation:fraction:respectFlipped:hints:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Draw(CGRect dstSpacePortionRect, CGRect srcSpacePortionRect, NSCompositingOperation op, nfloat requestedAlpha, bool respectContextIsFlipped, NSDictionary? hints)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGRect_CGRect_UInt64_nfloat_bool_IntPtr(base.Handle, selDrawInRect_FromRect_Operation_Fraction_RespectFlipped_Hints_Handle, dstSpacePortionRect, srcSpacePortionRect, (ulong)op, requestedAlpha, respectContextIsFlipped, hints?.Handle ?? IntPtr.Zero);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGRect_CGRect_UInt64_nfloat_bool_IntPtr(base.SuperHandle, selDrawInRect_FromRect_Operation_Fraction_RespectFlipped_Hints_Handle, dstSpacePortionRect, srcSpacePortionRect, (ulong)op, requestedAlpha, respectContextIsFlipped, hints?.Handle ?? IntPtr.Zero);
+		}
+	}
+
+	[Export("drawInRect:")]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Draw(CGRect rect)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGRect(base.Handle, selDrawInRect_Handle, rect);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selDrawInRect_Handle, rect);
+		}
+	}
+
+	[Export("drawRepresentation:inRect:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Draw(NSImageRep imageRep, CGRect rect)
+	{
 		if (imageRep == null)
 		{
 			throw new ArgumentNullException("imageRep");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveRepresentation_Handle, imageRep.Handle);
+			return Messaging.bool_objc_msgSend_IntPtr_CGRect(base.Handle, selDrawRepresentation_InRect_Handle, imageRep.Handle, rect);
+		}
+		return Messaging.bool_objc_msgSendSuper_IntPtr_CGRect(base.SuperHandle, selDrawRepresentation_InRect_Handle, imageRep.Handle, rect);
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public void DrawInRect(CGRect dstRect, CGRect srcRect, NSCompositingOperation operation, nfloat delta)
+	{
+		Messaging.void_objc_msgSend_CGRect_CGRect_UInt64_nfloat(base.Handle, selDrawInRect_FromRect_Operation_Fraction_Handle, dstRect, srcRect, (ulong)operation, delta);
+	}
+
+	[Export("encodeWithCoder:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void EncodeTo(NSCoder encoder)
+	{
+		if (encoder == null)
+		{
+			throw new ArgumentNullException("encoder");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveRepresentation_Handle, imageRep.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
 		}
-		__mt_reps_var = Representations();
+	}
+
+	[Export("layerContentsForContentsScale:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject GetLayerContentsForContentsScale(nfloat layerContentsScale)
+	{
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_nfloat(base.Handle, selLayerContentsForContentsScale_Handle, layerContentsScale));
+		}
+		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_nfloat(base.SuperHandle, selLayerContentsForContentsScale_Handle, layerContentsScale));
+	}
+
+	[Export("name")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal virtual string GetName()
+	{
+		if (base.IsDirectBinding)
+		{
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNameHandle));
+		}
+		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNameHandle));
+	}
+
+	[Export("pasteboardPropertyListForType:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject GetPasteboardPropertyListForType(string type)
+	{
+		if (type == null)
+		{
+			throw new ArgumentNullException("type");
+		}
+		IntPtr arg = NSString.CreateNative(type);
+		NSObject result = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selPasteboardPropertyListForType_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selPasteboardPropertyListForType_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("readableTypesForPasteboard:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static string[] GetReadableTypesForPasteboard(NSPasteboard pasteboard)
+	{
+		if (pasteboard == null)
+		{
+			throw new ArgumentNullException("pasteboard");
+		}
+		return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selReadableTypesForPasteboard_Handle, pasteboard.Handle));
+	}
+
+	[Export("readingOptionsForType:pasteboard:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSPasteboardReadingOptions GetReadingOptionsForType(string type, NSPasteboard pasteboard)
+	{
+		if (type == null)
+		{
+			throw new ArgumentNullException("type");
+		}
+		if (pasteboard == null)
+		{
+			throw new ArgumentNullException("pasteboard");
+		}
+		IntPtr arg = NSString.CreateNative(type);
+		NSPasteboardReadingOptions result = (NSPasteboardReadingOptions)Messaging.UInt64_objc_msgSend_IntPtr_IntPtr(class_ptr, selReadingOptionsForType_Pasteboard_Handle, arg, pasteboard.Handle);
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("recommendedLayerContentsScale:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat GetRecommendedLayerContentsScale(nfloat preferredContentsScale)
+	{
+		if (base.IsDirectBinding)
+		{
+			return Messaging.nfloat_objc_msgSend_nfloat(base.Handle, selRecommendedLayerContentsScale_Handle, preferredContentsScale);
+		}
+		return Messaging.nfloat_objc_msgSendSuper_nfloat(base.SuperHandle, selRecommendedLayerContentsScale_Handle, preferredContentsScale);
+	}
+
+	[Export("writableTypesForPasteboard:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string[] GetWritableTypesForPasteboard(NSPasteboard pasteboard)
+	{
+		if (pasteboard == null)
+		{
+			throw new ArgumentNullException("pasteboard");
+		}
+		if (base.IsDirectBinding)
+		{
+			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selWritableTypesForPasteboard_Handle, pasteboard.Handle));
+		}
+		return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selWritableTypesForPasteboard_Handle, pasteboard.Handle));
+	}
+
+	[Export("writingOptionsForType:pasteboard:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSPasteboardWritingOptions GetWritingOptionsForType(string type, NSPasteboard pasteboard)
+	{
+		if (type == null)
+		{
+			throw new ArgumentNullException("type");
+		}
+		if (pasteboard == null)
+		{
+			throw new ArgumentNullException("pasteboard");
+		}
+		IntPtr arg = NSString.CreateNative(type);
+		NSPasteboardWritingOptions result = (NSPasteboardWritingOptions)((!base.IsDirectBinding) ? Messaging.UInt64_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selWritingOptionsForType_Pasteboard_Handle, arg, pasteboard.Handle) : Messaging.UInt64_objc_msgSend_IntPtr_IntPtr(base.Handle, selWritingOptionsForType_Pasteboard_Handle, arg, pasteboard.Handle));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("hitTestRect:withImageDestinationRect:context:hints:flipped:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool HitTestRect(CGRect testRectDestSpace, CGRect imageRectDestSpace, NSGraphicsContext context, NSDictionary hints, bool flipped)
+	{
+		if (context == null)
+		{
+			throw new ArgumentNullException("context");
+		}
+		if (hints == null)
+		{
+			throw new ArgumentNullException("hints");
+		}
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_CGRect_CGRect_IntPtr_IntPtr_bool(base.Handle, selHitTestRect_WithImageDestinationRect_Context_Hints_Flipped_Handle, testRectDestSpace, imageRectDestSpace, context.Handle, hints.Handle, flipped);
+		}
+		return Messaging.bool_objc_msgSendSuper_CGRect_CGRect_IntPtr_IntPtr_bool(base.SuperHandle, selHitTestRect_WithImageDestinationRect_Context_Hints_Flipped_Handle, testRectDestSpace, imageRectDestSpace, context.Handle, hints.Handle, flipped);
+	}
+
+	[Export("imageNamed:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSImage ImageNamed(string name)
+	{
+		if (name == null)
+		{
+			throw new ArgumentNullException("name");
+		}
+		IntPtr arg = NSString.CreateNative(name);
+		NSImage nSObject = Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selImageNamed_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return nSObject;
+	}
+
+	[Export("imageUnfilteredFileTypes")]
+	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSObject[] ImageUnfilteredFileTypes()
+	{
+		return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(class_ptr, selImageUnfilteredFileTypesHandle));
+	}
+
+	[Export("imageUnfilteredPasteboardTypes")]
+	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static string[] ImageUnfilteredPasteboardTypes()
+	{
+		return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(class_ptr, selImageUnfilteredPasteboardTypesHandle));
+	}
+
+	[Export("imageWithSize:flipped:drawingHandler:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public unsafe static NSImage ImageWithSize(CGSize size, bool flipped, [BlockProxy(typeof(Trampolines.NIDNSCustomImageRepDrawingHandler))] NSCustomImageRepDrawingHandler drawingHandler)
+	{
+		if (drawingHandler == null)
+		{
+			throw new ArgumentNullException("drawingHandler");
+		}
+		BlockLiteral blockLiteral = default(BlockLiteral);
+		BlockLiteral* ptr = &blockLiteral;
+		blockLiteral.SetupBlockUnsafe(Trampolines.SDNSCustomImageRepDrawingHandler.Handler, drawingHandler);
+		NSImage nSObject = Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSend_CGSize_bool_IntPtr(class_ptr, selImageWithSize_Flipped_DrawingHandler_Handle, size, flipped, (IntPtr)ptr));
+		ptr->CleanupBlock();
+		return nSObject;
+	}
+
+	[Export("initByReferencingFile:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal virtual IntPtr InitByReferencingFile(string name)
+	{
+		if (name == null)
+		{
+			throw new ArgumentNullException("name");
+		}
+		IntPtr arg = NSString.CreateNative(name);
+		IntPtr result = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitByReferencingFile_Handle, arg) : Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitByReferencingFile_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal IntPtr InitWithContentsOfFile(string fileName)
+	{
+		if (fileName == null)
+		{
+			throw new ArgumentNullException("fileName");
+		}
+		IntPtr arg = NSString.CreateNative(fileName);
+		IntPtr result = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithContentsOfFile_Handle, arg);
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal IntPtr InitWithData(NSData data)
+	{
+		if (data == null)
+		{
+			throw new ArgumentNullException("data");
+		}
+		return Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithData_Handle, data.Handle);
+	}
+
+	[Export("initWithDataIgnoringOrientation:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal virtual IntPtr InitWithDataIgnoringOrientation(NSData data)
+	{
+		if (data == null)
+		{
+			throw new ArgumentNullException("data");
+		}
+		if (base.IsDirectBinding)
+		{
+			return Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithDataIgnoringOrientation_Handle, data.Handle);
+		}
+		return Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithDataIgnoringOrientation_Handle, data.Handle);
+	}
+
+	[Export("xamarinselector:removed:")]
+	[Obsolete("It will never be called.", false)]
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject InitWithPasteboardPropertyList(NSObject propertyList, string type)
+	{
+		if (propertyList == null)
+		{
+			throw new ArgumentNullException("propertyList");
+		}
+		if (type == null)
+		{
+			throw new ArgumentNullException("type");
+		}
+		IntPtr arg = NSString.CreateNative(type);
+		NSObject result = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selXamarinselector_Removed_Handle, propertyList.Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selXamarinselector_Removed_Handle, propertyList.Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
 	}
 
 	[Export("lockFocus")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void LockFocus()
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selLockFocusHandle);
 		}
@@ -1631,10 +1729,10 @@ public class NSImage : NSObject
 	}
 
 	[Export("lockFocusFlipped:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void LockFocusFlipped(bool flipped)
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_bool(base.Handle, selLockFocusFlipped_Handle, flipped);
 		}
@@ -1644,11 +1742,68 @@ public class NSImage : NSObject
 		}
 	}
 
+	[Export("recache")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Recache()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selRecacheHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRecacheHandle);
+		}
+	}
+
+	[Export("removeRepresentation:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RemoveRepresentation(NSImageRep imageRep)
+	{
+		if (imageRep == null)
+		{
+			throw new ArgumentNullException("imageRep");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveRepresentation_Handle, imageRep.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveRepresentation_Handle, imageRep.Handle);
+		}
+	}
+
+	[Export("representations")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSImageRep[] Representations()
+	{
+		if (base.IsDirectBinding)
+		{
+			return NSArray.ArrayFromHandle<NSImageRep>(Messaging.IntPtr_objc_msgSend(base.Handle, selRepresentationsHandle));
+		}
+		return NSArray.ArrayFromHandle<NSImageRep>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRepresentationsHandle));
+	}
+
+	[Export("setName:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal virtual bool SetName(string aString)
+	{
+		if (aString == null)
+		{
+			throw new ArgumentNullException("aString");
+		}
+		IntPtr arg = NSString.CreateNative(aString);
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetName_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selSetName_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
 	[Export("unlockFocus")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void UnlockFocus()
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selUnlockFocusHandle);
 		}
@@ -1658,201 +1813,31 @@ public class NSImage : NSObject
 		}
 	}
 
-	[Export("bestRepresentationForDevice:")]
-	public virtual NSImageRep BestRepresentationForDevice(NSDictionary deviceDescription)
+	internal virtual _NSImageDelegate CreateInternalEventDelegateType()
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return (NSImageRep)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selBestRepresentationForDevice_Handle, deviceDescription?.Handle ?? IntPtr.Zero));
-		}
-		return (NSImageRep)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selBestRepresentationForDevice_Handle, deviceDescription?.Handle ?? IntPtr.Zero));
+		return new _NSImageDelegate();
 	}
 
-	[Export("imageUnfilteredFileTypes")]
-	public static NSObject[] ImageUnfilteredFileTypes()
+	internal _NSImageDelegate EnsureNSImageDelegate()
 	{
-		NSApplication.EnsureUIThread();
-		return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(class_ptr, selImageUnfilteredFileTypesHandle));
+		if (WeakDelegate != null)
+		{
+			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakDelegate, GetInternalEventDelegateType);
+		}
+		_NSImageDelegate nSImageDelegate = Delegate as _NSImageDelegate;
+		if (nSImageDelegate == null)
+		{
+			nSImageDelegate = (_NSImageDelegate)(Delegate = CreateInternalEventDelegateType());
+		}
+		return nSImageDelegate;
 	}
 
-	[Export("imageUnfilteredPasteboardTypes")]
-	public static string[] ImageUnfilteredPasteboardTypes()
-	{
-		NSApplication.EnsureUIThread();
-		return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(class_ptr, selImageUnfilteredPasteboardTypesHandle));
-	}
-
-	[Export("canInitWithPasteboard:")]
-	public static bool CanInitWithPasteboard(NSPasteboard pasteboard)
-	{
-		NSApplication.EnsureUIThread();
-		if (pasteboard == null)
-		{
-			throw new ArgumentNullException("pasteboard");
-		}
-		return Messaging.bool_objc_msgSend_IntPtr(class_ptr, selCanInitWithPasteboard_Handle, pasteboard.Handle);
-	}
-
-	[Export("cancelIncrementalLoad")]
-	public virtual void CancelIncrementalLoad()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selCancelIncrementalLoadHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selCancelIncrementalLoadHandle);
-		}
-	}
-
-	[Export("initWithCGImage:size:")]
-	public NSImage(CGImage cgImage, CGSize size)
-		: base(NSObjectFlag.Empty)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_CGSize(base.Handle, selInitWithCGImageSize_Handle, cgImage.Handle, size);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_CGSize(base.SuperHandle, selInitWithCGImageSize_Handle, cgImage.Handle, size);
-		}
-	}
-
-	[Export("CGImageForProposedRect:context:hints:")]
-	public virtual CGImage AsCGImage(ref CGRect proposedDestRect, NSGraphicsContext referenceContext, NSDictionary hints)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return new CGImage(Messaging.IntPtr_objc_msgSend_out_CGRect_IntPtr_IntPtr(base.Handle, selCGImageForProposedRectContextHints_Handle, out proposedDestRect, referenceContext?.Handle ?? IntPtr.Zero, hints?.Handle ?? IntPtr.Zero));
-		}
-		return new CGImage(Messaging.IntPtr_objc_msgSendSuper_out_CGRect_IntPtr_IntPtr(base.SuperHandle, selCGImageForProposedRectContextHints_Handle, out proposedDestRect, referenceContext?.Handle ?? IntPtr.Zero, hints?.Handle ?? IntPtr.Zero));
-	}
-
-	[Export("bestRepresentationForRect:context:hints:")]
-	public virtual NSImageRep BestRepresentation(CGRect rect, NSGraphicsContext referenceContext, NSDictionary hints)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return (NSImageRep)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_CGRect_IntPtr_IntPtr(base.Handle, selBestRepresentationForRectContextHints_Handle, rect, referenceContext?.Handle ?? IntPtr.Zero, hints?.Handle ?? IntPtr.Zero));
-		}
-		return (NSImageRep)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_CGRect_IntPtr_IntPtr(base.SuperHandle, selBestRepresentationForRectContextHints_Handle, rect, referenceContext?.Handle ?? IntPtr.Zero, hints?.Handle ?? IntPtr.Zero));
-	}
-
-	[Export("hitTestRect:withImageDestinationRect:context:hints:flipped:")]
-	public virtual bool HitTestRect(CGRect testRectDestSpace, CGRect imageRectDestSpace, NSGraphicsContext context, NSDictionary hints, bool flipped)
-	{
-		NSApplication.EnsureUIThread();
-		if (context == null)
-		{
-			throw new ArgumentNullException("context");
-		}
-		if (hints == null)
-		{
-			throw new ArgumentNullException("hints");
-		}
-		if (IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_CGRect_CGRect_IntPtr_IntPtr_bool(base.Handle, selHitTestRectWithImageDestinationRectContextHintsFlipped_Handle, testRectDestSpace, imageRectDestSpace, context.Handle, hints.Handle, flipped);
-		}
-		return Messaging.bool_objc_msgSendSuper_CGRect_CGRect_IntPtr_IntPtr_bool(base.SuperHandle, selHitTestRectWithImageDestinationRectContextHintsFlipped_Handle, testRectDestSpace, imageRectDestSpace, context.Handle, hints.Handle, flipped);
-	}
-
-	[Export("name")]
-	internal virtual string GetName()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNameHandle));
-		}
-		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNameHandle));
-	}
-
-	[Export("setName:")]
-	internal virtual bool SetName(string aString)
-	{
-		NSApplication.EnsureUIThread();
-		if (aString == null)
-		{
-			throw new ArgumentNullException("aString");
-		}
-		IntPtr arg = NSString.CreateNative(aString);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetName_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selSetName_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	public CGSize StringSize(string str, NSDictionary attributes)
-	{
-		NSApplication.EnsureUIThread();
-		if (str == null)
-		{
-			throw new ArgumentNullException("str");
-		}
-		if (attributes == null)
-		{
-			throw new ArgumentNullException("attributes");
-		}
-		IntPtr receiver = NSString.CreateNative(str);
-		CGSize result = Messaging.CGSize_objc_msgSend_IntPtr(receiver, selSizeWithAttributes_Handle, attributes.Handle);
-		NSString.ReleaseNative(receiver);
-		return result;
-	}
-
-	public void DrawInRect(string str, CGRect rect, NSDictionary attributes)
-	{
-		NSApplication.EnsureUIThread();
-		if (str == null)
-		{
-			throw new ArgumentNullException("str");
-		}
-		if (attributes == null)
-		{
-			throw new ArgumentNullException("attributes");
-		}
-		IntPtr receiver = NSString.CreateNative(str);
-		Messaging.void_objc_msgSend_CGRect_IntPtr(receiver, selDrawInRectWithAttributes_Handle, rect, attributes.Handle);
-		NSString.ReleaseNative(receiver);
-	}
-
-	[Export("drawInRect:fromRect:operation:fraction:")]
-	public virtual void DrawInRect(CGRect dstRect, CGRect srcRect, NSCompositingOperation operation, double delta)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGRect_CGRect_UInt64_Double(base.Handle, selDrawInRectFromRectOperationFraction_Handle, dstRect, srcRect, (ulong)operation, delta);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGRect_CGRect_UInt64_Double(base.SuperHandle, selDrawInRectFromRectOperationFraction_Handle, dstRect, srcRect, (ulong)operation, delta);
-		}
-	}
-
-	private _NSImageDelegate EnsureNSImageDelegate()
-	{
-		NSObject nSObject = WeakDelegate;
-		if (nSObject == null || !(nSObject is _NSImageDelegate))
-		{
-			nSObject = (WeakDelegate = new _NSImageDelegate());
-		}
-		return (_NSImageDelegate)nSObject;
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
-		__mt_reps_var = null;
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
-			__mt_BackgroundColor_var = null;
 			__mt_WeakDelegate_var = null;
 		}
 	}

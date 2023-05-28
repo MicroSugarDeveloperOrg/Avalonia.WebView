@@ -6,16 +6,6 @@ namespace CoreGraphics;
 
 public class CGPDFPageInfo
 {
-	private static IntPtr kCGPDFContextMediaBox;
-
-	private static IntPtr kCGPDFContextCropBox;
-
-	private static IntPtr kCGPDFContextBleedBox;
-
-	private static IntPtr kCGPDFContextTrimBox;
-
-	private static IntPtr kCGPDFContextArtBox;
-
 	public CGRect? MediaBox { get; set; }
 
 	public CGRect? CropBox { get; set; }
@@ -26,29 +16,28 @@ public class CGPDFPageInfo
 
 	public CGRect? ArtBox { get; set; }
 
-	static CGPDFPageInfo()
-	{
-		IntPtr handle = Dlfcn.dlopen("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics", 0);
-		try
-		{
-			kCGPDFContextMediaBox = Dlfcn.GetIndirect(handle, "kCGPDFContextMediaBox");
-			kCGPDFContextCropBox = Dlfcn.GetIndirect(handle, "kCGPDFContextCropBox");
-			kCGPDFContextBleedBox = Dlfcn.GetIndirect(handle, "kCGPDFContextBleedBox");
-			kCGPDFContextTrimBox = Dlfcn.GetIndirect(handle, "kCGPDFContextTrimBox");
-			kCGPDFContextArtBox = Dlfcn.GetIndirect(handle, "kCGPDFContextArtBox");
-		}
-		finally
-		{
-			Dlfcn.dlclose(handle);
-		}
-	}
+	[Field("kCGPDFContextArtBox", "CoreGraphics")]
+	internal static IntPtr kCGPDFContextArtBox => Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextArtBox");
+
+	[Field("kCGPDFContextBleedBox", "CoreGraphics")]
+	internal static IntPtr kCGPDFContextBleedBox => Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextBleedBox");
+
+	[Field("kCGPDFContextCropBox", "CoreGraphics")]
+	internal static IntPtr kCGPDFContextCropBox => Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextCropBox");
+
+	[Field("kCGPDFContextMediaBox", "CoreGraphics")]
+	internal static IntPtr kCGPDFContextMediaBox => Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextMediaBox");
+
+	[Field("kCGPDFContextTrimBox", "CoreGraphics")]
+	internal static IntPtr kCGPDFContextTrimBox => Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextTrimBox");
 
 	private unsafe static void Add(NSMutableDictionary dict, IntPtr key, CGRect? val)
 	{
 		if (val.HasValue)
 		{
 			CGRect value = val.Value;
-			NSData obj = NSData.FromBytes((IntPtr)(&value), 16uL);
+			CGRect* ptr = &value;
+			NSData obj = NSData.FromBytes((IntPtr)ptr, (byte)16);
 			dict.LowlevelSetObject(obj, key);
 		}
 	}

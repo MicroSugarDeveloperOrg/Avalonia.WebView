@@ -9,26 +9,52 @@ namespace CoreAnimation;
 [Register("CATiledLayer", true)]
 public class CATiledLayer : CALayer
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFadeDuration = "fadeDuration";
+
 	private static readonly IntPtr selFadeDurationHandle = Selector.GetHandle("fadeDuration");
 
-	private static readonly IntPtr selLevelsOfDetailHandle = Selector.GetHandle("levelsOfDetail");
-
-	private static readonly IntPtr selSetLevelsOfDetail_Handle = Selector.GetHandle("setLevelsOfDetail:");
-
-	private static readonly IntPtr selLevelsOfDetailBiasHandle = Selector.GetHandle("levelsOfDetailBias");
-
-	private static readonly IntPtr selSetLevelsOfDetailBias_Handle = Selector.GetHandle("setLevelsOfDetailBias:");
-
-	private static readonly IntPtr selTileSizeHandle = Selector.GetHandle("tileSize");
-
-	private static readonly IntPtr selSetTileSize_Handle = Selector.GetHandle("setTileSize:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLayer = "layer";
 
 	private static readonly IntPtr selLayerHandle = Selector.GetHandle("layer");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("CATiledLayer");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLevelsOfDetail = "levelsOfDetail";
+
+	private static readonly IntPtr selLevelsOfDetailHandle = Selector.GetHandle("levelsOfDetail");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLevelsOfDetailBias = "levelsOfDetailBias";
+
+	private static readonly IntPtr selLevelsOfDetailBiasHandle = Selector.GetHandle("levelsOfDetailBias");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLevelsOfDetail_ = "setLevelsOfDetail:";
+
+	private static readonly IntPtr selSetLevelsOfDetail_Handle = Selector.GetHandle("setLevelsOfDetail:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLevelsOfDetailBias_ = "setLevelsOfDetailBias:";
+
+	private static readonly IntPtr selSetLevelsOfDetailBias_Handle = Selector.GetHandle("setLevelsOfDetailBias:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTileSize_ = "setTileSize:";
+
+	private static readonly IntPtr selSetTileSize_Handle = Selector.GetHandle("setTileSize:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTileSize = "tileSize";
+
+	private static readonly IntPtr selTileSizeHandle = Selector.GetHandle("tileSize");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("CATiledLayer");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static double FadeDuration
 	{
 		[Export("fadeDuration")]
@@ -38,62 +64,65 @@ public class CATiledLayer : CALayer
 		}
 	}
 
-	public virtual int LevelsOfDetail
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint LevelsOfDetail
 	{
 		[Export("levelsOfDetail")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.int_objc_msgSend(base.Handle, selLevelsOfDetailHandle);
+				return Messaging.nint_objc_msgSend(base.Handle, selLevelsOfDetailHandle);
 			}
-			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selLevelsOfDetailHandle);
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selLevelsOfDetailHandle);
 		}
 		[Export("setLevelsOfDetail:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_int(base.Handle, selSetLevelsOfDetail_Handle, value);
+				Messaging.void_objc_msgSend_nint(base.Handle, selSetLevelsOfDetail_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetLevelsOfDetail_Handle, value);
+				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetLevelsOfDetail_Handle, value);
 			}
 		}
 	}
 
-	public virtual int LevelsOfDetailBias
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint LevelsOfDetailBias
 	{
 		[Export("levelsOfDetailBias")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.int_objc_msgSend(base.Handle, selLevelsOfDetailBiasHandle);
+				return Messaging.nint_objc_msgSend(base.Handle, selLevelsOfDetailBiasHandle);
 			}
-			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selLevelsOfDetailBiasHandle);
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selLevelsOfDetailBiasHandle);
 		}
 		[Export("setLevelsOfDetailBias:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_int(base.Handle, selSetLevelsOfDetailBias_Handle, value);
+				Messaging.void_objc_msgSend_nint(base.Handle, selSetLevelsOfDetailBias_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetLevelsOfDetailBias_Handle, value);
+				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetLevelsOfDetailBias_Handle, value);
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGSize TileSize
 	{
 		[Export("tileSize")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.CGSize_objc_msgSend(base.Handle, selTileSizeHandle);
 			}
@@ -102,7 +131,7 @@ public class CATiledLayer : CALayer
 		[Export("setTileSize:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_CGSize(base.Handle, selSetTileSize_Handle, value);
 			}
@@ -113,51 +142,57 @@ public class CATiledLayer : CALayer
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public CATiledLayer()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public CATiledLayer(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public CATiledLayer(NSObjectFlag t)
+	protected CATiledLayer(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public CATiledLayer(IntPtr handle)
+	protected internal CATiledLayer(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("layer")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new static CALayer Create()
 	{
-		return (CALayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selLayerHandle));
+		return Runtime.GetNSObject<CALayer>(Messaging.IntPtr_objc_msgSend(class_ptr, selLayerHandle));
 	}
 }

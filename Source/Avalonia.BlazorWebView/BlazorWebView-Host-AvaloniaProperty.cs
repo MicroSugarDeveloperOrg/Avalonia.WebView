@@ -4,7 +4,7 @@ partial class BlazorWebView
 {
     static bool LoadHostDependencyObjectsChanged()
     {
-        HostPageProperty.Changed.AddClassHandler<BlazorWebView, string?>(async (s, e) =>
+        HostPageProperty.Changed.AddClassHandler<BlazorWebView, string?>((s, e) =>
         {
             if (s._platformWebView is null)
                 return;

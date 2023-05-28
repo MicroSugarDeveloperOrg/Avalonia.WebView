@@ -1,148 +1,187 @@
 using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
 namespace AppKit;
 
 [Register("NSFontCollection", true)]
-public class NSFontCollection : NSObject
+public class NSFontCollection : NSObject, INSCoding, INativeObject, IDisposable, INSCopying, INSMutableCopying, INSSecureCoding
 {
 	public static class Notifications
 	{
 		public static NSObject ObserveChanged(EventHandler<NSFontCollectionChangedEventArgs> handler)
 		{
+			EventHandler<NSFontCollectionChangedEventArgs> handler2 = handler;
 			return NSNotificationCenter.DefaultCenter.AddObserver(ChangedNotification, delegate(NSNotification notification)
 			{
-				handler(null, new NSFontCollectionChangedEventArgs(notification));
+				handler2(null, new NSFontCollectionChangedEventArgs(notification));
 			});
+		}
+
+		public static NSObject ObserveChanged(NSObject objectToObserve, EventHandler<NSFontCollectionChangedEventArgs> handler)
+		{
+			EventHandler<NSFontCollectionChangedEventArgs> handler2 = handler;
+			return NSNotificationCenter.DefaultCenter.AddObserver(ChangedNotification, delegate(NSNotification notification)
+			{
+				handler2(null, new NSFontCollectionChangedEventArgs(notification));
+			}, objectToObserve);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAllFontCollectionNames = "allFontCollectionNames";
+
 	private static readonly IntPtr selAllFontCollectionNamesHandle = Selector.GetHandle("allFontCollectionNames");
 
-	private static readonly IntPtr selFontCollectionWithDescriptors_Handle = Selector.GetHandle("fontCollectionWithDescriptors:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCopyWithZone_ = "copyWithZone:";
 
-	private static readonly IntPtr selFontCollectionWithAllAvailableDescriptorsHandle = Selector.GetHandle("fontCollectionWithAllAvailableDescriptors");
+	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
 
-	private static readonly IntPtr selFontCollectionWithLocale_Handle = Selector.GetHandle("fontCollectionWithLocale:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEncodeWithCoder_ = "encodeWithCoder:";
 
-	private static readonly IntPtr selShowFontCollectionWithNameVisibilityError_Handle = Selector.GetHandle("showFontCollection:withName:visibility:error:");
+	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
 
-	private static readonly IntPtr selHideFontCollectionWithNameVisibilityError_Handle = Selector.GetHandle("hideFontCollectionWithName:visibility:error:");
-
-	private static readonly IntPtr selRenameFontCollectionWithNameVisibilityToNameError_Handle = Selector.GetHandle("renameFontCollectionWithName:visibility:toName:error:");
-
-	private static readonly IntPtr selFontCollectionWithName_Handle = Selector.GetHandle("fontCollectionWithName:");
-
-	private static readonly IntPtr selFontCollectionWithNameVisibility_Handle = Selector.GetHandle("fontCollectionWithName:visibility:");
-
-	private static readonly IntPtr selQueryDescriptorsHandle = Selector.GetHandle("queryDescriptors");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selExclusionDescriptors = "exclusionDescriptors";
 
 	private static readonly IntPtr selExclusionDescriptorsHandle = Selector.GetHandle("exclusionDescriptors");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFontCollectionWithAllAvailableDescriptors = "fontCollectionWithAllAvailableDescriptors";
+
+	private static readonly IntPtr selFontCollectionWithAllAvailableDescriptorsHandle = Selector.GetHandle("fontCollectionWithAllAvailableDescriptors");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFontCollectionWithDescriptors_ = "fontCollectionWithDescriptors:";
+
+	private static readonly IntPtr selFontCollectionWithDescriptors_Handle = Selector.GetHandle("fontCollectionWithDescriptors:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFontCollectionWithLocale_ = "fontCollectionWithLocale:";
+
+	private static readonly IntPtr selFontCollectionWithLocale_Handle = Selector.GetHandle("fontCollectionWithLocale:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFontCollectionWithName_ = "fontCollectionWithName:";
+
+	private static readonly IntPtr selFontCollectionWithName_Handle = Selector.GetHandle("fontCollectionWithName:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFontCollectionWithName_Visibility_ = "fontCollectionWithName:visibility:";
+
+	private static readonly IntPtr selFontCollectionWithName_Visibility_Handle = Selector.GetHandle("fontCollectionWithName:visibility:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selHideFontCollectionWithName_Visibility_Error_ = "hideFontCollectionWithName:visibility:error:";
+
+	private static readonly IntPtr selHideFontCollectionWithName_Visibility_Error_Handle = Selector.GetHandle("hideFontCollectionWithName:visibility:error:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithCoder_ = "initWithCoder:";
+
+	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMatchingDescriptors = "matchingDescriptors";
+
 	private static readonly IntPtr selMatchingDescriptorsHandle = Selector.GetHandle("matchingDescriptors");
 
-	private static readonly IntPtr selMatchingDescriptorsWithOptions_Handle = Selector.GetHandle("matchingDescriptorsWithOptions:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMatchingDescriptorsForFamily_ = "matchingDescriptorsForFamily:";
 
 	private static readonly IntPtr selMatchingDescriptorsForFamily_Handle = Selector.GetHandle("matchingDescriptorsForFamily:");
 
-	private static readonly IntPtr selMatchingDescriptorsForFamilyOptions_Handle = Selector.GetHandle("matchingDescriptorsForFamily:options:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMatchingDescriptorsForFamily_Options_ = "matchingDescriptorsForFamily:options:";
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSFontCollection");
+	private static readonly IntPtr selMatchingDescriptorsForFamily_Options_Handle = Selector.GetHandle("matchingDescriptorsForFamily:options:");
 
-	private static NSString _IncludeDisabledFontsOption;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMatchingDescriptorsWithOptions_ = "matchingDescriptorsWithOptions:";
 
-	private static NSString _RemoveDuplicatesOption;
+	private static readonly IntPtr selMatchingDescriptorsWithOptions_Handle = Selector.GetHandle("matchingDescriptorsWithOptions:");
 
-	private static NSString _DisallowAutoActivationOption;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMutableCopyWithZone_ = "mutableCopyWithZone:";
 
-	private static NSString _ChangedNotification;
+	private static readonly IntPtr selMutableCopyWithZone_Handle = Selector.GetHandle("mutableCopyWithZone:");
 
-	private static NSString _ActionKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selQueryDescriptors = "queryDescriptors";
 
-	private static NSString _NameKey;
+	private static readonly IntPtr selQueryDescriptorsHandle = Selector.GetHandle("queryDescriptors");
 
-	private static NSString _OldNameKey;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRenameFontCollectionWithName_Visibility_ToName_Error_ = "renameFontCollectionWithName:visibility:toName:error:";
 
-	private static NSString _VisibilityKey;
+	private static readonly IntPtr selRenameFontCollectionWithName_Visibility_ToName_Error_Handle = Selector.GetHandle("renameFontCollectionWithName:visibility:toName:error:");
 
-	private static NSString _ActionWasShown;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selShowFontCollection_WithName_Visibility_Error_ = "showFontCollection:withName:visibility:error:";
 
-	private static NSString _ActionWasHidden;
+	private static readonly IntPtr selShowFontCollection_WithName_Visibility_Error_Handle = Selector.GetHandle("showFontCollection:withName:visibility:error:");
 
-	private static NSString _ActionWasRenamed;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSFontCollection");
 
-	private static NSString _NameAllFonts;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ActionKey;
 
-	private static NSString _NameUser;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ActionWasHidden;
 
-	private static NSString _NameFavorites;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ActionWasRenamed;
 
-	private static NSString _NameRecentlyUsed;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ActionWasShown;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ChangedNotification;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _DisallowAutoActivationOption;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _IncludeDisabledFontsOption;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _NameAllFonts;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _NameFavorites;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _NameKey;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _NameRecentlyUsed;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _NameUser;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _OldNameKey;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _RemoveDuplicatesOption;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _VisibilityKey;
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static string[] AllFontCollectionNames
 	{
-		[Export("allFontCollectionNames")]
+		[Export("allFontCollectionNames", ArgumentSemantic.Copy)]
 		get
 		{
 			NSApplication.EnsureUIThread();
 			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(class_ptr, selAllFontCollectionNamesHandle));
-		}
-	}
-
-	[Field("NSFontCollectionIncludeDisabledFontsOption", "AppKit")]
-	public static NSString IncludeDisabledFontsOption
-	{
-		get
-		{
-			if (_IncludeDisabledFontsOption == null)
-			{
-				_IncludeDisabledFontsOption = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionIncludeDisabledFontsOption");
-			}
-			return _IncludeDisabledFontsOption;
-		}
-	}
-
-	[Field("NSFontCollectionRemoveDuplicatesOption", "AppKit")]
-	public static NSString RemoveDuplicatesOption
-	{
-		get
-		{
-			if (_RemoveDuplicatesOption == null)
-			{
-				_RemoveDuplicatesOption = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionRemoveDuplicatesOption");
-			}
-			return _RemoveDuplicatesOption;
-		}
-	}
-
-	[Field("NSFontCollectionDisallowAutoActivationOption", "AppKit")]
-	public static NSString DisallowAutoActivationOption
-	{
-		get
-		{
-			if (_DisallowAutoActivationOption == null)
-			{
-				_DisallowAutoActivationOption = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionDisallowAutoActivationOption");
-			}
-			return _DisallowAutoActivationOption;
-		}
-	}
-
-	[Field("NSFontCollectionDidChangeNotification", "AppKit")]
-	public static NSString ChangedNotification
-	{
-		get
-		{
-			if (_ChangedNotification == null)
-			{
-				_ChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionDidChangeNotification");
-			}
-			return _ChangedNotification;
 		}
 	}
 
@@ -156,58 +195,6 @@ public class NSFontCollection : NSObject
 				_ActionKey = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionActionKey");
 			}
 			return _ActionKey;
-		}
-	}
-
-	[Field("NSFontCollectionNameKey", "AppKit")]
-	public static NSString NameKey
-	{
-		get
-		{
-			if (_NameKey == null)
-			{
-				_NameKey = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionNameKey");
-			}
-			return _NameKey;
-		}
-	}
-
-	[Field("NSFontCollectionOldNameKey", "AppKit")]
-	public static NSString OldNameKey
-	{
-		get
-		{
-			if (_OldNameKey == null)
-			{
-				_OldNameKey = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionOldNameKey");
-			}
-			return _OldNameKey;
-		}
-	}
-
-	[Field("NSFontCollectionVisibilityKey", "AppKit")]
-	public static NSString VisibilityKey
-	{
-		get
-		{
-			if (_VisibilityKey == null)
-			{
-				_VisibilityKey = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionVisibilityKey");
-			}
-			return _VisibilityKey;
-		}
-	}
-
-	[Field("NSFontCollectionWasShown", "AppKit")]
-	public static NSString ActionWasShown
-	{
-		get
-		{
-			if (_ActionWasShown == null)
-			{
-				_ActionWasShown = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionWasShown");
-			}
-			return _ActionWasShown;
 		}
 	}
 
@@ -237,6 +224,59 @@ public class NSFontCollection : NSObject
 		}
 	}
 
+	[Field("NSFontCollectionWasShown", "AppKit")]
+	public static NSString ActionWasShown
+	{
+		get
+		{
+			if (_ActionWasShown == null)
+			{
+				_ActionWasShown = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionWasShown");
+			}
+			return _ActionWasShown;
+		}
+	}
+
+	[Field("NSFontCollectionDidChangeNotification", "AppKit")]
+	[Advice("Use NSFontCollection.Notifications.ObserveChanged helper method instead.")]
+	public static NSString ChangedNotification
+	{
+		get
+		{
+			if (_ChangedNotification == null)
+			{
+				_ChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionDidChangeNotification");
+			}
+			return _ChangedNotification;
+		}
+	}
+
+	[Field("NSFontCollectionDisallowAutoActivationOption", "AppKit")]
+	public static NSString DisallowAutoActivationOption
+	{
+		get
+		{
+			if (_DisallowAutoActivationOption == null)
+			{
+				_DisallowAutoActivationOption = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionDisallowAutoActivationOption");
+			}
+			return _DisallowAutoActivationOption;
+		}
+	}
+
+	[Field("NSFontCollectionIncludeDisabledFontsOption", "AppKit")]
+	public static NSString IncludeDisabledFontsOption
+	{
+		get
+		{
+			if (_IncludeDisabledFontsOption == null)
+			{
+				_IncludeDisabledFontsOption = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionIncludeDisabledFontsOption");
+			}
+			return _IncludeDisabledFontsOption;
+		}
+	}
+
 	[Field("NSFontCollectionAllFonts", "AppKit")]
 	public static NSString NameAllFonts
 	{
@@ -247,19 +287,6 @@ public class NSFontCollection : NSObject
 				_NameAllFonts = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionAllFonts");
 			}
 			return _NameAllFonts;
-		}
-	}
-
-	[Field("NSFontCollectionUser", "AppKit")]
-	public static NSString NameUser
-	{
-		get
-		{
-			if (_NameUser == null)
-			{
-				_NameUser = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionUser");
-			}
-			return _NameUser;
 		}
 	}
 
@@ -276,6 +303,19 @@ public class NSFontCollection : NSObject
 		}
 	}
 
+	[Field("NSFontCollectionNameKey", "AppKit")]
+	public static NSString NameKey
+	{
+		get
+		{
+			if (_NameKey == null)
+			{
+				_NameKey = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionNameKey");
+			}
+			return _NameKey;
+		}
+	}
+
 	[Field("NSFontCollectionRecentlyUsed", "AppKit")]
 	public static NSString NameRecentlyUsed
 	{
@@ -289,49 +329,142 @@ public class NSFontCollection : NSObject
 		}
 	}
 
+	[Field("NSFontCollectionUser", "AppKit")]
+	public static NSString NameUser
+	{
+		get
+		{
+			if (_NameUser == null)
+			{
+				_NameUser = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionUser");
+			}
+			return _NameUser;
+		}
+	}
+
+	[Field("NSFontCollectionOldNameKey", "AppKit")]
+	public static NSString OldNameKey
+	{
+		get
+		{
+			if (_OldNameKey == null)
+			{
+				_OldNameKey = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionOldNameKey");
+			}
+			return _OldNameKey;
+		}
+	}
+
+	[Field("NSFontCollectionRemoveDuplicatesOption", "AppKit")]
+	public static NSString RemoveDuplicatesOption
+	{
+		get
+		{
+			if (_RemoveDuplicatesOption == null)
+			{
+				_RemoveDuplicatesOption = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionRemoveDuplicatesOption");
+			}
+			return _RemoveDuplicatesOption;
+		}
+	}
+
+	[Field("NSFontCollectionVisibilityKey", "AppKit")]
+	public static NSString VisibilityKey
+	{
+		get
+		{
+			if (_VisibilityKey == null)
+			{
+				_VisibilityKey = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSFontCollectionVisibilityKey");
+			}
+			return _VisibilityKey;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSFontCollection()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSFontCollection(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSFontCollection(NSObjectFlag t)
+	protected NSFontCollection(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSFontCollection(IntPtr handle)
+	protected internal NSFontCollection(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("copyWithZone:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[return: Release]
+	public virtual NSObject Copy(NSZone? zone)
+	{
+		NSApplication.EnsureUIThread();
+		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
+		if (nSObject != null)
+		{
+			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
+		}
+		return nSObject;
+	}
+
+	[Export("encodeWithCoder:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void EncodeTo(NSCoder encoder)
+	{
+		NSApplication.EnsureUIThread();
+		if (encoder == null)
+		{
+			throw new ArgumentNullException("encoder");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+	}
+
 	[Export("fontCollectionWithDescriptors:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSFontCollection FromDescriptors(NSFontDescriptor[] queryDescriptors)
 	{
 		NSApplication.EnsureUIThread();
@@ -340,19 +473,13 @@ public class NSFontCollection : NSObject
 			throw new ArgumentNullException("queryDescriptors");
 		}
 		NSArray nSArray = NSArray.FromNSObjects(queryDescriptors);
-		NSFontCollection result = (NSFontCollection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selFontCollectionWithDescriptors_Handle, nSArray.Handle));
+		NSFontCollection nSObject = Runtime.GetNSObject<NSFontCollection>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selFontCollectionWithDescriptors_Handle, nSArray.Handle));
 		nSArray.Dispose();
-		return result;
-	}
-
-	[Export("fontCollectionWithAllAvailableDescriptors")]
-	public static NSFontCollection GetAllAvailableFonts()
-	{
-		NSApplication.EnsureUIThread();
-		return (NSFontCollection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selFontCollectionWithAllAvailableDescriptorsHandle));
+		return nSObject;
 	}
 
 	[Export("fontCollectionWithLocale:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSFontCollection FromLocale(NSLocale locale)
 	{
 		NSApplication.EnsureUIThread();
@@ -360,77 +487,11 @@ public class NSFontCollection : NSObject
 		{
 			throw new ArgumentNullException("locale");
 		}
-		return (NSFontCollection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selFontCollectionWithLocale_Handle, locale.Handle));
-	}
-
-	[Export("showFontCollection:withName:visibility:error:")]
-	public static bool ShowFontCollection(NSFontCollection fontCollection, string name, NSFontCollectionVisibility visibility, out NSError error)
-	{
-		NSApplication.EnsureUIThread();
-		if (fontCollection == null)
-		{
-			throw new ArgumentNullException("fontCollection");
-		}
-		if (name == null)
-		{
-			throw new ArgumentNullException("name");
-		}
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		IntPtr arg = NSString.CreateNative(name);
-		bool result = Messaging.bool_objc_msgSend_IntPtr_IntPtr_UInt64_IntPtr(class_ptr, selShowFontCollectionWithNameVisibilityError_Handle, fontCollection.Handle, arg, (ulong)visibility, intPtr);
-		NSString.ReleaseNative(arg);
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
-		return result;
-	}
-
-	[Export("hideFontCollectionWithName:visibility:error:")]
-	public static bool HideFontCollection(string name, NSFontCollectionVisibility visibility, out NSError error)
-	{
-		NSApplication.EnsureUIThread();
-		if (name == null)
-		{
-			throw new ArgumentNullException("name");
-		}
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		IntPtr arg = NSString.CreateNative(name);
-		bool result = Messaging.bool_objc_msgSend_IntPtr_UInt64_IntPtr(class_ptr, selHideFontCollectionWithNameVisibilityError_Handle, arg, (ulong)visibility, intPtr);
-		NSString.ReleaseNative(arg);
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
-		return result;
-	}
-
-	[Export("renameFontCollectionWithName:visibility:toName:error:")]
-	public static bool RenameFontCollection(string fromName, NSFontCollectionVisibility visibility, string toName, out NSError error)
-	{
-		NSApplication.EnsureUIThread();
-		if (fromName == null)
-		{
-			throw new ArgumentNullException("fromName");
-		}
-		if (toName == null)
-		{
-			throw new ArgumentNullException("toName");
-		}
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		IntPtr arg = NSString.CreateNative(fromName);
-		IntPtr arg2 = NSString.CreateNative(toName);
-		bool result = Messaging.bool_objc_msgSend_IntPtr_UInt64_IntPtr_IntPtr(class_ptr, selRenameFontCollectionWithNameVisibilityToNameError_Handle, arg, (ulong)visibility, arg2, intPtr);
-		NSString.ReleaseNative(arg);
-		NSString.ReleaseNative(arg2);
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
-		return result;
+		return Runtime.GetNSObject<NSFontCollection>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selFontCollectionWithLocale_Handle, locale.Handle));
 	}
 
 	[Export("fontCollectionWithName:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSFontCollection FromName(string name)
 	{
 		NSApplication.EnsureUIThread();
@@ -439,12 +500,13 @@ public class NSFontCollection : NSObject
 			throw new ArgumentNullException("name");
 		}
 		IntPtr arg = NSString.CreateNative(name);
-		NSFontCollection result = (NSFontCollection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selFontCollectionWithName_Handle, arg));
+		NSFontCollection nSObject = Runtime.GetNSObject<NSFontCollection>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selFontCollectionWithName_Handle, arg));
 		NSString.ReleaseNative(arg);
-		return result;
+		return nSObject;
 	}
 
 	[Export("fontCollectionWithName:visibility:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSFontCollection FromName(string name, NSFontCollectionVisibility visibility)
 	{
 		NSApplication.EnsureUIThread();
@@ -453,27 +515,25 @@ public class NSFontCollection : NSObject
 			throw new ArgumentNullException("name");
 		}
 		IntPtr arg = NSString.CreateNative(name);
-		NSFontCollection result = (NSFontCollection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64(class_ptr, selFontCollectionWithNameVisibility_Handle, arg, (ulong)visibility));
+		NSFontCollection nSObject = Runtime.GetNSObject<NSFontCollection>(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64(class_ptr, selFontCollectionWithName_Visibility_Handle, arg, (ulong)visibility));
 		NSString.ReleaseNative(arg);
-		return result;
+		return nSObject;
 	}
 
-	[Export("queryDescriptors")]
-	public virtual NSFontDescriptor[] GetQueryDescriptors()
+	[Export("fontCollectionWithAllAvailableDescriptors")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSFontCollection GetAllAvailableFonts()
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend(base.Handle, selQueryDescriptorsHandle));
-		}
-		return NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selQueryDescriptorsHandle));
+		return Runtime.GetNSObject<NSFontCollection>(Messaging.IntPtr_objc_msgSend(class_ptr, selFontCollectionWithAllAvailableDescriptorsHandle));
 	}
 
 	[Export("exclusionDescriptors")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSFontDescriptor[] GetExclusionDescriptors()
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			return NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend(base.Handle, selExclusionDescriptorsHandle));
 		}
@@ -481,10 +541,11 @@ public class NSFontCollection : NSObject
 	}
 
 	[Export("matchingDescriptors")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSFontDescriptor[] GetMatchingDescriptors()
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			return NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend(base.Handle, selMatchingDescriptorsHandle));
 		}
@@ -492,6 +553,7 @@ public class NSFontCollection : NSObject
 	}
 
 	[Export("matchingDescriptorsWithOptions:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSFontDescriptor[] GetMatchingDescriptors(NSDictionary options)
 	{
 		NSApplication.EnsureUIThread();
@@ -499,7 +561,7 @@ public class NSFontCollection : NSObject
 		{
 			throw new ArgumentNullException("options");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			return NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selMatchingDescriptorsWithOptions_Handle, options.Handle));
 		}
@@ -507,6 +569,7 @@ public class NSFontCollection : NSObject
 	}
 
 	[Export("matchingDescriptorsForFamily:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSFontDescriptor[] GetMatchingDescriptors(string family)
 	{
 		NSApplication.EnsureUIThread();
@@ -515,12 +578,13 @@ public class NSFontCollection : NSObject
 			throw new ArgumentNullException("family");
 		}
 		IntPtr arg = NSString.CreateNative(family);
-		NSFontDescriptor[] result = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selMatchingDescriptorsForFamily_Handle, arg)) : NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selMatchingDescriptorsForFamily_Handle, arg)));
+		NSFontDescriptor[] result = ((!base.IsDirectBinding) ? NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selMatchingDescriptorsForFamily_Handle, arg)) : NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selMatchingDescriptorsForFamily_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
 	[Export("matchingDescriptorsForFamily:options:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSFontDescriptor[] GetMatchingDescriptors(string family, NSDictionary options)
 	{
 		NSApplication.EnsureUIThread();
@@ -533,8 +597,95 @@ public class NSFontCollection : NSObject
 			throw new ArgumentNullException("options");
 		}
 		IntPtr arg = NSString.CreateNative(family);
-		NSFontDescriptor[] result = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selMatchingDescriptorsForFamilyOptions_Handle, arg, options.Handle)) : NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selMatchingDescriptorsForFamilyOptions_Handle, arg, options.Handle)));
+		NSFontDescriptor[] result = ((!base.IsDirectBinding) ? NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selMatchingDescriptorsForFamily_Options_Handle, arg, options.Handle)) : NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selMatchingDescriptorsForFamily_Options_Handle, arg, options.Handle)));
 		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("queryDescriptors")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSFontDescriptor[] GetQueryDescriptors()
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			return NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend(base.Handle, selQueryDescriptorsHandle));
+		}
+		return NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selQueryDescriptorsHandle));
+	}
+
+	[Export("hideFontCollectionWithName:visibility:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static bool HideFontCollection(string name, NSFontCollectionVisibility visibility, out NSError error)
+	{
+		NSApplication.EnsureUIThread();
+		if (name == null)
+		{
+			throw new ArgumentNullException("name");
+		}
+		IntPtr arg = IntPtr.Zero;
+		IntPtr arg2 = NSString.CreateNative(name);
+		bool result = Messaging.bool_objc_msgSend_IntPtr_UInt64_ref_IntPtr(class_ptr, selHideFontCollectionWithName_Visibility_Error_Handle, arg2, (ulong)visibility, ref arg);
+		NSString.ReleaseNative(arg2);
+		error = Runtime.GetNSObject<NSError>(arg);
+		return result;
+	}
+
+	[Export("mutableCopyWithZone:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[return: Release]
+	public virtual NSObject MutableCopy(NSZone? zone)
+	{
+		NSApplication.EnsureUIThread();
+		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selMutableCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selMutableCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
+		if (nSObject != null)
+		{
+			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
+		}
+		return nSObject;
+	}
+
+	[Export("renameFontCollectionWithName:visibility:toName:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static bool RenameFontCollection(string fromName, NSFontCollectionVisibility visibility, string toName, out NSError error)
+	{
+		NSApplication.EnsureUIThread();
+		if (fromName == null)
+		{
+			throw new ArgumentNullException("fromName");
+		}
+		if (toName == null)
+		{
+			throw new ArgumentNullException("toName");
+		}
+		IntPtr arg = IntPtr.Zero;
+		IntPtr arg2 = NSString.CreateNative(fromName);
+		IntPtr arg3 = NSString.CreateNative(toName);
+		bool result = Messaging.bool_objc_msgSend_IntPtr_UInt64_IntPtr_ref_IntPtr(class_ptr, selRenameFontCollectionWithName_Visibility_ToName_Error_Handle, arg2, (ulong)visibility, arg3, ref arg);
+		NSString.ReleaseNative(arg2);
+		NSString.ReleaseNative(arg3);
+		error = Runtime.GetNSObject<NSError>(arg);
+		return result;
+	}
+
+	[Export("showFontCollection:withName:visibility:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static bool ShowFontCollection(NSFontCollection fontCollection, string name, NSFontCollectionVisibility visibility, out NSError error)
+	{
+		NSApplication.EnsureUIThread();
+		if (fontCollection == null)
+		{
+			throw new ArgumentNullException("fontCollection");
+		}
+		if (name == null)
+		{
+			throw new ArgumentNullException("name");
+		}
+		IntPtr arg = IntPtr.Zero;
+		IntPtr arg2 = NSString.CreateNative(name);
+		bool result = Messaging.bool_objc_msgSend_IntPtr_IntPtr_UInt64_ref_IntPtr(class_ptr, selShowFontCollection_WithName_Visibility_Error_Handle, fontCollection.Handle, arg2, (ulong)visibility, ref arg);
+		NSString.ReleaseNative(arg2);
+		error = Runtime.GetNSObject<NSError>(arg);
 		return result;
 	}
 }

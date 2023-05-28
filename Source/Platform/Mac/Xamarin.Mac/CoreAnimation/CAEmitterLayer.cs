@@ -9,138 +9,218 @@ namespace CoreAnimation;
 [Register("CAEmitterLayer", true)]
 public class CAEmitterLayer : CALayer
 {
-	private static readonly IntPtr selEmitterCellsHandle = Selector.GetHandle("emitterCells");
-
-	private static readonly IntPtr selSetEmitterCells_Handle = Selector.GetHandle("setEmitterCells:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBirthRate = "birthRate";
 
 	private static readonly IntPtr selBirthRateHandle = Selector.GetHandle("birthRate");
 
-	private static readonly IntPtr selSetBirthRate_Handle = Selector.GetHandle("setBirthRate:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEmitterCells = "emitterCells";
 
-	private static readonly IntPtr selLifetimeHandle = Selector.GetHandle("lifetime");
+	private static readonly IntPtr selEmitterCellsHandle = Selector.GetHandle("emitterCells");
 
-	private static readonly IntPtr selSetLifetime_Handle = Selector.GetHandle("setLifetime:");
-
-	private static readonly IntPtr selEmitterPositionHandle = Selector.GetHandle("emitterPosition");
-
-	private static readonly IntPtr selSetEmitterPosition_Handle = Selector.GetHandle("setEmitterPosition:");
-
-	private static readonly IntPtr selEmitterZPositionHandle = Selector.GetHandle("emitterZPosition");
-
-	private static readonly IntPtr selSetEmitterZPosition_Handle = Selector.GetHandle("setEmitterZPosition:");
-
-	private static readonly IntPtr selEmitterSizeHandle = Selector.GetHandle("emitterSize");
-
-	private static readonly IntPtr selSetEmitterSize_Handle = Selector.GetHandle("setEmitterSize:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEmitterDepth = "emitterDepth";
 
 	private static readonly IntPtr selEmitterDepthHandle = Selector.GetHandle("emitterDepth");
 
-	private static readonly IntPtr selSetEmitterDepth_Handle = Selector.GetHandle("setEmitterDepth:");
-
-	private static readonly IntPtr selEmitterShapeHandle = Selector.GetHandle("emitterShape");
-
-	private static readonly IntPtr selSetEmitterShape_Handle = Selector.GetHandle("setEmitterShape:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEmitterMode = "emitterMode";
 
 	private static readonly IntPtr selEmitterModeHandle = Selector.GetHandle("emitterMode");
 
-	private static readonly IntPtr selSetEmitterMode_Handle = Selector.GetHandle("setEmitterMode:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEmitterPosition = "emitterPosition";
 
-	private static readonly IntPtr selRenderModeHandle = Selector.GetHandle("renderMode");
+	private static readonly IntPtr selEmitterPositionHandle = Selector.GetHandle("emitterPosition");
 
-	private static readonly IntPtr selSetRenderMode_Handle = Selector.GetHandle("setRenderMode:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEmitterShape = "emitterShape";
 
-	private static readonly IntPtr selPreservesDepthHandle = Selector.GetHandle("preservesDepth");
+	private static readonly IntPtr selEmitterShapeHandle = Selector.GetHandle("emitterShape");
 
-	private static readonly IntPtr selSetPreservesDepth_Handle = Selector.GetHandle("setPreservesDepth:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEmitterSize = "emitterSize";
 
-	private static readonly IntPtr selVelocityHandle = Selector.GetHandle("velocity");
+	private static readonly IntPtr selEmitterSizeHandle = Selector.GetHandle("emitterSize");
 
-	private static readonly IntPtr selSetVelocity_Handle = Selector.GetHandle("setVelocity:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEmitterZPosition = "emitterZPosition";
 
-	private static readonly IntPtr selScaleHandle = Selector.GetHandle("scale");
+	private static readonly IntPtr selEmitterZPositionHandle = Selector.GetHandle("emitterZPosition");
 
-	private static readonly IntPtr selSetScale_Handle = Selector.GetHandle("setScale:");
-
-	private static readonly IntPtr selSpinHandle = Selector.GetHandle("spin");
-
-	private static readonly IntPtr selSetSpin_Handle = Selector.GetHandle("setSpin:");
-
-	private static readonly IntPtr selSeedHandle = Selector.GetHandle("seed");
-
-	private static readonly IntPtr selSetSeed_Handle = Selector.GetHandle("setSeed:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLayer = "layer";
 
 	private static readonly IntPtr selLayerHandle = Selector.GetHandle("layer");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("CAEmitterLayer");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLifetime = "lifetime";
 
-	private object __mt_Cells_var;
+	private static readonly IntPtr selLifetimeHandle = Selector.GetHandle("lifetime");
 
-	private static NSString _ShapePoint;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPreservesDepth = "preservesDepth";
 
-	private static NSString _ShapeLine;
+	private static readonly IntPtr selPreservesDepthHandle = Selector.GetHandle("preservesDepth");
 
-	private static NSString _ShapeRectangle;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRenderMode = "renderMode";
 
-	private static NSString _ShapeCuboid;
+	private static readonly IntPtr selRenderModeHandle = Selector.GetHandle("renderMode");
 
-	private static NSString _ShapeCircle;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selScale = "scale";
 
-	private static NSString _ShapeSphere;
+	private static readonly IntPtr selScaleHandle = Selector.GetHandle("scale");
 
-	private static NSString _ModePoints;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSeed = "seed";
 
-	private static NSString _ModeOutline;
+	private static readonly IntPtr selSeedHandle = Selector.GetHandle("seed");
 
-	private static NSString _ModeSurface;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBirthRate_ = "setBirthRate:";
 
-	private static NSString _ModeVolume;
+	private static readonly IntPtr selSetBirthRate_Handle = Selector.GetHandle("setBirthRate:");
 
-	private static NSString _RenderUnordered;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEmitterCells_ = "setEmitterCells:";
 
-	private static NSString _RenderOldestFirst;
+	private static readonly IntPtr selSetEmitterCells_Handle = Selector.GetHandle("setEmitterCells:");
 
-	private static NSString _RenderOldestLast;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEmitterDepth_ = "setEmitterDepth:";
 
-	private static NSString _RenderBackToFront;
+	private static readonly IntPtr selSetEmitterDepth_Handle = Selector.GetHandle("setEmitterDepth:");
 
-	private static NSString _RenderAdditive;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEmitterMode_ = "setEmitterMode:";
+
+	private static readonly IntPtr selSetEmitterMode_Handle = Selector.GetHandle("setEmitterMode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEmitterPosition_ = "setEmitterPosition:";
+
+	private static readonly IntPtr selSetEmitterPosition_Handle = Selector.GetHandle("setEmitterPosition:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEmitterShape_ = "setEmitterShape:";
+
+	private static readonly IntPtr selSetEmitterShape_Handle = Selector.GetHandle("setEmitterShape:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEmitterSize_ = "setEmitterSize:";
+
+	private static readonly IntPtr selSetEmitterSize_Handle = Selector.GetHandle("setEmitterSize:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEmitterZPosition_ = "setEmitterZPosition:";
+
+	private static readonly IntPtr selSetEmitterZPosition_Handle = Selector.GetHandle("setEmitterZPosition:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLifetime_ = "setLifetime:";
+
+	private static readonly IntPtr selSetLifetime_Handle = Selector.GetHandle("setLifetime:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPreservesDepth_ = "setPreservesDepth:";
+
+	private static readonly IntPtr selSetPreservesDepth_Handle = Selector.GetHandle("setPreservesDepth:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetRenderMode_ = "setRenderMode:";
+
+	private static readonly IntPtr selSetRenderMode_Handle = Selector.GetHandle("setRenderMode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetScale_ = "setScale:";
+
+	private static readonly IntPtr selSetScale_Handle = Selector.GetHandle("setScale:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetSeed_ = "setSeed:";
+
+	private static readonly IntPtr selSetSeed_Handle = Selector.GetHandle("setSeed:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetSpin_ = "setSpin:";
+
+	private static readonly IntPtr selSetSpin_Handle = Selector.GetHandle("setSpin:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetVelocity_ = "setVelocity:";
+
+	private static readonly IntPtr selSetVelocity_Handle = Selector.GetHandle("setVelocity:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSpin = "spin";
+
+	private static readonly IntPtr selSpinHandle = Selector.GetHandle("spin");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selVelocity = "velocity";
+
+	private static readonly IntPtr selVelocityHandle = Selector.GetHandle("velocity");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("CAEmitterLayer");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ModeOutline;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ModePoints;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ModeSurface;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ModeVolume;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _RenderAdditive;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _RenderBackToFront;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _RenderOldestFirst;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _RenderOldestLast;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _RenderUnordered;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ShapeCircle;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ShapeCuboid;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ShapeLine;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ShapePoint;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ShapeRectangle;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ShapeSphere;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual CAEmitterCell[] Cells
-	{
-		[Export("emitterCells")]
-		get
-		{
-			return (CAEmitterCell[])(__mt_Cells_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<CAEmitterCell>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEmitterCellsHandle)) : NSArray.ArrayFromHandle<CAEmitterCell>(Messaging.IntPtr_objc_msgSend(base.Handle, selEmitterCellsHandle))));
-		}
-		[Export("setEmitterCells:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetEmitterCells_Handle, nSArray.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetEmitterCells_Handle, nSArray.Handle);
-			}
-			nSArray.Dispose();
-			__mt_Cells_var = value;
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual float BirthRate
 	{
 		[Export("birthRate")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.float_objc_msgSend(base.Handle, selBirthRateHandle);
 			}
@@ -149,7 +229,7 @@ public class CAEmitterLayer : CALayer
 		[Export("setBirthRate:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_float(base.Handle, selSetBirthRate_Handle, value);
 			}
@@ -160,12 +240,67 @@ public class CAEmitterLayer : CALayer
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CAEmitterCell[]? Cells
+	{
+		[Export("emitterCells", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<CAEmitterCell>(Messaging.IntPtr_objc_msgSend(base.Handle, selEmitterCellsHandle));
+			}
+			return NSArray.ArrayFromHandle<CAEmitterCell>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEmitterCellsHandle));
+		}
+		[Export("setEmitterCells:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetEmitterCells_Handle, nSArray?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetEmitterCells_Handle, nSArray?.Handle ?? IntPtr.Zero);
+			}
+			nSArray?.Dispose();
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat Depth
+	{
+		[Export("emitterDepth")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nfloat_objc_msgSend(base.Handle, selEmitterDepthHandle);
+			}
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selEmitterDepthHandle);
+		}
+		[Export("setEmitterDepth:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetEmitterDepth_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetEmitterDepth_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual float LifeTime
 	{
 		[Export("lifetime")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.float_objc_msgSend(base.Handle, selLifetimeHandle);
 			}
@@ -174,7 +309,7 @@ public class CAEmitterLayer : CALayer
 		[Export("setLifetime:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_float(base.Handle, selSetLifetime_Handle, value);
 			}
@@ -185,149 +320,19 @@ public class CAEmitterLayer : CALayer
 		}
 	}
 
-	public new virtual CGPoint Position
-	{
-		[Export("emitterPosition")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.CGPoint_objc_msgSend(base.Handle, selEmitterPositionHandle);
-			}
-			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selEmitterPositionHandle);
-		}
-		[Export("setEmitterPosition:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_CGPoint(base.Handle, selSetEmitterPosition_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selSetEmitterPosition_Handle, value);
-			}
-		}
-	}
-
-	public new virtual double ZPosition
-	{
-		[Export("emitterZPosition")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selEmitterZPositionHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selEmitterZPositionHandle);
-		}
-		[Export("setEmitterZPosition:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetEmitterZPosition_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetEmitterZPosition_Handle, value);
-			}
-		}
-	}
-
-	public virtual CGSize Size
-	{
-		[Export("emitterSize")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.CGSize_objc_msgSend(base.Handle, selEmitterSizeHandle);
-			}
-			return Messaging.CGSize_objc_msgSendSuper(base.SuperHandle, selEmitterSizeHandle);
-		}
-		[Export("setEmitterSize:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_CGSize(base.Handle, selSetEmitterSize_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_CGSize(base.SuperHandle, selSetEmitterSize_Handle, value);
-			}
-		}
-	}
-
-	public virtual double Depth
-	{
-		[Export("emitterDepth")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selEmitterDepthHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selEmitterDepthHandle);
-		}
-		[Export("setEmitterDepth:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetEmitterDepth_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetEmitterDepth_Handle, value);
-			}
-		}
-	}
-
-	public virtual string Shape
-	{
-		[Export("emitterShape")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selEmitterShapeHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEmitterShapeHandle));
-		}
-		[Export("setEmitterShape:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetEmitterShape_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetEmitterShape_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string Mode
 	{
-		[Export("emitterMode")]
+		[Export("emitterMode", ArgumentSemantic.Copy)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selEmitterModeHandle));
 			}
 			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEmitterModeHandle));
 		}
-		[Export("setEmitterMode:")]
+		[Export("setEmitterMode:", ArgumentSemantic.Copy)]
 		set
 		{
 			if (value == null)
@@ -335,7 +340,7 @@ public class CAEmitterLayer : CALayer
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetEmitterMode_Handle, arg);
 			}
@@ -347,18 +352,71 @@ public class CAEmitterLayer : CALayer
 		}
 	}
 
-	public virtual string RenderMode
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual CGPoint Position
 	{
-		[Export("renderMode")]
+		[Export("emitterPosition")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
+			{
+				return Messaging.CGPoint_objc_msgSend(base.Handle, selEmitterPositionHandle);
+			}
+			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selEmitterPositionHandle);
+		}
+		[Export("setEmitterPosition:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_CGPoint(base.Handle, selSetEmitterPosition_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selSetEmitterPosition_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool PreservesDepth
+	{
+		[Export("preservesDepth")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selPreservesDepthHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selPreservesDepthHandle);
+		}
+		[Export("setPreservesDepth:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetPreservesDepth_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetPreservesDepth_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string RenderMode
+	{
+		[Export("renderMode", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selRenderModeHandle));
 			}
 			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRenderModeHandle));
 		}
-		[Export("setRenderMode:")]
+		[Export("setRenderMode:", ArgumentSemantic.Copy)]
 		set
 		{
 			if (value == null)
@@ -366,7 +424,7 @@ public class CAEmitterLayer : CALayer
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetRenderMode_Handle, arg);
 			}
@@ -378,62 +436,13 @@ public class CAEmitterLayer : CALayer
 		}
 	}
 
-	public virtual bool PreservesDepth
-	{
-		[Export("preservesDepth")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selPreservesDepthHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selPreservesDepthHandle);
-		}
-		[Export("setPreservesDepth:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetPreservesDepth_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetPreservesDepth_Handle, value);
-			}
-		}
-	}
-
-	public virtual float Velocity
-	{
-		[Export("velocity")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.float_objc_msgSend(base.Handle, selVelocityHandle);
-			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selVelocityHandle);
-		}
-		[Export("setVelocity:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_float(base.Handle, selSetVelocity_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetVelocity_Handle, value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual float Scale
 	{
 		[Export("scale")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.float_objc_msgSend(base.Handle, selScaleHandle);
 			}
@@ -442,7 +451,7 @@ public class CAEmitterLayer : CALayer
 		[Export("setScale:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_float(base.Handle, selSetScale_Handle, value);
 			}
@@ -453,37 +462,13 @@ public class CAEmitterLayer : CALayer
 		}
 	}
 
-	public virtual float Spin
-	{
-		[Export("spin")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.float_objc_msgSend(base.Handle, selSpinHandle);
-			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selSpinHandle);
-		}
-		[Export("setSpin:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_float(base.Handle, selSetSpin_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetSpin_Handle, value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual int Seed
 	{
 		[Export("seed")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.int_objc_msgSend(base.Handle, selSeedHandle);
 			}
@@ -492,7 +477,7 @@ public class CAEmitterLayer : CALayer
 		[Export("setSeed:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_int(base.Handle, selSetSeed_Handle, value);
 			}
@@ -503,94 +488,139 @@ public class CAEmitterLayer : CALayer
 		}
 	}
 
-	[Field("kCAEmitterLayerPoint", "CoreAnimation")]
-	public static NSString ShapePoint
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string Shape
 	{
+		[Export("emitterShape", ArgumentSemantic.Copy)]
 		get
 		{
-			if (_ShapePoint == null)
+			if (base.IsDirectBinding)
 			{
-				_ShapePoint = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerPoint");
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selEmitterShapeHandle));
 			}
-			return _ShapePoint;
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEmitterShapeHandle));
+		}
+		[Export("setEmitterShape:", ArgumentSemantic.Copy)]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetEmitterShape_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetEmitterShape_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
 		}
 	}
 
-	[Field("kCAEmitterLayerLine", "CoreAnimation")]
-	public static NSString ShapeLine
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGSize Size
 	{
+		[Export("emitterSize")]
 		get
 		{
-			if (_ShapeLine == null)
+			if (base.IsDirectBinding)
 			{
-				_ShapeLine = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerLine");
+				return Messaging.CGSize_objc_msgSend(base.Handle, selEmitterSizeHandle);
 			}
-			return _ShapeLine;
+			return Messaging.CGSize_objc_msgSendSuper(base.SuperHandle, selEmitterSizeHandle);
+		}
+		[Export("setEmitterSize:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_CGSize(base.Handle, selSetEmitterSize_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_CGSize(base.SuperHandle, selSetEmitterSize_Handle, value);
+			}
 		}
 	}
 
-	[Field("kCAEmitterLayerRectangle", "CoreAnimation")]
-	public static NSString ShapeRectangle
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual float Spin
 	{
+		[Export("spin")]
 		get
 		{
-			if (_ShapeRectangle == null)
+			if (base.IsDirectBinding)
 			{
-				_ShapeRectangle = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerRectangle");
+				return Messaging.float_objc_msgSend(base.Handle, selSpinHandle);
 			}
-			return _ShapeRectangle;
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selSpinHandle);
+		}
+		[Export("setSpin:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_float(base.Handle, selSetSpin_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetSpin_Handle, value);
+			}
 		}
 	}
 
-	[Field("kCAEmitterLayerCuboid", "CoreAnimation")]
-	public static NSString ShapeCuboid
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual float Velocity
 	{
+		[Export("velocity")]
 		get
 		{
-			if (_ShapeCuboid == null)
+			if (base.IsDirectBinding)
 			{
-				_ShapeCuboid = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerCuboid");
+				return Messaging.float_objc_msgSend(base.Handle, selVelocityHandle);
 			}
-			return _ShapeCuboid;
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selVelocityHandle);
+		}
+		[Export("setVelocity:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_float(base.Handle, selSetVelocity_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetVelocity_Handle, value);
+			}
 		}
 	}
 
-	[Field("kCAEmitterLayerCircle", "CoreAnimation")]
-	public static NSString ShapeCircle
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual nfloat ZPosition
 	{
+		[Export("emitterZPosition")]
 		get
 		{
-			if (_ShapeCircle == null)
+			if (base.IsDirectBinding)
 			{
-				_ShapeCircle = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerCircle");
+				return Messaging.nfloat_objc_msgSend(base.Handle, selEmitterZPositionHandle);
 			}
-			return _ShapeCircle;
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selEmitterZPositionHandle);
 		}
-	}
-
-	[Field("kCAEmitterLayerSphere", "CoreAnimation")]
-	public static NSString ShapeSphere
-	{
-		get
+		[Export("setEmitterZPosition:")]
+		set
 		{
-			if (_ShapeSphere == null)
+			if (base.IsDirectBinding)
 			{
-				_ShapeSphere = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerSphere");
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetEmitterZPosition_Handle, value);
 			}
-			return _ShapeSphere;
-		}
-	}
-
-	[Field("kCAEmitterLayerPoints", "CoreAnimation")]
-	public static NSString ModePoints
-	{
-		get
-		{
-			if (_ModePoints == null)
+			else
 			{
-				_ModePoints = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerPoints");
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetEmitterZPosition_Handle, value);
 			}
-			return _ModePoints;
 		}
 	}
 
@@ -604,6 +634,19 @@ public class CAEmitterLayer : CALayer
 				_ModeOutline = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerOutline");
 			}
 			return _ModeOutline;
+		}
+	}
+
+	[Field("kCAEmitterLayerPoints", "CoreAnimation")]
+	public static NSString ModePoints
+	{
+		get
+		{
+			if (_ModePoints == null)
+			{
+				_ModePoints = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerPoints");
+			}
+			return _ModePoints;
 		}
 	}
 
@@ -633,16 +676,29 @@ public class CAEmitterLayer : CALayer
 		}
 	}
 
-	[Field("kCAEmitterLayerUnordered", "CoreAnimation")]
-	public static NSString RenderUnordered
+	[Field("kCAEmitterLayerAdditive", "CoreAnimation")]
+	public static NSString RenderAdditive
 	{
 		get
 		{
-			if (_RenderUnordered == null)
+			if (_RenderAdditive == null)
 			{
-				_RenderUnordered = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerUnordered");
+				_RenderAdditive = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerAdditive");
 			}
-			return _RenderUnordered;
+			return _RenderAdditive;
+		}
+	}
+
+	[Field("kCAEmitterLayerBackToFront", "CoreAnimation")]
+	public static NSString RenderBackToFront
+	{
+		get
+		{
+			if (_RenderBackToFront == null)
+			{
+				_RenderBackToFront = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerBackToFront");
+			}
+			return _RenderBackToFront;
 		}
 	}
 
@@ -672,86 +728,148 @@ public class CAEmitterLayer : CALayer
 		}
 	}
 
-	[Field("kCAEmitterLayerBackToFront", "CoreAnimation")]
-	public static NSString RenderBackToFront
+	[Field("kCAEmitterLayerUnordered", "CoreAnimation")]
+	public static NSString RenderUnordered
 	{
 		get
 		{
-			if (_RenderBackToFront == null)
+			if (_RenderUnordered == null)
 			{
-				_RenderBackToFront = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerBackToFront");
+				_RenderUnordered = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerUnordered");
 			}
-			return _RenderBackToFront;
+			return _RenderUnordered;
 		}
 	}
 
-	[Field("kCAEmitterLayerAdditive", "CoreAnimation")]
-	public static NSString RenderAdditive
+	[Field("kCAEmitterLayerCircle", "CoreAnimation")]
+	public static NSString ShapeCircle
 	{
 		get
 		{
-			if (_RenderAdditive == null)
+			if (_ShapeCircle == null)
 			{
-				_RenderAdditive = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerAdditive");
+				_ShapeCircle = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerCircle");
 			}
-			return _RenderAdditive;
+			return _ShapeCircle;
 		}
 	}
 
+	[Field("kCAEmitterLayerCuboid", "CoreAnimation")]
+	public static NSString ShapeCuboid
+	{
+		get
+		{
+			if (_ShapeCuboid == null)
+			{
+				_ShapeCuboid = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerCuboid");
+			}
+			return _ShapeCuboid;
+		}
+	}
+
+	[Field("kCAEmitterLayerLine", "CoreAnimation")]
+	public static NSString ShapeLine
+	{
+		get
+		{
+			if (_ShapeLine == null)
+			{
+				_ShapeLine = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerLine");
+			}
+			return _ShapeLine;
+		}
+	}
+
+	[Field("kCAEmitterLayerPoint", "CoreAnimation")]
+	public static NSString ShapePoint
+	{
+		get
+		{
+			if (_ShapePoint == null)
+			{
+				_ShapePoint = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerPoint");
+			}
+			return _ShapePoint;
+		}
+	}
+
+	[Field("kCAEmitterLayerRectangle", "CoreAnimation")]
+	public static NSString ShapeRectangle
+	{
+		get
+		{
+			if (_ShapeRectangle == null)
+			{
+				_ShapeRectangle = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerRectangle");
+			}
+			return _ShapeRectangle;
+		}
+	}
+
+	[Field("kCAEmitterLayerSphere", "CoreAnimation")]
+	public static NSString ShapeSphere
+	{
+		get
+		{
+			if (_ShapeSphere == null)
+			{
+				_ShapeSphere = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAEmitterLayerSphere");
+			}
+			return _ShapeSphere;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public CAEmitterLayer()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public CAEmitterLayer(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public CAEmitterLayer(NSObjectFlag t)
+	protected CAEmitterLayer(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public CAEmitterLayer(IntPtr handle)
+	protected internal CAEmitterLayer(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("layer")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new static CALayer Create()
 	{
-		return (CALayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selLayerHandle));
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_Cells_var = null;
-		}
+		return Runtime.GetNSObject<CALayer>(Messaging.IntPtr_objc_msgSend(class_ptr, selLayerHandle));
 	}
 }

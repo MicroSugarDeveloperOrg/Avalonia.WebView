@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Foundation;
 using ObjCRuntime;
 
@@ -8,23 +7,22 @@ namespace AppKit;
 [Register("__MonoMac_NSAlertDidEndDispatcher")]
 internal class NSAlertDidEndDispatcher : NSObject
 {
-	private static List<NSAlertDidEndDispatcher> pendingInvokes = new List<NSAlertDidEndDispatcher>();
-
 	private const string selector = "alertDidEnd:returnCode:contextInfo:";
 
 	public static readonly Selector Selector = new Selector("alertDidEnd:returnCode:contextInfo:");
 
-	private Action<int> action;
+	private Action<nint> action;
 
-	public NSAlertDidEndDispatcher(Action<int> action)
+	public NSAlertDidEndDispatcher(Action<nint> action)
 	{
 		this.action = action;
-		pendingInvokes.Add(this);
+		base.IsDirectBinding = false;
+		DangerousRetain();
 	}
 
 	[Export("alertDidEnd:returnCode:contextInfo:")]
 	[Preserve(Conditional = true)]
-	public void OnAlertDidEnd(NSAlert alert, int returnCode, IntPtr context)
+	public void OnAlertDidEnd(NSAlert alert, nint returnCode, IntPtr context)
 	{
 		try
 		{
@@ -36,7 +34,7 @@ internal class NSAlertDidEndDispatcher : NSObject
 		finally
 		{
 			action = null;
-			pendingInvokes.Remove(this);
+			DangerousRelease();
 		}
 	}
 }

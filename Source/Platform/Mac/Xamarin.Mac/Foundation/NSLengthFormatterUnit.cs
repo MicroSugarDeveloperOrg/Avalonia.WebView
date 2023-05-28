@@ -1,4 +1,4 @@
-﻿using ObjCRuntime;
+using ObjCRuntime;
 
 namespace Foundation;
 
@@ -7,12 +7,12 @@ namespace Foundation;
 [Native]
 public enum NSLengthFormatterUnit : long
 {
-    Millimeter = 8L,
-    Centimeter = 9L,
-    Meter = 11L,
-    Kilometer = 14L,
-    Inch = 1281L,
-    Foot = 1282L,
-    Yard = 1283L,
-    Mile = 1284L
+	Millimeter = 8L,
+	Centimeter = 9L,
+	Meter = 11L,
+	Kilometer = 14L,
+	Inch = 1281L,
+	Foot = 1282L,
+	Yard = 1283L,
+	Mile = 1284L
 }

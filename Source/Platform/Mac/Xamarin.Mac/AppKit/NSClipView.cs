@@ -9,63 +9,176 @@ namespace AppKit;
 [Register("NSClipView", true)]
 public class NSClipView : NSView
 {
-	private static readonly IntPtr selBackgroundColorHandle = Selector.GetHandle("backgroundColor");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAutomaticallyAdjustsContentInsets = "automaticallyAdjustsContentInsets";
 
-	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
+	private static readonly IntPtr selAutomaticallyAdjustsContentInsetsHandle = Selector.GetHandle("automaticallyAdjustsContentInsets");
 
-	private static readonly IntPtr selDrawsBackgroundHandle = Selector.GetHandle("drawsBackground");
-
-	private static readonly IntPtr selSetDrawsBackground_Handle = Selector.GetHandle("setDrawsBackground:");
-
-	private static readonly IntPtr selDocumentViewHandle = Selector.GetHandle("documentView");
-
-	private static readonly IntPtr selSetDocumentView_Handle = Selector.GetHandle("setDocumentView:");
-
-	private static readonly IntPtr selDocumentRectHandle = Selector.GetHandle("documentRect");
-
-	private static readonly IntPtr selDocumentCursorHandle = Selector.GetHandle("documentCursor");
-
-	private static readonly IntPtr selSetDocumentCursor_Handle = Selector.GetHandle("setDocumentCursor:");
-
-	private static readonly IntPtr selCopiesOnScrollHandle = Selector.GetHandle("copiesOnScroll");
-
-	private static readonly IntPtr selSetCopiesOnScroll_Handle = Selector.GetHandle("setCopiesOnScroll:");
-
-	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
-
-	private static readonly IntPtr selDocumentVisibleRectHandle = Selector.GetHandle("documentVisibleRect");
-
-	private static readonly IntPtr selViewFrameChanged_Handle = Selector.GetHandle("viewFrameChanged:");
-
-	private static readonly IntPtr selViewBoundsChanged_Handle = Selector.GetHandle("viewBoundsChanged:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAutoscroll_ = "autoscroll:";
 
 	private static readonly IntPtr selAutoscroll_Handle = Selector.GetHandle("autoscroll:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBackgroundColor = "backgroundColor";
+
+	private static readonly IntPtr selBackgroundColorHandle = Selector.GetHandle("backgroundColor");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selConstrainBoundsRect_ = "constrainBoundsRect:";
+
+	private static readonly IntPtr selConstrainBoundsRect_Handle = Selector.GetHandle("constrainBoundsRect:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selConstrainScrollPoint_ = "constrainScrollPoint:";
+
 	private static readonly IntPtr selConstrainScrollPoint_Handle = Selector.GetHandle("constrainScrollPoint:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selContentInsets = "contentInsets";
+
+	private static readonly IntPtr selContentInsetsHandle = Selector.GetHandle("contentInsets");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCopiesOnScroll = "copiesOnScroll";
+
+	private static readonly IntPtr selCopiesOnScrollHandle = Selector.GetHandle("copiesOnScroll");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDocumentCursor = "documentCursor";
+
+	private static readonly IntPtr selDocumentCursorHandle = Selector.GetHandle("documentCursor");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDocumentRect = "documentRect";
+
+	private static readonly IntPtr selDocumentRectHandle = Selector.GetHandle("documentRect");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDocumentView = "documentView";
+
+	private static readonly IntPtr selDocumentViewHandle = Selector.GetHandle("documentView");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDocumentVisibleRect = "documentVisibleRect";
+
+	private static readonly IntPtr selDocumentVisibleRectHandle = Selector.GetHandle("documentVisibleRect");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDrawsBackground = "drawsBackground";
+
+	private static readonly IntPtr selDrawsBackgroundHandle = Selector.GetHandle("drawsBackground");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithFrame_ = "initWithFrame:";
+
+	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selScrollClipView_ToPoint_ = "scrollClipView:toPoint:";
+
+	private static readonly IntPtr selScrollClipView_ToPoint_Handle = Selector.GetHandle("scrollClipView:toPoint:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selScrollToPoint_ = "scrollToPoint:";
 
 	private static readonly IntPtr selScrollToPoint_Handle = Selector.GetHandle("scrollToPoint:");
 
-	private static readonly IntPtr selScrollClipViewToPoint_Handle = Selector.GetHandle("scrollClipView:toPoint:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAutomaticallyAdjustsContentInsets_ = "setAutomaticallyAdjustsContentInsets:";
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSClipView");
+	private static readonly IntPtr selSetAutomaticallyAdjustsContentInsets_Handle = Selector.GetHandle("setAutomaticallyAdjustsContentInsets:");
 
-	private object __mt_BackgroundColor_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBackgroundColor_ = "setBackgroundColor:";
 
-	private object __mt_DocumentView_var;
+	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
 
-	private object __mt_DocumentCursor_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetContentInsets_ = "setContentInsets:";
+
+	private static readonly IntPtr selSetContentInsets_Handle = Selector.GetHandle("setContentInsets:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCopiesOnScroll_ = "setCopiesOnScroll:";
+
+	private static readonly IntPtr selSetCopiesOnScroll_Handle = Selector.GetHandle("setCopiesOnScroll:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDocumentCursor_ = "setDocumentCursor:";
+
+	private static readonly IntPtr selSetDocumentCursor_Handle = Selector.GetHandle("setDocumentCursor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDocumentView_ = "setDocumentView:";
+
+	private static readonly IntPtr selSetDocumentView_Handle = Selector.GetHandle("setDocumentView:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDrawsBackground_ = "setDrawsBackground:";
+
+	private static readonly IntPtr selSetDrawsBackground_Handle = Selector.GetHandle("setDrawsBackground:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selViewBoundsChanged_ = "viewBoundsChanged:";
+
+	private static readonly IntPtr selViewBoundsChanged_Handle = Selector.GetHandle("viewBoundsChanged:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selViewFrameChanged_ = "viewFrameChanged:";
+
+	private static readonly IntPtr selViewFrameChanged_Handle = Selector.GetHandle("viewFrameChanged:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSClipView");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSColor BackgroundColor
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	public virtual bool AutomaticallyAdjustsContentInsets
 	{
-		[Export("backgroundColor")]
+		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		[Export("automaticallyAdjustsContentInsets")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSColor)(__mt_BackgroundColor_var = ((!IsDirectBinding) ? ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle))) : ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selAutomaticallyAdjustsContentInsetsHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAutomaticallyAdjustsContentInsetsHandle);
 		}
-		[Export("setBackgroundColor:")]
+		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		[Export("setAutomaticallyAdjustsContentInsets:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetAutomaticallyAdjustsContentInsets_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAutomaticallyAdjustsContentInsets_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSColor BackgroundColor
+	{
+		[Export("backgroundColor", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle));
+			}
+			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle));
+		}
+		[Export("setBackgroundColor:", ArgumentSemantic.Copy)]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -73,7 +186,7 @@ public class NSClipView : NSView
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBackgroundColor_Handle, value.Handle);
 			}
@@ -81,46 +194,90 @@ public class NSClipView : NSView
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBackgroundColor_Handle, value.Handle);
 			}
-			__mt_BackgroundColor_var = value;
 		}
 	}
 
-	public virtual bool DrawsBackground
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	public virtual NSEdgeInsets ContentInsets
 	{
-		[Export("drawsBackground")]
+		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		[Export("contentInsets")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			NSEdgeInsets retval;
+			if (base.IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selDrawsBackgroundHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selDrawsBackgroundHandle);
-		}
-		[Export("setDrawsBackground:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetDrawsBackground_Handle, value);
+				Messaging.NSEdgeInsets_objc_msgSend_stret(out retval, base.Handle, selContentInsetsHandle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetDrawsBackground_Handle, value);
+				Messaging.NSEdgeInsets_objc_msgSendSuper_stret(out retval, base.SuperHandle, selContentInsetsHandle);
+			}
+			return retval;
+		}
+		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		[Export("setContentInsets:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_NSEdgeInsets(base.Handle, selSetContentInsets_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_NSEdgeInsets(base.SuperHandle, selSetContentInsets_Handle, value);
 			}
 		}
 	}
 
-	public virtual NSView DocumentView
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, "'NSClipView' minimizes area of the document view that is invalidated. Use the 'SetNeedsDisplayInRect' method to force invalidation.")]
+	public virtual bool CopiesOnScroll
 	{
-		[Export("documentView")]
+		[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, "'NSClipView' minimizes area of the document view that is invalidated. Use the 'SetNeedsDisplayInRect' method to force invalidation.")]
+		[Export("copiesOnScroll")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSView)(__mt_DocumentView_var = ((!IsDirectBinding) ? ((NSView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDocumentViewHandle))) : ((NSView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDocumentViewHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selCopiesOnScrollHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCopiesOnScrollHandle);
 		}
-		[Export("setDocumentView:")]
+		[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, "'NSClipView' minimizes area of the document view that is invalidated. Use the 'SetNeedsDisplayInRect' method to force invalidation.")]
+		[Export("setCopiesOnScroll:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetCopiesOnScroll_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetCopiesOnScroll_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSCursor DocumentCursor
+	{
+		[Export("documentCursor", ArgumentSemantic.Retain)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSCursor>(Messaging.IntPtr_objc_msgSend(base.Handle, selDocumentCursorHandle));
+			}
+			return Runtime.GetNSObject<NSCursor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDocumentCursorHandle));
+		}
+		[Export("setDocumentCursor:", ArgumentSemantic.Retain)]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -128,18 +285,18 @@ public class NSClipView : NSView
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDocumentView_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDocumentCursor_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDocumentView_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDocumentCursor_Handle, value.Handle);
 			}
-			__mt_DocumentView_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGRect DocumentRect
 	{
 		[Export("documentRect")]
@@ -147,7 +304,7 @@ public class NSClipView : NSView
 		{
 			NSApplication.EnsureUIThread();
 			CGRect retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selDocumentRectHandle);
 			}
@@ -159,15 +316,20 @@ public class NSClipView : NSView
 		}
 	}
 
-	public virtual NSCursor DocumentCursor
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSView DocumentView
 	{
-		[Export("documentCursor")]
+		[Export("documentView")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSCursor)(__mt_DocumentCursor_var = ((!IsDirectBinding) ? ((NSCursor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDocumentCursorHandle))) : ((NSCursor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDocumentCursorHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSView>(Messaging.IntPtr_objc_msgSend(base.Handle, selDocumentViewHandle));
+			}
+			return Runtime.GetNSObject<NSView>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDocumentViewHandle));
 		}
-		[Export("setDocumentCursor:")]
+		[Export("setDocumentView:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -175,108 +337,164 @@ public class NSClipView : NSView
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDocumentCursor_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDocumentView_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDocumentCursor_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDocumentView_Handle, value.Handle);
 			}
-			__mt_DocumentCursor_var = value;
 		}
 	}
 
-	public virtual bool CopiesOnScroll
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool DrawsBackground
 	{
-		[Export("copiesOnScroll")]
+		[Export("drawsBackground")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selCopiesOnScrollHandle);
+				return Messaging.bool_objc_msgSend(base.Handle, selDrawsBackgroundHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCopiesOnScrollHandle);
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selDrawsBackgroundHandle);
 		}
-		[Export("setCopiesOnScroll:")]
+		[Export("setDrawsBackground:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetCopiesOnScroll_Handle, value);
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetDrawsBackground_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetCopiesOnScroll_Handle, value);
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetDrawsBackground_Handle, value);
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSClipView()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSClipView(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSClipView(NSObjectFlag t)
+	protected NSClipView(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSClipView(IntPtr handle)
+	protected internal NSClipView(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithFrame:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSClipView(CGRect frameRect)
 		: base(NSObjectFlag.Empty)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
 		}
 	}
 
+	[Export("autoscroll:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual bool Autoscroll(NSEvent theEvent)
+	{
+		NSApplication.EnsureUIThread();
+		if (theEvent == null)
+		{
+			throw new ArgumentNullException("theEvent");
+		}
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selAutoscroll_Handle, theEvent.Handle);
+		}
+		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selAutoscroll_Handle, theEvent.Handle);
+	}
+
+	[Export("constrainBoundsRect:")]
+	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGRect ConstrainBoundsRect(CGRect proposedBounds)
+	{
+		NSApplication.EnsureUIThread();
+		CGRect retval;
+		if (base.IsDirectBinding)
+		{
+			Messaging.CGRect_objc_msgSend_stret_CGRect(out retval, base.Handle, selConstrainBoundsRect_Handle, proposedBounds);
+		}
+		else
+		{
+			Messaging.CGRect_objc_msgSendSuper_stret_CGRect(out retval, base.SuperHandle, selConstrainBoundsRect_Handle, proposedBounds);
+		}
+		return retval;
+	}
+
+	[Export("constrainScrollPoint:")]
+	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, "Use ConstrainBoundsRect instead.")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGPoint ConstrainScrollPoint(CGPoint newOrigin)
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			return Messaging.CGPoint_objc_msgSend_CGPoint(base.Handle, selConstrainScrollPoint_Handle, newOrigin);
+		}
+		return Messaging.CGPoint_objc_msgSendSuper_CGPoint(base.SuperHandle, selConstrainScrollPoint_Handle, newOrigin);
+	}
+
 	[Export("documentVisibleRect")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGRect DocumentVisibleRect()
 	{
 		NSApplication.EnsureUIThread();
 		CGRect retval;
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selDocumentVisibleRectHandle);
 		}
@@ -287,73 +505,31 @@ public class NSClipView : NSView
 		return retval;
 	}
 
-	[Export("viewFrameChanged:")]
-	public virtual void ViewFrameChanged(NSNotification notification)
+	[Export("scrollClipView:toPoint:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ScrollClipView(NSClipView aClipView, CGPoint aPoint)
 	{
 		NSApplication.EnsureUIThread();
-		if (notification == null)
+		if (aClipView == null)
 		{
-			throw new ArgumentNullException("notification");
+			throw new ArgumentNullException("aClipView");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selViewFrameChanged_Handle, notification.Handle);
+			Messaging.void_objc_msgSend_IntPtr_CGPoint(base.Handle, selScrollClipView_ToPoint_Handle, aClipView.Handle, aPoint);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selViewFrameChanged_Handle, notification.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr_CGPoint(base.SuperHandle, selScrollClipView_ToPoint_Handle, aClipView.Handle, aPoint);
 		}
-	}
-
-	[Export("viewBoundsChanged:")]
-	public virtual void ViewBoundsChanged(NSNotification notification)
-	{
-		NSApplication.EnsureUIThread();
-		if (notification == null)
-		{
-			throw new ArgumentNullException("notification");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selViewBoundsChanged_Handle, notification.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selViewBoundsChanged_Handle, notification.Handle);
-		}
-	}
-
-	[Export("autoscroll:")]
-	public new virtual bool Autoscroll(NSEvent theEvent)
-	{
-		NSApplication.EnsureUIThread();
-		if (theEvent == null)
-		{
-			throw new ArgumentNullException("theEvent");
-		}
-		if (IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selAutoscroll_Handle, theEvent.Handle);
-		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selAutoscroll_Handle, theEvent.Handle);
-	}
-
-	[Export("constrainScrollPoint:")]
-	public virtual CGPoint ConstrainScrollPoint(CGPoint newOrigin)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return Messaging.CGPoint_objc_msgSend_CGPoint(base.Handle, selConstrainScrollPoint_Handle, newOrigin);
-		}
-		return Messaging.CGPoint_objc_msgSendSuper_CGPoint(base.SuperHandle, selConstrainScrollPoint_Handle, newOrigin);
 	}
 
 	[Export("scrollToPoint:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ScrollToPoint(CGPoint newOrigin)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_CGPoint(base.Handle, selScrollToPoint_Handle, newOrigin);
 		}
@@ -363,32 +539,41 @@ public class NSClipView : NSView
 		}
 	}
 
-	[Export("scrollClipView:toPoint:")]
-	public virtual void ScrollClipView(NSClipView aClipView, CGPoint aPoint)
+	[Export("viewBoundsChanged:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ViewBoundsChanged(NSNotification notification)
 	{
 		NSApplication.EnsureUIThread();
-		if (aClipView == null)
+		if (notification == null)
 		{
-			throw new ArgumentNullException("aClipView");
+			throw new ArgumentNullException("notification");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_CGPoint(base.Handle, selScrollClipViewToPoint_Handle, aClipView.Handle, aPoint);
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selViewBoundsChanged_Handle, notification.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_CGPoint(base.SuperHandle, selScrollClipViewToPoint_Handle, aClipView.Handle, aPoint);
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selViewBoundsChanged_Handle, notification.Handle);
 		}
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("viewFrameChanged:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ViewFrameChanged(NSNotification notification)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		NSApplication.EnsureUIThread();
+		if (notification == null)
 		{
-			__mt_BackgroundColor_var = null;
-			__mt_DocumentView_var = null;
-			__mt_DocumentCursor_var = null;
+			throw new ArgumentNullException("notification");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selViewFrameChanged_Handle, notification.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selViewFrameChanged_Handle, notification.Handle);
 		}
 	}
 }

@@ -12,17 +12,11 @@ internal class AppKitSynchronizationContext : SynchronizationContext
 
 	public override void Post(SendOrPostCallback d, object state)
 	{
-		NSRunLoop.Main.BeginInvokeOnMainThread(delegate
-		{
-			d(state);
-		});
+		NSRunLoop.Main.BeginInvokeOnMainThread(d, state);
 	}
 
 	public override void Send(SendOrPostCallback d, object state)
 	{
-		NSRunLoop.Main.InvokeOnMainThread(delegate
-		{
-			d(state);
-		});
+		NSRunLoop.Main.InvokeOnMainThread(d, state);
 	}
 }

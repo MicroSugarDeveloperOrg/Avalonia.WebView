@@ -12,6 +12,10 @@ public enum NSFontSymbolicTraits
 	MonoSpaceTrait = 0x400,
 	VerticalTrait = 0x800,
 	UIOptimizedTrait = 0x1000,
+	[Mac(10, 13)]
+	TraitTightLeading = 0x8000,
+	[Mac(10, 13)]
+	TraitLooseLeading = 0x10000,
 	UnknownClass = 0,
 	OldStyleSerifsClass = 0x10000000,
 	TransitionalSerifsClass = 0x20000000,

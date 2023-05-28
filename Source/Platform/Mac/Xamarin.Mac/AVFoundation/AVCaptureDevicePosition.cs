@@ -2,9 +2,12 @@ using ObjCRuntime;
 
 namespace AVFoundation;
 
-[Since(4, 0)]
-public enum AVCaptureDevicePosition
+[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
+[Native]
+public enum AVCaptureDevicePosition : long
 {
-	Back = 1,
+	Unspecified,
+	Back,
 	Front
 }

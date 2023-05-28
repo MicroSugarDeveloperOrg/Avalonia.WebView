@@ -1,9 +1,12 @@
+using ObjCRuntime;
+
 namespace Foundation;
 
-public enum NSBundleExecutableArchitecture
+[Native]
+public enum NSBundleExecutableArchitecture : long
 {
-	I386 = 7,
-	PPC = 18,
-	X86_64 = 16777223,
-	PPC64 = 16777234
+	I386 = 7L,
+	PPC = 18L,
+	X86_64 = 16777223L,
+	PPC64 = 16777234L
 }

@@ -1,4 +1,4 @@
-﻿using ObjCRuntime;
+using ObjCRuntime;
 
 namespace AVFoundation;
 
@@ -7,7 +7,7 @@ namespace AVFoundation;
 [Native]
 public enum AVAudioConverterInputStatus : long
 {
-    HaveData,
-    NoDataNow,
-    EndOfStream
+	HaveData,
+	NoDataNow,
+	EndOfStream
 }

@@ -5,82 +5,76 @@ using ObjCRuntime;
 
 namespace AppKit;
 
-[Register("NSRuleEditorDelegate", true)]
+[Protocol]
+[Register("NSRuleEditorDelegate", false)]
 [Model]
-public abstract class NSRuleEditorDelegate : NSObject
+public abstract class NSRuleEditorDelegate : NSObject, INSRuleEditorDelegate, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
-	public NSRuleEditorDelegate()
+	protected NSRuleEditorDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
+		NSApplication.EnsureUIThread();
+		base.IsDirectBinding = false;
+		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSRuleEditorDelegate(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSRuleEditorDelegate(NSObjectFlag t)
+	protected NSRuleEditorDelegate(NSObjectFlag t)
 		: base(t)
 	{
+		base.IsDirectBinding = false;
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSRuleEditorDelegate(IntPtr handle)
+	protected internal NSRuleEditorDelegate(IntPtr handle)
 		: base(handle)
 	{
-	}
-
-	[Export("ruleEditor:numberOfChildrenForCriterion:withRowType:")]
-	public abstract long NumberOfChildren(NSRuleEditor editor, NSObject criterion, NSRuleEditorRowType rowType);
-
-	[Export("ruleEditor:child:forCriterion:withRowType:")]
-	public abstract NSObject ChildForCriterion(NSRuleEditor editor, long index, NSObject criterion, NSRuleEditorRowType rowType);
-
-	[Export("ruleEditor:displayValueForCriterion:inRow:")]
-	public abstract NSObject DisplayValue(NSRuleEditor editor, NSObject criterion, long row);
-
-	[Export("ruleEditor:predicatePartsForCriterion:withDisplayValue:inRow:")]
-	public abstract NSDictionary PredicateParts(NSRuleEditor editor, NSObject criterion, NSObject value, long row);
-
-	[Export("ruleEditorRowsDidChange:")]
-	public abstract void RowsDidChange(NSNotification notification);
-
-	[Export("controlTextDidEndEditing:")]
-	public virtual void EditingEnded(NSNotification notification)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
+		base.IsDirectBinding = false;
 	}
 
 	[Export("controlTextDidChange:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Changed(NSNotification notification)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
+	[Export("ruleEditor:child:forCriterion:withRowType:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public abstract NSObject ChildForCriterion(NSRuleEditor editor, nint index, NSObject criterion, NSRuleEditorRowType rowType);
+
+	[Export("ruleEditor:displayValueForCriterion:inRow:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public abstract NSObject DisplayValue(NSRuleEditor editor, NSObject criterion, nint row);
+
 	[Export("controlTextDidBeginEditing:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void EditingBegan(NSNotification notification)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
+
+	[Export("controlTextDidEndEditing:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void EditingEnded(NSNotification notification)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("ruleEditor:numberOfChildrenForCriterion:withRowType:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public abstract nint NumberOfChildren(NSRuleEditor editor, NSObject criterion, NSRuleEditorRowType rowType);
+
+	[Export("ruleEditor:predicatePartsForCriterion:withDisplayValue:inRow:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public abstract NSDictionary PredicateParts(NSRuleEditor editor, NSObject criterion, NSObject value, nint row);
+
+	[Export("ruleEditorRowsDidChange:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public abstract void RowsDidChange(NSNotification notification);
 }

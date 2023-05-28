@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
+using ObjCRuntime;
 
 namespace AVFoundation;
 
@@ -8,14 +9,14 @@ namespace AVFoundation;
 [NoTV]
 public struct AVSampleCursorChunkInfo
 {
-    public long SampleCount;
+	public long SampleCount;
 
-    [MarshalAs(UnmanagedType.I1)]
-    public bool HasUniformSampleSizes;
+	[MarshalAs(UnmanagedType.I1)]
+	public bool HasUniformSampleSizes;
 
-    [MarshalAs(UnmanagedType.I1)]
-    public bool HasUniformSampleDurations;
+	[MarshalAs(UnmanagedType.I1)]
+	public bool HasUniformSampleDurations;
 
-    [MarshalAs(UnmanagedType.I1)]
-    public bool HasUniformFormatDescriptions;
+	[MarshalAs(UnmanagedType.I1)]
+	public bool HasUniformFormatDescriptions;
 }

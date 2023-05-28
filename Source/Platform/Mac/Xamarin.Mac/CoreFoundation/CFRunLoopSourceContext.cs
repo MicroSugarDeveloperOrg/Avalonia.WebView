@@ -4,7 +4,7 @@ namespace CoreFoundation;
 
 internal struct CFRunLoopSourceContext
 {
-	public CFIndex Version;
+	public nint Version;
 
 	public IntPtr Info;
 

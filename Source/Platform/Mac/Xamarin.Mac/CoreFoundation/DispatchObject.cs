@@ -1,27 +1,20 @@
 using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
 namespace CoreFoundation;
 
-public abstract class DispatchObject : INativeObject, IDisposable
+public abstract class DispatchObject : NativeObject
 {
-	internal IntPtr handle;
-
-	public IntPtr Handle => handle;
-
 	[Preserve(Conditional = true)]
 	internal DispatchObject(IntPtr handle, bool owns)
+		: base(handle, owns)
 	{
 		if (handle == IntPtr.Zero)
 		{
 			throw new ArgumentNullException("handle");
-		}
-		this.handle = handle;
-		if (!owns)
-		{
-			dispatch_retain(handle);
 		}
 	}
 
@@ -29,30 +22,20 @@ public abstract class DispatchObject : INativeObject, IDisposable
 	{
 	}
 
-	[DllImport("libc")]
+	[DllImport("/usr/lib/libc.dylib")]
 	private static extern IntPtr dispatch_release(IntPtr o);
 
-	[DllImport("libc")]
+	[DllImport("/usr/lib/libc.dylib")]
 	private static extern IntPtr dispatch_retain(IntPtr o);
 
-	~DispatchObject()
+	protected override void Retain()
 	{
-		Dispose(disposing: false);
+		dispatch_retain(base.Handle);
 	}
 
-	public void Dispose()
+	protected override void Release()
 	{
-		Dispose(disposing: true);
-		GC.SuppressFinalize(this);
-	}
-
-	protected virtual void Dispose(bool disposing)
-	{
-		if (handle != IntPtr.Zero)
-		{
-			dispatch_release(handle);
-			handle = IntPtr.Zero;
-		}
+		dispatch_release(base.Handle);
 	}
 
 	public static bool operator ==(DispatchObject a, DispatchObject b)
@@ -69,54 +52,64 @@ public abstract class DispatchObject : INativeObject, IDisposable
 		{
 			return false;
 		}
-		return a.handle == b.handle;
+		return a.Handle == b.Handle;
 	}
 
 	public static bool operator !=(DispatchObject a, DispatchObject b)
 	{
-		if ((object)a == null)
-		{
-			if ((object)b == null)
-			{
-				return false;
-			}
-			return true;
-		}
-		if ((object)b == null)
-		{
-			return true;
-		}
-		return a.handle != b.handle;
+		return !(a == b);
 	}
 
 	public override bool Equals(object other)
 	{
-		if (other == null)
+		DispatchQueue dispatchQueue = other as DispatchQueue;
+		if (dispatchQueue == null)
 		{
 			return false;
 		}
-		return (other as DispatchQueue).handle == handle;
+		return dispatchQueue.Handle == base.Handle;
 	}
 
 	public override int GetHashCode()
 	{
-		return (int)handle;
+		return (int)base.Handle;
 	}
 
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	[Obsolete("Use 'GetCheckedHandle' instead.")]
 	protected void Check()
 	{
-		if (handle == IntPtr.Zero)
-		{
-			throw new ObjectDisposedException(GetType().ToString());
-		}
+		GetCheckedHandle();
 	}
 
-	[DllImport("libc")]
+	[DllImport("/usr/lib/libc.dylib")]
 	private static extern void dispatch_set_target_queue(IntPtr queue, IntPtr target);
 
 	public void SetTargetQueue(DispatchQueue queue)
 	{
 		IntPtr target = ((queue == null) ? IntPtr.Zero : queue.Handle);
-		dispatch_set_target_queue(handle, target);
+		dispatch_set_target_queue(base.Handle, target);
 	}
+
+	[DllImport("/usr/lib/libc.dylib")]
+	internal static extern void dispatch_resume(IntPtr o);
+
+	[DllImport("/usr/lib/libc.dylib")]
+	internal static extern void dispatch_suspend(IntPtr o);
+
+	[Mac(10, 12)]
+	[iOS(10, 0)]
+	[TV(10, 0)]
+	[Watch(3, 0)]
+	public void Activate()
+	{
+		dispatch_activate(GetCheckedHandle());
+	}
+
+	[DllImport("/usr/lib/libc.dylib")]
+	[Mac(10, 12)]
+	[iOS(10, 0)]
+	[TV(10, 0)]
+	[Watch(3, 0)]
+	private static extern void dispatch_activate(IntPtr @object);
 }

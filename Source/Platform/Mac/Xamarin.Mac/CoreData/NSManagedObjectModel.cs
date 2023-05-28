@@ -6,83 +6,165 @@ using ObjCRuntime;
 namespace CoreData;
 
 [Register("NSManagedObjectModel", true)]
-public class NSManagedObjectModel : NSObject
+public class NSManagedObjectModel : NSObject, INSCoding, INativeObject, IDisposable, INSCopying
 {
-	private static readonly IntPtr selEntitiesByNameHandle = Selector.GetHandle("entitiesByName");
-
-	private static readonly IntPtr selEntitiesHandle = Selector.GetHandle("entities");
-
-	private static readonly IntPtr selSetEntities_Handle = Selector.GetHandle("setEntities:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selConfigurations = "configurations";
 
 	private static readonly IntPtr selConfigurationsHandle = Selector.GetHandle("configurations");
 
-	private static readonly IntPtr selLocalizationDictionaryHandle = Selector.GetHandle("localizationDictionary");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCopyWithZone_ = "copyWithZone:";
 
-	private static readonly IntPtr selSetLocalizationDictionary_Handle = Selector.GetHandle("setLocalizationDictionary:");
+	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
 
-	private static readonly IntPtr selFetchRequestTemplatesByNameHandle = Selector.GetHandle("fetchRequestTemplatesByName");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEncodeWithCoder_ = "encodeWithCoder:";
 
-	private static readonly IntPtr selVersionIdentifiersHandle = Selector.GetHandle("versionIdentifiers");
+	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
 
-	private static readonly IntPtr selSetVersionIdentifiers_Handle = Selector.GetHandle("setVersionIdentifiers:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEntities = "entities";
 
-	private static readonly IntPtr selEntityVersionHashesByNameHandle = Selector.GetHandle("entityVersionHashesByName");
+	private static readonly IntPtr selEntitiesHandle = Selector.GetHandle("entities");
 
-	private static readonly IntPtr selMergedModelFromBundles_Handle = Selector.GetHandle("mergedModelFromBundles:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEntitiesByName = "entitiesByName";
 
-	private static readonly IntPtr selModelByMergingModels_Handle = Selector.GetHandle("modelByMergingModels:");
+	private static readonly IntPtr selEntitiesByNameHandle = Selector.GetHandle("entitiesByName");
 
-	private static readonly IntPtr selInitWithContentsOfURL_Handle = Selector.GetHandle("initWithContentsOfURL:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEntitiesForConfiguration_ = "entitiesForConfiguration:";
 
 	private static readonly IntPtr selEntitiesForConfiguration_Handle = Selector.GetHandle("entitiesForConfiguration:");
 
-	private static readonly IntPtr selSetEntitiesForConfiguration_Handle = Selector.GetHandle("setEntities:forConfiguration:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEntityVersionHashesByName = "entityVersionHashesByName";
 
-	private static readonly IntPtr selSetFetchRequestTemplateForName_Handle = Selector.GetHandle("setFetchRequestTemplate:forName:");
+	private static readonly IntPtr selEntityVersionHashesByNameHandle = Selector.GetHandle("entityVersionHashesByName");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFetchRequestFromTemplateWithName_SubstitutionVariables_ = "fetchRequestFromTemplateWithName:substitutionVariables:";
+
+	private static readonly IntPtr selFetchRequestFromTemplateWithName_SubstitutionVariables_Handle = Selector.GetHandle("fetchRequestFromTemplateWithName:substitutionVariables:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFetchRequestTemplateForName_ = "fetchRequestTemplateForName:";
 
 	private static readonly IntPtr selFetchRequestTemplateForName_Handle = Selector.GetHandle("fetchRequestTemplateForName:");
 
-	private static readonly IntPtr selFetchRequestFromTemplateWithNameSubstitutionVariables_Handle = Selector.GetHandle("fetchRequestFromTemplateWithName:substitutionVariables:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFetchRequestTemplatesByName = "fetchRequestTemplatesByName";
 
-	private static readonly IntPtr selMergedModelFromBundlesForStoreMetadata_Handle = Selector.GetHandle("mergedModelFromBundles:forStoreMetadata:");
+	private static readonly IntPtr selFetchRequestTemplatesByNameHandle = Selector.GetHandle("fetchRequestTemplatesByName");
 
-	private static readonly IntPtr selModelByMergingModelsForStoreMetadata_Handle = Selector.GetHandle("modelByMergingModels:forStoreMetadata:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInit = "init";
 
-	private static readonly IntPtr selIsConfigurationCompatibleWithStoreMetadata_Handle = Selector.GetHandle("isConfiguration:compatibleWithStoreMetadata:");
+	private static readonly IntPtr selInitHandle = Selector.GetHandle("init");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSManagedObjectModel");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithCoder_ = "initWithCoder:";
 
-	private object __mt_EntitiesByName_var;
+	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
 
-	private object __mt_Entities_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithContentsOfURL_ = "initWithContentsOfURL:";
 
-	private object __mt_LocalizationDictionary_var;
+	private static readonly IntPtr selInitWithContentsOfURL_Handle = Selector.GetHandle("initWithContentsOfURL:");
 
-	private object __mt_FetchRequestTemplatesByName_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsConfiguration_CompatibleWithStoreMetadata_ = "isConfiguration:compatibleWithStoreMetadata:";
 
-	private object __mt_VersionIdentifiers_var;
+	private static readonly IntPtr selIsConfiguration_CompatibleWithStoreMetadata_Handle = Selector.GetHandle("isConfiguration:compatibleWithStoreMetadata:");
 
-	private object __mt_EntityVersionHashesByName_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLocalizationDictionary = "localizationDictionary";
+
+	private static readonly IntPtr selLocalizationDictionaryHandle = Selector.GetHandle("localizationDictionary");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMergedModelFromBundles_ = "mergedModelFromBundles:";
+
+	private static readonly IntPtr selMergedModelFromBundles_Handle = Selector.GetHandle("mergedModelFromBundles:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMergedModelFromBundles_ForStoreMetadata_ = "mergedModelFromBundles:forStoreMetadata:";
+
+	private static readonly IntPtr selMergedModelFromBundles_ForStoreMetadata_Handle = Selector.GetHandle("mergedModelFromBundles:forStoreMetadata:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selModelByMergingModels_ = "modelByMergingModels:";
+
+	private static readonly IntPtr selModelByMergingModels_Handle = Selector.GetHandle("modelByMergingModels:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selModelByMergingModels_ForStoreMetadata_ = "modelByMergingModels:forStoreMetadata:";
+
+	private static readonly IntPtr selModelByMergingModels_ForStoreMetadata_Handle = Selector.GetHandle("modelByMergingModels:forStoreMetadata:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEntities_ = "setEntities:";
+
+	private static readonly IntPtr selSetEntities_Handle = Selector.GetHandle("setEntities:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEntities_ForConfiguration_ = "setEntities:forConfiguration:";
+
+	private static readonly IntPtr selSetEntities_ForConfiguration_Handle = Selector.GetHandle("setEntities:forConfiguration:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFetchRequestTemplate_ForName_ = "setFetchRequestTemplate:forName:";
+
+	private static readonly IntPtr selSetFetchRequestTemplate_ForName_Handle = Selector.GetHandle("setFetchRequestTemplate:forName:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLocalizationDictionary_ = "setLocalizationDictionary:";
+
+	private static readonly IntPtr selSetLocalizationDictionary_Handle = Selector.GetHandle("setLocalizationDictionary:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetVersionIdentifiers_ = "setVersionIdentifiers:";
+
+	private static readonly IntPtr selSetVersionIdentifiers_Handle = Selector.GetHandle("setVersionIdentifiers:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selVersionIdentifiers = "versionIdentifiers";
+
+	private static readonly IntPtr selVersionIdentifiersHandle = Selector.GetHandle("versionIdentifiers");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSManagedObjectModel");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSDictionary EntitiesByName
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string[] Configurations
 	{
-		[Export("entitiesByName")]
+		[Export("configurations", ArgumentSemantic.Retain)]
 		get
 		{
-			return (NSDictionary)(__mt_EntitiesByName_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntitiesByNameHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selEntitiesByNameHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selConfigurationsHandle));
+			}
+			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selConfigurationsHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSEntityDescription[] Entities
 	{
-		[Export("entities")]
+		[Export("entities", ArgumentSemantic.Retain)]
 		get
 		{
-			return (NSEntityDescription[])(__mt_Entities_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSEntityDescription>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntitiesHandle)) : NSArray.ArrayFromHandle<NSEntityDescription>(Messaging.IntPtr_objc_msgSend(base.Handle, selEntitiesHandle))));
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<NSEntityDescription>(Messaging.IntPtr_objc_msgSend(base.Handle, selEntitiesHandle));
+			}
+			return NSArray.ArrayFromHandle<NSEntityDescription>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntitiesHandle));
 		}
-		[Export("setEntities:")]
+		[Export("setEntities:", ArgumentSemantic.Retain)]
 		set
 		{
 			if (value == null)
@@ -90,7 +172,7 @@ public class NSManagedObjectModel : NSObject
 				throw new ArgumentNullException("value");
 			}
 			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetEntities_Handle, nSArray.Handle);
 			}
@@ -99,73 +181,97 @@ public class NSManagedObjectModel : NSObject
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetEntities_Handle, nSArray.Handle);
 			}
 			nSArray.Dispose();
-			__mt_Entities_var = value;
 		}
 	}
 
-	public virtual string[] Configurations
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary EntitiesByName
 	{
-		[Export("configurations")]
+		[Export("entitiesByName", ArgumentSemantic.Copy)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selConfigurationsHandle));
+				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selEntitiesByNameHandle));
 			}
-			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selConfigurationsHandle));
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntitiesByNameHandle));
 		}
 	}
 
-	public virtual NSDictionary LocalizationDictionary
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary EntityVersionHashesByName
 	{
-		[Export("localizationDictionary")]
+		[Export("entityVersionHashesByName", ArgumentSemantic.Copy)]
 		get
 		{
-			return (NSDictionary)(__mt_LocalizationDictionary_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizationDictionaryHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizationDictionaryHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selEntityVersionHashesByNameHandle));
+			}
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntityVersionHashesByNameHandle));
 		}
-		[Export("setLocalizationDictionary:")]
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary FetchRequestTemplatesByName
+	{
+		[Export("fetchRequestTemplatesByName", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selFetchRequestTemplatesByNameHandle));
+			}
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFetchRequestTemplatesByNameHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary? LocalizationDictionary
+	{
+		[Export("localizationDictionary", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizationDictionaryHandle));
+			}
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizationDictionaryHandle));
+		}
+		[Export("setLocalizationDictionary:", ArgumentSemantic.Retain)]
 		set
 		{
-			if (value == null)
+			if (base.IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetLocalizationDictionary_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetLocalizationDictionary_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetLocalizationDictionary_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetLocalizationDictionary_Handle, value?.Handle ?? IntPtr.Zero);
 			}
-			__mt_LocalizationDictionary_var = value;
 		}
 	}
 
-	public virtual NSDictionary FetchRequestTemplatesByName
-	{
-		[Export("fetchRequestTemplatesByName")]
-		get
-		{
-			return (NSDictionary)(__mt_FetchRequestTemplatesByName_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFetchRequestTemplatesByNameHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFetchRequestTemplatesByNameHandle)))));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSSet VersionIdentifiers
 	{
-		[Export("versionIdentifiers")]
+		[Export("versionIdentifiers", ArgumentSemantic.Copy)]
 		get
 		{
-			return (NSSet)(__mt_VersionIdentifiers_var = ((!IsDirectBinding) ? ((NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selVersionIdentifiersHandle))) : ((NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selVersionIdentifiersHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSSet>(Messaging.IntPtr_objc_msgSend(base.Handle, selVersionIdentifiersHandle));
+			}
+			return Runtime.GetNSObject<NSSet>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selVersionIdentifiersHandle));
 		}
-		[Export("setVersionIdentifiers:")]
+		[Export("setVersionIdentifiers:", ArgumentSemantic.Copy)]
 		set
 		{
 			if (value == null)
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetVersionIdentifiers_Handle, value.Handle);
 			}
@@ -173,88 +279,58 @@ public class NSManagedObjectModel : NSObject
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetVersionIdentifiers_Handle, value.Handle);
 			}
-			__mt_VersionIdentifiers_var = value;
 		}
 	}
 
-	public virtual NSDictionary EntityVersionHashesByName
-	{
-		[Export("entityVersionHashesByName")]
-		get
-		{
-			return (NSDictionary)(__mt_EntityVersionHashesByName_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntityVersionHashesByNameHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selEntityVersionHashesByNameHandle)))));
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("init")]
-	public NSManagedObjectModel()
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSManagedObjectModel(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSManagedObjectModel(NSObjectFlag t)
+	protected NSManagedObjectModel(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSManagedObjectModel(IntPtr handle)
+	protected internal NSManagedObjectModel(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("mergedModelFromBundles:")]
-	public static NSManagedObjectModel MergedModelFromBundles(NSBundle[] bundles)
+	[Export("init")]
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public NSManagedObjectModel()
+		: base(NSObjectFlag.Empty)
 	{
-		if (bundles == null)
+		if (base.IsDirectBinding)
 		{
-			throw new ArgumentNullException("bundles");
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selInitHandle), "init");
 		}
-		NSArray nSArray = NSArray.FromNSObjects(bundles);
-		NSManagedObjectModel result = (NSManagedObjectModel)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selMergedModelFromBundles_Handle, nSArray.Handle));
-		nSArray.Dispose();
-		return result;
-	}
-
-	[Export("modelByMergingModels:")]
-	public static NSManagedObjectModel ModelByMergingModels(NSManagedObjectModel[] models)
-	{
-		if (models == null)
+		else
 		{
-			throw new ArgumentNullException("models");
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInitHandle), "init");
 		}
-		NSArray nSArray = NSArray.FromNSObjects(models);
-		NSManagedObjectModel result = (NSManagedObjectModel)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selModelByMergingModels_Handle, nSArray.Handle));
-		nSArray.Dispose();
-		return result;
 	}
 
 	[Export("initWithContentsOfURL:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSManagedObjectModel(NSUrl url)
 		: base(NSObjectFlag.Empty)
 	{
@@ -262,30 +338,157 @@ public class NSManagedObjectModel : NSObject
 		{
 			throw new ArgumentNullException("url");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithContentsOfURL_Handle, url.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithContentsOfURL_Handle, url.Handle), "initWithContentsOfURL:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithContentsOfURL_Handle, url.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithContentsOfURL_Handle, url.Handle), "initWithContentsOfURL:");
+		}
+	}
+
+	[Export("copyWithZone:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[return: Release]
+	public virtual NSObject Copy(NSZone? zone)
+	{
+		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
+		if (nSObject != null)
+		{
+			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
+		}
+		return nSObject;
+	}
+
+	[Export("encodeWithCoder:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void EncodeTo(NSCoder encoder)
+	{
+		if (encoder == null)
+		{
+			throw new ArgumentNullException("encoder");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
 		}
 	}
 
 	[Export("entitiesForConfiguration:")]
-	public virtual string[] EntitiesForConfiguration(string configuration)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string[]? EntitiesForConfiguration(string? configuration)
 	{
-		if (configuration == null)
-		{
-			throw new ArgumentNullException("configuration");
-		}
 		IntPtr arg = NSString.CreateNative(configuration);
-		string[] result = ((!IsDirectBinding) ? NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selEntitiesForConfiguration_Handle, arg)) : NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selEntitiesForConfiguration_Handle, arg)));
+		string[] result = ((!base.IsDirectBinding) ? NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selEntitiesForConfiguration_Handle, arg)) : NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selEntitiesForConfiguration_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
+	[Export("fetchRequestFromTemplateWithName:substitutionVariables:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSFetchRequest? FetchRequestFromTemplateWithName(string name, NSDictionary variables)
+	{
+		if (name == null)
+		{
+			throw new ArgumentNullException("name");
+		}
+		if (variables == null)
+		{
+			throw new ArgumentNullException("variables");
+		}
+		IntPtr arg = NSString.CreateNative(name);
+		NSFetchRequest result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSFetchRequest>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selFetchRequestFromTemplateWithName_SubstitutionVariables_Handle, arg, variables.Handle)) : Runtime.GetNSObject<NSFetchRequest>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selFetchRequestFromTemplateWithName_SubstitutionVariables_Handle, arg, variables.Handle)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("fetchRequestTemplateForName:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSFetchRequest? FetchRequestTemplateForName(string name)
+	{
+		if (name == null)
+		{
+			throw new ArgumentNullException("name");
+		}
+		IntPtr arg = NSString.CreateNative(name);
+		NSFetchRequest result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSFetchRequest>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selFetchRequestTemplateForName_Handle, arg)) : Runtime.GetNSObject<NSFetchRequest>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selFetchRequestTemplateForName_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("isConfiguration:compatibleWithStoreMetadata:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool IsConfiguration(string? configuration, NSDictionary metadata)
+	{
+		if (metadata == null)
+		{
+			throw new ArgumentNullException("metadata");
+		}
+		IntPtr arg = NSString.CreateNative(configuration);
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selIsConfiguration_CompatibleWithStoreMetadata_Handle, arg, metadata.Handle) : Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selIsConfiguration_CompatibleWithStoreMetadata_Handle, arg, metadata.Handle));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("mergedModelFromBundles:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSManagedObjectModel? MergedModelFromBundles(NSBundle[]? bundles)
+	{
+		NSArray nSArray = ((bundles == null) ? null : NSArray.FromNSObjects(bundles));
+		NSManagedObjectModel nSObject = Runtime.GetNSObject<NSManagedObjectModel>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selMergedModelFromBundles_Handle, nSArray?.Handle ?? IntPtr.Zero));
+		nSArray?.Dispose();
+		return nSObject;
+	}
+
+	[Export("mergedModelFromBundles:forStoreMetadata:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSManagedObjectModel? MergedModelFromBundles(NSBundle[]? bundles, NSDictionary metadata)
+	{
+		if (metadata == null)
+		{
+			throw new ArgumentNullException("metadata");
+		}
+		NSArray nSArray = ((bundles == null) ? null : NSArray.FromNSObjects(bundles));
+		NSManagedObjectModel nSObject = Runtime.GetNSObject<NSManagedObjectModel>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selMergedModelFromBundles_ForStoreMetadata_Handle, nSArray?.Handle ?? IntPtr.Zero, metadata.Handle));
+		nSArray?.Dispose();
+		return nSObject;
+	}
+
+	[Export("modelByMergingModels:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSManagedObjectModel? ModelByMergingModels(NSManagedObjectModel[]? models)
+	{
+		NSArray nSArray = ((models == null) ? null : NSArray.FromNSObjects(models));
+		NSManagedObjectModel nSObject = Runtime.GetNSObject<NSManagedObjectModel>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selModelByMergingModels_Handle, nSArray?.Handle ?? IntPtr.Zero));
+		nSArray?.Dispose();
+		return nSObject;
+	}
+
+	[Export("modelByMergingModels:forStoreMetadata:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSManagedObjectModel? ModelByMergingModels(NSManagedObjectModel[] models, NSDictionary metadata)
+	{
+		if (models == null)
+		{
+			throw new ArgumentNullException("models");
+		}
+		if (metadata == null)
+		{
+			throw new ArgumentNullException("metadata");
+		}
+		NSArray nSArray = NSArray.FromNSObjects(models);
+		NSManagedObjectModel nSObject = Runtime.GetNSObject<NSManagedObjectModel>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selModelByMergingModels_ForStoreMetadata_Handle, nSArray.Handle, metadata.Handle));
+		nSArray.Dispose();
+		return nSObject;
+	}
+
 	[Export("setEntities:forConfiguration:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SetEntities(NSEntityDescription[] entities, string configuration)
 	{
 		if (entities == null)
@@ -298,133 +501,35 @@ public class NSManagedObjectModel : NSObject
 		}
 		NSArray nSArray = NSArray.FromNSObjects(entities);
 		IntPtr arg = NSString.CreateNative(configuration);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetEntitiesForConfiguration_Handle, nSArray.Handle, arg);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetEntities_ForConfiguration_Handle, nSArray.Handle, arg);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetEntitiesForConfiguration_Handle, nSArray.Handle, arg);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetEntities_ForConfiguration_Handle, nSArray.Handle, arg);
 		}
 		nSArray.Dispose();
 		NSString.ReleaseNative(arg);
 	}
 
 	[Export("setFetchRequestTemplate:forName:")]
-	public virtual void SetFetchRequestTemplate(NSFetchRequest fetchRequestTemplate, string name)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SetFetchRequestTemplate(NSFetchRequest? fetchRequestTemplate, string name)
 	{
-		if (fetchRequestTemplate == null)
-		{
-			throw new ArgumentNullException("fetchRequestTemplate");
-		}
 		if (name == null)
 		{
 			throw new ArgumentNullException("name");
 		}
 		IntPtr arg = NSString.CreateNative(name);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetFetchRequestTemplateForName_Handle, fetchRequestTemplate.Handle, arg);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetFetchRequestTemplate_ForName_Handle, fetchRequestTemplate?.Handle ?? IntPtr.Zero, arg);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetFetchRequestTemplateForName_Handle, fetchRequestTemplate.Handle, arg);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetFetchRequestTemplate_ForName_Handle, fetchRequestTemplate?.Handle ?? IntPtr.Zero, arg);
 		}
 		NSString.ReleaseNative(arg);
-	}
-
-	[Export("fetchRequestTemplateForName:")]
-	public virtual NSFetchRequest FetchRequestTemplateForName(string name)
-	{
-		if (name == null)
-		{
-			throw new ArgumentNullException("name");
-		}
-		IntPtr arg = NSString.CreateNative(name);
-		NSFetchRequest result = ((!IsDirectBinding) ? ((NSFetchRequest)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selFetchRequestTemplateForName_Handle, arg))) : ((NSFetchRequest)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selFetchRequestTemplateForName_Handle, arg))));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("fetchRequestFromTemplateWithName:substitutionVariables:")]
-	public virtual NSFetchRequest FetchRequestFromTemplateWithName(string name, NSDictionary variables)
-	{
-		if (name == null)
-		{
-			throw new ArgumentNullException("name");
-		}
-		if (variables == null)
-		{
-			throw new ArgumentNullException("variables");
-		}
-		IntPtr arg = NSString.CreateNative(name);
-		NSFetchRequest result = ((!IsDirectBinding) ? ((NSFetchRequest)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selFetchRequestFromTemplateWithNameSubstitutionVariables_Handle, arg, variables.Handle))) : ((NSFetchRequest)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selFetchRequestFromTemplateWithNameSubstitutionVariables_Handle, arg, variables.Handle))));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("mergedModelFromBundles:forStoreMetadata:")]
-	public static NSManagedObjectModel MergedModelFromBundles(NSBundle[] bundles, NSDictionary metadata)
-	{
-		if (bundles == null)
-		{
-			throw new ArgumentNullException("bundles");
-		}
-		if (metadata == null)
-		{
-			throw new ArgumentNullException("metadata");
-		}
-		NSArray nSArray = NSArray.FromNSObjects(bundles);
-		NSManagedObjectModel result = (NSManagedObjectModel)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selMergedModelFromBundlesForStoreMetadata_Handle, nSArray.Handle, metadata.Handle));
-		nSArray.Dispose();
-		return result;
-	}
-
-	[Export("modelByMergingModels:forStoreMetadata:")]
-	public static NSManagedObjectModel ModelByMergingModels(NSManagedObjectModel[] models, NSDictionary metadata)
-	{
-		if (models == null)
-		{
-			throw new ArgumentNullException("models");
-		}
-		if (metadata == null)
-		{
-			throw new ArgumentNullException("metadata");
-		}
-		NSArray nSArray = NSArray.FromNSObjects(models);
-		NSManagedObjectModel result = (NSManagedObjectModel)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selModelByMergingModelsForStoreMetadata_Handle, nSArray.Handle, metadata.Handle));
-		nSArray.Dispose();
-		return result;
-	}
-
-	[Export("isConfiguration:compatibleWithStoreMetadata:")]
-	public virtual bool IsConfiguration(string configuration, NSDictionary metadata)
-	{
-		if (configuration == null)
-		{
-			throw new ArgumentNullException("configuration");
-		}
-		if (metadata == null)
-		{
-			throw new ArgumentNullException("metadata");
-		}
-		IntPtr arg = NSString.CreateNative(configuration);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selIsConfigurationCompatibleWithStoreMetadata_Handle, arg, metadata.Handle) : Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selIsConfigurationCompatibleWithStoreMetadata_Handle, arg, metadata.Handle));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_EntitiesByName_var = null;
-			__mt_Entities_var = null;
-			__mt_LocalizationDictionary_var = null;
-			__mt_FetchRequestTemplatesByName_var = null;
-			__mt_VersionIdentifiers_var = null;
-			__mt_EntityVersionHashesByName_var = null;
-		}
 	}
 }

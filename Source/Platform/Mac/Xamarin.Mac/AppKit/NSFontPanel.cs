@@ -8,81 +8,79 @@ namespace AppKit;
 [Register("NSFontPanel", true)]
 public class NSFontPanel : NSPanel
 {
-	private static readonly IntPtr selSharedFontPanelHandle = Selector.GetHandle("sharedFontPanel");
-
-	private static readonly IntPtr selSharedFontPanelExistsHandle = Selector.GetHandle("sharedFontPanelExists");
-
-	private static readonly IntPtr selWorksWhenModalHandle = Selector.GetHandle("worksWhenModal");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAccessoryView = "accessoryView";
 
 	private static readonly IntPtr selAccessoryViewHandle = Selector.GetHandle("accessoryView");
 
-	private static readonly IntPtr selSetAccessoryView_Handle = Selector.GetHandle("setAccessoryView:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsEnabled = "isEnabled";
 
 	private static readonly IntPtr selIsEnabledHandle = Selector.GetHandle("isEnabled");
 
-	private static readonly IntPtr selSetEnabled_Handle = Selector.GetHandle("setEnabled:");
-
-	private static readonly IntPtr selSetPanelFontIsMultiple_Handle = Selector.GetHandle("setPanelFont:isMultiple:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPanelConvertFont_ = "panelConvertFont:";
 
 	private static readonly IntPtr selPanelConvertFont_Handle = Selector.GetHandle("panelConvertFont:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReloadDefaultFontFamilies = "reloadDefaultFontFamilies";
+
 	private static readonly IntPtr selReloadDefaultFontFamiliesHandle = Selector.GetHandle("reloadDefaultFontFamilies");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSFontPanel");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAccessoryView_ = "setAccessoryView:";
 
-	private static object __mt_SharedFontPanel_var_static;
+	private static readonly IntPtr selSetAccessoryView_Handle = Selector.GetHandle("setAccessoryView:");
 
-	private object __mt_AccessoryView_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEnabled_ = "setEnabled:";
+
+	private static readonly IntPtr selSetEnabled_Handle = Selector.GetHandle("setEnabled:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPanelFont_IsMultiple_ = "setPanelFont:isMultiple:";
+
+	private static readonly IntPtr selSetPanelFont_IsMultiple_Handle = Selector.GetHandle("setPanelFont:isMultiple:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSharedFontPanel = "sharedFontPanel";
+
+	private static readonly IntPtr selSharedFontPanelHandle = Selector.GetHandle("sharedFontPanel");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSharedFontPanelExists = "sharedFontPanelExists";
+
+	private static readonly IntPtr selSharedFontPanelExistsHandle = Selector.GetHandle("sharedFontPanelExists");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selWorksWhenModal = "worksWhenModal";
+
+	private static readonly IntPtr selWorksWhenModalHandle = Selector.GetHandle("worksWhenModal");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSFontPanel");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public static NSFontPanel SharedFontPanel
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSView? AccessoryView
 	{
-		[Export("sharedFontPanel")]
+		[Export("accessoryView", ArgumentSemantic.Retain)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSFontPanel)(__mt_SharedFontPanel_var_static = (NSFontPanel)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selSharedFontPanelHandle)));
-		}
-	}
-
-	public static bool SharedFontPanelExists
-	{
-		[Export("sharedFontPanelExists")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return Messaging.bool_objc_msgSend(class_ptr, selSharedFontPanelExistsHandle);
-		}
-	}
-
-	public new virtual bool WorksWhenModal
-	{
-		[Export("worksWhenModal")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selWorksWhenModalHandle);
+				return Runtime.GetNSObject<NSView>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessoryViewHandle));
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selWorksWhenModalHandle);
+			return Runtime.GetNSObject<NSView>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessoryViewHandle));
 		}
-	}
-
-	public virtual NSView AccessoryView
-	{
-		[Export("accessoryView")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSView)(__mt_AccessoryView_var = ((!IsDirectBinding) ? ((NSView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessoryViewHandle))) : ((NSView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessoryViewHandle)))));
-		}
-		[Export("setAccessoryView:")]
+		[Export("setAccessoryView:", ArgumentSemantic.Retain)]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessoryView_Handle, value?.Handle ?? IntPtr.Zero);
 			}
@@ -90,17 +88,17 @@ public class NSFontPanel : NSPanel
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessoryView_Handle, value?.Handle ?? IntPtr.Zero);
 			}
-			__mt_AccessoryView_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Enabled
 	{
 		[Export("isEnabled")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsEnabledHandle);
 			}
@@ -110,7 +108,7 @@ public class NSFontPanel : NSPanel
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetEnabled_Handle, value);
 			}
@@ -121,67 +119,79 @@ public class NSFontPanel : NSPanel
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSFontPanel SharedFontPanel
+	{
+		[Export("sharedFontPanel")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return Runtime.GetNSObject<NSFontPanel>(Messaging.IntPtr_objc_msgSend(class_ptr, selSharedFontPanelHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static bool SharedFontPanelExists
+	{
+		[Export("sharedFontPanelExists")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return Messaging.bool_objc_msgSend(class_ptr, selSharedFontPanelExistsHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSFontPanel()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSFontPanel(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSFontPanel(NSObjectFlag t)
+	protected NSFontPanel(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSFontPanel(IntPtr handle)
+	protected internal NSFontPanel(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("setPanelFont:isMultiple:")]
-	public virtual void SetPanelFont(NSFont fontObj, bool isMultiple)
-	{
-		NSApplication.EnsureUIThread();
-		if (fontObj == null)
-		{
-			throw new ArgumentNullException("fontObj");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selSetPanelFontIsMultiple_Handle, fontObj.Handle, isMultiple);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selSetPanelFontIsMultiple_Handle, fontObj.Handle, isMultiple);
-		}
-	}
-
 	[Export("panelConvertFont:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSFont PanelConvertFont(NSFont fontObj)
 	{
 		NSApplication.EnsureUIThread();
@@ -189,18 +199,19 @@ public class NSFontPanel : NSPanel
 		{
 			throw new ArgumentNullException("fontObj");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (NSFont)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selPanelConvertFont_Handle, fontObj.Handle));
+			return Runtime.GetNSObject<NSFont>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selPanelConvertFont_Handle, fontObj.Handle));
 		}
-		return (NSFont)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selPanelConvertFont_Handle, fontObj.Handle));
+		return Runtime.GetNSObject<NSFont>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selPanelConvertFont_Handle, fontObj.Handle));
 	}
 
 	[Export("reloadDefaultFontFamilies")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ReloadDefaultFontFamilies()
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selReloadDefaultFontFamiliesHandle);
 		}
@@ -210,12 +221,22 @@ public class NSFontPanel : NSPanel
 		}
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("setPanelFont:isMultiple:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SetPanelFont(NSFont fontObj, bool isMultiple)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		NSApplication.EnsureUIThread();
+		if (fontObj == null)
 		{
-			__mt_AccessoryView_var = null;
+			throw new ArgumentNullException("fontObj");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selSetPanelFont_IsMultiple_Handle, fontObj.Handle, isMultiple);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selSetPanelFont_IsMultiple_Handle, fontObj.Handle, isMultiple);
 		}
 	}
 }

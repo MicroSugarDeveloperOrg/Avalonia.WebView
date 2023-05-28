@@ -7,17 +7,23 @@ using ObjCRuntime;
 namespace AppKit;
 
 [Register("NSPathCell", true)]
-public class NSPathCell : NSActionCell
+public class NSPathCell : NSActionCell, INSMenuItemValidation, INativeObject, IDisposable
 {
 	[Register]
-	private sealed class _NSPathCellDelegate : NSPathCellDelegate
+	internal class _NSPathCellDelegate : NSObject, INSPathCellDelegate, INativeObject, IDisposable
 	{
-		internal EventHandler<NSPathCellDisplayPanelEventArgs> willDisplayOpenPanel;
+		internal EventHandler<NSPathCellDisplayPanelEventArgs>? willDisplayOpenPanel;
 
-		internal EventHandler<NSPathCellMenuEventArgs> willPopupMenu;
+		internal EventHandler<NSPathCellMenuEventArgs>? willPopupMenu;
+
+		public _NSPathCellDelegate()
+		{
+			base.IsDirectBinding = false;
+		}
 
 		[Preserve(Conditional = true)]
-		public override void WillDisplayOpenPanel(NSPathCell pathCell, NSOpenPanel openPanel)
+		[Export("pathCell:willDisplayOpenPanel:")]
+		public void WillDisplayOpenPanel(NSPathCell pathCell, NSOpenPanel openPanel)
 		{
 			EventHandler<NSPathCellDisplayPanelEventArgs> eventHandler = willDisplayOpenPanel;
 			if (eventHandler != null)
@@ -28,7 +34,8 @@ public class NSPathCell : NSActionCell
 		}
 
 		[Preserve(Conditional = true)]
-		public override void WillPopupMenu(NSPathCell pathCell, NSMenu menu)
+		[Export("pathCell:willPopUpMenu:")]
+		public void WillPopupMenu(NSPathCell pathCell, NSMenu menu)
 		{
 			EventHandler<NSPathCellMenuEventArgs> eventHandler = willPopupMenu;
 			if (eventHandler != null)
@@ -39,140 +46,167 @@ public class NSPathCell : NSActionCell
 		}
 	}
 
-	private static readonly IntPtr selPathStyleHandle = Selector.GetHandle("pathStyle");
-
-	private static readonly IntPtr selSetPathStyle_Handle = Selector.GetHandle("setPathStyle:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selURL = "URL";
 
 	private static readonly IntPtr selURLHandle = Selector.GetHandle("URL");
 
-	private static readonly IntPtr selSetURL_Handle = Selector.GetHandle("setURL:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAllowedTypes = "allowedTypes";
 
 	private static readonly IntPtr selAllowedTypesHandle = Selector.GetHandle("allowedTypes");
 
-	private static readonly IntPtr selSetAllowedTypes_Handle = Selector.GetHandle("setAllowedTypes:");
-
-	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
-
-	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
-
-	private static readonly IntPtr selPathComponentCellClassHandle = Selector.GetHandle("pathComponentCellClass");
-
-	private static readonly IntPtr selPathComponentCellsHandle = Selector.GetHandle("pathComponentCells");
-
-	private static readonly IntPtr selSetPathComponentCells_Handle = Selector.GetHandle("setPathComponentCells:");
-
-	private static readonly IntPtr selClickedPathComponentCellHandle = Selector.GetHandle("clickedPathComponentCell");
-
-	private static readonly IntPtr selDoubleActionHandle = Selector.GetHandle("doubleAction");
-
-	private static readonly IntPtr selSetDoubleAction_Handle = Selector.GetHandle("setDoubleAction:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBackgroundColor = "backgroundColor";
 
 	private static readonly IntPtr selBackgroundColorHandle = Selector.GetHandle("backgroundColor");
 
-	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selClickedPathComponentCell = "clickedPathComponentCell";
 
-	private static readonly IntPtr selPlaceholderStringHandle = Selector.GetHandle("placeholderString");
+	private static readonly IntPtr selClickedPathComponentCellHandle = Selector.GetHandle("clickedPathComponentCell");
 
-	private static readonly IntPtr selSetPlaceholderString_Handle = Selector.GetHandle("setPlaceholderString:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDelegate = "delegate";
 
-	private static readonly IntPtr selPlaceholderAttributedStringHandle = Selector.GetHandle("placeholderAttributedString");
+	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
 
-	private static readonly IntPtr selSetPlaceholderAttributedString_Handle = Selector.GetHandle("setPlaceholderAttributedString:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDoubleAction = "doubleAction";
 
-	private static readonly IntPtr selInitTextCell_Handle = Selector.GetHandle("initTextCell:");
+	private static readonly IntPtr selDoubleActionHandle = Selector.GetHandle("doubleAction");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitImageCell_ = "initImageCell:";
 
 	private static readonly IntPtr selInitImageCell_Handle = Selector.GetHandle("initImageCell:");
 
-	private static readonly IntPtr selSetObjectValue_Handle = Selector.GetHandle("setObjectValue:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitTextCell_ = "initTextCell:";
 
-	private static readonly IntPtr selRectOfPathComponentCellWithFrameInView_Handle = Selector.GetHandle("rectOfPathComponentCell:withFrame:inView:");
+	private static readonly IntPtr selInitTextCell_Handle = Selector.GetHandle("initTextCell:");
 
-	private static readonly IntPtr selPathComponentCellAtPointWithFrameInView_Handle = Selector.GetHandle("pathComponentCellAtPoint:withFrame:inView:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMouseEntered_WithFrame_InView_ = "mouseEntered:withFrame:inView:";
 
-	private static readonly IntPtr selMouseEnteredWithFrameInView_Handle = Selector.GetHandle("mouseEntered:withFrame:inView:");
+	private static readonly IntPtr selMouseEntered_WithFrame_InView_Handle = Selector.GetHandle("mouseEntered:withFrame:inView:");
 
-	private static readonly IntPtr selMouseExitedWithFrameInView_Handle = Selector.GetHandle("mouseExited:withFrame:inView:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMouseExited_WithFrame_InView_ = "mouseExited:withFrame:inView:";
+
+	private static readonly IntPtr selMouseExited_WithFrame_InView_Handle = Selector.GetHandle("mouseExited:withFrame:inView:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPathComponentCellAtPoint_WithFrame_InView_ = "pathComponentCellAtPoint:withFrame:inView:";
+
+	private static readonly IntPtr selPathComponentCellAtPoint_WithFrame_InView_Handle = Selector.GetHandle("pathComponentCellAtPoint:withFrame:inView:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPathComponentCellClass = "pathComponentCellClass";
+
+	private static readonly IntPtr selPathComponentCellClassHandle = Selector.GetHandle("pathComponentCellClass");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPathComponentCells = "pathComponentCells";
+
+	private static readonly IntPtr selPathComponentCellsHandle = Selector.GetHandle("pathComponentCells");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPathStyle = "pathStyle";
+
+	private static readonly IntPtr selPathStyleHandle = Selector.GetHandle("pathStyle");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPlaceholderAttributedString = "placeholderAttributedString";
+
+	private static readonly IntPtr selPlaceholderAttributedStringHandle = Selector.GetHandle("placeholderAttributedString");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPlaceholderString = "placeholderString";
+
+	private static readonly IntPtr selPlaceholderStringHandle = Selector.GetHandle("placeholderString");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRectOfPathComponentCell_WithFrame_InView_ = "rectOfPathComponentCell:withFrame:inView:";
+
+	private static readonly IntPtr selRectOfPathComponentCell_WithFrame_InView_Handle = Selector.GetHandle("rectOfPathComponentCell:withFrame:inView:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAllowedTypes_ = "setAllowedTypes:";
+
+	private static readonly IntPtr selSetAllowedTypes_Handle = Selector.GetHandle("setAllowedTypes:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBackgroundColor_ = "setBackgroundColor:";
+
+	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetControlSize_ = "setControlSize:";
 
 	private static readonly IntPtr selSetControlSize_Handle = Selector.GetHandle("setControlSize:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSPathCell");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDelegate_ = "setDelegate:";
 
-	private object __mt_Url_var;
+	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
 
-	private object __mt_WeakDelegate_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDoubleAction_ = "setDoubleAction:";
 
-	private object __mt_PathComponentCells_var;
+	private static readonly IntPtr selSetDoubleAction_Handle = Selector.GetHandle("setDoubleAction:");
 
-	private object __mt_ClickedPathComponentCell_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetObjectValue_ = "setObjectValue:";
 
-	private object __mt_BackgroundColor_var;
+	private static readonly IntPtr selSetObjectValue_Handle = Selector.GetHandle("setObjectValue:");
 
-	private object __mt_PlaceholderAttributedString_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPathComponentCells_ = "setPathComponentCells:";
+
+	private static readonly IntPtr selSetPathComponentCells_Handle = Selector.GetHandle("setPathComponentCells:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPathStyle_ = "setPathStyle:";
+
+	private static readonly IntPtr selSetPathStyle_Handle = Selector.GetHandle("setPathStyle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPlaceholderAttributedString_ = "setPlaceholderAttributedString:";
+
+	private static readonly IntPtr selSetPlaceholderAttributedString_Handle = Selector.GetHandle("setPlaceholderAttributedString:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPlaceholderString_ = "setPlaceholderString:";
+
+	private static readonly IntPtr selSetPlaceholderString_Handle = Selector.GetHandle("setPlaceholderString:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetURL_ = "setURL:";
+
+	private static readonly IntPtr selSetURL_Handle = Selector.GetHandle("setURL:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selValidateMenuItem_ = "validateMenuItem:";
+
+	private static readonly IntPtr selValidateMenuItem_Handle = Selector.GetHandle("validateMenuItem:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSPathCell");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_WeakDelegate_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSPathStyle PathStyle
-	{
-		[Export("pathStyle")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return (NSPathStyle)Messaging.Int64_objc_msgSend(base.Handle, selPathStyleHandle);
-			}
-			return (NSPathStyle)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selPathStyleHandle);
-		}
-		[Export("setPathStyle:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetPathStyle_Handle, (long)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetPathStyle_Handle, (long)value);
-			}
-		}
-	}
-
-	public virtual NSUrl Url
-	{
-		[Export("URL")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSUrl)(__mt_Url_var = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selURLHandle))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selURLHandle)))));
-		}
-		[Export("setURL:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetURL_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetURL_Handle, value.Handle);
-			}
-			__mt_Url_var = value;
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string[] AllowedTypes
 	{
 		[Export("allowedTypes")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAllowedTypesHandle));
 			}
@@ -187,7 +221,7 @@ public class NSPathCell : NSActionCell
 				throw new ArgumentNullException("value");
 			}
 			NSArray nSArray = NSArray.FromStrings(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAllowedTypes_Handle, nSArray.Handle);
 			}
@@ -199,61 +233,20 @@ public class NSPathCell : NSActionCell
 		}
 	}
 
-	public virtual NSObject WeakDelegate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSColor BackgroundColor
 	{
-		[Export("delegate")]
+		[Export("backgroundColor", ArgumentSemantic.Copy)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
-		}
-		[Export("setDelegate:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle));
 			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			__mt_WeakDelegate_var = value;
+			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle));
 		}
-	}
-
-	public NSPathCellDelegate Delegate
-	{
-		get
-		{
-			return WeakDelegate as NSPathCellDelegate;
-		}
-		set
-		{
-			WeakDelegate = value;
-		}
-	}
-
-	public static Class PathComponentCellClass
-	{
-		[Export("pathComponentCellClass")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return new Class(Messaging.IntPtr_objc_msgSend(class_ptr, selPathComponentCellClassHandle));
-		}
-	}
-
-	public virtual NSPathComponentCell[] PathComponentCells
-	{
-		[Export("pathComponentCells")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSPathComponentCell[])(__mt_PathComponentCells_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSPathComponentCell>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPathComponentCellsHandle)) : NSArray.ArrayFromHandle<NSPathComponentCell>(Messaging.IntPtr_objc_msgSend(base.Handle, selPathComponentCellsHandle))));
-		}
-		[Export("setPathComponentCells:")]
+		[Export("setBackgroundColor:", ArgumentSemantic.Copy)]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -261,37 +254,60 @@ public class NSPathCell : NSActionCell
 			{
 				throw new ArgumentNullException("value");
 			}
-			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPathComponentCells_Handle, nSArray.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBackgroundColor_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPathComponentCells_Handle, nSArray.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBackgroundColor_Handle, value.Handle);
 			}
-			nSArray.Dispose();
-			__mt_PathComponentCells_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'ClickedPathItem' instead.")]
 	public virtual NSPathComponentCell ClickedPathComponentCell
 	{
+		[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'ClickedPathItem' instead.")]
 		[Export("clickedPathComponentCell")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSPathComponentCell)(__mt_ClickedPathComponentCell_var = ((!IsDirectBinding) ? ((NSPathComponentCell)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selClickedPathComponentCellHandle))) : ((NSPathComponentCell)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selClickedPathComponentCellHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSPathComponentCell>(Messaging.IntPtr_objc_msgSend(base.Handle, selClickedPathComponentCellHandle));
+			}
+			return Runtime.GetNSObject<NSPathComponentCell>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selClickedPathComponentCellHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public INSPathCellDelegate Delegate
+	{
+		get
+		{
+			return WeakDelegate as INSPathCellDelegate;
+		}
+		set
+		{
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
+			{
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			WeakDelegate = nSObject;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual Selector DoubleAction
 	{
 		[Export("doubleAction")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Selector.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDoubleActionHandle));
 			}
@@ -305,7 +321,7 @@ public class NSPathCell : NSActionCell
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDoubleAction_Handle, value.Handle);
 			}
@@ -316,15 +332,32 @@ public class NSPathCell : NSActionCell
 		}
 	}
 
-	public virtual NSColor BackgroundColor
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static Class PathComponentCellClass
 	{
-		[Export("backgroundColor")]
+		[Export("pathComponentCellClass")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSColor)(__mt_BackgroundColor_var = ((!IsDirectBinding) ? ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle))) : ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle)))));
+			IntPtr intPtr = Messaging.IntPtr_objc_msgSend(class_ptr, selPathComponentCellClassHandle);
+			return (intPtr == IntPtr.Zero) ? null : new Class(intPtr);
 		}
-		[Export("setBackgroundColor:")]
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSPathComponentCell[] PathComponentCells
+	{
+		[Export("pathComponentCells", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<NSPathComponentCell>(Messaging.IntPtr_objc_msgSend(base.Handle, selPathComponentCellsHandle));
+			}
+			return NSArray.ArrayFromHandle<NSPathComponentCell>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPathComponentCellsHandle));
+		}
+		[Export("setPathComponentCells:", ArgumentSemantic.Copy)]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -332,25 +365,87 @@ public class NSPathCell : NSActionCell
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			NSArray nSArray = NSArray.FromNSObjects(value);
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBackgroundColor_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPathComponentCells_Handle, nSArray.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBackgroundColor_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPathComponentCells_Handle, nSArray.Handle);
 			}
-			__mt_BackgroundColor_var = value;
+			nSArray.Dispose();
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSPathStyle PathStyle
+	{
+		[Export("pathStyle")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return (NSPathStyle)Messaging.Int64_objc_msgSend(base.Handle, selPathStyleHandle);
+			}
+			return (NSPathStyle)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selPathStyleHandle);
+		}
+		[Export("setPathStyle:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetPathStyle_Handle, (long)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetPathStyle_Handle, (long)value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSAttributedString PlaceholderAttributedString
+	{
+		[Export("placeholderAttributedString", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSAttributedString>(Messaging.IntPtr_objc_msgSend(base.Handle, selPlaceholderAttributedStringHandle));
+			}
+			return Runtime.GetNSObject<NSAttributedString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPlaceholderAttributedStringHandle));
+		}
+		[Export("setPlaceholderAttributedString:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPlaceholderAttributedString_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPlaceholderAttributedString_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string PlaceholderString
 	{
 		[Export("placeholderString")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPlaceholderStringHandle));
 			}
@@ -365,7 +460,7 @@ public class NSPathCell : NSActionCell
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPlaceholderString_Handle, arg);
 			}
@@ -377,15 +472,20 @@ public class NSPathCell : NSActionCell
 		}
 	}
 
-	public virtual NSAttributedString PlaceholderAttributedString
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSUrl Url
 	{
-		[Export("placeholderAttributedString")]
+		[Export("URL", ArgumentSemantic.Copy)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSAttributedString)(__mt_PlaceholderAttributedString_var = ((!IsDirectBinding) ? ((NSAttributedString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPlaceholderAttributedStringHandle))) : ((NSAttributedString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPlaceholderAttributedStringHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selURLHandle));
+			}
+			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selURLHandle));
 		}
-		[Export("setPlaceholderAttributedString:")]
+		[Export("setURL:", ArgumentSemantic.Copy)]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -393,17 +493,48 @@ public class NSPathCell : NSActionCell
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPlaceholderAttributedString_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetURL_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPlaceholderAttributedString_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetURL_Handle, value.Handle);
 			}
-			__mt_PlaceholderAttributedString_var = value;
 		}
 	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakDelegate
+	{
+		[Export("delegate", ArgumentSemantic.Assign)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
+			MarkDirty();
+			__mt_WeakDelegate_var = nSObject;
+			return nSObject;
+		}
+		[Export("setDelegate:", ArgumentSemantic.Assign)]
+		set
+		{
+			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakDelegate_var, value, GetInternalEventDelegateType);
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			MarkDirty();
+			__mt_WeakDelegate_var = value;
+		}
+	}
+
+	internal virtual Type GetInternalEventDelegateType => typeof(_NSPathCellDelegate);
 
 	public event EventHandler DoubleClick
 	{
@@ -446,49 +577,57 @@ public class NSPathCell : NSActionCell
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSPathCell()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSPathCell(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSPathCell(NSObjectFlag t)
+	protected NSPathCell(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSPathCell(IntPtr handle)
+	protected internal NSPathCell(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initTextCell:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSPathCell(string aString)
 		: base(NSObjectFlag.Empty)
 	{
@@ -498,18 +637,19 @@ public class NSPathCell : NSActionCell
 			throw new ArgumentNullException("aString");
 		}
 		IntPtr arg = NSString.CreateNative(aString);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitTextCell_Handle, arg);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitTextCell_Handle, arg), "initTextCell:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitTextCell_Handle, arg);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitTextCell_Handle, arg), "initTextCell:");
 		}
 		NSString.ReleaseNative(arg);
 	}
 
 	[Export("initImageCell:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSPathCell(NSImage image)
 		: base(NSObjectFlag.Empty)
 	{
@@ -518,35 +658,34 @@ public class NSPathCell : NSActionCell
 		{
 			throw new ArgumentNullException("image");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitImageCell_Handle, image.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitImageCell_Handle, image.Handle), "initImageCell:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitImageCell_Handle, image.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitImageCell_Handle, image.Handle), "initImageCell:");
 		}
 	}
 
-	[Export("setObjectValue:")]
-	public virtual void SetObjectValue(NSObject obj)
+	[Export("pathComponentCellAtPoint:withFrame:inView:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSPathComponentCell GetPathComponent(CGPoint point, CGRect frame, NSView view)
 	{
 		NSApplication.EnsureUIThread();
-		if (obj == null)
+		if (view == null)
 		{
-			throw new ArgumentNullException("obj");
+			throw new ArgumentNullException("view");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetObjectValue_Handle, obj.Handle);
+			return Runtime.GetNSObject<NSPathComponentCell>(Messaging.IntPtr_objc_msgSend_CGPoint_CGRect_IntPtr(base.Handle, selPathComponentCellAtPoint_WithFrame_InView_Handle, point, frame, view.Handle));
 		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetObjectValue_Handle, obj.Handle);
-		}
+		return Runtime.GetNSObject<NSPathComponentCell>(Messaging.IntPtr_objc_msgSendSuper_CGPoint_CGRect_IntPtr(base.SuperHandle, selPathComponentCellAtPoint_WithFrame_InView_Handle, point, frame, view.Handle));
 	}
 
 	[Export("rectOfPathComponentCell:withFrame:inView:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGRect GetRect(NSPathComponentCell componentCell, CGRect withFrame, NSView inView)
 	{
 		NSApplication.EnsureUIThread();
@@ -559,33 +698,19 @@ public class NSPathCell : NSActionCell
 			throw new ArgumentNullException("inView");
 		}
 		CGRect retval;
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.CGRect_objc_msgSend_stret_IntPtr_CGRect_IntPtr(out retval, base.Handle, selRectOfPathComponentCellWithFrameInView_Handle, componentCell.Handle, withFrame, inView.Handle);
+			Messaging.CGRect_objc_msgSend_stret_IntPtr_CGRect_IntPtr(out retval, base.Handle, selRectOfPathComponentCell_WithFrame_InView_Handle, componentCell.Handle, withFrame, inView.Handle);
 		}
 		else
 		{
-			Messaging.CGRect_objc_msgSendSuper_stret_IntPtr_CGRect_IntPtr(out retval, base.SuperHandle, selRectOfPathComponentCellWithFrameInView_Handle, componentCell.Handle, withFrame, inView.Handle);
+			Messaging.CGRect_objc_msgSendSuper_stret_IntPtr_CGRect_IntPtr(out retval, base.SuperHandle, selRectOfPathComponentCell_WithFrame_InView_Handle, componentCell.Handle, withFrame, inView.Handle);
 		}
 		return retval;
 	}
 
-	[Export("pathComponentCellAtPoint:withFrame:inView:")]
-	public virtual NSPathComponentCell GetPathComponent(CGPoint point, CGRect frame, NSView view)
-	{
-		NSApplication.EnsureUIThread();
-		if (view == null)
-		{
-			throw new ArgumentNullException("view");
-		}
-		if (IsDirectBinding)
-		{
-			return (NSPathComponentCell)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_CGPoint_CGRect_IntPtr(base.Handle, selPathComponentCellAtPointWithFrameInView_Handle, point, frame, view.Handle));
-		}
-		return (NSPathComponentCell)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_CGPoint_CGRect_IntPtr(base.SuperHandle, selPathComponentCellAtPointWithFrameInView_Handle, point, frame, view.Handle));
-	}
-
 	[Export("mouseEntered:withFrame:inView:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void MouseEntered(NSEvent evt, CGRect frame, NSView view)
 	{
 		NSApplication.EnsureUIThread();
@@ -597,17 +722,18 @@ public class NSPathCell : NSActionCell
 		{
 			throw new ArgumentNullException("view");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_CGRect_IntPtr(base.Handle, selMouseEnteredWithFrameInView_Handle, evt.Handle, frame, view.Handle);
+			Messaging.void_objc_msgSend_IntPtr_CGRect_IntPtr(base.Handle, selMouseEntered_WithFrame_InView_Handle, evt.Handle, frame, view.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_CGRect_IntPtr(base.SuperHandle, selMouseEnteredWithFrameInView_Handle, evt.Handle, frame, view.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr_CGRect_IntPtr(base.SuperHandle, selMouseEntered_WithFrame_InView_Handle, evt.Handle, frame, view.Handle);
 		}
 	}
 
 	[Export("mouseExited:withFrame:inView:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void MouseExited(NSEvent evt, CGRect frame, NSView view)
 	{
 		NSApplication.EnsureUIThread();
@@ -619,21 +745,22 @@ public class NSPathCell : NSActionCell
 		{
 			throw new ArgumentNullException("view");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_CGRect_IntPtr(base.Handle, selMouseExitedWithFrameInView_Handle, evt.Handle, frame, view.Handle);
+			Messaging.void_objc_msgSend_IntPtr_CGRect_IntPtr(base.Handle, selMouseExited_WithFrame_InView_Handle, evt.Handle, frame, view.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_CGRect_IntPtr(base.SuperHandle, selMouseExitedWithFrameInView_Handle, evt.Handle, frame, view.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr_CGRect_IntPtr(base.SuperHandle, selMouseExited_WithFrame_InView_Handle, evt.Handle, frame, view.Handle);
 		}
 	}
 
 	[Export("setControlSize:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SetControlSize(NSControlSize size)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_UInt64(base.Handle, selSetControlSize_Handle, (ulong)size);
 		}
@@ -643,27 +770,68 @@ public class NSPathCell : NSActionCell
 		}
 	}
 
-	private _NSPathCellDelegate EnsureNSPathCellDelegate()
+	[Export("setObjectValue:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SetObjectValue(NSObject obj)
 	{
-		NSObject nSObject = WeakDelegate;
-		if (nSObject == null || !(nSObject is _NSPathCellDelegate))
+		NSApplication.EnsureUIThread();
+		if (obj == null)
 		{
-			nSObject = (WeakDelegate = new _NSPathCellDelegate());
+			throw new ArgumentNullException("obj");
 		}
-		return (_NSPathCellDelegate)nSObject;
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetObjectValue_Handle, obj.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetObjectValue_Handle, obj.Handle);
+		}
 	}
 
+	[Export("validateMenuItem:")]
+	[Introduced(PlatformName.MacOSX, 10, 14, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ValidateMenuItem(NSMenuItem menuItem)
+	{
+		NSApplication.EnsureUIThread();
+		if (menuItem == null)
+		{
+			throw new ArgumentNullException("menuItem");
+		}
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selValidateMenuItem_Handle, menuItem.Handle);
+		}
+		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selValidateMenuItem_Handle, menuItem.Handle);
+	}
+
+	internal virtual _NSPathCellDelegate CreateInternalEventDelegateType()
+	{
+		return new _NSPathCellDelegate();
+	}
+
+	internal _NSPathCellDelegate EnsureNSPathCellDelegate()
+	{
+		if (WeakDelegate != null)
+		{
+			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakDelegate, GetInternalEventDelegateType);
+		}
+		_NSPathCellDelegate nSPathCellDelegate = Delegate as _NSPathCellDelegate;
+		if (nSPathCellDelegate == null)
+		{
+			nSPathCellDelegate = (_NSPathCellDelegate)(Delegate = CreateInternalEventDelegateType());
+		}
+		return nSPathCellDelegate;
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
-			__mt_Url_var = null;
 			__mt_WeakDelegate_var = null;
-			__mt_PathComponentCells_var = null;
-			__mt_ClickedPathComponentCell_var = null;
-			__mt_BackgroundColor_var = null;
-			__mt_PlaceholderAttributedString_var = null;
 		}
 	}
 }

@@ -1,10 +1,12 @@
 using System;
+using ObjCRuntime;
 
 namespace CoreVideo;
 
+[Watch(4, 0)]
 public struct CVFillExtendedPixelsCallBackData
 {
-	public int Version;
+	public nint Version;
 
 	public CVFillExtendedPixelsCallBack FillCallBack;
 

@@ -5,78 +5,69 @@ using ObjCRuntime;
 
 namespace AppKit;
 
-[Register("NSAnimationDelegate", true)]
+[Protocol]
+[Register("NSAnimationDelegate", false)]
 [Model]
-public class NSAnimationDelegate : NSObject
+public class NSAnimationDelegate : NSObject, INSAnimationDelegate, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSAnimationDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
+		NSApplication.EnsureUIThread();
+		base.IsDirectBinding = false;
+		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSAnimationDelegate(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSAnimationDelegate(NSObjectFlag t)
+	protected NSAnimationDelegate(NSObjectFlag t)
 		: base(t)
 	{
+		base.IsDirectBinding = false;
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSAnimationDelegate(IntPtr handle)
+	protected internal NSAnimationDelegate(IntPtr handle)
 		: base(handle)
 	{
-	}
-
-	[Export("animationShouldStart:")]
-	public virtual bool AnimationShouldStart(NSAnimation animation)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("animationDidStop:")]
-	public virtual void AnimationDidStop(NSAnimation animation)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
+		base.IsDirectBinding = false;
 	}
 
 	[Export("animationDidEnd:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AnimationDidEnd(NSAnimation animation)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("animation:valueForProgress:")]
-	public virtual double ComputeAnimationCurve(NSAnimation animation, double progress)
+	[Export("animation:didReachProgressMark:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AnimationDidReachProgressMark(NSAnimation animation, float progress)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("animation:didReachProgressMark:")]
-	public virtual void AnimationDidReachProgressMark(NSAnimation animation, double progress)
+	[Export("animationDidStop:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AnimationDidStop(NSAnimation animation)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("animationShouldStart:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool AnimationShouldStart(NSAnimation animation)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("animation:valueForProgress:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual float ComputeAnimationCurve(NSAnimation animation, float progress)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

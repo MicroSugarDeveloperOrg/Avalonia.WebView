@@ -8,152 +8,88 @@ namespace CoreData;
 [Register("NSRelationshipDescription", true)]
 public class NSRelationshipDescription : NSPropertyDescription
 {
-	private static readonly IntPtr selDestinationEntityHandle = Selector.GetHandle("destinationEntity");
-
-	private static readonly IntPtr selSetDestinationEntity_Handle = Selector.GetHandle("setDestinationEntity:");
-
-	private static readonly IntPtr selInverseRelationshipHandle = Selector.GetHandle("inverseRelationship");
-
-	private static readonly IntPtr selSetInverseRelationship_Handle = Selector.GetHandle("setInverseRelationship:");
-
-	private static readonly IntPtr selMaxCountHandle = Selector.GetHandle("maxCount");
-
-	private static readonly IntPtr selSetMaxCount_Handle = Selector.GetHandle("setMaxCount:");
-
-	private static readonly IntPtr selMinCountHandle = Selector.GetHandle("minCount");
-
-	private static readonly IntPtr selSetMinCount_Handle = Selector.GetHandle("setMinCount:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDeleteRule = "deleteRule";
 
 	private static readonly IntPtr selDeleteRuleHandle = Selector.GetHandle("deleteRule");
 
-	private static readonly IntPtr selSetDeleteRule_Handle = Selector.GetHandle("setDeleteRule:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDestinationEntity = "destinationEntity";
 
-	private static readonly IntPtr selIsToManyHandle = Selector.GetHandle("isToMany");
+	private static readonly IntPtr selDestinationEntityHandle = Selector.GetHandle("destinationEntity");
 
-	private static readonly IntPtr selVersionHashHandle = Selector.GetHandle("versionHash");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInverseRelationship = "inverseRelationship";
+
+	private static readonly IntPtr selInverseRelationshipHandle = Selector.GetHandle("inverseRelationship");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsOrdered = "isOrdered";
 
 	private static readonly IntPtr selIsOrderedHandle = Selector.GetHandle("isOrdered");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsToMany = "isToMany";
+
+	private static readonly IntPtr selIsToManyHandle = Selector.GetHandle("isToMany");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMaxCount = "maxCount";
+
+	private static readonly IntPtr selMaxCountHandle = Selector.GetHandle("maxCount");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMinCount = "minCount";
+
+	private static readonly IntPtr selMinCountHandle = Selector.GetHandle("minCount");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDeleteRule_ = "setDeleteRule:";
+
+	private static readonly IntPtr selSetDeleteRule_Handle = Selector.GetHandle("setDeleteRule:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDestinationEntity_ = "setDestinationEntity:";
+
+	private static readonly IntPtr selSetDestinationEntity_Handle = Selector.GetHandle("setDestinationEntity:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetInverseRelationship_ = "setInverseRelationship:";
+
+	private static readonly IntPtr selSetInverseRelationship_Handle = Selector.GetHandle("setInverseRelationship:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMaxCount_ = "setMaxCount:";
+
+	private static readonly IntPtr selSetMaxCount_Handle = Selector.GetHandle("setMaxCount:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMinCount_ = "setMinCount:";
+
+	private static readonly IntPtr selSetMinCount_Handle = Selector.GetHandle("setMinCount:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetOrdered_ = "setOrdered:";
+
 	private static readonly IntPtr selSetOrdered_Handle = Selector.GetHandle("setOrdered:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSRelationshipDescription");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selVersionHash = "versionHash";
 
-	private object __mt_DestinationEntity_var;
+	private static readonly IntPtr selVersionHashHandle = Selector.GetHandle("versionHash");
 
-	private object __mt_InverseRelationship_var;
-
-	private object __mt_VersionHash_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSRelationshipDescription");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSEntityDescription DestinationEntity
-	{
-		[Export("destinationEntity")]
-		get
-		{
-			return (NSEntityDescription)(__mt_DestinationEntity_var = ((!IsDirectBinding) ? ((NSEntityDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDestinationEntityHandle))) : ((NSEntityDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDestinationEntityHandle)))));
-		}
-		[Export("setDestinationEntity:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDestinationEntity_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDestinationEntity_Handle, value.Handle);
-			}
-			__mt_DestinationEntity_var = value;
-		}
-	}
-
-	public virtual NSRelationshipDescription InverseRelationship
-	{
-		[Export("inverseRelationship")]
-		get
-		{
-			return (NSRelationshipDescription)(__mt_InverseRelationship_var = ((!IsDirectBinding) ? ((NSRelationshipDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInverseRelationshipHandle))) : ((NSRelationshipDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selInverseRelationshipHandle)))));
-		}
-		[Export("setInverseRelationship:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetInverseRelationship_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetInverseRelationship_Handle, value.Handle);
-			}
-			__mt_InverseRelationship_var = value;
-		}
-	}
-
-	public virtual uint MaxCount
-	{
-		[Export("maxCount")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.UInt32_objc_msgSend(base.Handle, selMaxCountHandle);
-			}
-			return Messaging.UInt32_objc_msgSendSuper(base.SuperHandle, selMaxCountHandle);
-		}
-		[Export("setMaxCount:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt32(base.Handle, selSetMaxCount_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_UInt32(base.SuperHandle, selSetMaxCount_Handle, value);
-			}
-		}
-	}
-
-	public virtual uint MinCount
-	{
-		[Export("minCount")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.UInt32_objc_msgSend(base.Handle, selMinCountHandle);
-			}
-			return Messaging.UInt32_objc_msgSendSuper(base.SuperHandle, selMinCountHandle);
-		}
-		[Export("setMinCount:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt32(base.Handle, selSetMinCount_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_UInt32(base.SuperHandle, selSetMinCount_Handle, value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDeleteRule DeleteRule
 	{
 		[Export("deleteRule")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return (NSDeleteRule)Messaging.UInt64_objc_msgSend(base.Handle, selDeleteRuleHandle);
 			}
@@ -162,7 +98,7 @@ public class NSRelationshipDescription : NSPropertyDescription
 		[Export("setDeleteRule:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetDeleteRule_Handle, (ulong)value);
 			}
@@ -173,12 +109,65 @@ public class NSRelationshipDescription : NSPropertyDescription
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSEntityDescription? DestinationEntity
+	{
+		[Export("destinationEntity")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSEntityDescription>(Messaging.IntPtr_objc_msgSend(base.Handle, selDestinationEntityHandle));
+			}
+			return Runtime.GetNSObject<NSEntityDescription>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDestinationEntityHandle));
+		}
+		[Export("setDestinationEntity:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDestinationEntity_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDestinationEntity_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSRelationshipDescription? InverseRelationship
+	{
+		[Export("inverseRelationship")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSRelationshipDescription>(Messaging.IntPtr_objc_msgSend(base.Handle, selInverseRelationshipHandle));
+			}
+			return Runtime.GetNSObject<NSRelationshipDescription>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInverseRelationshipHandle));
+		}
+		[Export("setInverseRelationship:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetInverseRelationship_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetInverseRelationship_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsToMany
 	{
 		[Export("isToMany")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsToManyHandle);
 			}
@@ -186,22 +175,65 @@ public class NSRelationshipDescription : NSPropertyDescription
 		}
 	}
 
-	public new virtual NSData VersionHash
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nuint MaxCount
 	{
-		[Export("versionHash")]
+		[Export("maxCount")]
 		get
 		{
-			return (NSData)(__mt_VersionHash_var = ((!IsDirectBinding) ? ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selVersionHashHandle))) : ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selVersionHashHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nuint_objc_msgSend(base.Handle, selMaxCountHandle);
+			}
+			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selMaxCountHandle);
+		}
+		[Export("setMaxCount:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nuint(base.Handle, selSetMaxCount_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nuint(base.SuperHandle, selSetMaxCount_Handle, value);
+			}
 		}
 	}
 
-	[Since(5, 0)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nuint MinCount
+	{
+		[Export("minCount")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nuint_objc_msgSend(base.Handle, selMinCountHandle);
+			}
+			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selMinCountHandle);
+		}
+		[Export("setMinCount:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_nuint(base.Handle, selSetMinCount_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_nuint(base.SuperHandle, selSetMinCount_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Ordered
 	{
 		[Export("isOrdered")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsOrderedHandle);
 			}
@@ -210,7 +242,7 @@ public class NSRelationshipDescription : NSPropertyDescription
 		[Export("setOrdered:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetOrdered_Handle, value);
 			}
@@ -221,56 +253,64 @@ public class NSRelationshipDescription : NSPropertyDescription
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual NSData VersionHash
+	{
+		[Export("versionHash")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSend(base.Handle, selVersionHashHandle));
+			}
+			return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selVersionHashHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSRelationshipDescription()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSRelationshipDescription(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSRelationshipDescription(NSObjectFlag t)
+	protected NSRelationshipDescription(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSRelationshipDescription(IntPtr handle)
+	protected internal NSRelationshipDescription(IntPtr handle)
 		: base(handle)
 	{
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_DestinationEntity_var = null;
-			__mt_InverseRelationship_var = null;
-			__mt_VersionHash_var = null;
-		}
 	}
 }

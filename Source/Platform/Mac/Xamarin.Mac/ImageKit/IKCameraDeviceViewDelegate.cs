@@ -1,64 +1,59 @@
 using System;
 using System.ComponentModel;
 using Foundation;
+using ImageCaptureCore;
 using ObjCRuntime;
 
 namespace ImageKit;
 
-[Register("IKCameraDeviceViewDelegate", true)]
+[Protocol]
+[Register("IKCameraDeviceViewDelegate", false)]
 [Model]
-public class IKCameraDeviceViewDelegate : NSObject
+public class IKCameraDeviceViewDelegate : NSObject, IIKCameraDeviceViewDelegate, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public IKCameraDeviceViewDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
+		base.IsDirectBinding = false;
+		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public IKCameraDeviceViewDelegate(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public IKCameraDeviceViewDelegate(NSObjectFlag t)
+	protected IKCameraDeviceViewDelegate(NSObjectFlag t)
 		: base(t)
 	{
+		base.IsDirectBinding = false;
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public IKCameraDeviceViewDelegate(IntPtr handle)
+	protected internal IKCameraDeviceViewDelegate(IntPtr handle)
 		: base(handle)
 	{
+		base.IsDirectBinding = false;
 	}
 
-	[Export("cameraDeviceViewSelectionDidChange:")]
-	public virtual void SelectionDidChange(IKCameraDeviceView cameraDeviceView)
+	[Export("cameraDeviceView:didDownloadFile:location:fileData:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void DidDownloadFile(IKCameraDeviceView cameraDeviceView, ICCameraFile file, NSUrl url, NSData data, NSError error)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("cameraDeviceView:didEncounterError:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void DidEncounterError(IKCameraDeviceView cameraDeviceView, NSError error)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("cameraDeviceViewSelectionDidChange:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SelectionDidChange(IKCameraDeviceView cameraDeviceView)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

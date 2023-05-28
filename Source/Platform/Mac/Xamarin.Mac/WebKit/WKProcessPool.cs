@@ -74,7 +74,7 @@ public class WKProcessPool : NSObject, INSCoding, INativeObject, IDisposable, IN
 
 	[Export("encodeWithCoder:")]
 	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public override void EncodeTo(NSCoder encoder)
+	public virtual void EncodeTo(NSCoder encoder)
 	{
 		if (encoder == null)
 		{

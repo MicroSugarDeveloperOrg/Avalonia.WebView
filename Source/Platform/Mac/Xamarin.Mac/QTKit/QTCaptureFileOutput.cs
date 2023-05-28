@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using AppKit;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
@@ -10,89 +11,34 @@ namespace QTKit;
 public class QTCaptureFileOutput : QTCaptureOutput
 {
 	[Register]
-	private sealed class _QTCaptureFileOutputDelegate : QTCaptureFileOutputDelegate
+	internal class _QTCaptureFileOutputDelegate : NSObject, IQTCaptureFileOutputDelegate, INativeObject, IDisposable
 	{
-		internal EventHandler<QTCaptureFileSampleEventArgs> didOutputSampleBuffer;
+		internal EventHandler<QTCaptureFileErrorEventArgs>? didFinishRecording;
 
-		internal EventHandler<QTCaptureFileUrlEventArgs> willStartRecording;
+		internal EventHandler<QTCaptureFileSampleEventArgs>? didOutputSampleBuffer;
 
-		internal EventHandler<QTCaptureFileUrlEventArgs> didStartRecording;
+		internal EventHandler<QTCaptureFileUrlEventArgs>? didPauseRecording;
 
-		internal QTCaptureFileError shouldChangeOutputFile;
+		internal EventHandler<QTCaptureFileUrlEventArgs>? didResumeRecording;
 
-		internal EventHandler<QTCaptureFileErrorEventArgs> mustChangeOutputFile;
+		internal EventHandler<QTCaptureFileUrlEventArgs>? didStartRecording;
 
-		internal EventHandler<QTCaptureFileErrorEventArgs> willFinishRecording;
+		internal EventHandler<QTCaptureFileErrorEventArgs>? mustChangeOutputFile;
 
-		internal EventHandler<QTCaptureFileErrorEventArgs> didFinishRecording;
+		internal QTCaptureFileError? shouldChangeOutputFile;
 
-		internal EventHandler<QTCaptureFileUrlEventArgs> didPauseRecording;
+		internal EventHandler<QTCaptureFileErrorEventArgs>? willFinishRecording;
 
-		internal EventHandler<QTCaptureFileUrlEventArgs> didResumeRecording;
+		internal EventHandler<QTCaptureFileUrlEventArgs>? willStartRecording;
 
-		[Preserve(Conditional = true)]
-		public override void DidOutputSampleBuffer(QTCaptureFileOutput captureOutput, QTSampleBuffer sampleBuffer, QTCaptureConnection connection)
+		public _QTCaptureFileOutputDelegate()
 		{
-			EventHandler<QTCaptureFileSampleEventArgs> eventHandler = didOutputSampleBuffer;
-			if (eventHandler != null)
-			{
-				QTCaptureFileSampleEventArgs e = new QTCaptureFileSampleEventArgs(sampleBuffer, connection);
-				eventHandler(captureOutput, e);
-			}
+			base.IsDirectBinding = false;
 		}
 
 		[Preserve(Conditional = true)]
-		public override void WillStartRecording(QTCaptureFileOutput captureOutput, NSUrl fileUrl, QTCaptureConnection[] connections)
-		{
-			EventHandler<QTCaptureFileUrlEventArgs> eventHandler = willStartRecording;
-			if (eventHandler != null)
-			{
-				QTCaptureFileUrlEventArgs e = new QTCaptureFileUrlEventArgs(fileUrl, connections);
-				eventHandler(captureOutput, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void DidStartRecording(QTCaptureFileOutput captureOutput, NSUrl fileUrl, QTCaptureConnection[] connections)
-		{
-			EventHandler<QTCaptureFileUrlEventArgs> eventHandler = didStartRecording;
-			if (eventHandler != null)
-			{
-				QTCaptureFileUrlEventArgs e = new QTCaptureFileUrlEventArgs(fileUrl, connections);
-				eventHandler(captureOutput, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override bool ShouldChangeOutputFile(QTCaptureFileOutput captureOutput, NSUrl outputFileURL, QTCaptureConnection[] connections, NSError reason)
-		{
-			return shouldChangeOutputFile?.Invoke(captureOutput, outputFileURL, connections, reason) ?? true;
-		}
-
-		[Preserve(Conditional = true)]
-		public override void MustChangeOutputFile(QTCaptureFileOutput captureOutput, NSUrl outputFileURL, QTCaptureConnection[] connections, NSError reason)
-		{
-			EventHandler<QTCaptureFileErrorEventArgs> eventHandler = mustChangeOutputFile;
-			if (eventHandler != null)
-			{
-				QTCaptureFileErrorEventArgs e = new QTCaptureFileErrorEventArgs(outputFileURL, connections, reason);
-				eventHandler(captureOutput, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void WillFinishRecording(QTCaptureFileOutput captureOutput, NSUrl outputFileURL, QTCaptureConnection[] connections, NSError reason)
-		{
-			EventHandler<QTCaptureFileErrorEventArgs> eventHandler = willFinishRecording;
-			if (eventHandler != null)
-			{
-				QTCaptureFileErrorEventArgs e = new QTCaptureFileErrorEventArgs(outputFileURL, connections, reason);
-				eventHandler(captureOutput, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void DidFinishRecording(QTCaptureFileOutput captureOutput, NSUrl outputFileURL, QTCaptureConnection[] connections, NSError reason)
+		[Export("captureOutput:didFinishRecordingToOutputFileAtURL:forConnections:dueToError:")]
+		public void DidFinishRecording(QTCaptureFileOutput captureOutput, NSUrl outputFileURL, QTCaptureConnection[] connections, NSError reason)
 		{
 			EventHandler<QTCaptureFileErrorEventArgs> eventHandler = didFinishRecording;
 			if (eventHandler != null)
@@ -103,7 +49,20 @@ public class QTCaptureFileOutput : QTCaptureOutput
 		}
 
 		[Preserve(Conditional = true)]
-		public override void DidPauseRecording(QTCaptureFileOutput captureOutput, NSUrl fileUrl, QTCaptureConnection[] connections)
+		[Export("captureOutput:didOutputSampleBuffer:fromConnection:")]
+		public void DidOutputSampleBuffer(QTCaptureFileOutput captureOutput, QTSampleBuffer sampleBuffer, QTCaptureConnection connection)
+		{
+			EventHandler<QTCaptureFileSampleEventArgs> eventHandler = didOutputSampleBuffer;
+			if (eventHandler != null)
+			{
+				QTCaptureFileSampleEventArgs e = new QTCaptureFileSampleEventArgs(sampleBuffer, connection);
+				eventHandler(captureOutput, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("captureOutput:didPauseRecordingToOutputFileAtURL:forConnections:")]
+		public void DidPauseRecording(QTCaptureFileOutput captureOutput, NSUrl fileUrl, QTCaptureConnection[] connections)
 		{
 			EventHandler<QTCaptureFileUrlEventArgs> eventHandler = didPauseRecording;
 			if (eventHandler != null)
@@ -114,7 +73,8 @@ public class QTCaptureFileOutput : QTCaptureOutput
 		}
 
 		[Preserve(Conditional = true)]
-		public override void DidResumeRecording(QTCaptureFileOutput captureOutput, NSUrl fileUrl, QTCaptureConnection[] connections)
+		[Export("captureOutput:didResumeRecordingToOutputFileAtURL:forConnections:")]
+		public void DidResumeRecording(QTCaptureFileOutput captureOutput, NSUrl fileUrl, QTCaptureConnection[] connections)
 		{
 			EventHandler<QTCaptureFileUrlEventArgs> eventHandler = didResumeRecording;
 			if (eventHandler != null)
@@ -123,71 +83,196 @@ public class QTCaptureFileOutput : QTCaptureOutput
 				eventHandler(captureOutput, e);
 			}
 		}
-	}
 
-	private static readonly IntPtr selOutputFileURLHandle = Selector.GetHandle("outputFileURL");
-
-	private static readonly IntPtr selIsRecordingPausedHandle = Selector.GetHandle("isRecordingPaused");
-
-	private static readonly IntPtr selRecordedDurationHandle = Selector.GetHandle("recordedDuration");
-
-	private static readonly IntPtr selRecordedFileSizeHandle = Selector.GetHandle("recordedFileSize");
-
-	private static readonly IntPtr selMaximumVideoSizeHandle = Selector.GetHandle("maximumVideoSize");
-
-	private static readonly IntPtr selSetMaximumVideoSize_Handle = Selector.GetHandle("setMaximumVideoSize:");
-
-	private static readonly IntPtr selMinimumVideoFrameIntervalHandle = Selector.GetHandle("minimumVideoFrameInterval");
-
-	private static readonly IntPtr selSetMinimumVideoFrameInterval_Handle = Selector.GetHandle("setMinimumVideoFrameInterval:");
-
-	private static readonly IntPtr selMaximumRecordedDurationHandle = Selector.GetHandle("maximumRecordedDuration");
-
-	private static readonly IntPtr selSetMaximumRecordedDuration_Handle = Selector.GetHandle("setMaximumRecordedDuration:");
-
-	private static readonly IntPtr selMaximumRecordedFileSizeHandle = Selector.GetHandle("maximumRecordedFileSize");
-
-	private static readonly IntPtr selSetMaximumRecordedFileSize_Handle = Selector.GetHandle("setMaximumRecordedFileSize:");
-
-	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
-
-	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
-
-	private static readonly IntPtr selRecordToOutputFileURL_Handle = Selector.GetHandle("recordToOutputFileURL:");
-
-	private static readonly IntPtr selRecordToOutputFileURLBufferDestination_Handle = Selector.GetHandle("recordToOutputFileURL:bufferDestination:");
-
-	private static readonly IntPtr selPauseRecordingHandle = Selector.GetHandle("pauseRecording");
-
-	private static readonly IntPtr selResumeRecordingHandle = Selector.GetHandle("resumeRecording");
-
-	private static readonly IntPtr selCompressionOptionsForConnection_Handle = Selector.GetHandle("compressionOptionsForConnection:");
-
-	private static readonly IntPtr selSetCompressionOptionsForConnection_Handle = Selector.GetHandle("setCompressionOptions:forConnection:");
-
-	private static readonly IntPtr class_ptr = Class.GetHandle("QTCaptureFileOutput");
-
-	private object __mt_OutputFileUrl_var;
-
-	private object __mt_WeakDelegate_var;
-
-	public override IntPtr ClassHandle => class_ptr;
-
-	public virtual NSUrl OutputFileUrl
-	{
-		[Export("outputFileURL")]
-		get
+		[Preserve(Conditional = true)]
+		[Export("captureOutput:didStartRecordingToOutputFileAtURL:forConnections:")]
+		public void DidStartRecording(QTCaptureFileOutput captureOutput, NSUrl fileUrl, QTCaptureConnection[] connections)
 		{
-			return (NSUrl)(__mt_OutputFileUrl_var = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOutputFileURLHandle))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selOutputFileURLHandle)))));
+			EventHandler<QTCaptureFileUrlEventArgs> eventHandler = didStartRecording;
+			if (eventHandler != null)
+			{
+				QTCaptureFileUrlEventArgs e = new QTCaptureFileUrlEventArgs(fileUrl, connections);
+				eventHandler(captureOutput, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("captureOutput:mustChangeOutputFileAtURL:forConnections:dueToError:")]
+		public void MustChangeOutputFile(QTCaptureFileOutput captureOutput, NSUrl outputFileURL, QTCaptureConnection[] connections, NSError reason)
+		{
+			EventHandler<QTCaptureFileErrorEventArgs> eventHandler = mustChangeOutputFile;
+			if (eventHandler != null)
+			{
+				QTCaptureFileErrorEventArgs e = new QTCaptureFileErrorEventArgs(outputFileURL, connections, reason);
+				eventHandler(captureOutput, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("captureOutput:shouldChangeOutputFileAtURL:forConnections:dueToError:")]
+		public bool ShouldChangeOutputFile(QTCaptureFileOutput captureOutput, NSUrl outputFileURL, QTCaptureConnection[] connections, NSError reason)
+		{
+			return shouldChangeOutputFile?.Invoke(captureOutput, outputFileURL, connections, reason) ?? true;
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("captureOutput:willFinishRecordingToOutputFileAtURL:forConnections:dueToError:")]
+		public void WillFinishRecording(QTCaptureFileOutput captureOutput, NSUrl outputFileURL, QTCaptureConnection[] connections, NSError reason)
+		{
+			EventHandler<QTCaptureFileErrorEventArgs> eventHandler = willFinishRecording;
+			if (eventHandler != null)
+			{
+				QTCaptureFileErrorEventArgs e = new QTCaptureFileErrorEventArgs(outputFileURL, connections, reason);
+				eventHandler(captureOutput, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("captureOutput:willStartRecordingToOutputFileAtURL:forConnections:")]
+		public void WillStartRecording(QTCaptureFileOutput captureOutput, NSUrl fileUrl, QTCaptureConnection[] connections)
+		{
+			EventHandler<QTCaptureFileUrlEventArgs> eventHandler = willStartRecording;
+			if (eventHandler != null)
+			{
+				QTCaptureFileUrlEventArgs e = new QTCaptureFileUrlEventArgs(fileUrl, connections);
+				eventHandler(captureOutput, e);
+			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCompressionOptionsForConnection_ = "compressionOptionsForConnection:";
+
+	private static readonly IntPtr selCompressionOptionsForConnection_Handle = Selector.GetHandle("compressionOptionsForConnection:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDelegate = "delegate";
+
+	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsRecordingPaused = "isRecordingPaused";
+
+	private static readonly IntPtr selIsRecordingPausedHandle = Selector.GetHandle("isRecordingPaused");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMaximumRecordedDuration = "maximumRecordedDuration";
+
+	private static readonly IntPtr selMaximumRecordedDurationHandle = Selector.GetHandle("maximumRecordedDuration");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMaximumRecordedFileSize = "maximumRecordedFileSize";
+
+	private static readonly IntPtr selMaximumRecordedFileSizeHandle = Selector.GetHandle("maximumRecordedFileSize");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMaximumVideoSize = "maximumVideoSize";
+
+	private static readonly IntPtr selMaximumVideoSizeHandle = Selector.GetHandle("maximumVideoSize");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMinimumVideoFrameInterval = "minimumVideoFrameInterval";
+
+	private static readonly IntPtr selMinimumVideoFrameIntervalHandle = Selector.GetHandle("minimumVideoFrameInterval");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selOutputFileURL = "outputFileURL";
+
+	private static readonly IntPtr selOutputFileURLHandle = Selector.GetHandle("outputFileURL");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPauseRecording = "pauseRecording";
+
+	private static readonly IntPtr selPauseRecordingHandle = Selector.GetHandle("pauseRecording");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRecordToOutputFileURL_ = "recordToOutputFileURL:";
+
+	private static readonly IntPtr selRecordToOutputFileURL_Handle = Selector.GetHandle("recordToOutputFileURL:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRecordToOutputFileURL_BufferDestination_ = "recordToOutputFileURL:bufferDestination:";
+
+	private static readonly IntPtr selRecordToOutputFileURL_BufferDestination_Handle = Selector.GetHandle("recordToOutputFileURL:bufferDestination:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRecordedDuration = "recordedDuration";
+
+	private static readonly IntPtr selRecordedDurationHandle = Selector.GetHandle("recordedDuration");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRecordedFileSize = "recordedFileSize";
+
+	private static readonly IntPtr selRecordedFileSizeHandle = Selector.GetHandle("recordedFileSize");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selResumeRecording = "resumeRecording";
+
+	private static readonly IntPtr selResumeRecordingHandle = Selector.GetHandle("resumeRecording");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCompressionOptions_ForConnection_ = "setCompressionOptions:forConnection:";
+
+	private static readonly IntPtr selSetCompressionOptions_ForConnection_Handle = Selector.GetHandle("setCompressionOptions:forConnection:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDelegate_ = "setDelegate:";
+
+	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMaximumRecordedDuration_ = "setMaximumRecordedDuration:";
+
+	private static readonly IntPtr selSetMaximumRecordedDuration_Handle = Selector.GetHandle("setMaximumRecordedDuration:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMaximumRecordedFileSize_ = "setMaximumRecordedFileSize:";
+
+	private static readonly IntPtr selSetMaximumRecordedFileSize_Handle = Selector.GetHandle("setMaximumRecordedFileSize:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMaximumVideoSize_ = "setMaximumVideoSize:";
+
+	private static readonly IntPtr selSetMaximumVideoSize_Handle = Selector.GetHandle("setMaximumVideoSize:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMinimumVideoFrameInterval_ = "setMinimumVideoFrameInterval:";
+
+	private static readonly IntPtr selSetMinimumVideoFrameInterval_Handle = Selector.GetHandle("setMinimumVideoFrameInterval:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("QTCaptureFileOutput");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_WeakDelegate_var;
+
+	public override IntPtr ClassHandle => class_ptr;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public IQTCaptureFileOutputDelegate Delegate
+	{
+		get
+		{
+			return WeakDelegate as IQTCaptureFileOutputDelegate;
+		}
+		set
+		{
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
+			{
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			WeakDelegate = nSObject;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsRecordingPaused
 	{
 		[Export("isRecordingPaused")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsRecordingPausedHandle);
 			}
@@ -195,97 +280,27 @@ public class QTCaptureFileOutput : QTCaptureOutput
 		}
 	}
 
-	public virtual QTTime RecordedDuration
-	{
-		[Export("recordedDuration")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.QTTime_objc_msgSend(base.Handle, selRecordedDurationHandle);
-			}
-			return Messaging.QTTime_objc_msgSendSuper(base.SuperHandle, selRecordedDurationHandle);
-		}
-	}
-
-	public virtual ulong RecordedFileSize
-	{
-		[Export("recordedFileSize")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.UInt64_objc_msgSend(base.Handle, selRecordedFileSizeHandle);
-			}
-			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selRecordedFileSizeHandle);
-		}
-	}
-
-	public virtual CGSize MaximumVideoSize
-	{
-		[Export("maximumVideoSize")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.CGSize_objc_msgSend(base.Handle, selMaximumVideoSizeHandle);
-			}
-			return Messaging.CGSize_objc_msgSendSuper(base.SuperHandle, selMaximumVideoSizeHandle);
-		}
-		[Export("setMaximumVideoSize:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_CGSize(base.Handle, selSetMaximumVideoSize_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_CGSize(base.SuperHandle, selSetMaximumVideoSize_Handle, value);
-			}
-		}
-	}
-
-	public virtual double MinimumVideoFrameInterval
-	{
-		[Export("minimumVideoFrameInterval")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selMinimumVideoFrameIntervalHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selMinimumVideoFrameIntervalHandle);
-		}
-		[Export("setMinimumVideoFrameInterval:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetMinimumVideoFrameInterval_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetMinimumVideoFrameInterval_Handle, value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual QTTime MaximumRecordedDuration
 	{
 		[Export("maximumRecordedDuration")]
 		get
 		{
-			if (IsDirectBinding)
+			QTTime retval;
+			if (base.IsDirectBinding)
 			{
-				return Messaging.QTTime_objc_msgSend(base.Handle, selMaximumRecordedDurationHandle);
+				Messaging.QTTime_objc_msgSend_stret(out retval, base.Handle, selMaximumRecordedDurationHandle);
 			}
-			return Messaging.QTTime_objc_msgSendSuper(base.SuperHandle, selMaximumRecordedDurationHandle);
+			else
+			{
+				Messaging.QTTime_objc_msgSendSuper_stret(out retval, base.SuperHandle, selMaximumRecordedDurationHandle);
+			}
+			return retval;
 		}
 		[Export("setMaximumRecordedDuration:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_QTTime(base.Handle, selSetMaximumRecordedDuration_Handle, value);
 			}
@@ -296,12 +311,13 @@ public class QTCaptureFileOutput : QTCaptureOutput
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual ulong MaximumRecordedFileSize
 	{
 		[Export("maximumRecordedFileSize")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.UInt64_objc_msgSend(base.Handle, selMaximumRecordedFileSizeHandle);
 			}
@@ -310,7 +326,7 @@ public class QTCaptureFileOutput : QTCaptureOutput
 		[Export("setMaximumRecordedFileSize:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetMaximumRecordedFileSize_Handle, value);
 			}
@@ -321,17 +337,121 @@ public class QTCaptureFileOutput : QTCaptureOutput
 		}
 	}
 
-	public virtual NSObject WeakDelegate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGSize MaximumVideoSize
 	{
-		[Export("delegate")]
+		[Export("maximumVideoSize")]
 		get
 		{
-			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
+			if (base.IsDirectBinding)
+			{
+				return Messaging.CGSize_objc_msgSend(base.Handle, selMaximumVideoSizeHandle);
+			}
+			return Messaging.CGSize_objc_msgSendSuper(base.SuperHandle, selMaximumVideoSizeHandle);
 		}
-		[Export("setDelegate:")]
+		[Export("setMaximumVideoSize:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_CGSize(base.Handle, selSetMaximumVideoSize_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_CGSize(base.SuperHandle, selSetMaximumVideoSize_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual double MinimumVideoFrameInterval
+	{
+		[Export("minimumVideoFrameInterval")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selMinimumVideoFrameIntervalHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selMinimumVideoFrameIntervalHandle);
+		}
+		[Export("setMinimumVideoFrameInterval:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Double(base.Handle, selSetMinimumVideoFrameInterval_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetMinimumVideoFrameInterval_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSUrl OutputFileUrl
+	{
+		[Export("outputFileURL")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selOutputFileURLHandle));
+			}
+			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOutputFileURLHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual QTTime RecordedDuration
+	{
+		[Export("recordedDuration")]
+		get
+		{
+			QTTime retval;
+			if (base.IsDirectBinding)
+			{
+				Messaging.QTTime_objc_msgSend_stret(out retval, base.Handle, selRecordedDurationHandle);
+			}
+			else
+			{
+				Messaging.QTTime_objc_msgSendSuper_stret(out retval, base.SuperHandle, selRecordedDurationHandle);
+			}
+			return retval;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual ulong RecordedFileSize
+	{
+		[Export("recordedFileSize")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selRecordedFileSizeHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selRecordedFileSizeHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakDelegate
+	{
+		[Export("delegate", ArgumentSemantic.Assign)]
+		get
+		{
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
+			MarkDirty();
+			__mt_WeakDelegate_var = nSObject;
+			return nSObject;
+		}
+		[Export("setDelegate:", ArgumentSemantic.Assign)]
+		set
+		{
+			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakDelegate_var, value, GetInternalEventDelegateType);
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
@@ -339,23 +459,14 @@ public class QTCaptureFileOutput : QTCaptureOutput
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
+			MarkDirty();
 			__mt_WeakDelegate_var = value;
 		}
 	}
 
-	public QTCaptureFileOutputDelegate Delegate
-	{
-		get
-		{
-			return WeakDelegate as QTCaptureFileOutputDelegate;
-		}
-		set
-		{
-			WeakDelegate = value;
-		}
-	}
+	internal virtual Type GetInternalEventDelegateType => typeof(_QTCaptureFileOutputDelegate);
 
-	public QTCaptureFileError ShouldChangeOutputFile
+	public QTCaptureFileError? ShouldChangeOutputFile
 	{
 		get
 		{
@@ -364,6 +475,20 @@ public class QTCaptureFileOutput : QTCaptureOutput
 		set
 		{
 			EnsureQTCaptureFileOutputDelegate().shouldChangeOutputFile = value;
+		}
+	}
+
+	public event EventHandler<QTCaptureFileErrorEventArgs> DidFinishRecording
+	{
+		add
+		{
+			_QTCaptureFileOutputDelegate qTCaptureFileOutputDelegate = EnsureQTCaptureFileOutputDelegate();
+			qTCaptureFileOutputDelegate.didFinishRecording = (EventHandler<QTCaptureFileErrorEventArgs>)System.Delegate.Combine(qTCaptureFileOutputDelegate.didFinishRecording, value);
+		}
+		remove
+		{
+			_QTCaptureFileOutputDelegate qTCaptureFileOutputDelegate = EnsureQTCaptureFileOutputDelegate();
+			qTCaptureFileOutputDelegate.didFinishRecording = (EventHandler<QTCaptureFileErrorEventArgs>)System.Delegate.Remove(qTCaptureFileOutputDelegate.didFinishRecording, value);
 		}
 	}
 
@@ -381,17 +506,31 @@ public class QTCaptureFileOutput : QTCaptureOutput
 		}
 	}
 
-	public event EventHandler<QTCaptureFileUrlEventArgs> WillStartRecording
+	public event EventHandler<QTCaptureFileUrlEventArgs> DidPauseRecording
 	{
 		add
 		{
 			_QTCaptureFileOutputDelegate qTCaptureFileOutputDelegate = EnsureQTCaptureFileOutputDelegate();
-			qTCaptureFileOutputDelegate.willStartRecording = (EventHandler<QTCaptureFileUrlEventArgs>)System.Delegate.Combine(qTCaptureFileOutputDelegate.willStartRecording, value);
+			qTCaptureFileOutputDelegate.didPauseRecording = (EventHandler<QTCaptureFileUrlEventArgs>)System.Delegate.Combine(qTCaptureFileOutputDelegate.didPauseRecording, value);
 		}
 		remove
 		{
 			_QTCaptureFileOutputDelegate qTCaptureFileOutputDelegate = EnsureQTCaptureFileOutputDelegate();
-			qTCaptureFileOutputDelegate.willStartRecording = (EventHandler<QTCaptureFileUrlEventArgs>)System.Delegate.Remove(qTCaptureFileOutputDelegate.willStartRecording, value);
+			qTCaptureFileOutputDelegate.didPauseRecording = (EventHandler<QTCaptureFileUrlEventArgs>)System.Delegate.Remove(qTCaptureFileOutputDelegate.didPauseRecording, value);
+		}
+	}
+
+	public event EventHandler<QTCaptureFileUrlEventArgs> DidResumeRecording
+	{
+		add
+		{
+			_QTCaptureFileOutputDelegate qTCaptureFileOutputDelegate = EnsureQTCaptureFileOutputDelegate();
+			qTCaptureFileOutputDelegate.didResumeRecording = (EventHandler<QTCaptureFileUrlEventArgs>)System.Delegate.Combine(qTCaptureFileOutputDelegate.didResumeRecording, value);
+		}
+		remove
+		{
+			_QTCaptureFileOutputDelegate qTCaptureFileOutputDelegate = EnsureQTCaptureFileOutputDelegate();
+			qTCaptureFileOutputDelegate.didResumeRecording = (EventHandler<QTCaptureFileUrlEventArgs>)System.Delegate.Remove(qTCaptureFileOutputDelegate.didResumeRecording, value);
 		}
 	}
 
@@ -437,105 +576,54 @@ public class QTCaptureFileOutput : QTCaptureOutput
 		}
 	}
 
-	public event EventHandler<QTCaptureFileErrorEventArgs> DidFinishRecording
+	public event EventHandler<QTCaptureFileUrlEventArgs> WillStartRecording
 	{
 		add
 		{
 			_QTCaptureFileOutputDelegate qTCaptureFileOutputDelegate = EnsureQTCaptureFileOutputDelegate();
-			qTCaptureFileOutputDelegate.didFinishRecording = (EventHandler<QTCaptureFileErrorEventArgs>)System.Delegate.Combine(qTCaptureFileOutputDelegate.didFinishRecording, value);
+			qTCaptureFileOutputDelegate.willStartRecording = (EventHandler<QTCaptureFileUrlEventArgs>)System.Delegate.Combine(qTCaptureFileOutputDelegate.willStartRecording, value);
 		}
 		remove
 		{
 			_QTCaptureFileOutputDelegate qTCaptureFileOutputDelegate = EnsureQTCaptureFileOutputDelegate();
-			qTCaptureFileOutputDelegate.didFinishRecording = (EventHandler<QTCaptureFileErrorEventArgs>)System.Delegate.Remove(qTCaptureFileOutputDelegate.didFinishRecording, value);
+			qTCaptureFileOutputDelegate.willStartRecording = (EventHandler<QTCaptureFileUrlEventArgs>)System.Delegate.Remove(qTCaptureFileOutputDelegate.willStartRecording, value);
 		}
 	}
 
-	public event EventHandler<QTCaptureFileUrlEventArgs> DidPauseRecording
-	{
-		add
-		{
-			_QTCaptureFileOutputDelegate qTCaptureFileOutputDelegate = EnsureQTCaptureFileOutputDelegate();
-			qTCaptureFileOutputDelegate.didPauseRecording = (EventHandler<QTCaptureFileUrlEventArgs>)System.Delegate.Combine(qTCaptureFileOutputDelegate.didPauseRecording, value);
-		}
-		remove
-		{
-			_QTCaptureFileOutputDelegate qTCaptureFileOutputDelegate = EnsureQTCaptureFileOutputDelegate();
-			qTCaptureFileOutputDelegate.didPauseRecording = (EventHandler<QTCaptureFileUrlEventArgs>)System.Delegate.Remove(qTCaptureFileOutputDelegate.didPauseRecording, value);
-		}
-	}
-
-	public event EventHandler<QTCaptureFileUrlEventArgs> DidResumeRecording
-	{
-		add
-		{
-			_QTCaptureFileOutputDelegate qTCaptureFileOutputDelegate = EnsureQTCaptureFileOutputDelegate();
-			qTCaptureFileOutputDelegate.didResumeRecording = (EventHandler<QTCaptureFileUrlEventArgs>)System.Delegate.Combine(qTCaptureFileOutputDelegate.didResumeRecording, value);
-		}
-		remove
-		{
-			_QTCaptureFileOutputDelegate qTCaptureFileOutputDelegate = EnsureQTCaptureFileOutputDelegate();
-			qTCaptureFileOutputDelegate.didResumeRecording = (EventHandler<QTCaptureFileUrlEventArgs>)System.Delegate.Remove(qTCaptureFileOutputDelegate.didResumeRecording, value);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public QTCaptureFileOutput(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public QTCaptureFileOutput(NSObjectFlag t)
+	protected QTCaptureFileOutput(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public QTCaptureFileOutput(IntPtr handle)
+	protected internal QTCaptureFileOutput(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("recordToOutputFileURL:")]
-	public virtual void RecordToOutputFile(NSUrl url)
+	[Export("compressionOptionsForConnection:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual QTCompressionOptions GetCompressionOptions(QTCaptureConnection forConnection)
 	{
-		if (IsDirectBinding)
+		if (forConnection == null)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRecordToOutputFileURL_Handle, url?.Handle ?? IntPtr.Zero);
+			throw new ArgumentNullException("forConnection");
 		}
-		else
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRecordToOutputFileURL_Handle, url?.Handle ?? IntPtr.Zero);
+			return Runtime.GetNSObject<QTCompressionOptions>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCompressionOptionsForConnection_Handle, forConnection.Handle));
 		}
-	}
-
-	[Export("recordToOutputFileURL:bufferDestination:")]
-	public virtual void RecordToOutputFile(NSUrl url, QTCaptureDestination bufferDestination)
-	{
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_int(base.Handle, selRecordToOutputFileURLBufferDestination_Handle, url?.Handle ?? IntPtr.Zero, (int)bufferDestination);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_int(base.SuperHandle, selRecordToOutputFileURLBufferDestination_Handle, url?.Handle ?? IntPtr.Zero, (int)bufferDestination);
-		}
+		return Runtime.GetNSObject<QTCompressionOptions>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCompressionOptionsForConnection_Handle, forConnection.Handle));
 	}
 
 	[Export("pauseRecording")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void PauseRecording()
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selPauseRecordingHandle);
 		}
@@ -545,10 +633,39 @@ public class QTCaptureFileOutput : QTCaptureOutput
 		}
 	}
 
+	[Export("recordToOutputFileURL:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RecordToOutputFile(NSUrl? url)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRecordToOutputFileURL_Handle, (url == null) ? IntPtr.Zero : url.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRecordToOutputFileURL_Handle, (url == null) ? IntPtr.Zero : url.Handle);
+		}
+	}
+
+	[Export("recordToOutputFileURL:bufferDestination:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RecordToOutputFile(NSUrl? url, QTCaptureDestination bufferDestination)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_UInt64(base.Handle, selRecordToOutputFileURL_BufferDestination_Handle, (url == null) ? IntPtr.Zero : url.Handle, (ulong)bufferDestination);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selRecordToOutputFileURL_BufferDestination_Handle, (url == null) ? IntPtr.Zero : url.Handle, (ulong)bufferDestination);
+		}
+	}
+
 	[Export("resumeRecording")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ResumeRecording()
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selResumeRecordingHandle);
 		}
@@ -558,21 +675,8 @@ public class QTCaptureFileOutput : QTCaptureOutput
 		}
 	}
 
-	[Export("compressionOptionsForConnection:")]
-	public virtual QTCompressionOptions GetCompressionOptions(QTCaptureConnection forConnection)
-	{
-		if (forConnection == null)
-		{
-			throw new ArgumentNullException("forConnection");
-		}
-		if (IsDirectBinding)
-		{
-			return (QTCompressionOptions)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCompressionOptionsForConnection_Handle, forConnection.Handle));
-		}
-		return (QTCompressionOptions)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCompressionOptionsForConnection_Handle, forConnection.Handle));
-	}
-
 	[Export("setCompressionOptions:forConnection:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SetCompressionOptions(QTCompressionOptions compressionOptions, QTCaptureConnection forConnection)
 	{
 		if (compressionOptions == null)
@@ -583,32 +687,41 @@ public class QTCaptureFileOutput : QTCaptureOutput
 		{
 			throw new ArgumentNullException("forConnection");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetCompressionOptionsForConnection_Handle, compressionOptions.Handle, forConnection.Handle);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetCompressionOptions_ForConnection_Handle, compressionOptions.Handle, forConnection.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetCompressionOptionsForConnection_Handle, compressionOptions.Handle, forConnection.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetCompressionOptions_ForConnection_Handle, compressionOptions.Handle, forConnection.Handle);
 		}
 	}
 
-	private _QTCaptureFileOutputDelegate EnsureQTCaptureFileOutputDelegate()
+	internal virtual _QTCaptureFileOutputDelegate CreateInternalEventDelegateType()
 	{
-		QTCaptureFileOutputDelegate qTCaptureFileOutputDelegate = Delegate;
-		if (qTCaptureFileOutputDelegate == null || !(qTCaptureFileOutputDelegate is _QTCaptureFileOutputDelegate))
-		{
-			qTCaptureFileOutputDelegate = (Delegate = new _QTCaptureFileOutputDelegate());
-		}
-		return (_QTCaptureFileOutputDelegate)qTCaptureFileOutputDelegate;
+		return new _QTCaptureFileOutputDelegate();
 	}
 
+	internal _QTCaptureFileOutputDelegate EnsureQTCaptureFileOutputDelegate()
+	{
+		if (WeakDelegate != null)
+		{
+			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakDelegate, GetInternalEventDelegateType);
+		}
+		_QTCaptureFileOutputDelegate qTCaptureFileOutputDelegate = Delegate as _QTCaptureFileOutputDelegate;
+		if (qTCaptureFileOutputDelegate == null)
+		{
+			qTCaptureFileOutputDelegate = (_QTCaptureFileOutputDelegate)(Delegate = CreateInternalEventDelegateType());
+		}
+		return qTCaptureFileOutputDelegate;
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
-			__mt_OutputFileUrl_var = null;
 			__mt_WeakDelegate_var = null;
 		}
 	}

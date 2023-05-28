@@ -5,21 +5,54 @@ using ObjCRuntime;
 
 namespace ImageKit;
 
-[Register("IKFilterCustomUIProvider", true)]
+[Protocol]
+[Register("IKFilterCustomUIProvider", false)]
 [Model]
-public abstract class IKFilterCustomUIProvider : NSObject
+public abstract class IKFilterCustomUIProvider : NSObject, IIKFilterCustomUIProvider, INativeObject, IDisposable
 {
-	private static NSString _SizeFlavor;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FlavorAllowFallback;
 
-	private static NSString _SizeMini;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _MaxSize;
 
-	private static NSString _SizeSmall;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _SizeFlavor;
 
-	private static NSString _SizeRegular;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _SizeMini;
 
-	private static NSString _MaxSize;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _SizeRegular;
 
-	private static NSString _FlavorAllowFallback;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _SizeSmall;
+
+	[Field("IKUIFlavorAllowFallback", "ImageKit")]
+	public static NSString FlavorAllowFallback
+	{
+		get
+		{
+			if (_FlavorAllowFallback == null)
+			{
+				_FlavorAllowFallback = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKUIFlavorAllowFallback");
+			}
+			return _FlavorAllowFallback;
+		}
+	}
+
+	[Field("IKUImaxSize", "ImageKit")]
+	public static NSString MaxSize
+	{
+		get
+		{
+			if (_MaxSize == null)
+			{
+				_MaxSize = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKUImaxSize");
+			}
+			return _MaxSize;
+		}
+	}
 
 	[Field("IKUISizeFlavor", "ImageKit")]
 	public static NSString SizeFlavor
@@ -47,19 +80,6 @@ public abstract class IKFilterCustomUIProvider : NSObject
 		}
 	}
 
-	[Field("IKUISizeSmall", "ImageKit")]
-	public static NSString SizeSmall
-	{
-		get
-		{
-			if (_SizeSmall == null)
-			{
-				_SizeSmall = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKUISizeSmall");
-			}
-			return _SizeSmall;
-		}
-	}
-
 	[Field("IKUISizeRegular", "ImageKit")]
 	public static NSString SizeRegular
 	{
@@ -73,74 +93,46 @@ public abstract class IKFilterCustomUIProvider : NSObject
 		}
 	}
 
-	[Field("IKUImaxSize", "ImageKit")]
-	public static NSString MaxSize
+	[Field("IKUISizeSmall", "ImageKit")]
+	public static NSString SizeSmall
 	{
 		get
 		{
-			if (_MaxSize == null)
+			if (_SizeSmall == null)
 			{
-				_MaxSize = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKUImaxSize");
+				_SizeSmall = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKUISizeSmall");
 			}
-			return _MaxSize;
+			return _SizeSmall;
 		}
 	}
 
-	[Field("IKUIFlavorAllowFallback", "ImageKit")]
-	public static NSString FlavorAllowFallback
-	{
-		get
-		{
-			if (_FlavorAllowFallback == null)
-			{
-				_FlavorAllowFallback = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKUIFlavorAllowFallback");
-			}
-			return _FlavorAllowFallback;
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
-	public IKFilterCustomUIProvider()
+	protected IKFilterCustomUIProvider()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
+		base.IsDirectBinding = false;
+		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public IKFilterCustomUIProvider(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public IKFilterCustomUIProvider(NSObjectFlag t)
+	protected IKFilterCustomUIProvider(NSObjectFlag t)
 		: base(t)
 	{
+		base.IsDirectBinding = false;
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public IKFilterCustomUIProvider(IntPtr handle)
+	protected internal IKFilterCustomUIProvider(IntPtr handle)
 		: base(handle)
 	{
+		base.IsDirectBinding = false;
 	}
 
 	[Export("provideViewForUIConfiguration:excludedKeys:")]
-	public abstract IKFilterUIView GetFilterUIView(NSDictionary configurationOptions, NSArray excludedKeys);
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public abstract IKFilterUIView ProvideFilterUIView(NSDictionary configurationOptions, NSArray? excludedKeys);
 }

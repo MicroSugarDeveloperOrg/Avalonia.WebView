@@ -2,5 +2,9 @@ namespace Security;
 
 public enum SecKind
 {
-	InternetPassword
+	InternetPassword,
+	GenericPassword,
+	Certificate,
+	Key,
+	Identity
 }

@@ -9,53 +9,69 @@ namespace AppKit;
 [Register("NSColorWell", true)]
 public class NSColorWell : NSControl
 {
-	private static readonly IntPtr selIsActiveHandle = Selector.GetHandle("isActive");
-
-	private static readonly IntPtr selIsBorderedHandle = Selector.GetHandle("isBordered");
-
-	private static readonly IntPtr selSetBordered_Handle = Selector.GetHandle("setBordered:");
-
-	private static readonly IntPtr selColorHandle = Selector.GetHandle("color");
-
-	private static readonly IntPtr selSetColor_Handle = Selector.GetHandle("setColor:");
-
-	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
-
-	private static readonly IntPtr selDeactivateHandle = Selector.GetHandle("deactivate");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selActivate_ = "activate:";
 
 	private static readonly IntPtr selActivate_Handle = Selector.GetHandle("activate:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selColor = "color";
+
+	private static readonly IntPtr selColorHandle = Selector.GetHandle("color");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDeactivate = "deactivate";
+
+	private static readonly IntPtr selDeactivateHandle = Selector.GetHandle("deactivate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDrawWellInside_ = "drawWellInside:";
+
 	private static readonly IntPtr selDrawWellInside_Handle = Selector.GetHandle("drawWellInside:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithFrame_ = "initWithFrame:";
+
+	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsActive = "isActive";
+
+	private static readonly IntPtr selIsActiveHandle = Selector.GetHandle("isActive");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsBordered = "isBordered";
+
+	private static readonly IntPtr selIsBorderedHandle = Selector.GetHandle("isBordered");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBordered_ = "setBordered:";
+
+	private static readonly IntPtr selSetBordered_Handle = Selector.GetHandle("setBordered:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetColor_ = "setColor:";
+
+	private static readonly IntPtr selSetColor_Handle = Selector.GetHandle("setColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTakeColorFrom_ = "takeColorFrom:";
 
 	private static readonly IntPtr selTakeColorFrom_Handle = Selector.GetHandle("takeColorFrom:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSColorWell");
-
-	private object __mt_Color_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSColorWell");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual bool IsActive
-	{
-		[Export("isActive")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsActiveHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsActiveHandle);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Bordered
 	{
 		[Export("isBordered")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsBorderedHandle);
 			}
@@ -65,7 +81,7 @@ public class NSColorWell : NSControl
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetBordered_Handle, value);
 			}
@@ -76,15 +92,20 @@ public class NSColorWell : NSControl
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSColor Color
 	{
-		[Export("color")]
+		[Export("color", ArgumentSemantic.Copy)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSColor)(__mt_Color_var = ((!IsDirectBinding) ? ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selColorHandle))) : ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selColorHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selColorHandle));
+			}
+			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selColorHandle));
 		}
-		[Export("setColor:")]
+		[Export("setColor:", ArgumentSemantic.Copy)]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -92,7 +113,7 @@ public class NSColorWell : NSControl
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetColor_Handle, value.Handle);
 			}
@@ -100,86 +121,95 @@ public class NSColorWell : NSControl
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetColor_Handle, value.Handle);
 			}
-			__mt_Color_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool IsActive
+	{
+		[Export("isActive")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsActiveHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsActiveHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSColorWell()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSColorWell(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSColorWell(NSObjectFlag t)
+	protected NSColorWell(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSColorWell(IntPtr handle)
+	protected internal NSColorWell(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithFrame:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSColorWell(CGRect frameRect)
 		: base(NSObjectFlag.Empty)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect);
-		}
-	}
-
-	[Export("deactivate")]
-	public virtual void Deactivate()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selDeactivateHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDeactivateHandle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
 		}
 	}
 
 	[Export("activate:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Activate(bool exclusive)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_bool(base.Handle, selActivate_Handle, exclusive);
 		}
@@ -189,11 +219,27 @@ public class NSColorWell : NSControl
 		}
 	}
 
+	[Export("deactivate")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Deactivate()
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selDeactivateHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDeactivateHandle);
+		}
+	}
+
 	[Export("drawWellInside:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void DrawWellInside(CGRect insideRect)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_CGRect(base.Handle, selDrawWellInside_Handle, insideRect);
 		}
@@ -204,6 +250,7 @@ public class NSColorWell : NSControl
 	}
 
 	[Export("takeColorFrom:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void TakeColorFrom(NSObject sender)
 	{
 		NSApplication.EnsureUIThread();
@@ -211,22 +258,13 @@ public class NSColorWell : NSControl
 		{
 			throw new ArgumentNullException("sender");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selTakeColorFrom_Handle, sender.Handle);
 		}
 		else
 		{
 			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selTakeColorFrom_Handle, sender.Handle);
-		}
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_Color_var = null;
 		}
 	}
 }

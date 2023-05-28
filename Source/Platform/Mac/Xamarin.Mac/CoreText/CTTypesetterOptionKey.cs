@@ -1,32 +1,70 @@
-using System;
 using Foundation;
 using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
 public static class CTTypesetterOptionKey
 {
-	[Obsolete("Deprecated in iOS 6.0")]
-	public static readonly NSString DisableBidiProcessing;
+	[Deprecated(PlatformName.iOS, 6, 0, PlatformArchitecture.None, null)]
+	public static readonly NSString DisableBidiProcessing = _DisableBidiProcessing;
 
-	public static readonly NSString ForceEmbeddingLevel;
+	public static readonly NSString ForceEmbeddingLevel = _ForceEmbeddingLevel;
 
-	static CTTypesetterOptionKey()
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _AllowUnboundedLayout;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? __DisableBidiProcessing;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? __ForceEmbeddingLevel;
+
+	[Field("kCTTypesetterOptionAllowUnboundedLayout", "CoreText")]
+	[Introduced(PlatformName.WatchOS, 5, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 12, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 14, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.iOS, 12, 0, PlatformArchitecture.All, null)]
+	public static NSString AllowUnboundedLayout
 	{
-		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText", 0);
-		if (intPtr == IntPtr.Zero)
+		[Introduced(PlatformName.WatchOS, 5, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 12, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 14, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.iOS, 12, 0, PlatformArchitecture.All, null)]
+		get
 		{
-			return;
+			if (_AllowUnboundedLayout == null)
+			{
+				_AllowUnboundedLayout = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTTypesetterOptionAllowUnboundedLayout");
+			}
+			return _AllowUnboundedLayout;
 		}
-		try
+	}
+
+	[Field("kCTTypesetterOptionDisableBidiProcessing", "CoreText")]
+	[Deprecated(PlatformName.iOS, 6, 0, PlatformArchitecture.None, null)]
+	internal static NSString _DisableBidiProcessing
+	{
+		[Deprecated(PlatformName.iOS, 6, 0, PlatformArchitecture.None, null)]
+		get
 		{
-			DisableBidiProcessing = Dlfcn.GetStringConstant(intPtr, "kCTTypesetterOptionDisableBidiProcessing");
-			ForceEmbeddingLevel = Dlfcn.GetStringConstant(intPtr, "kCTTypesetterOptionForcedEmbeddingLevel");
+			if (__DisableBidiProcessing == null)
+			{
+				__DisableBidiProcessing = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTTypesetterOptionDisableBidiProcessing");
+			}
+			return __DisableBidiProcessing;
 		}
-		finally
+	}
+
+	[Field("kCTTypesetterOptionForcedEmbeddingLevel", "CoreText")]
+	internal static NSString _ForceEmbeddingLevel
+	{
+		get
 		{
-			Dlfcn.dlclose(intPtr);
+			if (__ForceEmbeddingLevel == null)
+			{
+				__ForceEmbeddingLevel = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTTypesetterOptionForcedEmbeddingLevel");
+			}
+			return __ForceEmbeddingLevel;
 		}
 	}
 }

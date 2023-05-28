@@ -11,31 +11,61 @@ public class CGImage : INativeObject, IDisposable
 
 	public IntPtr Handle => handle;
 
-	public bool IsMask => CGImageIsMask(handle) != 0;
+	public bool IsMask => CGImageIsMask(handle);
 
-	public int Width => CGImageGetWidth(handle).ToInt32();
+	public nint Width => CGImageGetWidth(handle);
 
-	public int Height => CGImageGetHeight(handle).ToInt32();
+	public nint Height => CGImageGetHeight(handle);
 
-	public int BitsPerComponent => CGImageGetBitsPerComponent(handle).ToInt32();
+	public nint BitsPerComponent => CGImageGetBitsPerComponent(handle);
 
-	public int BitsPerPixel => CGImageGetBitsPerPixel(handle).ToInt32();
+	public nint BitsPerPixel => CGImageGetBitsPerPixel(handle);
 
-	public int BytesPerRow => CGImageGetBytesPerRow(handle).ToInt32();
+	public nint BytesPerRow => CGImageGetBytesPerRow(handle);
 
-	public CGColorSpace ColorSpace => new CGColorSpace(CGImageGetColorSpace(handle));
+	public CGColorSpace ColorSpace
+	{
+		get
+		{
+			IntPtr intPtr = CGImageGetColorSpace(handle);
+			return (intPtr == IntPtr.Zero) ? null : new CGColorSpace(intPtr);
+		}
+	}
 
 	public CGImageAlphaInfo AlphaInfo => CGImageGetAlphaInfo(handle);
 
 	public CGDataProvider DataProvider => new CGDataProvider(CGImageGetDataProvider(handle));
 
-	public unsafe double* Decode => CGImageGetDecode(handle);
+	public unsafe nfloat* Decode => CGImageGetDecode(handle);
 
-	public bool ShouldInterpolate => CGImageGetShouldInterpolate(handle) != 0;
+	public bool ShouldInterpolate => CGImageGetShouldInterpolate(handle);
 
 	public CGColorRenderingIntent RenderingIntent => CGImageGetRenderingIntent(handle);
 
 	public CGBitmapFlags BitmapInfo => CGImageGetBitmapInfo(handle);
+
+	[iOS(9, 0)]
+	[Mac(10, 11)]
+	public NSString UTType
+	{
+		get
+		{
+			IntPtr intPtr = CGImageGetUTType(handle);
+			return (intPtr == IntPtr.Zero) ? null : Runtime.GetNSObject<NSString>(intPtr);
+		}
+	}
+
+	[iOS(12, 0)]
+	[Mac(10, 14)]
+	[TV(12, 0)]
+	[Watch(5, 0)]
+	public CGImagePixelFormatInfo PixelFormatInfo => CGImageGetPixelFormatInfo(handle);
+
+	[iOS(12, 0)]
+	[Mac(10, 14)]
+	[TV(12, 0)]
+	[Watch(5, 0)]
+	public CGImageByteOrderInfo ByteOrderInfo => CGImageGetByteOrderInfo(handle);
 
 	public CGImage(IntPtr handle)
 		: this(handle, owns: false)
@@ -65,10 +95,10 @@ public class CGImage : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGImageRelease(IntPtr handle);
+	private static extern void CGImageRelease(IntPtr image);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGImageRetain(IntPtr handle);
+	private static extern IntPtr CGImageRetain(IntPtr image);
 
 	protected virtual void Dispose(bool disposing)
 	{
@@ -80,14 +110,10 @@ public class CGImage : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGImageCreate(IntPtr size_t_width, IntPtr size_t_height, IntPtr size_t_bitsPerComponent, IntPtr size_t_bitsPerPixel, IntPtr size_t_bytesPerRow, IntPtr space, CGBitmapFlags bitmapInfo, IntPtr provider, double[] decode, bool shouldInterpolate, CGColorRenderingIntent intent);
+	private static extern IntPtr CGImageCreate(nint width, nint height, nint bitsPerComponent, nint bitsPerPixel, nint bytesPerRow, IntPtr space, CGBitmapFlags bitmapInfo, IntPtr provider, nfloat[] decode, bool shouldInterpolate, CGColorRenderingIntent intent);
 
-	public CGImage(long width, long height, long bitsPerComponent, long bitsPerPixel, long bytesPerRow, CGColorSpace colorSpace, CGBitmapFlags bitmapFlags, CGDataProvider provider, double[] decode, bool shouldInterpolate, CGColorRenderingIntent intent)
+	public CGImage(int width, int height, int bitsPerComponent, int bitsPerPixel, int bytesPerRow, CGColorSpace colorSpace, CGBitmapFlags bitmapFlags, CGDataProvider provider, nfloat[] decode, bool shouldInterpolate, CGColorRenderingIntent intent)
 	{
-		if (colorSpace == null)
-		{
-			throw new ArgumentNullException("colorSpace");
-		}
 		if (width < 0)
 		{
 			throw new ArgumentException("width");
@@ -108,15 +134,11 @@ public class CGImage : INativeObject, IDisposable
 		{
 			throw new ArgumentException("bytesPerRow");
 		}
-		handle = CGImageCreate(new IntPtr(width), new IntPtr(height), new IntPtr(bitsPerComponent), new IntPtr(bitsPerPixel), new IntPtr(bytesPerRow), colorSpace.Handle, bitmapFlags, provider?.Handle ?? IntPtr.Zero, decode, shouldInterpolate, intent);
+		handle = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpace?.Handle ?? IntPtr.Zero, bitmapFlags, provider?.Handle ?? IntPtr.Zero, decode, shouldInterpolate, intent);
 	}
 
-	public CGImage(long width, long height, long bitsPerComponent, long bitsPerPixel, long bytesPerRow, CGColorSpace colorSpace, CGImageAlphaInfo alphaInfo, CGDataProvider provider, double[] decode, bool shouldInterpolate, CGColorRenderingIntent intent)
+	public CGImage(int width, int height, int bitsPerComponent, int bitsPerPixel, int bytesPerRow, CGColorSpace colorSpace, CGImageAlphaInfo alphaInfo, CGDataProvider provider, nfloat[] decode, bool shouldInterpolate, CGColorRenderingIntent intent)
 	{
-		if (colorSpace == null)
-		{
-			throw new ArgumentNullException("colorSpace");
-		}
 		if (width < 0)
 		{
 			throw new ArgumentException("width");
@@ -137,7 +159,7 @@ public class CGImage : INativeObject, IDisposable
 		{
 			throw new ArgumentException("bytesPerRow");
 		}
-		handle = CGImageCreate(new IntPtr(width), new IntPtr(height), new IntPtr(bitsPerComponent), new IntPtr(bitsPerPixel), new IntPtr(bytesPerRow), colorSpace.Handle, (CGBitmapFlags)alphaInfo, provider?.Handle ?? IntPtr.Zero, decode, shouldInterpolate, intent);
+		handle = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpace?.Handle ?? IntPtr.Zero, (CGBitmapFlags)alphaInfo, provider?.Handle ?? IntPtr.Zero, decode, shouldInterpolate, intent);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -145,19 +167,12 @@ public class CGImage : INativeObject, IDisposable
 
 	public static CGImage ScreenImage(int windownumber, CGRect bounds)
 	{
-		return new CGImage(CGWindowListCreateImage(bounds, CGWindowListOption.IncludingWindow, (uint)windownumber, CGWindowImageOption.Default), owns: true);
+		return ScreenImage(windownumber, bounds, CGWindowListOption.IncludingWindow, CGWindowImageOption.Default);
 	}
 
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGImageCreateWithJPEGDataProvider(IntPtr source, double[] decode, bool shouldInterpolate, CGColorRenderingIntent intent);
-
-	public static CGImage FromJPEG(CGDataProvider provider, double[] decode, bool shouldInterpolate, CGColorRenderingIntent intent)
+	public static CGImage ScreenImage(int windownumber, CGRect bounds, CGWindowListOption windowOption, CGWindowImageOption imageOption)
 	{
-		if (provider == null)
-		{
-			throw new ArgumentNullException("provider");
-		}
-		IntPtr intPtr = CGImageCreateWithJPEGDataProvider(provider.Handle, decode, shouldInterpolate, intent);
+		IntPtr intPtr = CGWindowListCreateImage(bounds, windowOption, (uint)windownumber, imageOption);
 		if (intPtr == IntPtr.Zero)
 		{
 			return null;
@@ -166,15 +181,11 @@ public class CGImage : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGImageCreateWithPNGDataProvider(IntPtr source, double[] decode, bool shouldInterpolate, CGColorRenderingIntent intent);
+	private static extern IntPtr CGImageCreateWithJPEGDataProvider(IntPtr source, nfloat[] decode, bool shouldInterpolate, CGColorRenderingIntent intent);
 
-	public static CGImage FromPNG(CGDataProvider provider, double[] decode, bool shouldInterpolate, CGColorRenderingIntent intent)
+	public static CGImage FromJPEG(CGDataProvider provider, nfloat[] decode, bool shouldInterpolate, CGColorRenderingIntent intent)
 	{
-		if (provider == null)
-		{
-			throw new ArgumentNullException("provider");
-		}
-		IntPtr intPtr = CGImageCreateWithPNGDataProvider(provider.Handle, decode, shouldInterpolate, intent);
+		IntPtr intPtr = CGImageCreateWithJPEGDataProvider(provider?.Handle ?? IntPtr.Zero, decode, shouldInterpolate, intent);
 		if (intPtr == IntPtr.Zero)
 		{
 			return null;
@@ -183,9 +194,22 @@ public class CGImage : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGImageMaskCreate(IntPtr size_t_width, IntPtr size_t_height, IntPtr size_t_bitsPerComponent, IntPtr size_t_bitsPerPixel, IntPtr size_t_bytesPerRow, IntPtr provider, double[] decode, bool shouldInterpolate);
+	private static extern IntPtr CGImageCreateWithPNGDataProvider(IntPtr source, nfloat[] decode, bool shouldInterpolate, CGColorRenderingIntent intent);
 
-	public static CGImage CreateMask(long width, long height, long bitsPerComponent, long bitsPerPixel, long bytesPerRow, CGDataProvider provider, double[] decode, bool shouldInterpolate)
+	public static CGImage FromPNG(CGDataProvider provider, nfloat[] decode, bool shouldInterpolate, CGColorRenderingIntent intent)
+	{
+		IntPtr intPtr = CGImageCreateWithPNGDataProvider(provider?.Handle ?? IntPtr.Zero, decode, shouldInterpolate, intent);
+		if (intPtr == IntPtr.Zero)
+		{
+			return null;
+		}
+		return new CGImage(intPtr, owns: true);
+	}
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	private static extern IntPtr CGImageMaskCreate(nint width, nint height, nint bitsPerComponent, nint bitsPerPixel, nint bytesPerRow, IntPtr provider, nfloat[] decode, bool shouldInterpolate);
+
+	public static CGImage CreateMask(int width, int height, int bitsPerComponent, int bitsPerPixel, int bytesPerRow, CGDataProvider provider, nfloat[] decode, bool shouldInterpolate)
 	{
 		if (width < 0)
 		{
@@ -203,11 +227,7 @@ public class CGImage : INativeObject, IDisposable
 		{
 			throw new ArgumentException("bytesPerRow");
 		}
-		if (provider == null)
-		{
-			throw new ArgumentNullException("provider");
-		}
-		IntPtr intPtr = CGImageMaskCreate(new IntPtr(width), new IntPtr(height), new IntPtr(bitsPerComponent), new IntPtr(bitsPerPixel), new IntPtr(bytesPerRow), provider.Handle, decode, shouldInterpolate);
+		IntPtr intPtr = CGImageMaskCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, provider?.Handle ?? IntPtr.Zero, decode, shouldInterpolate);
 		if (intPtr == IntPtr.Zero)
 		{
 			return null;
@@ -216,16 +236,12 @@ public class CGImage : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGImageCreateWithMaskingColors(IntPtr image, double[] components);
+	private static extern IntPtr CGImageCreateWithMaskingColors(IntPtr image, nfloat[] components);
 
-	public CGImage WithMaskingColors(double[] components)
+	public CGImage WithMaskingColors(nfloat[] components)
 	{
-		int num = 2 * ColorSpace.Components;
-		if (components == null)
-		{
-			throw new ArgumentNullException("components");
-		}
-		if (components.Length != num)
+		nint nint = 2 * ColorSpace.Components;
+		if (components != null && components.Length != nint)
 		{
 			throw new ArgumentException("The argument 'components' must have 2N values, where N is the number of components in the color space of the image.", "components");
 		}
@@ -245,7 +261,8 @@ public class CGImage : INativeObject, IDisposable
 
 	public CGImage WithColorSpace(CGColorSpace cs)
 	{
-		return new CGImage(CGImageCreateCopyWithColorSpace(handle, cs.handle), owns: true);
+		IntPtr intPtr = CGImageCreateCopyWithColorSpace(handle, cs?.handle ?? IntPtr.Zero);
+		return (intPtr == IntPtr.Zero) ? null : new CGImage(intPtr, owns: true);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -253,7 +270,8 @@ public class CGImage : INativeObject, IDisposable
 
 	public CGImage WithImageInRect(CGRect rect)
 	{
-		return new CGImage(CGImageCreateWithImageInRect(handle, rect), owns: true);
+		IntPtr intPtr = CGImageCreateWithImageInRect(handle, rect);
+		return (intPtr == IntPtr.Zero) ? null : new CGImage(intPtr, owns: true);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -261,26 +279,30 @@ public class CGImage : INativeObject, IDisposable
 
 	public CGImage WithMask(CGImage mask)
 	{
+		if (mask == null)
+		{
+			throw new ArgumentNullException("mask");
+		}
 		return new CGImage(CGImageCreateWithMask(handle, mask.handle), owns: true);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern int CGImageIsMask(IntPtr image);
+	private static extern bool CGImageIsMask(IntPtr image);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGImageGetWidth(IntPtr image);
+	private static extern nint CGImageGetWidth(IntPtr image);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGImageGetHeight(IntPtr image);
+	private static extern nint CGImageGetHeight(IntPtr image);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGImageGetBitsPerComponent(IntPtr image);
+	private static extern nint CGImageGetBitsPerComponent(IntPtr image);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGImageGetBitsPerPixel(IntPtr image);
+	private static extern nint CGImageGetBitsPerPixel(IntPtr image);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGImageGetBytesPerRow(IntPtr image);
+	private static extern nint CGImageGetBytesPerRow(IntPtr image);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
 	private static extern IntPtr CGImageGetColorSpace(IntPtr image);
@@ -292,14 +314,33 @@ public class CGImage : INativeObject, IDisposable
 	private static extern IntPtr CGImageGetDataProvider(IntPtr image);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private unsafe static extern double* CGImageGetDecode(IntPtr image);
+	private unsafe static extern nfloat* CGImageGetDecode(IntPtr image);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern int CGImageGetShouldInterpolate(IntPtr image);
+	private static extern bool CGImageGetShouldInterpolate(IntPtr image);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
 	private static extern CGColorRenderingIntent CGImageGetRenderingIntent(IntPtr image);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
 	private static extern CGBitmapFlags CGImageGetBitmapInfo(IntPtr image);
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	[iOS(9, 0)]
+	[Mac(10, 11)]
+	private static extern IntPtr CGImageGetUTType(IntPtr image);
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	[iOS(12, 0)]
+	[Mac(10, 14)]
+	[TV(12, 0)]
+	[Watch(5, 0)]
+	private static extern CGImagePixelFormatInfo CGImageGetPixelFormatInfo(IntPtr handle);
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	[iOS(12, 0)]
+	[Mac(10, 14)]
+	[TV(12, 0)]
+	[Watch(5, 0)]
+	private static extern CGImageByteOrderInfo CGImageGetByteOrderInfo(IntPtr handle);
 }

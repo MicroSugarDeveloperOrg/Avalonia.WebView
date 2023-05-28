@@ -1,59 +1,50 @@
 using System;
 using System.ComponentModel;
 using Foundation;
+using ImageCaptureCore;
 using ObjCRuntime;
 
 namespace ImageKit;
 
-[Register("IKDeviceBrowserViewDelegate", true)]
+[Protocol]
+[Register("IKDeviceBrowserViewDelegate", false)]
 [Model]
-public class IKDeviceBrowserViewDelegate : NSObject
+public abstract class IKDeviceBrowserViewDelegate : NSObject, IIKDeviceBrowserViewDelegate, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
-	public IKDeviceBrowserViewDelegate()
+	protected IKDeviceBrowserViewDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
+		base.IsDirectBinding = false;
+		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public IKDeviceBrowserViewDelegate(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public IKDeviceBrowserViewDelegate(NSObjectFlag t)
+	protected IKDeviceBrowserViewDelegate(NSObjectFlag t)
 		: base(t)
 	{
+		base.IsDirectBinding = false;
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public IKDeviceBrowserViewDelegate(IntPtr handle)
+	protected internal IKDeviceBrowserViewDelegate(IntPtr handle)
 		: base(handle)
 	{
+		base.IsDirectBinding = false;
 	}
 
 	[Export("deviceBrowserView:didEncounterError:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void DidEncounterError(IKDeviceBrowserView deviceBrowserView, NSError error)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
+
+	[Export("deviceBrowserView:selectionDidChange:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public abstract void SelectionDidChange(IKDeviceBrowserView deviceBrowserView, ICDevice device);
 }

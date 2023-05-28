@@ -9,38 +9,47 @@ namespace AppKit;
 [Register("NSDraggingItem", true)]
 public class NSDraggingItem : NSObject
 {
-	private static readonly IntPtr selItemHandle = Selector.GetHandle("item");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDraggingFrame = "draggingFrame";
 
 	private static readonly IntPtr selDraggingFrameHandle = Selector.GetHandle("draggingFrame");
 
-	private static readonly IntPtr selSetDraggingFrame_Handle = Selector.GetHandle("setDraggingFrame:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImageComponents = "imageComponents";
 
 	private static readonly IntPtr selImageComponentsHandle = Selector.GetHandle("imageComponents");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithPasteboardWriter_ = "initWithPasteboardWriter:";
+
 	private static readonly IntPtr selInitWithPasteboardWriter_Handle = Selector.GetHandle("initWithPasteboardWriter:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selItem = "item";
+
+	private static readonly IntPtr selItemHandle = Selector.GetHandle("item");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDraggingFrame_ = "setDraggingFrame:";
+
+	private static readonly IntPtr selSetDraggingFrame_Handle = Selector.GetHandle("setDraggingFrame:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDraggingFrame_Contents_ = "setDraggingFrame:contents:";
+
+	private static readonly IntPtr selSetDraggingFrame_Contents_Handle = Selector.GetHandle("setDraggingFrame:contents:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetImageComponentsProvider_ = "setImageComponentsProvider:";
 
 	private static readonly IntPtr selSetImageComponentsProvider_Handle = Selector.GetHandle("setImageComponentsProvider:");
 
-	private static readonly IntPtr selSetDraggingFrameContents_Handle = Selector.GetHandle("setDraggingFrame:contents:");
-
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSDraggingItem");
-
-	private object __mt_Item_var;
-
-	private object __mt_ImageComponents_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSDraggingItem");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSObject Item
-	{
-		[Export("item")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSObject)(__mt_Item_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selItemHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selItemHandle))));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGRect DraggingFrame
 	{
 		[Export("draggingFrame")]
@@ -48,7 +57,7 @@ public class NSDraggingItem : NSObject
 		{
 			NSApplication.EnsureUIThread();
 			CGRect retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selDraggingFrameHandle);
 			}
@@ -62,7 +71,7 @@ public class NSDraggingItem : NSObject
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_CGRect(base.Handle, selSetDraggingFrame_Handle, value);
 			}
@@ -73,60 +82,76 @@ public class NSDraggingItem : NSObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDraggingImageComponent[] ImageComponents
 	{
-		[Export("imageComponents")]
+		[Export("imageComponents", ArgumentSemantic.Copy)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSDraggingImageComponent[])(__mt_ImageComponents_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSDraggingImageComponent>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selImageComponentsHandle)) : NSArray.ArrayFromHandle<NSDraggingImageComponent>(Messaging.IntPtr_objc_msgSend(base.Handle, selImageComponentsHandle))));
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<NSDraggingImageComponent>(Messaging.IntPtr_objc_msgSend(base.Handle, selImageComponentsHandle));
+			}
+			return NSArray.ArrayFromHandle<NSDraggingImageComponent>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selImageComponentsHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject Item
+	{
+		[Export("item", ArgumentSemantic.Retain)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selItemHandle));
+			}
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selItemHandle));
+		}
+	}
+
+	public NSDraggingItem(NSPasteboardWriting pasteboardWriter)
+		: this((INSPasteboardWriting)pasteboardWriter)
+	{
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSDraggingItem()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSDraggingItem(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSDraggingItem(NSObjectFlag t)
+	protected NSDraggingItem(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSDraggingItem(IntPtr handle)
+	protected internal NSDraggingItem(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithPasteboardWriter:")]
-	public NSDraggingItem(NSPasteboardWriting pasteboardWriter)
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public NSDraggingItem(INSPasteboardWriting pasteboardWriter)
 		: base(NSObjectFlag.Empty)
 	{
 		NSApplication.EnsureUIThread();
@@ -134,18 +159,38 @@ public class NSDraggingItem : NSObject
 		{
 			throw new ArgumentNullException("pasteboardWriter");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithPasteboardWriter_Handle, pasteboardWriter.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithPasteboardWriter_Handle, pasteboardWriter.Handle), "initWithPasteboardWriter:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithPasteboardWriter_Handle, pasteboardWriter.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithPasteboardWriter_Handle, pasteboardWriter.Handle), "initWithPasteboardWriter:");
+		}
+	}
+
+	[Export("setDraggingFrame:contents:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SetDraggingFrame(CGRect frame, NSObject contents)
+	{
+		NSApplication.EnsureUIThread();
+		if (contents == null)
+		{
+			throw new ArgumentNullException("contents");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGRect_IntPtr(base.Handle, selSetDraggingFrame_Contents_Handle, frame, contents.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGRect_IntPtr(base.SuperHandle, selSetDraggingFrame_Contents_Handle, frame, contents.Handle);
 		}
 	}
 
 	[Export("setImageComponentsProvider:")]
-	public unsafe virtual void SetImagesContentProvider(NSDraggingItemImagesContentProvider provider)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public unsafe virtual void SetImagesContentProvider([BlockProxy(typeof(Trampolines.NIDNSDraggingItemImagesContentProvider))] NSDraggingItemImagesContentProvider? provider)
 	{
 		NSApplication.EnsureUIThread();
 		BlockLiteral* ptr;
@@ -157,9 +202,9 @@ public class NSDraggingItem : NSObject
 		{
 			BlockLiteral blockLiteral = default(BlockLiteral);
 			ptr = &blockLiteral;
-			blockLiteral.SetupBlock(Trampolines.SDNSDraggingItemImagesContentProvider.Handler, provider);
+			blockLiteral.SetupBlockUnsafe(Trampolines.SDNSDraggingItemImagesContentProvider.Handler, provider);
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetImageComponentsProvider_Handle, (IntPtr)ptr);
 		}
@@ -170,34 +215,6 @@ public class NSDraggingItem : NSObject
 		if (ptr != null)
 		{
 			ptr->CleanupBlock();
-		}
-	}
-
-	[Export("setDraggingFrame:contents:")]
-	public virtual void SetDraggingFrame(CGRect frame, NSObject contents)
-	{
-		NSApplication.EnsureUIThread();
-		if (contents == null)
-		{
-			throw new ArgumentNullException("contents");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGRect_IntPtr(base.Handle, selSetDraggingFrameContents_Handle, frame, contents.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGRect_IntPtr(base.SuperHandle, selSetDraggingFrameContents_Handle, frame, contents.Handle);
-		}
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_Item_var = null;
-			__mt_ImageComponents_var = null;
 		}
 	}
 }

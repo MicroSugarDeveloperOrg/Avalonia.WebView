@@ -1,3 +1,3 @@
 namespace AppKit;
 
-public delegate double NSAnimationProgress(NSAnimation animation, double progress);
+public delegate float NSAnimationProgress(NSAnimation animation, float progress);

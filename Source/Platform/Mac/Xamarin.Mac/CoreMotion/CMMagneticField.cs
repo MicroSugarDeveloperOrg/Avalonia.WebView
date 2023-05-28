@@ -1,16 +1,16 @@
-﻿namespace CoreMotion;
+namespace CoreMotion;
 
 [Mac(10, 15)]
 public struct CMMagneticField
 {
-    public double X;
+	public double X;
 
-    public double Y;
+	public double Y;
 
-    public double Z;
+	public double Z;
 
-    public override string ToString()
-    {
-        return $"({X},{Y},{Z})";
-    }
+	public override string ToString()
+	{
+		return $"({X},{Y},{Z})";
+	}
 }

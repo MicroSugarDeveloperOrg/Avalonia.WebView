@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using CoreFoundation;
+using ObjCRuntime;
 
 namespace AudioToolbox;
 
@@ -31,7 +32,13 @@ public struct AudioStreamBasicDescription
 
 	private const AudioFormatFlags AudioFormatFlagIsBigEndian = (AudioFormatFlags)0u;
 
-	public static readonly AudioFormatFlags AudioFormatFlagsAudioUnitCanonical = (AudioFormatFlags)3116u;
+	[Deprecated(PlatformName.iOS, 8, 0, PlatformArchitecture.None, "Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preffered instead.")]
+	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.None, "Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preffered instead.")]
+	public static readonly AudioFormatFlags AudioFormatFlagsAudioUnitCanonical = AudioFormatFlags.IsSignedInteger | ((!BitConverter.IsLittleEndian) ? AudioFormatFlags.IsBigEndian : ((AudioFormatFlags)0u)) | AudioFormatFlags.IsPacked | AudioFormatFlags.IsNonInterleaved | (AudioFormatFlags)3072u;
+
+	public static readonly AudioFormatFlags AudioFormatFlagsNativeFloat = AudioFormatFlags.IsFloat | AudioFormatFlags.IsPacked | ((!BitConverter.IsLittleEndian) ? AudioFormatFlags.IsBigEndian : ((AudioFormatFlags)0u));
+
+	public static readonly AudioFormatFlags AudioFormatFlagsAudioUnitNativeFloat = AudioFormatFlags.IsFloat | AudioFormatFlags.IsPacked | ((!BitConverter.IsLittleEndian) ? AudioFormatFlags.IsBigEndian : ((AudioFormatFlags)0u)) | AudioFormatFlags.IsNonInterleaved;
 
 	public unsafe string FormatName
 	{
@@ -77,7 +84,7 @@ public struct AudioStreamBasicDescription
 		get
 		{
 			int ioPropertyDataSize = 4;
-			if (AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.FormatName, sizeof(AudioStreamBasicDescription), ref this, ref ioPropertyDataSize, out uint outPropertyData) != 0)
+			if (AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.FormatIsVBR, sizeof(AudioStreamBasicDescription), ref this, ref ioPropertyDataSize, out uint outPropertyData) != 0)
 			{
 				return false;
 			}

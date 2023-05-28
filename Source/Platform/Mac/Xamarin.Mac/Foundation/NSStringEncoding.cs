@@ -1,27 +1,30 @@
+using ObjCRuntime;
+
 namespace Foundation;
 
-public enum NSStringEncoding : uint
+[Native]
+public enum NSStringEncoding : ulong
 {
-	ASCIIStringEncoding = 1u,
-	NEXTSTEP = 2u,
-	JapaneseEUC = 3u,
-	UTF8 = 4u,
-	ISOLatin1 = 5u,
-	Symbol = 6u,
-	NonLossyASCII = 7u,
-	ShiftJIS = 8u,
-	ISOLatin2 = 9u,
-	Unicode = 10u,
-	WindowsCP1251 = 11u,
-	WindowsCP1252 = 12u,
-	WindowsCP1253 = 13u,
-	WindowsCP1254 = 14u,
-	WindowsCP1250 = 15u,
-	ISO2022JP = 21u,
-	MacOSRoman = 30u,
-	UTF16BigEndian = 2415919360u,
-	UTF16LittleEndian = 2483028224u,
-	UTF32 = 2348810496u,
-	UTF32BigEndian = 2550137088u,
-	UTF32LittleEndian = 2617245952u
+	ASCIIStringEncoding = 1uL,
+	NEXTSTEP = 2uL,
+	JapaneseEUC = 3uL,
+	UTF8 = 4uL,
+	ISOLatin1 = 5uL,
+	Symbol = 6uL,
+	NonLossyASCII = 7uL,
+	ShiftJIS = 8uL,
+	ISOLatin2 = 9uL,
+	Unicode = 10uL,
+	WindowsCP1251 = 11uL,
+	WindowsCP1252 = 12uL,
+	WindowsCP1253 = 13uL,
+	WindowsCP1254 = 14uL,
+	WindowsCP1250 = 15uL,
+	ISO2022JP = 21uL,
+	MacOSRoman = 30uL,
+	UTF16BigEndian = 2415919360uL,
+	UTF16LittleEndian = 2483028224uL,
+	UTF32 = 2348810496uL,
+	UTF32BigEndian = 2550137088uL,
+	UTF32LittleEndian = 2617245952uL
 }

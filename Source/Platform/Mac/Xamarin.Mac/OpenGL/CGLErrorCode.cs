@@ -1,24 +1,27 @@
+using ObjCRuntime;
+
 namespace OpenGL;
 
-public enum CGLErrorCode
+[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'Metal' Framework instead.")]
+public enum CGLErrorCode : uint
 {
-	NoError = 0,
-	BadAttribute = 10000,
-	BadProperty = 10001,
-	BadPixelFormat = 10002,
-	BadRendererInfo = 10003,
-	BadContext = 10004,
-	BadDrawable = 10005,
-	BadDisplay = 10006,
-	BadState = 10007,
-	BadValue = 10008,
-	BadMatch = 10009,
-	BadEnumeration = 10010,
-	BadOffScreen = 10011,
-	BadFullScreen = 10012,
-	BadWindow = 10013,
-	BadAddress = 10014,
-	BadCodeModule = 10015,
-	BadAlloc = 10016,
-	BadConnection = 10017
+	NoError = 0u,
+	BadAttribute = 10000u,
+	BadProperty = 10001u,
+	BadPixelFormat = 10002u,
+	BadRendererInfo = 10003u,
+	BadContext = 10004u,
+	BadDrawable = 10005u,
+	BadDisplay = 10006u,
+	BadState = 10007u,
+	BadValue = 10008u,
+	BadMatch = 10009u,
+	BadEnumeration = 10010u,
+	BadOffScreen = 10011u,
+	BadFullScreen = 10012u,
+	BadWindow = 10013u,
+	BadAddress = 10014u,
+	BadCodeModule = 10015u,
+	BadAlloc = 10016u,
+	BadConnection = 10017u
 }

@@ -13,7 +13,7 @@ public class CFReadStream : CFStream
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFReadStreamCopyError(IntPtr handle);
+	private static extern IntPtr CFReadStreamCopyError(IntPtr stream);
 
 	public override CFException GetError()
 	{
@@ -26,7 +26,8 @@ public class CFReadStream : CFStream
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern bool CFReadStreamOpen(IntPtr handle);
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static extern bool CFReadStreamOpen(IntPtr stream);
 
 	protected override bool DoOpen()
 	{
@@ -34,7 +35,7 @@ public class CFReadStream : CFStream
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern void CFReadStreamClose(IntPtr handle);
+	private static extern void CFReadStreamClose(IntPtr stream);
 
 	protected override void DoClose()
 	{
@@ -42,15 +43,16 @@ public class CFReadStream : CFStream
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern CFStreamStatus CFReadStreamGetStatus(IntPtr handle);
+	private static extern nint CFReadStreamGetStatus(IntPtr stream);
 
 	protected override CFStreamStatus DoGetStatus()
 	{
-		return CFReadStreamGetStatus(base.Handle);
+		return (CFStreamStatus)(long)CFReadStreamGetStatus(base.Handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern bool CFReadStreamHasBytesAvailable(IntPtr handle);
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static extern bool CFReadStreamHasBytesAvailable(IntPtr stream);
 
 	public bool HasBytesAvailable()
 	{
@@ -58,39 +60,64 @@ public class CFReadStream : CFStream
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern void CFReadStreamScheduleWithRunLoop(IntPtr handle, IntPtr loop, IntPtr mode);
+	private static extern void CFReadStreamScheduleWithRunLoop(IntPtr stream, IntPtr runLoop, IntPtr runLoopMode);
 
 	protected override void ScheduleWithRunLoop(CFRunLoop loop, NSString mode)
 	{
+		if (loop == null)
+		{
+			throw new ArgumentNullException("loop");
+		}
+		if (mode == null)
+		{
+			throw new ArgumentNullException("mode");
+		}
 		CFReadStreamScheduleWithRunLoop(base.Handle, loop.Handle, mode.Handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern void CFReadStreamUnscheduleFromRunLoop(IntPtr handle, IntPtr loop, IntPtr mode);
+	private static extern void CFReadStreamUnscheduleFromRunLoop(IntPtr stream, IntPtr runLoop, IntPtr runLoopMode);
 
 	protected override void UnscheduleFromRunLoop(CFRunLoop loop, NSString mode)
 	{
+		if (loop == null)
+		{
+			throw new ArgumentNullException("loop");
+		}
+		if (mode == null)
+		{
+			throw new ArgumentNullException("mode");
+		}
 		CFReadStreamUnscheduleFromRunLoop(base.Handle, loop.Handle, mode.Handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern bool CFReadStreamSetClient(IntPtr stream, CFIndex eventTypes, CFStreamCallback cb, IntPtr context);
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static extern bool CFReadStreamSetClient(IntPtr stream, nint streamEvents, CFStreamCallback clientCB, IntPtr clientContext);
 
-	protected override bool DoSetClient(CFStreamCallback callback, CFIndex eventTypes, IntPtr context)
+	protected override bool DoSetClient(CFStreamCallback callback, nint eventTypes, IntPtr context)
 	{
 		return CFReadStreamSetClient(base.Handle, eventTypes, callback, context);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern CFIndex CFReadStreamRead(IntPtr handle, IntPtr buffer, CFIndex count);
+	private static extern nint CFReadStreamRead(IntPtr handle, IntPtr buffer, nint count);
 
-	public int Read(byte[] buffer)
+	public nint Read(byte[] buffer)
 	{
+		if (buffer == null)
+		{
+			throw new ArgumentNullException("buffer");
+		}
 		return Read(buffer, 0, buffer.Length);
 	}
 
-	public int Read(byte[] buffer, int offset, int count)
+	public unsafe nint Read(byte[] buffer, int offset, int count)
 	{
+		if (buffer == null)
+		{
+			throw new ArgumentNullException("buffer");
+		}
 		CheckHandle();
 		if (offset < 0)
 		{
@@ -104,30 +131,34 @@ public class CFReadStream : CFStream
 		{
 			throw new ArgumentException();
 		}
-		GCHandle gCHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-		try
+		fixed (byte* ptr = buffer)
 		{
-			return CFReadStreamRead(buffer: new IntPtr(gCHandle.AddrOfPinnedObject().ToInt64() + offset), handle: base.Handle, count: count);
-		}
-		finally
-		{
-			gCHandle.Free();
+			return CFReadStreamRead(base.Handle, (IntPtr)ptr + offset, count);
 		}
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFReadStreamCopyProperty(IntPtr handle, IntPtr name);
+	private static extern IntPtr CFReadStreamCopyProperty(IntPtr stream, IntPtr propertyName);
 
 	protected override IntPtr DoGetProperty(NSString name)
 	{
+		if (name == null)
+		{
+			throw new ArgumentNullException("name");
+		}
 		return CFReadStreamCopyProperty(base.Handle, name.Handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern bool CFReadStreamSetProperty(IntPtr handle, IntPtr name, IntPtr value);
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static extern bool CFReadStreamSetProperty(IntPtr stream, IntPtr propertyName, IntPtr propertyValue);
 
 	protected override bool DoSetProperty(NSString name, INativeObject value)
 	{
-		return CFReadStreamSetProperty(base.Handle, name.Handle, value.Handle);
+		if (name == null)
+		{
+			throw new ArgumentNullException("name");
+		}
+		return CFReadStreamSetProperty(base.Handle, name.Handle, value?.Handle ?? IntPtr.Zero);
 	}
 }

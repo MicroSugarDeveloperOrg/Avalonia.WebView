@@ -6,53 +6,61 @@ using ObjCRuntime;
 namespace WebKit;
 
 [Register("DOMStyleSheet", true)]
+[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
 public class DomStyleSheet : DomObject
 {
-	private static readonly IntPtr selTypeHandle = Selector.GetHandle("type");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDisabled = "disabled";
 
 	private static readonly IntPtr selDisabledHandle = Selector.GetHandle("disabled");
 
-	private static readonly IntPtr selSetDisabled_Handle = Selector.GetHandle("setDisabled:");
-
-	private static readonly IntPtr selOwnerNodeHandle = Selector.GetHandle("ownerNode");
-
-	private static readonly IntPtr selParentStyleSheetHandle = Selector.GetHandle("parentStyleSheet");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selHref = "href";
 
 	private static readonly IntPtr selHrefHandle = Selector.GetHandle("href");
 
-	private static readonly IntPtr selTitleHandle = Selector.GetHandle("title");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMedia = "media";
 
 	private static readonly IntPtr selMediaHandle = Selector.GetHandle("media");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("DOMStyleSheet");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selOwnerNode = "ownerNode";
 
-	private object __mt_OwnerNode_var;
+	private static readonly IntPtr selOwnerNodeHandle = Selector.GetHandle("ownerNode");
 
-	private object __mt_ParentStyleSheet_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selParentStyleSheet = "parentStyleSheet";
 
-	private object __mt_Media_var;
+	private static readonly IntPtr selParentStyleSheetHandle = Selector.GetHandle("parentStyleSheet");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDisabled_ = "setDisabled:";
+
+	private static readonly IntPtr selSetDisabled_Handle = Selector.GetHandle("setDisabled:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTitle = "title";
+
+	private static readonly IntPtr selTitleHandle = Selector.GetHandle("title");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selType = "type";
+
+	private static readonly IntPtr selTypeHandle = Selector.GetHandle("type");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("DOMStyleSheet");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual string Type
-	{
-		[Export("type")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selTypeHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTypeHandle));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Disabled
 	{
 		[Export("disabled")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selDisabledHandle);
 			}
@@ -61,7 +69,7 @@ public class DomStyleSheet : DomObject
 		[Export("setDisabled:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetDisabled_Handle, value);
 			}
@@ -72,30 +80,13 @@ public class DomStyleSheet : DomObject
 		}
 	}
 
-	public virtual DomNode OwnerNode
-	{
-		[Export("ownerNode")]
-		get
-		{
-			return (DomNode)(__mt_OwnerNode_var = ((!IsDirectBinding) ? ((DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOwnerNodeHandle))) : ((DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selOwnerNodeHandle)))));
-		}
-	}
-
-	public virtual DomStyleSheet ParentStyleSheet
-	{
-		[Export("parentStyleSheet")]
-		get
-		{
-			return (DomStyleSheet)(__mt_ParentStyleSheet_var = ((!IsDirectBinding) ? ((DomStyleSheet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selParentStyleSheetHandle))) : ((DomStyleSheet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selParentStyleSheetHandle)))));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string Href
 	{
-		[Export("href")]
+		[Export("href", ArgumentSemantic.Copy)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selHrefHandle));
 			}
@@ -103,12 +94,55 @@ public class DomStyleSheet : DomObject
 		}
 	}
 
-	public virtual string Title
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomMediaList Media
 	{
-		[Export("title")]
+		[Export("media", ArgumentSemantic.Retain)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomMediaList>(Messaging.IntPtr_objc_msgSend(base.Handle, selMediaHandle));
+			}
+			return Runtime.GetNSObject<DomMediaList>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMediaHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomNode OwnerNode
+	{
+		[Export("ownerNode", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSend(base.Handle, selOwnerNodeHandle));
+			}
+			return Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOwnerNodeHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomStyleSheet ParentStyleSheet
+	{
+		[Export("parentStyleSheet", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomStyleSheet>(Messaging.IntPtr_objc_msgSend(base.Handle, selParentStyleSheetHandle));
+			}
+			return Runtime.GetNSObject<DomStyleSheet>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selParentStyleSheetHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string Title
+	{
+		[Export("title", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selTitleHandle));
 			}
@@ -116,50 +150,31 @@ public class DomStyleSheet : DomObject
 		}
 	}
 
-	public virtual DomMediaList Media
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string Type
 	{
-		[Export("media")]
+		[Export("type", ArgumentSemantic.Copy)]
 		get
 		{
-			return (DomMediaList)(__mt_Media_var = ((!IsDirectBinding) ? ((DomMediaList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMediaHandle))) : ((DomMediaList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMediaHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selTypeHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTypeHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public DomStyleSheet(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public DomStyleSheet(NSObjectFlag t)
+	protected DomStyleSheet(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public DomStyleSheet(IntPtr handle)
+	protected internal DomStyleSheet(IntPtr handle)
 		: base(handle)
 	{
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_OwnerNode_var = null;
-			__mt_ParentStyleSheet_var = null;
-			__mt_Media_var = null;
-		}
 	}
 }

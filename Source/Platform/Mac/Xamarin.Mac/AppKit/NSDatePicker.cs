@@ -10,12 +10,18 @@ namespace AppKit;
 public class NSDatePicker : NSControl
 {
 	[Register]
-	private sealed class _NSDatePickerCellDelegate : NSDatePickerCellDelegate
+	internal class _NSDatePickerCellDelegate : NSObject, INSDatePickerCellDelegate, INativeObject, IDisposable
 	{
-		internal EventHandler<NSDatePickerValidatorEventArgs> validateProposedDateValue;
+		internal EventHandler<NSDatePickerValidatorEventArgs>? validateProposedDateValue;
+
+		public _NSDatePickerCellDelegate()
+		{
+			base.IsDirectBinding = false;
+		}
 
 		[Preserve(Conditional = true)]
-		public override void ValidateProposedDateValue(NSDatePickerCell aDatePickerCell, ref NSDate proposedDateValue, double proposedTimeInterval)
+		[Export("datePickerCell:validateProposedDateValue:timeInterval:")]
+		public void ValidateProposedDateValue(NSDatePickerCell aDatePickerCell, ref NSDate proposedDateValue, double proposedTimeInterval)
 		{
 			EventHandler<NSDatePickerValidatorEventArgs> eventHandler = validateProposedDateValue;
 			if (eventHandler != null)
@@ -27,134 +33,239 @@ public class NSDatePicker : NSControl
 		}
 	}
 
-	private static readonly IntPtr selDatePickerStyleHandle = Selector.GetHandle("datePickerStyle");
-
-	private static readonly IntPtr selSetDatePickerStyle_Handle = Selector.GetHandle("setDatePickerStyle:");
-
-	private static readonly IntPtr selIsBezeledHandle = Selector.GetHandle("isBezeled");
-
-	private static readonly IntPtr selSetBezeled_Handle = Selector.GetHandle("setBezeled:");
-
-	private static readonly IntPtr selIsBorderedHandle = Selector.GetHandle("isBordered");
-
-	private static readonly IntPtr selSetBordered_Handle = Selector.GetHandle("setBordered:");
-
-	private static readonly IntPtr selDrawsBackgroundHandle = Selector.GetHandle("drawsBackground");
-
-	private static readonly IntPtr selSetDrawsBackground_Handle = Selector.GetHandle("setDrawsBackground:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBackgroundColor = "backgroundColor";
 
 	private static readonly IntPtr selBackgroundColorHandle = Selector.GetHandle("backgroundColor");
 
-	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
-
-	private static readonly IntPtr selCellHandle = Selector.GetHandle("cell");
-
-	private static readonly IntPtr selSetCell_Handle = Selector.GetHandle("setCell:");
-
-	private static readonly IntPtr selTextColorHandle = Selector.GetHandle("textColor");
-
-	private static readonly IntPtr selSetTextColor_Handle = Selector.GetHandle("setTextColor:");
-
-	private static readonly IntPtr selDatePickerModeHandle = Selector.GetHandle("datePickerMode");
-
-	private static readonly IntPtr selSetDatePickerMode_Handle = Selector.GetHandle("setDatePickerMode:");
-
-	private static readonly IntPtr selDatePickerElementsHandle = Selector.GetHandle("datePickerElements");
-
-	private static readonly IntPtr selSetDatePickerElements_Handle = Selector.GetHandle("setDatePickerElements:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCalendar = "calendar";
 
 	private static readonly IntPtr selCalendarHandle = Selector.GetHandle("calendar");
 
-	private static readonly IntPtr selSetCalendar_Handle = Selector.GetHandle("setCalendar:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCell = "cell";
 
-	private static readonly IntPtr selLocaleHandle = Selector.GetHandle("locale");
+	private static readonly IntPtr selCellHandle = Selector.GetHandle("cell");
 
-	private static readonly IntPtr selSetLocale_Handle = Selector.GetHandle("setLocale:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDatePickerElements = "datePickerElements";
 
-	private static readonly IntPtr selTimeZoneHandle = Selector.GetHandle("timeZone");
+	private static readonly IntPtr selDatePickerElementsHandle = Selector.GetHandle("datePickerElements");
 
-	private static readonly IntPtr selSetTimeZone_Handle = Selector.GetHandle("setTimeZone:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDatePickerMode = "datePickerMode";
+
+	private static readonly IntPtr selDatePickerModeHandle = Selector.GetHandle("datePickerMode");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDatePickerStyle = "datePickerStyle";
+
+	private static readonly IntPtr selDatePickerStyleHandle = Selector.GetHandle("datePickerStyle");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDateValue = "dateValue";
 
 	private static readonly IntPtr selDateValueHandle = Selector.GetHandle("dateValue");
 
-	private static readonly IntPtr selSetDateValue_Handle = Selector.GetHandle("setDateValue:");
-
-	private static readonly IntPtr selTimeIntervalHandle = Selector.GetHandle("timeInterval");
-
-	private static readonly IntPtr selSetTimeInterval_Handle = Selector.GetHandle("setTimeInterval:");
-
-	private static readonly IntPtr selMinDateHandle = Selector.GetHandle("minDate");
-
-	private static readonly IntPtr selSetMinDate_Handle = Selector.GetHandle("setMinDate:");
-
-	private static readonly IntPtr selMaxDateHandle = Selector.GetHandle("maxDate");
-
-	private static readonly IntPtr selSetMaxDate_Handle = Selector.GetHandle("setMaxDate:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDelegate = "delegate";
 
 	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
 
-	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDrawsBackground = "drawsBackground";
+
+	private static readonly IntPtr selDrawsBackgroundHandle = Selector.GetHandle("drawsBackground");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithFrame_ = "initWithFrame:";
 
 	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSDatePicker");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsBezeled = "isBezeled";
 
-	private object __mt_BackgroundColor_var;
+	private static readonly IntPtr selIsBezeledHandle = Selector.GetHandle("isBezeled");
 
-	private object __mt_Cell_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsBordered = "isBordered";
 
-	private object __mt_TextColor_var;
+	private static readonly IntPtr selIsBorderedHandle = Selector.GetHandle("isBordered");
 
-	private object __mt_Calendar_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLocale = "locale";
 
-	private object __mt_Locale_var;
+	private static readonly IntPtr selLocaleHandle = Selector.GetHandle("locale");
 
-	private object __mt_TimeZone_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMaxDate = "maxDate";
 
-	private object __mt_DateValue_var;
+	private static readonly IntPtr selMaxDateHandle = Selector.GetHandle("maxDate");
 
-	private object __mt_MinDate_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMinDate = "minDate";
 
-	private object __mt_MaxDate_var;
+	private static readonly IntPtr selMinDateHandle = Selector.GetHandle("minDate");
 
-	private object __mt_WeakDelegate_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPresentsCalendarOverlay = "presentsCalendarOverlay";
+
+	private static readonly IntPtr selPresentsCalendarOverlayHandle = Selector.GetHandle("presentsCalendarOverlay");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBackgroundColor_ = "setBackgroundColor:";
+
+	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBezeled_ = "setBezeled:";
+
+	private static readonly IntPtr selSetBezeled_Handle = Selector.GetHandle("setBezeled:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBordered_ = "setBordered:";
+
+	private static readonly IntPtr selSetBordered_Handle = Selector.GetHandle("setBordered:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCalendar_ = "setCalendar:";
+
+	private static readonly IntPtr selSetCalendar_Handle = Selector.GetHandle("setCalendar:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCell_ = "setCell:";
+
+	private static readonly IntPtr selSetCell_Handle = Selector.GetHandle("setCell:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDatePickerElements_ = "setDatePickerElements:";
+
+	private static readonly IntPtr selSetDatePickerElements_Handle = Selector.GetHandle("setDatePickerElements:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDatePickerMode_ = "setDatePickerMode:";
+
+	private static readonly IntPtr selSetDatePickerMode_Handle = Selector.GetHandle("setDatePickerMode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDatePickerStyle_ = "setDatePickerStyle:";
+
+	private static readonly IntPtr selSetDatePickerStyle_Handle = Selector.GetHandle("setDatePickerStyle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDateValue_ = "setDateValue:";
+
+	private static readonly IntPtr selSetDateValue_Handle = Selector.GetHandle("setDateValue:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDelegate_ = "setDelegate:";
+
+	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDrawsBackground_ = "setDrawsBackground:";
+
+	private static readonly IntPtr selSetDrawsBackground_Handle = Selector.GetHandle("setDrawsBackground:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLocale_ = "setLocale:";
+
+	private static readonly IntPtr selSetLocale_Handle = Selector.GetHandle("setLocale:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMaxDate_ = "setMaxDate:";
+
+	private static readonly IntPtr selSetMaxDate_Handle = Selector.GetHandle("setMaxDate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMinDate_ = "setMinDate:";
+
+	private static readonly IntPtr selSetMinDate_Handle = Selector.GetHandle("setMinDate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPresentsCalendarOverlay_ = "setPresentsCalendarOverlay:";
+
+	private static readonly IntPtr selSetPresentsCalendarOverlay_Handle = Selector.GetHandle("setPresentsCalendarOverlay:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTextColor_ = "setTextColor:";
+
+	private static readonly IntPtr selSetTextColor_Handle = Selector.GetHandle("setTextColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTimeInterval_ = "setTimeInterval:";
+
+	private static readonly IntPtr selSetTimeInterval_Handle = Selector.GetHandle("setTimeInterval:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTimeZone_ = "setTimeZone:";
+
+	private static readonly IntPtr selSetTimeZone_Handle = Selector.GetHandle("setTimeZone:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTextColor = "textColor";
+
+	private static readonly IntPtr selTextColorHandle = Selector.GetHandle("textColor");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTimeInterval = "timeInterval";
+
+	private static readonly IntPtr selTimeIntervalHandle = Selector.GetHandle("timeInterval");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTimeZone = "timeZone";
+
+	private static readonly IntPtr selTimeZoneHandle = Selector.GetHandle("timeZone");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSDatePicker");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_WeakDelegate_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSDatePickerStyle DatePickerStyle
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSColor BackgroundColor
 	{
-		[Export("datePickerStyle")]
+		[Export("backgroundColor", ArgumentSemantic.Copy)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return (NSDatePickerStyle)Messaging.UInt64_objc_msgSend(base.Handle, selDatePickerStyleHandle);
+				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle));
 			}
-			return (NSDatePickerStyle)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selDatePickerStyleHandle);
+			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle));
 		}
-		[Export("setDatePickerStyle:")]
+		[Export("setBackgroundColor:", ArgumentSemantic.Copy)]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetDatePickerStyle_Handle, (ulong)value);
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBackgroundColor_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetDatePickerStyle_Handle, (ulong)value);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBackgroundColor_Handle, value.Handle);
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Bezeled
 	{
 		[Export("isBezeled")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsBezeledHandle);
 			}
@@ -164,7 +275,7 @@ public class NSDatePicker : NSControl
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetBezeled_Handle, value);
 			}
@@ -175,13 +286,14 @@ public class NSDatePicker : NSControl
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Bordered
 	{
 		[Export("isBordered")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsBorderedHandle);
 			}
@@ -191,7 +303,7 @@ public class NSDatePicker : NSControl
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetBordered_Handle, value);
 			}
@@ -202,42 +314,20 @@ public class NSDatePicker : NSControl
 		}
 	}
 
-	public virtual bool DrawsBackground
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSCalendar Calendar
 	{
-		[Export("drawsBackground")]
+		[Export("calendar", ArgumentSemantic.Copy)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selDrawsBackgroundHandle);
+				return Runtime.GetNSObject<NSCalendar>(Messaging.IntPtr_objc_msgSend(base.Handle, selCalendarHandle));
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selDrawsBackgroundHandle);
+			return Runtime.GetNSObject<NSCalendar>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCalendarHandle));
 		}
-		[Export("setDrawsBackground:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetDrawsBackground_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetDrawsBackground_Handle, value);
-			}
-		}
-	}
-
-	public virtual NSColor BackgroundColor
-	{
-		[Export("backgroundColor")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSColor)(__mt_BackgroundColor_var = ((!IsDirectBinding) ? ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle))) : ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle)))));
-		}
-		[Export("setBackgroundColor:")]
+		[Export("setCalendar:", ArgumentSemantic.Copy)]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -245,25 +335,29 @@ public class NSDatePicker : NSControl
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBackgroundColor_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCalendar_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBackgroundColor_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCalendar_Handle, value.Handle);
 			}
-			__mt_BackgroundColor_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new virtual NSDatePickerCell Cell
 	{
 		[Export("cell")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSDatePickerCell)(__mt_Cell_var = ((!IsDirectBinding) ? ((NSDatePickerCell)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCellHandle))) : ((NSDatePickerCell)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCellHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDatePickerCell>(Messaging.IntPtr_objc_msgSend(base.Handle, selCellHandle));
+			}
+			return Runtime.GetNSObject<NSDatePickerCell>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCellHandle));
 		}
 		[Export("setCell:")]
 		set
@@ -273,7 +367,7 @@ public class NSDatePicker : NSControl
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCell_Handle, value.Handle);
 			}
@@ -281,72 +375,17 @@ public class NSDatePicker : NSControl
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCell_Handle, value.Handle);
 			}
-			__mt_Cell_var = value;
 		}
 	}
 
-	public virtual NSColor TextColor
-	{
-		[Export("textColor")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSColor)(__mt_TextColor_var = ((!IsDirectBinding) ? ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextColorHandle))) : ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTextColorHandle)))));
-		}
-		[Export("setTextColor:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextColor_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextColor_Handle, value.Handle);
-			}
-			__mt_TextColor_var = value;
-		}
-	}
-
-	public virtual NSDatePickerMode DatePickerMode
-	{
-		[Export("datePickerMode")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return (NSDatePickerMode)Messaging.UInt64_objc_msgSend(base.Handle, selDatePickerModeHandle);
-			}
-			return (NSDatePickerMode)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selDatePickerModeHandle);
-		}
-		[Export("setDatePickerMode:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetDatePickerMode_Handle, (ulong)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetDatePickerMode_Handle, (ulong)value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDatePickerElementFlags DatePickerElements
 	{
 		[Export("datePickerElements")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return (NSDatePickerElementFlags)Messaging.UInt64_objc_msgSend(base.Handle, selDatePickerElementsHandle);
 			}
@@ -356,7 +395,7 @@ public class NSDatePicker : NSControl
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetDatePickerElements_Handle, (ulong)value);
 			}
@@ -367,99 +406,76 @@ public class NSDatePicker : NSControl
 		}
 	}
 
-	public virtual NSCalendar Calendar
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDatePickerMode DatePickerMode
 	{
-		[Export("calendar")]
+		[Export("datePickerMode")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSCalendar)(__mt_Calendar_var = ((!IsDirectBinding) ? ((NSCalendar)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCalendarHandle))) : ((NSCalendar)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCalendarHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return (NSDatePickerMode)Messaging.UInt64_objc_msgSend(base.Handle, selDatePickerModeHandle);
+			}
+			return (NSDatePickerMode)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selDatePickerModeHandle);
 		}
-		[Export("setCalendar:")]
+		[Export("setDatePickerMode:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (value == null)
+			if (base.IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCalendar_Handle, value.Handle);
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetDatePickerMode_Handle, (ulong)value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCalendar_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetDatePickerMode_Handle, (ulong)value);
 			}
-			__mt_Calendar_var = value;
 		}
 	}
 
-	public virtual NSLocale Locale
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDatePickerStyle DatePickerStyle
 	{
-		[Export("locale")]
+		[Export("datePickerStyle")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSLocale)(__mt_Locale_var = ((!IsDirectBinding) ? ((NSLocale)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocaleHandle))) : ((NSLocale)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selLocaleHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return (NSDatePickerStyle)Messaging.UInt64_objc_msgSend(base.Handle, selDatePickerStyleHandle);
+			}
+			return (NSDatePickerStyle)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selDatePickerStyleHandle);
 		}
-		[Export("setLocale:")]
+		[Export("setDatePickerStyle:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (value == null)
+			if (base.IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetLocale_Handle, value.Handle);
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetDatePickerStyle_Handle, (ulong)value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetLocale_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetDatePickerStyle_Handle, (ulong)value);
 			}
-			__mt_Locale_var = value;
 		}
 	}
 
-	public virtual NSTimeZone TimeZone
-	{
-		[Export("timeZone")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSTimeZone)(__mt_TimeZone_var = ((!IsDirectBinding) ? ((NSTimeZone)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTimeZoneHandle))) : ((NSTimeZone)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTimeZoneHandle)))));
-		}
-		[Export("setTimeZone:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTimeZone_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTimeZone_Handle, value.Handle);
-			}
-			__mt_TimeZone_var = value;
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDate DateValue
 	{
-		[Export("dateValue")]
+		[Export("dateValue", ArgumentSemantic.Copy)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSDate)(__mt_DateValue_var = ((!IsDirectBinding) ? ((NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDateValueHandle))) : ((NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDateValueHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSend(base.Handle, selDateValueHandle));
+			}
+			return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDateValueHandle));
 		}
-		[Export("setDateValue:")]
+		[Export("setDateValue:", ArgumentSemantic.Copy)]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -467,7 +483,7 @@ public class NSDatePicker : NSControl
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDateValue_Handle, value.Handle);
 			}
@@ -475,17 +491,222 @@ public class NSDatePicker : NSControl
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDateValue_Handle, value.Handle);
 			}
-			__mt_DateValue_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public INSDatePickerCellDelegate Delegate
+	{
+		get
+		{
+			return WeakDelegate as INSDatePickerCellDelegate;
+		}
+		set
+		{
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
+			{
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			WeakDelegate = nSObject;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool DrawsBackground
+	{
+		[Export("drawsBackground")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selDrawsBackgroundHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selDrawsBackgroundHandle);
+		}
+		[Export("setDrawsBackground:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetDrawsBackground_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetDrawsBackground_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSLocale Locale
+	{
+		[Export("locale", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSLocale>(Messaging.IntPtr_objc_msgSend(base.Handle, selLocaleHandle));
+			}
+			return Runtime.GetNSObject<NSLocale>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocaleHandle));
+		}
+		[Export("setLocale:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetLocale_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetLocale_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDate MaxDate
+	{
+		[Export("maxDate", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSend(base.Handle, selMaxDateHandle));
+			}
+			return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMaxDateHandle));
+		}
+		[Export("setMaxDate:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMaxDate_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMaxDate_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDate MinDate
+	{
+		[Export("minDate", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSend(base.Handle, selMinDateHandle));
+			}
+			return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMinDateHandle));
+		}
+		[Export("setMinDate:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMinDate_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMinDate_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.MacOSX, 10, 15, 4, PlatformArchitecture.All, null)]
+	public virtual bool PresentsCalendarOverlay
+	{
+		[Introduced(PlatformName.MacOSX, 10, 15, 4, PlatformArchitecture.All, null)]
+		[Export("presentsCalendarOverlay")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selPresentsCalendarOverlayHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selPresentsCalendarOverlayHandle);
+		}
+		[Introduced(PlatformName.MacOSX, 10, 15, 4, PlatformArchitecture.All, null)]
+		[Export("setPresentsCalendarOverlay:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetPresentsCalendarOverlay_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetPresentsCalendarOverlay_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSColor TextColor
+	{
+		[Export("textColor", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selTextColorHandle));
+			}
+			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextColorHandle));
+		}
+		[Export("setTextColor:", ArgumentSemantic.Copy)]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextColor_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextColor_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual double TimeInterval
 	{
 		[Export("timeInterval")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.Double_objc_msgSend(base.Handle, selTimeIntervalHandle);
 			}
@@ -495,7 +716,7 @@ public class NSDatePicker : NSControl
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_Double(base.Handle, selSetTimeInterval_Handle, value);
 			}
@@ -506,15 +727,20 @@ public class NSDatePicker : NSControl
 		}
 	}
 
-	public virtual NSDate MinDate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSTimeZone TimeZone
 	{
-		[Export("minDate")]
+		[Export("timeZone", ArgumentSemantic.Copy)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSDate)(__mt_MinDate_var = ((!IsDirectBinding) ? ((NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMinDateHandle))) : ((NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMinDateHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSTimeZone>(Messaging.IntPtr_objc_msgSend(base.Handle, selTimeZoneHandle));
+			}
+			return Runtime.GetNSObject<NSTimeZone>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTimeZoneHandle));
 		}
-		[Export("setMinDate:")]
+		[Export("setTimeZone:", ArgumentSemantic.Copy)]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -522,59 +748,35 @@ public class NSDatePicker : NSControl
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMinDate_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTimeZone_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMinDate_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTimeZone_Handle, value.Handle);
 			}
-			__mt_MinDate_var = value;
 		}
 	}
 
-	public virtual NSDate MaxDate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakDelegate
 	{
-		[Export("maxDate")]
+		[Export("delegate", ArgumentSemantic.Assign)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSDate)(__mt_MaxDate_var = ((!IsDirectBinding) ? ((NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMaxDateHandle))) : ((NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMaxDateHandle)))));
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
+			MarkDirty();
+			__mt_WeakDelegate_var = nSObject;
+			return nSObject;
 		}
-		[Export("setMaxDate:")]
+		[Export("setDelegate:", ArgumentSemantic.Assign)]
 		set
 		{
+			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakDelegate_var, value, GetInternalEventDelegateType);
 			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMaxDate_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMaxDate_Handle, value.Handle);
-			}
-			__mt_MaxDate_var = value;
-		}
-	}
-
-	public virtual NSObject WeakDelegate
-	{
-		[Export("delegate")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
-		}
-		[Export("setDelegate:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
@@ -582,21 +784,12 @@ public class NSDatePicker : NSControl
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
+			MarkDirty();
 			__mt_WeakDelegate_var = value;
 		}
 	}
 
-	public NSDatePickerCellDelegate Delegate
-	{
-		get
-		{
-			return WeakDelegate as NSDatePickerCellDelegate;
-		}
-		set
-		{
-			WeakDelegate = value;
-		}
-	}
+	internal virtual Type GetInternalEventDelegateType => typeof(_NSDatePickerCellDelegate);
 
 	public event EventHandler<NSDatePickerValidatorEventArgs> ValidateProposedDateValue
 	{
@@ -612,87 +805,96 @@ public class NSDatePicker : NSControl
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSDatePicker()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSDatePicker(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSDatePicker(NSObjectFlag t)
+	protected NSDatePicker(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSDatePicker(IntPtr handle)
+	protected internal NSDatePicker(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithFrame:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSDatePicker(CGRect frameRect)
 		: base(NSObjectFlag.Empty)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
 		}
 	}
 
-	private _NSDatePickerCellDelegate EnsureNSDatePickerCellDelegate()
+	internal virtual _NSDatePickerCellDelegate CreateInternalEventDelegateType()
 	{
-		NSObject nSObject = WeakDelegate;
-		if (nSObject == null || !(nSObject is _NSDatePickerCellDelegate))
-		{
-			nSObject = (WeakDelegate = new _NSDatePickerCellDelegate());
-		}
-		return (_NSDatePickerCellDelegate)nSObject;
+		return new _NSDatePickerCellDelegate();
 	}
 
+	internal _NSDatePickerCellDelegate EnsureNSDatePickerCellDelegate()
+	{
+		if (WeakDelegate != null)
+		{
+			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakDelegate, GetInternalEventDelegateType);
+		}
+		_NSDatePickerCellDelegate nSDatePickerCellDelegate = Delegate as _NSDatePickerCellDelegate;
+		if (nSDatePickerCellDelegate == null)
+		{
+			nSDatePickerCellDelegate = (_NSDatePickerCellDelegate)(Delegate = CreateInternalEventDelegateType());
+		}
+		return nSDatePickerCellDelegate;
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
-			__mt_BackgroundColor_var = null;
-			__mt_Cell_var = null;
-			__mt_TextColor_var = null;
-			__mt_Calendar_var = null;
-			__mt_Locale_var = null;
-			__mt_TimeZone_var = null;
-			__mt_DateValue_var = null;
-			__mt_MinDate_var = null;
-			__mt_MaxDate_var = null;
 			__mt_WeakDelegate_var = null;
 		}
 	}

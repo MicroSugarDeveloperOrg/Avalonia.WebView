@@ -1,4 +1,6 @@
-﻿using Metal;
+using System;
+using Metal;
+using ObjCRuntime;
 
 namespace MetalPerformanceShaders;
 
@@ -7,61 +9,61 @@ namespace MetalPerformanceShaders;
 [Mac(10, 13, 4)]
 public struct MPSStateTextureInfo
 {
-    public nuint Width;
+	public nuint Width;
 
-    public nuint Height;
+	public nuint Height;
 
-    public nuint Depth;
+	public nuint Depth;
 
-    public nuint ArrayLength;
+	public nuint ArrayLength;
 
-    private nuint _PixelFormat;
+	private nuint _PixelFormat;
 
-    private nuint _TextureType;
+	private nuint _TextureType;
 
-    private nuint _TextureUsage;
+	private nuint _TextureUsage;
 
-    private nuint Reserved0;
+	private nuint Reserved0;
 
-    private nuint Reserved1;
+	private nuint Reserved1;
 
-    private nuint Reserved2;
+	private nuint Reserved2;
 
-    private nuint Reserved3;
+	private nuint Reserved3;
 
-    public MTLPixelFormat PixelFormat
-    {
-        get
-        {
-            return (MTLPixelFormat)(ulong)_PixelFormat;
-        }
-        set
-        {
-            _PixelFormat = (nuint)(ulong)value;
-        }
-    }
+	public MTLPixelFormat PixelFormat
+	{
+		get
+		{
+			return (MTLPixelFormat)(ulong)_PixelFormat;
+		}
+		set
+		{
+			_PixelFormat = (nuint)(ulong)value;
+		}
+	}
 
-    public MTLTextureType TextureType
-    {
-        get
-        {
-            return (MTLTextureType)(ulong)_TextureType;
-        }
-        set
-        {
-            _TextureType = (nuint)(ulong)value;
-        }
-    }
+	public MTLTextureType TextureType
+	{
+		get
+		{
+			return (MTLTextureType)(ulong)_TextureType;
+		}
+		set
+		{
+			_TextureType = (nuint)(ulong)value;
+		}
+	}
 
-    public MTLTextureUsage TextureUsage
-    {
-        get
-        {
-            return (MTLTextureUsage)(ulong)_TextureUsage;
-        }
-        set
-        {
-            _TextureUsage = (nuint)(ulong)value;
-        }
-    }
+	public MTLTextureUsage TextureUsage
+	{
+		get
+		{
+			return (MTLTextureUsage)(ulong)_TextureUsage;
+		}
+		set
+		{
+			_TextureUsage = (nuint)(ulong)value;
+		}
+	}
 }

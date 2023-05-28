@@ -1,4 +1,4 @@
-﻿using ObjCRuntime;
+using ObjCRuntime;
 
 namespace AppKit;
 
@@ -6,8 +6,8 @@ namespace AppKit;
 [Native]
 public enum NSCollectionElementCategory : long
 {
-    Item,
-    SupplementaryView,
-    DecorationView,
-    InterItemGap
+	Item,
+	SupplementaryView,
+	DecorationView,
+	InterItemGap
 }

@@ -5,11 +5,11 @@ namespace ImageKit;
 
 public class IKImageBrowserViewIndexEventEventArgs : EventArgs
 {
-	public int Index { get; set; }
+	public nint Index { get; set; }
 
 	public NSEvent Nsevent { get; set; }
 
-	public IKImageBrowserViewIndexEventEventArgs(int index, NSEvent nsevent)
+	public IKImageBrowserViewIndexEventEventArgs(nint index, NSEvent nsevent)
 	{
 		Index = index;
 		Nsevent = nsevent;

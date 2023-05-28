@@ -1,5 +1,8 @@
+using ObjCRuntime;
+
 namespace CoreMedia;
 
+[Watch(6, 0)]
 public enum CMSyncError
 {
 	None = 0,

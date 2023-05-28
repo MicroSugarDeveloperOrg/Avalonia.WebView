@@ -1,6 +1,10 @@
+using ObjCRuntime;
+
 namespace AVFoundation;
 
-public enum AVCaptureDeviceTransportControlsPlaybackMode
+[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
+[Native]
+public enum AVCaptureDeviceTransportControlsPlaybackMode : long
 {
 	NotPlaying,
 	Playing

@@ -9,10 +9,6 @@ public class CGDataConsumer : INativeObject, IDisposable
 {
 	internal IntPtr handle;
 
-	private IntPtr buffer;
-
-	private byte[] reference;
-
 	public IntPtr Handle => handle;
 
 	public CGDataConsumer(IntPtr handle)
@@ -43,24 +39,18 @@ public class CGDataConsumer : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGDataConsumerRelease(IntPtr handle);
+	private static extern void CGDataConsumerRelease(IntPtr consumer);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGDataConsumerRetain(IntPtr handle);
+	private static extern IntPtr CGDataConsumerRetain(IntPtr consumer);
 
 	protected virtual void Dispose(bool disposing)
 	{
 		if (handle != IntPtr.Zero)
 		{
-			if (buffer != IntPtr.Zero)
-			{
-				Marshal.FreeHGlobal(buffer);
-			}
-			buffer = IntPtr.Zero;
 			CGDataConsumerRelease(handle);
 			handle = IntPtr.Zero;
 		}
-		reference = null;
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -68,6 +58,22 @@ public class CGDataConsumer : INativeObject, IDisposable
 
 	public CGDataConsumer(NSMutableData data)
 	{
+		if (data == null)
+		{
+			throw new ArgumentNullException("data");
+		}
 		handle = CGDataConsumerCreateWithCFData(data.Handle);
+	}
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	private static extern IntPtr CGDataConsumerCreateWithURL(IntPtr url);
+
+	public CGDataConsumer(NSUrl url)
+	{
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		handle = CGDataConsumerCreateWithURL(url.Handle);
 	}
 }

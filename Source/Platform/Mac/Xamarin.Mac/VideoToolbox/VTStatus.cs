@@ -1,0 +1,38 @@
+namespace VideoToolbox;
+
+public enum VTStatus
+{
+	Ok = 0,
+	PropertyNotSupported = -12900,
+	PropertyReadOnly = -12901,
+	Parameter = -12902,
+	InvalidSession = -12903,
+	AllocationFailed = -12904,
+	PixelTransferNotSupported = -12905,
+	CouldNotFindVideoDecoder = -12906,
+	CouldNotCreateInstance = -12907,
+	CouldNotFindVideoEncoder = -12908,
+	VideoDecoderBadData = -12909,
+	VideoDecoderUnsupportedDataFormat = -12910,
+	VideoDecoderMalfunction = -12911,
+	VideoEncoderMalfunction = -12912,
+	VideoDecoderNotAvailableNow = -12913,
+	ImageRotationNotSupported = -12914,
+	VideoEncoderNotAvailableNow = -12915,
+	FormatDescriptionChangeNotSupported = -12916,
+	InsufficientSourceColorData = -12917,
+	CouldNotCreateColorCorrectionData = -12918,
+	ColorSyncTransformConvertFailed = -12919,
+	VideoDecoderAuthorization = -12210,
+	VideoEncoderAuthorization = -12211,
+	ColorCorrectionPixelTransferFailed = -12212,
+	MultiPassStorageIdentifierMismatch = -12913,
+	MultiPassStorageInvalid = -12214,
+	FrameSiloInvalidTimeStamp = -12215,
+	FrameSiloInvalidTimeRange = -12216,
+	CouldNotFindTemporalFilter = -12217,
+	PixelTransferNotPermitted = -12218,
+	ColorCorrectionImageRotationFailed = -12219,
+	VideoDecoderRemoved = -17690,
+	SessionMalfunction = -17691
+}

@@ -1,157 +1,75 @@
 using System;
+using CoreFoundation;
+using Foundation;
 using ObjCRuntime;
 
 namespace Security;
 
 internal static class KeysAuthenticationType
 {
-	private static IntPtr _NTLM;
+	[Field("kSecAttrAuthenticationTypeDPA", "Security")]
+	public static IntPtr DPA => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAuthenticationTypeDPA");
 
-	private static IntPtr _MSN;
+	[Field("kSecAttrAuthenticationTypeDefault", "Security")]
+	public static IntPtr Default => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAuthenticationTypeDefault");
 
-	private static IntPtr _DPA;
+	[Field("kSecAttrAuthenticationTypeHTMLForm", "Security")]
+	public static IntPtr HTMLForm => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAuthenticationTypeHTMLForm");
 
-	private static IntPtr _RPA;
+	[Field("kSecAttrAuthenticationTypeHTTPBasic", "Security")]
+	public static IntPtr HTTPBasic => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAuthenticationTypeHTTPBasic");
 
-	private static IntPtr _HTTPBasic;
+	[Field("kSecAttrAuthenticationTypeHTTPDigest", "Security")]
+	public static IntPtr HTTPDigest => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAuthenticationTypeHTTPDigest");
 
-	private static IntPtr _HTTPDigest;
+	[Field("kSecAttrAuthenticationTypeMSN", "Security")]
+	public static IntPtr MSN => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAuthenticationTypeMSN");
 
-	private static IntPtr _HTMLForm;
+	[Field("kSecAttrAuthenticationTypeNTLM", "Security")]
+	public static IntPtr NTLM => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAuthenticationTypeNTLM");
 
-	private static IntPtr _Default;
-
-	public static IntPtr NTLM
-	{
-		get
-		{
-			if (_NTLM == IntPtr.Zero)
-			{
-				_NTLM = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAuthenticationTypeNTLM");
-			}
-			return _NTLM;
-		}
-	}
-
-	public static IntPtr MSN
-	{
-		get
-		{
-			if (_MSN == IntPtr.Zero)
-			{
-				_MSN = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAuthenticationTypeMSN");
-			}
-			return _MSN;
-		}
-	}
-
-	public static IntPtr DPA
-	{
-		get
-		{
-			if (_DPA == IntPtr.Zero)
-			{
-				_DPA = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAuthenticationTypeDPA");
-			}
-			return _DPA;
-		}
-	}
-
-	public static IntPtr RPA
-	{
-		get
-		{
-			if (_RPA == IntPtr.Zero)
-			{
-				_RPA = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAuthenticationTypeRPA");
-			}
-			return _RPA;
-		}
-	}
-
-	public static IntPtr HTTPBasic
-	{
-		get
-		{
-			if (_HTTPBasic == IntPtr.Zero)
-			{
-				_HTTPBasic = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAuthenticationTypeHTTPBasic");
-			}
-			return _HTTPBasic;
-		}
-	}
-
-	public static IntPtr HTTPDigest
-	{
-		get
-		{
-			if (_HTTPDigest == IntPtr.Zero)
-			{
-				_HTTPDigest = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAuthenticationTypeHTTPDigest");
-			}
-			return _HTTPDigest;
-		}
-	}
-
-	public static IntPtr HTMLForm
-	{
-		get
-		{
-			if (_HTMLForm == IntPtr.Zero)
-			{
-				_HTMLForm = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAuthenticationTypeHTMLForm");
-			}
-			return _HTMLForm;
-		}
-	}
-
-	public static IntPtr Default
-	{
-		get
-		{
-			if (_Default == IntPtr.Zero)
-			{
-				_Default = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrAuthenticationTypeDefault");
-			}
-			return _Default;
-		}
-	}
+	[Field("kSecAttrAuthenticationTypeRPA", "Security")]
+	public static IntPtr RPA => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrAuthenticationTypeRPA");
 
 	public static SecAuthenticationType ToSecAuthenticationType(IntPtr handle)
 	{
-		if (handle == NTLM)
+		if (handle == IntPtr.Zero)
+		{
+			return SecAuthenticationType.Invalid;
+		}
+		if (CFType.Equal(handle, NTLM))
 		{
 			return SecAuthenticationType.Ntlm;
 		}
-		if (handle == MSN)
+		if (CFType.Equal(handle, MSN))
 		{
 			return SecAuthenticationType.Msn;
 		}
-		if (handle == DPA)
+		if (CFType.Equal(handle, DPA))
 		{
 			return SecAuthenticationType.Dpa;
 		}
-		if (handle == RPA)
+		if (CFType.Equal(handle, RPA))
 		{
 			return SecAuthenticationType.Rpa;
 		}
-		if (handle == HTTPBasic)
+		if (CFType.Equal(handle, HTTPBasic))
 		{
 			return SecAuthenticationType.HttpBasic;
 		}
-		if (handle == HTTPDigest)
+		if (CFType.Equal(handle, HTTPDigest))
 		{
 			return SecAuthenticationType.HttpDigest;
 		}
-		if (handle == HTMLForm)
+		if (CFType.Equal(handle, HTMLForm))
 		{
 			return SecAuthenticationType.HtmlForm;
 		}
-		if (handle == Default)
+		if (CFType.Equal(handle, Default))
 		{
 			return SecAuthenticationType.Default;
 		}
-		throw new ArgumentException("handle");
+		return SecAuthenticationType.Invalid;
 	}
 
 	public static IntPtr FromSecAuthenticationType(SecAuthenticationType type)

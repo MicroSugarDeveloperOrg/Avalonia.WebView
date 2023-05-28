@@ -23,10 +23,4 @@ public class ObjCException : Exception
 	{
 		native_exc = exc;
 	}
-
-	[Preserve]
-	internal static void Throw(IntPtr handle)
-	{
-		throw new ObjCException(new NSException(handle));
-	}
 }

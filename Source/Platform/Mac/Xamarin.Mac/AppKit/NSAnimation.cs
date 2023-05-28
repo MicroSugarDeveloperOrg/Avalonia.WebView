@@ -6,47 +6,36 @@ using ObjCRuntime;
 namespace AppKit;
 
 [Register("NSAnimation", true)]
-public class NSAnimation : NSObject
+public class NSAnimation : NSObject, INSCoding, INativeObject, IDisposable, INSCopying
 {
 	[Register]
-	private sealed class _NSAnimationDelegate : NSAnimationDelegate
+	internal class _NSAnimationDelegate : NSObject, INSAnimationDelegate, INativeObject, IDisposable
 	{
-		internal NSAnimationPredicate animationShouldStart;
+		internal EventHandler? animationDidEnd;
 
-		internal EventHandler animationDidStop;
+		internal EventHandler<NSAnimationEventArgs>? animationDidReachProgressMark;
 
-		internal EventHandler animationDidEnd;
+		internal EventHandler? animationDidStop;
 
-		internal NSAnimationProgress computeAnimationCurve;
+		internal NSAnimationPredicate? animationShouldStart;
 
-		internal EventHandler<NSAnimationEventArgs> animationDidReachProgressMark;
+		internal NSAnimationProgress? computeAnimationCurve;
 
-		[Preserve(Conditional = true)]
-		public override bool AnimationShouldStart(NSAnimation animation)
+		public _NSAnimationDelegate()
 		{
-			return animationShouldStart?.Invoke(animation) ?? true;
+			base.IsDirectBinding = false;
 		}
 
 		[Preserve(Conditional = true)]
-		public override void AnimationDidStop(NSAnimation animation)
-		{
-			animationDidStop?.Invoke(animation, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		public override void AnimationDidEnd(NSAnimation animation)
+		[Export("animationDidEnd:")]
+		public void AnimationDidEnd(NSAnimation animation)
 		{
 			animationDidEnd?.Invoke(animation, EventArgs.Empty);
 		}
 
 		[Preserve(Conditional = true)]
-		public override double ComputeAnimationCurve(NSAnimation animation, double progress)
-		{
-			return computeAnimationCurve?.Invoke(animation, progress) ?? progress;
-		}
-
-		[Preserve(Conditional = true)]
-		public override void AnimationDidReachProgressMark(NSAnimation animation, double progress)
+		[Export("animation:didReachProgressMark:")]
+		public void AnimationDidReachProgressMark(NSAnimation animation, float progress)
 		{
 			EventHandler<NSAnimationEventArgs> eventHandler = animationDidReachProgressMark;
 			if (eventHandler != null)
@@ -55,146 +44,223 @@ public class NSAnimation : NSObject
 				eventHandler(animation, e);
 			}
 		}
+
+		[Preserve(Conditional = true)]
+		[Export("animationDidStop:")]
+		public void AnimationDidStop(NSAnimation animation)
+		{
+			animationDidStop?.Invoke(animation, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("animationShouldStart:")]
+		public bool AnimationShouldStart(NSAnimation animation)
+		{
+			return animationShouldStart?.Invoke(animation) ?? true;
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("animation:valueForProgress:")]
+		public float ComputeAnimationCurve(NSAnimation animation, float progress)
+		{
+			return computeAnimationCurve?.Invoke(animation, progress) ?? progress;
+		}
 	}
 
 	public static class Notifications
 	{
 		public static NSObject ObserveProgressMark(EventHandler<NSAnimationProgressMarkEventArgs> handler)
 		{
+			EventHandler<NSAnimationProgressMarkEventArgs> handler2 = handler;
 			return NSNotificationCenter.DefaultCenter.AddObserver(ProgressMarkNotification, delegate(NSNotification notification)
 			{
-				handler(null, new NSAnimationProgressMarkEventArgs(notification));
+				handler2(null, new NSAnimationProgressMarkEventArgs(notification));
 			});
+		}
+
+		public static NSObject ObserveProgressMark(NSObject objectToObserve, EventHandler<NSAnimationProgressMarkEventArgs> handler)
+		{
+			EventHandler<NSAnimationProgressMarkEventArgs> handler2 = handler;
+			return NSNotificationCenter.DefaultCenter.AddObserver(ProgressMarkNotification, delegate(NSNotification notification)
+			{
+				handler2(null, new NSAnimationProgressMarkEventArgs(notification));
+			}, objectToObserve);
 		}
 	}
 
-	private static readonly IntPtr selCurrentProgressHandle = Selector.GetHandle("currentProgress");
-
-	private static readonly IntPtr selSetCurrentProgress_Handle = Selector.GetHandle("setCurrentProgress:");
-
-	private static readonly IntPtr selDurationHandle = Selector.GetHandle("duration");
-
-	private static readonly IntPtr selSetDuration_Handle = Selector.GetHandle("setDuration:");
-
-	private static readonly IntPtr selAnimationBlockingModeHandle = Selector.GetHandle("animationBlockingMode");
-
-	private static readonly IntPtr selSetAnimationBlockingMode_Handle = Selector.GetHandle("setAnimationBlockingMode:");
-
-	private static readonly IntPtr selFrameRateHandle = Selector.GetHandle("frameRate");
-
-	private static readonly IntPtr selSetFrameRate_Handle = Selector.GetHandle("setFrameRate:");
-
-	private static readonly IntPtr selAnimationCurveHandle = Selector.GetHandle("animationCurve");
-
-	private static readonly IntPtr selSetAnimationCurve_Handle = Selector.GetHandle("setAnimationCurve:");
-
-	private static readonly IntPtr selCurrentValueHandle = Selector.GetHandle("currentValue");
-
-	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
-
-	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
-
-	private static readonly IntPtr selProgressMarksHandle = Selector.GetHandle("progressMarks");
-
-	private static readonly IntPtr selSetProgressMarks_Handle = Selector.GetHandle("setProgressMarks:");
-
-	private static readonly IntPtr selInitWithDurationAnimationCurve_Handle = Selector.GetHandle("initWithDuration:animationCurve:");
-
-	private static readonly IntPtr selStartAnimationHandle = Selector.GetHandle("startAnimation");
-
-	private static readonly IntPtr selStopAnimationHandle = Selector.GetHandle("stopAnimation");
-
-	private static readonly IntPtr selIsAnimatingHandle = Selector.GetHandle("isAnimating");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAddProgressMark_ = "addProgressMark:";
 
 	private static readonly IntPtr selAddProgressMark_Handle = Selector.GetHandle("addProgressMark:");
 
-	private static readonly IntPtr selRemoveProgressMark_Handle = Selector.GetHandle("removeProgressMark:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAnimationBlockingMode = "animationBlockingMode";
 
-	private static readonly IntPtr selStartWhenAnimationReachesProgress_Handle = Selector.GetHandle("startWhenAnimation:reachesProgress:");
+	private static readonly IntPtr selAnimationBlockingModeHandle = Selector.GetHandle("animationBlockingMode");
 
-	private static readonly IntPtr selStopWhenAnimationReachesProgress_Handle = Selector.GetHandle("stopWhenAnimation:reachesProgress:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAnimationCurve = "animationCurve";
+
+	private static readonly IntPtr selAnimationCurveHandle = Selector.GetHandle("animationCurve");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selClearStartAnimation = "clearStartAnimation";
 
 	private static readonly IntPtr selClearStartAnimationHandle = Selector.GetHandle("clearStartAnimation");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selClearStopAnimation = "clearStopAnimation";
+
 	private static readonly IntPtr selClearStopAnimationHandle = Selector.GetHandle("clearStopAnimation");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSAnimation");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCopyWithZone_ = "copyWithZone:";
 
-	private object __mt_Delegate_var;
+	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
 
-	private object __mt_ProgressMarks_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCurrentProgress = "currentProgress";
 
-	private static NSString _ProgressMarkNotification;
+	private static readonly IntPtr selCurrentProgressHandle = Selector.GetHandle("currentProgress");
 
-	private static NSString _ProgressMark;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCurrentValue = "currentValue";
 
-	private static NSString _TriggerOrderIn;
+	private static readonly IntPtr selCurrentValueHandle = Selector.GetHandle("currentValue");
 
-	private static NSString _TriggerOrderOut;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDelegate = "delegate";
+
+	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDuration = "duration";
+
+	private static readonly IntPtr selDurationHandle = Selector.GetHandle("duration");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEncodeWithCoder_ = "encodeWithCoder:";
+
+	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFrameRate = "frameRate";
+
+	private static readonly IntPtr selFrameRateHandle = Selector.GetHandle("frameRate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithCoder_ = "initWithCoder:";
+
+	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithDuration_AnimationCurve_ = "initWithDuration:animationCurve:";
+
+	private static readonly IntPtr selInitWithDuration_AnimationCurve_Handle = Selector.GetHandle("initWithDuration:animationCurve:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsAnimating = "isAnimating";
+
+	private static readonly IntPtr selIsAnimatingHandle = Selector.GetHandle("isAnimating");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selProgressMarks = "progressMarks";
+
+	private static readonly IntPtr selProgressMarksHandle = Selector.GetHandle("progressMarks");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveProgressMark_ = "removeProgressMark:";
+
+	private static readonly IntPtr selRemoveProgressMark_Handle = Selector.GetHandle("removeProgressMark:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRunLoopModesForAnimating = "runLoopModesForAnimating";
+
+	private static readonly IntPtr selRunLoopModesForAnimatingHandle = Selector.GetHandle("runLoopModesForAnimating");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAnimationBlockingMode_ = "setAnimationBlockingMode:";
+
+	private static readonly IntPtr selSetAnimationBlockingMode_Handle = Selector.GetHandle("setAnimationBlockingMode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAnimationCurve_ = "setAnimationCurve:";
+
+	private static readonly IntPtr selSetAnimationCurve_Handle = Selector.GetHandle("setAnimationCurve:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCurrentProgress_ = "setCurrentProgress:";
+
+	private static readonly IntPtr selSetCurrentProgress_Handle = Selector.GetHandle("setCurrentProgress:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDelegate_ = "setDelegate:";
+
+	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDuration_ = "setDuration:";
+
+	private static readonly IntPtr selSetDuration_Handle = Selector.GetHandle("setDuration:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFrameRate_ = "setFrameRate:";
+
+	private static readonly IntPtr selSetFrameRate_Handle = Selector.GetHandle("setFrameRate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetProgressMarks_ = "setProgressMarks:";
+
+	private static readonly IntPtr selSetProgressMarks_Handle = Selector.GetHandle("setProgressMarks:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStartAnimation = "startAnimation";
+
+	private static readonly IntPtr selStartAnimationHandle = Selector.GetHandle("startAnimation");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStartWhenAnimation_ReachesProgress_ = "startWhenAnimation:reachesProgress:";
+
+	private static readonly IntPtr selStartWhenAnimation_ReachesProgress_Handle = Selector.GetHandle("startWhenAnimation:reachesProgress:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStopAnimation = "stopAnimation";
+
+	private static readonly IntPtr selStopAnimationHandle = Selector.GetHandle("stopAnimation");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStopWhenAnimation_ReachesProgress_ = "stopWhenAnimation:reachesProgress:";
+
+	private static readonly IntPtr selStopWhenAnimation_ReachesProgress_Handle = Selector.GetHandle("stopWhenAnimation:reachesProgress:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSAnimation");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_WeakDelegate_var;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ProgressMark;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ProgressMarkNotification;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TriggerOrderIn;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TriggerOrderOut;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual double CurrentProgress
-	{
-		[Export("currentProgress")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selCurrentProgressHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selCurrentProgressHandle);
-		}
-		[Export("setCurrentProgress:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetCurrentProgress_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetCurrentProgress_Handle, value);
-			}
-		}
-	}
-
-	public virtual double Duration
-	{
-		[Export("duration")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selDurationHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selDurationHandle);
-		}
-		[Export("setDuration:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetDuration_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetDuration_Handle, value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSAnimationBlockingMode AnimationBlockingMode
 	{
 		[Export("animationBlockingMode")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return (NSAnimationBlockingMode)Messaging.UInt64_objc_msgSend(base.Handle, selAnimationBlockingModeHandle);
 			}
@@ -204,7 +270,7 @@ public class NSAnimation : NSObject
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetAnimationBlockingMode_Handle, (ulong)value);
 			}
@@ -215,40 +281,14 @@ public class NSAnimation : NSObject
 		}
 	}
 
-	public virtual double FrameRate
-	{
-		[Export("frameRate")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selFrameRateHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selFrameRateHandle);
-		}
-		[Export("setFrameRate:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Double(base.Handle, selSetFrameRate_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetFrameRate_Handle, value);
-			}
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSAnimationCurve AnimationCurve
 	{
 		[Export("animationCurve")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return (NSAnimationCurve)Messaging.UInt64_objc_msgSend(base.Handle, selAnimationCurveHandle);
 			}
@@ -258,7 +298,7 @@ public class NSAnimation : NSObject
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetAnimationCurve_Handle, (ulong)value);
 			}
@@ -269,57 +309,137 @@ public class NSAnimation : NSObject
 		}
 	}
 
-	public virtual double CurrentValue
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual float CurrentProgress
+	{
+		[Export("currentProgress")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.float_objc_msgSend(base.Handle, selCurrentProgressHandle);
+			}
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selCurrentProgressHandle);
+		}
+		[Export("setCurrentProgress:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_float(base.Handle, selSetCurrentProgress_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetCurrentProgress_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual float CurrentValue
 	{
 		[Export("currentValue")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Double_objc_msgSend(base.Handle, selCurrentValueHandle);
+				return Messaging.float_objc_msgSend(base.Handle, selCurrentValueHandle);
 			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selCurrentValueHandle);
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selCurrentValueHandle);
 		}
 	}
 
-	public virtual NSAnimationDelegate Delegate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public INSAnimationDelegate Delegate
 	{
-		[Export("delegate")]
+		get
+		{
+			return WeakDelegate as INSAnimationDelegate;
+		}
+		set
+		{
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
+			{
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			WeakDelegate = nSObject;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual double Duration
+	{
+		[Export("duration")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSAnimationDelegate)(__mt_Delegate_var = ((!IsDirectBinding) ? ((NSAnimationDelegate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle))) : ((NSAnimationDelegate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selDurationHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selDurationHandle);
 		}
-		[Export("setDelegate:")]
+		[Export("setDuration:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (value == null)
+			if (base.IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value.Handle);
+				Messaging.void_objc_msgSend_Double(base.Handle, selSetDuration_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetDuration_Handle, value);
 			}
-			__mt_Delegate_var = value;
 		}
 	}
 
-	public virtual NSNumber[] ProgressMarks
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual float FrameRate
 	{
-		[Export("progressMarks")]
+		[Export("frameRate")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSNumber[])(__mt_ProgressMarks_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selProgressMarksHandle)) : NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selProgressMarksHandle))));
+			if (base.IsDirectBinding)
+			{
+				return Messaging.float_objc_msgSend(base.Handle, selFrameRateHandle);
+			}
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selFrameRateHandle);
 		}
-		[Export("setProgressMarks:")]
+		[Export("setFrameRate:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_float(base.Handle, selSetFrameRate_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetFrameRate_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSNumber[] ProgressMarks
+	{
+		[Export("progressMarks", ArgumentSemantic.Copy)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selProgressMarksHandle));
+			}
+			return NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selProgressMarksHandle));
+		}
+		[Export("setProgressMarks:", ArgumentSemantic.Copy)]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -328,7 +448,7 @@ public class NSAnimation : NSObject
 				throw new ArgumentNullException("value");
 			}
 			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetProgressMarks_Handle, nSArray.Handle);
 			}
@@ -337,20 +457,51 @@ public class NSAnimation : NSObject
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetProgressMarks_Handle, nSArray.Handle);
 			}
 			nSArray.Dispose();
-			__mt_ProgressMarks_var = value;
 		}
 	}
 
-	[Field("NSAnimationProgressMarkNotification", "AppKit")]
-	public static NSString ProgressMarkNotification
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSString[] RunLoopModesForAnimating
 	{
+		[Export("runLoopModesForAnimating")]
 		get
 		{
-			if (_ProgressMarkNotification == null)
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
 			{
-				_ProgressMarkNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAnimationProgressMarkNotification");
+				return NSArray.ArrayFromHandle<NSString>(Messaging.IntPtr_objc_msgSend(base.Handle, selRunLoopModesForAnimatingHandle));
 			}
-			return _ProgressMarkNotification;
+			return NSArray.ArrayFromHandle<NSString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRunLoopModesForAnimatingHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakDelegate
+	{
+		[Export("delegate", ArgumentSemantic.Assign)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
+			MarkDirty();
+			__mt_WeakDelegate_var = nSObject;
+			return nSObject;
+		}
+		[Export("setDelegate:", ArgumentSemantic.Assign)]
+		set
+		{
+			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakDelegate_var, value, GetInternalEventDelegateType);
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			MarkDirty();
+			__mt_WeakDelegate_var = value;
 		}
 	}
 
@@ -364,6 +515,20 @@ public class NSAnimation : NSObject
 				_ProgressMark = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAnimationProgressMark");
 			}
 			return _ProgressMark;
+		}
+	}
+
+	[Field("NSAnimationProgressMarkNotification", "AppKit")]
+	[Advice("Use NSAnimation.Notifications.ObserveProgressMark helper method instead.")]
+	public static NSString ProgressMarkNotification
+	{
+		get
+		{
+			if (_ProgressMarkNotification == null)
+			{
+				_ProgressMarkNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAnimationProgressMarkNotification");
+			}
+			return _ProgressMarkNotification;
 		}
 	}
 
@@ -393,7 +558,9 @@ public class NSAnimation : NSObject
 		}
 	}
 
-	public NSAnimationPredicate AnimationShouldStart
+	internal virtual Type GetInternalEventDelegateType => typeof(_NSAnimationDelegate);
+
+	public NSAnimationPredicate? AnimationShouldStart
 	{
 		get
 		{
@@ -405,7 +572,7 @@ public class NSAnimation : NSObject
 		}
 	}
 
-	public NSAnimationProgress ComputeAnimationCurve
+	public NSAnimationProgress? ComputeAnimationCurve
 	{
 		get
 		{
@@ -414,20 +581,6 @@ public class NSAnimation : NSObject
 		set
 		{
 			EnsureNSAnimationDelegate().computeAnimationCurve = value;
-		}
-	}
-
-	public event EventHandler AnimationDidStop
-	{
-		add
-		{
-			_NSAnimationDelegate nSAnimationDelegate = EnsureNSAnimationDelegate();
-			nSAnimationDelegate.animationDidStop = (EventHandler)System.Delegate.Combine(nSAnimationDelegate.animationDidStop, value);
-		}
-		remove
-		{
-			_NSAnimationDelegate nSAnimationDelegate = EnsureNSAnimationDelegate();
-			nSAnimationDelegate.animationDidStop = (EventHandler)System.Delegate.Remove(nSAnimationDelegate.animationDidStop, value);
 		}
 	}
 
@@ -459,167 +612,105 @@ public class NSAnimation : NSObject
 		}
 	}
 
+	public event EventHandler AnimationDidStop
+	{
+		add
+		{
+			_NSAnimationDelegate nSAnimationDelegate = EnsureNSAnimationDelegate();
+			nSAnimationDelegate.animationDidStop = (EventHandler)System.Delegate.Combine(nSAnimationDelegate.animationDidStop, value);
+		}
+		remove
+		{
+			_NSAnimationDelegate nSAnimationDelegate = EnsureNSAnimationDelegate();
+			nSAnimationDelegate.animationDidStop = (EventHandler)System.Delegate.Remove(nSAnimationDelegate.animationDidStop, value);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSAnimation()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSAnimation(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSAnimation(NSObjectFlag t)
+	protected NSAnimation(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSAnimation(IntPtr handle)
+	protected internal NSAnimation(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("initWithDuration:animationCurve:")]
-	public virtual IntPtr Constant(double duration, NSAnimationCurve animationCurve)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public NSAnimation(double duration, NSAnimationCurve animationCurve)
+		: base(NSObjectFlag.Empty)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return Messaging.IntPtr_objc_msgSend_Double_UInt64(base.Handle, selInitWithDurationAnimationCurve_Handle, duration, (ulong)animationCurve);
-		}
-		return Messaging.IntPtr_objc_msgSendSuper_Double_UInt64(base.SuperHandle, selInitWithDurationAnimationCurve_Handle, duration, (ulong)animationCurve);
-	}
-
-	[Export("startAnimation")]
-	public virtual void StartAnimation()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selStartAnimationHandle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_Double_UInt64(base.Handle, selInitWithDuration_AnimationCurve_Handle, duration, (ulong)animationCurve), "initWithDuration:animationCurve:");
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selStartAnimationHandle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_Double_UInt64(base.SuperHandle, selInitWithDuration_AnimationCurve_Handle, duration, (ulong)animationCurve), "initWithDuration:animationCurve:");
 		}
-	}
-
-	[Export("stopAnimation")]
-	public virtual void StopAnimation()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selStopAnimationHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selStopAnimationHandle);
-		}
-	}
-
-	[Export("isAnimating")]
-	public virtual bool IsAnimating()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selIsAnimatingHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAnimatingHandle);
 	}
 
 	[Export("addProgressMark:")]
-	public virtual void AddProgressMark(double progressMark)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AddProgressMark(float progressMark)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_Double(base.Handle, selAddProgressMark_Handle, progressMark);
+			Messaging.void_objc_msgSend_float(base.Handle, selAddProgressMark_Handle, progressMark);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selAddProgressMark_Handle, progressMark);
-		}
-	}
-
-	[Export("removeProgressMark:")]
-	public virtual void RemoveProgressMark(double progressMark)
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_Double(base.Handle, selRemoveProgressMark_Handle, progressMark);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selRemoveProgressMark_Handle, progressMark);
-		}
-	}
-
-	[Export("startWhenAnimation:reachesProgress:")]
-	public virtual void StartWhenAnimationReaches(NSAnimation animation, double startProgress)
-	{
-		NSApplication.EnsureUIThread();
-		if (animation == null)
-		{
-			throw new ArgumentNullException("animation");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_Double(base.Handle, selStartWhenAnimationReachesProgress_Handle, animation.Handle, startProgress);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_Double(base.SuperHandle, selStartWhenAnimationReachesProgress_Handle, animation.Handle, startProgress);
-		}
-	}
-
-	[Export("stopWhenAnimation:reachesProgress:")]
-	public virtual void StopWhenAnimationReaches(NSAnimation animation, double stopProgress)
-	{
-		NSApplication.EnsureUIThread();
-		if (animation == null)
-		{
-			throw new ArgumentNullException("animation");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_Double(base.Handle, selStopWhenAnimationReachesProgress_Handle, animation.Handle, stopProgress);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_Double(base.SuperHandle, selStopWhenAnimationReachesProgress_Handle, animation.Handle, stopProgress);
+			Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selAddProgressMark_Handle, progressMark);
 		}
 	}
 
 	[Export("clearStartAnimation")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ClearStartAnimation()
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selClearStartAnimationHandle);
 		}
@@ -630,10 +721,11 @@ public class NSAnimation : NSObject
 	}
 
 	[Export("clearStopAnimation")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ClearStopAnimation()
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selClearStopAnimationHandle);
 		}
@@ -643,23 +735,174 @@ public class NSAnimation : NSObject
 		}
 	}
 
-	private _NSAnimationDelegate EnsureNSAnimationDelegate()
+	[Export("initWithDuration:animationCurve:")]
+	[Obsolete("Use the constructor instead.", false)]
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual IntPtr Constant(double duration, NSAnimationCurve animationCurve)
 	{
-		NSAnimationDelegate nSAnimationDelegate = Delegate;
-		if (nSAnimationDelegate == null || !(nSAnimationDelegate is _NSAnimationDelegate))
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			nSAnimationDelegate = (Delegate = new _NSAnimationDelegate());
+			return Messaging.IntPtr_objc_msgSend_Double_UInt64(base.Handle, selInitWithDuration_AnimationCurve_Handle, duration, (ulong)animationCurve);
 		}
-		return (_NSAnimationDelegate)nSAnimationDelegate;
+		return Messaging.IntPtr_objc_msgSendSuper_Double_UInt64(base.SuperHandle, selInitWithDuration_AnimationCurve_Handle, duration, (ulong)animationCurve);
 	}
 
+	[Export("copyWithZone:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[return: Release]
+	public virtual NSObject Copy(NSZone? zone)
+	{
+		NSApplication.EnsureUIThread();
+		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
+		if (nSObject != null)
+		{
+			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
+		}
+		return nSObject;
+	}
+
+	[Export("encodeWithCoder:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void EncodeTo(NSCoder encoder)
+	{
+		NSApplication.EnsureUIThread();
+		if (encoder == null)
+		{
+			throw new ArgumentNullException("encoder");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+	}
+
+	[Export("isAnimating")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool IsAnimating()
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selIsAnimatingHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAnimatingHandle);
+	}
+
+	[Export("removeProgressMark:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RemoveProgressMark(float progressMark)
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_float(base.Handle, selRemoveProgressMark_Handle, progressMark);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selRemoveProgressMark_Handle, progressMark);
+		}
+	}
+
+	[Export("startAnimation")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void StartAnimation()
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selStartAnimationHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selStartAnimationHandle);
+		}
+	}
+
+	[Export("startWhenAnimation:reachesProgress:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void StartWhenAnimationReaches(NSAnimation animation, float startProgress)
+	{
+		NSApplication.EnsureUIThread();
+		if (animation == null)
+		{
+			throw new ArgumentNullException("animation");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_float(base.Handle, selStartWhenAnimation_ReachesProgress_Handle, animation.Handle, startProgress);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_float(base.SuperHandle, selStartWhenAnimation_ReachesProgress_Handle, animation.Handle, startProgress);
+		}
+	}
+
+	[Export("stopAnimation")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void StopAnimation()
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selStopAnimationHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selStopAnimationHandle);
+		}
+	}
+
+	[Export("stopWhenAnimation:reachesProgress:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void StopWhenAnimationReaches(NSAnimation animation, float stopProgress)
+	{
+		NSApplication.EnsureUIThread();
+		if (animation == null)
+		{
+			throw new ArgumentNullException("animation");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_float(base.Handle, selStopWhenAnimation_ReachesProgress_Handle, animation.Handle, stopProgress);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_float(base.SuperHandle, selStopWhenAnimation_ReachesProgress_Handle, animation.Handle, stopProgress);
+		}
+	}
+
+	internal virtual _NSAnimationDelegate CreateInternalEventDelegateType()
+	{
+		return new _NSAnimationDelegate();
+	}
+
+	internal _NSAnimationDelegate EnsureNSAnimationDelegate()
+	{
+		if (WeakDelegate != null)
+		{
+			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakDelegate, GetInternalEventDelegateType);
+		}
+		_NSAnimationDelegate nSAnimationDelegate = Delegate as _NSAnimationDelegate;
+		if (nSAnimationDelegate == null)
+		{
+			nSAnimationDelegate = (_NSAnimationDelegate)(Delegate = CreateInternalEventDelegateType());
+		}
+		return nSAnimationDelegate;
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
-			__mt_Delegate_var = null;
-			__mt_ProgressMarks_var = null;
+			__mt_WeakDelegate_var = null;
 		}
 	}
 }

@@ -1,214 +1,243 @@
 using System;
 using System.ComponentModel;
+using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 
 namespace AppKit;
 
-[Register("NSTableViewDelegate", true)]
+[Protocol]
+[Register("NSTableViewDelegate", false)]
 [Model]
-public class NSTableViewDelegate : NSObject
+public class NSTableViewDelegate : NSObject, INSTableViewDelegate, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSTableViewDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
+		NSApplication.EnsureUIThread();
+		base.IsDirectBinding = false;
+		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSTableViewDelegate(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTableViewDelegate(NSObjectFlag t)
+	protected NSTableViewDelegate(NSObjectFlag t)
 		: base(t)
 	{
+		base.IsDirectBinding = false;
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTableViewDelegate(IntPtr handle)
+	protected internal NSTableViewDelegate(IntPtr handle)
 		: base(handle)
 	{
-	}
-
-	[Export("tableView:willDisplayCell:forTableColumn:row:")]
-	public virtual void WillDisplayCell(NSTableView tableView, NSObject cell, NSTableColumn tableColumn, long row)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:shouldEditTableColumn:row:")]
-	public virtual bool ShouldEditTableColumn(NSTableView tableView, NSTableColumn tableColumn, long row)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("selectionShouldChangeInTableView:")]
-	public virtual bool SelectionShouldChange(NSTableView tableView)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:shouldSelectRow:")]
-	public virtual bool ShouldSelectRow(NSTableView tableView, long row)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:selectionIndexesForProposedSelection:")]
-	public virtual NSIndexSet GetSelectionIndexes(NSTableView tableView, NSIndexSet proposedSelectionIndexes)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:shouldSelectTableColumn:")]
-	public virtual bool ShouldSelectTableColumn(NSTableView tableView, NSTableColumn tableColumn)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:mouseDownInHeaderOfTableColumn:")]
-	public virtual void MouseDownInHeaderOfTableColumn(NSTableView tableView, NSTableColumn tableColumn)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:didClickTableColumn:")]
-	public virtual void DidClickTableColumn(NSTableView tableView, NSTableColumn tableColumn)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:didDragTableColumn:")]
-	public virtual void DidDragTableColumn(NSTableView tableView, NSTableColumn tableColumn)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:heightOfRow:")]
-	public virtual double GetRowHeight(NSTableView tableView, long row)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:typeSelectStringForTableColumn:row:")]
-	public virtual string GetSelectString(NSTableView tableView, NSTableColumn tableColumn, long row)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:nextTypeSelectMatchFromRow:toRow:forString:")]
-	public virtual long GetNextTypeSelectMatch(NSTableView tableView, long startRow, long endRow, string searchString)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:shouldTypeSelectForEvent:withCurrentSearchString:")]
-	public virtual bool ShouldTypeSelect(NSTableView tableView, NSEvent theEvent, string searchString)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:shouldShowCellExpansionForTableColumn:row:")]
-	public virtual bool ShouldShowCellExpansion(NSTableView tableView, NSTableColumn tableColumn, long row)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:shouldTrackCell:forTableColumn:row:")]
-	public virtual bool ShouldTrackCell(NSTableView tableView, NSCell cell, NSTableColumn tableColumn, long row)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:dataCellForTableColumn:row:")]
-	public virtual NSCell GetDataCell(NSTableView tableView, NSTableColumn tableColumn, long row)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:isGroupRow:")]
-	public virtual bool IsGroupRow(NSTableView tableView, long row)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:sizeToFitWidthOfColumn:")]
-	public virtual double GetSizeToFitColumnWidth(NSTableView tableView, long column)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:shouldReorderColumn:toColumn:")]
-	public virtual bool ShouldReorder(NSTableView tableView, long columnIndex, long newColumnIndex)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableViewSelectionDidChange:")]
-	public virtual void SelectionDidChange(NSNotification notification)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
+		base.IsDirectBinding = false;
 	}
 
 	[Export("tableViewColumnDidMove:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ColumnDidMove(NSNotification notification)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("tableViewColumnDidResize:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ColumnDidResize(NSNotification notification)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("tableViewSelectionIsChanging:")]
-	public virtual void SelectionIsChanging(NSNotification notification)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("tableView:viewForTableColumn:row:")]
-	public virtual NSView GetViewForItem(NSTableView tableView, NSTableColumn tableColumn, long row)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
 	[Export("tableView:rowViewForRow:")]
-	public virtual NSTableRowView CoreGetRowView(NSTableView tableView, long row)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSTableRowView CoreGetRowView(NSTableView tableView, nint row)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("tableView:didAddRowView:forRow:")]
-	public virtual void DidAddRowView(NSTableView tableView, NSTableRowView rowView, long row)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void DidAddRowView(NSTableView tableView, NSTableRowView rowView, nint row)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:didClickTableColumn:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void DidClickTableColumn(NSTableView tableView, NSTableColumn tableColumn)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:didDragTableColumn:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void DidDragTableColumn(NSTableView tableView, NSTableColumn tableColumn)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("tableView:didRemoveRowView:forRow:")]
-	public virtual void DidRemoveRowView(NSTableView tableView, NSTableRowView rowView, long row)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void DidRemoveRowView(NSTableView tableView, NSTableRowView rowView, nint row)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:dataCellForTableColumn:row:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSCell GetDataCell(NSTableView tableView, NSTableColumn tableColumn, nint row)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:nextTypeSelectMatchFromRow:toRow:forString:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint GetNextTypeSelectMatch(NSTableView tableView, nint startRow, nint endRow, string searchString)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:heightOfRow:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat GetRowHeight(NSTableView tableView, nint row)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:typeSelectStringForTableColumn:row:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string GetSelectString(NSTableView tableView, NSTableColumn tableColumn, nint row)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:selectionIndexesForProposedSelection:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSIndexSet GetSelectionIndexes(NSTableView tableView, NSIndexSet proposedSelectionIndexes)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:sizeToFitWidthOfColumn:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat GetSizeToFitColumnWidth(NSTableView tableView, nint column)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:toolTipForCell:rect:tableColumn:row:mouseLocation:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSString GetToolTip(NSTableView tableView, NSCell cell, ref CGRect rect, NSTableColumn? tableColumn, nint row, CGPoint mouseLocation)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:viewForTableColumn:row:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSView GetViewForItem(NSTableView tableView, NSTableColumn tableColumn, nint row)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:isGroupRow:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool IsGroupRow(NSTableView tableView, nint row)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:mouseDownInHeaderOfTableColumn:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void MouseDownInHeaderOfTableColumn(NSTableView tableView, NSTableColumn tableColumn)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:rowActionsForRow:edge:")]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSTableViewRowAction[] RowActions(NSTableView tableView, nint row, NSTableRowActionEdge edge)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableViewSelectionDidChange:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SelectionDidChange(NSNotification notification)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableViewSelectionIsChanging:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SelectionIsChanging(NSNotification notification)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("selectionShouldChangeInTableView:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool SelectionShouldChange(NSTableView tableView)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:shouldEditTableColumn:row:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ShouldEditTableColumn(NSTableView tableView, NSTableColumn tableColumn, nint row)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:shouldReorderColumn:toColumn:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ShouldReorder(NSTableView tableView, nint columnIndex, nint newColumnIndex)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:shouldSelectRow:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ShouldSelectRow(NSTableView tableView, nint row)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:shouldSelectTableColumn:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ShouldSelectTableColumn(NSTableView tableView, NSTableColumn tableColumn)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:shouldShowCellExpansionForTableColumn:row:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ShouldShowCellExpansion(NSTableView tableView, NSTableColumn tableColumn, nint row)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:shouldTrackCell:forTableColumn:row:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ShouldTrackCell(NSTableView tableView, NSCell cell, NSTableColumn tableColumn, nint row)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:shouldTypeSelectForEvent:withCurrentSearchString:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ShouldTypeSelect(NSTableView tableView, NSEvent theEvent, string searchString)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("tableView:willDisplayCell:forTableColumn:row:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void WillDisplayCell(NSTableView tableView, NSObject cell, NSTableColumn tableColumn, nint row)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

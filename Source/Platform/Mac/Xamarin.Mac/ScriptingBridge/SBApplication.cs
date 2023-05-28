@@ -1,71 +1,158 @@
 using System;
 using System.ComponentModel;
+using System.Reflection;
+using AppKit;
 using Foundation;
 using ObjCRuntime;
 
 namespace ScriptingBridge;
 
 [Register("SBApplication", true)]
-public class SBApplication : SBObject
+public class SBApplication : SBObject, INSCoding, INativeObject, IDisposable
 {
 	[Register]
-	private sealed class _SBApplicationDelegate : SBApplicationDelegate
+	internal class _SBApplicationDelegate : NSObject, ISBApplicationDelegate, INativeObject, IDisposable
 	{
-		internal SBApplicationError eventDidFailwithError;
+		internal SBApplicationError? eventDidFailwithError;
+
+		public _SBApplicationDelegate()
+		{
+			base.IsDirectBinding = false;
+		}
 
 		[Preserve(Conditional = true)]
-		public override NSObject EventDidFailwithError(IntPtr appleEvent, NSError error)
+		[Export("eventDidFail:withError:")]
+		public NSObject EventDidFailwithError(IntPtr appleEvent, NSError error)
 		{
 			return eventDidFailwithError?.Invoke(appleEvent, error);
 		}
 	}
 
-	private static readonly IntPtr selIsRunningHandle = Selector.GetHandle("isRunning");
-
-	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
-
-	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
-
-	private static readonly IntPtr selLaunchFlagsHandle = Selector.GetHandle("launchFlags");
-
-	private static readonly IntPtr selSetLaunchFlags_Handle = Selector.GetHandle("setLaunchFlags:");
-
-	private static readonly IntPtr selSendModeHandle = Selector.GetHandle("sendMode");
-
-	private static readonly IntPtr selSetSendMode_Handle = Selector.GetHandle("setSendMode:");
-
-	private static readonly IntPtr selTimeoutHandle = Selector.GetHandle("timeout");
-
-	private static readonly IntPtr selSetTimeout_Handle = Selector.GetHandle("setTimeout:");
-
-	private static readonly IntPtr selInitWithURL_Handle = Selector.GetHandle("initWithURL:");
-
-	private static readonly IntPtr selInitWithProcessIdentifier_Handle = Selector.GetHandle("initWithProcessIdentifier:");
-
-	private static readonly IntPtr selInitWithBundleIdentifier_Handle = Selector.GetHandle("initWithBundleIdentifier:");
-
-	private static readonly IntPtr selApplicationWithBundleIdentifier_Handle = Selector.GetHandle("applicationWithBundleIdentifier:");
-
-	private static readonly IntPtr selApplicationWithURL_Handle = Selector.GetHandle("applicationWithURL:");
-
-	private static readonly IntPtr selApplicationWithProcessIdentifier_Handle = Selector.GetHandle("applicationWithProcessIdentifier:");
-
-	private static readonly IntPtr selClassForScriptingClass_Handle = Selector.GetHandle("classForScriptingClass:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selActivate = "activate";
 
 	private static readonly IntPtr selActivateHandle = Selector.GetHandle("activate");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("SBApplication");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selApplicationWithBundleIdentifier_ = "applicationWithBundleIdentifier:";
 
-	private object __mt_WeakDelegate_var;
+	private static readonly IntPtr selApplicationWithBundleIdentifier_Handle = Selector.GetHandle("applicationWithBundleIdentifier:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selApplicationWithProcessIdentifier_ = "applicationWithProcessIdentifier:";
+
+	private static readonly IntPtr selApplicationWithProcessIdentifier_Handle = Selector.GetHandle("applicationWithProcessIdentifier:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selApplicationWithURL_ = "applicationWithURL:";
+
+	private static readonly IntPtr selApplicationWithURL_Handle = Selector.GetHandle("applicationWithURL:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selClassForScriptingClass_ = "classForScriptingClass:";
+
+	private static readonly IntPtr selClassForScriptingClass_Handle = Selector.GetHandle("classForScriptingClass:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDelegate = "delegate";
+
+	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEncodeWithCoder_ = "encodeWithCoder:";
+
+	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithBundleIdentifier_ = "initWithBundleIdentifier:";
+
+	private static readonly IntPtr selInitWithBundleIdentifier_Handle = Selector.GetHandle("initWithBundleIdentifier:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithCoder_ = "initWithCoder:";
+
+	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithProcessIdentifier_ = "initWithProcessIdentifier:";
+
+	private static readonly IntPtr selInitWithProcessIdentifier_Handle = Selector.GetHandle("initWithProcessIdentifier:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithURL_ = "initWithURL:";
+
+	private static readonly IntPtr selInitWithURL_Handle = Selector.GetHandle("initWithURL:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsRunning = "isRunning";
+
+	private static readonly IntPtr selIsRunningHandle = Selector.GetHandle("isRunning");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLaunchFlags = "launchFlags";
+
+	private static readonly IntPtr selLaunchFlagsHandle = Selector.GetHandle("launchFlags");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSendMode = "sendMode";
+
+	private static readonly IntPtr selSendModeHandle = Selector.GetHandle("sendMode");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDelegate_ = "setDelegate:";
+
+	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLaunchFlags_ = "setLaunchFlags:";
+
+	private static readonly IntPtr selSetLaunchFlags_Handle = Selector.GetHandle("setLaunchFlags:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetSendMode_ = "setSendMode:";
+
+	private static readonly IntPtr selSetSendMode_Handle = Selector.GetHandle("setSendMode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTimeout_ = "setTimeout:";
+
+	private static readonly IntPtr selSetTimeout_Handle = Selector.GetHandle("setTimeout:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTimeout = "timeout";
+
+	private static readonly IntPtr selTimeoutHandle = Selector.GetHandle("timeout");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("SBApplication");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public ISBApplicationDelegate Delegate
+	{
+		get
+		{
+			return WeakDelegate as ISBApplicationDelegate;
+		}
+		set
+		{
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
+			{
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			WeakDelegate = nSObject;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsRunning
 	{
 		[Export("isRunning")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsRunningHandle);
 			}
@@ -73,46 +160,13 @@ public class SBApplication : SBObject
 		}
 	}
 
-	public virtual NSObject WeakDelegate
-	{
-		[Export("delegate", ArgumentSemantic.Assign)]
-		get
-		{
-			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
-		}
-		[Export("setDelegate:", ArgumentSemantic.Assign)]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			__mt_WeakDelegate_var = value;
-		}
-	}
-
-	public SBApplicationDelegate Delegate
-	{
-		get
-		{
-			return WeakDelegate as SBApplicationDelegate;
-		}
-		set
-		{
-			WeakDelegate = value;
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual LSLaunchFlags LaunchFlags
 	{
 		[Export("launchFlags")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return (LSLaunchFlags)Messaging.UInt32_objc_msgSend(base.Handle, selLaunchFlagsHandle);
 			}
@@ -121,7 +175,7 @@ public class SBApplication : SBObject
 		[Export("setLaunchFlags:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_UInt32(base.Handle, selSetLaunchFlags_Handle, (uint)value);
 			}
@@ -132,12 +186,13 @@ public class SBApplication : SBObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual AESendMode SendMode
 	{
 		[Export("sendMode")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return (AESendMode)Messaging.int_objc_msgSend(base.Handle, selSendModeHandle);
 			}
@@ -146,7 +201,7 @@ public class SBApplication : SBObject
 		[Export("setSendMode:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_int(base.Handle, selSetSendMode_Handle, (int)value);
 			}
@@ -157,32 +212,62 @@ public class SBApplication : SBObject
 		}
 	}
 
-	public virtual int Timeout
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint Timeout
 	{
 		[Export("timeout")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.int_objc_msgSend(base.Handle, selTimeoutHandle);
+				return Messaging.nint_objc_msgSend(base.Handle, selTimeoutHandle);
 			}
-			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selTimeoutHandle);
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selTimeoutHandle);
 		}
 		[Export("setTimeout:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_int(base.Handle, selSetTimeout_Handle, value);
+				Messaging.void_objc_msgSend_nint(base.Handle, selSetTimeout_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetTimeout_Handle, value);
+				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetTimeout_Handle, value);
 			}
 		}
 	}
 
-	public SBApplicationError EventDidFailwithError
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakDelegate
+	{
+		[Export("delegate", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle));
+			}
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle));
+		}
+		[Export("setDelegate:", ArgumentSemantic.Retain)]
+		set
+		{
+			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(null, value, GetInternalEventDelegateType);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+		}
+	}
+
+	internal virtual Type GetInternalEventDelegateType => typeof(_SBApplicationDelegate);
+
+	public SBApplicationError? EventDidFailwithError
 	{
 		get
 		{
@@ -194,34 +279,57 @@ public class SBApplication : SBObject
 		}
 	}
 
+	public static T FromBundleIdentifier<T>(string ident) where T : SBApplication, new()
+	{
+		using SBApplication sBApplication = FromBundleIdentifier(ident);
+		return (T)Activator.CreateInstance(typeof(T), BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new object[1] { sBApplication.Handle }, null);
+	}
+
+	public static T FromURL<T>(NSUrl url) where T : SBApplication
+	{
+		using SBApplication sBApplication = FromURL(url);
+		return (T)Activator.CreateInstance(typeof(T), BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new object[1] { sBApplication.Handle }, null);
+	}
+
+	public static T FromProcessIdentifier<T>(int pid) where T : SBApplication
+	{
+		using SBApplication sBApplication = FromProcessIdentifier(pid);
+		return (T)Activator.CreateInstance(typeof(T), BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new object[1] { sBApplication.Handle }, null);
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public SBApplication(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public SBApplication(NSObjectFlag t)
+	protected SBApplication(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public SBApplication(IntPtr handle)
+	protected internal SBApplication(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithURL:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public SBApplication(NSUrl url)
 		: base(NSObjectFlag.Empty)
 	{
@@ -229,31 +337,33 @@ public class SBApplication : SBObject
 		{
 			throw new ArgumentNullException("url");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithURL_Handle, url.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithURL_Handle, url.Handle), "initWithURL:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithURL_Handle, url.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithURL_Handle, url.Handle), "initWithURL:");
 		}
 	}
 
 	[Export("initWithProcessIdentifier:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public SBApplication(int pid)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_int(base.Handle, selInitWithProcessIdentifier_Handle, pid);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_int(base.Handle, selInitWithProcessIdentifier_Handle, pid), "initWithProcessIdentifier:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_int(base.SuperHandle, selInitWithProcessIdentifier_Handle, pid);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_int(base.SuperHandle, selInitWithProcessIdentifier_Handle, pid), "initWithProcessIdentifier:");
 		}
 	}
 
 	[Export("initWithBundleIdentifier:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public SBApplication(string ident)
 		: base(NSObjectFlag.Empty)
 	{
@@ -262,63 +372,22 @@ public class SBApplication : SBObject
 			throw new ArgumentNullException("ident");
 		}
 		IntPtr arg = NSString.CreateNative(ident);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithBundleIdentifier_Handle, arg);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithBundleIdentifier_Handle, arg), "initWithBundleIdentifier:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithBundleIdentifier_Handle, arg);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithBundleIdentifier_Handle, arg), "initWithBundleIdentifier:");
 		}
 		NSString.ReleaseNative(arg);
-	}
-
-	[Export("applicationWithBundleIdentifier:")]
-	public static SBApplication FromBundleIdentifier(string ident)
-	{
-		if (ident == null)
-		{
-			throw new ArgumentNullException("ident");
-		}
-		IntPtr arg = NSString.CreateNative(ident);
-		SBApplication result = (SBApplication)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selApplicationWithBundleIdentifier_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("applicationWithURL:")]
-	public static SBApplication FromURL(NSUrl url)
-	{
-		if (url == null)
-		{
-			throw new ArgumentNullException("url");
-		}
-		return (SBApplication)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selApplicationWithURL_Handle, url.Handle));
-	}
-
-	[Export("applicationWithProcessIdentifier:")]
-	public static SBApplication FromProcessIdentifier(int pid)
-	{
-		return (SBApplication)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_int(class_ptr, selApplicationWithProcessIdentifier_Handle, pid));
-	}
-
-	[Export("classForScriptingClass:")]
-	public virtual Class ClassForScripting(string className)
-	{
-		if (className == null)
-		{
-			throw new ArgumentNullException("className");
-		}
-		IntPtr arg = NSString.CreateNative(className);
-		Class result = ((!IsDirectBinding) ? new Class(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selClassForScriptingClass_Handle, arg)) : new Class(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selClassForScriptingClass_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
 	}
 
 	[Export("activate")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Activate()
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selActivateHandle);
 		}
@@ -328,22 +397,86 @@ public class SBApplication : SBObject
 		}
 	}
 
-	private _SBApplicationDelegate EnsureSBApplicationDelegate()
+	[Export("classForScriptingClass:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual Class ClassForScripting(string className)
 	{
-		NSObject nSObject = WeakDelegate;
-		if (nSObject == null || !(nSObject is _SBApplicationDelegate))
+		if (className == null)
 		{
-			nSObject = (WeakDelegate = new _SBApplicationDelegate());
+			throw new ArgumentNullException("className");
 		}
-		return (_SBApplicationDelegate)nSObject;
+		IntPtr arg = NSString.CreateNative(className);
+		IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selClassForScriptingClass_Handle, arg) : Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selClassForScriptingClass_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return (intPtr == IntPtr.Zero) ? null : new Class(intPtr);
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("encodeWithCoder:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual void EncodeTo(NSCoder encoder)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		if (encoder == null)
 		{
-			__mt_WeakDelegate_var = null;
+			throw new ArgumentNullException("encoder");
 		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
+		}
+	}
+
+	[Export("applicationWithBundleIdentifier:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static SBApplication FromBundleIdentifier(string ident)
+	{
+		if (ident == null)
+		{
+			throw new ArgumentNullException("ident");
+		}
+		IntPtr arg = NSString.CreateNative(ident);
+		SBApplication nSObject = Runtime.GetNSObject<SBApplication>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selApplicationWithBundleIdentifier_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return nSObject;
+	}
+
+	[Export("applicationWithProcessIdentifier:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static SBApplication FromProcessIdentifier(int pid)
+	{
+		return Runtime.GetNSObject<SBApplication>(Messaging.IntPtr_objc_msgSend_int(class_ptr, selApplicationWithProcessIdentifier_Handle, pid));
+	}
+
+	[Export("applicationWithURL:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static SBApplication FromURL(NSUrl url)
+	{
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		return Runtime.GetNSObject<SBApplication>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selApplicationWithURL_Handle, url.Handle));
+	}
+
+	internal virtual _SBApplicationDelegate CreateInternalEventDelegateType()
+	{
+		return new _SBApplicationDelegate();
+	}
+
+	internal _SBApplicationDelegate EnsureSBApplicationDelegate()
+	{
+		if (WeakDelegate != null)
+		{
+			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakDelegate, GetInternalEventDelegateType);
+		}
+		_SBApplicationDelegate sBApplicationDelegate = Delegate as _SBApplicationDelegate;
+		if (sBApplicationDelegate == null)
+		{
+			sBApplicationDelegate = (_SBApplicationDelegate)(Delegate = CreateInternalEventDelegateType());
+		}
+		return sBApplicationDelegate;
 	}
 }

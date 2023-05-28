@@ -1,125 +1,125 @@
-using ObjCRuntime;
 using System;
 using System.Runtime.InteropServices;
+using ObjCRuntime;
 
 namespace AudioToolbox;
 
 public class AudioBuffers : IDisposable, INativeObject
 {
-    private IntPtr address;
+	private IntPtr address;
 
-    private readonly bool owns;
+	private readonly bool owns;
 
-    public unsafe int Count => *(int*)(void*)address;
+	public unsafe int Count => *(int*)(void*)address;
 
-    public unsafe AudioBuffer this[int index]
-    {
-        get
-        {
-            if (index >= Count)
-            {
-                throw new ArgumentOutOfRangeException("index");
-            }
-            byte* ptr = (byte*)(void*)address;
-            byte* ptr2 = ptr + IntPtr.Size + index * sizeof(AudioBuffer);
-            return *(AudioBuffer*)ptr2;
-        }
-        set
-        {
-            if (index >= Count)
-            {
-                throw new ArgumentOutOfRangeException("index");
-            }
-            byte* ptr = (byte*)(void*)address;
-            AudioBuffer* ptr2 = (AudioBuffer*)(ptr + IntPtr.Size + index * sizeof(AudioBuffer));
-            *ptr2 = value;
-        }
-    }
+	public unsafe AudioBuffer this[int index]
+	{
+		get
+		{
+			if (index >= Count)
+			{
+				throw new ArgumentOutOfRangeException("index");
+			}
+			byte* ptr = (byte*)(void*)address;
+			byte* ptr2 = ptr + IntPtr.Size + index * sizeof(AudioBuffer);
+			return *(AudioBuffer*)ptr2;
+		}
+		set
+		{
+			if (index >= Count)
+			{
+				throw new ArgumentOutOfRangeException("index");
+			}
+			byte* ptr = (byte*)(void*)address;
+			AudioBuffer* ptr2 = (AudioBuffer*)(ptr + IntPtr.Size + index * sizeof(AudioBuffer));
+			*ptr2 = value;
+		}
+	}
 
-    public IntPtr Handle => address;
+	public IntPtr Handle => address;
 
-    public AudioBuffers(IntPtr address)
-        : this(address, owns: false)
-    {
-    }
+	public AudioBuffers(IntPtr address)
+		: this(address, owns: false)
+	{
+	}
 
-    public AudioBuffers(IntPtr address, bool owns)
-    {
-        if (address == IntPtr.Zero)
-        {
-            throw new ArgumentException("address");
-        }
-        this.address = address;
-        this.owns = owns;
-    }
+	public AudioBuffers(IntPtr address, bool owns)
+	{
+		if (address == IntPtr.Zero)
+		{
+			throw new ArgumentException("address");
+		}
+		this.address = address;
+		this.owns = owns;
+	}
 
-    public unsafe AudioBuffers(int count)
-    {
-        if (count < 0)
-        {
-            throw new ArgumentOutOfRangeException("count");
-        }
-        int cb = IntPtr.Size + count * sizeof(AudioBuffer);
-        address = Marshal.AllocHGlobal(cb);
-        owns = true;
-        Marshal.WriteInt32(address, 0, count);
-        AudioBuffer* ptr = (AudioBuffer*)((byte*)(void*)address + IntPtr.Size);
-        for (int i = 0; i < count; i++)
-        {
-            ptr->NumberChannels = 0;
-            ptr->DataByteSize = 0;
-            ptr->Data = IntPtr.Zero;
-            ptr++;
-        }
-    }
+	public unsafe AudioBuffers(int count)
+	{
+		if (count < 0)
+		{
+			throw new ArgumentOutOfRangeException("count");
+		}
+		int cb = IntPtr.Size + count * sizeof(AudioBuffer);
+		address = Marshal.AllocHGlobal(cb);
+		owns = true;
+		Marshal.WriteInt32(address, 0, count);
+		AudioBuffer* ptr = (AudioBuffer*)((byte*)(void*)address + IntPtr.Size);
+		for (int i = 0; i < count; i++)
+		{
+			ptr->NumberChannels = 0;
+			ptr->DataByteSize = 0;
+			ptr->Data = IntPtr.Zero;
+			ptr++;
+		}
+	}
 
-    ~AudioBuffers()
-    {
-        Dispose(disposing: false);
-    }
+	~AudioBuffers()
+	{
+		Dispose(disposing: false);
+	}
 
-    public static explicit operator IntPtr(AudioBuffers audioBuffers)
-    {
-        return audioBuffers.address;
-    }
+	public static explicit operator IntPtr(AudioBuffers audioBuffers)
+	{
+		return audioBuffers.address;
+	}
 
-    public unsafe void SetData(int index, IntPtr data)
-    {
-        if (index >= Count)
-        {
-            throw new ArgumentOutOfRangeException("index");
-        }
-        byte* ptr = (byte*)(void*)address;
-        IntPtr* ptr2 = (IntPtr*)(ptr + IntPtr.Size + index * sizeof(AudioBuffer) + 4 + 4);
-        *ptr2 = data;
-    }
+	public unsafe void SetData(int index, IntPtr data)
+	{
+		if (index >= Count)
+		{
+			throw new ArgumentOutOfRangeException("index");
+		}
+		byte* ptr = (byte*)(void*)address;
+		IntPtr* ptr2 = (IntPtr*)(ptr + IntPtr.Size + index * sizeof(AudioBuffer) + 4 + 4);
+		*ptr2 = data;
+	}
 
-    public unsafe void SetData(int index, IntPtr data, int dataByteSize)
-    {
-        if (index >= Count)
-        {
-            throw new ArgumentOutOfRangeException("index");
-        }
-        byte* ptr = (byte*)(void*)address;
-        int* ptr2 = (int*)(ptr + IntPtr.Size + index * sizeof(AudioBuffer) + 4);
-        *ptr2 = dataByteSize;
-        ptr2++;
-        IntPtr* ptr3 = (IntPtr*)ptr2;
-        *ptr3 = data;
-    }
+	public unsafe void SetData(int index, IntPtr data, int dataByteSize)
+	{
+		if (index >= Count)
+		{
+			throw new ArgumentOutOfRangeException("index");
+		}
+		byte* ptr = (byte*)(void*)address;
+		int* ptr2 = (int*)(ptr + IntPtr.Size + index * sizeof(AudioBuffer) + 4);
+		*ptr2 = dataByteSize;
+		ptr2++;
+		IntPtr* ptr3 = (IntPtr*)ptr2;
+		*ptr3 = data;
+	}
 
-    public void Dispose()
-    {
-        Dispose(disposing: true);
-        GC.SuppressFinalize(this);
-    }
+	public void Dispose()
+	{
+		Dispose(disposing: true);
+		GC.SuppressFinalize(this);
+	}
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (owns && address != IntPtr.Zero)
-        {
-            Marshal.FreeHGlobal(address);
-            address = IntPtr.Zero;
-        }
-    }
+	protected virtual void Dispose(bool disposing)
+	{
+		if (owns && address != IntPtr.Zero)
+		{
+			Marshal.FreeHGlobal(address);
+			address = IntPtr.Zero;
+		}
+	}
 }

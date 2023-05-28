@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace CoreText;
 
-[Since(3, 2)]
 public enum CTUnderlineStyle
 {
 	None = 0,

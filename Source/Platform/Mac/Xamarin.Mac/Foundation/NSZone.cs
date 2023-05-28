@@ -1,47 +1,49 @@
-﻿using ObjCRuntime;
+using System;
 using System.Runtime.InteropServices;
+using ObjCRuntime;
 
 namespace Foundation;
+
 public class NSZone : INativeObject
 {
-    public static readonly NSZone Default = new NSZone(NSDefaultMallocZone());
+	public static readonly NSZone Default = new NSZone(NSDefaultMallocZone());
 
-    public IntPtr Handle { get; private set; }
+	public IntPtr Handle { get; private set; }
 
-    public string Name
-    {
-        get
-        {
-            return new NSString(NSZoneName(Handle)).ToString();
-        }
-        set
-        {
-            using NSString nSString = new NSString(value);
-            NSSetZoneName(Handle, nSString.Handle);
-        }
-    }
+	public string Name
+	{
+		get
+		{
+			return new NSString(NSZoneName(Handle)).ToString();
+		}
+		set
+		{
+			using NSString nSString = new NSString(value);
+			NSSetZoneName(Handle, nSString.Handle);
+		}
+	}
 
-    [DllImport("/System/Library/Frameworks/Foundation.framework/Foundation")]
-    private static extern IntPtr NSDefaultMallocZone();
+	[DllImport("/System/Library/Frameworks/Foundation.framework/Foundation")]
+	private static extern IntPtr NSDefaultMallocZone();
 
-    [DllImport("/System/Library/Frameworks/Foundation.framework/Foundation")]
-    private static extern IntPtr NSZoneName(IntPtr zone);
+	[DllImport("/System/Library/Frameworks/Foundation.framework/Foundation")]
+	private static extern IntPtr NSZoneName(IntPtr zone);
 
-    [DllImport("/System/Library/Frameworks/Foundation.framework/Foundation")]
-    private static extern void NSSetZoneName(IntPtr zone, IntPtr name);
+	[DllImport("/System/Library/Frameworks/Foundation.framework/Foundation")]
+	private static extern void NSSetZoneName(IntPtr zone, IntPtr name);
 
-    internal NSZone()
-    {
-    }
+	internal NSZone()
+	{
+	}
 
-    public NSZone(IntPtr handle)
-    {
-        Handle = handle;
-    }
+	public NSZone(IntPtr handle)
+	{
+		Handle = handle;
+	}
 
-    [Preserve(Conditional = true)]
-    public NSZone(IntPtr handle, bool owns)
-        : this(handle)
-    {
-    }
+	[Preserve(Conditional = true)]
+	public NSZone(IntPtr handle, bool owns)
+		: this(handle)
+	{
+	}
 }

@@ -7,56 +7,95 @@ using ObjCRuntime;
 namespace CoreImage;
 
 [Register("CISampler", true)]
-public class CISampler : NSObject
+[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+public class CISampler : NSObject, INSCopying, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCopyWithZone_ = "copyWithZone:";
+
+	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDefinition = "definition";
+
 	private static readonly IntPtr selDefinitionHandle = Selector.GetHandle("definition");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selExtent = "extent";
 
 	private static readonly IntPtr selExtentHandle = Selector.GetHandle("extent");
 
-	private static readonly IntPtr selSamplerWithImage_Handle = Selector.GetHandle("samplerWithImage:");
-
-	private static readonly IntPtr selSamplerWithImageOptions_Handle = Selector.GetHandle("samplerWithImage:options:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithImage_ = "initWithImage:";
 
 	private static readonly IntPtr selInitWithImage_Handle = Selector.GetHandle("initWithImage:");
 
-	private static readonly IntPtr selInitWithImageOptions_Handle = Selector.GetHandle("initWithImage:options:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithImage_Options_ = "initWithImage:options:";
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("CISampler");
+	private static readonly IntPtr selInitWithImage_Options_Handle = Selector.GetHandle("initWithImage:options:");
 
-	private object __mt_Definition_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSamplerWithImage_ = "samplerWithImage:";
 
-	private static NSString _AffineMatrix;
+	private static readonly IntPtr selSamplerWithImage_Handle = Selector.GetHandle("samplerWithImage:");
 
-	private static NSString _WrapMode;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSamplerWithImage_Options_ = "samplerWithImage:options:";
 
-	private static NSString _FilterMode;
+	private static readonly IntPtr selSamplerWithImage_Options_Handle = Selector.GetHandle("samplerWithImage:options:");
 
-	private static NSString _WrapBlack;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("CISampler");
 
-	private static NSString _WrapClamp;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _AffineMatrix;
 
-	private static NSString _FilterNearest;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ColorSpace;
 
-	private static NSString _FilterLinear;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FilterLinear;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FilterMode;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FilterNearest;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _WrapBlack;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _WrapClamp;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _WrapMode;
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CIFilterShape Definition
 	{
 		[Export("definition")]
 		get
 		{
-			return (CIFilterShape)(__mt_Definition_var = ((!IsDirectBinding) ? ((CIFilterShape)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDefinitionHandle))) : ((CIFilterShape)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDefinitionHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<CIFilterShape>(Messaging.IntPtr_objc_msgSend(base.Handle, selDefinitionHandle));
+			}
+			return Runtime.GetNSObject<CIFilterShape>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDefinitionHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGRect Extent
 	{
 		[Export("extent")]
 		get
 		{
 			CGRect retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selExtentHandle);
 			}
@@ -81,16 +120,31 @@ public class CISampler : NSObject
 		}
 	}
 
-	[Field("kCISamplerWrapMode", "Quartz")]
-	internal static NSString WrapMode
+	[Field("kCISamplerColorSpace", "Quartz")]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	internal static NSString ColorSpace
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_ColorSpace == null)
+			{
+				_ColorSpace = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCISamplerColorSpace");
+			}
+			return _ColorSpace;
+		}
+	}
+
+	[Field("kCISamplerFilterLinear", "Quartz")]
+	internal static NSString FilterLinear
 	{
 		get
 		{
-			if (_WrapMode == null)
+			if (_FilterLinear == null)
 			{
-				_WrapMode = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCISamplerWrapMode");
+				_FilterLinear = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCISamplerFilterLinear");
 			}
-			return _WrapMode;
+			return _FilterLinear;
 		}
 	}
 
@@ -104,6 +158,19 @@ public class CISampler : NSObject
 				_FilterMode = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCISamplerFilterMode");
 			}
 			return _FilterMode;
+		}
+	}
+
+	[Field("kCISamplerFilterNearest", "Quartz")]
+	internal static NSString FilterNearest
+	{
+		get
+		{
+			if (_FilterNearest == null)
+			{
+				_FilterNearest = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCISamplerFilterNearest");
+			}
+			return _FilterNearest;
 		}
 	}
 
@@ -133,30 +200,22 @@ public class CISampler : NSObject
 		}
 	}
 
-	[Field("kCISamplerFilterNearest", "Quartz")]
-	internal static NSString FilterNearest
+	[Field("kCISamplerWrapMode", "Quartz")]
+	internal static NSString WrapMode
 	{
 		get
 		{
-			if (_FilterNearest == null)
+			if (_WrapMode == null)
 			{
-				_FilterNearest = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCISamplerFilterNearest");
+				_WrapMode = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCISamplerWrapMode");
 			}
-			return _FilterNearest;
+			return _WrapMode;
 		}
 	}
 
-	[Field("kCISamplerFilterLinear", "Quartz")]
-	internal static NSString FilterLinear
+	[Obsolete("This default constructor does not provide a valid instance")]
+	public CISampler()
 	{
-		get
-		{
-			if (_FilterLinear == null)
-			{
-				_FilterLinear = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCISamplerFilterLinear");
-			}
-			return _FilterLinear;
-		}
 	}
 
 	public CISampler FromImage(CIImage sourceImage, CISamplerOptions options)
@@ -168,78 +227,28 @@ public class CISampler : NSObject
 		return FromImage(sourceImage, options.ToDictionary());
 	}
 
+	[DesignatedInitializer]
 	public CISampler(CIImage sourceImage, CISamplerOptions options)
 		: this(sourceImage, options?.ToDictionary())
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("init")]
-	public CISampler()
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public CISampler(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public CISampler(NSObjectFlag t)
+	protected CISampler(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public CISampler(IntPtr handle)
+	protected internal CISampler(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("samplerWithImage:")]
-	public static CISampler FromImage(CIImage sourceImage)
-	{
-		if (sourceImage == null)
-		{
-			throw new ArgumentNullException("sourceImage");
-		}
-		return (CISampler)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selSamplerWithImage_Handle, sourceImage.Handle));
-	}
-
-	[Export("samplerWithImage:options:")]
-	internal static CISampler FromImage(CIImage sourceImag, NSDictionary options)
-	{
-		if (sourceImag == null)
-		{
-			throw new ArgumentNullException("sourceImag");
-		}
-		if (options == null)
-		{
-			throw new ArgumentNullException("options");
-		}
-		return (CISampler)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selSamplerWithImageOptions_Handle, sourceImag.Handle, options.Handle));
-	}
-
 	[Export("initWithImage:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public CISampler(CIImage sourceImage)
 		: base(NSObjectFlag.Empty)
 	{
@@ -247,17 +256,19 @@ public class CISampler : NSObject
 		{
 			throw new ArgumentNullException("sourceImage");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithImage_Handle, sourceImage.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithImage_Handle, sourceImage.Handle), "initWithImage:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithImage_Handle, sourceImage.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithImage_Handle, sourceImage.Handle), "initWithImage:");
 		}
 	}
 
 	[Export("initWithImage:options:")]
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	internal CISampler(CIImage image, NSDictionary options)
 		: base(NSObjectFlag.Empty)
 	{
@@ -269,22 +280,52 @@ public class CISampler : NSObject
 		{
 			throw new ArgumentNullException("options");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithImageOptions_Handle, image.Handle, options.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithImage_Options_Handle, image.Handle, options.Handle), "initWithImage:options:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithImageOptions_Handle, image.Handle, options.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithImage_Options_Handle, image.Handle, options.Handle), "initWithImage:options:");
 		}
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("copyWithZone:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[return: Release]
+	public virtual NSObject Copy(NSZone? zone)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
+		if (nSObject != null)
 		{
-			__mt_Definition_var = null;
+			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
 		}
+		return nSObject;
+	}
+
+	[Export("samplerWithImage:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static CISampler FromImage(CIImage sourceImage)
+	{
+		if (sourceImage == null)
+		{
+			throw new ArgumentNullException("sourceImage");
+		}
+		return Runtime.GetNSObject<CISampler>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selSamplerWithImage_Handle, sourceImage.Handle));
+	}
+
+	[Export("samplerWithImage:options:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	internal static CISampler FromImage(CIImage sourceImag, NSDictionary options)
+	{
+		if (sourceImag == null)
+		{
+			throw new ArgumentNullException("sourceImag");
+		}
+		if (options == null)
+		{
+			throw new ArgumentNullException("options");
+		}
+		return Runtime.GetNSObject<CISampler>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selSamplerWithImage_Options_Handle, sourceImag.Handle, options.Handle));
 	}
 }

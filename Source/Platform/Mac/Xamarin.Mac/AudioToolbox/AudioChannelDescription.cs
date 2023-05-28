@@ -42,9 +42,9 @@ public struct AudioChannelDescription
 			int inSpecifierSize = sizeof(AudioChannelDescription);
 			IntPtr intPtr = ToPointer();
 			IntPtr outPropertyData;
-			AudioFormatError num = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.ChannelName, inSpecifierSize, intPtr, ref ioDataSize, out outPropertyData);
+			AudioFormatError audioFormatError = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.ChannelName, inSpecifierSize, intPtr, ref ioDataSize, out outPropertyData);
 			Marshal.FreeHGlobal(intPtr);
-			if (num != 0)
+			if (audioFormatError != 0)
 			{
 				return null;
 			}
@@ -60,9 +60,9 @@ public struct AudioChannelDescription
 			int inSpecifierSize = sizeof(AudioChannelDescription);
 			IntPtr intPtr = ToPointer();
 			IntPtr outPropertyData;
-			AudioFormatError num = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.ChannelShortName, inSpecifierSize, intPtr, ref ioDataSize, out outPropertyData);
+			AudioFormatError audioFormatError = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.ChannelShortName, inSpecifierSize, intPtr, ref ioDataSize, out outPropertyData);
 			Marshal.FreeHGlobal(intPtr);
-			if (num != 0)
+			if (audioFormatError != 0)
 			{
 				return null;
 			}

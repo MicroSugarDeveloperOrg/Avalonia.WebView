@@ -7,97 +7,71 @@ using ObjCRuntime;
 namespace AppKit;
 
 [Register("NSTouch", true)]
-public class NSTouch : NSObject
+public class NSTouch : NSObject, INSCopying, INativeObject, IDisposable
 {
-	private static readonly IntPtr selIdentityHandle = Selector.GetHandle("identity");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCopyWithZone_ = "copyWithZone:";
 
-	private static readonly IntPtr selPhaseHandle = Selector.GetHandle("phase");
+	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
 
-	private static readonly IntPtr selNormalizedPositionHandle = Selector.GetHandle("normalizedPosition");
-
-	private static readonly IntPtr selIsRestingHandle = Selector.GetHandle("isResting");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDevice = "device";
 
 	private static readonly IntPtr selDeviceHandle = Selector.GetHandle("device");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDeviceSize = "deviceSize";
+
 	private static readonly IntPtr selDeviceSizeHandle = Selector.GetHandle("deviceSize");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSTouch");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIdentity = "identity";
 
-	private object __mt_Identity_var;
+	private static readonly IntPtr selIdentityHandle = Selector.GetHandle("identity");
 
-	private object __mt_Device_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsResting = "isResting";
+
+	private static readonly IntPtr selIsRestingHandle = Selector.GetHandle("isResting");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selNormalizedPosition = "normalizedPosition";
+
+	private static readonly IntPtr selNormalizedPositionHandle = Selector.GetHandle("normalizedPosition");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPhase = "phase";
+
+	private static readonly IntPtr selPhaseHandle = Selector.GetHandle("phase");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSTouch");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSObject Identity
-	{
-		[Export("identity", ArgumentSemantic.Retain)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSObject)(__mt_Identity_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selIdentityHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selIdentityHandle))));
-		}
-	}
-
-	public virtual NSTouchPhase Phase
-	{
-		[Export("phase")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return (NSTouchPhase)Messaging.UInt64_objc_msgSend(base.Handle, selPhaseHandle);
-			}
-			return (NSTouchPhase)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selPhaseHandle);
-		}
-	}
-
-	public virtual CGPoint NormalizedPosition
-	{
-		[Export("normalizedPosition")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.CGPoint_objc_msgSend(base.Handle, selNormalizedPositionHandle);
-			}
-			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selNormalizedPositionHandle);
-		}
-	}
-
-	public virtual bool IsResting
-	{
-		[Export("isResting")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsRestingHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsRestingHandle);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSObject Device
 	{
 		[Export("device", ArgumentSemantic.Retain)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSObject)(__mt_Device_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDeviceHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDeviceHandle))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDeviceHandle));
+			}
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDeviceHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGSize DeviceSize
 	{
 		[Export("deviceSize")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.CGSize_objc_msgSend(base.Handle, selDeviceSizeHandle);
 			}
@@ -105,55 +79,96 @@ public class NSTouch : NSObject
 		}
 	}
 
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("init")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject Identity
+	{
+		[Export("identity", ArgumentSemantic.Retain)]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selIdentityHandle));
+			}
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selIdentityHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool IsResting
+	{
+		[Export("isResting")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsRestingHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsRestingHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGPoint NormalizedPosition
+	{
+		[Export("normalizedPosition")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.CGPoint_objc_msgSend(base.Handle, selNormalizedPositionHandle);
+			}
+			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selNormalizedPositionHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSTouchPhase Phase
+	{
+		[Export("phase")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return (NSTouchPhase)Messaging.UInt64_objc_msgSend(base.Handle, selPhaseHandle);
+			}
+			return (NSTouchPhase)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selPhaseHandle);
+		}
+	}
+
+	[Obsolete("This type is not meant to be user-created")]
 	public NSTouch()
-		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSTouch(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTouch(NSObjectFlag t)
+	protected NSTouch(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTouch(IntPtr handle)
+	protected internal NSTouch(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("copyWithZone:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[return: Release]
+	public virtual NSObject Copy(NSZone? zone)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		NSApplication.EnsureUIThread();
+		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
+		if (nSObject != null)
 		{
-			__mt_Identity_var = null;
-			__mt_Device_var = null;
+			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
 		}
+		return nSObject;
 	}
 }

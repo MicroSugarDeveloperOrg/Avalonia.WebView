@@ -2,10 +2,12 @@ using ObjCRuntime;
 
 namespace AVFoundation;
 
-[Since(4, 0)]
-public enum AVCaptureFocusMode
+[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
+[Native]
+public enum AVCaptureFocusMode : long
 {
-	ModeLocked,
-	ModeAutoFocus,
-	ModeContinuousAutoFocus
+	Locked,
+	AutoFocus,
+	ContinuousAutoFocus
 }

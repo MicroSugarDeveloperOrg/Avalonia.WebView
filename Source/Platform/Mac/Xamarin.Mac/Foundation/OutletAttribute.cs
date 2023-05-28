@@ -6,6 +6,7 @@ namespace Foundation;
 public sealed class OutletAttribute : ExportAttribute
 {
 	public OutletAttribute()
+		: base(null)
 	{
 	}
 

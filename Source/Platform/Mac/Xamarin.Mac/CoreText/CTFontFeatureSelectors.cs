@@ -1,27 +1,12 @@
 using System;
 using CoreFoundation;
 using Foundation;
-using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
 public class CTFontFeatureSelectors
 {
 	public NSDictionary Dictionary { get; private set; }
-
-	[Advice("Use one of descendant classes")]
-	public NSNumber Identifier
-	{
-		get
-		{
-			return (NSNumber)Dictionary[CTFontFeatureSelectorKey.Identifier];
-		}
-		set
-		{
-			Adapter.SetValue(Dictionary, CTFontFeatureSelectorKey.Identifier, value);
-		}
-	}
 
 	protected int FeatureWeak => (int)(NSNumber)Dictionary[CTFontFeatureSelectorKey.Identifier];
 

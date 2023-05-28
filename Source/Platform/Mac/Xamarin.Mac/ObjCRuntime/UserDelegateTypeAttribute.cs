@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+using System;
+using System.ComponentModel;
 
 namespace ObjCRuntime;
 
@@ -6,10 +7,10 @@ namespace ObjCRuntime;
 [AttributeUsage(AttributeTargets.Delegate, AllowMultiple = false)]
 public sealed class UserDelegateTypeAttribute : Attribute
 {
-    public Type UserDelegateType { get; private set; }
+	public Type UserDelegateType { get; private set; }
 
-    public UserDelegateTypeAttribute(Type userDelegateType)
-    {
-        UserDelegateType = userDelegateType;
-    }
+	public UserDelegateTypeAttribute(Type userDelegateType)
+	{
+		UserDelegateType = userDelegateType;
+	}
 }

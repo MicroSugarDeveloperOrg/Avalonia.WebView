@@ -6,7 +6,6 @@ using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
 public class CTStringAttributes
 {
 	private const int UnderlineStyleMask = 15;
@@ -20,11 +19,7 @@ public class CTStringAttributes
 		get
 		{
 			IntPtr value = CFDictionary.GetValue(Dictionary.Handle, CTStringAttributeKey.Font.Handle);
-			if (!(value == IntPtr.Zero))
-			{
-				return new CTFont(value, owns: false);
-			}
-			return null;
+			return (value == IntPtr.Zero) ? null : new CTFont(value, owns: false);
 		}
 		set
 		{
@@ -62,11 +57,7 @@ public class CTStringAttributes
 		get
 		{
 			int? int32Value = Adapter.GetInt32Value(Dictionary, CTStringAttributeKey.LigatureFormation);
-			if (int32Value.HasValue)
-			{
-				return (CTLigatureFormation)int32Value.Value;
-			}
-			return null;
+			return (!int32Value.HasValue) ? null : new CTLigatureFormation?((CTLigatureFormation)int32Value.Value);
 		}
 		set
 		{
@@ -79,15 +70,35 @@ public class CTStringAttributes
 		get
 		{
 			IntPtr value = CFDictionary.GetValue(Dictionary.Handle, CTStringAttributeKey.ForegroundColor.Handle);
-			if (!(value == IntPtr.Zero))
-			{
-				return new CGColor(value);
-			}
-			return null;
+			return (value == IntPtr.Zero) ? null : new CGColor(value);
 		}
 		set
 		{
 			Adapter.SetNativeValue(Dictionary, CTStringAttributeKey.ForegroundColor, value);
+		}
+	}
+
+	[iOS(10, 0)]
+	[Mac(10, 12)]
+	public CGColor BackgroundColor
+	{
+		get
+		{
+			IntPtr intPtr = IntPtr.Zero;
+			NSString backgroundColor = CTStringAttributeKey.BackgroundColor;
+			if (backgroundColor != null)
+			{
+				intPtr = CFDictionary.GetValue(Dictionary.Handle, backgroundColor.Handle);
+			}
+			return (intPtr == IntPtr.Zero) ? null : new CGColor(intPtr);
+		}
+		set
+		{
+			NSString backgroundColor = CTStringAttributeKey.BackgroundColor;
+			if (backgroundColor != null)
+			{
+				Adapter.SetNativeValue(Dictionary, backgroundColor, value);
+			}
 		}
 	}
 
@@ -96,11 +107,7 @@ public class CTStringAttributes
 		get
 		{
 			IntPtr value = CFDictionary.GetValue(Dictionary.Handle, CTStringAttributeKey.ParagraphStyle.Handle);
-			if (!(value == IntPtr.Zero))
-			{
-				return new CTParagraphStyle(value, owns: false);
-			}
-			return null;
+			return (value == IntPtr.Zero) ? null : new CTParagraphStyle(value, owns: false);
 		}
 		set
 		{
@@ -125,15 +132,27 @@ public class CTStringAttributes
 		get
 		{
 			IntPtr value = CFDictionary.GetValue(Dictionary.Handle, CTStringAttributeKey.StrokeColor.Handle);
-			if (!(value == IntPtr.Zero))
-			{
-				return new CGColor(value);
-			}
-			return null;
+			return (value == IntPtr.Zero) ? null : new CGColor(value);
 		}
 		set
 		{
 			Adapter.SetNativeValue(Dictionary, CTStringAttributeKey.StrokeColor, value);
+		}
+	}
+
+	[Watch(6, 0)]
+	[TV(13, 0)]
+	[Mac(10, 15)]
+	[iOS(13, 0)]
+	public float? TrackingAdjustment
+	{
+		get
+		{
+			return Adapter.GetSingleValue(Dictionary, CTStringAttributeKey.TrackingAttributeName);
+		}
+		set
+		{
+			Adapter.SetValue(Dictionary, CTStringAttributeKey.TrackingAttributeName, value);
 		}
 	}
 
@@ -154,11 +173,7 @@ public class CTStringAttributes
 		get
 		{
 			int? underlineStyleValue = UnderlineStyleValue;
-			if (underlineStyleValue.HasValue)
-			{
-				return (CTUnderlineStyle)(underlineStyleValue.Value & 0xF);
-			}
-			return null;
+			return (!underlineStyleValue.HasValue) ? null : new CTUnderlineStyle?((CTUnderlineStyle)(underlineStyleValue.Value & 0xF));
 		}
 		set
 		{
@@ -172,11 +187,7 @@ public class CTStringAttributes
 		get
 		{
 			int? underlineStyleValue = UnderlineStyleValue;
-			if (underlineStyleValue.HasValue)
-			{
-				return (CTUnderlineStyleModifiers)(underlineStyleValue.Value & 0x700);
-			}
-			return null;
+			return (!underlineStyleValue.HasValue) ? null : new CTUnderlineStyleModifiers?((CTUnderlineStyleModifiers)(underlineStyleValue.Value & 0x700));
 		}
 		set
 		{
@@ -190,11 +201,7 @@ public class CTStringAttributes
 		get
 		{
 			int? int32Value = Adapter.GetInt32Value(Dictionary, CTStringAttributeKey.Superscript);
-			if (int32Value.HasValue)
-			{
-				return (CTSuperscriptStyle)int32Value.Value;
-			}
-			return null;
+			return (!int32Value.HasValue) ? null : new CTSuperscriptStyle?((CTSuperscriptStyle)int32Value.Value);
 		}
 		set
 		{
@@ -207,11 +214,7 @@ public class CTStringAttributes
 		get
 		{
 			IntPtr value = CFDictionary.GetValue(Dictionary.Handle, CTStringAttributeKey.UnderlineColor.Handle);
-			if (!(value == IntPtr.Zero))
-			{
-				return new CGColor(value);
-			}
-			return null;
+			return (value == IntPtr.Zero) ? null : new CGColor(value);
 		}
 		set
 		{
@@ -232,16 +235,49 @@ public class CTStringAttributes
 		}
 	}
 
+	[iOS(10, 0)]
+	[Mac(10, 12)]
+	[Watch(3, 0)]
+	[TV(10, 0)]
+	public int? HorizontalInVerticalForms
+	{
+		get
+		{
+			NSString horizontalInVerticalForms = CTStringAttributeKey.HorizontalInVerticalForms;
+			return (horizontalInVerticalForms != null) ? Adapter.GetInt32Value(Dictionary, horizontalInVerticalForms) : null;
+		}
+		set
+		{
+			NSString horizontalInVerticalForms = CTStringAttributeKey.HorizontalInVerticalForms;
+			if (horizontalInVerticalForms != null)
+			{
+				Adapter.SetValue(Dictionary, horizontalInVerticalForms, value);
+			}
+		}
+	}
+
+	[iOS(11, 0)]
+	[Mac(10, 13)]
+	[TV(11, 0)]
+	[Watch(4, 0)]
+	public float? BaselineOffset
+	{
+		get
+		{
+			return Adapter.GetSingleValue(Dictionary, CTStringAttributeKey.BaselineOffset);
+		}
+		set
+		{
+			Adapter.SetValue(Dictionary, CTStringAttributeKey.BaselineOffset, value);
+		}
+	}
+
 	public CTGlyphInfo GlyphInfo
 	{
 		get
 		{
 			IntPtr value = CFDictionary.GetValue(Dictionary.Handle, CTStringAttributeKey.GlyphInfo.Handle);
-			if (!(value == IntPtr.Zero))
-			{
-				return new CTGlyphInfo(value, owns: false);
-			}
-			return null;
+			return (value == IntPtr.Zero) ? null : new CTGlyphInfo(value, owns: false);
 		}
 		set
 		{
@@ -266,11 +302,7 @@ public class CTStringAttributes
 		get
 		{
 			IntPtr value = CFDictionary.GetValue(Dictionary.Handle, CTStringAttributeKey.RunDelegate.Handle);
-			if (!(value == IntPtr.Zero))
-			{
-				return new CTRunDelegate(value, owns: false);
-			}
-			return null;
+			return (value == IntPtr.Zero) ? null : new CTRunDelegate(value, owns: false);
 		}
 		set
 		{
@@ -278,17 +310,12 @@ public class CTStringAttributes
 		}
 	}
 
-	[Since(6, 0)]
 	public CTBaselineClass? BaselineClass
 	{
 		get
 		{
 			IntPtr value = CFDictionary.GetValue(Dictionary.Handle, CTStringAttributeKey.BaselineClass.Handle);
-			if (!(value == IntPtr.Zero))
-			{
-				return CTBaselineClassID.FromHandle(value);
-			}
-			return null;
+			return (value == IntPtr.Zero) ? null : new CTBaselineClass?(CTBaselineClassID.FromHandle(value));
 		}
 		set
 		{
@@ -311,13 +338,11 @@ public class CTStringAttributes
 		Dictionary = dictionary;
 	}
 
-	[Since(6, 0)]
 	public void SetBaselineInfo(CTBaselineClass baselineClass, double offset)
 	{
 		SetBaseline(baselineClass, offset, CTStringAttributeKey.BaselineInfo);
 	}
 
-	[Since(6, 0)]
 	public void SetBaselineReferenceInfo(CTBaselineClass baselineClass, double offset)
 	{
 		SetBaseline(baselineClass, offset, CTStringAttributeKey.BaselineReferenceInfo);
@@ -335,7 +360,6 @@ public class CTStringAttributes
 		}
 	}
 
-	[Since(6, 0)]
 	public void SetWritingDirection(params CTWritingDirection[] writingDirections)
 	{
 		IntPtr[] array = new IntPtr[writingDirections.Length];

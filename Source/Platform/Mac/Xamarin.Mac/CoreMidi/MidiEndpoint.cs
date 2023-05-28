@@ -108,15 +108,15 @@ public class MidiEndpoint : MidiObject
 		}
 	}
 
-	public int IsBroadcast
+	public bool IsBroadcast
 	{
 		get
 		{
-			return GetInt(MidiObject.kMIDIPropertyIsBroadcast);
+			return GetInt(MidiObject.kMIDIPropertyIsBroadcast) != 0;
 		}
 		set
 		{
-			SetInt(MidiObject.kMIDIPropertyIsBroadcast, value);
+			SetInt(MidiObject.kMIDIPropertyIsBroadcast, value ? 1 : 0);
 		}
 	}
 
@@ -226,89 +226,88 @@ public class MidiEndpoint : MidiObject
 	public event EventHandler<MidiPacketsEventArgs> MessageReceived;
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIEndpointDispose(IntPtr handle);
+	private static extern int MIDIEndpointDispose(int handle);
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIDestinationCreate(IntPtr client, IntPtr name, MidiReadProc readProc, IntPtr context, out IntPtr midiEndpoint);
+	private static extern MidiError MIDIDestinationCreate(int client, IntPtr name, MidiReadProc readProc, IntPtr context, out int midiEndpoint);
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIFlushOutput(IntPtr handle);
+	private static extern int MIDIFlushOutput(int handle);
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern MidiError MIDIReceived(IntPtr handle, IntPtr packetList);
+	private static extern MidiError MIDIReceived(int handle, IntPtr packetList);
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern IntPtr MIDIGetSource(int sourceIndex);
+	private static extern int MIDIGetSource(nint sourceIndex);
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern IntPtr MIDIGetDestination(int destinationIndex);
+	private static extern int MIDIGetDestination(nint destinationIndex);
 
 	internal override void DisposeHandle()
 	{
-		if (handle != IntPtr.Zero)
+		if (handle != 0)
 		{
 			if (owns)
 			{
 				MIDIEndpointDispose(handle);
 			}
-			handle = IntPtr.Zero;
+			handle = 0;
+		}
+		if (gch.IsAllocated)
+		{
 			gch.Free();
 		}
 	}
 
-	internal MidiEndpoint(IntPtr handle)
+	internal MidiEndpoint(int handle)
 		: base(handle, owns: false)
 	{
 		EndpointName = "Endpoint from Lookup";
 	}
 
-	internal MidiEndpoint(IntPtr handle, bool owns)
+	internal MidiEndpoint(int handle, bool owns)
 		: base(handle, owns)
 	{
 		EndpointName = "Endpoint from Lookup";
 	}
 
-	internal MidiEndpoint(IntPtr handle, string endpointName, bool owns)
+	internal MidiEndpoint(int handle, string endpointName, bool owns)
 		: base(handle, owns)
 	{
 		EndpointName = endpointName;
 	}
 
-	public static MidiEndpoint GetSource(int sourceIndex)
+	public static MidiEndpoint GetSource(nint sourceIndex)
 	{
-		IntPtr intPtr = MIDIGetSource(sourceIndex);
-		if (intPtr == IntPtr.Zero)
+		int num = MIDIGetSource(sourceIndex);
+		if (num == 0)
 		{
 			return null;
 		}
-		return new MidiEndpoint(intPtr, "Source" + sourceIndex, owns: false);
+		nint nint = sourceIndex;
+		return new MidiEndpoint(num, "Source" + nint.ToString(), owns: false);
 	}
 
-	public static MidiEndpoint GetDestination(int destinationIndex)
+	public static MidiEndpoint GetDestination(nint destinationIndex)
 	{
-		IntPtr intPtr = MIDIGetDestination(destinationIndex);
-		if (intPtr == IntPtr.Zero)
+		int num = MIDIGetDestination(destinationIndex);
+		if (num == 0)
 		{
 			return null;
 		}
-		return new MidiEndpoint(intPtr, "Destination" + destinationIndex, owns: false);
+		nint nint = destinationIndex;
+		return new MidiEndpoint(num, "Destination" + nint.ToString(), owns: false);
 	}
 
-	internal MidiEndpoint(MidiClient client, string name)
+	internal MidiEndpoint(MidiClient client, string name, out MidiError code)
 	{
 		using NSString nSString = new NSString(name);
 		GCHandle value = GCHandle.Alloc(this);
-		int num = MIDIDestinationCreate(client.handle, nSString.Handle, Read, GCHandle.ToIntPtr(value), out handle);
-		if (num != 0)
-		{
-			value.Free();
-			handle = IntPtr.Zero;
-			throw new MidiException((MidiError)num);
-		}
+		code = MIDIDestinationCreate(client.handle, nSString.Handle, Read, GCHandle.ToIntPtr(value), out handle);
 		EndpointName = name;
 	}
 
-	public override void Dispose(bool disposing)
+	protected override void Dispose(bool disposing)
 	{
 		this.MessageReceived = null;
 		base.Dispose(disposing);
@@ -331,12 +330,12 @@ public class MidiEndpoint : MidiObject
 		{
 			throw new ArgumentNullException("packets");
 		}
-		IntPtr intPtr = Midi.EncodePackets(packets);
+		IntPtr intPtr = MidiPacket.CreatePacketList(packets);
 		MidiError result = MIDIReceived(handle, intPtr);
 		Marshal.FreeHGlobal(intPtr);
 		return result;
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIEndpointGetEntity(IntPtr endpoint, out IntPtr entity);
+	private static extern int MIDIEndpointGetEntity(int endpoint, out int entity);
 }

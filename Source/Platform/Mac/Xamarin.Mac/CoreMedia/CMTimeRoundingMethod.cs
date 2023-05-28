@@ -1,12 +1,15 @@
+using ObjCRuntime;
+
 namespace CoreMedia;
 
-public enum CMTimeRoundingMethod
+[Watch(6, 0)]
+public enum CMTimeRoundingMethod : uint
 {
-	RoundHalfAwayFromZero = 1,
-	RoundTowardZero = 2,
-	RoundAwayFromZero = 3,
-	QuickTime = 4,
-	RoundTowardPositiveInfinity = 5,
-	RoundTowardNegativeInfinity = 6,
-	Default = 1
+	RoundHalfAwayFromZero = 1u,
+	RoundTowardZero = 2u,
+	RoundAwayFromZero = 3u,
+	QuickTime = 4u,
+	RoundTowardPositiveInfinity = 5u,
+	RoundTowardNegativeInfinity = 6u,
+	Default = 1u
 }

@@ -1,4 +1,4 @@
-﻿using AudioToolbox;
+using AudioToolbox;
 
 namespace AVFoundation;
 

@@ -1,5 +1,8 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
+[Native]
 public enum NSDocumentChangeType : ulong
 {
 	Done = 0uL,

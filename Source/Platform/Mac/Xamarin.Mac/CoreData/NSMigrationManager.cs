@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
@@ -9,124 +8,174 @@ namespace CoreData;
 [Register("NSMigrationManager", true)]
 public class NSMigrationManager : NSObject
 {
-	private static readonly IntPtr selMappingModelHandle = Selector.GetHandle("mappingModel");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAssociateSourceInstance_WithDestinationInstance_ForEntityMapping_ = "associateSourceInstance:withDestinationInstance:forEntityMapping:";
 
-	private static readonly IntPtr selSourceModelHandle = Selector.GetHandle("sourceModel");
+	private static readonly IntPtr selAssociateSourceInstance_WithDestinationInstance_ForEntityMapping_Handle = Selector.GetHandle("associateSourceInstance:withDestinationInstance:forEntityMapping:");
 
-	private static readonly IntPtr selDestinationModelHandle = Selector.GetHandle("destinationModel");
-
-	private static readonly IntPtr selSourceContextHandle = Selector.GetHandle("sourceContext");
-
-	private static readonly IntPtr selDestinationContextHandle = Selector.GetHandle("destinationContext");
-
-	private static readonly IntPtr selCurrentEntityMappingHandle = Selector.GetHandle("currentEntityMapping");
-
-	private static readonly IntPtr selMigrationProgressHandle = Selector.GetHandle("migrationProgress");
-
-	private static readonly IntPtr selUserInfoHandle = Selector.GetHandle("userInfo");
-
-	private static readonly IntPtr selSetUserInfo_Handle = Selector.GetHandle("setUserInfo:");
-
-	private static readonly IntPtr selUsesStoreSpecificMigrationManagerHandle = Selector.GetHandle("usesStoreSpecificMigrationManager");
-
-	private static readonly IntPtr selSetUsesStoreSpecificMigrationManager_Handle = Selector.GetHandle("setUsesStoreSpecificMigrationManager:");
-
-	private static readonly IntPtr selInitWithSourceModelDestinationModel_Handle = Selector.GetHandle("initWithSourceModel:destinationModel:");
-
-	private static readonly IntPtr selMigrateStoreFromURLTypeOptionsWithMappingModelToDestinationURLDestinationTypeDestinationOptionsError_Handle = Selector.GetHandle("migrateStoreFromURL:type:options:withMappingModel:toDestinationURL:destinationType:destinationOptions:error:");
-
-	private static readonly IntPtr selResetHandle = Selector.GetHandle("reset");
-
-	private static readonly IntPtr selSourceEntityForEntityMapping_Handle = Selector.GetHandle("sourceEntityForEntityMapping:");
-
-	private static readonly IntPtr selDestinationEntityForEntityMapping_Handle = Selector.GetHandle("destinationEntityForEntityMapping:");
-
-	private static readonly IntPtr selAssociateSourceInstanceWithDestinationInstanceForEntityMapping_Handle = Selector.GetHandle("associateSourceInstance:withDestinationInstance:forEntityMapping:");
-
-	private static readonly IntPtr selDestinationInstancesForEntityMappingNamedSourceInstances_Handle = Selector.GetHandle("destinationInstancesForEntityMappingNamed:sourceInstances:");
-
-	private static readonly IntPtr selSourceInstancesForEntityMappingNamedDestinationInstances_Handle = Selector.GetHandle("sourceInstancesForEntityMappingNamed:destinationInstances:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCancelMigrationWithError_ = "cancelMigrationWithError:";
 
 	private static readonly IntPtr selCancelMigrationWithError_Handle = Selector.GetHandle("cancelMigrationWithError:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSMigrationManager");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCurrentEntityMapping = "currentEntityMapping";
 
-	private object __mt_MappingModel_var;
+	private static readonly IntPtr selCurrentEntityMappingHandle = Selector.GetHandle("currentEntityMapping");
 
-	private object __mt_SourceModel_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDestinationContext = "destinationContext";
 
-	private object __mt_DestinationModel_var;
+	private static readonly IntPtr selDestinationContextHandle = Selector.GetHandle("destinationContext");
 
-	private object __mt_SourceContext_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDestinationEntityForEntityMapping_ = "destinationEntityForEntityMapping:";
 
-	private object __mt_DestinationContext_var;
+	private static readonly IntPtr selDestinationEntityForEntityMapping_Handle = Selector.GetHandle("destinationEntityForEntityMapping:");
 
-	private object __mt_CurrentEntityMapping_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDestinationInstancesForEntityMappingNamed_SourceInstances_ = "destinationInstancesForEntityMappingNamed:sourceInstances:";
 
-	private object __mt_UserInfo_var;
+	private static readonly IntPtr selDestinationInstancesForEntityMappingNamed_SourceInstances_Handle = Selector.GetHandle("destinationInstancesForEntityMappingNamed:sourceInstances:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDestinationModel = "destinationModel";
+
+	private static readonly IntPtr selDestinationModelHandle = Selector.GetHandle("destinationModel");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithSourceModel_DestinationModel_ = "initWithSourceModel:destinationModel:";
+
+	private static readonly IntPtr selInitWithSourceModel_DestinationModel_Handle = Selector.GetHandle("initWithSourceModel:destinationModel:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMappingModel = "mappingModel";
+
+	private static readonly IntPtr selMappingModelHandle = Selector.GetHandle("mappingModel");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMigrateStoreFromURL_Type_Options_WithMappingModel_ToDestinationURL_DestinationType_DestinationOptions_Error_ = "migrateStoreFromURL:type:options:withMappingModel:toDestinationURL:destinationType:destinationOptions:error:";
+
+	private static readonly IntPtr selMigrateStoreFromURL_Type_Options_WithMappingModel_ToDestinationURL_DestinationType_DestinationOptions_Error_Handle = Selector.GetHandle("migrateStoreFromURL:type:options:withMappingModel:toDestinationURL:destinationType:destinationOptions:error:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMigrationProgress = "migrationProgress";
+
+	private static readonly IntPtr selMigrationProgressHandle = Selector.GetHandle("migrationProgress");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReset = "reset";
+
+	private static readonly IntPtr selResetHandle = Selector.GetHandle("reset");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetUserInfo_ = "setUserInfo:";
+
+	private static readonly IntPtr selSetUserInfo_Handle = Selector.GetHandle("setUserInfo:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetUsesStoreSpecificMigrationManager_ = "setUsesStoreSpecificMigrationManager:";
+
+	private static readonly IntPtr selSetUsesStoreSpecificMigrationManager_Handle = Selector.GetHandle("setUsesStoreSpecificMigrationManager:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSourceContext = "sourceContext";
+
+	private static readonly IntPtr selSourceContextHandle = Selector.GetHandle("sourceContext");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSourceEntityForEntityMapping_ = "sourceEntityForEntityMapping:";
+
+	private static readonly IntPtr selSourceEntityForEntityMapping_Handle = Selector.GetHandle("sourceEntityForEntityMapping:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSourceInstancesForEntityMappingNamed_DestinationInstances_ = "sourceInstancesForEntityMappingNamed:destinationInstances:";
+
+	private static readonly IntPtr selSourceInstancesForEntityMappingNamed_DestinationInstances_Handle = Selector.GetHandle("sourceInstancesForEntityMappingNamed:destinationInstances:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSourceModel = "sourceModel";
+
+	private static readonly IntPtr selSourceModelHandle = Selector.GetHandle("sourceModel");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selUserInfo = "userInfo";
+
+	private static readonly IntPtr selUserInfoHandle = Selector.GetHandle("userInfo");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selUsesStoreSpecificMigrationManager = "usesStoreSpecificMigrationManager";
+
+	private static readonly IntPtr selUsesStoreSpecificMigrationManagerHandle = Selector.GetHandle("usesStoreSpecificMigrationManager");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSMigrationManager");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSMappingModel MappingModel
-	{
-		[Export("mappingModel")]
-		get
-		{
-			return (NSMappingModel)(__mt_MappingModel_var = ((!IsDirectBinding) ? ((NSMappingModel)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMappingModelHandle))) : ((NSMappingModel)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMappingModelHandle)))));
-		}
-	}
-
-	public virtual NSManagedObjectModel SourceModel
-	{
-		[Export("sourceModel")]
-		get
-		{
-			return (NSManagedObjectModel)(__mt_SourceModel_var = ((!IsDirectBinding) ? ((NSManagedObjectModel)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSourceModelHandle))) : ((NSManagedObjectModel)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSourceModelHandle)))));
-		}
-	}
-
-	public virtual NSManagedObjectModel DestinationModel
-	{
-		[Export("destinationModel")]
-		get
-		{
-			return (NSManagedObjectModel)(__mt_DestinationModel_var = ((!IsDirectBinding) ? ((NSManagedObjectModel)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDestinationModelHandle))) : ((NSManagedObjectModel)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDestinationModelHandle)))));
-		}
-	}
-
-	public virtual NSManagedObjectContext SourceContext
-	{
-		[Export("sourceContext")]
-		get
-		{
-			return (NSManagedObjectContext)(__mt_SourceContext_var = ((!IsDirectBinding) ? ((NSManagedObjectContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSourceContextHandle))) : ((NSManagedObjectContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSourceContextHandle)))));
-		}
-	}
-
-	public virtual NSManagedObjectContext DestinationContext
-	{
-		[Export("destinationContext")]
-		get
-		{
-			return (NSManagedObjectContext)(__mt_DestinationContext_var = ((!IsDirectBinding) ? ((NSManagedObjectContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDestinationContextHandle))) : ((NSManagedObjectContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDestinationContextHandle)))));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSEntityMapping CurrentEntityMapping
 	{
-		[Export("currentEntityMapping")]
+		[Export("currentEntityMapping", ArgumentSemantic.Retain)]
 		get
 		{
-			return (NSEntityMapping)(__mt_CurrentEntityMapping_var = ((!IsDirectBinding) ? ((NSEntityMapping)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrentEntityMappingHandle))) : ((NSEntityMapping)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrentEntityMappingHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSEntityMapping>(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrentEntityMappingHandle));
+			}
+			return Runtime.GetNSObject<NSEntityMapping>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrentEntityMappingHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSManagedObjectContext DestinationContext
+	{
+		[Export("destinationContext", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSManagedObjectContext>(Messaging.IntPtr_objc_msgSend(base.Handle, selDestinationContextHandle));
+			}
+			return Runtime.GetNSObject<NSManagedObjectContext>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDestinationContextHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSManagedObjectModel DestinationModel
+	{
+		[Export("destinationModel", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSManagedObjectModel>(Messaging.IntPtr_objc_msgSend(base.Handle, selDestinationModelHandle));
+			}
+			return Runtime.GetNSObject<NSManagedObjectModel>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDestinationModelHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSMappingModel MappingModel
+	{
+		[Export("mappingModel", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSMappingModel>(Messaging.IntPtr_objc_msgSend(base.Handle, selMappingModelHandle));
+			}
+			return Runtime.GetNSObject<NSMappingModel>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMappingModelHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual float MigrationProgress
 	{
 		[Export("migrationProgress")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.float_objc_msgSend(base.Handle, selMigrationProgressHandle);
 			}
@@ -134,39 +183,67 @@ public class NSMigrationManager : NSObject
 		}
 	}
 
-	public virtual NSDictionary UserInfo
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSManagedObjectContext SourceContext
 	{
-		[Export("userInfo")]
+		[Export("sourceContext", ArgumentSemantic.Retain)]
 		get
 		{
-			return (NSDictionary)(__mt_UserInfo_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUserInfoHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selUserInfoHandle)))));
-		}
-		[Export("setUserInfo:")]
-		set
-		{
-			if (value == null)
+			if (base.IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
+				return Runtime.GetNSObject<NSManagedObjectContext>(Messaging.IntPtr_objc_msgSend(base.Handle, selSourceContextHandle));
 			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetUserInfo_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetUserInfo_Handle, value.Handle);
-			}
-			__mt_UserInfo_var = value;
+			return Runtime.GetNSObject<NSManagedObjectContext>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSourceContextHandle));
 		}
 	}
 
-	[Since(5, 0)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSManagedObjectModel SourceModel
+	{
+		[Export("sourceModel", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSManagedObjectModel>(Messaging.IntPtr_objc_msgSend(base.Handle, selSourceModelHandle));
+			}
+			return Runtime.GetNSObject<NSManagedObjectModel>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSourceModelHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary? UserInfo
+	{
+		[Export("userInfo", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selUserInfoHandle));
+			}
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUserInfoHandle));
+		}
+		[Export("setUserInfo:", ArgumentSemantic.Retain)]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetUserInfo_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetUserInfo_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool UsesStoreSpecificMigrationManager
 	{
 		[Export("usesStoreSpecificMigrationManager")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selUsesStoreSpecificMigrationManagerHandle);
 			}
@@ -175,7 +252,7 @@ public class NSMigrationManager : NSObject
 		[Export("setUsesStoreSpecificMigrationManager:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetUsesStoreSpecificMigrationManager_Handle, value);
 			}
@@ -186,49 +263,38 @@ public class NSMigrationManager : NSObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSMigrationManager()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSMigrationManager(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSMigrationManager(NSObjectFlag t)
+	protected NSMigrationManager(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSMigrationManager(IntPtr handle)
+	protected internal NSMigrationManager(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithSourceModel:destinationModel:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSMigrationManager(NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel)
 		: base(NSObjectFlag.Empty)
 	{
@@ -240,102 +306,18 @@ public class NSMigrationManager : NSObject
 		{
 			throw new ArgumentNullException("destinationModel");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithSourceModelDestinationModel_Handle, sourceModel.Handle, destinationModel.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithSourceModel_DestinationModel_Handle, sourceModel.Handle, destinationModel.Handle), "initWithSourceModel:destinationModel:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithSourceModelDestinationModel_Handle, sourceModel.Handle, destinationModel.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithSourceModel_DestinationModel_Handle, sourceModel.Handle, destinationModel.Handle), "initWithSourceModel:destinationModel:");
 		}
-	}
-
-	[Export("migrateStoreFromURL:type:options:withMappingModel:toDestinationURL:destinationType:destinationOptions:error:")]
-	public virtual bool MigrateStoreFromUrl(NSUrl sourceURL, string sStoreType, NSDictionary sOptions, NSMappingModel mappings, NSUrl dURL, string dStoreType, NSDictionary dOptions, out NSError error)
-	{
-		if (sourceURL == null)
-		{
-			throw new ArgumentNullException("sourceURL");
-		}
-		if (sStoreType == null)
-		{
-			throw new ArgumentNullException("sStoreType");
-		}
-		if (sOptions == null)
-		{
-			throw new ArgumentNullException("sOptions");
-		}
-		if (mappings == null)
-		{
-			throw new ArgumentNullException("mappings");
-		}
-		if (dURL == null)
-		{
-			throw new ArgumentNullException("dURL");
-		}
-		if (dStoreType == null)
-		{
-			throw new ArgumentNullException("dStoreType");
-		}
-		if (dOptions == null)
-		{
-			throw new ArgumentNullException("dOptions");
-		}
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		IntPtr arg = NSString.CreateNative(sStoreType);
-		IntPtr arg2 = NSString.CreateNative(dStoreType);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selMigrateStoreFromURLTypeOptionsWithMappingModelToDestinationURLDestinationTypeDestinationOptionsError_Handle, sourceURL.Handle, arg, sOptions.Handle, mappings.Handle, dURL.Handle, arg2, dOptions.Handle, intPtr) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selMigrateStoreFromURLTypeOptionsWithMappingModelToDestinationURLDestinationTypeDestinationOptionsError_Handle, sourceURL.Handle, arg, sOptions.Handle, mappings.Handle, dURL.Handle, arg2, dOptions.Handle, intPtr));
-		NSString.ReleaseNative(arg);
-		NSString.ReleaseNative(arg2);
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
-		return result;
-	}
-
-	[Export("reset")]
-	public virtual void Reset()
-	{
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selResetHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selResetHandle);
-		}
-	}
-
-	[Export("sourceEntityForEntityMapping:")]
-	public virtual NSEntityDescription SourceEntityForEntityMapping(NSEntityMapping mEntity)
-	{
-		if (mEntity == null)
-		{
-			throw new ArgumentNullException("mEntity");
-		}
-		if (IsDirectBinding)
-		{
-			return (NSEntityDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selSourceEntityForEntityMapping_Handle, mEntity.Handle));
-		}
-		return (NSEntityDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selSourceEntityForEntityMapping_Handle, mEntity.Handle));
-	}
-
-	[Export("destinationEntityForEntityMapping:")]
-	public virtual NSEntityDescription DestinationEntityForEntityMapping(NSEntityMapping mEntity)
-	{
-		if (mEntity == null)
-		{
-			throw new ArgumentNullException("mEntity");
-		}
-		if (IsDirectBinding)
-		{
-			return (NSEntityDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDestinationEntityForEntityMapping_Handle, mEntity.Handle));
-		}
-		return (NSEntityDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDestinationEntityForEntityMapping_Handle, mEntity.Handle));
 	}
 
 	[Export("associateSourceInstance:withDestinationInstance:forEntityMapping:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AssociateSourceInstance(NSManagedObject sourceInstance, NSManagedObject destinationInstance, NSEntityMapping entityMapping)
 	{
 		if (sourceInstance == null)
@@ -350,62 +332,25 @@ public class NSMigrationManager : NSObject
 		{
 			throw new ArgumentNullException("entityMapping");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selAssociateSourceInstanceWithDestinationInstanceForEntityMapping_Handle, sourceInstance.Handle, destinationInstance.Handle, entityMapping.Handle);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selAssociateSourceInstance_WithDestinationInstance_ForEntityMapping_Handle, sourceInstance.Handle, destinationInstance.Handle, entityMapping.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selAssociateSourceInstanceWithDestinationInstanceForEntityMapping_Handle, sourceInstance.Handle, destinationInstance.Handle, entityMapping.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selAssociateSourceInstance_WithDestinationInstance_ForEntityMapping_Handle, sourceInstance.Handle, destinationInstance.Handle, entityMapping.Handle);
 		}
-	}
-
-	[Export("destinationInstancesForEntityMappingNamed:sourceInstances:")]
-	public virtual NSManagedObject[] DestinationInstancesForEntityMappingNamed(string mappingName, NSManagedObject[] sourceInstances)
-	{
-		if (mappingName == null)
-		{
-			throw new ArgumentNullException("mappingName");
-		}
-		if (sourceInstances == null)
-		{
-			throw new ArgumentNullException("sourceInstances");
-		}
-		IntPtr arg = NSString.CreateNative(mappingName);
-		NSArray nSArray = NSArray.FromNSObjects(sourceInstances);
-		NSManagedObject[] result = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSManagedObject>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selDestinationInstancesForEntityMappingNamedSourceInstances_Handle, arg, nSArray.Handle)) : NSArray.ArrayFromHandle<NSManagedObject>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selDestinationInstancesForEntityMappingNamedSourceInstances_Handle, arg, nSArray.Handle)));
-		NSString.ReleaseNative(arg);
-		nSArray.Dispose();
-		return result;
-	}
-
-	[Export("sourceInstancesForEntityMappingNamed:destinationInstances:")]
-	public virtual NSManagedObject[] SourceInstancesForEntityMappingNamed(string mappingName, NSManagedObject[] destinationInstances)
-	{
-		if (mappingName == null)
-		{
-			throw new ArgumentNullException("mappingName");
-		}
-		if (destinationInstances == null)
-		{
-			throw new ArgumentNullException("destinationInstances");
-		}
-		IntPtr arg = NSString.CreateNative(mappingName);
-		NSArray nSArray = NSArray.FromNSObjects(destinationInstances);
-		NSManagedObject[] result = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSManagedObject>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSourceInstancesForEntityMappingNamedDestinationInstances_Handle, arg, nSArray.Handle)) : NSArray.ArrayFromHandle<NSManagedObject>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selSourceInstancesForEntityMappingNamedDestinationInstances_Handle, arg, nSArray.Handle)));
-		NSString.ReleaseNative(arg);
-		nSArray.Dispose();
-		return result;
 	}
 
 	[Export("cancelMigrationWithError:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void CancelMigrationWithError(NSError error)
 	{
 		if (error == null)
 		{
 			throw new ArgumentNullException("error");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selCancelMigrationWithError_Handle, error.Handle);
 		}
@@ -415,18 +360,109 @@ public class NSMigrationManager : NSObject
 		}
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("destinationEntityForEntityMapping:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSEntityDescription? DestinationEntityForEntityMapping(NSEntityMapping mEntity)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		if (mEntity == null)
 		{
-			__mt_MappingModel_var = null;
-			__mt_SourceModel_var = null;
-			__mt_DestinationModel_var = null;
-			__mt_SourceContext_var = null;
-			__mt_DestinationContext_var = null;
-			__mt_CurrentEntityMapping_var = null;
-			__mt_UserInfo_var = null;
+			throw new ArgumentNullException("mEntity");
 		}
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<NSEntityDescription>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDestinationEntityForEntityMapping_Handle, mEntity.Handle));
+		}
+		return Runtime.GetNSObject<NSEntityDescription>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDestinationEntityForEntityMapping_Handle, mEntity.Handle));
+	}
+
+	[Export("destinationInstancesForEntityMappingNamed:sourceInstances:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSManagedObject[] DestinationInstancesForEntityMappingNamed(string mappingName, NSManagedObject[]? sourceInstances)
+	{
+		if (mappingName == null)
+		{
+			throw new ArgumentNullException("mappingName");
+		}
+		IntPtr arg = NSString.CreateNative(mappingName);
+		NSArray nSArray = ((sourceInstances == null) ? null : NSArray.FromNSObjects(sourceInstances));
+		NSManagedObject[] result = ((!base.IsDirectBinding) ? NSArray.ArrayFromHandle<NSManagedObject>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selDestinationInstancesForEntityMappingNamed_SourceInstances_Handle, arg, nSArray?.Handle ?? IntPtr.Zero)) : NSArray.ArrayFromHandle<NSManagedObject>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selDestinationInstancesForEntityMappingNamed_SourceInstances_Handle, arg, nSArray?.Handle ?? IntPtr.Zero)));
+		NSString.ReleaseNative(arg);
+		nSArray?.Dispose();
+		return result;
+	}
+
+	[Export("migrateStoreFromURL:type:options:withMappingModel:toDestinationURL:destinationType:destinationOptions:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool MigrateStoreFromUrl(NSUrl sourceUrl, string sStoreType, NSDictionary? sOptions, NSMappingModel? mappings, NSUrl dUrl, string dStoreType, NSDictionary? dOptions, out NSError error)
+	{
+		if (sourceUrl == null)
+		{
+			throw new ArgumentNullException("sourceUrl");
+		}
+		if (sStoreType == null)
+		{
+			throw new ArgumentNullException("sStoreType");
+		}
+		if (dUrl == null)
+		{
+			throw new ArgumentNullException("dUrl");
+		}
+		if (dStoreType == null)
+		{
+			throw new ArgumentNullException("dStoreType");
+		}
+		IntPtr arg = IntPtr.Zero;
+		IntPtr arg2 = NSString.CreateNative(sStoreType);
+		IntPtr arg3 = NSString.CreateNative(dStoreType);
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_ref_IntPtr(base.SuperHandle, selMigrateStoreFromURL_Type_Options_WithMappingModel_ToDestinationURL_DestinationType_DestinationOptions_Error_Handle, sourceUrl.Handle, arg2, sOptions?.Handle ?? IntPtr.Zero, mappings?.Handle ?? IntPtr.Zero, dUrl.Handle, arg3, dOptions?.Handle ?? IntPtr.Zero, ref arg) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_ref_IntPtr(base.Handle, selMigrateStoreFromURL_Type_Options_WithMappingModel_ToDestinationURL_DestinationType_DestinationOptions_Error_Handle, sourceUrl.Handle, arg2, sOptions?.Handle ?? IntPtr.Zero, mappings?.Handle ?? IntPtr.Zero, dUrl.Handle, arg3, dOptions?.Handle ?? IntPtr.Zero, ref arg));
+		NSString.ReleaseNative(arg2);
+		NSString.ReleaseNative(arg3);
+		error = Runtime.GetNSObject<NSError>(arg);
+		return result;
+	}
+
+	[Export("reset")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Reset()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selResetHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selResetHandle);
+		}
+	}
+
+	[Export("sourceEntityForEntityMapping:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSEntityDescription? SourceEntityForEntityMapping(NSEntityMapping mEntity)
+	{
+		if (mEntity == null)
+		{
+			throw new ArgumentNullException("mEntity");
+		}
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<NSEntityDescription>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selSourceEntityForEntityMapping_Handle, mEntity.Handle));
+		}
+		return Runtime.GetNSObject<NSEntityDescription>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selSourceEntityForEntityMapping_Handle, mEntity.Handle));
+	}
+
+	[Export("sourceInstancesForEntityMappingNamed:destinationInstances:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSManagedObject[] SourceInstancesForEntityMappingNamed(string mappingName, NSManagedObject[]? destinationInstances)
+	{
+		if (mappingName == null)
+		{
+			throw new ArgumentNullException("mappingName");
+		}
+		IntPtr arg = NSString.CreateNative(mappingName);
+		NSArray nSArray = ((destinationInstances == null) ? null : NSArray.FromNSObjects(destinationInstances));
+		NSManagedObject[] result = ((!base.IsDirectBinding) ? NSArray.ArrayFromHandle<NSManagedObject>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSourceInstancesForEntityMappingNamed_DestinationInstances_Handle, arg, nSArray?.Handle ?? IntPtr.Zero)) : NSArray.ArrayFromHandle<NSManagedObject>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selSourceInstancesForEntityMappingNamed_DestinationInstances_Handle, arg, nSArray?.Handle ?? IntPtr.Zero)));
+		NSString.ReleaseNative(arg);
+		nSArray?.Dispose();
+		return result;
 	}
 }

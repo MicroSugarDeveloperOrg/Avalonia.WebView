@@ -1,5 +1,8 @@
+using ObjCRuntime;
+
 namespace Foundation;
 
+[Native]
 public enum NSUrlRequestCachePolicy : ulong
 {
 	UseProtocolCachePolicy = 0uL,

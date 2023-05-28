@@ -20,7 +20,7 @@ internal class AvaloniaDispatcher : Dispatcher
             else
                 await _dispatcher.InvokeAsync(workItem).GetTask();
         }
-        catch (Exception ex)
+        catch (Exception)
         {      
             throw;
         }
@@ -35,7 +35,7 @@ internal class AvaloniaDispatcher : Dispatcher
             else
                 await _dispatcher.InvokeAsync(workItem);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw;
         }
@@ -50,7 +50,7 @@ internal class AvaloniaDispatcher : Dispatcher
             else
                 return await _dispatcher.InvokeAsync(workItem);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw;
         }
@@ -65,7 +65,7 @@ internal class AvaloniaDispatcher : Dispatcher
             else
                 return await _dispatcher.InvokeAsync(workItem);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw;
         }

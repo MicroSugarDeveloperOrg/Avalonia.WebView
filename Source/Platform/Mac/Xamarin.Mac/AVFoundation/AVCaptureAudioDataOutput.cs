@@ -7,107 +7,181 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Register("AVCaptureAudioDataOutput", true)]
+[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
 public class AVCaptureAudioDataOutput : AVCaptureOutput
 {
-	private static readonly IntPtr selSampleBufferDelegateHandle = Selector.GetHandle("sampleBufferDelegate");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAudioSettings = "audioSettings";
+
+	private static readonly IntPtr selAudioSettingsHandle = Selector.GetHandle("audioSettings");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRecommendedAudioSettingsForAssetWriterWithOutputFileType_ = "recommendedAudioSettingsForAssetWriterWithOutputFileType:";
+
+	private static readonly IntPtr selRecommendedAudioSettingsForAssetWriterWithOutputFileType_Handle = Selector.GetHandle("recommendedAudioSettingsForAssetWriterWithOutputFileType:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSampleBufferCallbackQueue = "sampleBufferCallbackQueue";
 
 	private static readonly IntPtr selSampleBufferCallbackQueueHandle = Selector.GetHandle("sampleBufferCallbackQueue");
 
-	private static readonly IntPtr selSetSampleBufferDelegateQueue_Handle = Selector.GetHandle("setSampleBufferDelegate:queue:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSampleBufferDelegate = "sampleBufferDelegate";
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("AVCaptureAudioDataOutput");
+	private static readonly IntPtr selSampleBufferDelegateHandle = Selector.GetHandle("sampleBufferDelegate");
 
-	private object __mt_SampleBufferDelegate_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetAudioSettings_ = "setAudioSettings:";
+
+	private static readonly IntPtr selSetAudioSettings_Handle = Selector.GetHandle("setAudioSettings:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetSampleBufferDelegate_Queue_ = "setSampleBufferDelegate:queue:";
+
+	private static readonly IntPtr selSetSampleBufferDelegate_Queue_Handle = Selector.GetHandle("setSampleBufferDelegate:queue:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVCaptureAudioDataOutput");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual AVCaptureAudioDataOutputSampleBufferDelegate SampleBufferDelegate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
+	public AudioSettings? AudioSettings
 	{
-		[Export("sampleBufferDelegate")]
+		[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
 		get
 		{
-			return (AVCaptureAudioDataOutputSampleBufferDelegate)(__mt_SampleBufferDelegate_var = ((!IsDirectBinding) ? ((AVCaptureAudioDataOutputSampleBufferDelegate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSampleBufferDelegateHandle))) : ((AVCaptureAudioDataOutputSampleBufferDelegate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSampleBufferDelegateHandle)))));
+			NSMutableDictionary nSMutableDictionary = ((WeakAudioSettings != null) ? new NSMutableDictionary(WeakAudioSettings) : null);
+			return (nSMutableDictionary == null) ? null : new AudioSettings(nSMutableDictionary);
+		}
+		[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
+		set
+		{
+			WeakAudioSettings = value.GetDictionary();
 		}
 	}
 
-	public virtual DispatchQueue SampleBufferCallbackQueue
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DispatchQueue? SampleBufferCallbackQueue
 	{
 		[Export("sampleBufferCallbackQueue")]
 		get
 		{
-			if (IsDirectBinding)
-			{
-				return new DispatchQueue(Messaging.IntPtr_objc_msgSend(base.Handle, selSampleBufferCallbackQueueHandle));
-			}
-			return new DispatchQueue(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSampleBufferCallbackQueueHandle));
+			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSampleBufferCallbackQueueHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selSampleBufferCallbackQueueHandle));
+			return (intPtr == IntPtr.Zero) ? null : new DispatchQueue(intPtr);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual IAVCaptureAudioDataOutputSampleBufferDelegate? SampleBufferDelegate
+	{
+		[Export("sampleBufferDelegate")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetINativeObject<IAVCaptureAudioDataOutputSampleBufferDelegate>(Messaging.IntPtr_objc_msgSend(base.Handle, selSampleBufferDelegateHandle), owns: false);
+			}
+			return Runtime.GetINativeObject<IAVCaptureAudioDataOutputSampleBufferDelegate>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSampleBufferDelegateHandle), owns: false);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
+	public virtual NSDictionary? WeakAudioSettings
+	{
+		[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
+		[Export("audioSettings", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selAudioSettingsHandle));
+			}
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAudioSettingsHandle));
+		}
+		[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
+		[Export("setAudioSettings:", ArgumentSemantic.Copy)]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAudioSettings_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAudioSettings_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public AVCaptureAudioDataOutput()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public AVCaptureAudioDataOutput(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVCaptureAudioDataOutput(NSObjectFlag t)
+	protected AVCaptureAudioDataOutput(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public AVCaptureAudioDataOutput(IntPtr handle)
+	protected internal AVCaptureAudioDataOutput(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("setSampleBufferDelegate:queue:")]
-	public virtual void SetSampleBufferDelegatequeue(AVCaptureAudioDataOutputSampleBufferDelegate sampleBufferDelegate, DispatchQueue sampleBufferCallbackDispatchQueue)
+	[Export("recommendedAudioSettingsForAssetWriterWithOutputFileType:")]
+	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary? GetRecommendedAudioSettingsForAssetWriter(string outputFileType)
 	{
-		if (sampleBufferDelegate == null)
+		if (outputFileType == null)
 		{
-			throw new ArgumentNullException("sampleBufferDelegate");
+			throw new ArgumentNullException("outputFileType");
 		}
-		if (IsDirectBinding)
+		IntPtr arg = NSString.CreateNative(outputFileType);
+		NSDictionary result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selRecommendedAudioSettingsForAssetWriterWithOutputFileType_Handle, arg)) : Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selRecommendedAudioSettingsForAssetWriterWithOutputFileType_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public void SetSampleBufferDelegateQueue(IAVCaptureAudioDataOutputSampleBufferDelegate? sampleBufferDelegate, DispatchQueue? sampleBufferCallbackDispatchQueue)
+	{
+		Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetSampleBufferDelegate_Queue_Handle, sampleBufferDelegate?.Handle ?? IntPtr.Zero, (sampleBufferCallbackDispatchQueue == null) ? IntPtr.Zero : sampleBufferCallbackDispatchQueue.Handle);
+	}
+
+	[Export("setSampleBufferDelegate:queue:")]
+	[Obsolete("Use overload accepting a 'IAVCaptureVideoDataOutputSampleBufferDelegate'.", false)]
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SetSampleBufferDelegateQueue(AVCaptureAudioDataOutputSampleBufferDelegate? sampleBufferDelegate, DispatchQueue? sampleBufferCallbackDispatchQueue)
+	{
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetSampleBufferDelegateQueue_Handle, sampleBufferDelegate.Handle, sampleBufferCallbackDispatchQueue.Handle);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetSampleBufferDelegate_Queue_Handle, sampleBufferDelegate?.Handle ?? IntPtr.Zero, (sampleBufferCallbackDispatchQueue == null) ? IntPtr.Zero : sampleBufferCallbackDispatchQueue.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetSampleBufferDelegateQueue_Handle, sampleBufferDelegate.Handle, sampleBufferCallbackDispatchQueue.Handle);
-		}
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_SampleBufferDelegate_var = null;
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetSampleBufferDelegate_Queue_Handle, sampleBufferDelegate?.Handle ?? IntPtr.Zero, (sampleBufferCallbackDispatchQueue == null) ? IntPtr.Zero : sampleBufferCallbackDispatchQueue.Handle);
 		}
 	}
 }

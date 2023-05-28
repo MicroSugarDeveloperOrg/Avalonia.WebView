@@ -1,10 +1,11 @@
+using System;
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
 namespace CoreVideo;
 
-[Since(6, 0)]
+[Watch(4, 0)]
 public class CVPixelBufferAttributes : DictionaryContainer
 {
 	public CVPixelFormatType? PixelFormatType
@@ -21,13 +22,17 @@ public class CVPixelBufferAttributes : DictionaryContainer
 
 	public CFAllocator MemoryAllocator
 	{
+		get
+		{
+			return GetNativeValue<CFAllocator>(CVPixelBuffer.MemoryAllocatorKey);
+		}
 		set
 		{
 			SetNativeValue(CVPixelBuffer.MemoryAllocatorKey, value);
 		}
 	}
 
-	public int? Width
+	public nint? Width
 	{
 		get
 		{
@@ -39,7 +44,7 @@ public class CVPixelBufferAttributes : DictionaryContainer
 		}
 	}
 
-	public int? Height
+	public nint? Height
 	{
 		get
 		{
@@ -159,19 +164,6 @@ public class CVPixelBufferAttributes : DictionaryContainer
 		}
 	}
 
-	[Since(6, 0)]
-	public bool? OpenGLESCompatibility
-	{
-		get
-		{
-			return GetBoolValue(CVPixelBuffer.OpenGLESCompatibilityKey);
-		}
-		set
-		{
-			SetBooleanValue(CVPixelBuffer.OpenGLESCompatibilityKey, value);
-		}
-	}
-
 	public CVPixelBufferAttributes()
 		: base(new NSMutableDictionary())
 	{
@@ -182,7 +174,7 @@ public class CVPixelBufferAttributes : DictionaryContainer
 	{
 	}
 
-	public CVPixelBufferAttributes(CVPixelFormatType pixelFormatType, int width, int height)
+	public CVPixelBufferAttributes(CVPixelFormatType pixelFormatType, nint width, nint height)
 		: this()
 	{
 		PixelFormatType = pixelFormatType;

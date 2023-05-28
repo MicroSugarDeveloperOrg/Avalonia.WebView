@@ -1,37 +1,119 @@
-using System;
 using Foundation;
 using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
-public class CTFontFeatureSelectorKey
+public static class CTFontFeatureSelectorKey
 {
-	public static readonly NSString Identifier;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Default;
 
-	public static readonly NSString Name;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Identifier;
 
-	public static readonly NSString Default;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Name;
 
-	public static readonly NSString Setting;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _SampleText;
 
-	static CTFontFeatureSelectorKey()
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Setting;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TooltipText;
+
+	[Field("kCTFontFeatureSelectorDefaultKey", "CoreText")]
+	public static NSString Default
 	{
-		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText", 0);
-		if (intPtr == IntPtr.Zero)
+		get
 		{
-			return;
+			if (_Default == null)
+			{
+				_Default = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontFeatureSelectorDefaultKey");
+			}
+			return _Default;
 		}
-		try
+	}
+
+	[Field("kCTFontFeatureSelectorIdentifierKey", "CoreText")]
+	public static NSString Identifier
+	{
+		get
 		{
-			Identifier = Dlfcn.GetStringConstant(intPtr, "kCTFontFeatureSelectorIdentifierKey");
-			Name = Dlfcn.GetStringConstant(intPtr, "kCTFontFeatureSelectorNameKey");
-			Default = Dlfcn.GetStringConstant(intPtr, "kCTFontFeatureSelectorDefaultKey");
-			Setting = Dlfcn.GetStringConstant(intPtr, "kCTFontFeatureSelectorSettingKey");
+			if (_Identifier == null)
+			{
+				_Identifier = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontFeatureSelectorIdentifierKey");
+			}
+			return _Identifier;
 		}
-		finally
+	}
+
+	[Field("kCTFontFeatureSelectorNameKey", "CoreText")]
+	public static NSString Name
+	{
+		get
 		{
-			Dlfcn.dlclose(intPtr);
+			if (_Name == null)
+			{
+				_Name = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontFeatureSelectorNameKey");
+			}
+			return _Name;
+		}
+	}
+
+	[Field("kCTFontFeatureSampleTextKey", "CoreText")]
+	[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
+	public static NSString SampleText
+	{
+		[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_SampleText == null)
+			{
+				_SampleText = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontFeatureSampleTextKey");
+			}
+			return _SampleText;
+		}
+	}
+
+	[Field("kCTFontFeatureSelectorSettingKey", "CoreText")]
+	public static NSString Setting
+	{
+		get
+		{
+			if (_Setting == null)
+			{
+				_Setting = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontFeatureSelectorSettingKey");
+			}
+			return _Setting;
+		}
+	}
+
+	[Field("kCTFontFeatureTooltipTextKey", "CoreText")]
+	[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
+	public static NSString TooltipText
+	{
+		[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_TooltipText == null)
+			{
+				_TooltipText = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontFeatureTooltipTextKey");
+			}
+			return _TooltipText;
 		}
 	}
 }

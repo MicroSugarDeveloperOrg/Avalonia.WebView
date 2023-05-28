@@ -8,125 +8,133 @@ namespace AppKit;
 [Register("NSRunningApplication", true)]
 public class NSRunningApplication : NSObject
 {
-	private static readonly IntPtr selIsTerminatedHandle = Selector.GetHandle("isTerminated");
-
-	private static readonly IntPtr selIsFinishedLaunchingHandle = Selector.GetHandle("isFinishedLaunching");
-
-	private static readonly IntPtr selIsHiddenHandle = Selector.GetHandle("isHidden");
-
-	private static readonly IntPtr selIsActiveHandle = Selector.GetHandle("isActive");
-
-	private static readonly IntPtr selActivationPolicyHandle = Selector.GetHandle("activationPolicy");
-
-	private static readonly IntPtr selLocalizedNameHandle = Selector.GetHandle("localizedName");
-
-	private static readonly IntPtr selBundleIdentifierHandle = Selector.GetHandle("bundleIdentifier");
-
-	private static readonly IntPtr selBundleURLHandle = Selector.GetHandle("bundleURL");
-
-	private static readonly IntPtr selExecutableURLHandle = Selector.GetHandle("executableURL");
-
-	private static readonly IntPtr selProcessIdentifierHandle = Selector.GetHandle("processIdentifier");
-
-	private static readonly IntPtr selLaunchDateHandle = Selector.GetHandle("launchDate");
-
-	private static readonly IntPtr selIconHandle = Selector.GetHandle("icon");
-
-	private static readonly IntPtr selExecutableArchitectureHandle = Selector.GetHandle("executableArchitecture");
-
-	private static readonly IntPtr selCurrentApplicationHandle = Selector.GetHandle("currentApplication");
-
-	private static readonly IntPtr selHideHandle = Selector.GetHandle("hide");
-
-	private static readonly IntPtr selUnhideHandle = Selector.GetHandle("unhide");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selActivateWithOptions_ = "activateWithOptions:";
 
 	private static readonly IntPtr selActivateWithOptions_Handle = Selector.GetHandle("activateWithOptions:");
 
-	private static readonly IntPtr selTerminateHandle = Selector.GetHandle("terminate");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selActivationPolicy = "activationPolicy";
+
+	private static readonly IntPtr selActivationPolicyHandle = Selector.GetHandle("activationPolicy");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBundleIdentifier = "bundleIdentifier";
+
+	private static readonly IntPtr selBundleIdentifierHandle = Selector.GetHandle("bundleIdentifier");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBundleURL = "bundleURL";
+
+	private static readonly IntPtr selBundleURLHandle = Selector.GetHandle("bundleURL");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCurrentApplication = "currentApplication";
+
+	private static readonly IntPtr selCurrentApplicationHandle = Selector.GetHandle("currentApplication");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selExecutableArchitecture = "executableArchitecture";
+
+	private static readonly IntPtr selExecutableArchitectureHandle = Selector.GetHandle("executableArchitecture");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selExecutableURL = "executableURL";
+
+	private static readonly IntPtr selExecutableURLHandle = Selector.GetHandle("executableURL");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selForceTerminate = "forceTerminate";
 
 	private static readonly IntPtr selForceTerminateHandle = Selector.GetHandle("forceTerminate");
 
-	private static readonly IntPtr selRunningApplicationsWithBundleIdentifier_Handle = Selector.GetHandle("runningApplicationsWithBundleIdentifier:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selHide = "hide";
+
+	private static readonly IntPtr selHideHandle = Selector.GetHandle("hide");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIcon = "icon";
+
+	private static readonly IntPtr selIconHandle = Selector.GetHandle("icon");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsActive = "isActive";
+
+	private static readonly IntPtr selIsActiveHandle = Selector.GetHandle("isActive");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsFinishedLaunching = "isFinishedLaunching";
+
+	private static readonly IntPtr selIsFinishedLaunchingHandle = Selector.GetHandle("isFinishedLaunching");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsHidden = "isHidden";
+
+	private static readonly IntPtr selIsHiddenHandle = Selector.GetHandle("isHidden");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsTerminated = "isTerminated";
+
+	private static readonly IntPtr selIsTerminatedHandle = Selector.GetHandle("isTerminated");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLaunchDate = "launchDate";
+
+	private static readonly IntPtr selLaunchDateHandle = Selector.GetHandle("launchDate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLocalizedName = "localizedName";
+
+	private static readonly IntPtr selLocalizedNameHandle = Selector.GetHandle("localizedName");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selOwnsMenuBar = "ownsMenuBar";
+
+	private static readonly IntPtr selOwnsMenuBarHandle = Selector.GetHandle("ownsMenuBar");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selProcessIdentifier = "processIdentifier";
+
+	private static readonly IntPtr selProcessIdentifierHandle = Selector.GetHandle("processIdentifier");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRunningApplicationWithProcessIdentifier_ = "runningApplicationWithProcessIdentifier:";
 
 	private static readonly IntPtr selRunningApplicationWithProcessIdentifier_Handle = Selector.GetHandle("runningApplicationWithProcessIdentifier:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSRunningApplication");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRunningApplicationsWithBundleIdentifier_ = "runningApplicationsWithBundleIdentifier:";
 
-	private object __mt_BundleUrl_var;
+	private static readonly IntPtr selRunningApplicationsWithBundleIdentifier_Handle = Selector.GetHandle("runningApplicationsWithBundleIdentifier:");
 
-	private object __mt_ExecutableUrl_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTerminate = "terminate";
 
-	private object __mt_LaunchDate_var;
+	private static readonly IntPtr selTerminateHandle = Selector.GetHandle("terminate");
 
-	private object __mt_Icon_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTerminateAutomaticallyTerminableApplications = "terminateAutomaticallyTerminableApplications";
 
-	private static object __mt_CurrentApplication_var_static;
+	private static readonly IntPtr selTerminateAutomaticallyTerminableApplicationsHandle = Selector.GetHandle("terminateAutomaticallyTerminableApplications");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selUnhide = "unhide";
+
+	private static readonly IntPtr selUnhideHandle = Selector.GetHandle("unhide");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSRunningApplication");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual bool Terminated
-	{
-		[Export("isTerminated")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsTerminatedHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsTerminatedHandle);
-		}
-	}
-
-	public virtual bool FinishedLaunching
-	{
-		[Export("isFinishedLaunching")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsFinishedLaunchingHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsFinishedLaunchingHandle);
-		}
-	}
-
-	public virtual bool Hidden
-	{
-		[Export("isHidden")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsHiddenHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsHiddenHandle);
-		}
-	}
-
-	public virtual bool Active
-	{
-		[Export("isActive")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsActiveHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsActiveHandle);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSApplicationActivationPolicy ActivationPolicy
 	{
 		[Export("activationPolicy")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return (NSApplicationActivationPolicy)Messaging.Int64_objc_msgSend(base.Handle, selActivationPolicyHandle);
 			}
@@ -134,27 +142,27 @@ public class NSRunningApplication : NSObject
 		}
 	}
 
-	public virtual string LocalizedName
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Active
 	{
-		[Export("localizedName")]
+		[Export("isActive")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedNameHandle));
+				return Messaging.bool_objc_msgSend(base.Handle, selIsActiveHandle);
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizedNameHandle));
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsActiveHandle);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string BundleIdentifier
 	{
-		[Export("bundleIdentifier")]
+		[Export("bundleIdentifier", ArgumentSemantic.Copy)]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selBundleIdentifierHandle));
 			}
@@ -162,33 +170,150 @@ public class NSRunningApplication : NSObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSUrl BundleUrl
 	{
-		[Export("bundleURL")]
+		[Export("bundleURL", ArgumentSemantic.Copy)]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			return (NSUrl)(__mt_BundleUrl_var = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBundleURLHandle))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selBundleURLHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selBundleURLHandle));
+			}
+			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBundleURLHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[ThreadSafe]
+	public static NSRunningApplication CurrentApplication
+	{
+		[Export("currentApplication")]
+		get
+		{
+			return Runtime.GetNSObject<NSRunningApplication>(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentApplicationHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint ExecutableArchitecture
+	{
+		[Export("executableArchitecture")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nint_objc_msgSend(base.Handle, selExecutableArchitectureHandle);
+			}
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selExecutableArchitectureHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSUrl ExecutableUrl
 	{
-		[Export("executableURL")]
+		[Export("executableURL", ArgumentSemantic.Copy)]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			return (NSUrl)(__mt_ExecutableUrl_var = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selExecutableURLHandle))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selExecutableURLHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selExecutableURLHandle));
+			}
+			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selExecutableURLHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool FinishedLaunching
+	{
+		[Export("isFinishedLaunching")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsFinishedLaunchingHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsFinishedLaunchingHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Hidden
+	{
+		[Export("isHidden")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsHiddenHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsHiddenHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSImage Icon
+	{
+		[Export("icon", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSend(base.Handle, selIconHandle));
+			}
+			return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selIconHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDate LaunchDate
+	{
+		[Export("launchDate", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSend(base.Handle, selLaunchDateHandle));
+			}
+			return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLaunchDateHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string LocalizedName
+	{
+		[Export("localizedName", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedNameHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizedNameHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool OwnsMenuBar
+	{
+		[Export("ownsMenuBar")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selOwnsMenuBarHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selOwnsMenuBarHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual int ProcessIdentifier
 	{
 		[Export("processIdentifier")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.int_objc_msgSend(base.Handle, selProcessIdentifierHandle);
 			}
@@ -196,151 +321,83 @@ public class NSRunningApplication : NSObject
 		}
 	}
 
-	public virtual NSDate LaunchDate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Terminated
 	{
-		[Export("launchDate")]
+		[Export("isTerminated")]
 		get
 		{
-			NSApplication.EnsureUIThread();
-			return (NSDate)(__mt_LaunchDate_var = ((!IsDirectBinding) ? ((NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLaunchDateHandle))) : ((NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selLaunchDateHandle)))));
-		}
-	}
-
-	public virtual NSImage Icon
-	{
-		[Export("icon")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return (NSImage)(__mt_Icon_var = ((!IsDirectBinding) ? ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selIconHandle))) : ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selIconHandle)))));
-		}
-	}
-
-	public virtual int ExecutableArchitecture
-	{
-		[Export("executableArchitecture")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.int_objc_msgSend(base.Handle, selExecutableArchitectureHandle);
+				return Messaging.bool_objc_msgSend(base.Handle, selIsTerminatedHandle);
 			}
-			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selExecutableArchitectureHandle);
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsTerminatedHandle);
 		}
 	}
 
-	[ThreadSafe]
-	public static NSRunningApplication CurrentApplication
-	{
-		[Export("currentApplication")]
-		get
-		{
-			return (NSRunningApplication)(__mt_CurrentApplication_var_static = (NSRunningApplication)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentApplicationHandle)));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSRunningApplication()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSRunningApplication(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSRunningApplication(NSObjectFlag t)
+	protected NSRunningApplication(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSRunningApplication(IntPtr handle)
+	protected internal NSRunningApplication(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("hide")]
-	public virtual bool Hide()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selHideHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selHideHandle);
-	}
-
-	[Export("unhide")]
-	public virtual bool Unhide()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selUnhideHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selUnhideHandle);
-	}
-
 	[Export("activateWithOptions:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Activate(NSApplicationActivationOptions options)
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend_UInt64(base.Handle, selActivateWithOptions_Handle, (ulong)options);
 		}
 		return Messaging.bool_objc_msgSendSuper_UInt64(base.SuperHandle, selActivateWithOptions_Handle, (ulong)options);
 	}
 
-	[Export("terminate")]
-	public virtual bool Terminate()
-	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selTerminateHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selTerminateHandle);
-	}
-
 	[Export("forceTerminate")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool ForceTerminate()
 	{
-		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend(base.Handle, selForceTerminateHandle);
 		}
 		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selForceTerminateHandle);
 	}
 
+	[Export("runningApplicationWithProcessIdentifier:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSRunningApplication GetRunningApplication(int pid)
+	{
+		return Runtime.GetNSObject<NSRunningApplication>(Messaging.IntPtr_objc_msgSend_int(class_ptr, selRunningApplicationWithProcessIdentifier_Handle, pid));
+	}
+
 	[Export("runningApplicationsWithBundleIdentifier:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSRunningApplication[] GetRunningApplications(string bundleIdentifier)
 	{
-		NSApplication.EnsureUIThread();
 		if (bundleIdentifier == null)
 		{
 			throw new ArgumentNullException("bundleIdentifier");
@@ -351,22 +408,43 @@ public class NSRunningApplication : NSObject
 		return result;
 	}
 
-	[Export("runningApplicationWithProcessIdentifier:")]
-	public static NSRunningApplication GetRunningApplication(int pid)
+	[Export("hide")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Hide()
 	{
-		NSApplication.EnsureUIThread();
-		return (NSRunningApplication)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_int(class_ptr, selRunningApplicationWithProcessIdentifier_Handle, pid));
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selHideHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selHideHandle);
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("terminate")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Terminate()
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		if (base.IsDirectBinding)
 		{
-			__mt_BundleUrl_var = null;
-			__mt_ExecutableUrl_var = null;
-			__mt_LaunchDate_var = null;
-			__mt_Icon_var = null;
+			return Messaging.bool_objc_msgSend(base.Handle, selTerminateHandle);
 		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selTerminateHandle);
+	}
+
+	[Export("terminateAutomaticallyTerminableApplications")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static void TerminateAutomaticallyTerminableApplications()
+	{
+		Messaging.void_objc_msgSend(class_ptr, selTerminateAutomaticallyTerminableApplicationsHandle);
+	}
+
+	[Export("unhide")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Unhide()
+	{
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selUnhideHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selUnhideHandle);
 	}
 }

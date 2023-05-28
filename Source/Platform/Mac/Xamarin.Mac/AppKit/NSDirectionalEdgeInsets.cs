@@ -1,4 +1,5 @@
-﻿using Foundation;
+using System;
+using Foundation;
 using ObjCRuntime;
 
 namespace AppKit;
@@ -8,63 +9,63 @@ namespace AppKit;
 [iOS(11, 0)]
 public struct NSDirectionalEdgeInsets
 {
-    [Field("NSDirectionalEdgeInsetsZero")]
-    public static readonly NSDirectionalEdgeInsets Zero;
+	[Field("NSDirectionalEdgeInsetsZero")]
+	public static readonly NSDirectionalEdgeInsets Zero;
 
-    public nfloat Top;
+	public nfloat Top;
 
-    public nfloat Leading;
+	public nfloat Leading;
 
-    public nfloat Bottom;
+	public nfloat Bottom;
 
-    public nfloat Trailing;
+	public nfloat Trailing;
 
-    public NSDirectionalEdgeInsets(nfloat top, nfloat leading, nfloat bottom, nfloat trailing)
-    {
-        Top = top;
-        Leading = leading;
-        Bottom = bottom;
-        Trailing = trailing;
-    }
+	public NSDirectionalEdgeInsets(nfloat top, nfloat leading, nfloat bottom, nfloat trailing)
+	{
+		Top = top;
+		Leading = leading;
+		Bottom = bottom;
+		Trailing = trailing;
+	}
 
-    public bool Equals(NSDirectionalEdgeInsets other)
-    {
-        if (Leading != other.Leading)
-        {
-            return false;
-        }
-        if (Trailing != other.Trailing)
-        {
-            return false;
-        }
-        if (Top != other.Top)
-        {
-            return false;
-        }
-        return Bottom == other.Bottom;
-    }
+	public bool Equals(NSDirectionalEdgeInsets other)
+	{
+		if (Leading != other.Leading)
+		{
+			return false;
+		}
+		if (Trailing != other.Trailing)
+		{
+			return false;
+		}
+		if (Top != other.Top)
+		{
+			return false;
+		}
+		return Bottom == other.Bottom;
+	}
 
-    public override bool Equals(object obj)
-    {
-        if (obj is NSDirectionalEdgeInsets)
-        {
-            return Equals((NSDirectionalEdgeInsets)obj);
-        }
-        return false;
-    }
+	public override bool Equals(object obj)
+	{
+		if (obj is NSDirectionalEdgeInsets)
+		{
+			return Equals((NSDirectionalEdgeInsets)obj);
+		}
+		return false;
+	}
 
-    public static bool operator ==(NSDirectionalEdgeInsets insets1, NSDirectionalEdgeInsets insets2)
-    {
-        return insets1.Equals(insets2);
-    }
+	public static bool operator ==(NSDirectionalEdgeInsets insets1, NSDirectionalEdgeInsets insets2)
+	{
+		return insets1.Equals(insets2);
+	}
 
-    public static bool operator !=(NSDirectionalEdgeInsets insets1, NSDirectionalEdgeInsets insets2)
-    {
-        return !insets1.Equals(insets2);
-    }
+	public static bool operator !=(NSDirectionalEdgeInsets insets1, NSDirectionalEdgeInsets insets2)
+	{
+		return !insets1.Equals(insets2);
+	}
 
-    public override int GetHashCode()
-    {
-        return Top.GetHashCode() ^ Leading.GetHashCode() ^ Trailing.GetHashCode() ^ Bottom.GetHashCode();
-    }
+	public override int GetHashCode()
+	{
+		return Top.GetHashCode() ^ Leading.GetHashCode() ^ Trailing.GetHashCode() ^ Bottom.GetHashCode();
+	}
 }

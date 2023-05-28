@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using CoreFoundation;
+using ObjCRuntime;
 
 namespace AudioToolbox;
 
@@ -13,7 +14,8 @@ public class InputAudioQueue : AudioQueue
 	[MonoPInvokeCallback(typeof(AudioQueueInputCallback))]
 	private unsafe static void input_callback(IntPtr userData, IntPtr AQ, IntPtr audioQueueBuffer, AudioTimeStamp* startTime, int descriptors, IntPtr inPacketDesc)
 	{
-		(GCHandle.FromIntPtr(userData).Target as InputAudioQueue).OnInputCompleted(audioQueueBuffer, *startTime, AudioFile.PacketDescriptionFrom(descriptors, inPacketDesc));
+		InputAudioQueue inputAudioQueue = GCHandle.FromIntPtr(userData).Target as InputAudioQueue;
+		inputAudioQueue.OnInputCompleted(audioQueueBuffer, *startTime, AudioFile.PacketDescriptionFrom(descriptors, inPacketDesc));
 	}
 
 	protected virtual void OnInputCompleted(IntPtr audioQueueBuffer, AudioTimeStamp timeStamp, AudioStreamPacketDescription[] packetDescriptions)
@@ -42,7 +44,7 @@ public class InputAudioQueue : AudioQueue
 			gch = value;
 			return;
 		}
-		gch.Free();
+		value.Free();
 		throw new AudioQueueException(num);
 	}
 

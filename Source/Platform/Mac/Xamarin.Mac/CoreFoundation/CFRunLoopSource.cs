@@ -10,16 +10,16 @@ public class CFRunLoopSource : INativeObject, IDisposable
 
 	public IntPtr Handle => handle;
 
-	public int Order => CFRunLoopSourceGetOrder(handle);
+	public nint Order => CFRunLoopSourceGetOrder(handle);
 
-	public bool IsValid => CFRunLoopSourceIsValid(handle) != 0;
+	public bool IsValid => CFRunLoopSourceIsValid(handle);
 
-	internal CFRunLoopSource(IntPtr handle)
+	public CFRunLoopSource(IntPtr handle)
 		: this(handle, ownsHandle: false)
 	{
 	}
 
-	internal CFRunLoopSource(IntPtr handle, bool ownsHandle)
+	public CFRunLoopSource(IntPtr handle, bool ownsHandle)
 	{
 		if (!ownsHandle)
 		{
@@ -34,7 +34,7 @@ public class CFRunLoopSource : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern CFIndex CFRunLoopSourceGetOrder(IntPtr source);
+	private static extern nint CFRunLoopSourceGetOrder(IntPtr source);
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
 	private static extern void CFRunLoopSourceInvalidate(IntPtr source);
@@ -45,7 +45,8 @@ public class CFRunLoopSource : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern int CFRunLoopSourceIsValid(IntPtr source);
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static extern bool CFRunLoopSourceIsValid(IntPtr source);
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
 	private static extern void CFRunLoopSourceSignal(IntPtr source);
@@ -61,7 +62,7 @@ public class CFRunLoopSource : INativeObject, IDisposable
 		GC.SuppressFinalize(this);
 	}
 
-	public virtual void Dispose(bool disposing)
+	protected virtual void Dispose(bool disposing)
 	{
 		if (handle != IntPtr.Zero)
 		{

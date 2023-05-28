@@ -8,34 +8,65 @@ using ObjCRuntime;
 namespace WebKit;
 
 [Register("DOMNamedNodeMap", true)]
+[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
 public class DomNamedNodeMap : DomObject, IIndexedContainer<DomNode>, IEnumerable<DomNode>, IEnumerable
 {
-	private static readonly IntPtr selLengthHandle = Selector.GetHandle("length");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGetNamedItem_ = "getNamedItem:";
 
 	private static readonly IntPtr selGetNamedItem_Handle = Selector.GetHandle("getNamedItem:");
 
-	private static readonly IntPtr selSetNamedItem_Handle = Selector.GetHandle("setNamedItem:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGetNamedItemNS_LocalName_ = "getNamedItemNS:localName:";
 
-	private static readonly IntPtr selRemoveNamedItem_Handle = Selector.GetHandle("removeNamedItem:");
+	private static readonly IntPtr selGetNamedItemNS_LocalName_Handle = Selector.GetHandle("getNamedItemNS:localName:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selItem_ = "item:";
 
 	private static readonly IntPtr selItem_Handle = Selector.GetHandle("item:");
 
-	private static readonly IntPtr selGetNamedItemNSLocalName_Handle = Selector.GetHandle("getNamedItemNS:localName:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLength = "length";
+
+	private static readonly IntPtr selLengthHandle = Selector.GetHandle("length");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveNamedItem_ = "removeNamedItem:";
+
+	private static readonly IntPtr selRemoveNamedItem_Handle = Selector.GetHandle("removeNamedItem:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveNamedItemNS_LocalName_ = "removeNamedItemNS:localName:";
+
+	private static readonly IntPtr selRemoveNamedItemNS_LocalName_Handle = Selector.GetHandle("removeNamedItemNS:localName:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetNamedItem_ = "setNamedItem:";
+
+	private static readonly IntPtr selSetNamedItem_Handle = Selector.GetHandle("setNamedItem:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetNamedItemNS_ = "setNamedItemNS:";
 
 	private static readonly IntPtr selSetNamedItemNS_Handle = Selector.GetHandle("setNamedItemNS:");
 
-	private static readonly IntPtr selRemoveNamedItemNSLocalName_Handle = Selector.GetHandle("removeNamedItemNS:localName:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("DOMNamedNodeMap");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("DOMNamedNodeMap");
+	public DomNode this[int index] => GetItem(index);
+
+	public DomNode this[string name] => GetNamedItem(name);
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual int Count
 	{
 		[Export("length")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.int_objc_msgSend(base.Handle, selLengthHandle);
 			}
@@ -43,38 +74,43 @@ public class DomNamedNodeMap : DomObject, IIndexedContainer<DomNode>, IEnumerabl
 		}
 	}
 
-	public DomNode this[int index] => GetItem(index);
-
-	public DomNode this[string name] => GetNamedItem(name);
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public DomNamedNodeMap(NSCoder coder)
-		: base(NSObjectFlag.Empty)
+	public IEnumerator<DomNode> GetEnumerator()
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
+		return new IndexedContainerEnumerator<DomNode>(this);
 	}
 
+	IEnumerator IEnumerable.GetEnumerator()
+	{
+		return ((IEnumerable<DomNode>)this).GetEnumerator();
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public DomNamedNodeMap(NSObjectFlag t)
+	protected DomNamedNodeMap(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public DomNamedNodeMap(IntPtr handle)
+	protected internal DomNamedNodeMap(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("item:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomNode GetItem(int index)
+	{
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSend_int(base.Handle, selItem_Handle, index));
+		}
+		return Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSendSuper_int(base.SuperHandle, selItem_Handle, index));
+	}
+
 	[Export("getNamedItem:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomNode GetNamedItem(string name)
 	{
 		if (name == null)
@@ -82,49 +118,13 @@ public class DomNamedNodeMap : DomObject, IIndexedContainer<DomNode>, IEnumerabl
 			throw new ArgumentNullException("name");
 		}
 		IntPtr arg = NSString.CreateNative(name);
-		DomNode result = ((!IsDirectBinding) ? ((DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selGetNamedItem_Handle, arg))) : ((DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selGetNamedItem_Handle, arg))));
+		DomNode result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selGetNamedItem_Handle, arg)) : Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selGetNamedItem_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
-	}
-
-	[Export("setNamedItem:")]
-	public virtual DomNode SetNamedItem(DomNode node)
-	{
-		if (node == null)
-		{
-			throw new ArgumentNullException("node");
-		}
-		if (IsDirectBinding)
-		{
-			return (DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selSetNamedItem_Handle, node.Handle));
-		}
-		return (DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetNamedItem_Handle, node.Handle));
-	}
-
-	[Export("removeNamedItem:")]
-	public virtual DomNode RemoveNamedItem(string name)
-	{
-		if (name == null)
-		{
-			throw new ArgumentNullException("name");
-		}
-		IntPtr arg = NSString.CreateNative(name);
-		DomNode result = ((!IsDirectBinding) ? ((DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveNamedItem_Handle, arg))) : ((DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selRemoveNamedItem_Handle, arg))));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("item:")]
-	public virtual DomNode GetItem(int index)
-	{
-		if (IsDirectBinding)
-		{
-			return (DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_int(base.Handle, selItem_Handle, index));
-		}
-		return (DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_int(base.SuperHandle, selItem_Handle, index));
 	}
 
 	[Export("getNamedItemNS:localName:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomNode GetNamedItemNS(string namespaceUri, string localName)
 	{
 		if (namespaceUri == null)
@@ -137,27 +137,28 @@ public class DomNamedNodeMap : DomObject, IIndexedContainer<DomNode>, IEnumerabl
 		}
 		IntPtr arg = NSString.CreateNative(namespaceUri);
 		IntPtr arg2 = NSString.CreateNative(localName);
-		DomNode result = ((!IsDirectBinding) ? ((DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selGetNamedItemNSLocalName_Handle, arg, arg2))) : ((DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selGetNamedItemNSLocalName_Handle, arg, arg2))));
+		DomNode result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selGetNamedItemNS_LocalName_Handle, arg, arg2)) : Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selGetNamedItemNS_LocalName_Handle, arg, arg2)));
 		NSString.ReleaseNative(arg);
 		NSString.ReleaseNative(arg2);
 		return result;
 	}
 
-	[Export("setNamedItemNS:")]
-	public virtual DomNode SetNamedItemNS(DomNode node)
+	[Export("removeNamedItem:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomNode RemoveNamedItem(string name)
 	{
-		if (node == null)
+		if (name == null)
 		{
-			throw new ArgumentNullException("node");
+			throw new ArgumentNullException("name");
 		}
-		if (IsDirectBinding)
-		{
-			return (DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selSetNamedItemNS_Handle, node.Handle));
-		}
-		return (DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetNamedItemNS_Handle, node.Handle));
+		IntPtr arg = NSString.CreateNative(name);
+		DomNode result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveNamedItem_Handle, arg)) : Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selRemoveNamedItem_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
 	}
 
 	[Export("removeNamedItemNS:localName:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomNode RemoveNamedItemNS(string namespaceURI, string localName)
 	{
 		if (namespaceURI == null)
@@ -170,19 +171,39 @@ public class DomNamedNodeMap : DomObject, IIndexedContainer<DomNode>, IEnumerabl
 		}
 		IntPtr arg = NSString.CreateNative(namespaceURI);
 		IntPtr arg2 = NSString.CreateNative(localName);
-		DomNode result = ((!IsDirectBinding) ? ((DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selRemoveNamedItemNSLocalName_Handle, arg, arg2))) : ((DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selRemoveNamedItemNSLocalName_Handle, arg, arg2))));
+		DomNode result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selRemoveNamedItemNS_LocalName_Handle, arg, arg2)) : Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selRemoveNamedItemNS_LocalName_Handle, arg, arg2)));
 		NSString.ReleaseNative(arg);
 		NSString.ReleaseNative(arg2);
 		return result;
 	}
 
-	public IEnumerator<DomNode> GetEnumerator()
+	[Export("setNamedItem:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomNode SetNamedItem(DomNode node)
 	{
-		return new IndexedContainerEnumerator<DomNode>(this);
+		if (node == null)
+		{
+			throw new ArgumentNullException("node");
+		}
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selSetNamedItem_Handle, node.Handle));
+		}
+		return Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetNamedItem_Handle, node.Handle));
 	}
 
-	IEnumerator IEnumerable.GetEnumerator()
+	[Export("setNamedItemNS:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomNode SetNamedItemNS(DomNode node)
 	{
-		return ((IEnumerable<DomNode>)this).GetEnumerator();
+		if (node == null)
+		{
+			throw new ArgumentNullException("node");
+		}
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selSetNamedItemNS_Handle, node.Handle));
+		}
+		return Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetNamedItemNS_Handle, node.Handle));
 	}
 }

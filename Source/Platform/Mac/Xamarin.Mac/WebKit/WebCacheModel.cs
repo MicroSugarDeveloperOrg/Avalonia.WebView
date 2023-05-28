@@ -1,6 +1,9 @@
+using ObjCRuntime;
+
 namespace WebKit;
 
-public enum WebCacheModel
+[Native]
+public enum WebCacheModel : ulong
 {
 	DocumentViewer,
 	DocumentBrowser,

@@ -1,8 +1,10 @@
 using System;
+using ObjCRuntime;
 
 namespace Foundation;
 
 [Flags]
+[Native]
 public enum NSAttributedStringEnumeration : ulong
 {
 	None = 0uL,

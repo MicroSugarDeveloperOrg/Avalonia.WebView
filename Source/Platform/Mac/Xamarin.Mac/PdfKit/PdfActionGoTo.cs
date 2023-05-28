@@ -6,26 +6,40 @@ using ObjCRuntime;
 namespace PdfKit;
 
 [Register("PDFActionGoTo", true)]
+[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
 public class PdfActionGoTo : PdfAction
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDestination = "destination";
+
 	private static readonly IntPtr selDestinationHandle = Selector.GetHandle("destination");
 
-	private static readonly IntPtr selSetDestination_Handle = Selector.GetHandle("setDestination:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithDestination_ = "initWithDestination:";
 
 	private static readonly IntPtr selInitWithDestination_Handle = Selector.GetHandle("initWithDestination:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("PDFActionGoTo");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDestination_ = "setDestination:";
 
-	private object __mt_Destination_var;
+	private static readonly IntPtr selSetDestination_Handle = Selector.GetHandle("setDestination:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("PDFActionGoTo");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual PdfDestination Destination
 	{
 		[Export("destination")]
 		get
 		{
-			return (PdfDestination)(__mt_Destination_var = ((!IsDirectBinding) ? ((PdfDestination)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDestinationHandle))) : ((PdfDestination)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDestinationHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<PdfDestination>(Messaging.IntPtr_objc_msgSend(base.Handle, selDestinationHandle));
+			}
+			return Runtime.GetNSObject<PdfDestination>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDestinationHandle));
 		}
 		[Export("setDestination:")]
 		set
@@ -34,7 +48,7 @@ public class PdfActionGoTo : PdfAction
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDestination_Handle, value.Handle);
 			}
@@ -42,53 +56,42 @@ public class PdfActionGoTo : PdfAction
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDestination_Handle, value.Handle);
 			}
-			__mt_Destination_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public PdfActionGoTo()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public PdfActionGoTo(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public PdfActionGoTo(NSObjectFlag t)
+	protected PdfActionGoTo(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public PdfActionGoTo(IntPtr handle)
+	protected internal PdfActionGoTo(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithDestination:")]
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public PdfActionGoTo(PdfDestination destination)
 		: base(NSObjectFlag.Empty)
 	{
@@ -96,22 +99,13 @@ public class PdfActionGoTo : PdfAction
 		{
 			throw new ArgumentNullException("destination");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithDestination_Handle, destination.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithDestination_Handle, destination.Handle), "initWithDestination:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithDestination_Handle, destination.Handle);
-		}
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_Destination_var = null;
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithDestination_Handle, destination.Handle), "initWithDestination:");
 		}
 	}
 }

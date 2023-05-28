@@ -9,34 +9,41 @@ namespace CoreImage;
 [Register("CIFeature", true)]
 public class CIFeature : NSObject
 {
-	private static readonly IntPtr selTypeHandle = Selector.GetHandle("type");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBounds = "bounds";
 
 	private static readonly IntPtr selBoundsHandle = Selector.GetHandle("bounds");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("CIFeature");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selType = "type";
 
-	private object __mt_Type_var;
+	private static readonly IntPtr selTypeHandle = Selector.GetHandle("type");
 
-	private static NSString _TypeFace;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("CIFeature");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeFace;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeQRCode;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeRectangle;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeText;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSString Type
-	{
-		[Export("type")]
-		get
-		{
-			return (NSString)(__mt_Type_var = ((!IsDirectBinding) ? ((NSString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTypeHandle))) : ((NSString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTypeHandle)))));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGRect Bounds
 	{
-		[Export("bounds")]
+		[Export("bounds", ArgumentSemantic.Assign)]
 		get
 		{
 			CGRect retval;
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selBoundsHandle);
 			}
@@ -45,6 +52,20 @@ public class CIFeature : NSObject
 				Messaging.CGRect_objc_msgSendSuper_stret(out retval, base.SuperHandle, selBoundsHandle);
 			}
 			return retval;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSString Type
+	{
+		[Export("type", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSend(base.Handle, selTypeHandle));
+			}
+			return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTypeHandle));
 		}
 	}
 
@@ -61,39 +82,68 @@ public class CIFeature : NSObject
 		}
 	}
 
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public CIFeature(NSCoder coder)
-		: base(NSObjectFlag.Empty)
+	[Field("CIFeatureTypeQRCode", "CoreImage")]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	public static NSString TypeQRCode
 	{
-		if (IsDirectBinding)
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+		get
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			if (_TypeQRCode == null)
+			{
+				_TypeQRCode = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIFeatureTypeQRCode");
+			}
+			return _TypeQRCode;
 		}
 	}
 
+	[Field("CIFeatureTypeRectangle", "CoreImage")]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	public static NSString TypeRectangle
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_TypeRectangle == null)
+			{
+				_TypeRectangle = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIFeatureTypeRectangle");
+			}
+			return _TypeRectangle;
+		}
+	}
+
+	[Field("CIFeatureTypeText", "CoreImage")]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	public static NSString TypeText
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_TypeText == null)
+			{
+				_TypeText = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIFeatureTypeText");
+			}
+			return _TypeText;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public CIFeature(NSObjectFlag t)
+	protected CIFeature(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public CIFeature(IntPtr handle)
+	protected internal CIFeature(IntPtr handle)
 		: base(handle)
 	{
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_Type_var = null;
-		}
 	}
 }

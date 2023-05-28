@@ -6,9 +6,11 @@ namespace AppKit;
 
 public class NSAnimationProgressMarkEventArgs : NSNotificationEventArgs
 {
+	[Field("NSAnimationProgressMark", "AppKit")]
 	private static IntPtr k0;
 
-	public double Progress
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public float Progress
 	{
 		get
 		{
@@ -16,13 +18,13 @@ public class NSAnimationProgressMarkEventArgs : NSNotificationEventArgs
 			{
 				k0 = Dlfcn.GetIntPtr(Libraries.AppKit.Handle, "NSAnimationProgressMark");
 			}
-			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k0);
+			IntPtr intPtr = base.Notification.UserInfo?.LowlevelObjectForKey(k0) ?? IntPtr.Zero;
 			if (intPtr == IntPtr.Zero)
 			{
-				return 0.0;
+				return 0f;
 			}
-			using NSNumber nSNumber = new NSNumber(intPtr);
-			return nSNumber.DoubleValue;
+			using NSNumber nSNumber = Runtime.GetNSObject<NSNumber>(intPtr);
+			return nSNumber.FloatValue;
 		}
 	}
 

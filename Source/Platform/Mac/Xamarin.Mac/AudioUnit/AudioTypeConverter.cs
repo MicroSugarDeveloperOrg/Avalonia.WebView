@@ -8,6 +8,8 @@ public enum AudioTypeConverter
 	Splitter = 1936747636,
 	Merger = 1835364967,
 	NewTimePitch = 1853191280,
-	TimePitch = 1953329268,
-	RoundTripAAC = 1918984547
+	AUiPodTimeOther = 1768977519,
+	RoundTripAAC = 1918984547,
+	MultiSplitter = 1836281964,
+	TimePitch = 1953329268
 }

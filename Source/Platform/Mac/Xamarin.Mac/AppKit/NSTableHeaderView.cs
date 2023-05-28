@@ -7,79 +7,115 @@ using ObjCRuntime;
 namespace AppKit;
 
 [Register("NSTableHeaderView", true)]
-public class NSTableHeaderView : NSView
+public class NSTableHeaderView : NSView, INSViewToolTipOwner, INativeObject, IDisposable
 {
-	private static readonly IntPtr selDraggedColumnHandle = Selector.GetHandle("draggedColumn");
-
-	private static readonly IntPtr selDraggedDistanceHandle = Selector.GetHandle("draggedDistance");
-
-	private static readonly IntPtr selResizedColumnHandle = Selector.GetHandle("resizedColumn");
-
-	private static readonly IntPtr selTableViewHandle = Selector.GetHandle("tableView");
-
-	private static readonly IntPtr selSetTableView_Handle = Selector.GetHandle("setTableView:");
-
-	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
-
-	private static readonly IntPtr selHeaderRectOfColumn_Handle = Selector.GetHandle("headerRectOfColumn:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selColumnAtPoint_ = "columnAtPoint:";
 
 	private static readonly IntPtr selColumnAtPoint_Handle = Selector.GetHandle("columnAtPoint:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSTableHeaderView");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDraggedColumn = "draggedColumn";
 
-	private object __mt_TableView_var;
+	private static readonly IntPtr selDraggedColumnHandle = Selector.GetHandle("draggedColumn");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDraggedDistance = "draggedDistance";
+
+	private static readonly IntPtr selDraggedDistanceHandle = Selector.GetHandle("draggedDistance");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selHeaderRectOfColumn_ = "headerRectOfColumn:";
+
+	private static readonly IntPtr selHeaderRectOfColumn_Handle = Selector.GetHandle("headerRectOfColumn:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithFrame_ = "initWithFrame:";
+
+	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selResizedColumn = "resizedColumn";
+
+	private static readonly IntPtr selResizedColumnHandle = Selector.GetHandle("resizedColumn");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTableView_ = "setTableView:";
+
+	private static readonly IntPtr selSetTableView_Handle = Selector.GetHandle("setTableView:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTableView = "tableView";
+
+	private static readonly IntPtr selTableViewHandle = Selector.GetHandle("tableView");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selView_StringForToolTip_Point_UserData_ = "view:stringForToolTip:point:userData:";
+
+	private static readonly IntPtr selView_StringForToolTip_Point_UserData_Handle = Selector.GetHandle("view:stringForToolTip:point:userData:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSTableHeaderView");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual long DraggedColumn
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint DraggedColumn
 	{
 		[Export("draggedColumn")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Int64_objc_msgSend(base.Handle, selDraggedColumnHandle);
+				return Messaging.nint_objc_msgSend(base.Handle, selDraggedColumnHandle);
 			}
-			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selDraggedColumnHandle);
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selDraggedColumnHandle);
 		}
 	}
 
-	public virtual double DraggedDistance
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat DraggedDistance
 	{
 		[Export("draggedDistance")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Double_objc_msgSend(base.Handle, selDraggedDistanceHandle);
+				return Messaging.nfloat_objc_msgSend(base.Handle, selDraggedDistanceHandle);
 			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selDraggedDistanceHandle);
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selDraggedDistanceHandle);
 		}
 	}
 
-	public virtual long ResizedColumn
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint ResizedColumn
 	{
 		[Export("resizedColumn")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Int64_objc_msgSend(base.Handle, selResizedColumnHandle);
+				return Messaging.nint_objc_msgSend(base.Handle, selResizedColumnHandle);
 			}
-			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selResizedColumnHandle);
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selResizedColumnHandle);
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSTableView TableView
 	{
 		[Export("tableView")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSTableView)(__mt_TableView_var = ((!IsDirectBinding) ? ((NSTableView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTableViewHandle))) : ((NSTableView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTableViewHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSTableView>(Messaging.IntPtr_objc_msgSend(base.Handle, selTableViewHandle));
+			}
+			return Runtime.GetNSObject<NSTableView>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTableViewHandle));
 		}
 		[Export("setTableView:")]
 		set
@@ -89,7 +125,7 @@ public class NSTableHeaderView : NSView
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTableView_Handle, value.Handle);
 			}
@@ -97,100 +133,117 @@ public class NSTableHeaderView : NSView
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTableView_Handle, value.Handle);
 			}
-			__mt_TableView_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSTableHeaderView()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSTableHeaderView(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTableHeaderView(NSObjectFlag t)
+	protected NSTableHeaderView(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTableHeaderView(IntPtr handle)
+	protected internal NSTableHeaderView(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithFrame:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSTableHeaderView(CGRect frameRect)
 		: base(NSObjectFlag.Empty)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
 		}
 	}
 
+	[Export("columnAtPoint:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint GetColumn(CGPoint point)
+	{
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
+		{
+			return Messaging.nint_objc_msgSend_CGPoint(base.Handle, selColumnAtPoint_Handle, point);
+		}
+		return Messaging.nint_objc_msgSendSuper_CGPoint(base.SuperHandle, selColumnAtPoint_Handle, point);
+	}
+
 	[Export("headerRectOfColumn:")]
-	public virtual CGRect GetHeaderRect(long column)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGRect GetHeaderRect(nint column)
 	{
 		NSApplication.EnsureUIThread();
 		CGRect retval;
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.CGRect_objc_msgSend_stret_Int64(out retval, base.Handle, selHeaderRectOfColumn_Handle, column);
+			Messaging.CGRect_objc_msgSend_stret_nint(out retval, base.Handle, selHeaderRectOfColumn_Handle, column);
 		}
 		else
 		{
-			Messaging.CGRect_objc_msgSendSuper_stret_Int64(out retval, base.SuperHandle, selHeaderRectOfColumn_Handle, column);
+			Messaging.CGRect_objc_msgSendSuper_stret_nint(out retval, base.SuperHandle, selHeaderRectOfColumn_Handle, column);
 		}
 		return retval;
 	}
 
-	[Export("columnAtPoint:")]
-	public virtual long GetColumn(CGPoint point)
+	[Export("view:stringForToolTip:point:userData:")]
+	[Introduced(PlatformName.MacOSX, 10, 14, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string GetStringForToolTip(NSView view, nint tag, CGPoint point, IntPtr data)
 	{
 		NSApplication.EnsureUIThread();
-		if (IsDirectBinding)
+		if (view == null)
 		{
-			return Messaging.Int64_objc_msgSend_CGPoint(base.Handle, selColumnAtPoint_Handle, point);
+			throw new ArgumentNullException("view");
 		}
-		return Messaging.Int64_objc_msgSendSuper_CGPoint(base.SuperHandle, selColumnAtPoint_Handle, point);
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		if (base.IsDirectBinding)
 		{
-			__mt_TableView_var = null;
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr_nint_CGPoint_IntPtr(base.Handle, selView_StringForToolTip_Point_UserData_Handle, view.Handle, tag, point, data));
 		}
+		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_nint_CGPoint_IntPtr(base.SuperHandle, selView_StringForToolTip_Point_UserData_Handle, view.Handle, tag, point, data));
 	}
 }

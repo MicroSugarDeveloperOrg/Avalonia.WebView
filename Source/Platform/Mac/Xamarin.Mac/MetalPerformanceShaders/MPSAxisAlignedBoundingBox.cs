@@ -1,4 +1,5 @@
-﻿using OpenTK;
+using ObjCRuntime;
+using OpenTK;
 
 namespace MetalPerformanceShaders;
 
@@ -7,7 +8,7 @@ namespace MetalPerformanceShaders;
 [iOS(12, 0)]
 public struct MPSAxisAlignedBoundingBox
 {
-    public Vector3 Min;
+	public Vector3 Min;
 
-    public Vector3 Max;
+	public Vector3 Max;
 }

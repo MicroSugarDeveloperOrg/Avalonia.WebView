@@ -9,26 +9,42 @@ namespace QTKit;
 [Register("QTMovieLayer", true)]
 public class QTMovieLayer : CALayer
 {
-	private static readonly IntPtr selMovieHandle = Selector.GetHandle("movie");
-
-	private static readonly IntPtr selSetMovie_Handle = Selector.GetHandle("setMovie:");
-
-	private static readonly IntPtr selLayerWithMovie_Handle = Selector.GetHandle("layerWithMovie:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithMovie_ = "initWithMovie:";
 
 	private static readonly IntPtr selInitWithMovie_Handle = Selector.GetHandle("initWithMovie:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("QTMovieLayer");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLayerWithMovie_ = "layerWithMovie:";
 
-	private object __mt_Movie_var;
+	private static readonly IntPtr selLayerWithMovie_Handle = Selector.GetHandle("layerWithMovie:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMovie = "movie";
+
+	private static readonly IntPtr selMovieHandle = Selector.GetHandle("movie");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMovie_ = "setMovie:";
+
+	private static readonly IntPtr selSetMovie_Handle = Selector.GetHandle("setMovie:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("QTMovieLayer");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual QTMovie Movie
 	{
 		[Export("movie")]
 		get
 		{
-			return (QTMovie)(__mt_Movie_var = ((!IsDirectBinding) ? ((QTMovie)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMovieHandle))) : ((QTMovie)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMovieHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<QTMovie>(Messaging.IntPtr_objc_msgSend(base.Handle, selMovieHandle));
+			}
+			return Runtime.GetNSObject<QTMovie>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMovieHandle));
 		}
 		[Export("setMovie:")]
 		set
@@ -37,7 +53,7 @@ public class QTMovieLayer : CALayer
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMovie_Handle, value.Handle);
 			}
@@ -45,63 +61,58 @@ public class QTMovieLayer : CALayer
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMovie_Handle, value.Handle);
 			}
-			__mt_Movie_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public QTMovieLayer()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public QTMovieLayer(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public QTMovieLayer(NSObjectFlag t)
+	protected QTMovieLayer(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public QTMovieLayer(IntPtr handle)
+	protected internal QTMovieLayer(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("layerWithMovie:")]
-	public static QTMovieLayer FromMovie(QTMovie movie)
-	{
-		if (movie == null)
-		{
-			throw new ArgumentNullException("movie");
-		}
-		return (QTMovieLayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selLayerWithMovie_Handle, movie.Handle));
-	}
-
 	[Export("initWithMovie:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public QTMovieLayer(QTMovie movie)
 		: base(NSObjectFlag.Empty)
 	{
@@ -109,22 +120,24 @@ public class QTMovieLayer : CALayer
 		{
 			throw new ArgumentNullException("movie");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithMovie_Handle, movie.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithMovie_Handle, movie.Handle), "initWithMovie:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithMovie_Handle, movie.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithMovie_Handle, movie.Handle), "initWithMovie:");
 		}
 	}
 
-	protected override void Dispose(bool disposing)
+	[Export("layerWithMovie:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static QTMovieLayer FromMovie(QTMovie movie)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		if (movie == null)
 		{
-			__mt_Movie_var = null;
+			throw new ArgumentNullException("movie");
 		}
+		return Runtime.GetNSObject<QTMovieLayer>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selLayerWithMovie_Handle, movie.Handle));
 	}
 }

@@ -4,7 +4,7 @@ namespace AudioUnit;
 
 internal struct AURenderCallbackStruct
 {
-	public RenderCallbackShared Proc;
+	public Delegate Proc;
 
 	public IntPtr ProcRefCon;
 }

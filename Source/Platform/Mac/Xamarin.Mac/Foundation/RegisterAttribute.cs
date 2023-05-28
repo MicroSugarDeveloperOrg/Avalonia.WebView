@@ -2,7 +2,7 @@ using System;
 
 namespace Foundation;
 
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Class)]
 public sealed class RegisterAttribute : Attribute
 {
 	private string name;
@@ -33,9 +33,9 @@ public sealed class RegisterAttribute : Attribute
 		}
 	}
 
-    public bool SkipRegistration { get; set; }
+	public bool SkipRegistration { get; set; }
 
-    public RegisterAttribute()
+	public RegisterAttribute()
 	{
 	}
 

@@ -5,126 +5,139 @@ namespace CoreImage;
 
 public static class CIFilterAttributes
 {
-	private static NSString _FilterName;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Available_Mac;
 
-	private static NSString _FilterDisplayName;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Available_iOS;
 
-	private static NSString _Description;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Class;
 
-	private static NSString _ReferenceDocumentation;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Default;
 
-	private static NSString _FilterCategories;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Description;
 
-	private static NSString _Class;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _DisplayName;
 
-	private static NSString _Type;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FilterCategories;
 
-	private static NSString _Min;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FilterDisplayName;
 
-	private static NSString _Max;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FilterName;
 
-	private static NSString _SliderMin;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Identity;
 
-	private static NSString _SliderMax;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Max;
 
-	private static NSString _Default;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Min;
 
-	private static NSString _Identity;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Name;
 
-	private static NSString _Name;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _ReferenceDocumentation;
 
-	private static NSString _DisplayName;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _SliderMax;
 
-	private static NSString _UIParameterSet;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _SliderMin;
 
-	private static NSString _TypeTime;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Type;
 
-	private static NSString _TypeScalar;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeAngle;
 
-	private static NSString _TypeDistance;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeBoolean;
 
-	private static NSString _TypeAngle;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeColor;
 
-	private static NSString _TypeBoolean;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeCount;
 
-	private static NSString _TypeInteger;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeDistance;
 
-	private static NSString _TypeCount;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeGradient;
 
-	private static NSString _TypePosition;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeImage;
 
-	private static NSString _TypeOffset;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeInteger;
 
-	private static NSString _TypePosition3;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeOffset;
 
-	private static NSString _TypeRectangle;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeOpaqueColor;
 
-	private static NSString _TypeOpaqueColor;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypePosition;
 
-	private static NSString _TypeGradient;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypePosition3;
 
-	[Field("kCIAttributeFilterName", "Quartz")]
-	public static NSString FilterName
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeRectangle;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeScalar;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeTime;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _TypeTransform;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _UIParameterSet;
+
+	[Field("kCIAttributeFilterAvailable_Mac", "Quartz")]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	public static NSString Available_Mac
 	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_FilterName == null)
+			if (_Available_Mac == null)
 			{
-				_FilterName = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeFilterName");
+				_Available_Mac = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeFilterAvailable_Mac");
 			}
-			return _FilterName;
+			return _Available_Mac;
 		}
 	}
 
-	[Field("kCIAttributeFilterDisplayName", "Quartz")]
-	public static NSString FilterDisplayName
+	[Field("kCIAttributeFilterAvailable_iOS", "Quartz")]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	public static NSString Available_iOS
 	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_FilterDisplayName == null)
+			if (_Available_iOS == null)
 			{
-				_FilterDisplayName = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeFilterDisplayName");
+				_Available_iOS = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeFilterAvailable_iOS");
 			}
-			return _FilterDisplayName;
-		}
-	}
-
-	[Field("kCIAttributeDescription", "Quartz")]
-	public static NSString Description
-	{
-		get
-		{
-			if (_Description == null)
-			{
-				_Description = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeDescription");
-			}
-			return _Description;
-		}
-	}
-
-	[Field("kCIAttributeReferenceDocumentation", "Quartz")]
-	public static NSString ReferenceDocumentation
-	{
-		get
-		{
-			if (_ReferenceDocumentation == null)
-			{
-				_ReferenceDocumentation = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeReferenceDocumentation");
-			}
-			return _ReferenceDocumentation;
-		}
-	}
-
-	[Field("kCIAttributeFilterCategories", "Quartz")]
-	public static NSString FilterCategories
-	{
-		get
-		{
-			if (_FilterCategories == null)
-			{
-				_FilterCategories = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeFilterCategories");
-			}
-			return _FilterCategories;
+			return _Available_iOS;
 		}
 	}
 
@@ -141,71 +154,6 @@ public static class CIFilterAttributes
 		}
 	}
 
-	[Field("kCIAttributeType", "Quartz")]
-	public static NSString Type
-	{
-		get
-		{
-			if (_Type == null)
-			{
-				_Type = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeType");
-			}
-			return _Type;
-		}
-	}
-
-	[Field("kCIAttributeMin", "Quartz")]
-	public static NSString Min
-	{
-		get
-		{
-			if (_Min == null)
-			{
-				_Min = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeMin");
-			}
-			return _Min;
-		}
-	}
-
-	[Field("kCIAttributeMax", "Quartz")]
-	public static NSString Max
-	{
-		get
-		{
-			if (_Max == null)
-			{
-				_Max = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeMax");
-			}
-			return _Max;
-		}
-	}
-
-	[Field("kCIAttributeSliderMin", "Quartz")]
-	public static NSString SliderMin
-	{
-		get
-		{
-			if (_SliderMin == null)
-			{
-				_SliderMin = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeSliderMin");
-			}
-			return _SliderMin;
-		}
-	}
-
-	[Field("kCIAttributeSliderMax", "Quartz")]
-	public static NSString SliderMax
-	{
-		get
-		{
-			if (_SliderMax == null)
-			{
-				_SliderMax = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeSliderMax");
-			}
-			return _SliderMax;
-		}
-	}
-
 	[Field("kCIAttributeDefault", "Quartz")]
 	public static NSString Default
 	{
@@ -219,29 +167,18 @@ public static class CIFilterAttributes
 		}
 	}
 
-	[Field("kCIAttributeIdentity", "Quartz")]
-	public static NSString Identity
+	[Field("kCIAttributeDescription", "Quartz")]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	public static NSString Description
 	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_Identity == null)
+			if (_Description == null)
 			{
-				_Identity = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeIdentity");
+				_Description = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeDescription");
 			}
-			return _Identity;
-		}
-	}
-
-	[Field("kCIAttributeName", "Quartz")]
-	public static NSString Name
-	{
-		get
-		{
-			if (_Name == null)
-			{
-				_Name = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeName");
-			}
-			return _Name;
+			return _Description;
 		}
 	}
 
@@ -258,55 +195,148 @@ public static class CIFilterAttributes
 		}
 	}
 
-	[Field("kCIUIParameterSet", "Quartz")]
-	public static NSString UIParameterSet
+	[Field("kCIAttributeFilterCategories", "Quartz")]
+	public static NSString FilterCategories
 	{
 		get
 		{
-			if (_UIParameterSet == null)
+			if (_FilterCategories == null)
 			{
-				_UIParameterSet = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIUIParameterSet");
+				_FilterCategories = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeFilterCategories");
 			}
-			return _UIParameterSet;
+			return _FilterCategories;
 		}
 	}
 
-	[Field("kCIAttributeTypeTime", "Quartz")]
-	public static NSString TypeTime
+	[Field("kCIAttributeFilterDisplayName", "Quartz")]
+	public static NSString FilterDisplayName
 	{
 		get
 		{
-			if (_TypeTime == null)
+			if (_FilterDisplayName == null)
 			{
-				_TypeTime = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeTime");
+				_FilterDisplayName = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeFilterDisplayName");
 			}
-			return _TypeTime;
+			return _FilterDisplayName;
 		}
 	}
 
-	[Field("kCIAttributeTypeScalar", "Quartz")]
-	public static NSString TypeScalar
+	[Field("kCIAttributeFilterName", "Quartz")]
+	public static NSString FilterName
 	{
 		get
 		{
-			if (_TypeScalar == null)
+			if (_FilterName == null)
 			{
-				_TypeScalar = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeScalar");
+				_FilterName = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeFilterName");
 			}
-			return _TypeScalar;
+			return _FilterName;
 		}
 	}
 
-	[Field("kCIAttributeTypeDistance", "Quartz")]
-	public static NSString TypeDistance
+	[Field("kCIAttributeIdentity", "Quartz")]
+	public static NSString Identity
 	{
 		get
 		{
-			if (_TypeDistance == null)
+			if (_Identity == null)
 			{
-				_TypeDistance = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeDistance");
+				_Identity = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeIdentity");
 			}
-			return _TypeDistance;
+			return _Identity;
+		}
+	}
+
+	[Field("kCIAttributeMax", "Quartz")]
+	public static NSString Max
+	{
+		get
+		{
+			if (_Max == null)
+			{
+				_Max = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeMax");
+			}
+			return _Max;
+		}
+	}
+
+	[Field("kCIAttributeMin", "Quartz")]
+	public static NSString Min
+	{
+		get
+		{
+			if (_Min == null)
+			{
+				_Min = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeMin");
+			}
+			return _Min;
+		}
+	}
+
+	[Field("kCIAttributeName", "Quartz")]
+	public static NSString Name
+	{
+		get
+		{
+			if (_Name == null)
+			{
+				_Name = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeName");
+			}
+			return _Name;
+		}
+	}
+
+	[Field("kCIAttributeReferenceDocumentation", "Quartz")]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	public static NSString ReferenceDocumentation
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_ReferenceDocumentation == null)
+			{
+				_ReferenceDocumentation = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeReferenceDocumentation");
+			}
+			return _ReferenceDocumentation;
+		}
+	}
+
+	[Field("kCIAttributeSliderMax", "Quartz")]
+	public static NSString SliderMax
+	{
+		get
+		{
+			if (_SliderMax == null)
+			{
+				_SliderMax = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeSliderMax");
+			}
+			return _SliderMax;
+		}
+	}
+
+	[Field("kCIAttributeSliderMin", "Quartz")]
+	public static NSString SliderMin
+	{
+		get
+		{
+			if (_SliderMin == null)
+			{
+				_SliderMin = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeSliderMin");
+			}
+			return _SliderMin;
+		}
+	}
+
+	[Field("kCIAttributeType", "Quartz")]
+	public static NSString Type
+	{
+		get
+		{
+			if (_Type == null)
+			{
+				_Type = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeType");
+			}
+			return _Type;
 		}
 	}
 
@@ -336,16 +366,18 @@ public static class CIFilterAttributes
 		}
 	}
 
-	[Field("kCIAttributeTypeInteger", "Quartz")]
-	public static NSString TypeInteger
+	[Field("kCIAttributeTypeColor", "Quartz")]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	public static NSString TypeColor
 	{
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_TypeInteger == null)
+			if (_TypeColor == null)
 			{
-				_TypeInteger = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeInteger");
+				_TypeColor = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeColor");
 			}
-			return _TypeInteger;
+			return _TypeColor;
 		}
 	}
 
@@ -362,16 +394,59 @@ public static class CIFilterAttributes
 		}
 	}
 
-	[Field("kCIAttributeTypePosition", "Quartz")]
-	public static NSString TypePosition
+	[Field("kCIAttributeTypeDistance", "Quartz")]
+	public static NSString TypeDistance
 	{
 		get
 		{
-			if (_TypePosition == null)
+			if (_TypeDistance == null)
 			{
-				_TypePosition = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypePosition");
+				_TypeDistance = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeDistance");
 			}
-			return _TypePosition;
+			return _TypeDistance;
+		}
+	}
+
+	[Field("kCIAttributeTypeGradient", "Quartz")]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	public static NSString TypeGradient
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_TypeGradient == null)
+			{
+				_TypeGradient = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeGradient");
+			}
+			return _TypeGradient;
+		}
+	}
+
+	[Field("kCIAttributeTypeImage", "Quartz")]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	public static NSString TypeImage
+	{
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_TypeImage == null)
+			{
+				_TypeImage = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeImage");
+			}
+			return _TypeImage;
+		}
+	}
+
+	[Field("kCIAttributeTypeInteger", "Quartz")]
+	public static NSString TypeInteger
+	{
+		get
+		{
+			if (_TypeInteger == null)
+			{
+				_TypeInteger = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeInteger");
+			}
+			return _TypeInteger;
 		}
 	}
 
@@ -385,6 +460,34 @@ public static class CIFilterAttributes
 				_TypeOffset = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeOffset");
 			}
 			return _TypeOffset;
+		}
+	}
+
+	[Field("kCIAttributeTypeOpaqueColor", "Quartz")]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	public static NSString TypeOpaqueColor
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_TypeOpaqueColor == null)
+			{
+				_TypeOpaqueColor = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeOpaqueColor");
+			}
+			return _TypeOpaqueColor;
+		}
+	}
+
+	[Field("kCIAttributeTypePosition", "Quartz")]
+	public static NSString TypePosition
+	{
+		get
+		{
+			if (_TypePosition == null)
+			{
+				_TypePosition = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypePosition");
+			}
+			return _TypePosition;
 		}
 	}
 
@@ -414,29 +517,59 @@ public static class CIFilterAttributes
 		}
 	}
 
-	[Field("kCIAttributeTypeOpaqueColor", "Quartz")]
-	public static NSString TypeOpaqueColor
+	[Field("kCIAttributeTypeScalar", "Quartz")]
+	public static NSString TypeScalar
 	{
 		get
 		{
-			if (_TypeOpaqueColor == null)
+			if (_TypeScalar == null)
 			{
-				_TypeOpaqueColor = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeOpaqueColor");
+				_TypeScalar = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeScalar");
 			}
-			return _TypeOpaqueColor;
+			return _TypeScalar;
 		}
 	}
 
-	[Field("kCIAttributeTypeGradient", "Quartz")]
-	public static NSString TypeGradient
+	[Field("kCIAttributeTypeTime", "Quartz")]
+	public static NSString TypeTime
 	{
 		get
 		{
-			if (_TypeGradient == null)
+			if (_TypeTime == null)
 			{
-				_TypeGradient = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeGradient");
+				_TypeTime = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeTime");
 			}
-			return _TypeGradient;
+			return _TypeTime;
+		}
+	}
+
+	[Field("kCIAttributeTypeTransform", "Quartz")]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	public static NSString TypeTransform
+	{
+		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_TypeTransform == null)
+			{
+				_TypeTransform = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIAttributeTypeTransform");
+			}
+			return _TypeTransform;
+		}
+	}
+
+	[Field("kCIUIParameterSet", "Quartz")]
+	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+	public static NSString UIParameterSet
+	{
+		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
+		get
+		{
+			if (_UIParameterSet == null)
+			{
+				_UIParameterSet = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIUIParameterSet");
+			}
+			return _UIParameterSet;
 		}
 	}
 }

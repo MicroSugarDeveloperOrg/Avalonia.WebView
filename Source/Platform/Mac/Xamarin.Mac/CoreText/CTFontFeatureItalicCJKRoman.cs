@@ -1,5 +1,5 @@
-using System;
 using Foundation;
+using ObjCRuntime;
 
 namespace CoreText;
 
@@ -7,9 +7,11 @@ public class CTFontFeatureItalicCJKRoman : CTFontFeatureSelectors
 {
 	public enum Selector
 	{
-		[Obsolete("Deprecated. Use CJKItalicRomanOff instead")]
+		[Deprecated(PlatformName.iOS, 5, 1, PlatformArchitecture.None, null)]
+		[Deprecated(PlatformName.MacOSX, 10, 8, PlatformArchitecture.None, null)]
 		NoCJKItalicRoman,
-		[Obsolete("Deprecated. Use CJKItalicRomanOn instead")]
+		[Deprecated(PlatformName.iOS, 5, 1, PlatformArchitecture.None, null)]
+		[Deprecated(PlatformName.MacOSX, 10, 8, PlatformArchitecture.None, null)]
 		CJKItalicRoman,
 		CJKItalicRomanOn,
 		CJKItalicRomanOff

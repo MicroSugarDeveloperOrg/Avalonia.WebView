@@ -1,5 +1,8 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
+[Native]
 public enum NSRuleEditorNestingMode : ulong
 {
 	Single,

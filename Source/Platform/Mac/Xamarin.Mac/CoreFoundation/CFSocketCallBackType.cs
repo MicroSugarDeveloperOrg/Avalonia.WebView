@@ -1,14 +1,16 @@
 using System;
+using ObjCRuntime;
 
 namespace CoreFoundation;
 
 [Flags]
-public enum CFSocketCallBackType
+[Native]
+public enum CFSocketCallBackType : ulong
 {
-	NoCallBack = 0,
-	ReadCallBack = 1,
-	AcceptCallBack = 2,
-	DataCallBack = 3,
-	ConnectCallBack = 4,
-	WriteCallBack = 8
+	NoCallBack = 0uL,
+	ReadCallBack = 1uL,
+	AcceptCallBack = 2uL,
+	DataCallBack = 3uL,
+	ConnectCallBack = 4uL,
+	WriteCallBack = 8uL
 }

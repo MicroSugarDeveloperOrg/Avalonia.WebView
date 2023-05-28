@@ -1,9 +1,11 @@
 using System;
+using ObjCRuntime;
 
 namespace AVFoundation;
 
 [Flags]
-public enum AVAudioSessionSetActiveOptions
+[Native]
+public enum AVAudioSessionSetActiveOptions : ulong
 {
-	NotifyOthersOnDeactivation = 1
+	NotifyOthersOnDeactivation = 1uL
 }

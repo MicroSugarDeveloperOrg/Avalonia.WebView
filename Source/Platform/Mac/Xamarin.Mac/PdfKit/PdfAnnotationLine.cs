@@ -8,65 +8,98 @@ using ObjCRuntime;
 namespace PdfKit;
 
 [Register("PDFAnnotationLine", true)]
+[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
+[Deprecated(PlatformName.MacOSX, 10, 12, PlatformArchitecture.None, null)]
 public class PdfAnnotationLine : PdfAnnotation
 {
-	private static readonly IntPtr selStartPointHandle = Selector.GetHandle("startPoint");
-
-	private static readonly IntPtr selSetStartPoint_Handle = Selector.GetHandle("setStartPoint:");
-
-	private static readonly IntPtr selEndPointHandle = Selector.GetHandle("endPoint");
-
-	private static readonly IntPtr selSetEndPoint_Handle = Selector.GetHandle("setEndPoint:");
-
-	private static readonly IntPtr selStartLineStyleHandle = Selector.GetHandle("startLineStyle");
-
-	private static readonly IntPtr selSetStartLineStyle_Handle = Selector.GetHandle("setStartLineStyle:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEndLineStyle = "endLineStyle";
 
 	private static readonly IntPtr selEndLineStyleHandle = Selector.GetHandle("endLineStyle");
 
-	private static readonly IntPtr selSetEndLineStyle_Handle = Selector.GetHandle("setEndLineStyle:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEndPoint = "endPoint";
+
+	private static readonly IntPtr selEndPointHandle = Selector.GetHandle("endPoint");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInteriorColor = "interiorColor";
 
 	private static readonly IntPtr selInteriorColorHandle = Selector.GetHandle("interiorColor");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEndLineStyle_ = "setEndLineStyle:";
+
+	private static readonly IntPtr selSetEndLineStyle_Handle = Selector.GetHandle("setEndLineStyle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEndPoint_ = "setEndPoint:";
+
+	private static readonly IntPtr selSetEndPoint_Handle = Selector.GetHandle("setEndPoint:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetInteriorColor_ = "setInteriorColor:";
+
 	private static readonly IntPtr selSetInteriorColor_Handle = Selector.GetHandle("setInteriorColor:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("PDFAnnotationLine");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetStartLineStyle_ = "setStartLineStyle:";
 
-	private object __mt_InteriorColor_var;
+	private static readonly IntPtr selSetStartLineStyle_Handle = Selector.GetHandle("setStartLineStyle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetStartPoint_ = "setStartPoint:";
+
+	private static readonly IntPtr selSetStartPoint_Handle = Selector.GetHandle("setStartPoint:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStartLineStyle = "startLineStyle";
+
+	private static readonly IntPtr selStartLineStyleHandle = Selector.GetHandle("startLineStyle");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStartPoint = "startPoint";
+
+	private static readonly IntPtr selStartPointHandle = Selector.GetHandle("startPoint");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("PDFAnnotationLine");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual CGPoint StartPoint
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual PdfLineStyle EndLineStyle
 	{
-		[Export("startPoint")]
+		[Export("endLineStyle")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.CGPoint_objc_msgSend(base.Handle, selStartPointHandle);
+				return (PdfLineStyle)Messaging.Int64_objc_msgSend(base.Handle, selEndLineStyleHandle);
 			}
-			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selStartPointHandle);
+			return (PdfLineStyle)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selEndLineStyleHandle);
 		}
-		[Export("setStartPoint:")]
+		[Export("setEndLineStyle:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_CGPoint(base.Handle, selSetStartPoint_Handle, value);
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetEndLineStyle_Handle, (long)value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selSetStartPoint_Handle, value);
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetEndLineStyle_Handle, (long)value);
 			}
 		}
 	}
 
-	public virtual CGPoint EndPoint
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual CGPoint EndPoint
 	{
 		[Export("endPoint")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.CGPoint_objc_msgSend(base.Handle, selEndPointHandle);
 			}
@@ -75,7 +108,7 @@ public class PdfAnnotationLine : PdfAnnotation
 		[Export("setEndPoint:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_CGPoint(base.Handle, selSetEndPoint_Handle, value);
 			}
@@ -86,62 +119,17 @@ public class PdfAnnotationLine : PdfAnnotation
 		}
 	}
 
-	public virtual PdfLineStyle StartLineStyle
-	{
-		[Export("startLineStyle")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return (PdfLineStyle)Messaging.int_objc_msgSend(base.Handle, selStartLineStyleHandle);
-			}
-			return (PdfLineStyle)Messaging.int_objc_msgSendSuper(base.SuperHandle, selStartLineStyleHandle);
-		}
-		[Export("setStartLineStyle:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_int(base.Handle, selSetStartLineStyle_Handle, (int)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetStartLineStyle_Handle, (int)value);
-			}
-		}
-	}
-
-	public virtual PdfLineStyle EndLineStyle
-	{
-		[Export("endLineStyle")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return (PdfLineStyle)Messaging.int_objc_msgSend(base.Handle, selEndLineStyleHandle);
-			}
-			return (PdfLineStyle)Messaging.int_objc_msgSendSuper(base.SuperHandle, selEndLineStyleHandle);
-		}
-		[Export("setEndLineStyle:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_int(base.Handle, selSetEndLineStyle_Handle, (int)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetEndLineStyle_Handle, (int)value);
-			}
-		}
-	}
-
-	public virtual NSColor InteriorColor
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual NSColor InteriorColor
 	{
 		[Export("interiorColor")]
 		get
 		{
-			return (NSColor)(__mt_InteriorColor_var = ((!IsDirectBinding) ? ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInteriorColorHandle))) : ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selInteriorColorHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selInteriorColorHandle));
+			}
+			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInteriorColorHandle));
 		}
 		[Export("setInteriorColor:")]
 		set
@@ -150,7 +138,7 @@ public class PdfAnnotationLine : PdfAnnotation
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetInteriorColor_Handle, value.Handle);
 			}
@@ -158,58 +146,105 @@ public class PdfAnnotationLine : PdfAnnotation
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetInteriorColor_Handle, value.Handle);
 			}
-			__mt_InteriorColor_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual PdfLineStyle StartLineStyle
+	{
+		[Export("startLineStyle")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return (PdfLineStyle)Messaging.Int64_objc_msgSend(base.Handle, selStartLineStyleHandle);
+			}
+			return (PdfLineStyle)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selStartLineStyleHandle);
+		}
+		[Export("setStartLineStyle:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetStartLineStyle_Handle, (long)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetStartLineStyle_Handle, (long)value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual CGPoint StartPoint
+	{
+		[Export("startPoint")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.CGPoint_objc_msgSend(base.Handle, selStartPointHandle);
+			}
+			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selStartPointHandle);
+		}
+		[Export("setStartPoint:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_CGPoint(base.Handle, selSetStartPoint_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selSetStartPoint_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public PdfAnnotationLine()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public PdfAnnotationLine(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public PdfAnnotationLine(NSObjectFlag t)
+	protected PdfAnnotationLine(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public PdfAnnotationLine(IntPtr handle)
+	protected internal PdfAnnotationLine(IntPtr handle)
 		: base(handle)
 	{
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_InteriorColor_var = null;
-		}
 	}
 }

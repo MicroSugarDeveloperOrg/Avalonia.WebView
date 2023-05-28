@@ -5,96 +5,97 @@ using ObjCRuntime;
 namespace Foundation;
 
 [Protocol]
-[Register("NSNetServiceDelegate", true)]
+[Register("NSNetServiceDelegate", false)]
 [Model]
-public class NSNetServiceDelegate : NSObject
+[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+public class NSNetServiceDelegate : NSObject, INSNetServiceDelegate, INativeObject, IDisposable
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSNetServiceDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
+		base.IsDirectBinding = false;
+		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSNetServiceDelegate(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSNetServiceDelegate(NSObjectFlag t)
+	protected NSNetServiceDelegate(NSObjectFlag t)
 		: base(t)
 	{
+		base.IsDirectBinding = false;
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSNetServiceDelegate(IntPtr handle)
+	protected internal NSNetServiceDelegate(IntPtr handle)
 		: base(handle)
 	{
-	}
-
-	[Export("netServiceWillPublish:")]
-	public virtual void WillPublish(NSNetService sender)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("netServiceDidPublish:")]
-	public virtual void Published(NSNetService sender)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("netService:didNotPublish:")]
-	public virtual void PublishFailure(NSNetService sender, NSDictionary errors)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("netServiceWillResolve:")]
-	public virtual void WillResolve(NSNetService sender)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
+		base.IsDirectBinding = false;
 	}
 
 	[Export("netServiceDidResolveAddress:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AddressResolved(NSNetService sender)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
+	[Export("netService:didAcceptConnectionWithInputStream:outputStream:")]
+	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void DidAcceptConnection(NSNetService sender, NSInputStream inputStream, NSOutputStream outputStream)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("netService:didNotPublish:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void PublishFailure(NSNetService sender, NSDictionary errors)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("netServiceDidPublish:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Published(NSNetService sender)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
 	[Export("netService:didNotResolve:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ResolveFailure(NSNetService sender, NSDictionary errors)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("netServiceDidStop:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Stopped(NSNetService sender)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("netService:didUpdateTXTRecordData:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void UpdatedTxtRecordData(NSNetService sender, NSData data)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("netServiceWillPublish:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void WillPublish(NSNetService sender)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("netServiceWillResolve:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void WillResolve(NSNetService sender)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

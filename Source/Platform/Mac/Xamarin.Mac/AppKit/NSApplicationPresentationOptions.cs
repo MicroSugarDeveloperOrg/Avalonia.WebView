@@ -1,5 +1,10 @@
+using System;
+using ObjCRuntime;
+
 namespace AppKit;
 
+[Flags]
+[Native]
 public enum NSApplicationPresentationOptions : ulong
 {
 	Default = 0uL,

@@ -6,7 +6,6 @@ using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
 public class CTTextTab : INativeObject, IDisposable
 {
 	internal IntPtr handle;

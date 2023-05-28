@@ -3,156 +3,56 @@ using System.ComponentModel;
 using AppKit;
 using CoreGraphics;
 using Foundation;
+using JavaScriptCore;
 using ObjCRuntime;
 
 namespace WebKit;
 
 [Register("WebView", true)]
-public class WebView : NSView
+[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
+public class WebView : NSView, INSUserInterfaceValidations, INativeObject, IDisposable
 {
 	[Register]
-	private sealed class _WebFrameLoadDelegate : WebFrameLoadDelegate
+	internal class _WebFrameLoadDelegate : NSObject, IWebFrameLoadDelegate, INativeObject, IDisposable
 	{
-		internal EventHandler<WebFrameEventArgs> startedProvisionalLoad;
+		internal EventHandler<WebFrameEventArgs>? canceledClientRedirect;
 
-		internal EventHandler<WebFrameEventArgs> receivedServerRedirectForProvisionalLoad;
+		internal EventHandler<WebFrameEventArgs>? changedLocationWithinPage;
 
-		internal EventHandler<WebFrameErrorEventArgs> failedProvisionalLoad;
+		internal EventHandler<WebFrameScriptFrameEventArgs>? clearedWindowObject;
 
-		internal EventHandler<WebFrameEventArgs> commitedLoad;
+		internal EventHandler<WebFrameEventArgs>? commitedLoad;
 
-		internal EventHandler<WebFrameTitleEventArgs> receivedTitle;
+		internal EventHandler<WebFrameJavaScriptContextEventArgs>? didCreateJavaScriptContext;
 
-		internal EventHandler<WebFrameImageEventArgs> receivedIcon;
+		internal EventHandler<WebFrameErrorEventArgs>? failedLoadWithError;
 
-		internal EventHandler<WebFrameEventArgs> finishedLoad;
+		internal EventHandler<WebFrameErrorEventArgs>? failedProvisionalLoad;
 
-		internal EventHandler<WebFrameErrorEventArgs> failedLoadWithError;
+		internal EventHandler<WebFrameEventArgs>? finishedLoad;
 
-		internal EventHandler<WebFrameEventArgs> changedLocationWithinPage;
+		internal EventHandler<WebFrameImageEventArgs>? receivedIcon;
 
-		internal EventHandler<WebFrameClientRedirectEventArgs> willPerformClientRedirect;
+		internal EventHandler<WebFrameEventArgs>? receivedServerRedirectForProvisionalLoad;
 
-		internal EventHandler<WebFrameEventArgs> canceledClientRedirect;
+		internal EventHandler<WebFrameTitleEventArgs>? receivedTitle;
 
-		internal EventHandler<WebFrameEventArgs> willCloseFrame;
+		internal EventHandler<WebFrameEventArgs>? startedProvisionalLoad;
 
-		internal EventHandler<WebFrameScriptFrameEventArgs> clearedWindowObject;
+		internal EventHandler<WebFrameEventArgs>? willCloseFrame;
 
-		internal EventHandler<WebFrameScriptObjectEventArgs> windowScriptObjectAvailable;
+		internal EventHandler<WebFrameClientRedirectEventArgs>? willPerformClientRedirect;
 
-		[Preserve(Conditional = true)]
-		public override void StartedProvisionalLoad(WebView sender, WebFrame forFrame)
+		internal EventHandler<WebFrameScriptObjectEventArgs>? windowScriptObjectAvailable;
+
+		public _WebFrameLoadDelegate()
 		{
-			EventHandler<WebFrameEventArgs> eventHandler = startedProvisionalLoad;
-			if (eventHandler != null)
-			{
-				WebFrameEventArgs e = new WebFrameEventArgs(forFrame);
-				eventHandler(sender, e);
-			}
+			base.IsDirectBinding = false;
 		}
 
 		[Preserve(Conditional = true)]
-		public override void ReceivedServerRedirectForProvisionalLoad(WebView sender, WebFrame forFrame)
-		{
-			EventHandler<WebFrameEventArgs> eventHandler = receivedServerRedirectForProvisionalLoad;
-			if (eventHandler != null)
-			{
-				WebFrameEventArgs e = new WebFrameEventArgs(forFrame);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void FailedProvisionalLoad(WebView sender, NSError error, WebFrame forFrame)
-		{
-			EventHandler<WebFrameErrorEventArgs> eventHandler = failedProvisionalLoad;
-			if (eventHandler != null)
-			{
-				WebFrameErrorEventArgs e = new WebFrameErrorEventArgs(error, forFrame);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void CommitedLoad(WebView sender, WebFrame forFrame)
-		{
-			EventHandler<WebFrameEventArgs> eventHandler = commitedLoad;
-			if (eventHandler != null)
-			{
-				WebFrameEventArgs e = new WebFrameEventArgs(forFrame);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void ReceivedTitle(WebView sender, string title, WebFrame forFrame)
-		{
-			EventHandler<WebFrameTitleEventArgs> eventHandler = receivedTitle;
-			if (eventHandler != null)
-			{
-				WebFrameTitleEventArgs e = new WebFrameTitleEventArgs(title, forFrame);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void ReceivedIcon(WebView sender, NSImage image, WebFrame forFrame)
-		{
-			EventHandler<WebFrameImageEventArgs> eventHandler = receivedIcon;
-			if (eventHandler != null)
-			{
-				WebFrameImageEventArgs e = new WebFrameImageEventArgs(image, forFrame);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void FinishedLoad(WebView sender, WebFrame forFrame)
-		{
-			EventHandler<WebFrameEventArgs> eventHandler = finishedLoad;
-			if (eventHandler != null)
-			{
-				WebFrameEventArgs e = new WebFrameEventArgs(forFrame);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void FailedLoadWithError(WebView sender, NSError error, WebFrame forFrame)
-		{
-			EventHandler<WebFrameErrorEventArgs> eventHandler = failedLoadWithError;
-			if (eventHandler != null)
-			{
-				WebFrameErrorEventArgs e = new WebFrameErrorEventArgs(error, forFrame);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void ChangedLocationWithinPage(WebView sender, WebFrame forFrame)
-		{
-			EventHandler<WebFrameEventArgs> eventHandler = changedLocationWithinPage;
-			if (eventHandler != null)
-			{
-				WebFrameEventArgs e = new WebFrameEventArgs(forFrame);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void WillPerformClientRedirect(WebView sender, NSUrl toUrl, double secondsDelay, NSDate fireDate, WebFrame forFrame)
-		{
-			EventHandler<WebFrameClientRedirectEventArgs> eventHandler = willPerformClientRedirect;
-			if (eventHandler != null)
-			{
-				WebFrameClientRedirectEventArgs e = new WebFrameClientRedirectEventArgs(toUrl, secondsDelay, fireDate, forFrame);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void CanceledClientRedirect(WebView sender, WebFrame forFrame)
+		[Export("webView:didCancelClientRedirectForFrame:")]
+		public void CanceledClientRedirect(WebView sender, WebFrame forFrame)
 		{
 			EventHandler<WebFrameEventArgs> eventHandler = canceledClientRedirect;
 			if (eventHandler != null)
@@ -163,9 +63,10 @@ public class WebView : NSView
 		}
 
 		[Preserve(Conditional = true)]
-		public override void WillCloseFrame(WebView sender, WebFrame forFrame)
+		[Export("webView:didChangeLocationWithinPageForFrame:")]
+		public void ChangedLocationWithinPage(WebView sender, WebFrame forFrame)
 		{
-			EventHandler<WebFrameEventArgs> eventHandler = willCloseFrame;
+			EventHandler<WebFrameEventArgs> eventHandler = changedLocationWithinPage;
 			if (eventHandler != null)
 			{
 				WebFrameEventArgs e = new WebFrameEventArgs(forFrame);
@@ -174,7 +75,8 @@ public class WebView : NSView
 		}
 
 		[Preserve(Conditional = true)]
-		public override void ClearedWindowObject(WebView webView, WebScriptObject windowObject, WebFrame forFrame)
+		[Export("webView:didClearWindowObject:forFrame:")]
+		public void ClearedWindowObject(WebView webView, WebScriptObject windowObject, WebFrame forFrame)
 		{
 			EventHandler<WebFrameScriptFrameEventArgs> eventHandler = clearedWindowObject;
 			if (eventHandler != null)
@@ -185,7 +87,140 @@ public class WebView : NSView
 		}
 
 		[Preserve(Conditional = true)]
-		public override void WindowScriptObjectAvailable(WebView webView, WebScriptObject windowScriptObject)
+		[Export("webView:didCommitLoadForFrame:")]
+		public void CommitedLoad(WebView sender, WebFrame forFrame)
+		{
+			EventHandler<WebFrameEventArgs> eventHandler = commitedLoad;
+			if (eventHandler != null)
+			{
+				WebFrameEventArgs e = new WebFrameEventArgs(forFrame);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:didCreateJavaScriptContext:forFrame:")]
+		public void DidCreateJavaScriptContext(WebView webView, JSContext context, WebFrame frame)
+		{
+			EventHandler<WebFrameJavaScriptContextEventArgs> eventHandler = didCreateJavaScriptContext;
+			if (eventHandler != null)
+			{
+				WebFrameJavaScriptContextEventArgs e = new WebFrameJavaScriptContextEventArgs(context, frame);
+				eventHandler(webView, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:didFailLoadWithError:forFrame:")]
+		public void FailedLoadWithError(WebView sender, NSError error, WebFrame forFrame)
+		{
+			EventHandler<WebFrameErrorEventArgs> eventHandler = failedLoadWithError;
+			if (eventHandler != null)
+			{
+				WebFrameErrorEventArgs e = new WebFrameErrorEventArgs(error, forFrame);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:didFailProvisionalLoadWithError:forFrame:")]
+		public void FailedProvisionalLoad(WebView sender, NSError error, WebFrame forFrame)
+		{
+			EventHandler<WebFrameErrorEventArgs> eventHandler = failedProvisionalLoad;
+			if (eventHandler != null)
+			{
+				WebFrameErrorEventArgs e = new WebFrameErrorEventArgs(error, forFrame);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:didFinishLoadForFrame:")]
+		public void FinishedLoad(WebView sender, WebFrame forFrame)
+		{
+			EventHandler<WebFrameEventArgs> eventHandler = finishedLoad;
+			if (eventHandler != null)
+			{
+				WebFrameEventArgs e = new WebFrameEventArgs(forFrame);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:didReceiveIcon:forFrame:")]
+		public void ReceivedIcon(WebView sender, NSImage image, WebFrame forFrame)
+		{
+			EventHandler<WebFrameImageEventArgs> eventHandler = receivedIcon;
+			if (eventHandler != null)
+			{
+				WebFrameImageEventArgs e = new WebFrameImageEventArgs(image, forFrame);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:didReceiveServerRedirectForProvisionalLoadForFrame:")]
+		public void ReceivedServerRedirectForProvisionalLoad(WebView sender, WebFrame forFrame)
+		{
+			EventHandler<WebFrameEventArgs> eventHandler = receivedServerRedirectForProvisionalLoad;
+			if (eventHandler != null)
+			{
+				WebFrameEventArgs e = new WebFrameEventArgs(forFrame);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:didReceiveTitle:forFrame:")]
+		public void ReceivedTitle(WebView sender, string title, WebFrame forFrame)
+		{
+			EventHandler<WebFrameTitleEventArgs> eventHandler = receivedTitle;
+			if (eventHandler != null)
+			{
+				WebFrameTitleEventArgs e = new WebFrameTitleEventArgs(title, forFrame);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:didStartProvisionalLoadForFrame:")]
+		public void StartedProvisionalLoad(WebView sender, WebFrame forFrame)
+		{
+			EventHandler<WebFrameEventArgs> eventHandler = startedProvisionalLoad;
+			if (eventHandler != null)
+			{
+				WebFrameEventArgs e = new WebFrameEventArgs(forFrame);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:willCloseFrame:")]
+		public void WillCloseFrame(WebView sender, WebFrame forFrame)
+		{
+			EventHandler<WebFrameEventArgs> eventHandler = willCloseFrame;
+			if (eventHandler != null)
+			{
+				WebFrameEventArgs e = new WebFrameEventArgs(forFrame);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:willPerformClientRedirectToURL:delay:fireDate:forFrame:")]
+		public void WillPerformClientRedirect(WebView sender, NSUrl toUrl, double secondsDelay, NSDate fireDate, WebFrame forFrame)
+		{
+			EventHandler<WebFrameClientRedirectEventArgs> eventHandler = willPerformClientRedirect;
+			if (eventHandler != null)
+			{
+				WebFrameClientRedirectEventArgs e = new WebFrameClientRedirectEventArgs(toUrl, secondsDelay, fireDate, forFrame);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:windowScriptObjectAvailable:")]
+		public void WindowScriptObjectAvailable(WebView webView, WebScriptObject windowScriptObject)
 		{
 			EventHandler<WebFrameScriptObjectEventArgs> eventHandler = windowScriptObjectAvailable;
 			if (eventHandler != null)
@@ -197,68 +232,52 @@ public class WebView : NSView
 	}
 
 	[Register]
-	private sealed class _WebDownloadDelegate : WebDownloadDelegate
+	internal class _WebDownloadDelegate : NSObject, IWebDownloadDelegate, INativeObject, IDisposable
 	{
-		internal WebDownloadRequest onDownloadWindowForSheet;
+		internal WebDownloadRequest? onDownloadWindowForSheet;
+
+		public _WebDownloadDelegate()
+		{
+			base.IsDirectBinding = false;
+		}
 
 		[Preserve(Conditional = true)]
-		public override NSWindow OnDownloadWindowForSheet(WebDownload download)
+		[Export("downloadWindowForAuthenticationSheet:")]
+		public NSWindow OnDownloadWindowForSheet(WebDownload download)
 		{
 			return onDownloadWindowForSheet?.Invoke(download);
 		}
 	}
 
 	[Register]
-	private sealed class _WebResourceLoadDelegate : WebResourceLoadDelegate
+	internal class _WebResourceLoadDelegate : NSObject, IWebResourceLoadDelegate, INativeObject, IDisposable
 	{
-		internal WebResourceIdentifierRequest onIdentifierForInitialRequest;
+		internal EventHandler<WebResourceCancelledChallengeEventArgs>? onCancelledAuthenticationChallenge;
 
-		internal WebResourceOnRequestSend onSendRequest;
+		internal EventHandler<WebResourceErrorEventArgs>? onFailedLoading;
 
-		internal EventHandler<WebResourceAuthenticationChallengeEventArgs> onReceivedAuthenticationChallenge;
+		internal EventHandler<WebResourceCompletedEventArgs>? onFinishedLoading;
 
-		internal EventHandler<WebResourceCancelledChallengeEventArgs> onCancelledAuthenticationChallenge;
+		internal WebResourceIdentifierRequest? onIdentifierForInitialRequest;
 
-		internal EventHandler<WebResourceReceivedResponseEventArgs> onReceivedResponse;
+		internal EventHandler<WebResourcePluginErrorEventArgs>? onPlugInFailed;
 
-		internal EventHandler<WebResourceReceivedContentLengthEventArgs> onReceivedContentLength;
+		internal EventHandler<WebResourceAuthenticationChallengeEventArgs>? onReceivedAuthenticationChallenge;
 
-		internal EventHandler<WebResourceCompletedEventArgs> onFinishedLoading;
+		internal EventHandler<WebResourceReceivedContentLengthEventArgs>? onReceivedContentLength;
 
-		internal EventHandler<WebResourceErrorEventArgs> onFailedLoading;
+		internal EventHandler<WebResourceReceivedResponseEventArgs>? onReceivedResponse;
 
-		internal EventHandler<WebResourcePluginErrorEventArgs> onPlugInFailed;
+		internal WebResourceOnRequestSend? onSendRequest;
 
-		[Preserve(Conditional = true)]
-		public override NSObject OnIdentifierForInitialRequest(WebView sender, NSUrlRequest request, WebDataSource dataSource)
+		public _WebResourceLoadDelegate()
 		{
-			return onIdentifierForInitialRequest?.Invoke(sender, request, dataSource);
+			base.IsDirectBinding = false;
 		}
 
 		[Preserve(Conditional = true)]
-		public override NSUrlRequest OnSendRequest(WebView sender, NSObject identifier, NSUrlRequest request, NSUrlResponse redirectResponse, WebDataSource dataSource)
-		{
-			WebResourceOnRequestSend webResourceOnRequestSend = onSendRequest;
-			if (webResourceOnRequestSend != null)
-			{
-				return webResourceOnRequestSend(sender, identifier, request, redirectResponse, dataSource);
-			}
-			return request;
-		}
-
-		[Preserve(Conditional = true)]
-		public override void OnReceivedAuthenticationChallenge(WebView sender, NSObject identifier, NSUrlAuthenticationChallenge challenge, WebDataSource dataSource)
-		{
-			EventHandler<WebResourceAuthenticationChallengeEventArgs> eventHandler = onReceivedAuthenticationChallenge;
-			if (eventHandler != null)
-			{
-				WebResourceAuthenticationChallengeEventArgs e = new WebResourceAuthenticationChallengeEventArgs(identifier, challenge, dataSource);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void OnCancelledAuthenticationChallenge(WebView sender, NSObject identifier, NSUrlAuthenticationChallenge challenge, WebDataSource dataSource)
+		[Export("webView:resource:didCancelAuthenticationChallenge:fromDataSource:")]
+		public void OnCancelledAuthenticationChallenge(WebView sender, NSObject identifier, NSUrlAuthenticationChallenge challenge, WebDataSource dataSource)
 		{
 			EventHandler<WebResourceCancelledChallengeEventArgs> eventHandler = onCancelledAuthenticationChallenge;
 			if (eventHandler != null)
@@ -269,40 +288,8 @@ public class WebView : NSView
 		}
 
 		[Preserve(Conditional = true)]
-		public override void OnReceivedResponse(WebView sender, NSObject identifier, NSUrlResponse responseReceived, WebDataSource dataSource)
-		{
-			EventHandler<WebResourceReceivedResponseEventArgs> eventHandler = onReceivedResponse;
-			if (eventHandler != null)
-			{
-				WebResourceReceivedResponseEventArgs e = new WebResourceReceivedResponseEventArgs(identifier, responseReceived, dataSource);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void OnReceivedContentLength(WebView sender, NSObject identifier, int length, WebDataSource dataSource)
-		{
-			EventHandler<WebResourceReceivedContentLengthEventArgs> eventHandler = onReceivedContentLength;
-			if (eventHandler != null)
-			{
-				WebResourceReceivedContentLengthEventArgs e = new WebResourceReceivedContentLengthEventArgs(identifier, length, dataSource);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void OnFinishedLoading(WebView sender, NSObject identifier, WebDataSource dataSource)
-		{
-			EventHandler<WebResourceCompletedEventArgs> eventHandler = onFinishedLoading;
-			if (eventHandler != null)
-			{
-				WebResourceCompletedEventArgs e = new WebResourceCompletedEventArgs(identifier, dataSource);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void OnFailedLoading(WebView sender, NSObject identifier, NSError withError, WebDataSource dataSource)
+		[Export("webView:resource:didFailLoadingWithError:fromDataSource:")]
+		public void OnFailedLoading(WebView sender, NSObject identifier, NSError withError, WebDataSource dataSource)
 		{
 			EventHandler<WebResourceErrorEventArgs> eventHandler = onFailedLoading;
 			if (eventHandler != null)
@@ -313,7 +300,27 @@ public class WebView : NSView
 		}
 
 		[Preserve(Conditional = true)]
-		public override void OnPlugInFailed(WebView sender, NSError error, WebDataSource dataSource)
+		[Export("webView:resource:didFinishLoadingFromDataSource:")]
+		public void OnFinishedLoading(WebView sender, NSObject identifier, WebDataSource dataSource)
+		{
+			EventHandler<WebResourceCompletedEventArgs> eventHandler = onFinishedLoading;
+			if (eventHandler != null)
+			{
+				WebResourceCompletedEventArgs e = new WebResourceCompletedEventArgs(identifier, dataSource);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:identifierForInitialRequest:fromDataSource:")]
+		public NSObject OnIdentifierForInitialRequest(WebView sender, NSUrlRequest request, WebDataSource dataSource)
+		{
+			return onIdentifierForInitialRequest?.Invoke(sender, request, dataSource);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:plugInFailedWithError:dataSource:")]
+		public void OnPlugInFailed(WebView sender, NSError error, WebDataSource dataSource)
 		{
 			EventHandler<WebResourcePluginErrorEventArgs> eventHandler = onPlugInFailed;
 			if (eventHandler != null)
@@ -322,173 +329,151 @@ public class WebView : NSView
 				eventHandler(sender, e);
 			}
 		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:resource:didReceiveAuthenticationChallenge:fromDataSource:")]
+		public void OnReceivedAuthenticationChallenge(WebView sender, NSObject identifier, NSUrlAuthenticationChallenge challenge, WebDataSource dataSource)
+		{
+			EventHandler<WebResourceAuthenticationChallengeEventArgs> eventHandler = onReceivedAuthenticationChallenge;
+			if (eventHandler != null)
+			{
+				WebResourceAuthenticationChallengeEventArgs e = new WebResourceAuthenticationChallengeEventArgs(identifier, challenge, dataSource);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:resource:didReceiveContentLength:fromDataSource:")]
+		public void OnReceivedContentLength(WebView sender, NSObject identifier, nint length, WebDataSource dataSource)
+		{
+			EventHandler<WebResourceReceivedContentLengthEventArgs> eventHandler = onReceivedContentLength;
+			if (eventHandler != null)
+			{
+				WebResourceReceivedContentLengthEventArgs e = new WebResourceReceivedContentLengthEventArgs(identifier, length, dataSource);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:resource:didReceiveResponse:fromDataSource:")]
+		public void OnReceivedResponse(WebView sender, NSObject identifier, NSUrlResponse responseReceived, WebDataSource dataSource)
+		{
+			EventHandler<WebResourceReceivedResponseEventArgs> eventHandler = onReceivedResponse;
+			if (eventHandler != null)
+			{
+				WebResourceReceivedResponseEventArgs e = new WebResourceReceivedResponseEventArgs(identifier, responseReceived, dataSource);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:resource:willSendRequest:redirectResponse:fromDataSource:")]
+		public NSUrlRequest OnSendRequest(WebView sender, NSObject identifier, NSUrlRequest request, NSUrlResponse redirectResponse, WebDataSource dataSource)
+		{
+			WebResourceOnRequestSend webResourceOnRequestSend = onSendRequest;
+			if (webResourceOnRequestSend != null)
+			{
+				return webResourceOnRequestSend(sender, identifier, request, redirectResponse, dataSource);
+			}
+			return request;
+		}
 	}
 
 	[Register]
-	private sealed class _WebUIDelegate : WebUIDelegate
+	internal class _WebUIDelegate : NSObject, IWebUIDelegate, INativeObject, IDisposable
 	{
-		internal CreateWebViewFromRequest uICreateWebView;
+		internal WebViewGetBool? uIAreToolbarsVisible;
 
-		internal EventHandler uIShow;
+		internal EventHandler? uIClose;
 
-		internal WebViewCreate uICreateModalDialog;
+		internal WebViewCreate? uICreateModalDialog;
 
-		internal EventHandler uIRunModal;
+		internal CreateWebViewFromRequest? uICreateWebView;
 
-		internal EventHandler uIClose;
+		internal DragSourceGetActionMask? uIDragSourceActionMask;
 
-		internal EventHandler uIFocus;
+		internal EventHandler<WebViewFooterEventArgs>? uIDrawFooterInRect;
 
-		internal EventHandler uIUnfocus;
+		internal EventHandler<WebViewHeaderEventArgs>? uIDrawHeaderInRect;
 
-		internal WebViewGetResponder uIGetFirstResponder;
+		internal EventHandler? uIFocus;
 
-		internal EventHandler<WebViewResponderEventArgs> uIMakeFirstResponder;
+		internal WebViewGetRectangle? uIGetContentRect;
 
-		internal EventHandler<WebViewStatusTextEventArgs> uISetStatusText;
+		internal WebViewGetContextMenuItems? uIGetContextMenuItems;
 
-		internal WebViewGetString uIGetStatusText;
+		internal DragDestinationGetActionMask? uIGetDragDestinationActionMask;
 
-		internal WebViewGetBool uIAreToolbarsVisible;
+		internal WebViewGetResponder? uIGetFirstResponder;
 
-		internal EventHandler<WebViewToolBarsEventArgs> uISetToolbarsVisible;
+		internal WebViewGetFloat? uIGetFooterHeight;
 
-		internal WebViewGetBool uIIsStatusBarVisible;
+		internal WebViewGetRectangle? uIGetFrame;
 
-		internal EventHandler<WebViewStatusBarEventArgs> uISetStatusBarVisible;
+		internal WebViewGetFloat? uIGetHeaderHeight;
 
-		internal WebViewGetBool uIIsResizable;
+		internal WebViewGetString? uIGetStatusText;
 
-		internal EventHandler<WebViewResizableEventArgs> uISetResizable;
+		internal WebViewGetBool? uIIsResizable;
 
-		internal EventHandler<WebViewFrameEventArgs> uISetFrame;
+		internal WebViewGetBool? uIIsStatusBarVisible;
 
-		internal WebViewGetRectangle uIGetFrame;
+		internal EventHandler<WebViewResponderEventArgs>? uIMakeFirstResponder;
 
-		internal EventHandler<WebViewJavaScriptFrameEventArgs> uIRunJavaScriptAlertPanelMessage;
+		internal EventHandler<WebViewMouseMovedEventArgs>? uIMouseDidMoveOverElement;
 
-		internal WebViewConfirmationPanel uIRunJavaScriptConfirmationPanel;
+		internal EventHandler<WebViewPrintEventArgs>? uIPrintFrameView;
 
-		internal WebViewPromptPanel uIRunJavaScriptTextInputPanelWithFrame;
+		internal WebViewJavaScriptFrame? uIRunBeforeUnload;
 
-		internal WebViewJavaScriptFrame uIRunBeforeUnload;
+		internal EventHandler<WebViewJavaScriptEventArgs>? uIRunJavaScriptAlertPanel;
 
-		internal EventHandler<WebViewRunOpenPanelEventArgs> uIRunOpenPanelForFileButton;
+		internal EventHandler<WebViewJavaScriptFrameEventArgs>? uIRunJavaScriptAlertPanelMessage;
 
-		internal EventHandler<WebViewMouseMovedEventArgs> uIMouseDidMoveOverElement;
+		internal WebViewPrompt? uIRunJavaScriptConfirmPanel;
 
-		internal WebViewGetContextMenuItems uIGetContextMenuItems;
+		internal WebViewConfirmationPanel? uIRunJavaScriptConfirmationPanel;
 
-		internal WebViewValidateUserInterface uIValidateUserInterfaceItem;
+		internal WebViewJavaScriptInput? uIRunJavaScriptTextInputPanel;
 
-		internal WebViewPerformAction uIShouldPerformActionfromSender;
+		internal WebViewPromptPanel? uIRunJavaScriptTextInputPanelWithFrame;
 
-		internal DragDestinationGetActionMask uIGetDragDestinationActionMask;
+		internal EventHandler? uIRunModal;
 
-		internal EventHandler<WebViewDragEventArgs> uIWillPerformDragDestination;
+		internal EventHandler<WebViewRunOpenPanelEventArgs>? uIRunOpenPanelForFileButton;
 
-		internal DragSourceGetActionMask uIDragSourceActionMask;
+		internal EventHandler<WebViewContentEventArgs>? uISetContentRect;
 
-		internal EventHandler<WebViewPerformDragEventArgs> uIWillPerformDragSource;
+		internal EventHandler<WebViewFrameEventArgs>? uISetFrame;
 
-		internal EventHandler<WebViewPrintEventArgs> uIPrintFrameView;
+		internal EventHandler<WebViewResizableEventArgs>? uISetResizable;
 
-		internal WebViewGetFloat uIGetHeaderHeight;
+		internal EventHandler<WebViewStatusBarEventArgs>? uISetStatusBarVisible;
 
-		internal WebViewGetFloat uIGetFooterHeight;
+		internal EventHandler<WebViewStatusTextEventArgs>? uISetStatusText;
 
-		internal EventHandler<WebViewHeaderEventArgs> uIDrawHeaderInRect;
+		internal EventHandler<WebViewToolBarsEventArgs>? uISetToolbarsVisible;
 
-		internal EventHandler<WebViewFooterEventArgs> uIDrawFooterInRect;
+		internal WebViewPerformAction? uIShouldPerformActionfromSender;
 
-		internal EventHandler<WebViewJavaScriptEventArgs> uIRunJavaScriptAlertPanel;
+		internal EventHandler? uIShow;
 
-		internal WebViewPrompt uIRunJavaScriptConfirmPanel;
+		internal EventHandler? uIUnfocus;
 
-		internal WebViewJavaScriptInput uIRunJavaScriptTextInputPanel;
+		internal WebViewValidateUserInterface? uIValidateUserInterfaceItem;
 
-		internal EventHandler<WebViewContentEventArgs> uISetContentRect;
+		internal EventHandler<WebViewDragEventArgs>? uIWillPerformDragDestination;
 
-		internal WebViewGetRectangle uIGetContentRect;
+		internal EventHandler<WebViewPerformDragEventArgs>? uIWillPerformDragSource;
 
-		[Preserve(Conditional = true)]
-		public override WebView UICreateWebView(WebView sender, NSUrlRequest request)
+		public _WebUIDelegate()
 		{
-			return uICreateWebView?.Invoke(sender, request);
+			base.IsDirectBinding = false;
 		}
 
 		[Preserve(Conditional = true)]
-		public override void UIShow(WebView sender)
-		{
-			uIShow?.Invoke(sender, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		public override WebView UICreateModalDialog(WebView sender, NSUrlRequest request)
-		{
-			return uICreateModalDialog?.Invoke(sender, request);
-		}
-
-		[Preserve(Conditional = true)]
-		public override void UIRunModal(WebView sender)
-		{
-			uIRunModal?.Invoke(sender, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		public override void UIClose(WebView sender)
-		{
-			uIClose?.Invoke(sender, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		public override void UIFocus(WebView sender)
-		{
-			uIFocus?.Invoke(sender, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		public override void UIUnfocus(WebView sender)
-		{
-			uIUnfocus?.Invoke(sender, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		public override NSResponder UIGetFirstResponder(WebView sender)
-		{
-			return uIGetFirstResponder?.Invoke(sender);
-		}
-
-		[Preserve(Conditional = true)]
-		public override void UIMakeFirstResponder(WebView sender, NSResponder newResponder)
-		{
-			EventHandler<WebViewResponderEventArgs> eventHandler = uIMakeFirstResponder;
-			if (eventHandler != null)
-			{
-				WebViewResponderEventArgs e = new WebViewResponderEventArgs(newResponder);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void UISetStatusText(WebView sender, string text)
-		{
-			EventHandler<WebViewStatusTextEventArgs> eventHandler = uISetStatusText;
-			if (eventHandler != null)
-			{
-				WebViewStatusTextEventArgs e = new WebViewStatusTextEventArgs(text);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override string UIGetStatusText(WebView sender)
-		{
-			return uIGetStatusText?.Invoke(sender);
-		}
-
-		[Preserve(Conditional = true)]
-		public override bool UIAreToolbarsVisible(WebView sender)
+		[Export("webViewAreToolbarsVisible:")]
+		public bool UIAreToolbarsVisible(WebView sender)
 		{
 			WebViewGetBool webViewGetBool = uIAreToolbarsVisible;
 			if (webViewGetBool != null)
@@ -499,241 +484,36 @@ public class WebView : NSView
 		}
 
 		[Preserve(Conditional = true)]
-		public override void UISetToolbarsVisible(WebView sender, bool visible)
+		[Export("webViewClose:")]
+		public void UIClose(WebView sender)
 		{
-			EventHandler<WebViewToolBarsEventArgs> eventHandler = uISetToolbarsVisible;
-			if (eventHandler != null)
-			{
-				WebViewToolBarsEventArgs e = new WebViewToolBarsEventArgs(visible);
-				eventHandler(sender, e);
-			}
+			uIClose?.Invoke(sender, EventArgs.Empty);
 		}
 
 		[Preserve(Conditional = true)]
-		public override bool UIIsStatusBarVisible(WebView sender)
+		[Export("webView:createWebViewModalDialogWithRequest:")]
+		public WebView UICreateModalDialog(WebView sender, NSUrlRequest request)
 		{
-			return uIIsStatusBarVisible?.Invoke(sender) ?? false;
+			return uICreateModalDialog?.Invoke(sender, request);
 		}
 
 		[Preserve(Conditional = true)]
-		public override void UISetStatusBarVisible(WebView sender, bool visible)
+		[Export("webView:createWebViewWithRequest:")]
+		public WebView UICreateWebView(WebView sender, NSUrlRequest request)
 		{
-			EventHandler<WebViewStatusBarEventArgs> eventHandler = uISetStatusBarVisible;
-			if (eventHandler != null)
-			{
-				WebViewStatusBarEventArgs e = new WebViewStatusBarEventArgs(visible);
-				eventHandler(sender, e);
-			}
+			return uICreateWebView?.Invoke(sender, request);
 		}
 
 		[Preserve(Conditional = true)]
-		public override bool UIIsResizable(WebView sender)
-		{
-			WebViewGetBool webViewGetBool = uIIsResizable;
-			if (webViewGetBool != null)
-			{
-				return webViewGetBool(sender);
-			}
-			throw new Exception("No event handler has been added to the UIIsResizable event.");
-		}
-
-		[Preserve(Conditional = true)]
-		public override void UISetResizable(WebView sender, bool resizable)
-		{
-			EventHandler<WebViewResizableEventArgs> eventHandler = uISetResizable;
-			if (eventHandler != null)
-			{
-				WebViewResizableEventArgs e = new WebViewResizableEventArgs(resizable);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void UISetFrame(WebView sender, CGRect newFrame)
-		{
-			EventHandler<WebViewFrameEventArgs> eventHandler = uISetFrame;
-			if (eventHandler != null)
-			{
-				WebViewFrameEventArgs e = new WebViewFrameEventArgs(newFrame);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override CGRect UIGetFrame(WebView sender)
-		{
-			WebViewGetRectangle webViewGetRectangle = uIGetFrame;
-			if (webViewGetRectangle != null)
-			{
-				return webViewGetRectangle(sender);
-			}
-			throw new Exception("No event handler has been added to the UIGetFrame event.");
-		}
-
-		[Preserve(Conditional = true)]
-		public override void UIRunJavaScriptAlertPanelMessage(WebView sender, string withMessage, WebFrame initiatedByFrame)
-		{
-			EventHandler<WebViewJavaScriptFrameEventArgs> eventHandler = uIRunJavaScriptAlertPanelMessage;
-			if (eventHandler != null)
-			{
-				WebViewJavaScriptFrameEventArgs e = new WebViewJavaScriptFrameEventArgs(withMessage, initiatedByFrame);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override bool UIRunJavaScriptConfirmationPanel(WebView sender, string withMessage, WebFrame initiatedByFrame)
-		{
-			WebViewConfirmationPanel webViewConfirmationPanel = uIRunJavaScriptConfirmationPanel;
-			if (webViewConfirmationPanel != null)
-			{
-				return webViewConfirmationPanel(sender, withMessage, initiatedByFrame);
-			}
-			throw new Exception("No event handler has been added to the UIRunJavaScriptConfirmationPanel event.");
-		}
-
-		[Preserve(Conditional = true)]
-		public override string UIRunJavaScriptTextInputPanelWithFrame(WebView sender, string prompt, string defaultText, WebFrame initiatedByFrame)
-		{
-			return uIRunJavaScriptTextInputPanelWithFrame?.Invoke(sender, prompt, defaultText, initiatedByFrame);
-		}
-
-		[Preserve(Conditional = true)]
-		public override bool UIRunBeforeUnload(WebView sender, string message, WebFrame initiatedByFrame)
-		{
-			WebViewJavaScriptFrame webViewJavaScriptFrame = uIRunBeforeUnload;
-			if (webViewJavaScriptFrame != null)
-			{
-				return webViewJavaScriptFrame(sender, message, initiatedByFrame);
-			}
-			throw new Exception("No event handler has been added to the UIRunBeforeUnload event.");
-		}
-
-		[Preserve(Conditional = true)]
-		public override void UIRunOpenPanelForFileButton(WebView sender, WebOpenPanelResultListener resultListener)
-		{
-			EventHandler<WebViewRunOpenPanelEventArgs> eventHandler = uIRunOpenPanelForFileButton;
-			if (eventHandler != null)
-			{
-				WebViewRunOpenPanelEventArgs e = new WebViewRunOpenPanelEventArgs(resultListener);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void UIMouseDidMoveOverElement(WebView sender, NSDictionary elementInformation, NSEventModifierMask modifierFlags)
-		{
-			EventHandler<WebViewMouseMovedEventArgs> eventHandler = uIMouseDidMoveOverElement;
-			if (eventHandler != null)
-			{
-				WebViewMouseMovedEventArgs e = new WebViewMouseMovedEventArgs(elementInformation, modifierFlags);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override NSMenuItem[] UIGetContextMenuItems(WebView sender, NSDictionary forElement, NSMenuItem[] defaultMenuItems)
-		{
-			return uIGetContextMenuItems?.Invoke(sender, forElement, defaultMenuItems);
-		}
-
-		[Preserve(Conditional = true)]
-		public override bool UIValidateUserInterfaceItem(WebView webView, NSObject validatedUserInterfaceItem, bool defaultValidation)
-		{
-			return uIValidateUserInterfaceItem?.Invoke(webView, validatedUserInterfaceItem, defaultValidation) ?? defaultValidation;
-		}
-
-		[Preserve(Conditional = true)]
-		public override bool UIShouldPerformActionfromSender(WebView webView, Selector action, NSObject sender)
-		{
-			WebViewPerformAction webViewPerformAction = uIShouldPerformActionfromSender;
-			if (webViewPerformAction != null)
-			{
-				return webViewPerformAction(webView, action, sender);
-			}
-			throw new Exception("No event handler has been added to the UIShouldPerformActionfromSender event.");
-		}
-
-		[Preserve(Conditional = true)]
-		public override NSEventModifierMask UIGetDragDestinationActionMask(WebView webView, NSDraggingInfo draggingInfo)
-		{
-			return uIGetDragDestinationActionMask?.Invoke(webView, draggingInfo) ?? ((NSEventModifierMask)0uL);
-		}
-
-		[Preserve(Conditional = true)]
-		public override void UIWillPerformDragDestination(WebView webView, WebDragDestinationAction action, NSDraggingInfo draggingInfo)
-		{
-			EventHandler<WebViewDragEventArgs> eventHandler = uIWillPerformDragDestination;
-			if (eventHandler != null)
-			{
-				WebViewDragEventArgs e = new WebViewDragEventArgs(action, draggingInfo);
-				eventHandler(webView, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override NSEventModifierMask UIDragSourceActionMask(WebView webView, CGPoint point)
+		[Export("webView:dragSourceActionMaskForPoint:")]
+		public NSEventModifierMask UIDragSourceActionMask(WebView webView, CGPoint point)
 		{
 			return uIDragSourceActionMask?.Invoke(webView, point) ?? ((NSEventModifierMask)0uL);
 		}
 
 		[Preserve(Conditional = true)]
-		public override void UIWillPerformDragSource(WebView webView, WebDragSourceAction action, CGPoint sourcePoint, NSPasteboard pasteboard)
-		{
-			EventHandler<WebViewPerformDragEventArgs> eventHandler = uIWillPerformDragSource;
-			if (eventHandler != null)
-			{
-				WebViewPerformDragEventArgs e = new WebViewPerformDragEventArgs(action, sourcePoint, pasteboard);
-				eventHandler(webView, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void UIPrintFrameView(WebView sender, WebFrameView frameView)
-		{
-			EventHandler<WebViewPrintEventArgs> eventHandler = uIPrintFrameView;
-			if (eventHandler != null)
-			{
-				WebViewPrintEventArgs e = new WebViewPrintEventArgs(frameView);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override float UIGetHeaderHeight(WebView sender)
-		{
-			WebViewGetFloat webViewGetFloat = uIGetHeaderHeight;
-			if (webViewGetFloat != null)
-			{
-				return webViewGetFloat(sender);
-			}
-			throw new Exception("No event handler has been added to the UIGetHeaderHeight event.");
-		}
-
-		[Preserve(Conditional = true)]
-		public override float UIGetFooterHeight(WebView sender)
-		{
-			WebViewGetFloat webViewGetFloat = uIGetFooterHeight;
-			if (webViewGetFloat != null)
-			{
-				return webViewGetFloat(sender);
-			}
-			throw new Exception("No event handler has been added to the UIGetFooterHeight event.");
-		}
-
-		[Preserve(Conditional = true)]
-		public override void UIDrawHeaderInRect(WebView sender, CGRect rect)
-		{
-			EventHandler<WebViewHeaderEventArgs> eventHandler = uIDrawHeaderInRect;
-			if (eventHandler != null)
-			{
-				WebViewHeaderEventArgs e = new WebViewHeaderEventArgs(rect);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void UIDrawFooterInRect(WebView sender, CGRect rect)
+		[Export("webView:drawFooterInRect:")]
+		public void UIDrawFooterInRect(WebView sender, CGRect rect)
 		{
 			EventHandler<WebViewFooterEventArgs> eventHandler = uIDrawFooterInRect;
 			if (eventHandler != null)
@@ -744,7 +524,170 @@ public class WebView : NSView
 		}
 
 		[Preserve(Conditional = true)]
-		public override void UIRunJavaScriptAlertPanel(WebView sender, string message)
+		[Export("webView:drawHeaderInRect:")]
+		public void UIDrawHeaderInRect(WebView sender, CGRect rect)
+		{
+			EventHandler<WebViewHeaderEventArgs> eventHandler = uIDrawHeaderInRect;
+			if (eventHandler != null)
+			{
+				WebViewHeaderEventArgs e = new WebViewHeaderEventArgs(rect);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webViewFocus:")]
+		public void UIFocus(WebView sender)
+		{
+			uIFocus?.Invoke(sender, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webViewContentRect:")]
+		public CGRect UIGetContentRect(WebView sender)
+		{
+			WebViewGetRectangle webViewGetRectangle = uIGetContentRect;
+			if (webViewGetRectangle != null)
+			{
+				return webViewGetRectangle(sender);
+			}
+			throw new Exception("No event handler has been added to the UIGetContentRect event.");
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:contextMenuItemsForElement:defaultMenuItems:")]
+		public NSMenuItem[] UIGetContextMenuItems(WebView sender, NSDictionary forElement, NSMenuItem[] defaultMenuItems)
+		{
+			return uIGetContextMenuItems?.Invoke(sender, forElement, defaultMenuItems);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:dragDestinationActionMaskForDraggingInfo:")]
+		public NSEventModifierMask UIGetDragDestinationActionMask(WebView webView, NSDraggingInfo draggingInfo)
+		{
+			return uIGetDragDestinationActionMask?.Invoke(webView, draggingInfo) ?? ((NSEventModifierMask)0uL);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webViewFirstResponder:")]
+		public NSResponder UIGetFirstResponder(WebView sender)
+		{
+			return uIGetFirstResponder?.Invoke(sender);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webViewFooterHeight:")]
+		public float UIGetFooterHeight(WebView sender)
+		{
+			WebViewGetFloat webViewGetFloat = uIGetFooterHeight;
+			if (webViewGetFloat != null)
+			{
+				return webViewGetFloat(sender);
+			}
+			throw new Exception("No event handler has been added to the UIGetFooterHeight event.");
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webViewFrame:")]
+		public CGRect UIGetFrame(WebView sender)
+		{
+			WebViewGetRectangle webViewGetRectangle = uIGetFrame;
+			if (webViewGetRectangle != null)
+			{
+				return webViewGetRectangle(sender);
+			}
+			throw new Exception("No event handler has been added to the UIGetFrame event.");
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webViewHeaderHeight:")]
+		public float UIGetHeaderHeight(WebView sender)
+		{
+			WebViewGetFloat webViewGetFloat = uIGetHeaderHeight;
+			if (webViewGetFloat != null)
+			{
+				return webViewGetFloat(sender);
+			}
+			throw new Exception("No event handler has been added to the UIGetHeaderHeight event.");
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webViewStatusText:")]
+		public string UIGetStatusText(WebView sender)
+		{
+			return uIGetStatusText?.Invoke(sender);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webViewIsResizable:")]
+		public bool UIIsResizable(WebView sender)
+		{
+			WebViewGetBool webViewGetBool = uIIsResizable;
+			if (webViewGetBool != null)
+			{
+				return webViewGetBool(sender);
+			}
+			throw new Exception("No event handler has been added to the UIIsResizable event.");
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webViewIsStatusBarVisible:")]
+		public bool UIIsStatusBarVisible(WebView sender)
+		{
+			return uIIsStatusBarVisible?.Invoke(sender) ?? false;
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:makeFirstResponder:")]
+		public void UIMakeFirstResponder(WebView sender, NSResponder newResponder)
+		{
+			EventHandler<WebViewResponderEventArgs> eventHandler = uIMakeFirstResponder;
+			if (eventHandler != null)
+			{
+				WebViewResponderEventArgs e = new WebViewResponderEventArgs(newResponder);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:mouseDidMoveOverElement:modifierFlags:")]
+		public void UIMouseDidMoveOverElement(WebView sender, NSDictionary elementInformation, NSEventModifierMask modifierFlags)
+		{
+			EventHandler<WebViewMouseMovedEventArgs> eventHandler = uIMouseDidMoveOverElement;
+			if (eventHandler != null)
+			{
+				WebViewMouseMovedEventArgs e = new WebViewMouseMovedEventArgs(elementInformation, modifierFlags);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:printFrameView:")]
+		public void UIPrintFrameView(WebView sender, WebFrameView frameView)
+		{
+			EventHandler<WebViewPrintEventArgs> eventHandler = uIPrintFrameView;
+			if (eventHandler != null)
+			{
+				WebViewPrintEventArgs e = new WebViewPrintEventArgs(frameView);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:runBeforeUnloadConfirmPanelWithMessage:initiatedByFrame:")]
+		public bool UIRunBeforeUnload(WebView sender, string message, WebFrame initiatedByFrame)
+		{
+			WebViewJavaScriptFrame webViewJavaScriptFrame = uIRunBeforeUnload;
+			if (webViewJavaScriptFrame != null)
+			{
+				return webViewJavaScriptFrame(sender, message, initiatedByFrame);
+			}
+			throw new Exception("No event handler has been added to the UIRunBeforeUnload event.");
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:runJavaScriptAlertPanelWithMessage:")]
+		public void UIRunJavaScriptAlertPanel(WebView sender, string message)
 		{
 			EventHandler<WebViewJavaScriptEventArgs> eventHandler = uIRunJavaScriptAlertPanel;
 			if (eventHandler != null)
@@ -755,7 +698,20 @@ public class WebView : NSView
 		}
 
 		[Preserve(Conditional = true)]
-		public override bool UIRunJavaScriptConfirmPanel(WebView sender, string message)
+		[Export("webView:runJavaScriptAlertPanelWithMessage:initiatedByFrame:")]
+		public void UIRunJavaScriptAlertPanelMessage(WebView sender, string withMessage, WebFrame initiatedByFrame)
+		{
+			EventHandler<WebViewJavaScriptFrameEventArgs> eventHandler = uIRunJavaScriptAlertPanelMessage;
+			if (eventHandler != null)
+			{
+				WebViewJavaScriptFrameEventArgs e = new WebViewJavaScriptFrameEventArgs(withMessage, initiatedByFrame);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:runJavaScriptConfirmPanelWithMessage:")]
+		public bool UIRunJavaScriptConfirmPanel(WebView sender, string message)
 		{
 			WebViewPrompt webViewPrompt = uIRunJavaScriptConfirmPanel;
 			if (webViewPrompt != null)
@@ -766,13 +722,53 @@ public class WebView : NSView
 		}
 
 		[Preserve(Conditional = true)]
-		public override string UIRunJavaScriptTextInputPanel(WebView sender, string prompt, string defaultText)
+		[Export("webView:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:")]
+		public bool UIRunJavaScriptConfirmationPanel(WebView sender, string withMessage, WebFrame initiatedByFrame)
+		{
+			WebViewConfirmationPanel webViewConfirmationPanel = uIRunJavaScriptConfirmationPanel;
+			if (webViewConfirmationPanel != null)
+			{
+				return webViewConfirmationPanel(sender, withMessage, initiatedByFrame);
+			}
+			throw new Exception("No event handler has been added to the UIRunJavaScriptConfirmationPanel event.");
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:runJavaScriptTextInputPanelWithPrompt:defaultText:")]
+		public string UIRunJavaScriptTextInputPanel(WebView sender, string prompt, string defaultText)
 		{
 			return uIRunJavaScriptTextInputPanel?.Invoke(sender, prompt, defaultText);
 		}
 
 		[Preserve(Conditional = true)]
-		public override void UISetContentRect(WebView sender, CGRect frame)
+		[Export("webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:")]
+		public string UIRunJavaScriptTextInputPanelWithFrame(WebView sender, string prompt, string defaultText, WebFrame initiatedByFrame)
+		{
+			return uIRunJavaScriptTextInputPanelWithFrame?.Invoke(sender, prompt, defaultText, initiatedByFrame);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webViewRunModal:")]
+		public void UIRunModal(WebView sender)
+		{
+			uIRunModal?.Invoke(sender, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:runOpenPanelForFileButtonWithResultListener:")]
+		public void UIRunOpenPanelForFileButton(WebView sender, IWebOpenPanelResultListener resultListener)
+		{
+			EventHandler<WebViewRunOpenPanelEventArgs> eventHandler = uIRunOpenPanelForFileButton;
+			if (eventHandler != null)
+			{
+				WebViewRunOpenPanelEventArgs e = new WebViewRunOpenPanelEventArgs(resultListener);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:setContentRect:")]
+		public void UISetContentRect(WebView sender, CGRect frame)
 		{
 			EventHandler<WebViewContentEventArgs> eventHandler = uISetContentRect;
 			if (eventHandler != null)
@@ -783,52 +779,142 @@ public class WebView : NSView
 		}
 
 		[Preserve(Conditional = true)]
-		public override CGRect UIGetContentRect(WebView sender)
+		[Export("webView:setFrame:")]
+		public void UISetFrame(WebView sender, CGRect newFrame)
 		{
-			WebViewGetRectangle webViewGetRectangle = uIGetContentRect;
-			if (webViewGetRectangle != null)
+			EventHandler<WebViewFrameEventArgs> eventHandler = uISetFrame;
+			if (eventHandler != null)
 			{
-				return webViewGetRectangle(sender);
+				WebViewFrameEventArgs e = new WebViewFrameEventArgs(newFrame);
+				eventHandler(sender, e);
 			}
-			throw new Exception("No event handler has been added to the UIGetContentRect event.");
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:setResizable:")]
+		public void UISetResizable(WebView sender, bool resizable)
+		{
+			EventHandler<WebViewResizableEventArgs> eventHandler = uISetResizable;
+			if (eventHandler != null)
+			{
+				WebViewResizableEventArgs e = new WebViewResizableEventArgs(resizable);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:setStatusBarVisible:")]
+		public void UISetStatusBarVisible(WebView sender, bool visible)
+		{
+			EventHandler<WebViewStatusBarEventArgs> eventHandler = uISetStatusBarVisible;
+			if (eventHandler != null)
+			{
+				WebViewStatusBarEventArgs e = new WebViewStatusBarEventArgs(visible);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:setStatusText:")]
+		public void UISetStatusText(WebView sender, string text)
+		{
+			EventHandler<WebViewStatusTextEventArgs> eventHandler = uISetStatusText;
+			if (eventHandler != null)
+			{
+				WebViewStatusTextEventArgs e = new WebViewStatusTextEventArgs(text);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:setToolbarsVisible:")]
+		public void UISetToolbarsVisible(WebView sender, bool visible)
+		{
+			EventHandler<WebViewToolBarsEventArgs> eventHandler = uISetToolbarsVisible;
+			if (eventHandler != null)
+			{
+				WebViewToolBarsEventArgs e = new WebViewToolBarsEventArgs(visible);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:shouldPerformAction:fromSender:")]
+		public bool UIShouldPerformActionfromSender(WebView webView, Selector action, NSObject sender)
+		{
+			WebViewPerformAction webViewPerformAction = uIShouldPerformActionfromSender;
+			if (webViewPerformAction != null)
+			{
+				return webViewPerformAction(webView, action, sender);
+			}
+			throw new Exception("No event handler has been added to the UIShouldPerformActionfromSender event.");
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webViewShow:")]
+		public void UIShow(WebView sender)
+		{
+			uIShow?.Invoke(sender, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webViewUnfocus:")]
+		public void UIUnfocus(WebView sender)
+		{
+			uIUnfocus?.Invoke(sender, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:validateUserInterfaceItem:defaultValidation:")]
+		public bool UIValidateUserInterfaceItem(WebView webView, NSObject validatedUserInterfaceItem, bool defaultValidation)
+		{
+			return uIValidateUserInterfaceItem?.Invoke(webView, validatedUserInterfaceItem, defaultValidation) ?? defaultValidation;
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:willPerformDragDestinationAction:forDraggingInfo:")]
+		public void UIWillPerformDragDestination(WebView webView, WebDragDestinationAction action, NSDraggingInfo draggingInfo)
+		{
+			EventHandler<WebViewDragEventArgs> eventHandler = uIWillPerformDragDestination;
+			if (eventHandler != null)
+			{
+				WebViewDragEventArgs e = new WebViewDragEventArgs(action, draggingInfo);
+				eventHandler(webView, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:willPerformDragSourceAction:fromPoint:withPasteboard:")]
+		public void UIWillPerformDragSource(WebView webView, WebDragSourceAction action, CGPoint sourcePoint, NSPasteboard pasteboard)
+		{
+			EventHandler<WebViewPerformDragEventArgs> eventHandler = uIWillPerformDragSource;
+			if (eventHandler != null)
+			{
+				WebViewPerformDragEventArgs e = new WebViewPerformDragEventArgs(action, sourcePoint, pasteboard);
+				eventHandler(webView, e);
+			}
 		}
 	}
 
 	[Register]
-	private sealed class _WebPolicyDelegate : WebPolicyDelegate
+	internal class _WebPolicyDelegate : NSObject, IWebPolicyDelegate, INativeObject, IDisposable
 	{
-		internal EventHandler<WebNavigationPolicyEventArgs> decidePolicyForNavigation;
+		internal EventHandler<WebMimeTypePolicyEventArgs>? decidePolicyForMimeType;
 
-		internal EventHandler<WebNewWindowPolicyEventArgs> decidePolicyForNewWindow;
+		internal EventHandler<WebNavigationPolicyEventArgs>? decidePolicyForNavigation;
 
-		internal EventHandler<WebMimeTypePolicyEventArgs> decidePolicyForMimeType;
+		internal EventHandler<WebNewWindowPolicyEventArgs>? decidePolicyForNewWindow;
 
-		internal EventHandler<WebFailureToImplementPolicyEventArgs> unableToImplementPolicy;
+		internal EventHandler<WebFailureToImplementPolicyEventArgs>? unableToImplementPolicy;
 
-		[Preserve(Conditional = true)]
-		public override void DecidePolicyForNavigation(WebView webView, NSDictionary actionInformation, NSUrlRequest request, WebFrame frame, NSObject decisionToken)
+		public _WebPolicyDelegate()
 		{
-			EventHandler<WebNavigationPolicyEventArgs> eventHandler = decidePolicyForNavigation;
-			if (eventHandler != null)
-			{
-				WebNavigationPolicyEventArgs e = new WebNavigationPolicyEventArgs(actionInformation, request, frame, decisionToken);
-				eventHandler(webView, e);
-			}
+			base.IsDirectBinding = false;
 		}
 
 		[Preserve(Conditional = true)]
-		public override void DecidePolicyForNewWindow(WebView webView, NSDictionary actionInformation, NSUrlRequest request, string newFrameName, NSObject decisionToken)
-		{
-			EventHandler<WebNewWindowPolicyEventArgs> eventHandler = decidePolicyForNewWindow;
-			if (eventHandler != null)
-			{
-				WebNewWindowPolicyEventArgs e = new WebNewWindowPolicyEventArgs(actionInformation, request, newFrameName, decisionToken);
-				eventHandler(webView, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void DecidePolicyForMimeType(WebView webView, string mimeType, NSUrlRequest request, WebFrame frame, NSObject decisionToken)
+		[Export("webView:decidePolicyForMIMEType:request:frame:decisionListener:")]
+		public void DecidePolicyForMimeType(WebView webView, string mimeType, NSUrlRequest request, WebFrame frame, NSObject decisionToken)
 		{
 			EventHandler<WebMimeTypePolicyEventArgs> eventHandler = decidePolicyForMimeType;
 			if (eventHandler != null)
@@ -839,7 +925,32 @@ public class WebView : NSView
 		}
 
 		[Preserve(Conditional = true)]
-		public override void UnableToImplementPolicy(WebView webView, NSError error, WebFrame frame)
+		[Export("webView:decidePolicyForNavigationAction:request:frame:decisionListener:")]
+		public void DecidePolicyForNavigation(WebView webView, NSDictionary actionInformation, NSUrlRequest request, WebFrame frame, NSObject decisionToken)
+		{
+			EventHandler<WebNavigationPolicyEventArgs> eventHandler = decidePolicyForNavigation;
+			if (eventHandler != null)
+			{
+				WebNavigationPolicyEventArgs e = new WebNavigationPolicyEventArgs(actionInformation, request, frame, decisionToken);
+				eventHandler(webView, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:decidePolicyForNewWindowAction:request:newFrameName:decisionListener:")]
+		public void DecidePolicyForNewWindow(WebView webView, NSDictionary actionInformation, NSUrlRequest request, string newFrameName, NSObject decisionToken)
+		{
+			EventHandler<WebNewWindowPolicyEventArgs> eventHandler = decidePolicyForNewWindow;
+			if (eventHandler != null)
+			{
+				WebNewWindowPolicyEventArgs e = new WebNewWindowPolicyEventArgs(actionInformation, request, newFrameName, decisionToken);
+				eventHandler(webView, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("webView:unableToImplementPolicyWithError:frame:")]
+		public void UnableToImplementPolicy(WebView webView, NSError error, WebFrame frame)
 		{
 			EventHandler<WebFailureToImplementPolicyEventArgs> eventHandler = unableToImplementPolicy;
 			if (eventHandler != null)
@@ -856,300 +967,1155 @@ public class WebView : NSView
 
 	private static IntPtr selIgnore = Selector.GetHandle("ignore");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMIMETypesShownAsHTML = "MIMETypesShownAsHTML";
+
 	private static readonly IntPtr selMIMETypesShownAsHTMLHandle = Selector.GetHandle("MIMETypesShownAsHTML");
 
-	private static readonly IntPtr selSetMIMETypesShownAsHTML_Handle = Selector.GetHandle("setMIMETypesShownAsHTML:");
-
-	private static readonly IntPtr selMainFrameHandle = Selector.GetHandle("mainFrame");
-
-	private static readonly IntPtr selSelectedFrameHandle = Selector.GetHandle("selectedFrame");
-
-	private static readonly IntPtr selBackForwardListHandle = Selector.GetHandle("backForwardList");
-
-	private static readonly IntPtr selSupportsTextEncodingHandle = Selector.GetHandle("supportsTextEncoding");
-
-	private static readonly IntPtr selWindowScriptObjectHandle = Selector.GetHandle("windowScriptObject");
-
-	private static readonly IntPtr selEstimatedProgressHandle = Selector.GetHandle("estimatedProgress");
-
-	private static readonly IntPtr selIsLoadingHandle = Selector.GetHandle("isLoading");
-
-	private static readonly IntPtr selPasteboardTypesForSelectionHandle = Selector.GetHandle("pasteboardTypesForSelection");
-
-	private static readonly IntPtr selMainFrameDocumentHandle = Selector.GetHandle("mainFrameDocument");
-
-	private static readonly IntPtr selMainFrameTitleHandle = Selector.GetHandle("mainFrameTitle");
-
-	private static readonly IntPtr selMainFrameIconHandle = Selector.GetHandle("mainFrameIcon");
-
-	private static readonly IntPtr selShouldCloseWithWindowHandle = Selector.GetHandle("shouldCloseWithWindow");
-
-	private static readonly IntPtr selSetShouldCloseWithWindow_Handle = Selector.GetHandle("setShouldCloseWithWindow:");
-
-	private static readonly IntPtr selResourceLoadDelegateHandle = Selector.GetHandle("resourceLoadDelegate");
-
-	private static readonly IntPtr selSetResourceLoadDelegate_Handle = Selector.GetHandle("setResourceLoadDelegate:");
-
-	private static readonly IntPtr selDownloadDelegateHandle = Selector.GetHandle("downloadDelegate");
-
-	private static readonly IntPtr selSetDownloadDelegate_Handle = Selector.GetHandle("setDownloadDelegate:");
-
-	private static readonly IntPtr selFrameLoadDelegateHandle = Selector.GetHandle("frameLoadDelegate");
-
-	private static readonly IntPtr selSetFrameLoadDelegate_Handle = Selector.GetHandle("setFrameLoadDelegate:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selUIDelegate = "UIDelegate";
 
 	private static readonly IntPtr selUIDelegateHandle = Selector.GetHandle("UIDelegate");
 
-	private static readonly IntPtr selSetUIDelegate_Handle = Selector.GetHandle("setUIDelegate:");
-
-	private static readonly IntPtr selPolicyDelegateHandle = Selector.GetHandle("policyDelegate");
-
-	private static readonly IntPtr selSetPolicyDelegate_Handle = Selector.GetHandle("setPolicyDelegate:");
-
-	private static readonly IntPtr selTextSizeMultiplierHandle = Selector.GetHandle("textSizeMultiplier");
-
-	private static readonly IntPtr selSetTextSizeMultiplier_Handle = Selector.GetHandle("setTextSizeMultiplier:");
-
-	private static readonly IntPtr selApplicationNameForUserAgentHandle = Selector.GetHandle("applicationNameForUserAgent");
-
-	private static readonly IntPtr selSetApplicationNameForUserAgent_Handle = Selector.GetHandle("setApplicationNameForUserAgent:");
-
-	private static readonly IntPtr selCustomUserAgentHandle = Selector.GetHandle("customUserAgent");
-
-	private static readonly IntPtr selSetCustomUserAgent_Handle = Selector.GetHandle("setCustomUserAgent:");
-
-	private static readonly IntPtr selCustomTextEncodingNameHandle = Selector.GetHandle("customTextEncodingName");
-
-	private static readonly IntPtr selSetCustomTextEncodingName_Handle = Selector.GetHandle("setCustomTextEncodingName:");
-
-	private static readonly IntPtr selMediaStyleHandle = Selector.GetHandle("mediaStyle");
-
-	private static readonly IntPtr selSetMediaStyle_Handle = Selector.GetHandle("setMediaStyle:");
-
-	private static readonly IntPtr selPreferencesHandle = Selector.GetHandle("preferences");
-
-	private static readonly IntPtr selSetPreferences_Handle = Selector.GetHandle("setPreferences:");
-
-	private static readonly IntPtr selPreferencesIdentifierHandle = Selector.GetHandle("preferencesIdentifier");
-
-	private static readonly IntPtr selSetPreferencesIdentifier_Handle = Selector.GetHandle("setPreferencesIdentifier:");
-
-	private static readonly IntPtr selHostWindowHandle = Selector.GetHandle("hostWindow");
-
-	private static readonly IntPtr selSetHostWindow_Handle = Selector.GetHandle("setHostWindow:");
-
-	private static readonly IntPtr selGroupNameHandle = Selector.GetHandle("groupName");
-
-	private static readonly IntPtr selSetGroupName_Handle = Selector.GetHandle("setGroupName:");
-
-	private static readonly IntPtr selDrawsBackgroundHandle = Selector.GetHandle("drawsBackground");
-
-	private static readonly IntPtr selSetDrawsBackground_Handle = Selector.GetHandle("setDrawsBackground:");
-
-	private static readonly IntPtr selShouldUpdateWhileOffscreenHandle = Selector.GetHandle("shouldUpdateWhileOffscreen");
-
-	private static readonly IntPtr selSetShouldUpdateWhileOffscreen_Handle = Selector.GetHandle("setShouldUpdateWhileOffscreen:");
-
-	private static readonly IntPtr selMainFrameURLHandle = Selector.GetHandle("mainFrameURL");
-
-	private static readonly IntPtr selSetMainFrameURL_Handle = Selector.GetHandle("setMainFrameURL:");
-
-	private static readonly IntPtr selSelectedDOMRangeHandle = Selector.GetHandle("selectedDOMRange");
-
-	private static readonly IntPtr selSelectionAffinityHandle = Selector.GetHandle("selectionAffinity");
-
-	private static readonly IntPtr selMaintainsInactiveSelectionHandle = Selector.GetHandle("maintainsInactiveSelection");
-
-	private static readonly IntPtr selSpellCheckerDocumentTagHandle = Selector.GetHandle("spellCheckerDocumentTag");
-
-	private static readonly IntPtr selUndoManagerHandle = Selector.GetHandle("undoManager");
-
-	private static readonly IntPtr selIsEditableHandle = Selector.GetHandle("isEditable");
-
-	private static readonly IntPtr selSetEditable_Handle = Selector.GetHandle("setEditable:");
-
-	private static readonly IntPtr selTypingStyleHandle = Selector.GetHandle("typingStyle");
-
-	private static readonly IntPtr selSetTypingStyle_Handle = Selector.GetHandle("setTypingStyle:");
-
-	private static readonly IntPtr selSmartInsertDeleteEnabledHandle = Selector.GetHandle("smartInsertDeleteEnabled");
-
-	private static readonly IntPtr selSetSmartInsertDeleteEnabled_Handle = Selector.GetHandle("setSmartInsertDeleteEnabled:");
-
-	private static readonly IntPtr selIsContinuousSpellCheckingEnabledHandle = Selector.GetHandle("isContinuousSpellCheckingEnabled");
-
-	private static readonly IntPtr selSetContinuousSpellCheckingEnabled_Handle = Selector.GetHandle("setContinuousSpellCheckingEnabled:");
-
-	private static readonly IntPtr selEditingDelegateHandle = Selector.GetHandle("editingDelegate");
-
-	private static readonly IntPtr selSetEditingDelegate_Handle = Selector.GetHandle("setEditingDelegate:");
-
-	private static readonly IntPtr selCanShowMIMEType_Handle = Selector.GetHandle("canShowMIMEType:");
-
-	private static readonly IntPtr selCanShowMIMETypeAsHTML_Handle = Selector.GetHandle("canShowMIMETypeAsHTML:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selURLFromPasteboard_ = "URLFromPasteboard:";
 
 	private static readonly IntPtr selURLFromPasteboard_Handle = Selector.GetHandle("URLFromPasteboard:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selURLTitleFromPasteboard_ = "URLTitleFromPasteboard:";
+
 	private static readonly IntPtr selURLTitleFromPasteboard_Handle = Selector.GetHandle("URLTitleFromPasteboard:");
 
-	private static readonly IntPtr selRegisterURLSchemeAsLocal_Handle = Selector.GetHandle("registerURLSchemeAsLocal:");
-
-	private static readonly IntPtr selInitWithFrameFrameNameGroupName_Handle = Selector.GetHandle("initWithFrame:frameName:groupName:");
-
-	private static readonly IntPtr selCloseHandle = Selector.GetHandle("close");
-
-	private static readonly IntPtr selSetMaintainsBackForwardList_Handle = Selector.GetHandle("setMaintainsBackForwardList:");
-
-	private static readonly IntPtr selGoBackHandle = Selector.GetHandle("goBack");
-
-	private static readonly IntPtr selGoForwardHandle = Selector.GetHandle("goForward");
-
-	private static readonly IntPtr selGoToBackForwardItem_Handle = Selector.GetHandle("goToBackForwardItem:");
-
-	private static readonly IntPtr selUserAgentForURL_Handle = Selector.GetHandle("userAgentForURL:");
-
-	private static readonly IntPtr selStringByEvaluatingJavaScriptFromString_Handle = Selector.GetHandle("stringByEvaluatingJavaScriptFromString:");
-
-	private static readonly IntPtr selSearchForDirectionCaseSensitiveWrap_Handle = Selector.GetHandle("searchFor:direction:caseSensitive:wrap:");
-
-	private static readonly IntPtr selRegisterViewClassRepresentationClassForMIMEType_Handle = Selector.GetHandle("registerViewClass:representationClass:forMIMEType:");
-
-	private static readonly IntPtr selElementAtPoint_Handle = Selector.GetHandle("elementAtPoint:");
-
-	private static readonly IntPtr selWriteSelectionWithPasteboardTypesToPasteboard_Handle = Selector.GetHandle("writeSelectionWithPasteboardTypes:toPasteboard:");
-
-	private static readonly IntPtr selPasteboardTypesForElement_Handle = Selector.GetHandle("pasteboardTypesForElement:");
-
-	private static readonly IntPtr selWriteElementWithPasteboardTypesToPasteboard_Handle = Selector.GetHandle("writeElement:withPasteboardTypes:toPasteboard:");
-
-	private static readonly IntPtr selMoveDragCaretToPoint_Handle = Selector.GetHandle("moveDragCaretToPoint:");
-
-	private static readonly IntPtr selRemoveDragCaretHandle = Selector.GetHandle("removeDragCaret");
-
-	private static readonly IntPtr selReload_Handle = Selector.GetHandle("reload:");
-
-	private static readonly IntPtr selReloadFromOrigin_Handle = Selector.GetHandle("reloadFromOrigin:");
-
-	private static readonly IntPtr selCanGoBackHandle = Selector.GetHandle("canGoBack");
-
-	private static readonly IntPtr selCanGoForwardHandle = Selector.GetHandle("canGoForward");
-
-	private static readonly IntPtr selCanMakeTextLargerHandle = Selector.GetHandle("canMakeTextLarger");
-
-	private static readonly IntPtr selMakeTextLarger_Handle = Selector.GetHandle("makeTextLarger:");
-
-	private static readonly IntPtr selCanMakeTextSmallerHandle = Selector.GetHandle("canMakeTextSmaller");
-
-	private static readonly IntPtr selMakeTextSmaller_Handle = Selector.GetHandle("makeTextSmaller:");
-
-	private static readonly IntPtr selCanMakeTextStandardSizeHandle = Selector.GetHandle("canMakeTextStandardSize");
-
-	private static readonly IntPtr selMakeTextStandardSize_Handle = Selector.GetHandle("makeTextStandardSize:");
-
-	private static readonly IntPtr selToggleContinuousSpellChecking_Handle = Selector.GetHandle("toggleContinuousSpellChecking:");
-
-	private static readonly IntPtr selToggleSmartInsertDelete_Handle = Selector.GetHandle("toggleSmartInsertDelete:");
-
-	private static readonly IntPtr selStyleDeclarationWithText_Handle = Selector.GetHandle("styleDeclarationWithText:");
-
-	private static readonly IntPtr selReplaceSelectionWithMarkupString_Handle = Selector.GetHandle("replaceSelectionWithMarkupString:");
-
-	private static readonly IntPtr selReplaceSelectionWithArchive_Handle = Selector.GetHandle("replaceSelectionWithArchive:");
-
-	private static readonly IntPtr selDeleteSelectionHandle = Selector.GetHandle("deleteSelection");
-
-	private static readonly IntPtr selApplyStyle_Handle = Selector.GetHandle("applyStyle:");
-
-	private static readonly IntPtr selCut_Handle = Selector.GetHandle("cut:");
-
-	private static readonly IntPtr selPaste_Handle = Selector.GetHandle("paste:");
-
-	private static readonly IntPtr selCopyFont_Handle = Selector.GetHandle("copyFont:");
-
-	private static readonly IntPtr selPasteFont_Handle = Selector.GetHandle("pasteFont:");
-
-	private static readonly IntPtr selDelete_Handle = Selector.GetHandle("delete:");
-
-	private static readonly IntPtr selPasteAsPlainText_Handle = Selector.GetHandle("pasteAsPlainText:");
-
-	private static readonly IntPtr selPasteAsRichText_Handle = Selector.GetHandle("pasteAsRichText:");
-
-	private static readonly IntPtr selChangeFont_Handle = Selector.GetHandle("changeFont:");
-
-	private static readonly IntPtr selChangeAttributes_Handle = Selector.GetHandle("changeAttributes:");
-
-	private static readonly IntPtr selChangeDocumentBackgroundColor_Handle = Selector.GetHandle("changeDocumentBackgroundColor:");
-
-	private static readonly IntPtr selChangeColor_Handle = Selector.GetHandle("changeColor:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAlignCenter_ = "alignCenter:";
 
 	private static readonly IntPtr selAlignCenter_Handle = Selector.GetHandle("alignCenter:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAlignJustified_ = "alignJustified:";
+
 	private static readonly IntPtr selAlignJustified_Handle = Selector.GetHandle("alignJustified:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAlignLeft_ = "alignLeft:";
 
 	private static readonly IntPtr selAlignLeft_Handle = Selector.GetHandle("alignLeft:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAlignRight_ = "alignRight:";
+
 	private static readonly IntPtr selAlignRight_Handle = Selector.GetHandle("alignRight:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selApplicationNameForUserAgent = "applicationNameForUserAgent";
+
+	private static readonly IntPtr selApplicationNameForUserAgentHandle = Selector.GetHandle("applicationNameForUserAgent");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selApplyStyle_ = "applyStyle:";
+
+	private static readonly IntPtr selApplyStyle_Handle = Selector.GetHandle("applyStyle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBackForwardList = "backForwardList";
+
+	private static readonly IntPtr selBackForwardListHandle = Selector.GetHandle("backForwardList");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCanGoBack = "canGoBack";
+
+	private static readonly IntPtr selCanGoBackHandle = Selector.GetHandle("canGoBack");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCanGoForward = "canGoForward";
+
+	private static readonly IntPtr selCanGoForwardHandle = Selector.GetHandle("canGoForward");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCanMakeTextLarger = "canMakeTextLarger";
+
+	private static readonly IntPtr selCanMakeTextLargerHandle = Selector.GetHandle("canMakeTextLarger");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCanMakeTextSmaller = "canMakeTextSmaller";
+
+	private static readonly IntPtr selCanMakeTextSmallerHandle = Selector.GetHandle("canMakeTextSmaller");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCanMakeTextStandardSize = "canMakeTextStandardSize";
+
+	private static readonly IntPtr selCanMakeTextStandardSizeHandle = Selector.GetHandle("canMakeTextStandardSize");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCanShowMIMEType_ = "canShowMIMEType:";
+
+	private static readonly IntPtr selCanShowMIMEType_Handle = Selector.GetHandle("canShowMIMEType:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCanShowMIMETypeAsHTML_ = "canShowMIMETypeAsHTML:";
+
+	private static readonly IntPtr selCanShowMIMETypeAsHTML_Handle = Selector.GetHandle("canShowMIMETypeAsHTML:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selChangeAttributes_ = "changeAttributes:";
+
+	private static readonly IntPtr selChangeAttributes_Handle = Selector.GetHandle("changeAttributes:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selChangeColor_ = "changeColor:";
+
+	private static readonly IntPtr selChangeColor_Handle = Selector.GetHandle("changeColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selChangeDocumentBackgroundColor_ = "changeDocumentBackgroundColor:";
+
+	private static readonly IntPtr selChangeDocumentBackgroundColor_Handle = Selector.GetHandle("changeDocumentBackgroundColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selChangeFont_ = "changeFont:";
+
+	private static readonly IntPtr selChangeFont_Handle = Selector.GetHandle("changeFont:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCheckSpelling_ = "checkSpelling:";
 
 	private static readonly IntPtr selCheckSpelling_Handle = Selector.GetHandle("checkSpelling:");
 
-	private static readonly IntPtr selShowGuessPanel_Handle = Selector.GetHandle("showGuessPanel:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selClose = "close";
 
-	private static readonly IntPtr selPerformFindPanelAction_Handle = Selector.GetHandle("performFindPanelAction:");
+	private static readonly IntPtr selCloseHandle = Selector.GetHandle("close");
 
-	private static readonly IntPtr selStartSpeaking_Handle = Selector.GetHandle("startSpeaking:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCopyFont_ = "copyFont:";
 
-	private static readonly IntPtr selStopSpeaking_Handle = Selector.GetHandle("stopSpeaking:");
+	private static readonly IntPtr selCopyFont_Handle = Selector.GetHandle("copyFont:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCustomTextEncodingName = "customTextEncodingName";
+
+	private static readonly IntPtr selCustomTextEncodingNameHandle = Selector.GetHandle("customTextEncodingName");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCustomUserAgent = "customUserAgent";
+
+	private static readonly IntPtr selCustomUserAgentHandle = Selector.GetHandle("customUserAgent");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCut_ = "cut:";
+
+	private static readonly IntPtr selCut_Handle = Selector.GetHandle("cut:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDelete_ = "delete:";
+
+	private static readonly IntPtr selDelete_Handle = Selector.GetHandle("delete:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDeleteSelection = "deleteSelection";
+
+	private static readonly IntPtr selDeleteSelectionHandle = Selector.GetHandle("deleteSelection");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDownloadDelegate = "downloadDelegate";
+
+	private static readonly IntPtr selDownloadDelegateHandle = Selector.GetHandle("downloadDelegate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDrawsBackground = "drawsBackground";
+
+	private static readonly IntPtr selDrawsBackgroundHandle = Selector.GetHandle("drawsBackground");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEditingDelegate = "editingDelegate";
+
+	private static readonly IntPtr selEditingDelegateHandle = Selector.GetHandle("editingDelegate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selElementAtPoint_ = "elementAtPoint:";
+
+	private static readonly IntPtr selElementAtPoint_Handle = Selector.GetHandle("elementAtPoint:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEstimatedProgress = "estimatedProgress";
+
+	private static readonly IntPtr selEstimatedProgressHandle = Selector.GetHandle("estimatedProgress");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFrameLoadDelegate = "frameLoadDelegate";
+
+	private static readonly IntPtr selFrameLoadDelegateHandle = Selector.GetHandle("frameLoadDelegate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGoBack = "goBack";
+
+	private static readonly IntPtr selGoBackHandle = Selector.GetHandle("goBack");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGoForward = "goForward";
+
+	private static readonly IntPtr selGoForwardHandle = Selector.GetHandle("goForward");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGoToBackForwardItem_ = "goToBackForwardItem:";
+
+	private static readonly IntPtr selGoToBackForwardItem_Handle = Selector.GetHandle("goToBackForwardItem:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGroupName = "groupName";
+
+	private static readonly IntPtr selGroupNameHandle = Selector.GetHandle("groupName");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selHostWindow = "hostWindow";
+
+	private static readonly IntPtr selHostWindowHandle = Selector.GetHandle("hostWindow");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithFrame_ = "initWithFrame:";
+
+	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithFrame_FrameName_GroupName_ = "initWithFrame:frameName:groupName:";
+
+	private static readonly IntPtr selInitWithFrame_FrameName_GroupName_Handle = Selector.GetHandle("initWithFrame:frameName:groupName:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsContinuousSpellCheckingEnabled = "isContinuousSpellCheckingEnabled";
+
+	private static readonly IntPtr selIsContinuousSpellCheckingEnabledHandle = Selector.GetHandle("isContinuousSpellCheckingEnabled");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsEditable = "isEditable";
+
+	private static readonly IntPtr selIsEditableHandle = Selector.GetHandle("isEditable");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsLoading = "isLoading";
+
+	private static readonly IntPtr selIsLoadingHandle = Selector.GetHandle("isLoading");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMainFrame = "mainFrame";
+
+	private static readonly IntPtr selMainFrameHandle = Selector.GetHandle("mainFrame");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMainFrameDocument = "mainFrameDocument";
+
+	private static readonly IntPtr selMainFrameDocumentHandle = Selector.GetHandle("mainFrameDocument");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMainFrameIcon = "mainFrameIcon";
+
+	private static readonly IntPtr selMainFrameIconHandle = Selector.GetHandle("mainFrameIcon");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMainFrameTitle = "mainFrameTitle";
+
+	private static readonly IntPtr selMainFrameTitleHandle = Selector.GetHandle("mainFrameTitle");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMainFrameURL = "mainFrameURL";
+
+	private static readonly IntPtr selMainFrameURLHandle = Selector.GetHandle("mainFrameURL");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMaintainsInactiveSelection = "maintainsInactiveSelection";
+
+	private static readonly IntPtr selMaintainsInactiveSelectionHandle = Selector.GetHandle("maintainsInactiveSelection");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMakeTextLarger_ = "makeTextLarger:";
+
+	private static readonly IntPtr selMakeTextLarger_Handle = Selector.GetHandle("makeTextLarger:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMakeTextSmaller_ = "makeTextSmaller:";
+
+	private static readonly IntPtr selMakeTextSmaller_Handle = Selector.GetHandle("makeTextSmaller:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMakeTextStandardSize_ = "makeTextStandardSize:";
+
+	private static readonly IntPtr selMakeTextStandardSize_Handle = Selector.GetHandle("makeTextStandardSize:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMediaStyle = "mediaStyle";
+
+	private static readonly IntPtr selMediaStyleHandle = Selector.GetHandle("mediaStyle");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMoveDragCaretToPoint_ = "moveDragCaretToPoint:";
+
+	private static readonly IntPtr selMoveDragCaretToPoint_Handle = Selector.GetHandle("moveDragCaretToPoint:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMoveToBeginningOfSentence_ = "moveToBeginningOfSentence:";
 
 	private static readonly IntPtr selMoveToBeginningOfSentence_Handle = Selector.GetHandle("moveToBeginningOfSentence:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMoveToBeginningOfSentenceAndModifySelection_ = "moveToBeginningOfSentenceAndModifySelection:";
+
 	private static readonly IntPtr selMoveToBeginningOfSentenceAndModifySelection_Handle = Selector.GetHandle("moveToBeginningOfSentenceAndModifySelection:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMoveToEndOfSentence_ = "moveToEndOfSentence:";
 
 	private static readonly IntPtr selMoveToEndOfSentence_Handle = Selector.GetHandle("moveToEndOfSentence:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMoveToEndOfSentenceAndModifySelection_ = "moveToEndOfSentenceAndModifySelection:";
+
 	private static readonly IntPtr selMoveToEndOfSentenceAndModifySelection_Handle = Selector.GetHandle("moveToEndOfSentenceAndModifySelection:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPaste_ = "paste:";
+
+	private static readonly IntPtr selPaste_Handle = Selector.GetHandle("paste:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPasteAsPlainText_ = "pasteAsPlainText:";
+
+	private static readonly IntPtr selPasteAsPlainText_Handle = Selector.GetHandle("pasteAsPlainText:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPasteAsRichText_ = "pasteAsRichText:";
+
+	private static readonly IntPtr selPasteAsRichText_Handle = Selector.GetHandle("pasteAsRichText:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPasteFont_ = "pasteFont:";
+
+	private static readonly IntPtr selPasteFont_Handle = Selector.GetHandle("pasteFont:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPasteboardTypesForElement_ = "pasteboardTypesForElement:";
+
+	private static readonly IntPtr selPasteboardTypesForElement_Handle = Selector.GetHandle("pasteboardTypesForElement:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPasteboardTypesForSelection = "pasteboardTypesForSelection";
+
+	private static readonly IntPtr selPasteboardTypesForSelectionHandle = Selector.GetHandle("pasteboardTypesForSelection");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPerformFindPanelAction_ = "performFindPanelAction:";
+
+	private static readonly IntPtr selPerformFindPanelAction_Handle = Selector.GetHandle("performFindPanelAction:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPolicyDelegate = "policyDelegate";
+
+	private static readonly IntPtr selPolicyDelegateHandle = Selector.GetHandle("policyDelegate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPreferences = "preferences";
+
+	private static readonly IntPtr selPreferencesHandle = Selector.GetHandle("preferences");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPreferencesIdentifier = "preferencesIdentifier";
+
+	private static readonly IntPtr selPreferencesIdentifierHandle = Selector.GetHandle("preferencesIdentifier");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRegisterURLSchemeAsLocal_ = "registerURLSchemeAsLocal:";
+
+	private static readonly IntPtr selRegisterURLSchemeAsLocal_Handle = Selector.GetHandle("registerURLSchemeAsLocal:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRegisterViewClass_RepresentationClass_ForMIMEType_ = "registerViewClass:representationClass:forMIMEType:";
+
+	private static readonly IntPtr selRegisterViewClass_RepresentationClass_ForMIMEType_Handle = Selector.GetHandle("registerViewClass:representationClass:forMIMEType:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReload_ = "reload:";
+
+	private static readonly IntPtr selReload_Handle = Selector.GetHandle("reload:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReloadFromOrigin_ = "reloadFromOrigin:";
+
+	private static readonly IntPtr selReloadFromOrigin_Handle = Selector.GetHandle("reloadFromOrigin:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveDragCaret = "removeDragCaret";
+
+	private static readonly IntPtr selRemoveDragCaretHandle = Selector.GetHandle("removeDragCaret");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReplaceSelectionWithArchive_ = "replaceSelectionWithArchive:";
+
+	private static readonly IntPtr selReplaceSelectionWithArchive_Handle = Selector.GetHandle("replaceSelectionWithArchive:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReplaceSelectionWithMarkupString_ = "replaceSelectionWithMarkupString:";
+
+	private static readonly IntPtr selReplaceSelectionWithMarkupString_Handle = Selector.GetHandle("replaceSelectionWithMarkupString:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selResourceLoadDelegate = "resourceLoadDelegate";
+
+	private static readonly IntPtr selResourceLoadDelegateHandle = Selector.GetHandle("resourceLoadDelegate");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSearchFor_Direction_CaseSensitive_Wrap_ = "searchFor:direction:caseSensitive:wrap:";
+
+	private static readonly IntPtr selSearchFor_Direction_CaseSensitive_Wrap_Handle = Selector.GetHandle("searchFor:direction:caseSensitive:wrap:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSelectSentence_ = "selectSentence:";
 
 	private static readonly IntPtr selSelectSentence_Handle = Selector.GetHandle("selectSentence:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("WebView");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSelectedDOMRange = "selectedDOMRange";
 
-	private object __mt_MainFrame_var;
+	private static readonly IntPtr selSelectedDOMRangeHandle = Selector.GetHandle("selectedDOMRange");
 
-	private object __mt_SelectedFrame_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSelectedFrame = "selectedFrame";
 
-	private object __mt_BackForwardList_var;
+	private static readonly IntPtr selSelectedFrameHandle = Selector.GetHandle("selectedFrame");
 
-	private object __mt_WindowScriptObject_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSelectionAffinity = "selectionAffinity";
 
-	private object __mt_PasteboardTypesForSelection_var;
+	private static readonly IntPtr selSelectionAffinityHandle = Selector.GetHandle("selectionAffinity");
 
-	private object __mt_MainFrameDocument_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetApplicationNameForUserAgent_ = "setApplicationNameForUserAgent:";
 
-	private object __mt_MainFrameIcon_var;
+	private static readonly IntPtr selSetApplicationNameForUserAgent_Handle = Selector.GetHandle("setApplicationNameForUserAgent:");
 
-	private object __mt_WeakResourceLoadDelegate_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetContinuousSpellCheckingEnabled_ = "setContinuousSpellCheckingEnabled:";
 
-	private object __mt_WeakDownloadDelegate_var;
+	private static readonly IntPtr selSetContinuousSpellCheckingEnabled_Handle = Selector.GetHandle("setContinuousSpellCheckingEnabled:");
 
-	private object __mt_WeakFrameLoadDelegate_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCustomTextEncodingName_ = "setCustomTextEncodingName:";
 
-	private object __mt_WeakUIDelegate_var;
+	private static readonly IntPtr selSetCustomTextEncodingName_Handle = Selector.GetHandle("setCustomTextEncodingName:");
 
-	private object __mt_WeakPolicyDelegate_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCustomUserAgent_ = "setCustomUserAgent:";
 
-	private object __mt_Preferences_var;
+	private static readonly IntPtr selSetCustomUserAgent_Handle = Selector.GetHandle("setCustomUserAgent:");
 
-	private object __mt_HostWindow_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDownloadDelegate_ = "setDownloadDelegate:";
 
-	private object __mt_SelectedDomRange_var;
+	private static readonly IntPtr selSetDownloadDelegate_Handle = Selector.GetHandle("setDownloadDelegate:");
 
-	private object __mt_UndoManager_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDrawsBackground_ = "setDrawsBackground:";
 
-	private object __mt_TypingStyle_var;
+	private static readonly IntPtr selSetDrawsBackground_Handle = Selector.GetHandle("setDrawsBackground:");
 
-	private object __mt_EditingDelegate_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEditable_ = "setEditable:";
+
+	private static readonly IntPtr selSetEditable_Handle = Selector.GetHandle("setEditable:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetEditingDelegate_ = "setEditingDelegate:";
+
+	private static readonly IntPtr selSetEditingDelegate_Handle = Selector.GetHandle("setEditingDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFrameLoadDelegate_ = "setFrameLoadDelegate:";
+
+	private static readonly IntPtr selSetFrameLoadDelegate_Handle = Selector.GetHandle("setFrameLoadDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetGroupName_ = "setGroupName:";
+
+	private static readonly IntPtr selSetGroupName_Handle = Selector.GetHandle("setGroupName:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetHostWindow_ = "setHostWindow:";
+
+	private static readonly IntPtr selSetHostWindow_Handle = Selector.GetHandle("setHostWindow:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMIMETypesShownAsHTML_ = "setMIMETypesShownAsHTML:";
+
+	private static readonly IntPtr selSetMIMETypesShownAsHTML_Handle = Selector.GetHandle("setMIMETypesShownAsHTML:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMainFrameURL_ = "setMainFrameURL:";
+
+	private static readonly IntPtr selSetMainFrameURL_Handle = Selector.GetHandle("setMainFrameURL:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMaintainsBackForwardList_ = "setMaintainsBackForwardList:";
+
+	private static readonly IntPtr selSetMaintainsBackForwardList_Handle = Selector.GetHandle("setMaintainsBackForwardList:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMediaStyle_ = "setMediaStyle:";
+
+	private static readonly IntPtr selSetMediaStyle_Handle = Selector.GetHandle("setMediaStyle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPolicyDelegate_ = "setPolicyDelegate:";
+
+	private static readonly IntPtr selSetPolicyDelegate_Handle = Selector.GetHandle("setPolicyDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPreferences_ = "setPreferences:";
+
+	private static readonly IntPtr selSetPreferences_Handle = Selector.GetHandle("setPreferences:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPreferencesIdentifier_ = "setPreferencesIdentifier:";
+
+	private static readonly IntPtr selSetPreferencesIdentifier_Handle = Selector.GetHandle("setPreferencesIdentifier:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetResourceLoadDelegate_ = "setResourceLoadDelegate:";
+
+	private static readonly IntPtr selSetResourceLoadDelegate_Handle = Selector.GetHandle("setResourceLoadDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetSelectedDOMRange_Affinity_ = "setSelectedDOMRange:affinity:";
+
+	private static readonly IntPtr selSetSelectedDOMRange_Affinity_Handle = Selector.GetHandle("setSelectedDOMRange:affinity:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetShouldCloseWithWindow_ = "setShouldCloseWithWindow:";
+
+	private static readonly IntPtr selSetShouldCloseWithWindow_Handle = Selector.GetHandle("setShouldCloseWithWindow:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetShouldUpdateWhileOffscreen_ = "setShouldUpdateWhileOffscreen:";
+
+	private static readonly IntPtr selSetShouldUpdateWhileOffscreen_Handle = Selector.GetHandle("setShouldUpdateWhileOffscreen:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetSmartInsertDeleteEnabled_ = "setSmartInsertDeleteEnabled:";
+
+	private static readonly IntPtr selSetSmartInsertDeleteEnabled_Handle = Selector.GetHandle("setSmartInsertDeleteEnabled:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTextSizeMultiplier_ = "setTextSizeMultiplier:";
+
+	private static readonly IntPtr selSetTextSizeMultiplier_Handle = Selector.GetHandle("setTextSizeMultiplier:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTypingStyle_ = "setTypingStyle:";
+
+	private static readonly IntPtr selSetTypingStyle_Handle = Selector.GetHandle("setTypingStyle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetUIDelegate_ = "setUIDelegate:";
+
+	private static readonly IntPtr selSetUIDelegate_Handle = Selector.GetHandle("setUIDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selShouldCloseWithWindow = "shouldCloseWithWindow";
+
+	private static readonly IntPtr selShouldCloseWithWindowHandle = Selector.GetHandle("shouldCloseWithWindow");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selShouldUpdateWhileOffscreen = "shouldUpdateWhileOffscreen";
+
+	private static readonly IntPtr selShouldUpdateWhileOffscreenHandle = Selector.GetHandle("shouldUpdateWhileOffscreen");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selShowGuessPanel_ = "showGuessPanel:";
+
+	private static readonly IntPtr selShowGuessPanel_Handle = Selector.GetHandle("showGuessPanel:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSmartInsertDeleteEnabled = "smartInsertDeleteEnabled";
+
+	private static readonly IntPtr selSmartInsertDeleteEnabledHandle = Selector.GetHandle("smartInsertDeleteEnabled");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSpellCheckerDocumentTag = "spellCheckerDocumentTag";
+
+	private static readonly IntPtr selSpellCheckerDocumentTagHandle = Selector.GetHandle("spellCheckerDocumentTag");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStartSpeaking_ = "startSpeaking:";
+
+	private static readonly IntPtr selStartSpeaking_Handle = Selector.GetHandle("startSpeaking:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStopSpeaking_ = "stopSpeaking:";
+
+	private static readonly IntPtr selStopSpeaking_Handle = Selector.GetHandle("stopSpeaking:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStringByEvaluatingJavaScriptFromString_ = "stringByEvaluatingJavaScriptFromString:";
+
+	private static readonly IntPtr selStringByEvaluatingJavaScriptFromString_Handle = Selector.GetHandle("stringByEvaluatingJavaScriptFromString:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStyleDeclarationWithText_ = "styleDeclarationWithText:";
+
+	private static readonly IntPtr selStyleDeclarationWithText_Handle = Selector.GetHandle("styleDeclarationWithText:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSupportsTextEncoding = "supportsTextEncoding";
+
+	private static readonly IntPtr selSupportsTextEncodingHandle = Selector.GetHandle("supportsTextEncoding");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTextSizeMultiplier = "textSizeMultiplier";
+
+	private static readonly IntPtr selTextSizeMultiplierHandle = Selector.GetHandle("textSizeMultiplier");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selToggleContinuousSpellChecking_ = "toggleContinuousSpellChecking:";
+
+	private static readonly IntPtr selToggleContinuousSpellChecking_Handle = Selector.GetHandle("toggleContinuousSpellChecking:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selToggleSmartInsertDelete_ = "toggleSmartInsertDelete:";
+
+	private static readonly IntPtr selToggleSmartInsertDelete_Handle = Selector.GetHandle("toggleSmartInsertDelete:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTypingStyle = "typingStyle";
+
+	private static readonly IntPtr selTypingStyleHandle = Selector.GetHandle("typingStyle");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selUndoManager = "undoManager";
+
+	private static readonly IntPtr selUndoManagerHandle = Selector.GetHandle("undoManager");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selUserAgentForURL_ = "userAgentForURL:";
+
+	private static readonly IntPtr selUserAgentForURL_Handle = Selector.GetHandle("userAgentForURL:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selValidateUserInterfaceItem_ = "validateUserInterfaceItem:";
+
+	private static readonly IntPtr selValidateUserInterfaceItem_Handle = Selector.GetHandle("validateUserInterfaceItem:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selWindowScriptObject = "windowScriptObject";
+
+	private static readonly IntPtr selWindowScriptObjectHandle = Selector.GetHandle("windowScriptObject");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selWriteElement_WithPasteboardTypes_ToPasteboard_ = "writeElement:withPasteboardTypes:toPasteboard:";
+
+	private static readonly IntPtr selWriteElement_WithPasteboardTypes_ToPasteboard_Handle = Selector.GetHandle("writeElement:withPasteboardTypes:toPasteboard:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selWriteSelectionWithPasteboardTypes_ToPasteboard_ = "writeSelectionWithPasteboardTypes:toPasteboard:";
+
+	private static readonly IntPtr selWriteSelectionWithPasteboardTypes_ToPasteboard_Handle = Selector.GetHandle("writeSelectionWithPasteboardTypes:toPasteboard:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("WebView");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_EditingDelegate_var;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_WeakDownloadDelegate_var;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_WeakFrameLoadDelegate_var;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_WeakPolicyDelegate_var;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_WeakResourceLoadDelegate_var;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_WeakUIDelegate_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string ApplicationNameForUserAgent
+	{
+		[Export("applicationNameForUserAgent")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selApplicationNameForUserAgentHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selApplicationNameForUserAgentHandle));
+		}
+		[Export("setApplicationNameForUserAgent:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetApplicationNameForUserAgent_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetApplicationNameForUserAgent_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual WebBackForwardList BackForwardList
+	{
+		[Export("backForwardList")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<WebBackForwardList>(Messaging.IntPtr_objc_msgSend(base.Handle, selBackForwardListHandle));
+			}
+			return Runtime.GetNSObject<WebBackForwardList>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackForwardListHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ContinuousSpellCheckingEnabled
+	{
+		[Export("isContinuousSpellCheckingEnabled")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsContinuousSpellCheckingEnabledHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsContinuousSpellCheckingEnabledHandle);
+		}
+		[Export("setContinuousSpellCheckingEnabled:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetContinuousSpellCheckingEnabled_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetContinuousSpellCheckingEnabled_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string CustomTextEncodingName
+	{
+		[Export("customTextEncodingName")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCustomTextEncodingNameHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCustomTextEncodingNameHandle));
+		}
+		[Export("setCustomTextEncodingName:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCustomTextEncodingName_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCustomTextEncodingName_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string CustomUserAgent
+	{
+		[Export("customUserAgent")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCustomUserAgentHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCustomUserAgentHandle));
+		}
+		[Export("setCustomUserAgent:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCustomUserAgent_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCustomUserAgent_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public IWebDownloadDelegate DownloadDelegate
+	{
+		get
+		{
+			return WeakDownloadDelegate as IWebDownloadDelegate;
+		}
+		set
+		{
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
+			{
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			WeakDownloadDelegate = nSObject;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool DrawsBackground
+	{
+		[Export("drawsBackground")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selDrawsBackgroundHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selDrawsBackgroundHandle);
+		}
+		[Export("setDrawsBackground:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetDrawsBackground_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetDrawsBackground_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Editable
+	{
+		[Export("isEditable")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsEditableHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsEditableHandle);
+		}
+		[Export("setEditable:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetEditable_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetEditable_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject EditingDelegate
+	{
+		[Export("editingDelegate", ArgumentSemantic.Assign)]
+		get
+		{
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEditingDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selEditingDelegateHandle)));
+			MarkDirty();
+			__mt_EditingDelegate_var = nSObject;
+			return nSObject;
+		}
+		[Export("setEditingDelegate:", ArgumentSemantic.Assign)]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetEditingDelegate_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetEditingDelegate_Handle, value.Handle);
+			}
+			MarkDirty();
+			__mt_EditingDelegate_var = value;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual double EstimatedProgress
+	{
+		[Export("estimatedProgress")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selEstimatedProgressHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selEstimatedProgressHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public IWebFrameLoadDelegate FrameLoadDelegate
+	{
+		get
+		{
+			return WeakFrameLoadDelegate as IWebFrameLoadDelegate;
+		}
+		set
+		{
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
+			{
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			WeakFrameLoadDelegate = nSObject;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string GroupName
+	{
+		[Export("groupName")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selGroupNameHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selGroupNameHandle));
+		}
+		[Export("setGroupName:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetGroupName_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetGroupName_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSWindow? HostWindow
+	{
+		[Export("hostWindow", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSend(base.Handle, selHostWindowHandle));
+			}
+			return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selHostWindowHandle));
+		}
+		[Export("setHostWindow:", ArgumentSemantic.Retain)]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetHostWindow_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetHostWindow_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool IsLoading
+	{
+		[Export("isLoading")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsLoadingHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsLoadingHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual WebFrame MainFrame
+	{
+		[Export("mainFrame")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<WebFrame>(Messaging.IntPtr_objc_msgSend(base.Handle, selMainFrameHandle));
+			}
+			return Runtime.GetNSObject<WebFrame>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainFrameHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomDocument MainFrameDocument
+	{
+		[Export("mainFrameDocument")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomDocument>(Messaging.IntPtr_objc_msgSend(base.Handle, selMainFrameDocumentHandle));
+			}
+			return Runtime.GetNSObject<DomDocument>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainFrameDocumentHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSImage MainFrameIcon
+	{
+		[Export("mainFrameIcon")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSend(base.Handle, selMainFrameIconHandle));
+			}
+			return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainFrameIconHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string MainFrameTitle
+	{
+		[Export("mainFrameTitle")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMainFrameTitleHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainFrameTitleHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string MainFrameUrl
+	{
+		[Export("mainFrameURL")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMainFrameURLHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainFrameURLHandle));
+		}
+		[Export("setMainFrameURL:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMainFrameURL_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMainFrameURL_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool MaintainsInactiveSelection
+	{
+		[Export("maintainsInactiveSelection")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selMaintainsInactiveSelectionHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selMaintainsInactiveSelectionHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string MediaStyle
+	{
+		[Export("mediaStyle")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMediaStyleHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMediaStyleHandle));
+		}
+		[Export("setMediaStyle:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMediaStyle_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMediaStyle_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static string[] MimeTypesShownAsHtml
 	{
 		[Export("MIMETypesShownAsHTML")]
@@ -1170,480 +2136,58 @@ public class WebView : NSView
 		}
 	}
 
-	public virtual WebFrame MainFrame
-	{
-		[Export("mainFrame")]
-		get
-		{
-			return (WebFrame)(__mt_MainFrame_var = ((!IsDirectBinding) ? ((WebFrame)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainFrameHandle))) : ((WebFrame)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMainFrameHandle)))));
-		}
-	}
-
-	public virtual WebFrame SelectedFrame
-	{
-		[Export("selectedFrame")]
-		get
-		{
-			return (WebFrame)(__mt_SelectedFrame_var = ((!IsDirectBinding) ? ((WebFrame)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectedFrameHandle))) : ((WebFrame)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectedFrameHandle)))));
-		}
-	}
-
-	public virtual WebBackForwardList BackForwardList
-	{
-		[Export("backForwardList")]
-		get
-		{
-			return (WebBackForwardList)(__mt_BackForwardList_var = ((!IsDirectBinding) ? ((WebBackForwardList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackForwardListHandle))) : ((WebBackForwardList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selBackForwardListHandle)))));
-		}
-	}
-
-	public virtual bool SupportsTextEncoding
-	{
-		[Export("supportsTextEncoding")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selSupportsTextEncodingHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selSupportsTextEncodingHandle);
-		}
-	}
-
-	public virtual WebScriptObject WindowScriptObject
-	{
-		[Export("windowScriptObject")]
-		get
-		{
-			return (WebScriptObject)(__mt_WindowScriptObject_var = ((!IsDirectBinding) ? ((WebScriptObject)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selWindowScriptObjectHandle))) : ((WebScriptObject)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selWindowScriptObjectHandle)))));
-		}
-	}
-
-	public virtual double EstimatedProgress
-	{
-		[Export("estimatedProgress")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selEstimatedProgressHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selEstimatedProgressHandle);
-		}
-	}
-
-	public virtual bool IsLoading
-	{
-		[Export("isLoading")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsLoadingHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsLoadingHandle);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSPasteboard[] PasteboardTypesForSelection
 	{
 		[Export("pasteboardTypesForSelection")]
 		get
 		{
-			return (NSPasteboard[])(__mt_PasteboardTypesForSelection_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSPasteboard>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPasteboardTypesForSelectionHandle)) : NSArray.ArrayFromHandle<NSPasteboard>(Messaging.IntPtr_objc_msgSend(base.Handle, selPasteboardTypesForSelectionHandle))));
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<NSPasteboard>(Messaging.IntPtr_objc_msgSend(base.Handle, selPasteboardTypesForSelectionHandle));
+			}
+			return NSArray.ArrayFromHandle<NSPasteboard>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPasteboardTypesForSelectionHandle));
 		}
 	}
 
-	public virtual DomDocument MainFrameDocument
-	{
-		[Export("mainFrameDocument")]
-		get
-		{
-			return (DomDocument)(__mt_MainFrameDocument_var = ((!IsDirectBinding) ? ((DomDocument)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainFrameDocumentHandle))) : ((DomDocument)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMainFrameDocumentHandle)))));
-		}
-	}
-
-	public virtual string MainFrameTitle
-	{
-		[Export("mainFrameTitle")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMainFrameTitleHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainFrameTitleHandle));
-		}
-	}
-
-	public virtual NSImage MainFrameIcon
-	{
-		[Export("mainFrameIcon")]
-		get
-		{
-			return (NSImage)(__mt_MainFrameIcon_var = ((!IsDirectBinding) ? ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainFrameIconHandle))) : ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMainFrameIconHandle)))));
-		}
-	}
-
-	public virtual bool ShouldCloseWithWindow
-	{
-		[Export("shouldCloseWithWindow")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selShouldCloseWithWindowHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selShouldCloseWithWindowHandle);
-		}
-		[Export("setShouldCloseWithWindow:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetShouldCloseWithWindow_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetShouldCloseWithWindow_Handle, value);
-			}
-		}
-	}
-
-	public virtual NSObject WeakResourceLoadDelegate
-	{
-		[Export("resourceLoadDelegate")]
-		get
-		{
-			return (NSObject)(__mt_WeakResourceLoadDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selResourceLoadDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selResourceLoadDelegateHandle))));
-		}
-		[Export("setResourceLoadDelegate:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetResourceLoadDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetResourceLoadDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			__mt_WeakResourceLoadDelegate_var = value;
-		}
-	}
-
-	public WebResourceLoadDelegate ResourceLoadDelegate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public IWebPolicyDelegate PolicyDelegate
 	{
 		get
 		{
-			return WeakResourceLoadDelegate as WebResourceLoadDelegate;
+			return WeakPolicyDelegate as IWebPolicyDelegate;
 		}
 		set
 		{
-			WeakResourceLoadDelegate = value;
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
+			{
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			WeakPolicyDelegate = nSObject;
 		}
 	}
 
-	public virtual NSObject WeakDownloadDelegate
-	{
-		[Export("downloadDelegate")]
-		get
-		{
-			return (NSObject)(__mt_WeakDownloadDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDownloadDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDownloadDelegateHandle))));
-		}
-		[Export("setDownloadDelegate:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDownloadDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDownloadDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			__mt_WeakDownloadDelegate_var = value;
-		}
-	}
-
-	public WebDownloadDelegate DownloadDelegate
-	{
-		get
-		{
-			return WeakDownloadDelegate as WebDownloadDelegate;
-		}
-		set
-		{
-			WeakDownloadDelegate = value;
-		}
-	}
-
-	public virtual NSObject WeakFrameLoadDelegate
-	{
-		[Export("frameLoadDelegate")]
-		get
-		{
-			return (NSObject)(__mt_WeakFrameLoadDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFrameLoadDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFrameLoadDelegateHandle))));
-		}
-		[Export("setFrameLoadDelegate:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFrameLoadDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFrameLoadDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			__mt_WeakFrameLoadDelegate_var = value;
-		}
-	}
-
-	public WebFrameLoadDelegate FrameLoadDelegate
-	{
-		get
-		{
-			return WeakFrameLoadDelegate as WebFrameLoadDelegate;
-		}
-		set
-		{
-			WeakFrameLoadDelegate = value;
-		}
-	}
-
-	public virtual NSObject WeakUIDelegate
-	{
-		[Export("UIDelegate")]
-		get
-		{
-			return (NSObject)(__mt_WeakUIDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUIDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selUIDelegateHandle))));
-		}
-		[Export("setUIDelegate:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetUIDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetUIDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			__mt_WeakUIDelegate_var = value;
-		}
-	}
-
-	public WebUIDelegate UIDelegate
-	{
-		get
-		{
-			return WeakUIDelegate as WebUIDelegate;
-		}
-		set
-		{
-			WeakUIDelegate = value;
-		}
-	}
-
-	public virtual NSObject WeakPolicyDelegate
-	{
-		[Export("policyDelegate")]
-		get
-		{
-			return (NSObject)(__mt_WeakPolicyDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPolicyDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPolicyDelegateHandle))));
-		}
-		[Export("setPolicyDelegate:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPolicyDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPolicyDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			__mt_WeakPolicyDelegate_var = value;
-		}
-	}
-
-	public WebPolicyDelegate PolicyDelegate
-	{
-		get
-		{
-			return WeakPolicyDelegate as WebPolicyDelegate;
-		}
-		set
-		{
-			WeakPolicyDelegate = value;
-		}
-	}
-
-	public virtual float TextSizeMultiplier
-	{
-		[Export("textSizeMultiplier")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.float_objc_msgSend(base.Handle, selTextSizeMultiplierHandle);
-			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selTextSizeMultiplierHandle);
-		}
-		[Export("setTextSizeMultiplier:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_float(base.Handle, selSetTextSizeMultiplier_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetTextSizeMultiplier_Handle, value);
-			}
-		}
-	}
-
-	public virtual string ApplicationNameForUserAgent
-	{
-		[Export("applicationNameForUserAgent")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selApplicationNameForUserAgentHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selApplicationNameForUserAgentHandle));
-		}
-		[Export("setApplicationNameForUserAgent:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetApplicationNameForUserAgent_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetApplicationNameForUserAgent_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	public virtual string CustomUserAgent
-	{
-		[Export("customUserAgent")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCustomUserAgentHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCustomUserAgentHandle));
-		}
-		[Export("setCustomUserAgent:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCustomUserAgent_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCustomUserAgent_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	public virtual string CustomTextEncodingName
-	{
-		[Export("customTextEncodingName")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCustomTextEncodingNameHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCustomTextEncodingNameHandle));
-		}
-		[Export("setCustomTextEncodingName:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCustomTextEncodingName_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCustomTextEncodingName_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	public virtual string MediaStyle
-	{
-		[Export("mediaStyle")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMediaStyleHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMediaStyleHandle));
-		}
-		[Export("setMediaStyle:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMediaStyle_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMediaStyle_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual WebPreferences Preferences
 	{
-		[Export("preferences")]
+		[Export("preferences", ArgumentSemantic.Retain)]
 		get
 		{
-			return (WebPreferences)(__mt_Preferences_var = ((!IsDirectBinding) ? ((WebPreferences)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPreferencesHandle))) : ((WebPreferences)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPreferencesHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<WebPreferences>(Messaging.IntPtr_objc_msgSend(base.Handle, selPreferencesHandle));
+			}
+			return Runtime.GetNSObject<WebPreferences>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPreferencesHandle));
 		}
-		[Export("setPreferences:")]
+		[Export("setPreferences:", ArgumentSemantic.Retain)]
 		set
 		{
 			if (value == null)
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPreferences_Handle, value.Handle);
 			}
@@ -1651,16 +2195,16 @@ public class WebView : NSView
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPreferences_Handle, value.Handle);
 			}
-			__mt_Preferences_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string PreferencesIdentifier
 	{
 		[Export("preferencesIdentifier")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPreferencesIdentifierHandle));
 			}
@@ -1674,7 +2218,7 @@ public class WebView : NSView
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPreferencesIdentifier_Handle, arg);
 			}
@@ -1686,159 +2230,59 @@ public class WebView : NSView
 		}
 	}
 
-	public virtual NSWindow HostWindow
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public IWebResourceLoadDelegate ResourceLoadDelegate
 	{
-		[Export("hostWindow")]
 		get
 		{
-			return (NSWindow)(__mt_HostWindow_var = ((!IsDirectBinding) ? ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selHostWindowHandle))) : ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selHostWindowHandle)))));
+			return WeakResourceLoadDelegate as IWebResourceLoadDelegate;
 		}
-		[Export("setHostWindow:")]
 		set
 		{
-			if (value == null)
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
 			{
-				throw new ArgumentNullException("value");
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
 			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetHostWindow_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetHostWindow_Handle, value.Handle);
-			}
-			__mt_HostWindow_var = value;
+			WeakResourceLoadDelegate = nSObject;
 		}
 	}
 
-	public virtual string GroupName
-	{
-		[Export("groupName")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selGroupNameHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selGroupNameHandle));
-		}
-		[Export("setGroupName:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetGroupName_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetGroupName_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	public virtual bool DrawsBackground
-	{
-		[Export("drawsBackground")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selDrawsBackgroundHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selDrawsBackgroundHandle);
-		}
-		[Export("setDrawsBackground:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetDrawsBackground_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetDrawsBackground_Handle, value);
-			}
-		}
-	}
-
-	public virtual bool UpdateWhileOffscreen
-	{
-		[Export("shouldUpdateWhileOffscreen")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selShouldUpdateWhileOffscreenHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selShouldUpdateWhileOffscreenHandle);
-		}
-		[Export("setShouldUpdateWhileOffscreen:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetShouldUpdateWhileOffscreen_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetShouldUpdateWhileOffscreen_Handle, value);
-			}
-		}
-	}
-
-	public virtual string MainFrameUrl
-	{
-		[Export("mainFrameURL")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMainFrameURLHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainFrameURLHandle));
-		}
-		[Export("setMainFrameURL:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMainFrameURL_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMainFrameURL_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomRange SelectedDomRange
 	{
 		[Export("selectedDOMRange")]
 		get
 		{
-			return (DomRange)(__mt_SelectedDomRange_var = ((!IsDirectBinding) ? ((DomRange)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectedDOMRangeHandle))) : ((DomRange)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectedDOMRangeHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomRange>(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectedDOMRangeHandle));
+			}
+			return Runtime.GetNSObject<DomRange>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectedDOMRangeHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual WebFrame SelectedFrame
+	{
+		[Export("selectedFrame")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<WebFrame>(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectedFrameHandle));
+			}
+			return Runtime.GetNSObject<WebFrame>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectedFrameHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSSelectionAffinity SelectionAffinity
 	{
 		[Export("selectionAffinity")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return (NSSelectionAffinity)Messaging.UInt64_objc_msgSend(base.Handle, selSelectionAffinityHandle);
 			}
@@ -1846,98 +2290,39 @@ public class WebView : NSView
 		}
 	}
 
-	public virtual bool MaintainsInactiveSelection
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ShouldCloseWithWindow
 	{
-		[Export("maintainsInactiveSelection")]
+		[Export("shouldCloseWithWindow")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selMaintainsInactiveSelectionHandle);
+				return Messaging.bool_objc_msgSend(base.Handle, selShouldCloseWithWindowHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selMaintainsInactiveSelectionHandle);
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selShouldCloseWithWindowHandle);
 		}
-	}
-
-	public virtual int SpellCheckerDocumentTag
-	{
-		[Export("spellCheckerDocumentTag")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.int_objc_msgSend(base.Handle, selSpellCheckerDocumentTagHandle);
-			}
-			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selSpellCheckerDocumentTagHandle);
-		}
-	}
-
-	public virtual NSUndoManager UndoManager
-	{
-		[Export("undoManager")]
-		get
-		{
-			return (NSUndoManager)(__mt_UndoManager_var = ((!IsDirectBinding) ? ((NSUndoManager)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUndoManagerHandle))) : ((NSUndoManager)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selUndoManagerHandle)))));
-		}
-	}
-
-	public virtual bool Editable
-	{
-		[Export("isEditable")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsEditableHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsEditableHandle);
-		}
-		[Export("setEditable:")]
+		[Export("setShouldCloseWithWindow:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetEditable_Handle, value);
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetShouldCloseWithWindow_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetEditable_Handle, value);
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetShouldCloseWithWindow_Handle, value);
 			}
 		}
 	}
 
-	public virtual DomCssStyleDeclaration TypingStyle
-	{
-		[Export("typingStyle")]
-		get
-		{
-			return (DomCssStyleDeclaration)(__mt_TypingStyle_var = ((!IsDirectBinding) ? ((DomCssStyleDeclaration)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTypingStyleHandle))) : ((DomCssStyleDeclaration)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTypingStyleHandle)))));
-		}
-		[Export("setTypingStyle:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTypingStyle_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTypingStyle_Handle, value.Handle);
-			}
-			__mt_TypingStyle_var = value;
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool SmartInsertDeleteEnabled
 	{
 		[Export("smartInsertDeleteEnabled")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selSmartInsertDeleteEnabledHandle);
 			}
@@ -1946,7 +2331,7 @@ public class WebView : NSView
 		[Export("setSmartInsertDeleteEnabled:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetSmartInsertDeleteEnabled_Handle, value);
 			}
@@ -1957,58 +2342,313 @@ public class WebView : NSView
 		}
 	}
 
-	public virtual bool ContinuousSpellCheckingEnabled
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint SpellCheckerDocumentTag
 	{
-		[Export("isContinuousSpellCheckingEnabled")]
+		[Export("spellCheckerDocumentTag")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsContinuousSpellCheckingEnabledHandle);
+				return Messaging.nint_objc_msgSend(base.Handle, selSpellCheckerDocumentTagHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsContinuousSpellCheckingEnabledHandle);
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selSpellCheckerDocumentTagHandle);
 		}
-		[Export("setContinuousSpellCheckingEnabled:")]
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool SupportsTextEncoding
+	{
+		[Export("supportsTextEncoding")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selSupportsTextEncodingHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selSupportsTextEncodingHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual float TextSizeMultiplier
+	{
+		[Export("textSizeMultiplier")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.float_objc_msgSend(base.Handle, selTextSizeMultiplierHandle);
+			}
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selTextSizeMultiplierHandle);
+		}
+		[Export("setTextSizeMultiplier:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetContinuousSpellCheckingEnabled_Handle, value);
+				Messaging.void_objc_msgSend_float(base.Handle, selSetTextSizeMultiplier_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetContinuousSpellCheckingEnabled_Handle, value);
+				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetTextSizeMultiplier_Handle, value);
 			}
 		}
 	}
 
-	public virtual NSObject EditingDelegate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomCssStyleDeclaration TypingStyle
 	{
-		[Export("editingDelegate")]
+		[Export("typingStyle")]
 		get
 		{
-			return (NSObject)(__mt_EditingDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEditingDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selEditingDelegateHandle))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomCssStyleDeclaration>(Messaging.IntPtr_objc_msgSend(base.Handle, selTypingStyleHandle));
+			}
+			return Runtime.GetNSObject<DomCssStyleDeclaration>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTypingStyleHandle));
 		}
-		[Export("setEditingDelegate:")]
+		[Export("setTypingStyle:")]
 		set
 		{
 			if (value == null)
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetEditingDelegate_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTypingStyle_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetEditingDelegate_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTypingStyle_Handle, value.Handle);
 			}
-			__mt_EditingDelegate_var = value;
 		}
 	}
 
-	public WebDownloadRequest OnDownloadWindowForSheet
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public IWebUIDelegate UIDelegate
+	{
+		get
+		{
+			return WeakUIDelegate as IWebUIDelegate;
+		}
+		set
+		{
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
+			{
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			WeakUIDelegate = nSObject;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSUndoManager UndoManager
+	{
+		[Export("undoManager")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSUndoManager>(Messaging.IntPtr_objc_msgSend(base.Handle, selUndoManagerHandle));
+			}
+			return Runtime.GetNSObject<NSUndoManager>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUndoManagerHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool UpdateWhileOffscreen
+	{
+		[Export("shouldUpdateWhileOffscreen")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selShouldUpdateWhileOffscreenHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selShouldUpdateWhileOffscreenHandle);
+		}
+		[Export("setShouldUpdateWhileOffscreen:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetShouldUpdateWhileOffscreen_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetShouldUpdateWhileOffscreen_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakDownloadDelegate
+	{
+		[Export("downloadDelegate", ArgumentSemantic.Assign)]
+		get
+		{
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDownloadDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDownloadDelegateHandle)));
+			MarkDirty();
+			__mt_WeakDownloadDelegate_var = nSObject;
+			return nSObject;
+		}
+		[Export("setDownloadDelegate:", ArgumentSemantic.Assign)]
+		set
+		{
+			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakDownloadDelegate_var, value, GetInternalEventDownloadDelegateType);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDownloadDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDownloadDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			MarkDirty();
+			__mt_WeakDownloadDelegate_var = value;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakFrameLoadDelegate
+	{
+		[Export("frameLoadDelegate", ArgumentSemantic.Assign)]
+		get
+		{
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFrameLoadDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFrameLoadDelegateHandle)));
+			MarkDirty();
+			__mt_WeakFrameLoadDelegate_var = nSObject;
+			return nSObject;
+		}
+		[Export("setFrameLoadDelegate:", ArgumentSemantic.Assign)]
+		set
+		{
+			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakFrameLoadDelegate_var, value, GetInternalEventFrameLoadDelegateType);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFrameLoadDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFrameLoadDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			MarkDirty();
+			__mt_WeakFrameLoadDelegate_var = value;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakPolicyDelegate
+	{
+		[Export("policyDelegate", ArgumentSemantic.Assign)]
+		get
+		{
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPolicyDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPolicyDelegateHandle)));
+			MarkDirty();
+			__mt_WeakPolicyDelegate_var = nSObject;
+			return nSObject;
+		}
+		[Export("setPolicyDelegate:", ArgumentSemantic.Assign)]
+		set
+		{
+			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakPolicyDelegate_var, value, GetInternalEventPolicyDelegateType);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPolicyDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPolicyDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			MarkDirty();
+			__mt_WeakPolicyDelegate_var = value;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakResourceLoadDelegate
+	{
+		[Export("resourceLoadDelegate", ArgumentSemantic.Assign)]
+		get
+		{
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selResourceLoadDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selResourceLoadDelegateHandle)));
+			MarkDirty();
+			__mt_WeakResourceLoadDelegate_var = nSObject;
+			return nSObject;
+		}
+		[Export("setResourceLoadDelegate:", ArgumentSemantic.Assign)]
+		set
+		{
+			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakResourceLoadDelegate_var, value, GetInternalEventResourceLoadDelegateType);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetResourceLoadDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetResourceLoadDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			MarkDirty();
+			__mt_WeakResourceLoadDelegate_var = value;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakUIDelegate
+	{
+		[Export("UIDelegate", ArgumentSemantic.Assign)]
+		get
+		{
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUIDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selUIDelegateHandle)));
+			MarkDirty();
+			__mt_WeakUIDelegate_var = nSObject;
+			return nSObject;
+		}
+		[Export("setUIDelegate:", ArgumentSemantic.Assign)]
+		set
+		{
+			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakUIDelegate_var, value, GetInternalEventUIDelegateType);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetUIDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetUIDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			MarkDirty();
+			__mt_WeakUIDelegate_var = value;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual WebScriptObject WindowScriptObject
+	{
+		[Export("windowScriptObject")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<WebScriptObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selWindowScriptObjectHandle));
+			}
+			return Runtime.GetNSObject<WebScriptObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selWindowScriptObjectHandle));
+		}
+	}
+
+	internal virtual Type GetInternalEventFrameLoadDelegateType => typeof(_WebFrameLoadDelegate);
+
+	internal virtual Type GetInternalEventDownloadDelegateType => typeof(_WebDownloadDelegate);
+
+	internal virtual Type GetInternalEventResourceLoadDelegateType => typeof(_WebResourceLoadDelegate);
+
+	internal virtual Type GetInternalEventUIDelegateType => typeof(_WebUIDelegate);
+
+	internal virtual Type GetInternalEventPolicyDelegateType => typeof(_WebPolicyDelegate);
+
+	public WebDownloadRequest? OnDownloadWindowForSheet
 	{
 		get
 		{
@@ -2020,7 +2660,7 @@ public class WebView : NSView
 		}
 	}
 
-	public WebResourceIdentifierRequest OnIdentifierForInitialRequest
+	public WebResourceIdentifierRequest? OnIdentifierForInitialRequest
 	{
 		get
 		{
@@ -2032,7 +2672,7 @@ public class WebView : NSView
 		}
 	}
 
-	public WebResourceOnRequestSend OnSendRequest
+	public WebResourceOnRequestSend? OnSendRequest
 	{
 		get
 		{
@@ -2044,55 +2684,7 @@ public class WebView : NSView
 		}
 	}
 
-	public CreateWebViewFromRequest UICreateWebView
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uICreateWebView;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uICreateWebView = value;
-		}
-	}
-
-	public WebViewCreate UICreateModalDialog
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uICreateModalDialog;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uICreateModalDialog = value;
-		}
-	}
-
-	public WebViewGetResponder UIGetFirstResponder
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uIGetFirstResponder;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uIGetFirstResponder = value;
-		}
-	}
-
-	public WebViewGetString UIGetStatusText
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uIGetStatusText;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uIGetStatusText = value;
-		}
-	}
-
-	public WebViewGetBool UIAreToolbarsVisible
+	public WebViewGetBool? UIAreToolbarsVisible
 	{
 		get
 		{
@@ -2104,127 +2696,31 @@ public class WebView : NSView
 		}
 	}
 
-	public WebViewGetBool UIIsStatusBarVisible
+	public WebViewCreate? UICreateModalDialog
 	{
 		get
 		{
-			return EnsureWebUIDelegate().uIIsStatusBarVisible;
+			return EnsureWebUIDelegate().uICreateModalDialog;
 		}
 		set
 		{
-			EnsureWebUIDelegate().uIIsStatusBarVisible = value;
+			EnsureWebUIDelegate().uICreateModalDialog = value;
 		}
 	}
 
-	public WebViewGetBool UIIsResizable
+	public CreateWebViewFromRequest? UICreateWebView
 	{
 		get
 		{
-			return EnsureWebUIDelegate().uIIsResizable;
+			return EnsureWebUIDelegate().uICreateWebView;
 		}
 		set
 		{
-			EnsureWebUIDelegate().uIIsResizable = value;
+			EnsureWebUIDelegate().uICreateWebView = value;
 		}
 	}
 
-	public WebViewGetRectangle UIGetFrame
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uIGetFrame;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uIGetFrame = value;
-		}
-	}
-
-	public WebViewConfirmationPanel UIRunJavaScriptConfirmationPanel
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uIRunJavaScriptConfirmationPanel;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uIRunJavaScriptConfirmationPanel = value;
-		}
-	}
-
-	public WebViewPromptPanel UIRunJavaScriptTextInputPanelWithFrame
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uIRunJavaScriptTextInputPanelWithFrame;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uIRunJavaScriptTextInputPanelWithFrame = value;
-		}
-	}
-
-	public WebViewJavaScriptFrame UIRunBeforeUnload
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uIRunBeforeUnload;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uIRunBeforeUnload = value;
-		}
-	}
-
-	public WebViewGetContextMenuItems UIGetContextMenuItems
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uIGetContextMenuItems;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uIGetContextMenuItems = value;
-		}
-	}
-
-	public WebViewValidateUserInterface UIValidateUserInterfaceItem
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uIValidateUserInterfaceItem;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uIValidateUserInterfaceItem = value;
-		}
-	}
-
-	public WebViewPerformAction UIShouldPerformActionfromSender
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uIShouldPerformActionfromSender;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uIShouldPerformActionfromSender = value;
-		}
-	}
-
-	public DragDestinationGetActionMask UIGetDragDestinationActionMask
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uIGetDragDestinationActionMask;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uIGetDragDestinationActionMask = value;
-		}
-	}
-
-	public DragSourceGetActionMask UIDragSourceActionMask
+	public DragSourceGetActionMask? UIDragSourceActionMask
 	{
 		get
 		{
@@ -2236,55 +2732,7 @@ public class WebView : NSView
 		}
 	}
 
-	public WebViewGetFloat UIGetHeaderHeight
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uIGetHeaderHeight;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uIGetHeaderHeight = value;
-		}
-	}
-
-	public WebViewGetFloat UIGetFooterHeight
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uIGetFooterHeight;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uIGetFooterHeight = value;
-		}
-	}
-
-	public WebViewPrompt UIRunJavaScriptConfirmPanel
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uIRunJavaScriptConfirmPanel;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uIRunJavaScriptConfirmPanel = value;
-		}
-	}
-
-	public WebViewJavaScriptInput UIRunJavaScriptTextInputPanel
-	{
-		get
-		{
-			return EnsureWebUIDelegate().uIRunJavaScriptTextInputPanel;
-		}
-		set
-		{
-			EnsureWebUIDelegate().uIRunJavaScriptTextInputPanel = value;
-		}
-	}
-
-	public WebViewGetRectangle UIGetContentRect
+	public WebViewGetRectangle? UIGetContentRect
 	{
 		get
 		{
@@ -2296,143 +2744,195 @@ public class WebView : NSView
 		}
 	}
 
-	public event EventHandler<WebFrameEventArgs> StartedProvisionalLoad
+	public WebViewGetContextMenuItems? UIGetContextMenuItems
 	{
-		add
+		get
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.startedProvisionalLoad = (EventHandler<WebFrameEventArgs>)Delegate.Combine(webFrameLoadDelegate.startedProvisionalLoad, value);
+			return EnsureWebUIDelegate().uIGetContextMenuItems;
 		}
-		remove
+		set
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.startedProvisionalLoad = (EventHandler<WebFrameEventArgs>)Delegate.Remove(webFrameLoadDelegate.startedProvisionalLoad, value);
+			EnsureWebUIDelegate().uIGetContextMenuItems = value;
 		}
 	}
 
-	public event EventHandler<WebFrameEventArgs> ReceivedServerRedirectForProvisionalLoad
+	public DragDestinationGetActionMask? UIGetDragDestinationActionMask
 	{
-		add
+		get
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.receivedServerRedirectForProvisionalLoad = (EventHandler<WebFrameEventArgs>)Delegate.Combine(webFrameLoadDelegate.receivedServerRedirectForProvisionalLoad, value);
+			return EnsureWebUIDelegate().uIGetDragDestinationActionMask;
 		}
-		remove
+		set
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.receivedServerRedirectForProvisionalLoad = (EventHandler<WebFrameEventArgs>)Delegate.Remove(webFrameLoadDelegate.receivedServerRedirectForProvisionalLoad, value);
+			EnsureWebUIDelegate().uIGetDragDestinationActionMask = value;
 		}
 	}
 
-	public event EventHandler<WebFrameErrorEventArgs> FailedProvisionalLoad
+	public WebViewGetResponder? UIGetFirstResponder
 	{
-		add
+		get
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.failedProvisionalLoad = (EventHandler<WebFrameErrorEventArgs>)Delegate.Combine(webFrameLoadDelegate.failedProvisionalLoad, value);
+			return EnsureWebUIDelegate().uIGetFirstResponder;
 		}
-		remove
+		set
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.failedProvisionalLoad = (EventHandler<WebFrameErrorEventArgs>)Delegate.Remove(webFrameLoadDelegate.failedProvisionalLoad, value);
+			EnsureWebUIDelegate().uIGetFirstResponder = value;
 		}
 	}
 
-	public event EventHandler<WebFrameEventArgs> CommitedLoad
+	public WebViewGetFloat? UIGetFooterHeight
 	{
-		add
+		get
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.commitedLoad = (EventHandler<WebFrameEventArgs>)Delegate.Combine(webFrameLoadDelegate.commitedLoad, value);
+			return EnsureWebUIDelegate().uIGetFooterHeight;
 		}
-		remove
+		set
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.commitedLoad = (EventHandler<WebFrameEventArgs>)Delegate.Remove(webFrameLoadDelegate.commitedLoad, value);
+			EnsureWebUIDelegate().uIGetFooterHeight = value;
 		}
 	}
 
-	public event EventHandler<WebFrameTitleEventArgs> ReceivedTitle
+	public WebViewGetRectangle? UIGetFrame
 	{
-		add
+		get
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.receivedTitle = (EventHandler<WebFrameTitleEventArgs>)Delegate.Combine(webFrameLoadDelegate.receivedTitle, value);
+			return EnsureWebUIDelegate().uIGetFrame;
 		}
-		remove
+		set
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.receivedTitle = (EventHandler<WebFrameTitleEventArgs>)Delegate.Remove(webFrameLoadDelegate.receivedTitle, value);
+			EnsureWebUIDelegate().uIGetFrame = value;
 		}
 	}
 
-	public event EventHandler<WebFrameImageEventArgs> ReceivedIcon
+	public WebViewGetFloat? UIGetHeaderHeight
 	{
-		add
+		get
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.receivedIcon = (EventHandler<WebFrameImageEventArgs>)Delegate.Combine(webFrameLoadDelegate.receivedIcon, value);
+			return EnsureWebUIDelegate().uIGetHeaderHeight;
 		}
-		remove
+		set
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.receivedIcon = (EventHandler<WebFrameImageEventArgs>)Delegate.Remove(webFrameLoadDelegate.receivedIcon, value);
+			EnsureWebUIDelegate().uIGetHeaderHeight = value;
 		}
 	}
 
-	public event EventHandler<WebFrameEventArgs> FinishedLoad
+	public WebViewGetString? UIGetStatusText
 	{
-		add
+		get
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.finishedLoad = (EventHandler<WebFrameEventArgs>)Delegate.Combine(webFrameLoadDelegate.finishedLoad, value);
+			return EnsureWebUIDelegate().uIGetStatusText;
 		}
-		remove
+		set
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.finishedLoad = (EventHandler<WebFrameEventArgs>)Delegate.Remove(webFrameLoadDelegate.finishedLoad, value);
+			EnsureWebUIDelegate().uIGetStatusText = value;
 		}
 	}
 
-	public event EventHandler<WebFrameErrorEventArgs> FailedLoadWithError
+	public WebViewGetBool? UIIsResizable
 	{
-		add
+		get
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.failedLoadWithError = (EventHandler<WebFrameErrorEventArgs>)Delegate.Combine(webFrameLoadDelegate.failedLoadWithError, value);
+			return EnsureWebUIDelegate().uIIsResizable;
 		}
-		remove
+		set
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.failedLoadWithError = (EventHandler<WebFrameErrorEventArgs>)Delegate.Remove(webFrameLoadDelegate.failedLoadWithError, value);
+			EnsureWebUIDelegate().uIIsResizable = value;
 		}
 	}
 
-	public event EventHandler<WebFrameEventArgs> ChangedLocationWithinPage
+	public WebViewGetBool? UIIsStatusBarVisible
 	{
-		add
+		get
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.changedLocationWithinPage = (EventHandler<WebFrameEventArgs>)Delegate.Combine(webFrameLoadDelegate.changedLocationWithinPage, value);
+			return EnsureWebUIDelegate().uIIsStatusBarVisible;
 		}
-		remove
+		set
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.changedLocationWithinPage = (EventHandler<WebFrameEventArgs>)Delegate.Remove(webFrameLoadDelegate.changedLocationWithinPage, value);
+			EnsureWebUIDelegate().uIIsStatusBarVisible = value;
 		}
 	}
 
-	public event EventHandler<WebFrameClientRedirectEventArgs> WillPerformClientRedirect
+	public WebViewJavaScriptFrame? UIRunBeforeUnload
 	{
-		add
+		get
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.willPerformClientRedirect = (EventHandler<WebFrameClientRedirectEventArgs>)Delegate.Combine(webFrameLoadDelegate.willPerformClientRedirect, value);
+			return EnsureWebUIDelegate().uIRunBeforeUnload;
 		}
-		remove
+		set
 		{
-			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.willPerformClientRedirect = (EventHandler<WebFrameClientRedirectEventArgs>)Delegate.Remove(webFrameLoadDelegate.willPerformClientRedirect, value);
+			EnsureWebUIDelegate().uIRunBeforeUnload = value;
+		}
+	}
+
+	public WebViewPrompt? UIRunJavaScriptConfirmPanel
+	{
+		get
+		{
+			return EnsureWebUIDelegate().uIRunJavaScriptConfirmPanel;
+		}
+		set
+		{
+			EnsureWebUIDelegate().uIRunJavaScriptConfirmPanel = value;
+		}
+	}
+
+	public WebViewConfirmationPanel? UIRunJavaScriptConfirmationPanel
+	{
+		get
+		{
+			return EnsureWebUIDelegate().uIRunJavaScriptConfirmationPanel;
+		}
+		set
+		{
+			EnsureWebUIDelegate().uIRunJavaScriptConfirmationPanel = value;
+		}
+	}
+
+	public WebViewJavaScriptInput? UIRunJavaScriptTextInputPanel
+	{
+		get
+		{
+			return EnsureWebUIDelegate().uIRunJavaScriptTextInputPanel;
+		}
+		set
+		{
+			EnsureWebUIDelegate().uIRunJavaScriptTextInputPanel = value;
+		}
+	}
+
+	public WebViewPromptPanel? UIRunJavaScriptTextInputPanelWithFrame
+	{
+		get
+		{
+			return EnsureWebUIDelegate().uIRunJavaScriptTextInputPanelWithFrame;
+		}
+		set
+		{
+			EnsureWebUIDelegate().uIRunJavaScriptTextInputPanelWithFrame = value;
+		}
+	}
+
+	public WebViewPerformAction? UIShouldPerformActionfromSender
+	{
+		get
+		{
+			return EnsureWebUIDelegate().uIShouldPerformActionfromSender;
+		}
+		set
+		{
+			EnsureWebUIDelegate().uIShouldPerformActionfromSender = value;
+		}
+	}
+
+	public WebViewValidateUserInterface? UIValidateUserInterfaceItem
+	{
+		get
+		{
+			return EnsureWebUIDelegate().uIValidateUserInterfaceItem;
+		}
+		set
+		{
+			EnsureWebUIDelegate().uIValidateUserInterfaceItem = value;
 		}
 	}
 
@@ -2450,17 +2950,17 @@ public class WebView : NSView
 		}
 	}
 
-	public event EventHandler<WebFrameEventArgs> WillCloseFrame
+	public event EventHandler<WebFrameEventArgs> ChangedLocationWithinPage
 	{
 		add
 		{
 			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.willCloseFrame = (EventHandler<WebFrameEventArgs>)Delegate.Combine(webFrameLoadDelegate.willCloseFrame, value);
+			webFrameLoadDelegate.changedLocationWithinPage = (EventHandler<WebFrameEventArgs>)Delegate.Combine(webFrameLoadDelegate.changedLocationWithinPage, value);
 		}
 		remove
 		{
 			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
-			webFrameLoadDelegate.willCloseFrame = (EventHandler<WebFrameEventArgs>)Delegate.Remove(webFrameLoadDelegate.willCloseFrame, value);
+			webFrameLoadDelegate.changedLocationWithinPage = (EventHandler<WebFrameEventArgs>)Delegate.Remove(webFrameLoadDelegate.changedLocationWithinPage, value);
 		}
 	}
 
@@ -2478,6 +2978,160 @@ public class WebView : NSView
 		}
 	}
 
+	public event EventHandler<WebFrameEventArgs> CommitedLoad
+	{
+		add
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.commitedLoad = (EventHandler<WebFrameEventArgs>)Delegate.Combine(webFrameLoadDelegate.commitedLoad, value);
+		}
+		remove
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.commitedLoad = (EventHandler<WebFrameEventArgs>)Delegate.Remove(webFrameLoadDelegate.commitedLoad, value);
+		}
+	}
+
+	public event EventHandler<WebFrameJavaScriptContextEventArgs> DidCreateJavaScriptContext
+	{
+		add
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.didCreateJavaScriptContext = (EventHandler<WebFrameJavaScriptContextEventArgs>)Delegate.Combine(webFrameLoadDelegate.didCreateJavaScriptContext, value);
+		}
+		remove
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.didCreateJavaScriptContext = (EventHandler<WebFrameJavaScriptContextEventArgs>)Delegate.Remove(webFrameLoadDelegate.didCreateJavaScriptContext, value);
+		}
+	}
+
+	public event EventHandler<WebFrameErrorEventArgs> FailedLoadWithError
+	{
+		add
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.failedLoadWithError = (EventHandler<WebFrameErrorEventArgs>)Delegate.Combine(webFrameLoadDelegate.failedLoadWithError, value);
+		}
+		remove
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.failedLoadWithError = (EventHandler<WebFrameErrorEventArgs>)Delegate.Remove(webFrameLoadDelegate.failedLoadWithError, value);
+		}
+	}
+
+	public event EventHandler<WebFrameErrorEventArgs> FailedProvisionalLoad
+	{
+		add
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.failedProvisionalLoad = (EventHandler<WebFrameErrorEventArgs>)Delegate.Combine(webFrameLoadDelegate.failedProvisionalLoad, value);
+		}
+		remove
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.failedProvisionalLoad = (EventHandler<WebFrameErrorEventArgs>)Delegate.Remove(webFrameLoadDelegate.failedProvisionalLoad, value);
+		}
+	}
+
+	public event EventHandler<WebFrameEventArgs> FinishedLoad
+	{
+		add
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.finishedLoad = (EventHandler<WebFrameEventArgs>)Delegate.Combine(webFrameLoadDelegate.finishedLoad, value);
+		}
+		remove
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.finishedLoad = (EventHandler<WebFrameEventArgs>)Delegate.Remove(webFrameLoadDelegate.finishedLoad, value);
+		}
+	}
+
+	public event EventHandler<WebFrameImageEventArgs> ReceivedIcon
+	{
+		add
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.receivedIcon = (EventHandler<WebFrameImageEventArgs>)Delegate.Combine(webFrameLoadDelegate.receivedIcon, value);
+		}
+		remove
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.receivedIcon = (EventHandler<WebFrameImageEventArgs>)Delegate.Remove(webFrameLoadDelegate.receivedIcon, value);
+		}
+	}
+
+	public event EventHandler<WebFrameEventArgs> ReceivedServerRedirectForProvisionalLoad
+	{
+		add
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.receivedServerRedirectForProvisionalLoad = (EventHandler<WebFrameEventArgs>)Delegate.Combine(webFrameLoadDelegate.receivedServerRedirectForProvisionalLoad, value);
+		}
+		remove
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.receivedServerRedirectForProvisionalLoad = (EventHandler<WebFrameEventArgs>)Delegate.Remove(webFrameLoadDelegate.receivedServerRedirectForProvisionalLoad, value);
+		}
+	}
+
+	public event EventHandler<WebFrameTitleEventArgs> ReceivedTitle
+	{
+		add
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.receivedTitle = (EventHandler<WebFrameTitleEventArgs>)Delegate.Combine(webFrameLoadDelegate.receivedTitle, value);
+		}
+		remove
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.receivedTitle = (EventHandler<WebFrameTitleEventArgs>)Delegate.Remove(webFrameLoadDelegate.receivedTitle, value);
+		}
+	}
+
+	public event EventHandler<WebFrameEventArgs> StartedProvisionalLoad
+	{
+		add
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.startedProvisionalLoad = (EventHandler<WebFrameEventArgs>)Delegate.Combine(webFrameLoadDelegate.startedProvisionalLoad, value);
+		}
+		remove
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.startedProvisionalLoad = (EventHandler<WebFrameEventArgs>)Delegate.Remove(webFrameLoadDelegate.startedProvisionalLoad, value);
+		}
+	}
+
+	public event EventHandler<WebFrameEventArgs> WillCloseFrame
+	{
+		add
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.willCloseFrame = (EventHandler<WebFrameEventArgs>)Delegate.Combine(webFrameLoadDelegate.willCloseFrame, value);
+		}
+		remove
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.willCloseFrame = (EventHandler<WebFrameEventArgs>)Delegate.Remove(webFrameLoadDelegate.willCloseFrame, value);
+		}
+	}
+
+	public event EventHandler<WebFrameClientRedirectEventArgs> WillPerformClientRedirect
+	{
+		add
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.willPerformClientRedirect = (EventHandler<WebFrameClientRedirectEventArgs>)Delegate.Combine(webFrameLoadDelegate.willPerformClientRedirect, value);
+		}
+		remove
+		{
+			_WebFrameLoadDelegate webFrameLoadDelegate = EnsureWebFrameLoadDelegate();
+			webFrameLoadDelegate.willPerformClientRedirect = (EventHandler<WebFrameClientRedirectEventArgs>)Delegate.Remove(webFrameLoadDelegate.willPerformClientRedirect, value);
+		}
+	}
+
 	public event EventHandler<WebFrameScriptObjectEventArgs> WindowScriptObjectAvailable
 	{
 		add
@@ -2492,395 +3146,17 @@ public class WebView : NSView
 		}
 	}
 
-	public event EventHandler<WebResourceAuthenticationChallengeEventArgs> OnReceivedAuthenticationChallenge
+	public event EventHandler<WebMimeTypePolicyEventArgs> DecidePolicyForMimeType
 	{
 		add
 		{
-			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
-			webResourceLoadDelegate.onReceivedAuthenticationChallenge = (EventHandler<WebResourceAuthenticationChallengeEventArgs>)Delegate.Combine(webResourceLoadDelegate.onReceivedAuthenticationChallenge, value);
+			_WebPolicyDelegate webPolicyDelegate = EnsureWebPolicyDelegate();
+			webPolicyDelegate.decidePolicyForMimeType = (EventHandler<WebMimeTypePolicyEventArgs>)Delegate.Combine(webPolicyDelegate.decidePolicyForMimeType, value);
 		}
 		remove
 		{
-			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
-			webResourceLoadDelegate.onReceivedAuthenticationChallenge = (EventHandler<WebResourceAuthenticationChallengeEventArgs>)Delegate.Remove(webResourceLoadDelegate.onReceivedAuthenticationChallenge, value);
-		}
-	}
-
-	public event EventHandler<WebResourceCancelledChallengeEventArgs> OnCancelledAuthenticationChallenge
-	{
-		add
-		{
-			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
-			webResourceLoadDelegate.onCancelledAuthenticationChallenge = (EventHandler<WebResourceCancelledChallengeEventArgs>)Delegate.Combine(webResourceLoadDelegate.onCancelledAuthenticationChallenge, value);
-		}
-		remove
-		{
-			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
-			webResourceLoadDelegate.onCancelledAuthenticationChallenge = (EventHandler<WebResourceCancelledChallengeEventArgs>)Delegate.Remove(webResourceLoadDelegate.onCancelledAuthenticationChallenge, value);
-		}
-	}
-
-	public event EventHandler<WebResourceReceivedResponseEventArgs> OnReceivedResponse
-	{
-		add
-		{
-			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
-			webResourceLoadDelegate.onReceivedResponse = (EventHandler<WebResourceReceivedResponseEventArgs>)Delegate.Combine(webResourceLoadDelegate.onReceivedResponse, value);
-		}
-		remove
-		{
-			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
-			webResourceLoadDelegate.onReceivedResponse = (EventHandler<WebResourceReceivedResponseEventArgs>)Delegate.Remove(webResourceLoadDelegate.onReceivedResponse, value);
-		}
-	}
-
-	public event EventHandler<WebResourceReceivedContentLengthEventArgs> OnReceivedContentLength
-	{
-		add
-		{
-			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
-			webResourceLoadDelegate.onReceivedContentLength = (EventHandler<WebResourceReceivedContentLengthEventArgs>)Delegate.Combine(webResourceLoadDelegate.onReceivedContentLength, value);
-		}
-		remove
-		{
-			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
-			webResourceLoadDelegate.onReceivedContentLength = (EventHandler<WebResourceReceivedContentLengthEventArgs>)Delegate.Remove(webResourceLoadDelegate.onReceivedContentLength, value);
-		}
-	}
-
-	public event EventHandler<WebResourceCompletedEventArgs> OnFinishedLoading
-	{
-		add
-		{
-			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
-			webResourceLoadDelegate.onFinishedLoading = (EventHandler<WebResourceCompletedEventArgs>)Delegate.Combine(webResourceLoadDelegate.onFinishedLoading, value);
-		}
-		remove
-		{
-			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
-			webResourceLoadDelegate.onFinishedLoading = (EventHandler<WebResourceCompletedEventArgs>)Delegate.Remove(webResourceLoadDelegate.onFinishedLoading, value);
-		}
-	}
-
-	public event EventHandler<WebResourceErrorEventArgs> OnFailedLoading
-	{
-		add
-		{
-			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
-			webResourceLoadDelegate.onFailedLoading = (EventHandler<WebResourceErrorEventArgs>)Delegate.Combine(webResourceLoadDelegate.onFailedLoading, value);
-		}
-		remove
-		{
-			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
-			webResourceLoadDelegate.onFailedLoading = (EventHandler<WebResourceErrorEventArgs>)Delegate.Remove(webResourceLoadDelegate.onFailedLoading, value);
-		}
-	}
-
-	public event EventHandler<WebResourcePluginErrorEventArgs> OnPlugInFailed
-	{
-		add
-		{
-			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
-			webResourceLoadDelegate.onPlugInFailed = (EventHandler<WebResourcePluginErrorEventArgs>)Delegate.Combine(webResourceLoadDelegate.onPlugInFailed, value);
-		}
-		remove
-		{
-			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
-			webResourceLoadDelegate.onPlugInFailed = (EventHandler<WebResourcePluginErrorEventArgs>)Delegate.Remove(webResourceLoadDelegate.onPlugInFailed, value);
-		}
-	}
-
-	public event EventHandler UIShow
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIShow = (EventHandler)Delegate.Combine(webUIDelegate.uIShow, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIShow = (EventHandler)Delegate.Remove(webUIDelegate.uIShow, value);
-		}
-	}
-
-	public event EventHandler UIRunModal
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIRunModal = (EventHandler)Delegate.Combine(webUIDelegate.uIRunModal, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIRunModal = (EventHandler)Delegate.Remove(webUIDelegate.uIRunModal, value);
-		}
-	}
-
-	public event EventHandler UIClose
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIClose = (EventHandler)Delegate.Combine(webUIDelegate.uIClose, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIClose = (EventHandler)Delegate.Remove(webUIDelegate.uIClose, value);
-		}
-	}
-
-	public event EventHandler UIFocus
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIFocus = (EventHandler)Delegate.Combine(webUIDelegate.uIFocus, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIFocus = (EventHandler)Delegate.Remove(webUIDelegate.uIFocus, value);
-		}
-	}
-
-	public event EventHandler UIUnfocus
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIUnfocus = (EventHandler)Delegate.Combine(webUIDelegate.uIUnfocus, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIUnfocus = (EventHandler)Delegate.Remove(webUIDelegate.uIUnfocus, value);
-		}
-	}
-
-	public event EventHandler<WebViewResponderEventArgs> UIMakeFirstResponder
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIMakeFirstResponder = (EventHandler<WebViewResponderEventArgs>)Delegate.Combine(webUIDelegate.uIMakeFirstResponder, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIMakeFirstResponder = (EventHandler<WebViewResponderEventArgs>)Delegate.Remove(webUIDelegate.uIMakeFirstResponder, value);
-		}
-	}
-
-	public event EventHandler<WebViewStatusTextEventArgs> UISetStatusText
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uISetStatusText = (EventHandler<WebViewStatusTextEventArgs>)Delegate.Combine(webUIDelegate.uISetStatusText, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uISetStatusText = (EventHandler<WebViewStatusTextEventArgs>)Delegate.Remove(webUIDelegate.uISetStatusText, value);
-		}
-	}
-
-	public event EventHandler<WebViewToolBarsEventArgs> UISetToolbarsVisible
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uISetToolbarsVisible = (EventHandler<WebViewToolBarsEventArgs>)Delegate.Combine(webUIDelegate.uISetToolbarsVisible, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uISetToolbarsVisible = (EventHandler<WebViewToolBarsEventArgs>)Delegate.Remove(webUIDelegate.uISetToolbarsVisible, value);
-		}
-	}
-
-	public event EventHandler<WebViewStatusBarEventArgs> UISetStatusBarVisible
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uISetStatusBarVisible = (EventHandler<WebViewStatusBarEventArgs>)Delegate.Combine(webUIDelegate.uISetStatusBarVisible, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uISetStatusBarVisible = (EventHandler<WebViewStatusBarEventArgs>)Delegate.Remove(webUIDelegate.uISetStatusBarVisible, value);
-		}
-	}
-
-	public event EventHandler<WebViewResizableEventArgs> UISetResizable
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uISetResizable = (EventHandler<WebViewResizableEventArgs>)Delegate.Combine(webUIDelegate.uISetResizable, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uISetResizable = (EventHandler<WebViewResizableEventArgs>)Delegate.Remove(webUIDelegate.uISetResizable, value);
-		}
-	}
-
-	public event EventHandler<WebViewFrameEventArgs> UISetFrame
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uISetFrame = (EventHandler<WebViewFrameEventArgs>)Delegate.Combine(webUIDelegate.uISetFrame, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uISetFrame = (EventHandler<WebViewFrameEventArgs>)Delegate.Remove(webUIDelegate.uISetFrame, value);
-		}
-	}
-
-	public event EventHandler<WebViewJavaScriptFrameEventArgs> UIRunJavaScriptAlertPanelMessage
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIRunJavaScriptAlertPanelMessage = (EventHandler<WebViewJavaScriptFrameEventArgs>)Delegate.Combine(webUIDelegate.uIRunJavaScriptAlertPanelMessage, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIRunJavaScriptAlertPanelMessage = (EventHandler<WebViewJavaScriptFrameEventArgs>)Delegate.Remove(webUIDelegate.uIRunJavaScriptAlertPanelMessage, value);
-		}
-	}
-
-	public event EventHandler<WebViewRunOpenPanelEventArgs> UIRunOpenPanelForFileButton
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIRunOpenPanelForFileButton = (EventHandler<WebViewRunOpenPanelEventArgs>)Delegate.Combine(webUIDelegate.uIRunOpenPanelForFileButton, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIRunOpenPanelForFileButton = (EventHandler<WebViewRunOpenPanelEventArgs>)Delegate.Remove(webUIDelegate.uIRunOpenPanelForFileButton, value);
-		}
-	}
-
-	public event EventHandler<WebViewMouseMovedEventArgs> UIMouseDidMoveOverElement
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIMouseDidMoveOverElement = (EventHandler<WebViewMouseMovedEventArgs>)Delegate.Combine(webUIDelegate.uIMouseDidMoveOverElement, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIMouseDidMoveOverElement = (EventHandler<WebViewMouseMovedEventArgs>)Delegate.Remove(webUIDelegate.uIMouseDidMoveOverElement, value);
-		}
-	}
-
-	public event EventHandler<WebViewDragEventArgs> UIWillPerformDragDestination
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIWillPerformDragDestination = (EventHandler<WebViewDragEventArgs>)Delegate.Combine(webUIDelegate.uIWillPerformDragDestination, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIWillPerformDragDestination = (EventHandler<WebViewDragEventArgs>)Delegate.Remove(webUIDelegate.uIWillPerformDragDestination, value);
-		}
-	}
-
-	public event EventHandler<WebViewPerformDragEventArgs> UIWillPerformDragSource
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIWillPerformDragSource = (EventHandler<WebViewPerformDragEventArgs>)Delegate.Combine(webUIDelegate.uIWillPerformDragSource, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIWillPerformDragSource = (EventHandler<WebViewPerformDragEventArgs>)Delegate.Remove(webUIDelegate.uIWillPerformDragSource, value);
-		}
-	}
-
-	public event EventHandler<WebViewPrintEventArgs> UIPrintFrameView
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIPrintFrameView = (EventHandler<WebViewPrintEventArgs>)Delegate.Combine(webUIDelegate.uIPrintFrameView, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIPrintFrameView = (EventHandler<WebViewPrintEventArgs>)Delegate.Remove(webUIDelegate.uIPrintFrameView, value);
-		}
-	}
-
-	public event EventHandler<WebViewHeaderEventArgs> UIDrawHeaderInRect
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIDrawHeaderInRect = (EventHandler<WebViewHeaderEventArgs>)Delegate.Combine(webUIDelegate.uIDrawHeaderInRect, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIDrawHeaderInRect = (EventHandler<WebViewHeaderEventArgs>)Delegate.Remove(webUIDelegate.uIDrawHeaderInRect, value);
-		}
-	}
-
-	public event EventHandler<WebViewFooterEventArgs> UIDrawFooterInRect
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIDrawFooterInRect = (EventHandler<WebViewFooterEventArgs>)Delegate.Combine(webUIDelegate.uIDrawFooterInRect, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIDrawFooterInRect = (EventHandler<WebViewFooterEventArgs>)Delegate.Remove(webUIDelegate.uIDrawFooterInRect, value);
-		}
-	}
-
-	public event EventHandler<WebViewJavaScriptEventArgs> UIRunJavaScriptAlertPanel
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIRunJavaScriptAlertPanel = (EventHandler<WebViewJavaScriptEventArgs>)Delegate.Combine(webUIDelegate.uIRunJavaScriptAlertPanel, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uIRunJavaScriptAlertPanel = (EventHandler<WebViewJavaScriptEventArgs>)Delegate.Remove(webUIDelegate.uIRunJavaScriptAlertPanel, value);
-		}
-	}
-
-	public event EventHandler<WebViewContentEventArgs> UISetContentRect
-	{
-		add
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uISetContentRect = (EventHandler<WebViewContentEventArgs>)Delegate.Combine(webUIDelegate.uISetContentRect, value);
-		}
-		remove
-		{
-			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
-			webUIDelegate.uISetContentRect = (EventHandler<WebViewContentEventArgs>)Delegate.Remove(webUIDelegate.uISetContentRect, value);
+			_WebPolicyDelegate webPolicyDelegate = EnsureWebPolicyDelegate();
+			webPolicyDelegate.decidePolicyForMimeType = (EventHandler<WebMimeTypePolicyEventArgs>)Delegate.Remove(webPolicyDelegate.decidePolicyForMimeType, value);
 		}
 	}
 
@@ -2912,20 +3188,6 @@ public class WebView : NSView
 		}
 	}
 
-	public event EventHandler<WebMimeTypePolicyEventArgs> DecidePolicyForMimeType
-	{
-		add
-		{
-			_WebPolicyDelegate webPolicyDelegate = EnsureWebPolicyDelegate();
-			webPolicyDelegate.decidePolicyForMimeType = (EventHandler<WebMimeTypePolicyEventArgs>)Delegate.Combine(webPolicyDelegate.decidePolicyForMimeType, value);
-		}
-		remove
-		{
-			_WebPolicyDelegate webPolicyDelegate = EnsureWebPolicyDelegate();
-			webPolicyDelegate.decidePolicyForMimeType = (EventHandler<WebMimeTypePolicyEventArgs>)Delegate.Remove(webPolicyDelegate.decidePolicyForMimeType, value);
-		}
-	}
-
 	public event EventHandler<WebFailureToImplementPolicyEventArgs> UnableToImplementPolicy
 	{
 		add
@@ -2937,6 +3199,398 @@ public class WebView : NSView
 		{
 			_WebPolicyDelegate webPolicyDelegate = EnsureWebPolicyDelegate();
 			webPolicyDelegate.unableToImplementPolicy = (EventHandler<WebFailureToImplementPolicyEventArgs>)Delegate.Remove(webPolicyDelegate.unableToImplementPolicy, value);
+		}
+	}
+
+	public event EventHandler<WebResourceCancelledChallengeEventArgs> OnCancelledAuthenticationChallenge
+	{
+		add
+		{
+			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
+			webResourceLoadDelegate.onCancelledAuthenticationChallenge = (EventHandler<WebResourceCancelledChallengeEventArgs>)Delegate.Combine(webResourceLoadDelegate.onCancelledAuthenticationChallenge, value);
+		}
+		remove
+		{
+			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
+			webResourceLoadDelegate.onCancelledAuthenticationChallenge = (EventHandler<WebResourceCancelledChallengeEventArgs>)Delegate.Remove(webResourceLoadDelegate.onCancelledAuthenticationChallenge, value);
+		}
+	}
+
+	public event EventHandler<WebResourceErrorEventArgs> OnFailedLoading
+	{
+		add
+		{
+			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
+			webResourceLoadDelegate.onFailedLoading = (EventHandler<WebResourceErrorEventArgs>)Delegate.Combine(webResourceLoadDelegate.onFailedLoading, value);
+		}
+		remove
+		{
+			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
+			webResourceLoadDelegate.onFailedLoading = (EventHandler<WebResourceErrorEventArgs>)Delegate.Remove(webResourceLoadDelegate.onFailedLoading, value);
+		}
+	}
+
+	public event EventHandler<WebResourceCompletedEventArgs> OnFinishedLoading
+	{
+		add
+		{
+			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
+			webResourceLoadDelegate.onFinishedLoading = (EventHandler<WebResourceCompletedEventArgs>)Delegate.Combine(webResourceLoadDelegate.onFinishedLoading, value);
+		}
+		remove
+		{
+			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
+			webResourceLoadDelegate.onFinishedLoading = (EventHandler<WebResourceCompletedEventArgs>)Delegate.Remove(webResourceLoadDelegate.onFinishedLoading, value);
+		}
+	}
+
+	public event EventHandler<WebResourcePluginErrorEventArgs> OnPlugInFailed
+	{
+		add
+		{
+			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
+			webResourceLoadDelegate.onPlugInFailed = (EventHandler<WebResourcePluginErrorEventArgs>)Delegate.Combine(webResourceLoadDelegate.onPlugInFailed, value);
+		}
+		remove
+		{
+			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
+			webResourceLoadDelegate.onPlugInFailed = (EventHandler<WebResourcePluginErrorEventArgs>)Delegate.Remove(webResourceLoadDelegate.onPlugInFailed, value);
+		}
+	}
+
+	public event EventHandler<WebResourceAuthenticationChallengeEventArgs> OnReceivedAuthenticationChallenge
+	{
+		add
+		{
+			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
+			webResourceLoadDelegate.onReceivedAuthenticationChallenge = (EventHandler<WebResourceAuthenticationChallengeEventArgs>)Delegate.Combine(webResourceLoadDelegate.onReceivedAuthenticationChallenge, value);
+		}
+		remove
+		{
+			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
+			webResourceLoadDelegate.onReceivedAuthenticationChallenge = (EventHandler<WebResourceAuthenticationChallengeEventArgs>)Delegate.Remove(webResourceLoadDelegate.onReceivedAuthenticationChallenge, value);
+		}
+	}
+
+	public event EventHandler<WebResourceReceivedContentLengthEventArgs> OnReceivedContentLength
+	{
+		add
+		{
+			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
+			webResourceLoadDelegate.onReceivedContentLength = (EventHandler<WebResourceReceivedContentLengthEventArgs>)Delegate.Combine(webResourceLoadDelegate.onReceivedContentLength, value);
+		}
+		remove
+		{
+			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
+			webResourceLoadDelegate.onReceivedContentLength = (EventHandler<WebResourceReceivedContentLengthEventArgs>)Delegate.Remove(webResourceLoadDelegate.onReceivedContentLength, value);
+		}
+	}
+
+	public event EventHandler<WebResourceReceivedResponseEventArgs> OnReceivedResponse
+	{
+		add
+		{
+			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
+			webResourceLoadDelegate.onReceivedResponse = (EventHandler<WebResourceReceivedResponseEventArgs>)Delegate.Combine(webResourceLoadDelegate.onReceivedResponse, value);
+		}
+		remove
+		{
+			_WebResourceLoadDelegate webResourceLoadDelegate = EnsureWebResourceLoadDelegate();
+			webResourceLoadDelegate.onReceivedResponse = (EventHandler<WebResourceReceivedResponseEventArgs>)Delegate.Remove(webResourceLoadDelegate.onReceivedResponse, value);
+		}
+	}
+
+	public event EventHandler UIClose
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIClose = (EventHandler)Delegate.Combine(webUIDelegate.uIClose, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIClose = (EventHandler)Delegate.Remove(webUIDelegate.uIClose, value);
+		}
+	}
+
+	public event EventHandler<WebViewFooterEventArgs> UIDrawFooterInRect
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIDrawFooterInRect = (EventHandler<WebViewFooterEventArgs>)Delegate.Combine(webUIDelegate.uIDrawFooterInRect, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIDrawFooterInRect = (EventHandler<WebViewFooterEventArgs>)Delegate.Remove(webUIDelegate.uIDrawFooterInRect, value);
+		}
+	}
+
+	public event EventHandler<WebViewHeaderEventArgs> UIDrawHeaderInRect
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIDrawHeaderInRect = (EventHandler<WebViewHeaderEventArgs>)Delegate.Combine(webUIDelegate.uIDrawHeaderInRect, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIDrawHeaderInRect = (EventHandler<WebViewHeaderEventArgs>)Delegate.Remove(webUIDelegate.uIDrawHeaderInRect, value);
+		}
+	}
+
+	public event EventHandler UIFocus
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIFocus = (EventHandler)Delegate.Combine(webUIDelegate.uIFocus, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIFocus = (EventHandler)Delegate.Remove(webUIDelegate.uIFocus, value);
+		}
+	}
+
+	public event EventHandler<WebViewResponderEventArgs> UIMakeFirstResponder
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIMakeFirstResponder = (EventHandler<WebViewResponderEventArgs>)Delegate.Combine(webUIDelegate.uIMakeFirstResponder, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIMakeFirstResponder = (EventHandler<WebViewResponderEventArgs>)Delegate.Remove(webUIDelegate.uIMakeFirstResponder, value);
+		}
+	}
+
+	public event EventHandler<WebViewMouseMovedEventArgs> UIMouseDidMoveOverElement
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIMouseDidMoveOverElement = (EventHandler<WebViewMouseMovedEventArgs>)Delegate.Combine(webUIDelegate.uIMouseDidMoveOverElement, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIMouseDidMoveOverElement = (EventHandler<WebViewMouseMovedEventArgs>)Delegate.Remove(webUIDelegate.uIMouseDidMoveOverElement, value);
+		}
+	}
+
+	public event EventHandler<WebViewPrintEventArgs> UIPrintFrameView
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIPrintFrameView = (EventHandler<WebViewPrintEventArgs>)Delegate.Combine(webUIDelegate.uIPrintFrameView, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIPrintFrameView = (EventHandler<WebViewPrintEventArgs>)Delegate.Remove(webUIDelegate.uIPrintFrameView, value);
+		}
+	}
+
+	public event EventHandler<WebViewJavaScriptEventArgs> UIRunJavaScriptAlertPanel
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIRunJavaScriptAlertPanel = (EventHandler<WebViewJavaScriptEventArgs>)Delegate.Combine(webUIDelegate.uIRunJavaScriptAlertPanel, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIRunJavaScriptAlertPanel = (EventHandler<WebViewJavaScriptEventArgs>)Delegate.Remove(webUIDelegate.uIRunJavaScriptAlertPanel, value);
+		}
+	}
+
+	public event EventHandler<WebViewJavaScriptFrameEventArgs> UIRunJavaScriptAlertPanelMessage
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIRunJavaScriptAlertPanelMessage = (EventHandler<WebViewJavaScriptFrameEventArgs>)Delegate.Combine(webUIDelegate.uIRunJavaScriptAlertPanelMessage, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIRunJavaScriptAlertPanelMessage = (EventHandler<WebViewJavaScriptFrameEventArgs>)Delegate.Remove(webUIDelegate.uIRunJavaScriptAlertPanelMessage, value);
+		}
+	}
+
+	public event EventHandler UIRunModal
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIRunModal = (EventHandler)Delegate.Combine(webUIDelegate.uIRunModal, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIRunModal = (EventHandler)Delegate.Remove(webUIDelegate.uIRunModal, value);
+		}
+	}
+
+	public event EventHandler<WebViewRunOpenPanelEventArgs> UIRunOpenPanelForFileButton
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIRunOpenPanelForFileButton = (EventHandler<WebViewRunOpenPanelEventArgs>)Delegate.Combine(webUIDelegate.uIRunOpenPanelForFileButton, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIRunOpenPanelForFileButton = (EventHandler<WebViewRunOpenPanelEventArgs>)Delegate.Remove(webUIDelegate.uIRunOpenPanelForFileButton, value);
+		}
+	}
+
+	public event EventHandler<WebViewContentEventArgs> UISetContentRect
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uISetContentRect = (EventHandler<WebViewContentEventArgs>)Delegate.Combine(webUIDelegate.uISetContentRect, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uISetContentRect = (EventHandler<WebViewContentEventArgs>)Delegate.Remove(webUIDelegate.uISetContentRect, value);
+		}
+	}
+
+	public event EventHandler<WebViewFrameEventArgs> UISetFrame
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uISetFrame = (EventHandler<WebViewFrameEventArgs>)Delegate.Combine(webUIDelegate.uISetFrame, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uISetFrame = (EventHandler<WebViewFrameEventArgs>)Delegate.Remove(webUIDelegate.uISetFrame, value);
+		}
+	}
+
+	public event EventHandler<WebViewResizableEventArgs> UISetResizable
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uISetResizable = (EventHandler<WebViewResizableEventArgs>)Delegate.Combine(webUIDelegate.uISetResizable, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uISetResizable = (EventHandler<WebViewResizableEventArgs>)Delegate.Remove(webUIDelegate.uISetResizable, value);
+		}
+	}
+
+	public event EventHandler<WebViewStatusBarEventArgs> UISetStatusBarVisible
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uISetStatusBarVisible = (EventHandler<WebViewStatusBarEventArgs>)Delegate.Combine(webUIDelegate.uISetStatusBarVisible, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uISetStatusBarVisible = (EventHandler<WebViewStatusBarEventArgs>)Delegate.Remove(webUIDelegate.uISetStatusBarVisible, value);
+		}
+	}
+
+	public event EventHandler<WebViewStatusTextEventArgs> UISetStatusText
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uISetStatusText = (EventHandler<WebViewStatusTextEventArgs>)Delegate.Combine(webUIDelegate.uISetStatusText, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uISetStatusText = (EventHandler<WebViewStatusTextEventArgs>)Delegate.Remove(webUIDelegate.uISetStatusText, value);
+		}
+	}
+
+	public event EventHandler<WebViewToolBarsEventArgs> UISetToolbarsVisible
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uISetToolbarsVisible = (EventHandler<WebViewToolBarsEventArgs>)Delegate.Combine(webUIDelegate.uISetToolbarsVisible, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uISetToolbarsVisible = (EventHandler<WebViewToolBarsEventArgs>)Delegate.Remove(webUIDelegate.uISetToolbarsVisible, value);
+		}
+	}
+
+	public event EventHandler UIShow
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIShow = (EventHandler)Delegate.Combine(webUIDelegate.uIShow, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIShow = (EventHandler)Delegate.Remove(webUIDelegate.uIShow, value);
+		}
+	}
+
+	public event EventHandler UIUnfocus
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIUnfocus = (EventHandler)Delegate.Combine(webUIDelegate.uIUnfocus, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIUnfocus = (EventHandler)Delegate.Remove(webUIDelegate.uIUnfocus, value);
+		}
+	}
+
+	public event EventHandler<WebViewDragEventArgs> UIWillPerformDragDestination
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIWillPerformDragDestination = (EventHandler<WebViewDragEventArgs>)Delegate.Combine(webUIDelegate.uIWillPerformDragDestination, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIWillPerformDragDestination = (EventHandler<WebViewDragEventArgs>)Delegate.Remove(webUIDelegate.uIWillPerformDragDestination, value);
+		}
+	}
+
+	public event EventHandler<WebViewPerformDragEventArgs> UIWillPerformDragSource
+	{
+		add
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIWillPerformDragSource = (EventHandler<WebViewPerformDragEventArgs>)Delegate.Combine(webUIDelegate.uIWillPerformDragSource, value);
+		}
+		remove
+		{
+			_WebUIDelegate webUIDelegate = EnsureWebUIDelegate();
+			webUIDelegate.uIWillPerformDragSource = (EventHandler<WebViewPerformDragEventArgs>)Delegate.Remove(webUIDelegate.uIWillPerformDragSource, value);
 		}
 	}
 
@@ -2967,49 +3621,234 @@ public class WebView : NSView
 		Messaging.void_objc_msgSend(decisionToken.Handle, selIgnore);
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public WebView()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public WebView(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public WebView(NSObjectFlag t)
+	protected WebView(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public WebView(IntPtr handle)
+	protected internal WebView(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("initWithFrame:frameName:groupName:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public WebView(CGRect frame, string? frameName, string? groupName)
+		: base(NSObjectFlag.Empty)
+	{
+		IntPtr arg = NSString.CreateNative(frameName);
+		IntPtr arg2 = NSString.CreateNative(groupName);
+		if (base.IsDirectBinding)
+		{
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect_IntPtr_IntPtr(base.Handle, selInitWithFrame_FrameName_GroupName_Handle, frame, arg, arg2), "initWithFrame:frameName:groupName:");
+		}
+		else
+		{
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect_IntPtr_IntPtr(base.SuperHandle, selInitWithFrame_FrameName_GroupName_Handle, frame, arg, arg2), "initWithFrame:frameName:groupName:");
+		}
+		NSString.ReleaseNative(arg);
+		NSString.ReleaseNative(arg2);
+	}
+
+	[Export("initWithFrame:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public WebView(CGRect frame)
+		: base(NSObjectFlag.Empty)
+	{
+		if (base.IsDirectBinding)
+		{
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frame), "initWithFrame:");
+		}
+		else
+		{
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frame), "initWithFrame:");
+		}
+	}
+
+	[Export("alignCenter:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AlignCenter(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAlignCenter_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAlignCenter_Handle, sender.Handle);
+		}
+	}
+
+	[Export("alignJustified:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AlignJustified(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAlignJustified_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAlignJustified_Handle, sender.Handle);
+		}
+	}
+
+	[Export("alignLeft:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AlignLeft(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAlignLeft_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAlignLeft_Handle, sender.Handle);
+		}
+	}
+
+	[Export("alignRight:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void AlignRight(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAlignRight_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAlignRight_Handle, sender.Handle);
+		}
+	}
+
+	[Export("applyStyle:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ApplyStyle(DomCssStyleDeclaration style)
+	{
+		if (style == null)
+		{
+			throw new ArgumentNullException("style");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selApplyStyle_Handle, style.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selApplyStyle_Handle, style.Handle);
+		}
+	}
+
+	[Export("canGoBack")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool CanGoBack()
+	{
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selCanGoBackHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCanGoBackHandle);
+	}
+
+	[Export("canGoForward")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool CanGoForward()
+	{
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selCanGoForwardHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCanGoForwardHandle);
+	}
+
+	[Export("canMakeTextLarger")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool CanMakeTextLarger()
+	{
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selCanMakeTextLargerHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCanMakeTextLargerHandle);
+	}
+
+	[Export("canMakeTextSmaller")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool CanMakeTextSmaller()
+	{
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selCanMakeTextSmallerHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCanMakeTextSmallerHandle);
+	}
+
+	[Export("canMakeTextStandardSize")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool CanMakeTextStandardSize()
+	{
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selCanMakeTextStandardSizeHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCanMakeTextStandardSizeHandle);
+	}
+
 	[Export("canShowMIMEType:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static bool CanShowMimeType(string MimeType)
 	{
 		if (MimeType == null)
@@ -3023,6 +3862,7 @@ public class WebView : NSView
 	}
 
 	[Export("canShowMIMETypeAsHTML:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static bool CanShowMimeTypeAsHtml(string mimeType)
 	{
 		if (mimeType == null)
@@ -3035,27 +3875,473 @@ public class WebView : NSView
 		return result;
 	}
 
-	[Export("URLFromPasteboard:")]
-	public static NSUrl UrlFromPasteboard(NSPasteboard pasteboard)
+	[Export("changeAttributes:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ChangeAttributes(NSObject sender)
 	{
-		if (pasteboard == null)
+		if (sender == null)
 		{
-			throw new ArgumentNullException("pasteboard");
+			throw new ArgumentNullException("sender");
 		}
-		return (NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selURLFromPasteboard_Handle, pasteboard.Handle));
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selChangeAttributes_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selChangeAttributes_Handle, sender.Handle);
+		}
 	}
 
-	[Export("URLTitleFromPasteboard:")]
-	public static string UrlTitleFromPasteboard(NSPasteboard pasteboard)
+	[Export("changeColor:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ChangeColor(NSObject sender)
 	{
-		if (pasteboard == null)
+		if (sender == null)
 		{
-			throw new ArgumentNullException("pasteboard");
+			throw new ArgumentNullException("sender");
 		}
-		return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selURLTitleFromPasteboard_Handle, pasteboard.Handle));
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selChangeColor_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selChangeColor_Handle, sender.Handle);
+		}
+	}
+
+	[Export("changeDocumentBackgroundColor:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ChangeDocumentBackgroundColor(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selChangeDocumentBackgroundColor_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selChangeDocumentBackgroundColor_Handle, sender.Handle);
+		}
+	}
+
+	[Export("changeFont:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ChangeFont(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selChangeFont_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selChangeFont_Handle, sender.Handle);
+		}
+	}
+
+	[Export("checkSpelling:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void CheckSpelling(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selCheckSpelling_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selCheckSpelling_Handle, sender.Handle);
+		}
+	}
+
+	[Export("close")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Close()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selCloseHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selCloseHandle);
+		}
+	}
+
+	[Export("copyFont:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void CopyFont(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selCopyFont_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyFont_Handle, sender.Handle);
+		}
+	}
+
+	[Export("cut:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Cut(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selCut_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selCut_Handle, sender.Handle);
+		}
+	}
+
+	[Export("delete:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Delete(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selDelete_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selDelete_Handle, sender.Handle);
+		}
+	}
+
+	[Export("deleteSelection")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void DeleteSelection()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selDeleteSelectionHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDeleteSelectionHandle);
+		}
+	}
+
+	[Export("elementAtPoint:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary ElementAtPoint(CGPoint point)
+	{
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend_CGPoint(base.Handle, selElementAtPoint_Handle, point));
+		}
+		return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper_CGPoint(base.SuperHandle, selElementAtPoint_Handle, point));
+	}
+
+	[Export("goBack")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool GoBack()
+	{
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selGoBackHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selGoBackHandle);
+	}
+
+	[Export("goForward")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool GoForward()
+	{
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selGoForwardHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selGoForwardHandle);
+	}
+
+	[Export("goToBackForwardItem:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool GoToBackForwardItem(WebHistoryItem item)
+	{
+		if (item == null)
+		{
+			throw new ArgumentNullException("item");
+		}
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selGoToBackForwardItem_Handle, item.Handle);
+		}
+		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selGoToBackForwardItem_Handle, item.Handle);
+	}
+
+	[Export("makeTextLarger:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void MakeTextLarger(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMakeTextLarger_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMakeTextLarger_Handle, sender.Handle);
+		}
+	}
+
+	[Export("makeTextSmaller:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void MakeTextSmaller(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMakeTextSmaller_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMakeTextSmaller_Handle, sender.Handle);
+		}
+	}
+
+	[Export("makeTextStandardSize:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void MakeTextStandardSize(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMakeTextStandardSize_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMakeTextStandardSize_Handle, sender.Handle);
+		}
+	}
+
+	[Export("moveDragCaretToPoint:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void MoveDragCaretToPoint(CGPoint point)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGPoint(base.Handle, selMoveDragCaretToPoint_Handle, point);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selMoveDragCaretToPoint_Handle, point);
+		}
+	}
+
+	[Export("moveToBeginningOfSentence:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void MoveToBeginningOfSentence(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMoveToBeginningOfSentence_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMoveToBeginningOfSentence_Handle, sender.Handle);
+		}
+	}
+
+	[Export("moveToBeginningOfSentenceAndModifySelection:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void MoveToBeginningOfSentenceAndModifySelection(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMoveToBeginningOfSentenceAndModifySelection_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMoveToBeginningOfSentenceAndModifySelection_Handle, sender.Handle);
+		}
+	}
+
+	[Export("moveToEndOfSentence:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void MoveToEndOfSentence(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMoveToEndOfSentence_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMoveToEndOfSentence_Handle, sender.Handle);
+		}
+	}
+
+	[Export("moveToEndOfSentenceAndModifySelection:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void MoveToEndOfSentenceAndModifySelection(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMoveToEndOfSentenceAndModifySelection_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMoveToEndOfSentenceAndModifySelection_Handle, sender.Handle);
+		}
+	}
+
+	[Export("paste:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Paste(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selPaste_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selPaste_Handle, sender.Handle);
+		}
+	}
+
+	[Export("pasteAsPlainText:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void PasteAsPlainText(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selPasteAsPlainText_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selPasteAsPlainText_Handle, sender.Handle);
+		}
+	}
+
+	[Export("pasteAsRichText:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void PasteAsRichText(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selPasteAsRichText_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selPasteAsRichText_Handle, sender.Handle);
+		}
+	}
+
+	[Export("pasteFont:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void PasteFont(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selPasteFont_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selPasteFont_Handle, sender.Handle);
+		}
+	}
+
+	[Export("pasteboardTypesForElement:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject[] PasteboardTypesForElement(NSDictionary element)
+	{
+		if (element == null)
+		{
+			throw new ArgumentNullException("element");
+		}
+		if (base.IsDirectBinding)
+		{
+			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selPasteboardTypesForElement_Handle, element.Handle));
+		}
+		return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selPasteboardTypesForElement_Handle, element.Handle));
+	}
+
+	[Export("performFindPanelAction:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void PerformFindPanelAction(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selPerformFindPanelAction_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selPerformFindPanelAction_Handle, sender.Handle);
+		}
 	}
 
 	[Export("registerURLSchemeAsLocal:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static void RegisterUrlSchemeAsLocal(string scheme)
 	{
 		if (scheme == null)
@@ -3067,133 +4353,8 @@ public class WebView : NSView
 		NSString.ReleaseNative(arg);
 	}
 
-	[Export("initWithFrame:frameName:groupName:")]
-	public WebView(CGRect frame, string frameName, string groupName)
-		: base(NSObjectFlag.Empty)
-	{
-		if (frameName == null)
-		{
-			throw new ArgumentNullException("frameName");
-		}
-		if (groupName == null)
-		{
-			throw new ArgumentNullException("groupName");
-		}
-		IntPtr arg = NSString.CreateNative(frameName);
-		IntPtr arg2 = NSString.CreateNative(groupName);
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_CGRect_IntPtr_IntPtr(base.Handle, selInitWithFrameFrameNameGroupName_Handle, frame, arg, arg2);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CGRect_IntPtr_IntPtr(base.SuperHandle, selInitWithFrameFrameNameGroupName_Handle, frame, arg, arg2);
-		}
-		NSString.ReleaseNative(arg);
-		NSString.ReleaseNative(arg2);
-	}
-
-	[Export("close")]
-	public virtual void Close()
-	{
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selCloseHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selCloseHandle);
-		}
-	}
-
-	[Export("setMaintainsBackForwardList:")]
-	public virtual void SetMaintainsBackForwardList(bool flag)
-	{
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_bool(base.Handle, selSetMaintainsBackForwardList_Handle, flag);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetMaintainsBackForwardList_Handle, flag);
-		}
-	}
-
-	[Export("goBack")]
-	public virtual bool GoBack()
-	{
-		if (IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selGoBackHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selGoBackHandle);
-	}
-
-	[Export("goForward")]
-	public virtual bool GoForward()
-	{
-		if (IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selGoForwardHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selGoForwardHandle);
-	}
-
-	[Export("goToBackForwardItem:")]
-	public virtual bool GoToBackForwardItem(WebHistoryItem item)
-	{
-		if (item == null)
-		{
-			throw new ArgumentNullException("item");
-		}
-		if (IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selGoToBackForwardItem_Handle, item.Handle);
-		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selGoToBackForwardItem_Handle, item.Handle);
-	}
-
-	[Export("userAgentForURL:")]
-	public virtual string UserAgentForUrl(NSUrl url)
-	{
-		if (url == null)
-		{
-			throw new ArgumentNullException("url");
-		}
-		if (IsDirectBinding)
-		{
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selUserAgentForURL_Handle, url.Handle));
-		}
-		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selUserAgentForURL_Handle, url.Handle));
-	}
-
-	[Export("stringByEvaluatingJavaScriptFromString:")]
-	public virtual string StringByEvaluatingJavaScriptFromString(string script)
-	{
-		if (script == null)
-		{
-			throw new ArgumentNullException("script");
-		}
-		IntPtr arg = NSString.CreateNative(script);
-		string result = ((!IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selStringByEvaluatingJavaScriptFromString_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selStringByEvaluatingJavaScriptFromString_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("searchFor:direction:caseSensitive:wrap:")]
-	public virtual bool Search(string forString, bool forward, bool caseSensitive, bool wrap)
-	{
-		if (forString == null)
-		{
-			throw new ArgumentNullException("forString");
-		}
-		IntPtr arg = NSString.CreateNative(forString);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_bool_bool_bool(base.SuperHandle, selSearchForDirectionCaseSensitiveWrap_Handle, arg, forward, caseSensitive, wrap) : Messaging.bool_objc_msgSend_IntPtr_bool_bool_bool(base.Handle, selSearchForDirectionCaseSensitiveWrap_Handle, arg, forward, caseSensitive, wrap));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
 	[Export("registerViewClass:representationClass:forMIMEType:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static void RegisterViewClass(Class viewClass, Class representationClass, string mimeType)
 	{
 		if (viewClass == null)
@@ -3209,58 +4370,331 @@ public class WebView : NSView
 			throw new ArgumentNullException("mimeType");
 		}
 		IntPtr arg = NSString.CreateNative(mimeType);
-		Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selRegisterViewClassRepresentationClassForMIMEType_Handle, viewClass.Handle, representationClass.Handle, arg);
+		Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selRegisterViewClass_RepresentationClass_ForMIMEType_Handle, viewClass.Handle, representationClass.Handle, arg);
 		NSString.ReleaseNative(arg);
 	}
 
-	[Export("elementAtPoint:")]
-	public virtual NSDictionary ElementAtPoint(CGPoint point)
+	[Export("reload:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Reload(NSObject sender)
 	{
-		if (IsDirectBinding)
+		if (sender == null)
 		{
-			return (NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_CGPoint(base.Handle, selElementAtPoint_Handle, point));
+			throw new ArgumentNullException("sender");
 		}
-		return (NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_CGPoint(base.SuperHandle, selElementAtPoint_Handle, point));
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selReload_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selReload_Handle, sender.Handle);
+		}
 	}
 
-	[Export("writeSelectionWithPasteboardTypes:toPasteboard:")]
-	public virtual void WriteSelection(NSObject[] types, NSPasteboard pasteboard)
+	[Export("reloadFromOrigin:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ReloadFromOrigin(NSObject sender)
 	{
-		if (types == null)
+		if (sender == null)
 		{
-			throw new ArgumentNullException("types");
+			throw new ArgumentNullException("sender");
 		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selReloadFromOrigin_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selReloadFromOrigin_Handle, sender.Handle);
+		}
+	}
+
+	[Export("removeDragCaret")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void RemoveDragCaret()
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selRemoveDragCaretHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRemoveDragCaretHandle);
+		}
+	}
+
+	[Export("replaceSelectionWithArchive:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ReplaceSelectionWithArchive(WebArchive archive)
+	{
+		if (archive == null)
+		{
+			throw new ArgumentNullException("archive");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selReplaceSelectionWithArchive_Handle, archive.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selReplaceSelectionWithArchive_Handle, archive.Handle);
+		}
+	}
+
+	[Export("replaceSelectionWithMarkupString:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ReplaceSelectionWithMarkupString(string markupString)
+	{
+		if (markupString == null)
+		{
+			throw new ArgumentNullException("markupString");
+		}
+		IntPtr arg = NSString.CreateNative(markupString);
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selReplaceSelectionWithMarkupString_Handle, arg);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selReplaceSelectionWithMarkupString_Handle, arg);
+		}
+		NSString.ReleaseNative(arg);
+	}
+
+	[Export("searchFor:direction:caseSensitive:wrap:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool Search(string forString, bool forward, bool caseSensitive, bool wrap)
+	{
+		if (forString == null)
+		{
+			throw new ArgumentNullException("forString");
+		}
+		IntPtr arg = NSString.CreateNative(forString);
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_bool_bool_bool(base.SuperHandle, selSearchFor_Direction_CaseSensitive_Wrap_Handle, arg, forward, caseSensitive, wrap) : Messaging.bool_objc_msgSend_IntPtr_bool_bool_bool(base.Handle, selSearchFor_Direction_CaseSensitive_Wrap_Handle, arg, forward, caseSensitive, wrap));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("selectSentence:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SelectSentence(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSelectSentence_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSelectSentence_Handle, sender.Handle);
+		}
+	}
+
+	[Export("setMaintainsBackForwardList:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SetMaintainsBackForwardList(bool flag)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_bool(base.Handle, selSetMaintainsBackForwardList_Handle, flag);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetMaintainsBackForwardList_Handle, flag);
+		}
+	}
+
+	[Export("setSelectedDOMRange:affinity:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void SetSelectedDomRange(DomRange? range, NSSelectionAffinity selectionAffinity)
+	{
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_UInt64(base.Handle, selSetSelectedDOMRange_Affinity_Handle, range?.Handle ?? IntPtr.Zero, (ulong)selectionAffinity);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selSetSelectedDOMRange_Affinity_Handle, range?.Handle ?? IntPtr.Zero, (ulong)selectionAffinity);
+		}
+	}
+
+	[Export("showGuessPanel:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ShowGuessPanel(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selShowGuessPanel_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selShowGuessPanel_Handle, sender.Handle);
+		}
+	}
+
+	[Export("startSpeaking:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void StartSpeaking(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selStartSpeaking_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selStartSpeaking_Handle, sender.Handle);
+		}
+	}
+
+	[Export("stopSpeaking:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void StopSpeaking(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selStopSpeaking_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selStopSpeaking_Handle, sender.Handle);
+		}
+	}
+
+	[Export("stringByEvaluatingJavaScriptFromString:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string StringByEvaluatingJavaScriptFromString(string script)
+	{
+		if (script == null)
+		{
+			throw new ArgumentNullException("script");
+		}
+		IntPtr arg = NSString.CreateNative(script);
+		string result = ((!base.IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selStringByEvaluatingJavaScriptFromString_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selStringByEvaluatingJavaScriptFromString_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("styleDeclarationWithText:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomCssStyleDeclaration StyleDeclarationWithText(string text)
+	{
+		if (text == null)
+		{
+			throw new ArgumentNullException("text");
+		}
+		IntPtr arg = NSString.CreateNative(text);
+		DomCssStyleDeclaration result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomCssStyleDeclaration>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selStyleDeclarationWithText_Handle, arg)) : Runtime.GetNSObject<DomCssStyleDeclaration>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selStyleDeclarationWithText_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("toggleContinuousSpellChecking:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ToggleContinuousSpellChecking(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selToggleContinuousSpellChecking_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selToggleContinuousSpellChecking_Handle, sender.Handle);
+		}
+	}
+
+	[Export("toggleSmartInsertDelete:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void ToggleSmartInsertDelete(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selToggleSmartInsertDelete_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selToggleSmartInsertDelete_Handle, sender.Handle);
+		}
+	}
+
+	[Export("URLFromPasteboard:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSUrl UrlFromPasteboard(NSPasteboard pasteboard)
+	{
 		if (pasteboard == null)
 		{
 			throw new ArgumentNullException("pasteboard");
 		}
-		NSArray nSArray = NSArray.FromNSObjects(types);
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selWriteSelectionWithPasteboardTypesToPasteboard_Handle, nSArray.Handle, pasteboard.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selWriteSelectionWithPasteboardTypesToPasteboard_Handle, nSArray.Handle, pasteboard.Handle);
-		}
-		nSArray.Dispose();
+		return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selURLFromPasteboard_Handle, pasteboard.Handle));
 	}
 
-	[Export("pasteboardTypesForElement:")]
-	public virtual NSObject[] PasteboardTypesForElement(NSDictionary element)
+	[Export("URLTitleFromPasteboard:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static string UrlTitleFromPasteboard(NSPasteboard pasteboard)
 	{
-		if (element == null)
+		if (pasteboard == null)
 		{
-			throw new ArgumentNullException("element");
+			throw new ArgumentNullException("pasteboard");
 		}
-		if (IsDirectBinding)
+		return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selURLTitleFromPasteboard_Handle, pasteboard.Handle));
+	}
+
+	[Export("userAgentForURL:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string UserAgentForUrl(NSUrl url)
+	{
+		if (url == null)
 		{
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selPasteboardTypesForElement_Handle, element.Handle));
+			throw new ArgumentNullException("url");
 		}
-		return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selPasteboardTypesForElement_Handle, element.Handle));
+		if (base.IsDirectBinding)
+		{
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selUserAgentForURL_Handle, url.Handle));
+		}
+		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selUserAgentForURL_Handle, url.Handle));
+	}
+
+	[Export("validateUserInterfaceItem:")]
+	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool ValidateUserInterfaceItem(INSValidatedUserInterfaceItem item)
+	{
+		if (item == null)
+		{
+			throw new ArgumentNullException("item");
+		}
+		if (base.IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selValidateUserInterfaceItem_Handle, item.Handle);
+		}
+		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selValidateUserInterfaceItem_Handle, item.Handle);
 	}
 
 	[Export("writeElement:withPasteboardTypes:toPasteboard:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void WriteElement(NSDictionary element, NSObject[] pasteboardTypes, NSPasteboard toPasteboard)
 	{
 		if (element == null)
@@ -3276,789 +4710,148 @@ public class WebView : NSView
 			throw new ArgumentNullException("toPasteboard");
 		}
 		NSArray nSArray = NSArray.FromNSObjects(pasteboardTypes);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selWriteElementWithPasteboardTypesToPasteboard_Handle, element.Handle, nSArray.Handle, toPasteboard.Handle);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selWriteElement_WithPasteboardTypes_ToPasteboard_Handle, element.Handle, nSArray.Handle, toPasteboard.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selWriteElementWithPasteboardTypesToPasteboard_Handle, element.Handle, nSArray.Handle, toPasteboard.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selWriteElement_WithPasteboardTypes_ToPasteboard_Handle, element.Handle, nSArray.Handle, toPasteboard.Handle);
 		}
 		nSArray.Dispose();
 	}
 
-	[Export("moveDragCaretToPoint:")]
-	public virtual void MoveDragCaretToPoint(CGPoint point)
+	[Export("writeSelectionWithPasteboardTypes:toPasteboard:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void WriteSelection(NSObject[] types, NSPasteboard pasteboard)
 	{
-		if (IsDirectBinding)
+		if (types == null)
 		{
-			Messaging.void_objc_msgSend_CGPoint(base.Handle, selMoveDragCaretToPoint_Handle, point);
+			throw new ArgumentNullException("types");
+		}
+		if (pasteboard == null)
+		{
+			throw new ArgumentNullException("pasteboard");
+		}
+		NSArray nSArray = NSArray.FromNSObjects(types);
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selWriteSelectionWithPasteboardTypes_ToPasteboard_Handle, nSArray.Handle, pasteboard.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selMoveDragCaretToPoint_Handle, point);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selWriteSelectionWithPasteboardTypes_ToPasteboard_Handle, nSArray.Handle, pasteboard.Handle);
 		}
+		nSArray.Dispose();
 	}
 
-	[Export("removeDragCaret")]
-	public virtual void RemoveDragCaret()
+	internal virtual _WebFrameLoadDelegate CreateInternalEventFrameLoadDelegateType()
 	{
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selRemoveDragCaretHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRemoveDragCaretHandle);
-		}
+		return new _WebFrameLoadDelegate();
 	}
 
-	[Export("reload:")]
-	public virtual void Reload(NSObject sender)
+	internal _WebFrameLoadDelegate EnsureWebFrameLoadDelegate()
 	{
-		if (sender == null)
+		if (WeakFrameLoadDelegate != null)
 		{
-			throw new ArgumentNullException("sender");
+			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakFrameLoadDelegate, GetInternalEventFrameLoadDelegateType);
 		}
-		if (IsDirectBinding)
+		_WebFrameLoadDelegate webFrameLoadDelegate = FrameLoadDelegate as _WebFrameLoadDelegate;
+		if (webFrameLoadDelegate == null)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selReload_Handle, sender.Handle);
+			webFrameLoadDelegate = (_WebFrameLoadDelegate)(FrameLoadDelegate = CreateInternalEventFrameLoadDelegateType());
 		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selReload_Handle, sender.Handle);
-		}
+		return webFrameLoadDelegate;
 	}
 
-	[Export("reloadFromOrigin:")]
-	public virtual void ReloadFromOrigin(NSObject sender)
+	internal virtual _WebDownloadDelegate CreateInternalEventDownloadDelegateType()
 	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selReloadFromOrigin_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selReloadFromOrigin_Handle, sender.Handle);
-		}
+		return new _WebDownloadDelegate();
 	}
 
-	[Export("canGoBack")]
-	public virtual bool CanGoBack()
+	internal _WebDownloadDelegate EnsureWebDownloadDelegate()
 	{
-		if (IsDirectBinding)
+		if (WeakDownloadDelegate != null)
 		{
-			return Messaging.bool_objc_msgSend(base.Handle, selCanGoBackHandle);
+			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakDownloadDelegate, GetInternalEventDownloadDelegateType);
 		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCanGoBackHandle);
+		_WebDownloadDelegate webDownloadDelegate = DownloadDelegate as _WebDownloadDelegate;
+		if (webDownloadDelegate == null)
+		{
+			webDownloadDelegate = (_WebDownloadDelegate)(DownloadDelegate = CreateInternalEventDownloadDelegateType());
+		}
+		return webDownloadDelegate;
 	}
 
-	[Export("canGoForward")]
-	public virtual bool CanGoForward()
+	internal virtual _WebResourceLoadDelegate CreateInternalEventResourceLoadDelegateType()
 	{
-		if (IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selCanGoForwardHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCanGoForwardHandle);
+		return new _WebResourceLoadDelegate();
 	}
 
-	[Export("canMakeTextLarger")]
-	public virtual bool CanMakeTextLarger()
+	internal _WebResourceLoadDelegate EnsureWebResourceLoadDelegate()
 	{
-		if (IsDirectBinding)
+		if (WeakResourceLoadDelegate != null)
 		{
-			return Messaging.bool_objc_msgSend(base.Handle, selCanMakeTextLargerHandle);
+			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakResourceLoadDelegate, GetInternalEventResourceLoadDelegateType);
 		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCanMakeTextLargerHandle);
+		_WebResourceLoadDelegate webResourceLoadDelegate = ResourceLoadDelegate as _WebResourceLoadDelegate;
+		if (webResourceLoadDelegate == null)
+		{
+			webResourceLoadDelegate = (_WebResourceLoadDelegate)(ResourceLoadDelegate = CreateInternalEventResourceLoadDelegateType());
+		}
+		return webResourceLoadDelegate;
 	}
 
-	[Export("makeTextLarger:")]
-	public virtual void MakeTextLarger(NSObject sender)
+	internal virtual _WebUIDelegate CreateInternalEventUIDelegateType()
 	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMakeTextLarger_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMakeTextLarger_Handle, sender.Handle);
-		}
+		return new _WebUIDelegate();
 	}
 
-	[Export("canMakeTextSmaller")]
-	public virtual bool CanMakeTextSmaller()
+	internal _WebUIDelegate EnsureWebUIDelegate()
 	{
-		if (IsDirectBinding)
+		if (WeakUIDelegate != null)
 		{
-			return Messaging.bool_objc_msgSend(base.Handle, selCanMakeTextSmallerHandle);
+			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakUIDelegate, GetInternalEventUIDelegateType);
 		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCanMakeTextSmallerHandle);
+		_WebUIDelegate webUIDelegate = UIDelegate as _WebUIDelegate;
+		if (webUIDelegate == null)
+		{
+			webUIDelegate = (_WebUIDelegate)(UIDelegate = CreateInternalEventUIDelegateType());
+		}
+		return webUIDelegate;
 	}
 
-	[Export("makeTextSmaller:")]
-	public virtual void MakeTextSmaller(NSObject sender)
+	internal virtual _WebPolicyDelegate CreateInternalEventPolicyDelegateType()
 	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMakeTextSmaller_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMakeTextSmaller_Handle, sender.Handle);
-		}
+		return new _WebPolicyDelegate();
 	}
 
-	[Export("canMakeTextStandardSize")]
-	public virtual bool CanMakeTextStandardSize()
+	internal _WebPolicyDelegate EnsureWebPolicyDelegate()
 	{
-		if (IsDirectBinding)
+		if (WeakPolicyDelegate != null)
 		{
-			return Messaging.bool_objc_msgSend(base.Handle, selCanMakeTextStandardSizeHandle);
+			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakPolicyDelegate, GetInternalEventPolicyDelegateType);
 		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCanMakeTextStandardSizeHandle);
+		_WebPolicyDelegate webPolicyDelegate = PolicyDelegate as _WebPolicyDelegate;
+		if (webPolicyDelegate == null)
+		{
+			webPolicyDelegate = (_WebPolicyDelegate)(PolicyDelegate = CreateInternalEventPolicyDelegateType());
+		}
+		return webPolicyDelegate;
 	}
 
-	[Export("makeTextStandardSize:")]
-	public virtual void MakeTextStandardSize(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMakeTextStandardSize_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMakeTextStandardSize_Handle, sender.Handle);
-		}
-	}
-
-	[Export("toggleContinuousSpellChecking:")]
-	public virtual void ToggleContinuousSpellChecking(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selToggleContinuousSpellChecking_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selToggleContinuousSpellChecking_Handle, sender.Handle);
-		}
-	}
-
-	[Export("toggleSmartInsertDelete:")]
-	public virtual void ToggleSmartInsertDelete(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selToggleSmartInsertDelete_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selToggleSmartInsertDelete_Handle, sender.Handle);
-		}
-	}
-
-	[Export("styleDeclarationWithText:")]
-	public virtual DomCssStyleDeclaration StyleDeclarationWithText(string text)
-	{
-		if (text == null)
-		{
-			throw new ArgumentNullException("text");
-		}
-		IntPtr arg = NSString.CreateNative(text);
-		DomCssStyleDeclaration result = ((!IsDirectBinding) ? ((DomCssStyleDeclaration)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selStyleDeclarationWithText_Handle, arg))) : ((DomCssStyleDeclaration)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selStyleDeclarationWithText_Handle, arg))));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("replaceSelectionWithMarkupString:")]
-	public virtual void ReplaceSelectionWithMarkupString(string markupString)
-	{
-		if (markupString == null)
-		{
-			throw new ArgumentNullException("markupString");
-		}
-		IntPtr arg = NSString.CreateNative(markupString);
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selReplaceSelectionWithMarkupString_Handle, arg);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selReplaceSelectionWithMarkupString_Handle, arg);
-		}
-		NSString.ReleaseNative(arg);
-	}
-
-	[Export("replaceSelectionWithArchive:")]
-	public virtual void ReplaceSelectionWithArchive(WebArchive archive)
-	{
-		if (archive == null)
-		{
-			throw new ArgumentNullException("archive");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selReplaceSelectionWithArchive_Handle, archive.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selReplaceSelectionWithArchive_Handle, archive.Handle);
-		}
-	}
-
-	[Export("deleteSelection")]
-	public virtual void DeleteSelection()
-	{
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selDeleteSelectionHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDeleteSelectionHandle);
-		}
-	}
-
-	[Export("applyStyle:")]
-	public virtual void ApplyStyle(DomCssStyleDeclaration style)
-	{
-		if (style == null)
-		{
-			throw new ArgumentNullException("style");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selApplyStyle_Handle, style.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selApplyStyle_Handle, style.Handle);
-		}
-	}
-
-	[Export("cut:")]
-	public virtual void Cut(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selCut_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selCut_Handle, sender.Handle);
-		}
-	}
-
-	[Export("paste:")]
-	public virtual void Paste(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selPaste_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selPaste_Handle, sender.Handle);
-		}
-	}
-
-	[Export("copyFont:")]
-	public virtual void CopyFont(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selCopyFont_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyFont_Handle, sender.Handle);
-		}
-	}
-
-	[Export("pasteFont:")]
-	public virtual void PasteFont(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selPasteFont_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selPasteFont_Handle, sender.Handle);
-		}
-	}
-
-	[Export("delete:")]
-	public virtual void Delete(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selDelete_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selDelete_Handle, sender.Handle);
-		}
-	}
-
-	[Export("pasteAsPlainText:")]
-	public virtual void PasteAsPlainText(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selPasteAsPlainText_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selPasteAsPlainText_Handle, sender.Handle);
-		}
-	}
-
-	[Export("pasteAsRichText:")]
-	public virtual void PasteAsRichText(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selPasteAsRichText_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selPasteAsRichText_Handle, sender.Handle);
-		}
-	}
-
-	[Export("changeFont:")]
-	public virtual void ChangeFont(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selChangeFont_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selChangeFont_Handle, sender.Handle);
-		}
-	}
-
-	[Export("changeAttributes:")]
-	public virtual void ChangeAttributes(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selChangeAttributes_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selChangeAttributes_Handle, sender.Handle);
-		}
-	}
-
-	[Export("changeDocumentBackgroundColor:")]
-	public virtual void ChangeDocumentBackgroundColor(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selChangeDocumentBackgroundColor_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selChangeDocumentBackgroundColor_Handle, sender.Handle);
-		}
-	}
-
-	[Export("changeColor:")]
-	public virtual void ChangeColor(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selChangeColor_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selChangeColor_Handle, sender.Handle);
-		}
-	}
-
-	[Export("alignCenter:")]
-	public virtual void AlignCenter(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAlignCenter_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAlignCenter_Handle, sender.Handle);
-		}
-	}
-
-	[Export("alignJustified:")]
-	public virtual void AlignJustified(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAlignJustified_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAlignJustified_Handle, sender.Handle);
-		}
-	}
-
-	[Export("alignLeft:")]
-	public virtual void AlignLeft(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAlignLeft_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAlignLeft_Handle, sender.Handle);
-		}
-	}
-
-	[Export("alignRight:")]
-	public virtual void AlignRight(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAlignRight_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAlignRight_Handle, sender.Handle);
-		}
-	}
-
-	[Export("checkSpelling:")]
-	public virtual void CheckSpelling(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selCheckSpelling_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selCheckSpelling_Handle, sender.Handle);
-		}
-	}
-
-	[Export("showGuessPanel:")]
-	public virtual void ShowGuessPanel(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selShowGuessPanel_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selShowGuessPanel_Handle, sender.Handle);
-		}
-	}
-
-	[Export("performFindPanelAction:")]
-	public virtual void PerformFindPanelAction(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selPerformFindPanelAction_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selPerformFindPanelAction_Handle, sender.Handle);
-		}
-	}
-
-	[Export("startSpeaking:")]
-	public virtual void StartSpeaking(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selStartSpeaking_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selStartSpeaking_Handle, sender.Handle);
-		}
-	}
-
-	[Export("stopSpeaking:")]
-	public virtual void StopSpeaking(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selStopSpeaking_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selStopSpeaking_Handle, sender.Handle);
-		}
-	}
-
-	[Export("moveToBeginningOfSentence:")]
-	public virtual void MoveToBeginningOfSentence(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMoveToBeginningOfSentence_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMoveToBeginningOfSentence_Handle, sender.Handle);
-		}
-	}
-
-	[Export("moveToBeginningOfSentenceAndModifySelection:")]
-	public virtual void MoveToBeginningOfSentenceAndModifySelection(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMoveToBeginningOfSentenceAndModifySelection_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMoveToBeginningOfSentenceAndModifySelection_Handle, sender.Handle);
-		}
-	}
-
-	[Export("moveToEndOfSentence:")]
-	public virtual void MoveToEndOfSentence(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMoveToEndOfSentence_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMoveToEndOfSentence_Handle, sender.Handle);
-		}
-	}
-
-	[Export("moveToEndOfSentenceAndModifySelection:")]
-	public virtual void MoveToEndOfSentenceAndModifySelection(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMoveToEndOfSentenceAndModifySelection_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMoveToEndOfSentenceAndModifySelection_Handle, sender.Handle);
-		}
-	}
-
-	[Export("selectSentence:")]
-	public virtual void SelectSentence(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSelectSentence_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSelectSentence_Handle, sender.Handle);
-		}
-	}
-
-	private _WebFrameLoadDelegate EnsureWebFrameLoadDelegate()
-	{
-		NSObject nSObject = WeakFrameLoadDelegate;
-		if (nSObject == null || !(nSObject is _WebFrameLoadDelegate))
-		{
-			nSObject = (WeakFrameLoadDelegate = new _WebFrameLoadDelegate());
-		}
-		return (_WebFrameLoadDelegate)nSObject;
-	}
-
-	private _WebDownloadDelegate EnsureWebDownloadDelegate()
-	{
-		NSObject nSObject = WeakDownloadDelegate;
-		if (nSObject == null || !(nSObject is _WebDownloadDelegate))
-		{
-			nSObject = (WeakDownloadDelegate = new _WebDownloadDelegate());
-		}
-		return (_WebDownloadDelegate)nSObject;
-	}
-
-	private _WebResourceLoadDelegate EnsureWebResourceLoadDelegate()
-	{
-		NSObject nSObject = WeakResourceLoadDelegate;
-		if (nSObject == null || !(nSObject is _WebResourceLoadDelegate))
-		{
-			nSObject = (WeakResourceLoadDelegate = new _WebResourceLoadDelegate());
-		}
-		return (_WebResourceLoadDelegate)nSObject;
-	}
-
-	private _WebUIDelegate EnsureWebUIDelegate()
-	{
-		NSObject nSObject = WeakUIDelegate;
-		if (nSObject == null || !(nSObject is _WebUIDelegate))
-		{
-			nSObject = (WeakUIDelegate = new _WebUIDelegate());
-		}
-		return (_WebUIDelegate)nSObject;
-	}
-
-	private _WebPolicyDelegate EnsureWebPolicyDelegate()
-	{
-		NSObject nSObject = WeakPolicyDelegate;
-		if (nSObject == null || !(nSObject is _WebPolicyDelegate))
-		{
-			nSObject = (WeakPolicyDelegate = new _WebPolicyDelegate());
-		}
-		return (_WebPolicyDelegate)nSObject;
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
-			__mt_MainFrame_var = null;
-			__mt_SelectedFrame_var = null;
-			__mt_BackForwardList_var = null;
-			__mt_WindowScriptObject_var = null;
-			__mt_PasteboardTypesForSelection_var = null;
-			__mt_MainFrameDocument_var = null;
-			__mt_MainFrameIcon_var = null;
-			__mt_WeakResourceLoadDelegate_var = null;
+			__mt_EditingDelegate_var = null;
 			__mt_WeakDownloadDelegate_var = null;
 			__mt_WeakFrameLoadDelegate_var = null;
-			__mt_WeakUIDelegate_var = null;
 			__mt_WeakPolicyDelegate_var = null;
-			__mt_Preferences_var = null;
-			__mt_HostWindow_var = null;
-			__mt_SelectedDomRange_var = null;
-			__mt_UndoManager_var = null;
-			__mt_TypingStyle_var = null;
-			__mt_EditingDelegate_var = null;
+			__mt_WeakResourceLoadDelegate_var = null;
+			__mt_WeakUIDelegate_var = null;
 		}
 	}
 }

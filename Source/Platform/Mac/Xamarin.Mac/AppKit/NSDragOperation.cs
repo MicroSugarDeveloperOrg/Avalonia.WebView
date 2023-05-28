@@ -1,8 +1,10 @@
 using System;
+using ObjCRuntime;
 
 namespace AppKit;
 
 [Flags]
+[Native]
 public enum NSDragOperation : ulong
 {
 	None = 0uL,
@@ -13,5 +15,5 @@ public enum NSDragOperation : ulong
 	AllObsolete = 0xFuL,
 	Move = 0x10uL,
 	Delete = 0x20uL,
-	All = ulong.MaxValue
+	All = 0xFFFFFFFFuL
 }

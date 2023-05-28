@@ -6,7 +6,7 @@ internal struct CTParagraphStyleSetting
 {
 	public CTParagraphStyleSpecifier spec;
 
-	public uint valueSize;
+	public nuint valueSize;
 
 	public IntPtr value;
 }

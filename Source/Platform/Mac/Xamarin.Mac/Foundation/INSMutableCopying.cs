@@ -1,4 +1,5 @@
-﻿using ObjCRuntime;
+using System;
+using ObjCRuntime;
 
 namespace Foundation;
 
@@ -6,9 +7,9 @@ namespace Foundation;
 [ProtocolMember(IsRequired = true, IsProperty = false, IsStatic = false, Name = "MutableCopy", Selector = "mutableCopyWithZone:", ReturnType = typeof(NSObject), ParameterType = new Type[] { typeof(NSZone) }, ParameterByRef = new bool[] { false })]
 public interface INSMutableCopying : INativeObject, IDisposable, INSCopying
 {
-    [BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-    [Export("mutableCopyWithZone:")]
-    [Preserve(Conditional = true)]
-    [return: Release]
-    NSObject MutableCopy(NSZone? zone);
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export("mutableCopyWithZone:")]
+	[Preserve(Conditional = true)]
+	[return: Release]
+	NSObject MutableCopy(NSZone? zone);
 }

@@ -1,6 +1,9 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
-public enum NSLineJoinStyle
+[Native]
+public enum NSLineJoinStyle : ulong
 {
 	Miter,
 	Round,

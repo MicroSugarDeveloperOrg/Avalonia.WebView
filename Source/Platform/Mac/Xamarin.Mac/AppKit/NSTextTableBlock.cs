@@ -8,134 +8,157 @@ namespace AppKit;
 [Register("NSTextTableBlock", true)]
 public class NSTextTableBlock : NSTextBlock
 {
-	private static readonly IntPtr selTableHandle = Selector.GetHandle("table");
-
-	private static readonly IntPtr selStartingRowHandle = Selector.GetHandle("startingRow");
-
-	private static readonly IntPtr selRowSpanHandle = Selector.GetHandle("rowSpan");
-
-	private static readonly IntPtr selStartingColumnHandle = Selector.GetHandle("startingColumn");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selColumnSpan = "columnSpan";
 
 	private static readonly IntPtr selColumnSpanHandle = Selector.GetHandle("columnSpan");
 
-	private static readonly IntPtr selInitWithTableStartingRowRowSpanStartingColumnColumnSpan_Handle = Selector.GetHandle("initWithTable:startingRow:rowSpan:startingColumn:columnSpan:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInitWithTable_StartingRow_RowSpan_StartingColumn_ColumnSpan_ = "initWithTable:startingRow:rowSpan:startingColumn:columnSpan:";
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSTextTableBlock");
+	private static readonly IntPtr selInitWithTable_StartingRow_RowSpan_StartingColumn_ColumnSpan_Handle = Selector.GetHandle("initWithTable:startingRow:rowSpan:startingColumn:columnSpan:");
 
-	private object __mt_Table_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRowSpan = "rowSpan";
+
+	private static readonly IntPtr selRowSpanHandle = Selector.GetHandle("rowSpan");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStartingColumn = "startingColumn";
+
+	private static readonly IntPtr selStartingColumnHandle = Selector.GetHandle("startingColumn");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStartingRow = "startingRow";
+
+	private static readonly IntPtr selStartingRowHandle = Selector.GetHandle("startingRow");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTable = "table";
+
+	private static readonly IntPtr selTableHandle = Selector.GetHandle("table");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSTextTableBlock");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint ColumnSpan
+	{
+		[Export("columnSpan")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nint_objc_msgSend(base.Handle, selColumnSpanHandle);
+			}
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selColumnSpanHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint RowSpan
+	{
+		[Export("rowSpan")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nint_objc_msgSend(base.Handle, selRowSpanHandle);
+			}
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selRowSpanHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint StartingColumn
+	{
+		[Export("startingColumn")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nint_objc_msgSend(base.Handle, selStartingColumnHandle);
+			}
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selStartingColumnHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nint StartingRow
+	{
+		[Export("startingRow")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (base.IsDirectBinding)
+			{
+				return Messaging.nint_objc_msgSend(base.Handle, selStartingRowHandle);
+			}
+			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selStartingRowHandle);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSTextTable Table
 	{
 		[Export("table")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSTextTable)(__mt_Table_var = ((!IsDirectBinding) ? ((NSTextTable)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTableHandle))) : ((NSTextTable)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTableHandle)))));
-		}
-	}
-
-	public virtual long StartingRow
-	{
-		[Export("startingRow")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.Int64_objc_msgSend(base.Handle, selStartingRowHandle);
+				return Runtime.GetNSObject<NSTextTable>(Messaging.IntPtr_objc_msgSend(base.Handle, selTableHandle));
 			}
-			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selStartingRowHandle);
+			return Runtime.GetNSObject<NSTextTable>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTableHandle));
 		}
 	}
 
-	public virtual long RowSpan
-	{
-		[Export("rowSpan")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Int64_objc_msgSend(base.Handle, selRowSpanHandle);
-			}
-			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selRowSpanHandle);
-		}
-	}
-
-	public virtual long StartingColumn
-	{
-		[Export("startingColumn")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Int64_objc_msgSend(base.Handle, selStartingColumnHandle);
-			}
-			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selStartingColumnHandle);
-		}
-	}
-
-	public virtual long ColumnSpan
-	{
-		[Export("columnSpan")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (IsDirectBinding)
-			{
-				return Messaging.Int64_objc_msgSend(base.Handle, selColumnSpanHandle);
-			}
-			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selColumnSpanHandle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("init")]
+	[Obsolete("macOS 10.12 does not allow creation via this constructor")]
 	public NSTextTableBlock()
-		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSTextTableBlock(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		NSApplication.EnsureUIThread();
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTextTableBlock(NSObjectFlag t)
+	protected NSTextTableBlock(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSTextTableBlock(IntPtr handle)
+	protected internal NSTextTableBlock(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithTable:startingRow:rowSpan:startingColumn:columnSpan:")]
-	public NSTextTableBlock(NSTextTable table, long row, long rowSpan, long col, long colSpan)
+	[DesignatedInitializer]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public NSTextTableBlock(NSTextTable table, nint row, nint rowSpan, nint col, nint colSpan)
 		: base(NSObjectFlag.Empty)
 	{
 		NSApplication.EnsureUIThread();
@@ -143,22 +166,13 @@ public class NSTextTableBlock : NSTextBlock
 		{
 			throw new ArgumentNullException("table");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_Int64_Int64_Int64_Int64(base.Handle, selInitWithTableStartingRowRowSpanStartingColumnColumnSpan_Handle, table.Handle, row, rowSpan, col, colSpan);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_nint_nint_nint_nint(base.Handle, selInitWithTable_StartingRow_RowSpan_StartingColumn_ColumnSpan_Handle, table.Handle, row, rowSpan, col, colSpan), "initWithTable:startingRow:rowSpan:startingColumn:columnSpan:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_Int64_Int64_Int64_Int64(base.SuperHandle, selInitWithTableStartingRowRowSpanStartingColumnColumnSpan_Handle, table.Handle, row, rowSpan, col, colSpan);
-		}
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_Table_var = null;
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_nint_nint_nint_nint(base.SuperHandle, selInitWithTable_StartingRow_RowSpan_StartingColumn_ColumnSpan_Handle, table.Handle, row, rowSpan, col, colSpan), "initWithTable:startingRow:rowSpan:startingColumn:columnSpan:");
 		}
 	}
 }

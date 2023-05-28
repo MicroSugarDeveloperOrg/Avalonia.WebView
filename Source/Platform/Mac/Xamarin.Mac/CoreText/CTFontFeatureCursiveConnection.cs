@@ -11,7 +11,7 @@ public class CTFontFeatureCursiveConnection : CTFontFeatureSelectors
 		Cursive
 	}
 
-	public Selector Feature => Feature;
+	public Selector Feature => (Selector)base.FeatureWeak;
 
 	public CTFontFeatureCursiveConnection(NSDictionary dictionary)
 		: base(dictionary)

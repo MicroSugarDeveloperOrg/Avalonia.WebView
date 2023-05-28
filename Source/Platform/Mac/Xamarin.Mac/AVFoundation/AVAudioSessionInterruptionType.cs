@@ -1,6 +1,9 @@
+using ObjCRuntime;
+
 namespace AVFoundation;
 
-public enum AVAudioSessionInterruptionType
+[Native]
+public enum AVAudioSessionInterruptionType : ulong
 {
 	Ended,
 	Began

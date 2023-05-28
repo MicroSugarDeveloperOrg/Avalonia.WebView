@@ -1,40 +1,111 @@
-using System;
 using Foundation;
 using ObjCRuntime;
 
 namespace CoreText;
 
-[Since(3, 2)]
 public static class CTFontVariationAxisKey
 {
-	public static readonly NSString Identifier;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _DefaultValue;
 
-	public static readonly NSString MinimumValue;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Hidden;
 
-	public static readonly NSString MaximumValue;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Identifier;
 
-	public static readonly NSString DefaultValue;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _MaximumValue;
 
-	public static readonly NSString Name;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _MinimumValue;
 
-	static CTFontVariationAxisKey()
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _Name;
+
+	[Field("kCTFontVariationAxisDefaultValueKey", "CoreText")]
+	public static NSString DefaultValue
 	{
-		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText", 0);
-		if (intPtr == IntPtr.Zero)
+		get
 		{
-			return;
+			if (_DefaultValue == null)
+			{
+				_DefaultValue = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontVariationAxisDefaultValueKey");
+			}
+			return _DefaultValue;
 		}
-		try
+	}
+
+	[Field("kCTFontVariationAxisHiddenKey", "CoreText")]
+	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.WatchOS, 4, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+	public static NSString Hidden
+	{
+		[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.WatchOS, 4, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
+		get
 		{
-			Identifier = Dlfcn.GetStringConstant(intPtr, "kCTFontVariationAxisIdentifierKey");
-			MinimumValue = Dlfcn.GetStringConstant(intPtr, "kCTFontVariationAxisMinimumValueKey");
-			MaximumValue = Dlfcn.GetStringConstant(intPtr, "kCTFontVariationAxisMaximumValueKey");
-			DefaultValue = Dlfcn.GetStringConstant(intPtr, "kCTFontVariationAxisDefaultValueKey");
-			Name = Dlfcn.GetStringConstant(intPtr, "kCTFontVariationAxisNameKey");
+			if (_Hidden == null)
+			{
+				_Hidden = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontVariationAxisHiddenKey");
+			}
+			return _Hidden;
 		}
-		finally
+	}
+
+	[Field("kCTFontVariationAxisIdentifierKey", "CoreText")]
+	public static NSString Identifier
+	{
+		get
 		{
-			Dlfcn.dlclose(intPtr);
+			if (_Identifier == null)
+			{
+				_Identifier = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontVariationAxisIdentifierKey");
+			}
+			return _Identifier;
+		}
+	}
+
+	[Field("kCTFontVariationAxisMaximumValueKey", "CoreText")]
+	public static NSString MaximumValue
+	{
+		get
+		{
+			if (_MaximumValue == null)
+			{
+				_MaximumValue = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontVariationAxisMaximumValueKey");
+			}
+			return _MaximumValue;
+		}
+	}
+
+	[Field("kCTFontVariationAxisMinimumValueKey", "CoreText")]
+	public static NSString MinimumValue
+	{
+		get
+		{
+			if (_MinimumValue == null)
+			{
+				_MinimumValue = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontVariationAxisMinimumValueKey");
+			}
+			return _MinimumValue;
+		}
+	}
+
+	[Field("kCTFontVariationAxisNameKey", "CoreText")]
+	public static NSString Name
+	{
+		get
+		{
+			if (_Name == null)
+			{
+				_Name = Dlfcn.GetStringConstant(Libraries.CoreText.Handle, "kCTFontVariationAxisNameKey");
+			}
+			return _Name;
 		}
 	}
 }

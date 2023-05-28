@@ -1,10 +1,13 @@
+using ObjCRuntime;
+
 namespace AVFoundation;
 
-public enum AVAudioQuality
+[Native]
+public enum AVAudioQuality : long
 {
-	Min = 0,
-	Low = 32,
-	Medium = 64,
-	High = 96,
-	Max = 127
+	Min = 0L,
+	Low = 32L,
+	Medium = 64L,
+	High = 96L,
+	Max = 127L
 }

@@ -18,20 +18,12 @@ internal static class Adapter
 
 	public static int? BitwiseOr(int? a, int? b)
 	{
-		if (!a.HasValue)
-		{
-			return b;
-		}
-		return a.Value | (b ?? 0);
+		return a.HasValue ? new int?(a.Value | b.GetValueOrDefault()) : b;
 	}
 
 	public static uint? BitwiseOr(uint? a, uint? b)
 	{
-		if (!a.HasValue)
-		{
-			return b;
-		}
-		return a.Value | (b ?? 0);
+		return a.HasValue ? new uint?(a.Value | b.GetValueOrDefault()) : b;
 	}
 
 	public static int? GetInt32Value(IDictionary<NSObject, NSObject> dictionary, NSObject key)
@@ -42,6 +34,16 @@ internal static class Adapter
 			return null;
 		}
 		return ((NSNumber)nSObject).Int32Value;
+	}
+
+	public static nuint? GetUnsignedIntegerValue(IDictionary<NSObject, NSObject> dictionary, NSObject key)
+	{
+		NSObject nSObject = dictionary[key];
+		if (nSObject == null)
+		{
+			return null;
+		}
+		return ((NSNumber)nSObject).NUIntValue;
 	}
 
 	public static T[] GetNativeArray<T>(NSDictionary dictionary, NSObject key, Converter<IntPtr, T> converter)
@@ -69,7 +71,7 @@ internal static class Adapter
 		NSObject nSObject = dictionary[key];
 		if (nSObject == null)
 		{
-			return new string[0];
+			return Array.Empty<string>();
 		}
 		return NSArray.StringArrayFromHandle(nSObject.Handle);
 	}
@@ -92,6 +94,16 @@ internal static class Adapter
 			return null;
 		}
 		return ((NSNumber)nSObject).UInt32Value;
+	}
+
+	public static bool? GetBoolValue(NSDictionary dictionary, NSObject key)
+	{
+		NSObject nSObject = dictionary[key];
+		if (nSObject == null)
+		{
+			return null;
+		}
+		return ((NSNumber)nSObject).BoolValue;
 	}
 
 	public static void SetValue(IDictionary<NSObject, NSObject> dictionary, NSObject key, int? value)
@@ -119,6 +131,30 @@ internal static class Adapter
 	}
 
 	public static void SetValue(IDictionary<NSObject, NSObject> dictionary, NSObject key, uint? value)
+	{
+		if (value.HasValue)
+		{
+			dictionary[key] = new NSNumber(value.Value);
+		}
+		else
+		{
+			dictionary.Remove(key);
+		}
+	}
+
+	public static void SetValue(IDictionary<NSObject, NSObject> dictionary, NSObject key, bool? value)
+	{
+		if (value.HasValue)
+		{
+			dictionary[key] = new NSNumber(value.Value);
+		}
+		else
+		{
+			dictionary.Remove(key);
+		}
+	}
+
+	public static void SetValue(IDictionary<NSObject, NSObject> dictionary, NSObject key, nuint? value)
 	{
 		if (value.HasValue)
 		{

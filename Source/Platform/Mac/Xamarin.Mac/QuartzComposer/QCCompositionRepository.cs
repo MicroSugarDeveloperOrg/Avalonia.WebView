@@ -6,70 +6,74 @@ using ObjCRuntime;
 namespace QuartzComposer;
 
 [Register("QCCompositionRepository", true)]
+[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, null)]
 public class QCCompositionRepository : NSObject
 {
-	private static readonly IntPtr selSharedCompositionRepositoryHandle = Selector.GetHandle("sharedCompositionRepository");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAllCompositions = "allCompositions";
 
 	private static readonly IntPtr selAllCompositionsHandle = Selector.GetHandle("allCompositions");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCompositionWithIdentifier_ = "compositionWithIdentifier:";
+
 	private static readonly IntPtr selCompositionWithIdentifier_Handle = Selector.GetHandle("compositionWithIdentifier:");
 
-	private static readonly IntPtr selCompositionsWithProtocolsAndAttributes_Handle = Selector.GetHandle("compositionsWithProtocols:andAttributes:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCompositionsWithProtocols_AndAttributes_ = "compositionsWithProtocols:andAttributes:";
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("QCCompositionRepository");
+	private static readonly IntPtr selCompositionsWithProtocols_AndAttributes_Handle = Selector.GetHandle("compositionsWithProtocols:andAttributes:");
 
-	private static object __mt_SharedCompositionRepository_var_static;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSharedCompositionRepository = "sharedCompositionRepository";
 
-	private object __mt_AllCompositions_var;
+	private static readonly IntPtr selSharedCompositionRepositoryHandle = Selector.GetHandle("sharedCompositionRepository");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("QCCompositionRepository");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public static QCCompositionRepository SharedCompositionRepository
-	{
-		[Export("sharedCompositionRepository")]
-		get
-		{
-			return (QCCompositionRepository)(__mt_SharedCompositionRepository_var_static = (QCCompositionRepository)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selSharedCompositionRepositoryHandle)));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual QCComposition[] AllCompositions
 	{
 		[Export("allCompositions")]
 		get
 		{
-			return (QCComposition[])(__mt_AllCompositions_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<QCComposition>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAllCompositionsHandle)) : NSArray.ArrayFromHandle<QCComposition>(Messaging.IntPtr_objc_msgSend(base.Handle, selAllCompositionsHandle))));
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<QCComposition>(Messaging.IntPtr_objc_msgSend(base.Handle, selAllCompositionsHandle));
+			}
+			return NSArray.ArrayFromHandle<QCComposition>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAllCompositionsHandle));
 		}
 	}
 
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public QCCompositionRepository(NSCoder coder)
-		: base(NSObjectFlag.Empty)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static QCCompositionRepository SharedCompositionRepository
 	{
-		if (IsDirectBinding)
+		[Export("sharedCompositionRepository")]
+		get
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			return Runtime.GetNSObject<QCCompositionRepository>(Messaging.IntPtr_objc_msgSend(class_ptr, selSharedCompositionRepositoryHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public QCCompositionRepository(NSObjectFlag t)
+	protected QCCompositionRepository(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public QCCompositionRepository(IntPtr handle)
+	protected internal QCCompositionRepository(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("compositionWithIdentifier:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual QCComposition GetComposition(string identifier)
 	{
 		if (identifier == null)
@@ -77,12 +81,13 @@ public class QCCompositionRepository : NSObject
 			throw new ArgumentNullException("identifier");
 		}
 		IntPtr arg = NSString.CreateNative(identifier);
-		QCComposition result = ((!IsDirectBinding) ? ((QCComposition)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCompositionWithIdentifier_Handle, arg))) : ((QCComposition)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCompositionWithIdentifier_Handle, arg))));
+		QCComposition result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<QCComposition>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCompositionWithIdentifier_Handle, arg)) : Runtime.GetNSObject<QCComposition>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCompositionWithIdentifier_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
 	[Export("compositionsWithProtocols:andAttributes:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual QCComposition[] GetCompositions(NSArray protocols, NSDictionary attributes)
 	{
 		if (protocols == null)
@@ -93,19 +98,10 @@ public class QCCompositionRepository : NSObject
 		{
 			throw new ArgumentNullException("attributes");
 		}
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return NSArray.ArrayFromHandle<QCComposition>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selCompositionsWithProtocolsAndAttributes_Handle, protocols.Handle, attributes.Handle));
+			return NSArray.ArrayFromHandle<QCComposition>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selCompositionsWithProtocols_AndAttributes_Handle, protocols.Handle, attributes.Handle));
 		}
-		return NSArray.ArrayFromHandle<QCComposition>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selCompositionsWithProtocolsAndAttributes_Handle, protocols.Handle, attributes.Handle));
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_AllCompositions_var = null;
-		}
+		return NSArray.ArrayFromHandle<QCComposition>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selCompositionsWithProtocols_AndAttributes_Handle, protocols.Handle, attributes.Handle));
 	}
 }

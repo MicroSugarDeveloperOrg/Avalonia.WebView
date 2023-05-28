@@ -1,13 +1,15 @@
 using System;
+using ObjCRuntime;
 
 namespace ImageKit;
 
 [Flags]
-public enum IKCellsStyle : uint
+[Native]
+public enum IKCellsStyle : ulong
 {
-	None = 0u,
-	Shadowed = 1u,
-	Outlined = 2u,
-	Titled = 4u,
-	Subtitled = 8u
+	None = 0uL,
+	Shadowed = 1uL,
+	Outlined = 2uL,
+	Titled = 4uL,
+	Subtitled = 8uL
 }

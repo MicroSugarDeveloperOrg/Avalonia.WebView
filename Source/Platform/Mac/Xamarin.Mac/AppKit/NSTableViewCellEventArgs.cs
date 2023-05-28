@@ -7,14 +7,14 @@ public class NSTableViewCellEventArgs : EventArgs
 {
 	public NSObject Cell { get; set; }
 
+	public nint Row { get; set; }
+
 	public NSTableColumn TableColumn { get; set; }
 
-	public long Row { get; set; }
-
-	public NSTableViewCellEventArgs(NSObject cell, NSTableColumn tableColumn, long row)
+	public NSTableViewCellEventArgs(NSObject cell, NSTableColumn tableColumn, nint row)
 	{
 		Cell = cell;
-		TableColumn = tableColumn;
 		Row = row;
+		TableColumn = tableColumn;
 	}
 }

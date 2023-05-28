@@ -6,529 +6,401 @@ using ObjCRuntime;
 namespace WebKit;
 
 [Register("DOMDocument", true)]
+[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
 public class DomDocument : DomNode
 {
-	private static readonly IntPtr selDoctypeHandle = Selector.GetHandle("doctype");
-
-	private static readonly IntPtr selImplementationHandle = Selector.GetHandle("implementation");
-
-	private static readonly IntPtr selDocumentElementHandle = Selector.GetHandle("documentElement");
-
-	private static readonly IntPtr selInputEncodingHandle = Selector.GetHandle("inputEncoding");
-
-	private static readonly IntPtr selXmlEncodingHandle = Selector.GetHandle("xmlEncoding");
-
-	private static readonly IntPtr selXmlVersionHandle = Selector.GetHandle("xmlVersion");
-
-	private static readonly IntPtr selSetXmlVersion_Handle = Selector.GetHandle("setXmlVersion:");
-
-	private static readonly IntPtr selXmlStandaloneHandle = Selector.GetHandle("xmlStandalone");
-
-	private static readonly IntPtr selSetXmlStandalone_Handle = Selector.GetHandle("setXmlStandalone:");
-
-	private static readonly IntPtr selDocumentURIHandle = Selector.GetHandle("documentURI");
-
-	private static readonly IntPtr selSetDocumentURI_Handle = Selector.GetHandle("setDocumentURI:");
-
-	private static readonly IntPtr selDefaultViewHandle = Selector.GetHandle("defaultView");
-
-	private static readonly IntPtr selStyleSheetsHandle = Selector.GetHandle("styleSheets");
-
-	private static readonly IntPtr selTitleHandle = Selector.GetHandle("title");
-
-	private static readonly IntPtr selSetTitle_Handle = Selector.GetHandle("setTitle:");
-
-	private static readonly IntPtr selReferrerHandle = Selector.GetHandle("referrer");
-
-	private static readonly IntPtr selDomainHandle = Selector.GetHandle("domain");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selURL = "URL";
 
 	private static readonly IntPtr selURLHandle = Selector.GetHandle("URL");
 
-	private static readonly IntPtr selCookieHandle = Selector.GetHandle("cookie");
-
-	private static readonly IntPtr selSetCookie_Handle = Selector.GetHandle("setCookie:");
-
-	private static readonly IntPtr selBodyHandle = Selector.GetHandle("body");
-
-	private static readonly IntPtr selSetBody_Handle = Selector.GetHandle("setBody:");
-
-	private static readonly IntPtr selImagesHandle = Selector.GetHandle("images");
-
-	private static readonly IntPtr selAppletsHandle = Selector.GetHandle("applets");
-
-	private static readonly IntPtr selLinksHandle = Selector.GetHandle("links");
-
-	private static readonly IntPtr selFormsHandle = Selector.GetHandle("forms");
-
-	private static readonly IntPtr selAnchorsHandle = Selector.GetHandle("anchors");
-
-	private static readonly IntPtr selLastModifiedHandle = Selector.GetHandle("lastModified");
-
-	private static readonly IntPtr selCharsetHandle = Selector.GetHandle("charset");
-
-	private static readonly IntPtr selSetCharset_Handle = Selector.GetHandle("setCharset:");
-
-	private static readonly IntPtr selDefaultCharsetHandle = Selector.GetHandle("defaultCharset");
-
-	private static readonly IntPtr selReadyStateHandle = Selector.GetHandle("readyState");
-
-	private static readonly IntPtr selCharacterSetHandle = Selector.GetHandle("characterSet");
-
-	private static readonly IntPtr selPreferredStylesheetSetHandle = Selector.GetHandle("preferredStylesheetSet");
-
-	private static readonly IntPtr selSelectedStylesheetSetHandle = Selector.GetHandle("selectedStylesheetSet");
-
-	private static readonly IntPtr selSetSelectedStylesheetSet_Handle = Selector.GetHandle("setSelectedStylesheetSet:");
-
-	private static readonly IntPtr selCreateElement_Handle = Selector.GetHandle("createElement:");
-
-	private static readonly IntPtr selCreateDocumentFragmentHandle = Selector.GetHandle("createDocumentFragment");
-
-	private static readonly IntPtr selCreateTextNode_Handle = Selector.GetHandle("createTextNode:");
-
-	private static readonly IntPtr selCreateComment_Handle = Selector.GetHandle("createComment:");
-
-	private static readonly IntPtr selCreateCDATASection_Handle = Selector.GetHandle("createCDATASection:");
-
-	private static readonly IntPtr selCreateProcessingInstructionData_Handle = Selector.GetHandle("createProcessingInstruction:data:");
-
-	private static readonly IntPtr selCreateAttribute_Handle = Selector.GetHandle("createAttribute:");
-
-	private static readonly IntPtr selCreateEntityReference_Handle = Selector.GetHandle("createEntityReference:");
-
-	private static readonly IntPtr selGetElementsByTagName_Handle = Selector.GetHandle("getElementsByTagName:");
-
-	private static readonly IntPtr selImportNodeDeep_Handle = Selector.GetHandle("importNode:deep:");
-
-	private static readonly IntPtr selCreateElementNSQualifiedName_Handle = Selector.GetHandle("createElementNS:qualifiedName:");
-
-	private static readonly IntPtr selCreateAttributeNSQualifiedName_Handle = Selector.GetHandle("createAttributeNS:qualifiedName:");
-
-	private static readonly IntPtr selGetElementsByTagNameNSLocalName_Handle = Selector.GetHandle("getElementsByTagNameNS:localName:");
-
-	private static readonly IntPtr selGetElementById_Handle = Selector.GetHandle("getElementById:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAdoptNode_ = "adoptNode:";
 
 	private static readonly IntPtr selAdoptNode_Handle = Selector.GetHandle("adoptNode:");
 
-	private static readonly IntPtr selCreateRangeHandle = Selector.GetHandle("createRange");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selAnchors = "anchors";
 
-	private static readonly IntPtr selGetOverrideStylePseudoElement_Handle = Selector.GetHandle("getOverrideStyle:pseudoElement:");
+	private static readonly IntPtr selAnchorsHandle = Selector.GetHandle("anchors");
 
-	private static readonly IntPtr selExecCommandUserInterfaceValue_Handle = Selector.GetHandle("execCommand:userInterface:value:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selApplets = "applets";
 
-	private static readonly IntPtr selExecCommandUserInterface_Handle = Selector.GetHandle("execCommand:userInterface:");
+	private static readonly IntPtr selAppletsHandle = Selector.GetHandle("applets");
 
-	private static readonly IntPtr selExecCommand_Handle = Selector.GetHandle("execCommand:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selBody = "body";
 
-	private static readonly IntPtr selQueryCommandEnabled_Handle = Selector.GetHandle("queryCommandEnabled:");
+	private static readonly IntPtr selBodyHandle = Selector.GetHandle("body");
 
-	private static readonly IntPtr selQueryCommandIndeterm_Handle = Selector.GetHandle("queryCommandIndeterm:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCharacterSet = "characterSet";
 
-	private static readonly IntPtr selQueryCommandState_Handle = Selector.GetHandle("queryCommandState:");
+	private static readonly IntPtr selCharacterSetHandle = Selector.GetHandle("characterSet");
 
-	private static readonly IntPtr selQueryCommandSupported_Handle = Selector.GetHandle("queryCommandSupported:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCharset = "charset";
 
-	private static readonly IntPtr selQueryCommandValue_Handle = Selector.GetHandle("queryCommandValue:");
+	private static readonly IntPtr selCharsetHandle = Selector.GetHandle("charset");
 
-	private static readonly IntPtr selGetElementsByName_Handle = Selector.GetHandle("getElementsByName:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCookie = "cookie";
 
-	private static readonly IntPtr selElementFromPointY_Handle = Selector.GetHandle("elementFromPoint:y:");
+	private static readonly IntPtr selCookieHandle = Selector.GetHandle("cookie");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCreateAttribute_ = "createAttribute:";
+
+	private static readonly IntPtr selCreateAttribute_Handle = Selector.GetHandle("createAttribute:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCreateAttributeNS_QualifiedName_ = "createAttributeNS:qualifiedName:";
+
+	private static readonly IntPtr selCreateAttributeNS_QualifiedName_Handle = Selector.GetHandle("createAttributeNS:qualifiedName:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCreateCDATASection_ = "createCDATASection:";
+
+	private static readonly IntPtr selCreateCDATASection_Handle = Selector.GetHandle("createCDATASection:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCreateCSSStyleDeclaration = "createCSSStyleDeclaration";
 
 	private static readonly IntPtr selCreateCSSStyleDeclarationHandle = Selector.GetHandle("createCSSStyleDeclaration");
 
-	private static readonly IntPtr selGetComputedStylePseudoElement_Handle = Selector.GetHandle("getComputedStyle:pseudoElement:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCreateComment_ = "createComment:";
 
-	private static readonly IntPtr selGetMatchedCSSRulesPseudoElement_Handle = Selector.GetHandle("getMatchedCSSRules:pseudoElement:");
+	private static readonly IntPtr selCreateComment_Handle = Selector.GetHandle("createComment:");
 
-	private static readonly IntPtr selGetMatchedCSSRulesPseudoElementAuthorOnly_Handle = Selector.GetHandle("getMatchedCSSRules:pseudoElement:authorOnly:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCreateDocumentFragment = "createDocumentFragment";
+
+	private static readonly IntPtr selCreateDocumentFragmentHandle = Selector.GetHandle("createDocumentFragment");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCreateElement_ = "createElement:";
+
+	private static readonly IntPtr selCreateElement_Handle = Selector.GetHandle("createElement:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCreateElementNS_QualifiedName_ = "createElementNS:qualifiedName:";
+
+	private static readonly IntPtr selCreateElementNS_QualifiedName_Handle = Selector.GetHandle("createElementNS:qualifiedName:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCreateEntityReference_ = "createEntityReference:";
+
+	private static readonly IntPtr selCreateEntityReference_Handle = Selector.GetHandle("createEntityReference:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCreateEvent_ = "createEvent:";
+
+	private static readonly IntPtr selCreateEvent_Handle = Selector.GetHandle("createEvent:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCreateNodeIterator_WhatToShow_Filter_ExpandEntityReferences_ = "createNodeIterator:whatToShow:filter:expandEntityReferences:";
+
+	private static readonly IntPtr selCreateNodeIterator_WhatToShow_Filter_ExpandEntityReferences_Handle = Selector.GetHandle("createNodeIterator:whatToShow:filter:expandEntityReferences:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCreateProcessingInstruction_Data_ = "createProcessingInstruction:data:";
+
+	private static readonly IntPtr selCreateProcessingInstruction_Data_Handle = Selector.GetHandle("createProcessingInstruction:data:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCreateRange = "createRange";
+
+	private static readonly IntPtr selCreateRangeHandle = Selector.GetHandle("createRange");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selCreateTextNode_ = "createTextNode:";
+
+	private static readonly IntPtr selCreateTextNode_Handle = Selector.GetHandle("createTextNode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDefaultCharset = "defaultCharset";
+
+	private static readonly IntPtr selDefaultCharsetHandle = Selector.GetHandle("defaultCharset");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDefaultView = "defaultView";
+
+	private static readonly IntPtr selDefaultViewHandle = Selector.GetHandle("defaultView");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDoctype = "doctype";
+
+	private static readonly IntPtr selDoctypeHandle = Selector.GetHandle("doctype");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDocumentElement = "documentElement";
+
+	private static readonly IntPtr selDocumentElementHandle = Selector.GetHandle("documentElement");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDocumentURI = "documentURI";
+
+	private static readonly IntPtr selDocumentURIHandle = Selector.GetHandle("documentURI");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDomain = "domain";
+
+	private static readonly IntPtr selDomainHandle = Selector.GetHandle("domain");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selElementFromPoint_Y_ = "elementFromPoint:y:";
+
+	private static readonly IntPtr selElementFromPoint_Y_Handle = Selector.GetHandle("elementFromPoint:y:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selExecCommand_ = "execCommand:";
+
+	private static readonly IntPtr selExecCommand_Handle = Selector.GetHandle("execCommand:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selExecCommand_UserInterface_ = "execCommand:userInterface:";
+
+	private static readonly IntPtr selExecCommand_UserInterface_Handle = Selector.GetHandle("execCommand:userInterface:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selExecCommand_UserInterface_Value_ = "execCommand:userInterface:value:";
+
+	private static readonly IntPtr selExecCommand_UserInterface_Value_Handle = Selector.GetHandle("execCommand:userInterface:value:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selForms = "forms";
+
+	private static readonly IntPtr selFormsHandle = Selector.GetHandle("forms");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGetComputedStyle_PseudoElement_ = "getComputedStyle:pseudoElement:";
+
+	private static readonly IntPtr selGetComputedStyle_PseudoElement_Handle = Selector.GetHandle("getComputedStyle:pseudoElement:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGetElementById_ = "getElementById:";
+
+	private static readonly IntPtr selGetElementById_Handle = Selector.GetHandle("getElementById:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGetElementsByClassName_ = "getElementsByClassName:";
 
 	private static readonly IntPtr selGetElementsByClassName_Handle = Selector.GetHandle("getElementsByClassName:");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGetElementsByName_ = "getElementsByName:";
+
+	private static readonly IntPtr selGetElementsByName_Handle = Selector.GetHandle("getElementsByName:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGetElementsByTagName_ = "getElementsByTagName:";
+
+	private static readonly IntPtr selGetElementsByTagName_Handle = Selector.GetHandle("getElementsByTagName:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGetElementsByTagNameNS_LocalName_ = "getElementsByTagNameNS:localName:";
+
+	private static readonly IntPtr selGetElementsByTagNameNS_LocalName_Handle = Selector.GetHandle("getElementsByTagNameNS:localName:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGetMatchedCSSRules_PseudoElement_ = "getMatchedCSSRules:pseudoElement:";
+
+	private static readonly IntPtr selGetMatchedCSSRules_PseudoElement_Handle = Selector.GetHandle("getMatchedCSSRules:pseudoElement:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGetMatchedCSSRules_PseudoElement_AuthorOnly_ = "getMatchedCSSRules:pseudoElement:authorOnly:";
+
+	private static readonly IntPtr selGetMatchedCSSRules_PseudoElement_AuthorOnly_Handle = Selector.GetHandle("getMatchedCSSRules:pseudoElement:authorOnly:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selGetOverrideStyle_PseudoElement_ = "getOverrideStyle:pseudoElement:";
+
+	private static readonly IntPtr selGetOverrideStyle_PseudoElement_Handle = Selector.GetHandle("getOverrideStyle:pseudoElement:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImages = "images";
+
+	private static readonly IntPtr selImagesHandle = Selector.GetHandle("images");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImplementation = "implementation";
+
+	private static readonly IntPtr selImplementationHandle = Selector.GetHandle("implementation");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selImportNode_Deep_ = "importNode:deep:";
+
+	private static readonly IntPtr selImportNode_Deep_Handle = Selector.GetHandle("importNode:deep:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInputEncoding = "inputEncoding";
+
+	private static readonly IntPtr selInputEncodingHandle = Selector.GetHandle("inputEncoding");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLastModified = "lastModified";
+
+	private static readonly IntPtr selLastModifiedHandle = Selector.GetHandle("lastModified");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLinks = "links";
+
+	private static readonly IntPtr selLinksHandle = Selector.GetHandle("links");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPreferredStylesheetSet = "preferredStylesheetSet";
+
+	private static readonly IntPtr selPreferredStylesheetSetHandle = Selector.GetHandle("preferredStylesheetSet");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selQueryCommandEnabled_ = "queryCommandEnabled:";
+
+	private static readonly IntPtr selQueryCommandEnabled_Handle = Selector.GetHandle("queryCommandEnabled:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selQueryCommandIndeterm_ = "queryCommandIndeterm:";
+
+	private static readonly IntPtr selQueryCommandIndeterm_Handle = Selector.GetHandle("queryCommandIndeterm:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selQueryCommandState_ = "queryCommandState:";
+
+	private static readonly IntPtr selQueryCommandState_Handle = Selector.GetHandle("queryCommandState:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selQueryCommandSupported_ = "queryCommandSupported:";
+
+	private static readonly IntPtr selQueryCommandSupported_Handle = Selector.GetHandle("queryCommandSupported:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selQueryCommandValue_ = "queryCommandValue:";
+
+	private static readonly IntPtr selQueryCommandValue_Handle = Selector.GetHandle("queryCommandValue:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selQuerySelector_ = "querySelector:";
+
 	private static readonly IntPtr selQuerySelector_Handle = Selector.GetHandle("querySelector:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selQuerySelectorAll_ = "querySelectorAll:";
 
 	private static readonly IntPtr selQuerySelectorAll_Handle = Selector.GetHandle("querySelectorAll:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("DOMDocument");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReadyState = "readyState";
 
-	private object __mt_DocumentType_var;
+	private static readonly IntPtr selReadyStateHandle = Selector.GetHandle("readyState");
 
-	private object __mt_Implementation_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selReferrer = "referrer";
 
-	private object __mt_DocumentElement_var;
+	private static readonly IntPtr selReferrerHandle = Selector.GetHandle("referrer");
 
-	private object __mt_DefaultView_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSelectedStylesheetSet = "selectedStylesheetSet";
 
-	private object __mt_StyleSheets_var;
+	private static readonly IntPtr selSelectedStylesheetSetHandle = Selector.GetHandle("selectedStylesheetSet");
 
-	private object __mt_body_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetBody_ = "setBody:";
 
-	private object __mt_images_var;
+	private static readonly IntPtr selSetBody_Handle = Selector.GetHandle("setBody:");
 
-	private object __mt_applets_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCharset_ = "setCharset:";
 
-	private object __mt_links_var;
+	private static readonly IntPtr selSetCharset_Handle = Selector.GetHandle("setCharset:");
 
-	private object __mt_forms_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetCookie_ = "setCookie:";
 
-	private object __mt_anchors_var;
+	private static readonly IntPtr selSetCookie_Handle = Selector.GetHandle("setCookie:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDocumentURI_ = "setDocumentURI:";
+
+	private static readonly IntPtr selSetDocumentURI_Handle = Selector.GetHandle("setDocumentURI:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetSelectedStylesheetSet_ = "setSelectedStylesheetSet:";
+
+	private static readonly IntPtr selSetSelectedStylesheetSet_Handle = Selector.GetHandle("setSelectedStylesheetSet:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetTitle_ = "setTitle:";
+
+	private static readonly IntPtr selSetTitle_Handle = Selector.GetHandle("setTitle:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetXmlStandalone_ = "setXmlStandalone:";
+
+	private static readonly IntPtr selSetXmlStandalone_Handle = Selector.GetHandle("setXmlStandalone:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetXmlVersion_ = "setXmlVersion:";
+
+	private static readonly IntPtr selSetXmlVersion_Handle = Selector.GetHandle("setXmlVersion:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStyleSheets = "styleSheets";
+
+	private static readonly IntPtr selStyleSheetsHandle = Selector.GetHandle("styleSheets");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selTitle = "title";
+
+	private static readonly IntPtr selTitleHandle = Selector.GetHandle("title");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selXmlEncoding = "xmlEncoding";
+
+	private static readonly IntPtr selXmlEncodingHandle = Selector.GetHandle("xmlEncoding");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selXmlStandalone = "xmlStandalone";
+
+	private static readonly IntPtr selXmlStandaloneHandle = Selector.GetHandle("xmlStandalone");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selXmlVersion = "xmlVersion";
+
+	private static readonly IntPtr selXmlVersionHandle = Selector.GetHandle("xmlVersion");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("DOMDocument");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual DomDocumentType DocumentType
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string CharacterSet
 	{
-		[Export("doctype")]
+		[Export("characterSet", ArgumentSemantic.Copy)]
 		get
 		{
-			return (DomDocumentType)(__mt_DocumentType_var = ((!IsDirectBinding) ? ((DomDocumentType)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDoctypeHandle))) : ((DomDocumentType)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDoctypeHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCharacterSetHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCharacterSetHandle));
 		}
 	}
 
-	public virtual DomImplementation Implementation
-	{
-		[Export("implementation")]
-		get
-		{
-			return (DomImplementation)(__mt_Implementation_var = ((!IsDirectBinding) ? ((DomImplementation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selImplementationHandle))) : ((DomImplementation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selImplementationHandle)))));
-		}
-	}
-
-	public virtual DomElement DocumentElement
-	{
-		[Export("documentElement")]
-		get
-		{
-			return (DomElement)(__mt_DocumentElement_var = ((!IsDirectBinding) ? ((DomElement)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDocumentElementHandle))) : ((DomElement)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDocumentElementHandle)))));
-		}
-	}
-
-	public virtual string InputEncoding
-	{
-		[Export("inputEncoding")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selInputEncodingHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInputEncodingHandle));
-		}
-	}
-
-	public virtual string XmlEncoding
-	{
-		[Export("xmlEncoding")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selXmlEncodingHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selXmlEncodingHandle));
-		}
-	}
-
-	public virtual string XmlVersion
-	{
-		[Export("xmlVersion")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selXmlVersionHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selXmlVersionHandle));
-		}
-		[Export("setXmlVersion:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetXmlVersion_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetXmlVersion_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	public virtual bool XmlStandalone
-	{
-		[Export("xmlStandalone")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selXmlStandaloneHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selXmlStandaloneHandle);
-		}
-		[Export("setXmlStandalone:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetXmlStandalone_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetXmlStandalone_Handle, value);
-			}
-		}
-	}
-
-	public virtual string DocumentURI
-	{
-		[Export("documentURI")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDocumentURIHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDocumentURIHandle));
-		}
-		[Export("setDocumentURI:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDocumentURI_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDocumentURI_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	public virtual DomAbstractView DefaultView
-	{
-		[Export("defaultView")]
-		get
-		{
-			return (DomAbstractView)(__mt_DefaultView_var = ((!IsDirectBinding) ? ((DomAbstractView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDefaultViewHandle))) : ((DomAbstractView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDefaultViewHandle)))));
-		}
-	}
-
-	public virtual DomStyleSheetList StyleSheets
-	{
-		[Export("styleSheets")]
-		get
-		{
-			return (DomStyleSheetList)(__mt_StyleSheets_var = ((!IsDirectBinding) ? ((DomStyleSheetList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selStyleSheetsHandle))) : ((DomStyleSheetList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selStyleSheetsHandle)))));
-		}
-	}
-
-	public virtual string Title
-	{
-		[Export("title")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selTitleHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTitleHandle));
-		}
-		[Export("setTitle:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTitle_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTitle_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	public virtual string Referrer
-	{
-		[Export("referrer")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selReferrerHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selReferrerHandle));
-		}
-	}
-
-	public virtual string Domain
-	{
-		[Export("domain")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDomainHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDomainHandle));
-		}
-	}
-
-	public virtual string Url
-	{
-		[Export("URL")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selURLHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selURLHandle));
-		}
-	}
-
-	public virtual string Cookie
-	{
-		[Export("cookie")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCookieHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCookieHandle));
-		}
-		[Export("setCookie:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCookie_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCookie_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	public virtual DomHtmlElement body
-	{
-		[Export("body")]
-		get
-		{
-			return (DomHtmlElement)(__mt_body_var = ((!IsDirectBinding) ? ((DomHtmlElement)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBodyHandle))) : ((DomHtmlElement)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selBodyHandle)))));
-		}
-		[Export("setBody:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBody_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBody_Handle, value.Handle);
-			}
-			__mt_body_var = value;
-		}
-	}
-
-	public virtual DomHtmlCollection images
-	{
-		[Export("images")]
-		get
-		{
-			return (DomHtmlCollection)(__mt_images_var = ((!IsDirectBinding) ? ((DomHtmlCollection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selImagesHandle))) : ((DomHtmlCollection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selImagesHandle)))));
-		}
-	}
-
-	public virtual DomHtmlCollection applets
-	{
-		[Export("applets")]
-		get
-		{
-			return (DomHtmlCollection)(__mt_applets_var = ((!IsDirectBinding) ? ((DomHtmlCollection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAppletsHandle))) : ((DomHtmlCollection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAppletsHandle)))));
-		}
-	}
-
-	public virtual DomHtmlCollection links
-	{
-		[Export("links")]
-		get
-		{
-			return (DomHtmlCollection)(__mt_links_var = ((!IsDirectBinding) ? ((DomHtmlCollection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLinksHandle))) : ((DomHtmlCollection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selLinksHandle)))));
-		}
-	}
-
-	public virtual DomHtmlCollection forms
-	{
-		[Export("forms")]
-		get
-		{
-			return (DomHtmlCollection)(__mt_forms_var = ((!IsDirectBinding) ? ((DomHtmlCollection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFormsHandle))) : ((DomHtmlCollection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFormsHandle)))));
-		}
-	}
-
-	public virtual DomHtmlCollection anchors
-	{
-		[Export("anchors")]
-		get
-		{
-			return (DomHtmlCollection)(__mt_anchors_var = ((!IsDirectBinding) ? ((DomHtmlCollection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAnchorsHandle))) : ((DomHtmlCollection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAnchorsHandle)))));
-		}
-	}
-
-	public virtual string LastModified
-	{
-		[Export("lastModified")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLastModifiedHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLastModifiedHandle));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string Charset
 	{
-		[Export("charset")]
+		[Export("charset", ArgumentSemantic.Copy)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCharsetHandle));
 			}
 			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCharsetHandle));
 		}
-		[Export("setCharset:")]
+		[Export("setCharset:", ArgumentSemantic.Copy)]
 		set
 		{
 			if (value == null)
@@ -536,7 +408,7 @@ public class DomDocument : DomNode
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCharset_Handle, arg);
 			}
@@ -548,70 +420,19 @@ public class DomDocument : DomNode
 		}
 	}
 
-	public virtual string DefaultCharset
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string Cookie
 	{
-		[Export("defaultCharset")]
+		[Export("cookie", ArgumentSemantic.Copy)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDefaultCharsetHandle));
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCookieHandle));
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDefaultCharsetHandle));
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCookieHandle));
 		}
-	}
-
-	public virtual string ReadyState
-	{
-		[Export("readyState")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selReadyStateHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selReadyStateHandle));
-		}
-	}
-
-	public virtual string CharacterSet
-	{
-		[Export("characterSet")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCharacterSetHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCharacterSetHandle));
-		}
-	}
-
-	public virtual string PreferredStylesheetSet
-	{
-		[Export("preferredStylesheetSet")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPreferredStylesheetSetHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPreferredStylesheetSetHandle));
-		}
-	}
-
-	public virtual string SelectedStylesheetSet
-	{
-		[Export("selectedStylesheetSet")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectedStylesheetSetHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectedStylesheetSetHandle));
-		}
-		[Export("setSelectedStylesheetSet:")]
+		[Export("setCookie:", ArgumentSemantic.Copy)]
 		set
 		{
 			if (value == null)
@@ -619,7 +440,225 @@ public class DomDocument : DomNode
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCookie_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCookie_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string DefaultCharset
+	{
+		[Export("defaultCharset", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDefaultCharsetHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDefaultCharsetHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomAbstractView DefaultView
+	{
+		[Export("defaultView", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomAbstractView>(Messaging.IntPtr_objc_msgSend(base.Handle, selDefaultViewHandle));
+			}
+			return Runtime.GetNSObject<DomAbstractView>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDefaultViewHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomElement DocumentElement
+	{
+		[Export("documentElement", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomElement>(Messaging.IntPtr_objc_msgSend(base.Handle, selDocumentElementHandle));
+			}
+			return Runtime.GetNSObject<DomElement>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDocumentElementHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomDocumentType DocumentType
+	{
+		[Export("doctype", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomDocumentType>(Messaging.IntPtr_objc_msgSend(base.Handle, selDoctypeHandle));
+			}
+			return Runtime.GetNSObject<DomDocumentType>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDoctypeHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string DocumentURI
+	{
+		[Export("documentURI", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDocumentURIHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDocumentURIHandle));
+		}
+		[Export("setDocumentURI:", ArgumentSemantic.Copy)]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDocumentURI_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDocumentURI_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string Domain
+	{
+		[Export("domain", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDomainHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDomainHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomImplementation Implementation
+	{
+		[Export("implementation", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomImplementation>(Messaging.IntPtr_objc_msgSend(base.Handle, selImplementationHandle));
+			}
+			return Runtime.GetNSObject<DomImplementation>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selImplementationHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string InputEncoding
+	{
+		[Export("inputEncoding", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selInputEncodingHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInputEncodingHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string LastModified
+	{
+		[Export("lastModified", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLastModifiedHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLastModifiedHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string PreferredStylesheetSet
+	{
+		[Export("preferredStylesheetSet", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPreferredStylesheetSetHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPreferredStylesheetSetHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string ReadyState
+	{
+		[Export("readyState", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selReadyStateHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selReadyStateHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string Referrer
+	{
+		[Export("referrer", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selReferrerHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selReferrerHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string SelectedStylesheetSet
+	{
+		[Export("selectedStylesheetSet", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectedStylesheetSetHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectedStylesheetSetHandle));
+		}
+		[Export("setSelectedStylesheetSet:", ArgumentSemantic.Copy)]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSelectedStylesheetSet_Handle, arg);
 			}
@@ -631,115 +670,269 @@ public class DomDocument : DomNode
 		}
 	}
 
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public DomDocument(NSCoder coder)
-		: base(NSObjectFlag.Empty)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomStyleSheetList StyleSheets
 	{
-		if (IsDirectBinding)
+		[Export("styleSheets", ArgumentSemantic.Retain)]
+		get
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomStyleSheetList>(Messaging.IntPtr_objc_msgSend(base.Handle, selStyleSheetsHandle));
+			}
+			return Runtime.GetNSObject<DomStyleSheetList>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selStyleSheetsHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string Title
+	{
+		[Export("title", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selTitleHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTitleHandle));
+		}
+		[Export("setTitle:", ArgumentSemantic.Copy)]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTitle_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTitle_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string Url
+	{
+		[Export("URL", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selURLHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selURLHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string XmlEncoding
+	{
+		[Export("xmlEncoding", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selXmlEncodingHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selXmlEncodingHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool XmlStandalone
+	{
+		[Export("xmlStandalone")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selXmlStandaloneHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selXmlStandaloneHandle);
+		}
+		[Export("setXmlStandalone:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetXmlStandalone_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetXmlStandalone_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string XmlVersion
+	{
+		[Export("xmlVersion", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selXmlVersionHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selXmlVersionHandle));
+		}
+		[Export("setXmlVersion:", ArgumentSemantic.Copy)]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetXmlVersion_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetXmlVersion_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomHtmlCollection anchors
+	{
+		[Export("anchors", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomHtmlCollection>(Messaging.IntPtr_objc_msgSend(base.Handle, selAnchorsHandle));
+			}
+			return Runtime.GetNSObject<DomHtmlCollection>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAnchorsHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomHtmlCollection applets
+	{
+		[Export("applets", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomHtmlCollection>(Messaging.IntPtr_objc_msgSend(base.Handle, selAppletsHandle));
+			}
+			return Runtime.GetNSObject<DomHtmlCollection>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAppletsHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomHtmlElement body
+	{
+		[Export("body", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomHtmlElement>(Messaging.IntPtr_objc_msgSend(base.Handle, selBodyHandle));
+			}
+			return Runtime.GetNSObject<DomHtmlElement>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBodyHandle));
+		}
+		[Export("setBody:", ArgumentSemantic.Retain)]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBody_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBody_Handle, value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomHtmlCollection forms
+	{
+		[Export("forms", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomHtmlCollection>(Messaging.IntPtr_objc_msgSend(base.Handle, selFormsHandle));
+			}
+			return Runtime.GetNSObject<DomHtmlCollection>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFormsHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomHtmlCollection images
+	{
+		[Export("images", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomHtmlCollection>(Messaging.IntPtr_objc_msgSend(base.Handle, selImagesHandle));
+			}
+			return Runtime.GetNSObject<DomHtmlCollection>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selImagesHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomHtmlCollection links
+	{
+		[Export("links", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomHtmlCollection>(Messaging.IntPtr_objc_msgSend(base.Handle, selLinksHandle));
+			}
+			return Runtime.GetNSObject<DomHtmlCollection>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLinksHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public DomDocument(NSObjectFlag t)
+	protected DomDocument(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public DomDocument(IntPtr handle)
+	protected internal DomDocument(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("createElement:")]
-	public virtual DomElement CreateElement(string tagName)
+	[Export("adoptNode:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomNode AdoptNode(DomNode source)
 	{
-		if (tagName == null)
+		if (source == null)
 		{
-			throw new ArgumentNullException("tagName");
+			throw new ArgumentNullException("source");
 		}
-		IntPtr arg = NSString.CreateNative(tagName);
-		DomElement result = ((!IsDirectBinding) ? ((DomElement)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCreateElement_Handle, arg))) : ((DomElement)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCreateElement_Handle, arg))));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("createDocumentFragment")]
-	public virtual DomDocumentFragment CreateDocumentFragment()
-	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (DomDocumentFragment)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCreateDocumentFragmentHandle));
+			return Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAdoptNode_Handle, source.Handle));
 		}
-		return (DomDocumentFragment)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCreateDocumentFragmentHandle));
-	}
-
-	[Export("createTextNode:")]
-	public virtual DomText CreateTextNode(string data)
-	{
-		if (data == null)
-		{
-			throw new ArgumentNullException("data");
-		}
-		IntPtr arg = NSString.CreateNative(data);
-		DomText result = ((!IsDirectBinding) ? ((DomText)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCreateTextNode_Handle, arg))) : ((DomText)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCreateTextNode_Handle, arg))));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("createComment:")]
-	public virtual DomComment CreateComment(string data)
-	{
-		if (data == null)
-		{
-			throw new ArgumentNullException("data");
-		}
-		IntPtr arg = NSString.CreateNative(data);
-		DomComment result = ((!IsDirectBinding) ? ((DomComment)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCreateComment_Handle, arg))) : ((DomComment)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCreateComment_Handle, arg))));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("createCDATASection:")]
-	public virtual DomCDataSection CreateCDataSection(string data)
-	{
-		if (data == null)
-		{
-			throw new ArgumentNullException("data");
-		}
-		IntPtr arg = NSString.CreateNative(data);
-		DomCDataSection result = ((!IsDirectBinding) ? ((DomCDataSection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCreateCDATASection_Handle, arg))) : ((DomCDataSection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCreateCDATASection_Handle, arg))));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("createProcessingInstruction:data:")]
-	public virtual DomProcessingInstruction CreateProcessingInstruction(string target, string data)
-	{
-		if (target == null)
-		{
-			throw new ArgumentNullException("target");
-		}
-		if (data == null)
-		{
-			throw new ArgumentNullException("data");
-		}
-		IntPtr arg = NSString.CreateNative(target);
-		IntPtr arg2 = NSString.CreateNative(data);
-		DomProcessingInstruction result = ((!IsDirectBinding) ? ((DomProcessingInstruction)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selCreateProcessingInstructionData_Handle, arg, arg2))) : ((DomProcessingInstruction)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selCreateProcessingInstructionData_Handle, arg, arg2))));
-		NSString.ReleaseNative(arg);
-		NSString.ReleaseNative(arg2);
-		return result;
+		return Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAdoptNode_Handle, source.Handle));
 	}
 
 	[Export("createAttribute:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomAttr CreateAttribute(string name)
 	{
 		if (name == null)
@@ -747,71 +940,13 @@ public class DomDocument : DomNode
 			throw new ArgumentNullException("name");
 		}
 		IntPtr arg = NSString.CreateNative(name);
-		DomAttr result = ((!IsDirectBinding) ? ((DomAttr)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCreateAttribute_Handle, arg))) : ((DomAttr)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCreateAttribute_Handle, arg))));
+		DomAttr result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomAttr>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCreateAttribute_Handle, arg)) : Runtime.GetNSObject<DomAttr>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCreateAttribute_Handle, arg)));
 		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("createEntityReference:")]
-	public virtual DomEntityReference CreateEntityReference(string name)
-	{
-		if (name == null)
-		{
-			throw new ArgumentNullException("name");
-		}
-		IntPtr arg = NSString.CreateNative(name);
-		DomEntityReference result = ((!IsDirectBinding) ? ((DomEntityReference)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCreateEntityReference_Handle, arg))) : ((DomEntityReference)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCreateEntityReference_Handle, arg))));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("getElementsByTagName:")]
-	public virtual DomNodeList GetElementsByTagName(string tagname)
-	{
-		if (tagname == null)
-		{
-			throw new ArgumentNullException("tagname");
-		}
-		IntPtr arg = NSString.CreateNative(tagname);
-		DomNodeList result = ((!IsDirectBinding) ? ((DomNodeList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selGetElementsByTagName_Handle, arg))) : ((DomNodeList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selGetElementsByTagName_Handle, arg))));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("importNode:deep:")]
-	public virtual DomNode ImportNode(DomNode importedNode, bool deep)
-	{
-		if (importedNode == null)
-		{
-			throw new ArgumentNullException("importedNode");
-		}
-		if (IsDirectBinding)
-		{
-			return (DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_bool(base.Handle, selImportNodeDeep_Handle, importedNode.Handle, deep));
-		}
-		return (DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selImportNodeDeep_Handle, importedNode.Handle, deep));
-	}
-
-	[Export("createElementNS:qualifiedName:")]
-	public virtual DomElement CreateElementNS(string namespaceURI, string qualifiedName)
-	{
-		if (namespaceURI == null)
-		{
-			throw new ArgumentNullException("namespaceURI");
-		}
-		if (qualifiedName == null)
-		{
-			throw new ArgumentNullException("qualifiedName");
-		}
-		IntPtr arg = NSString.CreateNative(namespaceURI);
-		IntPtr arg2 = NSString.CreateNative(qualifiedName);
-		DomElement result = ((!IsDirectBinding) ? ((DomElement)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selCreateElementNSQualifiedName_Handle, arg, arg2))) : ((DomElement)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selCreateElementNSQualifiedName_Handle, arg, arg2))));
-		NSString.ReleaseNative(arg);
-		NSString.ReleaseNative(arg2);
 		return result;
 	}
 
 	[Export("createAttributeNS:qualifiedName:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomAttr CreateAttributeNS(string namespaceURI, string qualifiedName)
 	{
 		if (namespaceURI == null)
@@ -824,86 +959,201 @@ public class DomDocument : DomNode
 		}
 		IntPtr arg = NSString.CreateNative(namespaceURI);
 		IntPtr arg2 = NSString.CreateNative(qualifiedName);
-		DomAttr result = ((!IsDirectBinding) ? ((DomAttr)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selCreateAttributeNSQualifiedName_Handle, arg, arg2))) : ((DomAttr)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selCreateAttributeNSQualifiedName_Handle, arg, arg2))));
+		DomAttr result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomAttr>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selCreateAttributeNS_QualifiedName_Handle, arg, arg2)) : Runtime.GetNSObject<DomAttr>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selCreateAttributeNS_QualifiedName_Handle, arg, arg2)));
 		NSString.ReleaseNative(arg);
 		NSString.ReleaseNative(arg2);
 		return result;
 	}
 
-	[Export("getElementsByTagNameNS:localName:")]
-	public virtual DomNodeList GetElementsByTagNameNS(string namespaceURI, string localName)
+	[Export("createCDATASection:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomCDataSection CreateCDataSection(string data)
+	{
+		if (data == null)
+		{
+			throw new ArgumentNullException("data");
+		}
+		IntPtr arg = NSString.CreateNative(data);
+		DomCDataSection result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomCDataSection>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCreateCDATASection_Handle, arg)) : Runtime.GetNSObject<DomCDataSection>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCreateCDATASection_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("createComment:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomComment CreateComment(string data)
+	{
+		if (data == null)
+		{
+			throw new ArgumentNullException("data");
+		}
+		IntPtr arg = NSString.CreateNative(data);
+		DomComment result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomComment>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCreateComment_Handle, arg)) : Runtime.GetNSObject<DomComment>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCreateComment_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("createCSSStyleDeclaration")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomCssStyleDeclaration CreateCssStyleDeclaration()
+	{
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<DomCssStyleDeclaration>(Messaging.IntPtr_objc_msgSend(base.Handle, selCreateCSSStyleDeclarationHandle));
+		}
+		return Runtime.GetNSObject<DomCssStyleDeclaration>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCreateCSSStyleDeclarationHandle));
+	}
+
+	[Export("createDocumentFragment")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomDocumentFragment CreateDocumentFragment()
+	{
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<DomDocumentFragment>(Messaging.IntPtr_objc_msgSend(base.Handle, selCreateDocumentFragmentHandle));
+		}
+		return Runtime.GetNSObject<DomDocumentFragment>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCreateDocumentFragmentHandle));
+	}
+
+	[Export("createElement:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomElement CreateElement(string tagName)
+	{
+		if (tagName == null)
+		{
+			throw new ArgumentNullException("tagName");
+		}
+		IntPtr arg = NSString.CreateNative(tagName);
+		DomElement result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomElement>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCreateElement_Handle, arg)) : Runtime.GetNSObject<DomElement>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCreateElement_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("createElementNS:qualifiedName:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomElement CreateElementNS(string namespaceURI, string qualifiedName)
 	{
 		if (namespaceURI == null)
 		{
 			throw new ArgumentNullException("namespaceURI");
 		}
-		if (localName == null)
+		if (qualifiedName == null)
 		{
-			throw new ArgumentNullException("localName");
+			throw new ArgumentNullException("qualifiedName");
 		}
 		IntPtr arg = NSString.CreateNative(namespaceURI);
-		IntPtr arg2 = NSString.CreateNative(localName);
-		DomNodeList result = ((!IsDirectBinding) ? ((DomNodeList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selGetElementsByTagNameNSLocalName_Handle, arg, arg2))) : ((DomNodeList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selGetElementsByTagNameNSLocalName_Handle, arg, arg2))));
+		IntPtr arg2 = NSString.CreateNative(qualifiedName);
+		DomElement result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomElement>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selCreateElementNS_QualifiedName_Handle, arg, arg2)) : Runtime.GetNSObject<DomElement>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selCreateElementNS_QualifiedName_Handle, arg, arg2)));
 		NSString.ReleaseNative(arg);
 		NSString.ReleaseNative(arg2);
 		return result;
 	}
 
-	[Export("getElementById:")]
-	public virtual DomElement GetElementById(string elementId)
+	[Export("createEntityReference:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomEntityReference CreateEntityReference(string name)
 	{
-		if (elementId == null)
+		if (name == null)
 		{
-			throw new ArgumentNullException("elementId");
+			throw new ArgumentNullException("name");
 		}
-		IntPtr arg = NSString.CreateNative(elementId);
-		DomElement result = ((!IsDirectBinding) ? ((DomElement)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selGetElementById_Handle, arg))) : ((DomElement)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selGetElementById_Handle, arg))));
+		IntPtr arg = NSString.CreateNative(name);
+		DomEntityReference result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomEntityReference>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCreateEntityReference_Handle, arg)) : Runtime.GetNSObject<DomEntityReference>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCreateEntityReference_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
-	[Export("adoptNode:")]
-	public virtual DomNode AdoptNode(DomNode source)
+	[Export("createEvent:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomEvent CreateEvent(string eventType)
 	{
-		if (source == null)
+		if (eventType == null)
 		{
-			throw new ArgumentNullException("source");
+			throw new ArgumentNullException("eventType");
 		}
-		if (IsDirectBinding)
+		IntPtr arg = NSString.CreateNative(eventType);
+		DomEvent result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomEvent>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCreateEvent_Handle, arg)) : Runtime.GetNSObject<DomEvent>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCreateEvent_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("createNodeIterator:whatToShow:filter:expandEntityReferences:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomNodeIterator CreateNodeIterator(DomNode root, uint whatToShow, IDomNodeFilter filter, bool expandEntityReferences)
+	{
+		if (root == null)
 		{
-			return (DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAdoptNode_Handle, source.Handle));
+			throw new ArgumentNullException("root");
 		}
-		return (DomNode)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAdoptNode_Handle, source.Handle));
+		if (filter == null)
+		{
+			throw new ArgumentNullException("filter");
+		}
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<DomNodeIterator>(Messaging.IntPtr_objc_msgSend_IntPtr_UInt32_IntPtr_bool(base.Handle, selCreateNodeIterator_WhatToShow_Filter_ExpandEntityReferences_Handle, root.Handle, whatToShow, filter.Handle, expandEntityReferences));
+		}
+		return Runtime.GetNSObject<DomNodeIterator>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_UInt32_IntPtr_bool(base.SuperHandle, selCreateNodeIterator_WhatToShow_Filter_ExpandEntityReferences_Handle, root.Handle, whatToShow, filter.Handle, expandEntityReferences));
+	}
+
+	[Export("createProcessingInstruction:data:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomProcessingInstruction CreateProcessingInstruction(string target, string data)
+	{
+		if (target == null)
+		{
+			throw new ArgumentNullException("target");
+		}
+		if (data == null)
+		{
+			throw new ArgumentNullException("data");
+		}
+		IntPtr arg = NSString.CreateNative(target);
+		IntPtr arg2 = NSString.CreateNative(data);
+		DomProcessingInstruction result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomProcessingInstruction>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selCreateProcessingInstruction_Data_Handle, arg, arg2)) : Runtime.GetNSObject<DomProcessingInstruction>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selCreateProcessingInstruction_Data_Handle, arg, arg2)));
+		NSString.ReleaseNative(arg);
+		NSString.ReleaseNative(arg2);
+		return result;
 	}
 
 	[Export("createRange")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomRange CreateRange()
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			return (DomRange)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCreateRangeHandle));
+			return Runtime.GetNSObject<DomRange>(Messaging.IntPtr_objc_msgSend(base.Handle, selCreateRangeHandle));
 		}
-		return (DomRange)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCreateRangeHandle));
+		return Runtime.GetNSObject<DomRange>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCreateRangeHandle));
 	}
 
-	[Export("getOverrideStyle:pseudoElement:")]
-	public virtual DomCssStyleDeclaration GetOverrideStyle(DomElement element, string pseudoElement)
+	[Export("createTextNode:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomText CreateTextNode(string data)
 	{
-		if (element == null)
+		if (data == null)
 		{
-			throw new ArgumentNullException("element");
+			throw new ArgumentNullException("data");
 		}
-		if (pseudoElement == null)
-		{
-			throw new ArgumentNullException("pseudoElement");
-		}
-		IntPtr arg = NSString.CreateNative(pseudoElement);
-		DomCssStyleDeclaration result = ((!IsDirectBinding) ? ((DomCssStyleDeclaration)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selGetOverrideStylePseudoElement_Handle, element.Handle, arg))) : ((DomCssStyleDeclaration)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selGetOverrideStylePseudoElement_Handle, element.Handle, arg))));
+		IntPtr arg = NSString.CreateNative(data);
+		DomText result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomText>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCreateTextNode_Handle, arg)) : Runtime.GetNSObject<DomText>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCreateTextNode_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
+	[Export("elementFromPoint:y:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomElement ElementFromPoint(int x, int y)
+	{
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<DomElement>(Messaging.IntPtr_objc_msgSend_int_int(base.Handle, selElementFromPoint_Y_Handle, x, y));
+		}
+		return Runtime.GetNSObject<DomElement>(Messaging.IntPtr_objc_msgSendSuper_int_int(base.SuperHandle, selElementFromPoint_Y_Handle, x, y));
+	}
+
 	[Export("execCommand:userInterface:value:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool ExecCommand(string command, bool userInterface, string value)
 	{
 		if (command == null)
@@ -916,13 +1166,14 @@ public class DomDocument : DomNode
 		}
 		IntPtr arg = NSString.CreateNative(command);
 		IntPtr arg2 = NSString.CreateNative(value);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_bool_IntPtr(base.SuperHandle, selExecCommandUserInterfaceValue_Handle, arg, userInterface, arg2) : Messaging.bool_objc_msgSend_IntPtr_bool_IntPtr(base.Handle, selExecCommandUserInterfaceValue_Handle, arg, userInterface, arg2));
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_bool_IntPtr(base.SuperHandle, selExecCommand_UserInterface_Value_Handle, arg, userInterface, arg2) : Messaging.bool_objc_msgSend_IntPtr_bool_IntPtr(base.Handle, selExecCommand_UserInterface_Value_Handle, arg, userInterface, arg2));
 		NSString.ReleaseNative(arg);
 		NSString.ReleaseNative(arg2);
 		return result;
 	}
 
 	[Export("execCommand:userInterface:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool ExecCommand(string command, bool userInterface)
 	{
 		if (command == null)
@@ -930,12 +1181,13 @@ public class DomDocument : DomNode
 			throw new ArgumentNullException("command");
 		}
 		IntPtr arg = NSString.CreateNative(command);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selExecCommandUserInterface_Handle, arg, userInterface) : Messaging.bool_objc_msgSend_IntPtr_bool(base.Handle, selExecCommandUserInterface_Handle, arg, userInterface));
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selExecCommand_UserInterface_Handle, arg, userInterface) : Messaging.bool_objc_msgSend_IntPtr_bool(base.Handle, selExecCommand_UserInterface_Handle, arg, userInterface));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
 	[Export("execCommand:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool ExecCommand(string command)
 	{
 		if (command == null)
@@ -943,110 +1195,13 @@ public class DomDocument : DomNode
 			throw new ArgumentNullException("command");
 		}
 		IntPtr arg = NSString.CreateNative(command);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selExecCommand_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selExecCommand_Handle, arg));
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selExecCommand_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selExecCommand_Handle, arg));
 		NSString.ReleaseNative(arg);
 		return result;
-	}
-
-	[Export("queryCommandEnabled:")]
-	public virtual bool QueryCommandEnabled(string command)
-	{
-		if (command == null)
-		{
-			throw new ArgumentNullException("command");
-		}
-		IntPtr arg = NSString.CreateNative(command);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selQueryCommandEnabled_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selQueryCommandEnabled_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("queryCommandIndeterm:")]
-	public virtual bool QueryCommandIndeterm(string command)
-	{
-		if (command == null)
-		{
-			throw new ArgumentNullException("command");
-		}
-		IntPtr arg = NSString.CreateNative(command);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selQueryCommandIndeterm_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selQueryCommandIndeterm_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("queryCommandState:")]
-	public virtual bool QueryCommandState(string command)
-	{
-		if (command == null)
-		{
-			throw new ArgumentNullException("command");
-		}
-		IntPtr arg = NSString.CreateNative(command);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selQueryCommandState_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selQueryCommandState_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("queryCommandSupported:")]
-	public virtual bool QueryCommandSupported(string command)
-	{
-		if (command == null)
-		{
-			throw new ArgumentNullException("command");
-		}
-		IntPtr arg = NSString.CreateNative(command);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selQueryCommandSupported_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selQueryCommandSupported_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("queryCommandValue:")]
-	public virtual string QueryCommandValue(string command)
-	{
-		if (command == null)
-		{
-			throw new ArgumentNullException("command");
-		}
-		IntPtr arg = NSString.CreateNative(command);
-		string result = ((!IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selQueryCommandValue_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selQueryCommandValue_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("getElementsByName:")]
-	public virtual DomNodeList GetElementsByName(string elementName)
-	{
-		if (elementName == null)
-		{
-			throw new ArgumentNullException("elementName");
-		}
-		IntPtr arg = NSString.CreateNative(elementName);
-		DomNodeList result = ((!IsDirectBinding) ? ((DomNodeList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selGetElementsByName_Handle, arg))) : ((DomNodeList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selGetElementsByName_Handle, arg))));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("elementFromPoint:y:")]
-	public virtual DomElement ElementFromPoint(int x, int y)
-	{
-		if (IsDirectBinding)
-		{
-			return (DomElement)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_int_int(base.Handle, selElementFromPointY_Handle, x, y));
-		}
-		return (DomElement)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_int_int(base.SuperHandle, selElementFromPointY_Handle, x, y));
-	}
-
-	[Export("createCSSStyleDeclaration")]
-	public virtual DomCssStyleDeclaration CreateCssStyleDeclaration()
-	{
-		if (IsDirectBinding)
-		{
-			return (DomCssStyleDeclaration)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCreateCSSStyleDeclarationHandle));
-		}
-		return (DomCssStyleDeclaration)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCreateCSSStyleDeclarationHandle));
 	}
 
 	[Export("getComputedStyle:pseudoElement:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomCssStyleDeclaration GetComputedStyle(DomElement element, string pseudoElement)
 	{
 		if (element == null)
@@ -1058,12 +1213,89 @@ public class DomDocument : DomNode
 			throw new ArgumentNullException("pseudoElement");
 		}
 		IntPtr arg = NSString.CreateNative(pseudoElement);
-		DomCssStyleDeclaration result = ((!IsDirectBinding) ? ((DomCssStyleDeclaration)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selGetComputedStylePseudoElement_Handle, element.Handle, arg))) : ((DomCssStyleDeclaration)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selGetComputedStylePseudoElement_Handle, element.Handle, arg))));
+		DomCssStyleDeclaration result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomCssStyleDeclaration>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selGetComputedStyle_PseudoElement_Handle, element.Handle, arg)) : Runtime.GetNSObject<DomCssStyleDeclaration>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selGetComputedStyle_PseudoElement_Handle, element.Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
+	[Export("getElementById:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomElement GetElementById(string elementId)
+	{
+		if (elementId == null)
+		{
+			throw new ArgumentNullException("elementId");
+		}
+		IntPtr arg = NSString.CreateNative(elementId);
+		DomElement result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomElement>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selGetElementById_Handle, arg)) : Runtime.GetNSObject<DomElement>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selGetElementById_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("getElementsByClassName:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomNodeList GetElementsByClassName(string tagname)
+	{
+		if (tagname == null)
+		{
+			throw new ArgumentNullException("tagname");
+		}
+		IntPtr arg = NSString.CreateNative(tagname);
+		DomNodeList result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomNodeList>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selGetElementsByClassName_Handle, arg)) : Runtime.GetNSObject<DomNodeList>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selGetElementsByClassName_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("getElementsByName:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomNodeList GetElementsByName(string elementName)
+	{
+		if (elementName == null)
+		{
+			throw new ArgumentNullException("elementName");
+		}
+		IntPtr arg = NSString.CreateNative(elementName);
+		DomNodeList result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomNodeList>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selGetElementsByName_Handle, arg)) : Runtime.GetNSObject<DomNodeList>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selGetElementsByName_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("getElementsByTagName:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomNodeList GetElementsByTagName(string tagname)
+	{
+		if (tagname == null)
+		{
+			throw new ArgumentNullException("tagname");
+		}
+		IntPtr arg = NSString.CreateNative(tagname);
+		DomNodeList result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomNodeList>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selGetElementsByTagName_Handle, arg)) : Runtime.GetNSObject<DomNodeList>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selGetElementsByTagName_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("getElementsByTagNameNS:localName:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomNodeList GetElementsByTagNameNS(string namespaceURI, string localName)
+	{
+		if (namespaceURI == null)
+		{
+			throw new ArgumentNullException("namespaceURI");
+		}
+		if (localName == null)
+		{
+			throw new ArgumentNullException("localName");
+		}
+		IntPtr arg = NSString.CreateNative(namespaceURI);
+		IntPtr arg2 = NSString.CreateNative(localName);
+		DomNodeList result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomNodeList>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selGetElementsByTagNameNS_LocalName_Handle, arg, arg2)) : Runtime.GetNSObject<DomNodeList>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selGetElementsByTagNameNS_LocalName_Handle, arg, arg2)));
+		NSString.ReleaseNative(arg);
+		NSString.ReleaseNative(arg2);
+		return result;
+	}
+
 	[Export("getMatchedCSSRules:pseudoElement:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomCssRuleList GetMatchedCSSRules(DomElement element, string pseudoElement)
 	{
 		if (element == null)
@@ -1075,12 +1307,13 @@ public class DomDocument : DomNode
 			throw new ArgumentNullException("pseudoElement");
 		}
 		IntPtr arg = NSString.CreateNative(pseudoElement);
-		DomCssRuleList result = ((!IsDirectBinding) ? ((DomCssRuleList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selGetMatchedCSSRulesPseudoElement_Handle, element.Handle, arg))) : ((DomCssRuleList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selGetMatchedCSSRulesPseudoElement_Handle, element.Handle, arg))));
+		DomCssRuleList result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomCssRuleList>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selGetMatchedCSSRules_PseudoElement_Handle, element.Handle, arg)) : Runtime.GetNSObject<DomCssRuleList>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selGetMatchedCSSRules_PseudoElement_Handle, element.Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
 	[Export("getMatchedCSSRules:pseudoElement:authorOnly:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomCssRuleList GetMatchedCSSRules(DomElement element, string pseudoElement, bool authorOnly)
 	{
 		if (element == null)
@@ -1092,25 +1325,116 @@ public class DomDocument : DomNode
 			throw new ArgumentNullException("pseudoElement");
 		}
 		IntPtr arg = NSString.CreateNative(pseudoElement);
-		DomCssRuleList result = ((!IsDirectBinding) ? ((DomCssRuleList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_bool(base.SuperHandle, selGetMatchedCSSRulesPseudoElementAuthorOnly_Handle, element.Handle, arg, authorOnly))) : ((DomCssRuleList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_bool(base.Handle, selGetMatchedCSSRulesPseudoElementAuthorOnly_Handle, element.Handle, arg, authorOnly))));
+		DomCssRuleList result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomCssRuleList>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_bool(base.SuperHandle, selGetMatchedCSSRules_PseudoElement_AuthorOnly_Handle, element.Handle, arg, authorOnly)) : Runtime.GetNSObject<DomCssRuleList>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_bool(base.Handle, selGetMatchedCSSRules_PseudoElement_AuthorOnly_Handle, element.Handle, arg, authorOnly)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
-	[Export("getElementsByClassName:")]
-	public virtual DomNodeList GetElementsByClassName(string tagname)
+	[Export("getOverrideStyle:pseudoElement:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomCssStyleDeclaration GetOverrideStyle(DomElement element, string pseudoElement)
 	{
-		if (tagname == null)
+		if (element == null)
 		{
-			throw new ArgumentNullException("tagname");
+			throw new ArgumentNullException("element");
 		}
-		IntPtr arg = NSString.CreateNative(tagname);
-		DomNodeList result = ((!IsDirectBinding) ? ((DomNodeList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selGetElementsByClassName_Handle, arg))) : ((DomNodeList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selGetElementsByClassName_Handle, arg))));
+		if (pseudoElement == null)
+		{
+			throw new ArgumentNullException("pseudoElement");
+		}
+		IntPtr arg = NSString.CreateNative(pseudoElement);
+		DomCssStyleDeclaration result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomCssStyleDeclaration>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selGetOverrideStyle_PseudoElement_Handle, element.Handle, arg)) : Runtime.GetNSObject<DomCssStyleDeclaration>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selGetOverrideStyle_PseudoElement_Handle, element.Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("importNode:deep:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomNode ImportNode(DomNode importedNode, bool deep)
+	{
+		if (importedNode == null)
+		{
+			throw new ArgumentNullException("importedNode");
+		}
+		if (base.IsDirectBinding)
+		{
+			return Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSend_IntPtr_bool(base.Handle, selImportNode_Deep_Handle, importedNode.Handle, deep));
+		}
+		return Runtime.GetNSObject<DomNode>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selImportNode_Deep_Handle, importedNode.Handle, deep));
+	}
+
+	[Export("queryCommandEnabled:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool QueryCommandEnabled(string command)
+	{
+		if (command == null)
+		{
+			throw new ArgumentNullException("command");
+		}
+		IntPtr arg = NSString.CreateNative(command);
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selQueryCommandEnabled_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selQueryCommandEnabled_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("queryCommandIndeterm:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool QueryCommandIndeterm(string command)
+	{
+		if (command == null)
+		{
+			throw new ArgumentNullException("command");
+		}
+		IntPtr arg = NSString.CreateNative(command);
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selQueryCommandIndeterm_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selQueryCommandIndeterm_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("queryCommandState:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool QueryCommandState(string command)
+	{
+		if (command == null)
+		{
+			throw new ArgumentNullException("command");
+		}
+		IntPtr arg = NSString.CreateNative(command);
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selQueryCommandState_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selQueryCommandState_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("queryCommandSupported:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool QueryCommandSupported(string command)
+	{
+		if (command == null)
+		{
+			throw new ArgumentNullException("command");
+		}
+		IntPtr arg = NSString.CreateNative(command);
+		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selQueryCommandSupported_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selQueryCommandSupported_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("queryCommandValue:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string QueryCommandValue(string command)
+	{
+		if (command == null)
+		{
+			throw new ArgumentNullException("command");
+		}
+		IntPtr arg = NSString.CreateNative(command);
+		string result = ((!base.IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selQueryCommandValue_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selQueryCommandValue_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
 	[Export("querySelector:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomElement QuerySelector(string selectors)
 	{
 		if (selectors == null)
@@ -1118,12 +1442,13 @@ public class DomDocument : DomNode
 			throw new ArgumentNullException("selectors");
 		}
 		IntPtr arg = NSString.CreateNative(selectors);
-		DomElement result = ((!IsDirectBinding) ? ((DomElement)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selQuerySelector_Handle, arg))) : ((DomElement)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selQuerySelector_Handle, arg))));
+		DomElement result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomElement>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selQuerySelector_Handle, arg)) : Runtime.GetNSObject<DomElement>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selQuerySelector_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
 	[Export("querySelectorAll:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomNodeList QuerySelectorAll(string selectors)
 	{
 		if (selectors == null)
@@ -1131,27 +1456,8 @@ public class DomDocument : DomNode
 			throw new ArgumentNullException("selectors");
 		}
 		IntPtr arg = NSString.CreateNative(selectors);
-		DomNodeList result = ((!IsDirectBinding) ? ((DomNodeList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selQuerySelectorAll_Handle, arg))) : ((DomNodeList)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selQuerySelectorAll_Handle, arg))));
+		DomNodeList result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<DomNodeList>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selQuerySelectorAll_Handle, arg)) : Runtime.GetNSObject<DomNodeList>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selQuerySelectorAll_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_DocumentType_var = null;
-			__mt_Implementation_var = null;
-			__mt_DocumentElement_var = null;
-			__mt_DefaultView_var = null;
-			__mt_StyleSheets_var = null;
-			__mt_body_var = null;
-			__mt_images_var = null;
-			__mt_applets_var = null;
-			__mt_links_var = null;
-			__mt_forms_var = null;
-			__mt_anchors_var = null;
-		}
 	}
 }

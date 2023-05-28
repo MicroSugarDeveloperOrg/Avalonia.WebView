@@ -1,5 +1,6 @@
 using CoreFoundation;
 using Foundation;
+using ImageIO;
 
 namespace CoreImage;
 
@@ -12,6 +13,12 @@ public class CIAutoAdjustmentFilterOptions
 	public CIFeature[] Features;
 
 	public CIImageOrientation? ImageOrientation;
+
+	[iOS(8, 0)]
+	public bool? AutoAdjustCrop;
+
+	[iOS(8, 0)]
+	public bool? AutoAdjustLevel;
 
 	internal NSDictionary ToDictionary()
 	{
@@ -32,6 +39,14 @@ public class CIAutoAdjustmentFilterOptions
 		{
 			num++;
 		}
+		if (AutoAdjustCrop.HasValue && AutoAdjustCrop.Value)
+		{
+			num++;
+		}
+		if (AutoAdjustLevel.HasValue && AutoAdjustLevel.Value)
+		{
+			num++;
+		}
 		if (num == 0)
 		{
 			return null;
@@ -39,19 +54,28 @@ public class CIAutoAdjustmentFilterOptions
 		NSMutableDictionary nSMutableDictionary = new NSMutableDictionary();
 		if (Enhance.HasValue && !Enhance.Value)
 		{
-			nSMutableDictionary.LowlevelSetObject(CFBoolean.False.Handle, CIImage.AutoAdjustEnhanceKey.Handle);
+			nSMutableDictionary.LowlevelSetObject(CFBoolean.FalseHandle, CIImage.AutoAdjustEnhanceKey.Handle);
 		}
 		if (RedEye.HasValue && !RedEye.Value)
 		{
-			nSMutableDictionary.LowlevelSetObject(CFBoolean.False.Handle, CIImage.AutoAdjustRedEyeKey.Handle);
+			nSMutableDictionary.LowlevelSetObject(CFBoolean.FalseHandle, CIImage.AutoAdjustRedEyeKey.Handle);
 		}
 		if (Features != null && Features.Length != 0)
 		{
-			nSMutableDictionary.LowlevelSetObject(NSArray.FromObjects(Features), CIImage.AutoAdjustFeaturesKey.Handle);
+			object[] features = Features;
+			nSMutableDictionary.LowlevelSetObject(NSArray.FromObjects(features), CIImage.AutoAdjustFeaturesKey.Handle);
 		}
 		if (ImageOrientation.HasValue)
 		{
-			nSMutableDictionary.LowlevelSetObject(new NSNumber((int)ImageOrientation.Value), CIImage.ImagePropertyOrientation.Handle);
+			nSMutableDictionary.LowlevelSetObject(new NSNumber((int)ImageOrientation.Value), CGImageProperties.Orientation.Handle);
+		}
+		if (AutoAdjustCrop.HasValue && AutoAdjustCrop.Value)
+		{
+			nSMutableDictionary.LowlevelSetObject(CFBoolean.TrueHandle, CIImage.AutoAdjustCrop.Handle);
+		}
+		if (AutoAdjustLevel.HasValue && AutoAdjustLevel.Value)
+		{
+			nSMutableDictionary.LowlevelSetObject(CFBoolean.TrueHandle, CIImage.AutoAdjustLevel.Handle);
 		}
 		return nSMutableDictionary;
 	}

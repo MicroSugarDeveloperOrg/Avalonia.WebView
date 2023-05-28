@@ -1,38 +1,39 @@
 using System;
+using Foundation;
 using ObjCRuntime;
 
 namespace Security;
 
 internal static class SecClass
 {
-	public static IntPtr SecClassKey;
+	[Field("kSecClassCertificate", "Security")]
+	public static IntPtr Certificate => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecClassCertificate");
 
-	public static IntPtr GenericPassword;
+	[Field("kSecClassGenericPassword", "Security")]
+	public static IntPtr GenericPassword => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecClassGenericPassword");
 
-	public static IntPtr InternetPassword;
+	[Field("kSecClassIdentity", "Security")]
+	public static IntPtr Identity => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecClassIdentity");
 
-	public static IntPtr Certificate;
+	[Field("kSecClassInternetPassword", "Security")]
+	public static IntPtr InternetPassword => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecClassInternetPassword");
 
-	public static IntPtr Key;
+	[Field("kSecClassKey", "Security")]
+	public static IntPtr Key => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecClassKey");
 
-	public static IntPtr Identity;
-
-	static SecClass()
-	{
-		SecClassKey = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecClass");
-		GenericPassword = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecClassGenericPassword");
-		InternetPassword = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecClassInternetPassword");
-		Certificate = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecClassCertificate");
-		Key = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecClassKey");
-		Identity = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecClassIdentity");
-	}
+	[Field("kSecClass", "Security")]
+	public static IntPtr SecClassKey => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecClass");
 
 	public static IntPtr FromSecKind(SecKind secKind)
 	{
-		if (secKind == SecKind.InternetPassword)
+		return secKind switch
 		{
-			return InternetPassword;
-		}
-		throw new ArgumentException("secKind");
+			SecKind.InternetPassword => InternetPassword, 
+			SecKind.GenericPassword => GenericPassword, 
+			SecKind.Certificate => Certificate, 
+			SecKind.Key => Key, 
+			SecKind.Identity => Identity, 
+			_ => throw new ArgumentException("secKind"), 
+		};
 	}
 }

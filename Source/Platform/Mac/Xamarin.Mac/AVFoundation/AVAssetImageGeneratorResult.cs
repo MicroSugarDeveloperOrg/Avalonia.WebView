@@ -6,7 +6,7 @@ namespace AVFoundation;
 [Native]
 public enum AVAssetImageGeneratorResult : long
 {
-    Succeeded,
-    Failed,
-    Cancelled
+	Succeeded,
+	Failed,
+	Cancelled
 }

@@ -14,5 +14,6 @@ public enum AudioConverterError
 	InputSampleRateOutOfRange = 560558962,
 	OutputSampleRateOutOfRange = 560952178,
 	HardwareInUse = 1752656245,
-	NoHardwarePermission = 1885696621
+	NoHardwarePermission = 1885696621,
+	AudioFormatUnsupported = 560226676
 }

@@ -1,9 +1,12 @@
 using System;
+using ObjCRuntime;
 
 namespace CoreVideo;
 
 [Flags]
-public enum CVPixelBufferLock
+[Watch(4, 0)]
+public enum CVPixelBufferLock : uint
 {
-	ReadOnly = 1
+	None = 0u,
+	ReadOnly = 1u
 }

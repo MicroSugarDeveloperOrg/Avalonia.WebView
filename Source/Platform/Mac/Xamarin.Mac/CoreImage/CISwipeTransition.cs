@@ -1,28 +1,18 @@
 using System;
+using System.ComponentModel;
+using Foundation;
 using ObjCRuntime;
 
 namespace CoreImage;
 
-[Since(6, 0)]
 public class CISwipeTransition : CITransitionFilter
 {
-	public float Angle
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public CIColor? Color
 	{
 		get
 		{
-			return GetFloat("inputAngle");
-		}
-		set
-		{
-			SetFloat("inputAngle", value);
-		}
-	}
-
-	public CIColor Color
-	{
-		get
-		{
-			return GetColor("inputColor");
+			return ValueForKey("inputColor") as CIColor;
 		}
 		set
 		{
@@ -30,30 +20,7 @@ public class CISwipeTransition : CITransitionFilter
 		}
 	}
 
-	public CIVector Extent
-	{
-		get
-		{
-			return GetVector("inputExtent");
-		}
-		set
-		{
-			SetValue("inputExtent", value);
-		}
-	}
-
-	public float Opacity
-	{
-		get
-		{
-			return GetFloat("inputOpacity");
-		}
-		set
-		{
-			SetFloat("inputOpacity", value);
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public float Width
 	{
 		get
@@ -66,13 +33,74 @@ public class CISwipeTransition : CITransitionFilter
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public float Opacity
+	{
+		get
+		{
+			return GetFloat("inputOpacity");
+		}
+		set
+		{
+			SetFloat("inputOpacity", value);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public float Angle
+	{
+		get
+		{
+			return GetFloat("inputAngle");
+		}
+		set
+		{
+			SetFloat("inputAngle", value);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public CIVector? Extent
+	{
+		get
+		{
+			return ValueForKey("inputExtent") as CIVector;
+		}
+		set
+		{
+			SetValue("inputExtent", value);
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public CISwipeTransition()
 		: base("CISwipeTransition")
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public CISwipeTransition(IntPtr handle)
 		: base(handle)
 	{
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	protected CISwipeTransition(NSObjectFlag t)
+		: base(t)
+	{
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	[Export("initWithCoder:")]
+	public CISwipeTransition(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (coder == null)
+		{
+			throw new ArgumentNullException("coder");
+		}
+		InitializeHandle((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.GetHandle("initWithCoder:"), coder.Handle) : Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.GetHandle("initWithCoder:"), coder.Handle), "initWithCoder:");
 	}
 }

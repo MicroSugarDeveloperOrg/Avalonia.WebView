@@ -6,91 +6,65 @@ using ObjCRuntime;
 namespace WebKit;
 
 [Register("DOMDocumentType", true)]
+[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
 public class DomDocumentType : DomNode
 {
-	private static readonly IntPtr selNameHandle = Selector.GetHandle("name");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selEntities = "entities";
 
 	private static readonly IntPtr selEntitiesHandle = Selector.GetHandle("entities");
 
-	private static readonly IntPtr selNotationsHandle = Selector.GetHandle("notations");
-
-	private static readonly IntPtr selPublicIdHandle = Selector.GetHandle("publicId");
-
-	private static readonly IntPtr selSystemIdHandle = Selector.GetHandle("systemId");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selInternalSubset = "internalSubset";
 
 	private static readonly IntPtr selInternalSubsetHandle = Selector.GetHandle("internalSubset");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("DOMDocumentType");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selName = "name";
 
-	private object __mt_Entities_var;
+	private static readonly IntPtr selNameHandle = Selector.GetHandle("name");
 
-	private object __mt_Notations_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selNotations = "notations";
+
+	private static readonly IntPtr selNotationsHandle = Selector.GetHandle("notations");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPublicId = "publicId";
+
+	private static readonly IntPtr selPublicIdHandle = Selector.GetHandle("publicId");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSystemId = "systemId";
+
+	private static readonly IntPtr selSystemIdHandle = Selector.GetHandle("systemId");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("DOMDocumentType");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public new virtual string Name
-	{
-		[Export("name")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNameHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNameHandle));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomNamedNodeMap Entities
 	{
-		[Export("entities")]
+		[Export("entities", ArgumentSemantic.Retain)]
 		get
 		{
-			return (DomNamedNodeMap)(__mt_Entities_var = ((!IsDirectBinding) ? ((DomNamedNodeMap)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntitiesHandle))) : ((DomNamedNodeMap)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selEntitiesHandle)))));
-		}
-	}
-
-	public virtual DomNamedNodeMap Notations
-	{
-		[Export("notations")]
-		get
-		{
-			return (DomNamedNodeMap)(__mt_Notations_var = ((!IsDirectBinding) ? ((DomNamedNodeMap)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNotationsHandle))) : ((DomNamedNodeMap)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selNotationsHandle)))));
-		}
-	}
-
-	public virtual string PublicId
-	{
-		[Export("publicId")]
-		get
-		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPublicIdHandle));
+				return Runtime.GetNSObject<DomNamedNodeMap>(Messaging.IntPtr_objc_msgSend(base.Handle, selEntitiesHandle));
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPublicIdHandle));
+			return Runtime.GetNSObject<DomNamedNodeMap>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntitiesHandle));
 		}
 	}
 
-	public virtual string SystemId
-	{
-		[Export("systemId")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSystemIdHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSystemIdHandle));
-		}
-	}
-
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string InternalSubset
 	{
-		[Export("internalSubset")]
+		[Export("internalSubset", ArgumentSemantic.Copy)]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selInternalSubsetHandle));
 			}
@@ -98,40 +72,73 @@ public class DomDocumentType : DomNode
 		}
 	}
 
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public DomDocumentType(NSCoder coder)
-		: base(NSObjectFlag.Empty)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public new virtual string Name
 	{
-		if (IsDirectBinding)
+		[Export("name", ArgumentSemantic.Copy)]
+		get
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNameHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNameHandle));
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual DomNamedNodeMap Notations
+	{
+		[Export("notations", ArgumentSemantic.Retain)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<DomNamedNodeMap>(Messaging.IntPtr_objc_msgSend(base.Handle, selNotationsHandle));
+			}
+			return Runtime.GetNSObject<DomNamedNodeMap>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNotationsHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string PublicId
+	{
+		[Export("publicId", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPublicIdHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPublicIdHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string SystemId
+	{
+		[Export("systemId", ArgumentSemantic.Copy)]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSystemIdHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSystemIdHandle));
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public DomDocumentType(NSObjectFlag t)
+	protected DomDocumentType(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public DomDocumentType(IntPtr handle)
+	protected internal DomDocumentType(IntPtr handle)
 		: base(handle)
 	{
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_Entities_var = null;
-			__mt_Notations_var = null;
-		}
 	}
 }

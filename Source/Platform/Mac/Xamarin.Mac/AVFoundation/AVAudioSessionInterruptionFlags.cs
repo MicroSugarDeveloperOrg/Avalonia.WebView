@@ -3,9 +3,10 @@ using ObjCRuntime;
 
 namespace AVFoundation;
 
+[Deprecated(PlatformName.iOS, 6, 0, PlatformArchitecture.None, null)]
 [Flags]
-[Since(4, 0)]
-public enum AVAudioSessionInterruptionFlags
+[Native]
+public enum AVAudioSessionInterruptionFlags : ulong
 {
-	ShouldResume = 1
+	ShouldResume = 1uL
 }

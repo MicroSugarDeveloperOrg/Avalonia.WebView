@@ -4,13 +4,13 @@ namespace AppKit;
 
 public class NSTableViewRowEventArgs : EventArgs
 {
+	public nint Row { get; set; }
+
 	public NSTableRowView RowView { get; set; }
 
-	public long Row { get; set; }
-
-	public NSTableViewRowEventArgs(NSTableRowView rowView, long row)
+	public NSTableViewRowEventArgs(NSTableRowView rowView, nint row)
 	{
-		RowView = rowView;
 		Row = row;
+		RowView = rowView;
 	}
 }

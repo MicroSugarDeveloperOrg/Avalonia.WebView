@@ -1,5 +1,6 @@
-﻿using OpenTK;
+using System;
 using System.Runtime.InteropServices;
+using OpenTK;
 
 namespace MetalPerformanceShaders;
 
@@ -7,15 +8,15 @@ namespace MetalPerformanceShaders;
 [Mac(10, 13)]
 public struct MPSImageHistogramInfo
 {
-    [FieldOffset(0)]
-    public nuint NumberOfHistogramEntries;
+	[FieldOffset(0)]
+	public nuint NumberOfHistogramEntries;
 
-    [FieldOffset(8)]
-    public bool HistogramForAlpha;
+	[FieldOffset(8)]
+	public bool HistogramForAlpha;
 
-    [FieldOffset(16)]
-    public Vector4 MinPixelValue;
+	[FieldOffset(16)]
+	public Vector4 MinPixelValue;
 
-    [FieldOffset(32)]
-    public Vector4 MaxPixelValue;
+	[FieldOffset(32)]
+	public Vector4 MaxPixelValue;
 }

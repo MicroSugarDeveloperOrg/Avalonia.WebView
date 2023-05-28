@@ -1,12 +1,10 @@
 using Foundation;
 using ImageIO;
-using ObjCRuntime;
 
 namespace CoreGraphics;
 
 public class CGImagePropertiesPng : DictionaryContainer
 {
-	[Since(5, 0)]
 	public string Author
 	{
 		get
@@ -19,7 +17,6 @@ public class CGImagePropertiesPng : DictionaryContainer
 		}
 	}
 
-	[Since(5, 0)]
 	public string Description
 	{
 		get
@@ -44,7 +41,6 @@ public class CGImagePropertiesPng : DictionaryContainer
 		}
 	}
 
-	[Since(5, 0)]
 	public string Software
 	{
 		get
@@ -81,7 +77,6 @@ public class CGImagePropertiesPng : DictionaryContainer
 		}
 	}
 
-	[Since(5, 0)]
 	public string Title
 	{
 		get

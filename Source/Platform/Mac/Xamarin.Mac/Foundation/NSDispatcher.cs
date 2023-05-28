@@ -1,19 +1,19 @@
-﻿using ObjCRuntime;
+using ObjCRuntime;
 
 namespace Foundation;
 
 internal abstract class NSDispatcher : NSObject
 {
-    public const string SelectorName = "xamarinApplySelector";
+	public const string SelectorName = "xamarinApplySelector";
 
-    public static readonly Selector Selector = new Selector("xamarinApplySelector");
+	public static readonly Selector Selector = new Selector("xamarinApplySelector");
 
-    protected NSDispatcher()
-    {
-        base.IsDirectBinding = false;
-    }
+	protected NSDispatcher()
+	{
+		base.IsDirectBinding = false;
+	}
 
-    [Export("xamarinApplySelector")]
-    [Preserve(Conditional = true)]
-    public abstract void Apply();
+	[Export("xamarinApplySelector")]
+	[Preserve(Conditional = true)]
+	public abstract void Apply();
 }

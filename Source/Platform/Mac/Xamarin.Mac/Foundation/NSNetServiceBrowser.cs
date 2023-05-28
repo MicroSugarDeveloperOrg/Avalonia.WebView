@@ -1,76 +1,39 @@
 using System;
 using System.ComponentModel;
+using AppKit;
 using ObjCRuntime;
 
 namespace Foundation;
 
 [Register("NSNetServiceBrowser", true)]
+[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
 public class NSNetServiceBrowser : NSObject
 {
 	[Register]
-	private sealed class _NSNetServiceBrowserDelegate : NSNetServiceBrowserDelegate
+	internal class _NSNetServiceBrowserDelegate : NSObject, INSNetServiceBrowserDelegate, INativeObject, IDisposable
 	{
-		internal EventHandler searchStarted;
+		internal EventHandler<NSNetDomainEventArgs>? domainRemoved;
 
-		internal EventHandler searchStopped;
+		internal EventHandler<NSNetDomainEventArgs>? foundDomain;
 
-		internal EventHandler<NSNetServiceErrorEventArgs> notSearched;
+		internal EventHandler<NSNetServiceEventArgs>? foundService;
 
-		internal EventHandler<NSNetDomainEventArgs> foundDomain;
+		internal EventHandler<NSNetServiceErrorEventArgs>? notSearched;
 
-		internal EventHandler<NSNetServiceEventArgs> foundService;
+		internal EventHandler? searchStarted;
 
-		internal EventHandler<NSNetDomainEventArgs> domainRemoved;
+		internal EventHandler? searchStopped;
 
-		internal EventHandler<NSNetServiceEventArgs> serviceRemoved;
+		internal EventHandler<NSNetServiceEventArgs>? serviceRemoved;
 
-		[Preserve(Conditional = true)]
-		public override void SearchStarted(NSNetServiceBrowser sender)
+		public _NSNetServiceBrowserDelegate()
 		{
-			searchStarted?.Invoke(sender, EventArgs.Empty);
+			base.IsDirectBinding = false;
 		}
 
 		[Preserve(Conditional = true)]
-		public override void SearchStopped(NSNetServiceBrowser sender)
-		{
-			searchStopped?.Invoke(sender, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		public override void NotSearched(NSNetServiceBrowser sender, NSDictionary errors)
-		{
-			EventHandler<NSNetServiceErrorEventArgs> eventHandler = notSearched;
-			if (eventHandler != null)
-			{
-				NSNetServiceErrorEventArgs e = new NSNetServiceErrorEventArgs(errors);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void FoundDomain(NSNetServiceBrowser sender, string domain, bool moreComing)
-		{
-			EventHandler<NSNetDomainEventArgs> eventHandler = foundDomain;
-			if (eventHandler != null)
-			{
-				NSNetDomainEventArgs e = new NSNetDomainEventArgs(domain, moreComing);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void FoundService(NSNetServiceBrowser sender, NSNetService service, bool moreComing)
-		{
-			EventHandler<NSNetServiceEventArgs> eventHandler = foundService;
-			if (eventHandler != null)
-			{
-				NSNetServiceEventArgs e = new NSNetServiceEventArgs(service, moreComing);
-				eventHandler(sender, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		public override void DomainRemoved(NSNetServiceBrowser sender, string domain, bool moreComing)
+		[Export("netServiceBrowser:didRemoveDomain:moreComing:")]
+		public void DomainRemoved(NSNetServiceBrowser sender, string domain, bool moreComing)
 		{
 			EventHandler<NSNetDomainEventArgs> eventHandler = domainRemoved;
 			if (eventHandler != null)
@@ -81,7 +44,58 @@ public class NSNetServiceBrowser : NSObject
 		}
 
 		[Preserve(Conditional = true)]
-		public override void ServiceRemoved(NSNetServiceBrowser sender, NSNetService service, bool moreComing)
+		[Export("netServiceBrowser:didFindDomain:moreComing:")]
+		public void FoundDomain(NSNetServiceBrowser sender, string domain, bool moreComing)
+		{
+			EventHandler<NSNetDomainEventArgs> eventHandler = foundDomain;
+			if (eventHandler != null)
+			{
+				NSNetDomainEventArgs e = new NSNetDomainEventArgs(domain, moreComing);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("netServiceBrowser:didFindService:moreComing:")]
+		public void FoundService(NSNetServiceBrowser sender, NSNetService service, bool moreComing)
+		{
+			EventHandler<NSNetServiceEventArgs> eventHandler = foundService;
+			if (eventHandler != null)
+			{
+				NSNetServiceEventArgs e = new NSNetServiceEventArgs(service, moreComing);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("netServiceBrowser:didNotSearch:")]
+		public void NotSearched(NSNetServiceBrowser sender, NSDictionary errors)
+		{
+			EventHandler<NSNetServiceErrorEventArgs> eventHandler = notSearched;
+			if (eventHandler != null)
+			{
+				NSNetServiceErrorEventArgs e = new NSNetServiceErrorEventArgs(errors);
+				eventHandler(sender, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("netServiceBrowserWillSearch:")]
+		public void SearchStarted(NSNetServiceBrowser sender)
+		{
+			searchStarted?.Invoke(sender, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("netServiceBrowserDidStopSearch:")]
+		public void SearchStopped(NSNetServiceBrowser sender)
+		{
+			searchStopped?.Invoke(sender, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		[Export("netServiceBrowser:didRemoveService:moreComing:")]
+		public void ServiceRemoved(NSNetServiceBrowser sender, NSNetService service, bool moreComing)
 		{
 			EventHandler<NSNetServiceEventArgs> eventHandler = serviceRemoved;
 			if (eventHandler != null)
@@ -92,39 +106,130 @@ public class NSNetServiceBrowser : NSObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDelegate = "delegate";
+
 	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
 
-	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIncludesPeerToPeer = "includesPeerToPeer";
 
-	private static readonly IntPtr selScheduleInRunLoopForMode_Handle = Selector.GetHandle("scheduleInRunLoop:forMode:");
+	private static readonly IntPtr selIncludesPeerToPeerHandle = Selector.GetHandle("includesPeerToPeer");
 
-	private static readonly IntPtr selRemoveFromRunLoopForMode_Handle = Selector.GetHandle("removeFromRunLoop:forMode:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selRemoveFromRunLoop_ForMode_ = "removeFromRunLoop:forMode:";
+
+	private static readonly IntPtr selRemoveFromRunLoop_ForMode_Handle = Selector.GetHandle("removeFromRunLoop:forMode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selScheduleInRunLoop_ForMode_ = "scheduleInRunLoop:forMode:";
+
+	private static readonly IntPtr selScheduleInRunLoop_ForMode_Handle = Selector.GetHandle("scheduleInRunLoop:forMode:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSearchForBrowsableDomains = "searchForBrowsableDomains";
 
 	private static readonly IntPtr selSearchForBrowsableDomainsHandle = Selector.GetHandle("searchForBrowsableDomains");
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSearchForRegistrationDomains = "searchForRegistrationDomains";
+
 	private static readonly IntPtr selSearchForRegistrationDomainsHandle = Selector.GetHandle("searchForRegistrationDomains");
 
-	private static readonly IntPtr selSearchForServicesOfTypeInDomain_Handle = Selector.GetHandle("searchForServicesOfType:inDomain:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSearchForServicesOfType_InDomain_ = "searchForServicesOfType:inDomain:";
+
+	private static readonly IntPtr selSearchForServicesOfType_InDomain_Handle = Selector.GetHandle("searchForServicesOfType:inDomain:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetDelegate_ = "setDelegate:";
+
+	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetIncludesPeerToPeer_ = "setIncludesPeerToPeer:";
+
+	private static readonly IntPtr selSetIncludesPeerToPeer_Handle = Selector.GetHandle("setIncludesPeerToPeer:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStop = "stop";
 
 	private static readonly IntPtr selStopHandle = Selector.GetHandle("stop");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSNetServiceBrowser");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSNetServiceBrowser");
 
-	private object __mt_WeakDelegate_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private object? __mt_WeakDelegate_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual NSObject WeakDelegate
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public INSNetServiceBrowserDelegate Delegate
+	{
+		get
+		{
+			return WeakDelegate as INSNetServiceBrowserDelegate;
+		}
+		set
+		{
+			NSObject nSObject = value as NSObject;
+			if (value != null && nSObject == null)
+			{
+				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
+			}
+			WeakDelegate = nSObject;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+	public virtual bool IncludesPeerToPeer
+	{
+		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		[Export("includesPeerToPeer")]
+		get
+		{
+			if (base.IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIncludesPeerToPeerHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIncludesPeerToPeerHandle);
+		}
+		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
+		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
+		[Export("setIncludesPeerToPeer:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetIncludesPeerToPeer_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetIncludesPeerToPeer_Handle, value);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject? WeakDelegate
 	{
 		[Export("delegate", ArgumentSemantic.Assign)]
 		get
 		{
-			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
+			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
+			MarkDirty();
+			__mt_WeakDelegate_var = nSObject;
+			return nSObject;
 		}
 		[Export("setDelegate:", ArgumentSemantic.Assign)]
 		set
 		{
-			if (IsDirectBinding)
+			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakDelegate_var, value, GetInternalEventDelegateType);
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
@@ -132,61 +237,24 @@ public class NSNetServiceBrowser : NSObject
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
+			MarkDirty();
 			__mt_WeakDelegate_var = value;
 		}
 	}
 
-	public NSNetServiceBrowserDelegate Delegate
-	{
-		get
-		{
-			return WeakDelegate as NSNetServiceBrowserDelegate;
-		}
-		set
-		{
-			WeakDelegate = value;
-		}
-	}
+	internal virtual Type GetInternalEventDelegateType => typeof(_NSNetServiceBrowserDelegate);
 
-	public event EventHandler SearchStarted
+	public event EventHandler<NSNetDomainEventArgs> DomainRemoved
 	{
 		add
 		{
 			_NSNetServiceBrowserDelegate nSNetServiceBrowserDelegate = EnsureNSNetServiceBrowserDelegate();
-			nSNetServiceBrowserDelegate.searchStarted = (EventHandler)System.Delegate.Combine(nSNetServiceBrowserDelegate.searchStarted, value);
+			nSNetServiceBrowserDelegate.domainRemoved = (EventHandler<NSNetDomainEventArgs>)System.Delegate.Combine(nSNetServiceBrowserDelegate.domainRemoved, value);
 		}
 		remove
 		{
 			_NSNetServiceBrowserDelegate nSNetServiceBrowserDelegate = EnsureNSNetServiceBrowserDelegate();
-			nSNetServiceBrowserDelegate.searchStarted = (EventHandler)System.Delegate.Remove(nSNetServiceBrowserDelegate.searchStarted, value);
-		}
-	}
-
-	public event EventHandler SearchStopped
-	{
-		add
-		{
-			_NSNetServiceBrowserDelegate nSNetServiceBrowserDelegate = EnsureNSNetServiceBrowserDelegate();
-			nSNetServiceBrowserDelegate.searchStopped = (EventHandler)System.Delegate.Combine(nSNetServiceBrowserDelegate.searchStopped, value);
-		}
-		remove
-		{
-			_NSNetServiceBrowserDelegate nSNetServiceBrowserDelegate = EnsureNSNetServiceBrowserDelegate();
-			nSNetServiceBrowserDelegate.searchStopped = (EventHandler)System.Delegate.Remove(nSNetServiceBrowserDelegate.searchStopped, value);
-		}
-	}
-
-	public event EventHandler<NSNetServiceErrorEventArgs> NotSearched
-	{
-		add
-		{
-			_NSNetServiceBrowserDelegate nSNetServiceBrowserDelegate = EnsureNSNetServiceBrowserDelegate();
-			nSNetServiceBrowserDelegate.notSearched = (EventHandler<NSNetServiceErrorEventArgs>)System.Delegate.Combine(nSNetServiceBrowserDelegate.notSearched, value);
-		}
-		remove
-		{
-			_NSNetServiceBrowserDelegate nSNetServiceBrowserDelegate = EnsureNSNetServiceBrowserDelegate();
-			nSNetServiceBrowserDelegate.notSearched = (EventHandler<NSNetServiceErrorEventArgs>)System.Delegate.Remove(nSNetServiceBrowserDelegate.notSearched, value);
+			nSNetServiceBrowserDelegate.domainRemoved = (EventHandler<NSNetDomainEventArgs>)System.Delegate.Remove(nSNetServiceBrowserDelegate.domainRemoved, value);
 		}
 	}
 
@@ -218,17 +286,45 @@ public class NSNetServiceBrowser : NSObject
 		}
 	}
 
-	public event EventHandler<NSNetDomainEventArgs> DomainRemoved
+	public event EventHandler<NSNetServiceErrorEventArgs> NotSearched
 	{
 		add
 		{
 			_NSNetServiceBrowserDelegate nSNetServiceBrowserDelegate = EnsureNSNetServiceBrowserDelegate();
-			nSNetServiceBrowserDelegate.domainRemoved = (EventHandler<NSNetDomainEventArgs>)System.Delegate.Combine(nSNetServiceBrowserDelegate.domainRemoved, value);
+			nSNetServiceBrowserDelegate.notSearched = (EventHandler<NSNetServiceErrorEventArgs>)System.Delegate.Combine(nSNetServiceBrowserDelegate.notSearched, value);
 		}
 		remove
 		{
 			_NSNetServiceBrowserDelegate nSNetServiceBrowserDelegate = EnsureNSNetServiceBrowserDelegate();
-			nSNetServiceBrowserDelegate.domainRemoved = (EventHandler<NSNetDomainEventArgs>)System.Delegate.Remove(nSNetServiceBrowserDelegate.domainRemoved, value);
+			nSNetServiceBrowserDelegate.notSearched = (EventHandler<NSNetServiceErrorEventArgs>)System.Delegate.Remove(nSNetServiceBrowserDelegate.notSearched, value);
+		}
+	}
+
+	public event EventHandler SearchStarted
+	{
+		add
+		{
+			_NSNetServiceBrowserDelegate nSNetServiceBrowserDelegate = EnsureNSNetServiceBrowserDelegate();
+			nSNetServiceBrowserDelegate.searchStarted = (EventHandler)System.Delegate.Combine(nSNetServiceBrowserDelegate.searchStarted, value);
+		}
+		remove
+		{
+			_NSNetServiceBrowserDelegate nSNetServiceBrowserDelegate = EnsureNSNetServiceBrowserDelegate();
+			nSNetServiceBrowserDelegate.searchStarted = (EventHandler)System.Delegate.Remove(nSNetServiceBrowserDelegate.searchStarted, value);
+		}
+	}
+
+	public event EventHandler SearchStopped
+	{
+		add
+		{
+			_NSNetServiceBrowserDelegate nSNetServiceBrowserDelegate = EnsureNSNetServiceBrowserDelegate();
+			nSNetServiceBrowserDelegate.searchStopped = (EventHandler)System.Delegate.Combine(nSNetServiceBrowserDelegate.searchStopped, value);
+		}
+		remove
+		{
+			_NSNetServiceBrowserDelegate nSNetServiceBrowserDelegate = EnsureNSNetServiceBrowserDelegate();
+			nSNetServiceBrowserDelegate.searchStopped = (EventHandler)System.Delegate.Remove(nSNetServiceBrowserDelegate.searchStopped, value);
 		}
 	}
 
@@ -246,49 +342,38 @@ public class NSNetServiceBrowser : NSObject
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSNetServiceBrowser()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSNetServiceBrowser(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSNetServiceBrowser(NSObjectFlag t)
+	protected NSNetServiceBrowser(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSNetServiceBrowser(IntPtr handle)
+	protected internal NSNetServiceBrowser(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("scheduleInRunLoop:forMode:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Schedule(NSRunLoop aRunLoop, string forMode)
 	{
 		if (aRunLoop == null)
@@ -300,44 +385,28 @@ public class NSNetServiceBrowser : NSObject
 			throw new ArgumentNullException("forMode");
 		}
 		IntPtr arg = NSString.CreateNative(forMode);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selScheduleInRunLoopForMode_Handle, aRunLoop.Handle, arg);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selScheduleInRunLoop_ForMode_Handle, aRunLoop.Handle, arg);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selScheduleInRunLoopForMode_Handle, aRunLoop.Handle, arg);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selScheduleInRunLoop_ForMode_Handle, aRunLoop.Handle, arg);
 		}
 		NSString.ReleaseNative(arg);
 	}
 
-	[Export("removeFromRunLoop:forMode:")]
-	public virtual void Unschedule(NSRunLoop aRunLoop, string forMode)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public void Schedule(NSRunLoop aRunLoop, NSRunLoopMode forMode)
 	{
-		if (aRunLoop == null)
-		{
-			throw new ArgumentNullException("aRunLoop");
-		}
-		if (forMode == null)
-		{
-			throw new ArgumentNullException("forMode");
-		}
-		IntPtr arg = NSString.CreateNative(forMode);
-		if (IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selRemoveFromRunLoopForMode_Handle, aRunLoop.Handle, arg);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selRemoveFromRunLoopForMode_Handle, aRunLoop.Handle, arg);
-		}
-		NSString.ReleaseNative(arg);
+		Schedule(aRunLoop, forMode.GetConstant());
 	}
 
 	[Export("searchForBrowsableDomains")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SearchForBrowsableDomains()
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selSearchForBrowsableDomainsHandle);
 		}
@@ -348,9 +417,10 @@ public class NSNetServiceBrowser : NSObject
 	}
 
 	[Export("searchForRegistrationDomains")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SearchForRegistrationDomains()
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selSearchForRegistrationDomainsHandle);
 		}
@@ -361,6 +431,7 @@ public class NSNetServiceBrowser : NSObject
 	}
 
 	[Export("searchForServicesOfType:inDomain:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SearchForServices(string type, string domain)
 	{
 		if (type == null)
@@ -373,22 +444,23 @@ public class NSNetServiceBrowser : NSObject
 		}
 		IntPtr arg = NSString.CreateNative(type);
 		IntPtr arg2 = NSString.CreateNative(domain);
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSearchForServicesOfTypeInDomain_Handle, arg, arg2);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSearchForServicesOfType_InDomain_Handle, arg, arg2);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSearchForServicesOfTypeInDomain_Handle, arg, arg2);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSearchForServicesOfType_InDomain_Handle, arg, arg2);
 		}
 		NSString.ReleaseNative(arg);
 		NSString.ReleaseNative(arg2);
 	}
 
 	[Export("stop")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Stop()
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selStopHandle);
 		}
@@ -398,16 +470,56 @@ public class NSNetServiceBrowser : NSObject
 		}
 	}
 
-	private _NSNetServiceBrowserDelegate EnsureNSNetServiceBrowserDelegate()
+	[Export("removeFromRunLoop:forMode:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual void Unschedule(NSRunLoop aRunLoop, string forMode)
 	{
-		NSObject nSObject = WeakDelegate;
-		if (nSObject == null || !(nSObject is _NSNetServiceBrowserDelegate))
+		if (aRunLoop == null)
 		{
-			nSObject = (WeakDelegate = new _NSNetServiceBrowserDelegate());
+			throw new ArgumentNullException("aRunLoop");
 		}
-		return (_NSNetServiceBrowserDelegate)nSObject;
+		if (forMode == null)
+		{
+			throw new ArgumentNullException("forMode");
+		}
+		IntPtr arg = NSString.CreateNative(forMode);
+		if (base.IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selRemoveFromRunLoop_ForMode_Handle, aRunLoop.Handle, arg);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selRemoveFromRunLoop_ForMode_Handle, aRunLoop.Handle, arg);
+		}
+		NSString.ReleaseNative(arg);
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public void Unschedule(NSRunLoop aRunLoop, NSRunLoopMode forMode)
+	{
+		Unschedule(aRunLoop, forMode.GetConstant());
+	}
+
+	internal virtual _NSNetServiceBrowserDelegate CreateInternalEventDelegateType()
+	{
+		return new _NSNetServiceBrowserDelegate();
+	}
+
+	internal _NSNetServiceBrowserDelegate EnsureNSNetServiceBrowserDelegate()
+	{
+		if (WeakDelegate != null)
+		{
+			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakDelegate, GetInternalEventDelegateType);
+		}
+		_NSNetServiceBrowserDelegate nSNetServiceBrowserDelegate = Delegate as _NSNetServiceBrowserDelegate;
+		if (nSNetServiceBrowserDelegate == null)
+		{
+			nSNetServiceBrowserDelegate = (_NSNetServiceBrowserDelegate)(Delegate = CreateInternalEventDelegateType());
+		}
+		return nSNetServiceBrowserDelegate;
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);

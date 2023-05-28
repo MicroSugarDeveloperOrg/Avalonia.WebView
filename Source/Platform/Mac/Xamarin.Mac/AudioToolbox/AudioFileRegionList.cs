@@ -40,7 +40,6 @@ public class AudioFileRegionList : IDisposable
 	~AudioFileRegionList()
 	{
 		Dispose(disposing: false);
-		GC.SuppressFinalize(this);
 	}
 
 	public void Dispose()
@@ -58,6 +57,7 @@ public class AudioFileRegionList : IDisposable
 			}
 			Marshal.FreeHGlobal(ptr);
 			ptr = IntPtr.Zero;
+			GC.SuppressFinalize(this);
 		}
 	}
 }

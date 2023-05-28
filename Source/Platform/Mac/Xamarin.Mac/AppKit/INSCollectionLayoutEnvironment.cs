@@ -1,4 +1,5 @@
-﻿using Foundation;
+using System;
+using Foundation;
 using ObjCRuntime;
 
 namespace AppKit;
@@ -8,10 +9,10 @@ namespace AppKit;
 [ProtocolMember(IsRequired = true, IsProperty = true, IsStatic = false, Name = "Container", Selector = "container", PropertyType = typeof(INSCollectionLayoutContainer), GetterSelector = "container", ArgumentSemantic = ArgumentSemantic.None)]
 public interface INSCollectionLayoutEnvironment : INativeObject, IDisposable
 {
-    [Preserve(Conditional = true)]
-    INSCollectionLayoutContainer Container
-    {
-        [Export("container")]
-        get;
-    }
+	[Preserve(Conditional = true)]
+	INSCollectionLayoutContainer Container
+	{
+		[Export("container")]
+		get;
+	}
 }

@@ -1,29 +1,67 @@
+using System;
+using ObjCRuntime;
+
 namespace QTKit;
 
+[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, null)]
 public struct QTTime
 {
 	public static readonly QTTime Zero = new QTTime(0L, 1, (TimeFlags)0);
 
 	public static readonly QTTime IndefiniteTime = new QTTime(0L, 1, TimeFlags.TimeIsIndefinite);
 
-	public long TimeValue;
+	private long timeValue;
 
-	public int TimeScale;
+	private nint timeScale;
 
-	public TimeFlags Flags;
+	private nint flags;
 
-	public QTTime(long timeValue, int timeScale, TimeFlags flags)
+	public long TimeValue
 	{
-		TimeValue = timeValue;
-		TimeScale = timeScale;
-		Flags = flags;
+		get
+		{
+			return timeValue;
+		}
+		set
+		{
+			timeValue = value;
+		}
 	}
 
-	public QTTime(long timeValue, int timeScale)
+	public nint TimeScale
 	{
-		TimeValue = timeValue;
-		TimeScale = timeScale;
-		Flags = (TimeFlags)0;
+		get
+		{
+			return timeScale;
+		}
+		set
+		{
+			timeScale = value;
+		}
+	}
+
+	public TimeFlags Flags
+	{
+		get
+		{
+			return (TimeFlags)(long)flags;
+		}
+		set
+		{
+			flags = (nint)(long)value;
+		}
+	}
+
+	public QTTime(long timeValue, nint timeScale, TimeFlags flags)
+	{
+		this.timeValue = timeValue;
+		this.timeScale = timeScale;
+		this.flags = (nint)(long)flags;
+	}
+
+	public QTTime(long timeValue, nint timeScale)
+		: this(timeValue, timeScale, (TimeFlags)0)
+	{
 	}
 
 	public override string ToString()

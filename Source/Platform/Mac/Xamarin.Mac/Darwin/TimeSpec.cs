@@ -1,8 +1,10 @@
+using System;
+
 namespace Darwin;
 
 public struct TimeSpec
 {
-	public int Seconds;
+	public nint Seconds;
 
-	public int NanoSeconds;
+	public nint NanoSeconds;
 }

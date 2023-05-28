@@ -1,5 +1,8 @@
+using ObjCRuntime;
+
 namespace AppKit;
 
+[Native]
 public enum NSBezelStyle : ulong
 {
 	Rounded = 1uL,

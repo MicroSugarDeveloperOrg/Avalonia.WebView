@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using ObjCRuntime;
 
 namespace Foundation;
@@ -8,48 +7,80 @@ namespace Foundation;
 [Register("NSJSONSerialization", true)]
 public class NSJsonSerialization : NSObject
 {
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selJSONObjectWithData_Options_Error_ = "JSONObjectWithData:options:error:";
+
+	private static readonly IntPtr selJSONObjectWithData_Options_Error_Handle = Selector.GetHandle("JSONObjectWithData:options:error:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selJSONObjectWithStream_Options_Error_ = "JSONObjectWithStream:options:error:";
+
+	private static readonly IntPtr selJSONObjectWithStream_Options_Error_Handle = Selector.GetHandle("JSONObjectWithStream:options:error:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selDataWithJSONObject_Options_Error_ = "dataWithJSONObject:options:error:";
+
+	private static readonly IntPtr selDataWithJSONObject_Options_Error_Handle = Selector.GetHandle("dataWithJSONObject:options:error:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selIsValidJSONObject_ = "isValidJSONObject:";
+
 	private static readonly IntPtr selIsValidJSONObject_Handle = Selector.GetHandle("isValidJSONObject:");
 
-	private static readonly IntPtr selDataWithJSONObjectOptionsError_Handle = Selector.GetHandle("dataWithJSONObject:options:error:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selWriteJSONObject_ToStream_Options_Error_ = "writeJSONObject:toStream:options:error:";
 
-	private static readonly IntPtr selJSONObjectWithDataOptionsError_Handle = Selector.GetHandle("JSONObjectWithData:options:error:");
+	private static readonly IntPtr selWriteJSONObject_ToStream_Options_Error_Handle = Selector.GetHandle("writeJSONObject:toStream:options:error:");
 
-	private static readonly IntPtr selWriteJSONObjectToStreamOptionsError_Handle = Selector.GetHandle("writeJSONObject:toStream:options:error:");
-
-	private static readonly IntPtr selJSONObjectWithStreamOptionsError_Handle = Selector.GetHandle("JSONObjectWithStream:options:error:");
-
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSJSONSerialization");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSJSONSerialization");
 
 	public override IntPtr ClassHandle => class_ptr;
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSJsonSerialization(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSJsonSerialization(NSObjectFlag t)
+	protected NSJsonSerialization(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSJsonSerialization(IntPtr handle)
+	protected internal NSJsonSerialization(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("JSONObjectWithData:options:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSObject Deserialize(NSData data, NSJsonReadingOptions opt, out NSError error)
+	{
+		if (data == null)
+		{
+			throw new ArgumentNullException("data");
+		}
+		IntPtr arg = IntPtr.Zero;
+		NSObject nSObject = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64_ref_IntPtr(class_ptr, selJSONObjectWithData_Options_Error_Handle, data.Handle, (ulong)opt, ref arg));
+		error = Runtime.GetNSObject<NSError>(arg);
+		return nSObject;
+	}
+
+	[Export("JSONObjectWithStream:options:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSObject Deserialize(NSInputStream stream, NSJsonReadingOptions opt, out NSError error)
+	{
+		if (stream == null)
+		{
+			throw new ArgumentNullException("stream");
+		}
+		IntPtr arg = IntPtr.Zero;
+		NSObject nSObject = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64_ref_IntPtr(class_ptr, selJSONObjectWithStream_Options_Error_Handle, stream.Handle, (ulong)opt, ref arg));
+		error = Runtime.GetNSObject<NSError>(arg);
+		return nSObject;
+	}
+
 	[Export("isValidJSONObject:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static bool IsValidJSONObject(NSObject obj)
 	{
 		if (obj == null)
@@ -60,37 +91,22 @@ public class NSJsonSerialization : NSObject
 	}
 
 	[Export("dataWithJSONObject:options:error:")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSData Serialize(NSObject obj, NSJsonWritingOptions opt, out NSError error)
 	{
 		if (obj == null)
 		{
 			throw new ArgumentNullException("obj");
 		}
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		NSData result = (NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64_IntPtr(class_ptr, selDataWithJSONObjectOptionsError_Handle, obj.Handle, (ulong)opt, intPtr));
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
-		return result;
-	}
-
-	[Export("JSONObjectWithData:options:error:")]
-	public static NSObject Deserialize(NSData data, NSJsonReadingOptions opt, NSError error)
-	{
-		if (data == null)
-		{
-			throw new ArgumentNullException("data");
-		}
-		if (error == null)
-		{
-			throw new ArgumentNullException("error");
-		}
-		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64_IntPtr(class_ptr, selJSONObjectWithDataOptionsError_Handle, data.Handle, (ulong)opt, error.Handle));
+		IntPtr arg = IntPtr.Zero;
+		NSData nSObject = Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64_ref_IntPtr(class_ptr, selDataWithJSONObject_Options_Error_Handle, obj.Handle, (ulong)opt, ref arg));
+		error = Runtime.GetNSObject<NSError>(arg);
+		return nSObject;
 	}
 
 	[Export("writeJSONObject:toStream:options:error:")]
-	public static long Serialize(NSObject obj, NSOutputStream stream, NSJsonWritingOptions opt, out NSError error)
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static nint Serialize(NSObject obj, NSOutputStream stream, NSJsonWritingOptions opt, out NSError error)
 	{
 		if (obj == null)
 		{
@@ -100,28 +116,9 @@ public class NSJsonSerialization : NSObject
 		{
 			throw new ArgumentNullException("stream");
 		}
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		long result = Messaging.Int64_objc_msgSend_IntPtr_IntPtr_UInt64_IntPtr(class_ptr, selWriteJSONObjectToStreamOptionsError_Handle, obj.Handle, stream.Handle, (ulong)opt, intPtr);
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
+		IntPtr arg = IntPtr.Zero;
+		nint result = Messaging.nint_objc_msgSend_IntPtr_IntPtr_UInt64_ref_IntPtr(class_ptr, selWriteJSONObject_ToStream_Options_Error_Handle, obj.Handle, stream.Handle, (ulong)opt, ref arg);
+		error = Runtime.GetNSObject<NSError>(arg);
 		return result;
-	}
-
-	[Export("JSONObjectWithStream:options:error:")]
-	public static NSObject Deserialize(NSInputStream stream, NSJsonReadingOptions opt, out NSError error)
-	{
-		if (stream == null)
-		{
-			throw new ArgumentNullException("stream");
-		}
-		IntPtr intPtr = Marshal.AllocHGlobal(4);
-		Marshal.WriteInt32(intPtr, 0);
-		NSObject nSObject = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64_IntPtr(class_ptr, selJSONObjectWithStreamOptionsError_Handle, stream.Handle, (ulong)opt, intPtr));
-		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
-		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
-		Marshal.FreeHGlobal(intPtr);
-		return nSObject;
 	}
 }

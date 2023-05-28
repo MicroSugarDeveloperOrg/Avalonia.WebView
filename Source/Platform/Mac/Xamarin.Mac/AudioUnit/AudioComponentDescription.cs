@@ -2,8 +2,7 @@ using System.Runtime.InteropServices;
 
 namespace AudioUnit;
 
-[StructLayout(LayoutKind.Sequential)]
-public class AudioComponentDescription
+public struct AudioComponentDescription
 {
 	[MarshalAs(UnmanagedType.U4)]
 	public AudioComponentType ComponentType;
@@ -18,15 +17,13 @@ public class AudioComponentDescription
 
 	public int ComponentFlagsMask;
 
-	public AudioComponentDescription()
-	{
-	}
-
 	internal AudioComponentDescription(AudioComponentType type, int subType)
 	{
 		ComponentType = type;
 		ComponentSubType = subType;
 		ComponentManufacturer = AudioComponentManufacturerType.Apple;
+		ComponentFlags = (AudioComponentFlag)0;
+		ComponentFlagsMask = 0;
 	}
 
 	public static AudioComponentDescription CreateGeneric(AudioComponentType type, int subType)
@@ -73,14 +70,14 @@ public class AudioComponentDescription
 	{
 		return ComponentType switch
 		{
-			AudioComponentType.Output => $"[componetType={ComponentType}, subType={(AudioTypeOutput)ComponentSubType}]", 
-			AudioComponentType.MusicDevice => $"[componetType={ComponentType}, subType={(AudioTypeMusicDevice)ComponentSubType}]", 
-			AudioComponentType.FormatConverter => $"[componetType={ComponentType}, subType={(AudioTypeConverter)ComponentSubType}]", 
-			AudioComponentType.Effect => $"[componetType={ComponentType}, subType={(AudioTypeEffect)ComponentSubType}]", 
-			AudioComponentType.Mixer => $"[componetType={ComponentType}, subType={(AudioTypeMixer)ComponentSubType}]", 
-			AudioComponentType.Panner => $"[componetType={ComponentType}, subType={(AudioTypePanner)ComponentSubType}]", 
-			AudioComponentType.Generator => $"[componetType={ComponentType}, subType={(AudioTypeGenerator)ComponentSubType}]", 
-			_ => $"[componetType={ComponentType}, subType={ComponentSubType}]", 
+			AudioComponentType.Output => $"[componentType={ComponentType}, subType={(AudioTypeOutput)ComponentSubType}]", 
+			AudioComponentType.MusicDevice => $"[componentType={ComponentType}, subType={(AudioTypeMusicDevice)ComponentSubType}]", 
+			AudioComponentType.FormatConverter => $"[componentType={ComponentType}, subType={(AudioTypeConverter)ComponentSubType}]", 
+			AudioComponentType.Effect => $"[componentType={ComponentType}, subType={(AudioTypeEffect)ComponentSubType}]", 
+			AudioComponentType.Mixer => $"[componentType={ComponentType}, subType={(AudioTypeMixer)ComponentSubType}]", 
+			AudioComponentType.Panner => $"[componentType={ComponentType}, subType={(AudioTypePanner)ComponentSubType}]", 
+			AudioComponentType.Generator => $"[componentType={ComponentType}, subType={(AudioTypeGenerator)ComponentSubType}]", 
+			_ => $"[componentType={ComponentType}, subType={ComponentSubType}]", 
 		};
 	}
 }

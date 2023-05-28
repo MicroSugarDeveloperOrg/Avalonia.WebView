@@ -2,10 +2,14 @@ using ObjCRuntime;
 
 namespace AVFoundation;
 
-[Since(4, 0)]
-public enum AVCaptureExposureMode
+[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
+[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
+[Native]
+public enum AVCaptureExposureMode : long
 {
 	Locked,
 	AutoExpose,
-	ContinuousAutoExposure
+	ContinuousAutoExposure,
+	[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
+	Custom
 }

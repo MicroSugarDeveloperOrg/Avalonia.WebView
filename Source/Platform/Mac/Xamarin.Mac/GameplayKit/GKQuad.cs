@@ -1,4 +1,4 @@
-﻿using ObjCRuntime;
+using ObjCRuntime;
 using OpenTK;
 
 namespace GameplayKit;
@@ -8,7 +8,7 @@ namespace GameplayKit;
 [Mac(10, 12)]
 public struct GKQuad
 {
-    public Vector2 Min;
+	public Vector2 Min;
 
-    public Vector2 Max;
+	public Vector2 Max;
 }

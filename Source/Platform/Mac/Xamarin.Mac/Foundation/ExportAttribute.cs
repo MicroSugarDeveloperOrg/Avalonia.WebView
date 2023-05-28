@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using ObjCRuntime;
+using Registrar;
 
 namespace Foundation;
 
@@ -37,7 +38,7 @@ public class ExportAttribute : Attribute
 
 	public bool IsVariadic { get; set; }
 
-	public ExportAttribute()
+	protected ExportAttribute()
 	{
 	}
 
@@ -68,6 +69,6 @@ public class ExportAttribute : Attribute
 		{
 			Selector = prop.Name;
 		}
-		return new ExportAttribute($"set{char.ToUpperInvariant(selector[0])}{selector.Substring(1)}:", semantic);
+		return new ExportAttribute(global::Registrar.Registrar.CreateSetterSelector(selector), semantic);
 	}
 }

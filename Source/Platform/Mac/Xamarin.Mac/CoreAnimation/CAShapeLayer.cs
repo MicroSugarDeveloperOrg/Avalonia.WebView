@@ -9,124 +9,173 @@ namespace CoreAnimation;
 [Register("CAShapeLayer", true)]
 public class CAShapeLayer : CALayer
 {
-	private static readonly IntPtr selPathHandle = Selector.GetHandle("path");
-
-	private static readonly IntPtr selSetPath_Handle = Selector.GetHandle("setPath:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFillColor = "fillColor";
 
 	private static readonly IntPtr selFillColorHandle = Selector.GetHandle("fillColor");
 
-	private static readonly IntPtr selSetFillColor_Handle = Selector.GetHandle("setFillColor:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selFillRule = "fillRule";
 
 	private static readonly IntPtr selFillRuleHandle = Selector.GetHandle("fillRule");
 
-	private static readonly IntPtr selSetFillRule_Handle = Selector.GetHandle("setFillRule:");
-
-	private static readonly IntPtr selLineCapHandle = Selector.GetHandle("lineCap");
-
-	private static readonly IntPtr selSetLineCap_Handle = Selector.GetHandle("setLineCap:");
-
-	private static readonly IntPtr selLineDashPatternHandle = Selector.GetHandle("lineDashPattern");
-
-	private static readonly IntPtr selSetLineDashPattern_Handle = Selector.GetHandle("setLineDashPattern:");
-
-	private static readonly IntPtr selLineDashPhaseHandle = Selector.GetHandle("lineDashPhase");
-
-	private static readonly IntPtr selSetLineDashPhase_Handle = Selector.GetHandle("setLineDashPhase:");
-
-	private static readonly IntPtr selLineJoinHandle = Selector.GetHandle("lineJoin");
-
-	private static readonly IntPtr selSetLineJoin_Handle = Selector.GetHandle("setLineJoin:");
-
-	private static readonly IntPtr selLineWidthHandle = Selector.GetHandle("lineWidth");
-
-	private static readonly IntPtr selSetLineWidth_Handle = Selector.GetHandle("setLineWidth:");
-
-	private static readonly IntPtr selMiterLimitHandle = Selector.GetHandle("miterLimit");
-
-	private static readonly IntPtr selSetMiterLimit_Handle = Selector.GetHandle("setMiterLimit:");
-
-	private static readonly IntPtr selStrokeColorHandle = Selector.GetHandle("strokeColor");
-
-	private static readonly IntPtr selSetStrokeColor_Handle = Selector.GetHandle("setStrokeColor:");
-
-	private static readonly IntPtr selStrokeStartHandle = Selector.GetHandle("strokeStart");
-
-	private static readonly IntPtr selSetStrokeStart_Handle = Selector.GetHandle("setStrokeStart:");
-
-	private static readonly IntPtr selStrokeEndHandle = Selector.GetHandle("strokeEnd");
-
-	private static readonly IntPtr selSetStrokeEnd_Handle = Selector.GetHandle("setStrokeEnd:");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLayer = "layer";
 
 	private static readonly IntPtr selLayerHandle = Selector.GetHandle("layer");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("CAShapeLayer");
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLineCap = "lineCap";
 
-	private object __mt_FillRule_var;
+	private static readonly IntPtr selLineCapHandle = Selector.GetHandle("lineCap");
 
-	private object __mt_LineCap_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLineDashPattern = "lineDashPattern";
 
-	private object __mt_LineDashPattern_var;
+	private static readonly IntPtr selLineDashPatternHandle = Selector.GetHandle("lineDashPattern");
 
-	private object __mt_LineJoin_var;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLineDashPhase = "lineDashPhase";
 
-	private static NSString _JoinMiter;
+	private static readonly IntPtr selLineDashPhaseHandle = Selector.GetHandle("lineDashPhase");
 
-	private static NSString _JoinRound;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLineJoin = "lineJoin";
 
-	private static NSString _JoinBevel;
+	private static readonly IntPtr selLineJoinHandle = Selector.GetHandle("lineJoin");
 
-	private static NSString _CapButt;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selLineWidth = "lineWidth";
 
-	private static NSString _CapRound;
+	private static readonly IntPtr selLineWidthHandle = Selector.GetHandle("lineWidth");
 
-	private static NSString _CapSquare;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selMiterLimit = "miterLimit";
 
-	private static NSString _FillRuleNonZero;
+	private static readonly IntPtr selMiterLimitHandle = Selector.GetHandle("miterLimit");
 
-	private static NSString _FillRuleEvenOdd;
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selPath = "path";
+
+	private static readonly IntPtr selPathHandle = Selector.GetHandle("path");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFillColor_ = "setFillColor:";
+
+	private static readonly IntPtr selSetFillColor_Handle = Selector.GetHandle("setFillColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetFillRule_ = "setFillRule:";
+
+	private static readonly IntPtr selSetFillRule_Handle = Selector.GetHandle("setFillRule:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLineCap_ = "setLineCap:";
+
+	private static readonly IntPtr selSetLineCap_Handle = Selector.GetHandle("setLineCap:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLineDashPattern_ = "setLineDashPattern:";
+
+	private static readonly IntPtr selSetLineDashPattern_Handle = Selector.GetHandle("setLineDashPattern:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLineDashPhase_ = "setLineDashPhase:";
+
+	private static readonly IntPtr selSetLineDashPhase_Handle = Selector.GetHandle("setLineDashPhase:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLineJoin_ = "setLineJoin:";
+
+	private static readonly IntPtr selSetLineJoin_Handle = Selector.GetHandle("setLineJoin:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetLineWidth_ = "setLineWidth:";
+
+	private static readonly IntPtr selSetLineWidth_Handle = Selector.GetHandle("setLineWidth:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetMiterLimit_ = "setMiterLimit:";
+
+	private static readonly IntPtr selSetMiterLimit_Handle = Selector.GetHandle("setMiterLimit:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetPath_ = "setPath:";
+
+	private static readonly IntPtr selSetPath_Handle = Selector.GetHandle("setPath:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetStrokeColor_ = "setStrokeColor:";
+
+	private static readonly IntPtr selSetStrokeColor_Handle = Selector.GetHandle("setStrokeColor:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetStrokeEnd_ = "setStrokeEnd:";
+
+	private static readonly IntPtr selSetStrokeEnd_Handle = Selector.GetHandle("setStrokeEnd:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selSetStrokeStart_ = "setStrokeStart:";
+
+	private static readonly IntPtr selSetStrokeStart_Handle = Selector.GetHandle("setStrokeStart:");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStrokeColor = "strokeColor";
+
+	private static readonly IntPtr selStrokeColorHandle = Selector.GetHandle("strokeColor");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStrokeEnd = "strokeEnd";
+
+	private static readonly IntPtr selStrokeEndHandle = Selector.GetHandle("strokeEnd");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private const string selStrokeStart = "strokeStart";
+
+	private static readonly IntPtr selStrokeStartHandle = Selector.GetHandle("strokeStart");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("CAShapeLayer");
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _CapButt;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _CapRound;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _CapSquare;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FillRuleEvenOdd;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _FillRuleNonZero;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _JoinBevel;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _JoinMiter;
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static NSString? _JoinRound;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual CGPath Path
-	{
-		[Export("path")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return new CGPath(Messaging.IntPtr_objc_msgSend(base.Handle, selPathHandle));
-			}
-			return new CGPath(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPathHandle));
-		}
-		[Export("setPath:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPath_Handle, (value == null) ? IntPtr.Zero : value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPath_Handle, (value == null) ? IntPtr.Zero : value.Handle);
-			}
-		}
-	}
-
-	public virtual CGColor FillColor
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGColor? FillColor
 	{
 		[Export("fillColor")]
 		get
 		{
-			if (IsDirectBinding)
-			{
-				return new CGColor(Messaging.IntPtr_objc_msgSend(base.Handle, selFillColorHandle));
-			}
-			return new CGColor(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFillColorHandle));
+			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFillColorHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selFillColorHandle));
+			return (intPtr == IntPtr.Zero) ? null : new CGColor(intPtr);
 		}
 		[Export("setFillColor:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFillColor_Handle, (value == null) ? IntPtr.Zero : value.Handle);
 			}
@@ -137,12 +186,17 @@ public class CAShapeLayer : CALayer
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSString FillRule
 	{
 		[Export("fillRule", ArgumentSemantic.Copy)]
 		get
 		{
-			return (NSString)(__mt_FillRule_var = ((!IsDirectBinding) ? ((NSString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFillRuleHandle))) : ((NSString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFillRuleHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSend(base.Handle, selFillRuleHandle));
+			}
+			return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFillRuleHandle));
 		}
 		[Export("setFillRule:", ArgumentSemantic.Copy)]
 		set
@@ -151,7 +205,7 @@ public class CAShapeLayer : CALayer
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFillRule_Handle, value.Handle);
 			}
@@ -159,16 +213,20 @@ public class CAShapeLayer : CALayer
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFillRule_Handle, value.Handle);
 			}
-			__mt_FillRule_var = value;
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSString LineCap
 	{
 		[Export("lineCap", ArgumentSemantic.Copy)]
 		get
 		{
-			return (NSString)(__mt_LineCap_var = ((!IsDirectBinding) ? ((NSString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLineCapHandle))) : ((NSString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selLineCapHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSend(base.Handle, selLineCapHandle));
+			}
+			return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLineCapHandle));
 		}
 		[Export("setLineCap:", ArgumentSemantic.Copy)]
 		set
@@ -177,7 +235,7 @@ public class CAShapeLayer : CALayer
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetLineCap_Handle, value.Handle);
 			}
@@ -185,22 +243,26 @@ public class CAShapeLayer : CALayer
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetLineCap_Handle, value.Handle);
 			}
-			__mt_LineCap_var = value;
 		}
 	}
 
-	public virtual NSNumber[] LineDashPattern
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSNumber[]? LineDashPattern
 	{
 		[Export("lineDashPattern", ArgumentSemantic.Copy)]
 		get
 		{
-			return (NSNumber[])(__mt_LineDashPattern_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLineDashPatternHandle)) : NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selLineDashPatternHandle))));
+			if (base.IsDirectBinding)
+			{
+				return NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selLineDashPatternHandle));
+			}
+			return NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLineDashPatternHandle));
 		}
 		[Export("setLineDashPattern:", ArgumentSemantic.Copy)]
 		set
 		{
 			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetLineDashPattern_Handle, nSArray?.Handle ?? IntPtr.Zero);
 			}
@@ -209,41 +271,46 @@ public class CAShapeLayer : CALayer
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetLineDashPattern_Handle, nSArray?.Handle ?? IntPtr.Zero);
 			}
 			nSArray?.Dispose();
-			__mt_LineDashPattern_var = value;
 		}
 	}
 
-	public virtual float LineDashPhase
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat LineDashPhase
 	{
 		[Export("lineDashPhase")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.float_objc_msgSend(base.Handle, selLineDashPhaseHandle);
+				return Messaging.nfloat_objc_msgSend(base.Handle, selLineDashPhaseHandle);
 			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selLineDashPhaseHandle);
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selLineDashPhaseHandle);
 		}
 		[Export("setLineDashPhase:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_float(base.Handle, selSetLineDashPhase_Handle, value);
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetLineDashPhase_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetLineDashPhase_Handle, value);
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetLineDashPhase_Handle, value);
 			}
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSString LineJoin
 	{
 		[Export("lineJoin", ArgumentSemantic.Copy)]
 		get
 		{
-			return (NSString)(__mt_LineJoin_var = ((!IsDirectBinding) ? ((NSString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLineJoinHandle))) : ((NSString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selLineJoinHandle)))));
+			if (base.IsDirectBinding)
+			{
+				return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSend(base.Handle, selLineJoinHandle));
+			}
+			return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLineJoinHandle));
 		}
 		[Export("setLineJoin:", ArgumentSemantic.Copy)]
 		set
@@ -252,7 +319,7 @@ public class CAShapeLayer : CALayer
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetLineJoin_Handle, value.Handle);
 			}
@@ -260,75 +327,97 @@ public class CAShapeLayer : CALayer
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetLineJoin_Handle, value.Handle);
 			}
-			__mt_LineJoin_var = value;
 		}
 	}
 
-	public virtual float LineWidth
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat LineWidth
 	{
 		[Export("lineWidth")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.float_objc_msgSend(base.Handle, selLineWidthHandle);
+				return Messaging.nfloat_objc_msgSend(base.Handle, selLineWidthHandle);
 			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selLineWidthHandle);
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selLineWidthHandle);
 		}
 		[Export("setLineWidth:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_float(base.Handle, selSetLineWidth_Handle, value);
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetLineWidth_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetLineWidth_Handle, value);
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetLineWidth_Handle, value);
 			}
 		}
 	}
 
-	public virtual float MiterLimit
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat MiterLimit
 	{
 		[Export("miterLimit")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.float_objc_msgSend(base.Handle, selMiterLimitHandle);
+				return Messaging.nfloat_objc_msgSend(base.Handle, selMiterLimitHandle);
 			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selMiterLimitHandle);
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selMiterLimitHandle);
 		}
 		[Export("setMiterLimit:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_float(base.Handle, selSetMiterLimit_Handle, value);
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetMiterLimit_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetMiterLimit_Handle, value);
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetMiterLimit_Handle, value);
 			}
 		}
 	}
 
-	public virtual CGColor StrokeColor
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGPath? Path
+	{
+		[Export("path")]
+		get
+		{
+			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPathHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selPathHandle));
+			return (intPtr == IntPtr.Zero) ? null : new CGPath(intPtr);
+		}
+		[Export("setPath:")]
+		set
+		{
+			if (base.IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPath_Handle, (value == null) ? IntPtr.Zero : value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPath_Handle, (value == null) ? IntPtr.Zero : value.Handle);
+			}
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGColor? StrokeColor
 	{
 		[Export("strokeColor")]
 		get
 		{
-			if (IsDirectBinding)
-			{
-				return new CGColor(Messaging.IntPtr_objc_msgSend(base.Handle, selStrokeColorHandle));
-			}
-			return new CGColor(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selStrokeColorHandle));
+			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selStrokeColorHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selStrokeColorHandle));
+			return (intPtr == IntPtr.Zero) ? null : new CGColor(intPtr);
 		}
 		[Export("setStrokeColor:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetStrokeColor_Handle, (value == null) ? IntPtr.Zero : value.Handle);
 			}
@@ -339,94 +428,55 @@ public class CAShapeLayer : CALayer
 		}
 	}
 
-	[Since(4, 2)]
-	public virtual float StrokeStart
-	{
-		[Export("strokeStart")]
-		get
-		{
-			if (IsDirectBinding)
-			{
-				return Messaging.float_objc_msgSend(base.Handle, selStrokeStartHandle);
-			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selStrokeStartHandle);
-		}
-		[Export("setStrokeStart:")]
-		set
-		{
-			if (IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_float(base.Handle, selSetStrokeStart_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetStrokeStart_Handle, value);
-			}
-		}
-	}
-
-	[Since(4, 2)]
-	public virtual float StrokeEnd
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat StrokeEnd
 	{
 		[Export("strokeEnd")]
 		get
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				return Messaging.float_objc_msgSend(base.Handle, selStrokeEndHandle);
+				return Messaging.nfloat_objc_msgSend(base.Handle, selStrokeEndHandle);
 			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selStrokeEndHandle);
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selStrokeEndHandle);
 		}
 		[Export("setStrokeEnd:")]
 		set
 		{
-			if (IsDirectBinding)
+			if (base.IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_float(base.Handle, selSetStrokeEnd_Handle, value);
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetStrokeEnd_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetStrokeEnd_Handle, value);
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetStrokeEnd_Handle, value);
 			}
 		}
 	}
 
-	[Field("kCALineJoinMiter", "CoreAnimation")]
-	public static NSString JoinMiter
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual nfloat StrokeStart
 	{
+		[Export("strokeStart")]
 		get
 		{
-			if (_JoinMiter == null)
+			if (base.IsDirectBinding)
 			{
-				_JoinMiter = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCALineJoinMiter");
+				return Messaging.nfloat_objc_msgSend(base.Handle, selStrokeStartHandle);
 			}
-			return _JoinMiter;
+			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selStrokeStartHandle);
 		}
-	}
-
-	[Field("kCALineJoinRound", "CoreAnimation")]
-	public static NSString JoinRound
-	{
-		get
+		[Export("setStrokeStart:")]
+		set
 		{
-			if (_JoinRound == null)
+			if (base.IsDirectBinding)
 			{
-				_JoinRound = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCALineJoinRound");
+				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetStrokeStart_Handle, value);
 			}
-			return _JoinRound;
-		}
-	}
-
-	[Field("kCALineJoinBevel", "CoreAnimation")]
-	public static NSString JoinBevel
-	{
-		get
-		{
-			if (_JoinBevel == null)
+			else
 			{
-				_JoinBevel = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCALineJoinBevel");
+				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetStrokeStart_Handle, value);
 			}
-			return _JoinBevel;
 		}
 	}
 
@@ -469,19 +519,6 @@ public class CAShapeLayer : CALayer
 		}
 	}
 
-	[Field("kCAFillRuleNonZero", "CoreAnimation")]
-	public static NSString FillRuleNonZero
-	{
-		get
-		{
-			if (_FillRuleNonZero == null)
-			{
-				_FillRuleNonZero = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAFillRuleNonZero");
-			}
-			return _FillRuleNonZero;
-		}
-	}
-
 	[Field("kCAFillRuleEvenOdd", "CoreAnimation")]
 	public static NSString FillRuleEvenOdd
 	{
@@ -495,63 +532,109 @@ public class CAShapeLayer : CALayer
 		}
 	}
 
+	[Field("kCAFillRuleNonZero", "CoreAnimation")]
+	public static NSString FillRuleNonZero
+	{
+		get
+		{
+			if (_FillRuleNonZero == null)
+			{
+				_FillRuleNonZero = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAFillRuleNonZero");
+			}
+			return _FillRuleNonZero;
+		}
+	}
+
+	[Field("kCALineJoinBevel", "CoreAnimation")]
+	public static NSString JoinBevel
+	{
+		get
+		{
+			if (_JoinBevel == null)
+			{
+				_JoinBevel = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCALineJoinBevel");
+			}
+			return _JoinBevel;
+		}
+	}
+
+	[Field("kCALineJoinMiter", "CoreAnimation")]
+	public static NSString JoinMiter
+	{
+		get
+		{
+			if (_JoinMiter == null)
+			{
+				_JoinMiter = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCALineJoinMiter");
+			}
+			return _JoinMiter;
+		}
+	}
+
+	[Field("kCALineJoinRound", "CoreAnimation")]
+	public static NSString JoinRound
+	{
+		get
+		{
+			if (_JoinRound == null)
+			{
+				_JoinRound = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCALineJoinRound");
+			}
+			return _JoinRound;
+		}
+	}
+
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public CAShapeLayer()
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public CAShapeLayer(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
+		if (base.IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
 		}
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public CAShapeLayer(NSObjectFlag t)
+	protected CAShapeLayer(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public CAShapeLayer(IntPtr handle)
+	protected internal CAShapeLayer(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("layer")]
+	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new static CALayer Create()
 	{
-		return (CALayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selLayerHandle));
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
-		{
-			__mt_FillRule_var = null;
-			__mt_LineCap_var = null;
-			__mt_LineDashPattern_var = null;
-			__mt_LineJoin_var = null;
-		}
+		return Runtime.GetNSObject<CALayer>(Messaging.IntPtr_objc_msgSend(class_ptr, selLayerHandle));
 	}
 }

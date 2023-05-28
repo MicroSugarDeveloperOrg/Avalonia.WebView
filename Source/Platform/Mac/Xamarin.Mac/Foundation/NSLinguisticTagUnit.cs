@@ -1,0 +1,36 @@
+namespace Foundation;
+
+public enum NSLinguisticTagUnit
+{
+	Word,
+	Punctuation,
+	Whitespace,
+	Other,
+	Noun,
+	Verb,
+	Adjective,
+	Adverb,
+	Pronoun,
+	Determiner,
+	Particle,
+	Preposition,
+	Number,
+	Conjunction,
+	Interjection,
+	Classifier,
+	Idiom,
+	OtherWord,
+	Terminator,
+	OpenQuote,
+	CloseQuote,
+	OpenParenthesis,
+	CloseParenthesis,
+	WordJoiner,
+	Dash,
+	OtherPunctuation,
+	ParagraphBreak,
+	OtherWhitespace,
+	PersonalName,
+	OrganizationName,
+	PlaceName
+}
