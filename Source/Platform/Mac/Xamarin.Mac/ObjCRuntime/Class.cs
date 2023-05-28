@@ -212,7 +212,45 @@ public class Class : INativeObject, IEquatable<Class>
 		return LookupClass(klass, throw_on_error: true);
 	}
 
-    #region
+    internal static IntPtr Register(Type type)
+    {
+        return Runtime.Registrar.Register(type);
+    }
+
+    internal static Type Lookup(IntPtr klass, bool throw_on_error)
+    {
+        return LookupClass(klass, throw_on_error);
+    }
+
+    [BindingImpl(BindingImplOptions.Optimizable)]
+    private static Type LookupClass(IntPtr klass, bool throw_on_error)
+    {
+        IntPtr intPtr = klass;
+        do
+        {
+            bool is_custom_type;
+            Type type = FindType(intPtr, out is_custom_type);
+            if (type != null)
+            {
+                return type;
+            }
+            if (Runtime.DynamicRegistrationSupported)
+            {
+                break;
+            }
+            intPtr = class_getSuperclass(intPtr);
+        }
+        while (intPtr != IntPtr.Zero);
+        if (Runtime.DynamicRegistrationSupported)
+        {
+            return Runtime.Registrar.Lookup(klass, throw_on_error);
+        }
+        if (throw_on_error)
+        {
+            throw ErrorHelper.CreateError(8026, string.Format("Can't lookup the Objective-C class 0x{0} ({1}) when the dynamic registrar has been linked away.", klass.ToString("x"), class_getName(klass)));
+        }
+        return null;
+    }
 
     #region
     //private static bool is_fromxamarin_initilized = false;
@@ -220,8 +258,6 @@ public class Class : INativeObject, IEquatable<Class>
     private static Dictionary<IntPtr, Type> type_map = new Dictionary<IntPtr, Type>();
     private static Dictionary<Type, Type> custom_types = new Dictionary<Type, Type>();
     private static List<Delegate> method_wrappers = new List<Delegate>();
-
-    #endregion
 
     [MonoNativeFunctionWrapper]
     private delegate IntPtr addPropertyDelegate( IntPtr cls, string name, Class.objc_attribute_prop[] attributes,  int count);
@@ -271,45 +307,6 @@ public class Class : INativeObject, IEquatable<Class>
         }
     }
 
-    internal static Type Lookup(IntPtr klass, bool throw_on_error)
-	{
-		return LookupClass(klass, throw_on_error);
-	}
-
-	[BindingImpl(BindingImplOptions.Optimizable)]
-	private static Type LookupClass(IntPtr klass, bool throw_on_error)
-	{
-		IntPtr intPtr = klass;
-		do
-		{
-			bool is_custom_type;
-			Type type = FindType(intPtr, out is_custom_type);
-			if (type != null)
-			{
-				return type;
-			}
-			if (Runtime.DynamicRegistrationSupported)
-			{
-				break;
-			}
-			intPtr = class_getSuperclass(intPtr);
-		}
-		while (intPtr != IntPtr.Zero);
-		if (Runtime.DynamicRegistrationSupported)
-		{
-			return Runtime.Registrar.Lookup(klass, throw_on_error);
-		}
-		if (throw_on_error)
-		{
-			throw ErrorHelper.CreateError(8026, string.Format("Can't lookup the Objective-C class 0x{0} ({1}) when the dynamic registrar has been linked away.", klass.ToString("x"), class_getName(klass)));
-		}
-		return null;
-	}
-
-	internal static IntPtr Register(Type type)
-	{
-		return Runtime.Registrar.Register(type);
-	}
 
     public static IntPtr FindClassEx(Type type, out bool is_custom_type)
     {
@@ -319,12 +316,20 @@ public class Class : INativeObject, IEquatable<Class>
         bool is_wrapper = customAttribute != null && customAttribute.IsWrapper;
         IntPtr handle = Class.object_getClass(name);
         if (handle == IntPtr.Zero)
-            handle = Class.Register(type, name, is_wrapper);
+            handle = Class.RegisterEx(type, name, is_wrapper);
 
         return handle;
     }
 
-    private static IntPtr Register(Type type, string name, bool is_wrapper)
+    internal static IntPtr RegisterEx(Type type)
+    {
+        RegisterAttribute customAttribute = (RegisterAttribute)Attribute.GetCustomAttribute((MemberInfo)type, typeof(RegisterAttribute), false);
+        string name = customAttribute == null ? type.FullName : customAttribute.Name ?? type.FullName;
+        bool is_wrapper = customAttribute != null && customAttribute.IsWrapper;
+        return Class.RegisterEx(type, name, is_wrapper);
+    }
+
+    private static IntPtr RegisterEx(Type type, string name, bool is_wrapper)
     {
         IntPtr zero1 = IntPtr.Zero;
         IntPtr zero2 = IntPtr.Zero;
@@ -350,7 +355,7 @@ public class Class : INativeObject, IEquatable<Class>
             if (superclass == IntPtr.Zero && (baseType.Assembly != NSObject.MonoMacAssembly))
             {
                 bool is_wrapper1 = customAttribute1 != null && customAttribute1.IsWrapper;
-                Class.Register(baseType, name1, is_wrapper1);
+                Class.RegisterEx(baseType, name1, is_wrapper1);
                 superclass = Class.objc_getClass(name1);
             }
             if (superclass == IntPtr.Zero)
@@ -364,13 +369,13 @@ public class Class : INativeObject, IEquatable<Class>
                     string name2 = customAttribute2.Name ?? ((MemberInfo)property).Name;
                     Class.class_addIvar(num, name2, (IntPtr)Marshal.SizeOf(typeof(IntPtr)), (ushort)Math.Log((double)Marshal.SizeOf(typeof(IntPtr)), 2.0), "@");
                 }
-                Class.RegisterProperty(property, type, num);
+                Class.RegisterPropertyEx(property, type, num);
             }
 
             NSObject.OverrideRetainAndRelease(num);
 
             foreach (MethodInfo method in type.GetMethods((BindingFlags)62))
-                Class.RegisterMethod(method, type, num);
+                Class.RegisterMethodEx(method, type, num);
 
             ConstructorInfo constructor1 = type.GetConstructor(Type.EmptyTypes);
 
@@ -396,7 +401,7 @@ public class Class : INativeObject, IEquatable<Class>
         }
     }
 
-    private static void RegisterProperty(PropertyInfo prop, Type type, IntPtr handle)
+    private static void RegisterPropertyEx(PropertyInfo prop, Type type, IntPtr handle)
     {
         ExportAttribute customAttribute = (ExportAttribute)Attribute.GetCustomAttribute((MemberInfo)prop, typeof(ExportAttribute));
         if (customAttribute == null)
@@ -406,11 +411,11 @@ public class Class : INativeObject, IEquatable<Class>
         
         MethodInfo getMethod = prop.GetGetMethod(true);
         if (getMethod is not null)
-            Class.RegisterMethod(getMethod, customAttribute.ToGetter(prop), type, handle);
+            Class.RegisterMethodEx(getMethod, customAttribute.ToGetter(prop), type, handle);
         
         MethodInfo setMethod = prop.GetSetMethod(true);
         if (setMethod is not null)
-            Class.RegisterMethod(setMethod, customAttribute.ToSetter(prop), type, handle);
+            Class.RegisterMethodEx(setMethod, customAttribute.ToSetter(prop), type, handle);
 
         int num1 = 0;
         Class.objc_attribute_prop[] attributes = new Class.objc_attribute_prop[3];
@@ -456,28 +461,28 @@ public class Class : INativeObject, IEquatable<Class>
         Class.class_addPropertyEx(handle, customAttribute.Selector, attributes, count);
     }
 
-    private static void RegisterMethod(MethodInfo minfo, Type type, IntPtr handle)
+    private static void RegisterMethodEx(MethodInfo minfo, Type type, IntPtr handle)
     {
         ExportAttribute customAttribute = (ExportAttribute)Attribute.GetCustomAttribute((MemberInfo)minfo.GetBaseDefinition(), typeof(ExportAttribute));
         if (customAttribute == null || ((MethodBase)minfo).IsVirtual && ((MemberInfo)minfo).DeclaringType != type &&  (((MemberInfo)minfo).DeclaringType.Assembly != NSObject.MonoMacAssembly))
             return;
-        Class.RegisterMethod(minfo, customAttribute, type, handle);
+        Class.RegisterMethodEx(minfo, customAttribute, type, handle);
     }
 
-    internal static void RegisterMethod( MethodInfo minfo, ExportAttribute ea, Type type,  IntPtr handle)
+    internal static void RegisterMethodEx( MethodInfo minfo, ExportAttribute ea, Type type,  IntPtr handle)
     {
         NativeMethodBuilder nativeMethodBuilder = new NativeMethodBuilder(minfo, type, ea);
-        Class.class_addMethod(((MethodBase)minfo).IsStatic ? Class.object_getClass(handle) : handle, nativeMethodBuilder.Selector, Class.GetFunctionPointer(minfo, nativeMethodBuilder.Delegate), nativeMethodBuilder.Signature);
+        Class.class_addMethod(((MethodBase)minfo).IsStatic ? Class.object_getClass(handle) : handle, nativeMethodBuilder.Selector, Class.GetFunctionPointerEx(minfo, nativeMethodBuilder.Delegate), nativeMethodBuilder.Signature);
         lock (Class.lock_obj)
             Class.method_wrappers.Add(nativeMethodBuilder.Delegate);
     }
 
-    private static IntPtr GetFunctionPointer(MethodInfo minfo, Delegate @delegate)
+    private static IntPtr GetFunctionPointerEx(MethodInfo minfo, Delegate @delegate)
     {
         IntPtr pointerForDelegate = Marshal.GetFunctionPointerForDelegate(@delegate);
         if (!Class.TypeRequiresFloatingPointTrampoline(minfo.ReturnType))
             return pointerForDelegate;
-        IntPtr destination = Class.AllocExecMemory(83);
+        IntPtr destination = Class.AllocExecMemoryEx(83);
         IntPtr num1 = new IntPtr(pointerForDelegate.ToInt32() - destination.ToInt32() - 70);
         IntPtr num2 = new IntPtr(Class.getFrameLengthPtr.ToInt32() - destination.ToInt32() - 27);
         byte[] bytes1 = BitConverter.GetBytes(num1.ToInt32());
@@ -586,7 +591,7 @@ public class Class : INativeObject, IEquatable<Class>
         return false;
     }
 
-    private static IntPtr AllocExecMemory(int size)
+    private static IntPtr AllocExecMemoryEx(int size)
     {
         if (Class.size_left < size)
         {

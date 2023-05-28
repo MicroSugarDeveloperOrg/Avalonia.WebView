@@ -430,6 +430,24 @@ public static class Runtime
 
     public static event MarshalManagedExceptionHandler MarshalManagedException;
 
+    static Runtime()
+    {
+        string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        string path1;
+        if (!string.IsNullOrEmpty(baseDirectory))
+        {
+            path1 = Path.Combine(baseDirectory, "..");
+        }
+        else
+        {
+            string location = Assembly.GetExecutingAssembly().Location;
+            path1 = !string.IsNullOrEmpty(location) ? Path.Combine(Path.GetDirectoryName(location), "..") : throw new InvalidOperationException("Cannot get base path of current app domain");
+        }
+        ResourcesPath = Path.Combine(path1, "Resources");
+        FrameworksPath = Path.Combine(path1, "Frameworks");
+    }
+
+
     [MonoPInvokeCallback(typeof(register_nsobject_delegate))]
     private static void register_nsobject(IntPtr managed_obj, IntPtr native_obj, out int exception_gchandle)
     {
@@ -1301,13 +1319,13 @@ public static class Runtime
         if (Runtime.assemblies == null)
         {
             Runtime.assemblies = new List<Assembly>();
-            Class.Register(typeof(NSObject));
+            Class.RegisterEx(typeof(NSObject));
         }
         Runtime.assemblies.Add(a);
         foreach (Type type in a.GetTypes())
         {
             if (type.IsSubclassOf(typeof(NSObject)) && !Attribute.IsDefined((MemberInfo)type, typeof(ModelAttribute), false))
-                Class.Register(type);
+                Class.RegisterEx(type);
         }
     }
 
