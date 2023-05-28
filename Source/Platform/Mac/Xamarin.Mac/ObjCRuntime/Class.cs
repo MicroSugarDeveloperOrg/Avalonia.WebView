@@ -17,15 +17,6 @@ public class Class : INativeObject, IEquatable<Class>
 		internal string value;
 	}
 
-    #region
-    //private static bool is_fromxamarin_initilized = false;
-    private static object lock_obj = new object();
-    private static Dictionary<IntPtr, Type> type_map = new Dictionary<IntPtr, Type>();
-    private static Dictionary<Type, Type> custom_types = new Dictionary<Type, Type>();
-    private static List<Delegate> method_wrappers = new List<Delegate>();
-
-    #endregion
-
     public static bool ThrowOnInitFailure = true;
 
 	private static Dictionary<Type, IntPtr> type_to_class;
@@ -73,19 +64,6 @@ public class Class : INativeObject, IEquatable<Class>
 			}
 		}
 	}
-
-    //[BindingImpl(BindingImplOptions.Optimizable)]
-    internal static void Initialize()
-	{
-        //is_fromxamarin_initilized = false;
-        type_to_class = new Dictionary<Type, IntPtr>(Runtime.TypeEqualityComparer);
-		//class_to_type = new Type[20];
-        if (Runtime.DynamicRegistrationSupported)
-        {
-            //IntPtr ptr = Marshal.ReadIntPtr(assembly, IntPtr.Size);
-            //Runtime.Registrar.SetAssemblyRegistered(Marshal.PtrToStringAuto(ptr));
-        }
-    }
 
     public Class(string name)
 	{
@@ -154,7 +132,13 @@ public class Class : INativeObject, IEquatable<Class>
 	[BindingImpl(BindingImplOptions.Optimizable)]
 	private static IntPtr GetClassHandle(Type type, bool throw_if_failure, out bool is_custom_type)
 	{
-		IntPtr value = IntPtr.Zero;
+        if (!NSApplication.is_autoloaded)
+        {
+            var handle = FindClassEx(type, out is_custom_type);
+            return handle;
+        }
+        
+        IntPtr value = IntPtr.Zero;
 		if (type.IsByRef || type.IsPointer || type.IsArray)
 		{
 			is_custom_type = false;
@@ -167,11 +151,8 @@ public class Class : INativeObject, IEquatable<Class>
 		}
 		if (!flag)
 		{
-			if (NSApplication.is_autoloaded)
-                value = FindClass(type, out is_custom_type);
-			else
-				value = FindClassEx(type, out is_custom_type);
-			lock (type_to_class)
+            value = FindClass(type, out is_custom_type);
+            lock (type_to_class)
 			{
 				type_to_class[type] = value + (is_custom_type ? 1 : 0);
 			}
@@ -233,8 +214,21 @@ public class Class : INativeObject, IEquatable<Class>
 
     #region
 
-    private static int size_left;
+    #region
+    //private static bool is_fromxamarin_initilized = false;
+    private static object lock_obj = new object();
+    private static Dictionary<IntPtr, Type> type_map = new Dictionary<IntPtr, Type>();
+    private static Dictionary<Type, Type> custom_types = new Dictionary<Type, Type>();
+    private static List<Delegate> method_wrappers = new List<Delegate>();
 
+    #endregion
+
+    [MonoNativeFunctionWrapper]
+    private delegate IntPtr addPropertyDelegate( IntPtr cls, string name, Class.objc_attribute_prop[] attributes,  int count);
+
+    private static Class.addPropertyDelegate addProperty;
+    private static bool addPropertyInitialized;
+    private static int size_left;
     private static IntPtr memory;
 
     [MonoNativeFunctionWrapper]
@@ -459,7 +453,7 @@ public class Class : INativeObject, IEquatable<Class>
         objcAttributeProp1.value = customAttribute.Selector;
         Class.objc_attribute_prop objcAttributeProp5 = objcAttributeProp1;
         objcAttributePropArray4[index4] = objcAttributeProp5;
-        Class.class_addProperty(handle, customAttribute.Selector, attributes, count);
+        Class.class_addPropertyEx(handle, customAttribute.Selector, attributes, count);
     }
 
     private static void RegisterMethod(MethodInfo minfo, Type type, IntPtr handle)
@@ -611,6 +605,29 @@ public class Class : INativeObject, IEquatable<Class>
 
     [DllImport("libc", SetLastError = true)]
     private static extern int mprotect(IntPtr addr, int len, int prot);
+
+    [DllImport("libc", SetLastError = true)]
+    private static extern IntPtr mmap(IntPtr start, ulong length, int prot, int flags, int fd, long offset);
+
+    private static IntPtr class_addPropertyEx( IntPtr cls, string name, Class.objc_attribute_prop[] attributes, int count)
+    {
+        if (!Class.addPropertyInitialized)
+        {
+            IntPtr handle = Dlfcn.dlopen("/usr/lib/libobjc.dylib", 0);
+            try
+            {
+                IntPtr ptr = Dlfcn.dlsym(handle, nameof(class_addProperty));
+                if (ptr != IntPtr.Zero)
+                    Class.addProperty = (Class.addPropertyDelegate)Marshal.GetDelegateForFunctionPointer(ptr, typeof(Class.addPropertyDelegate));
+            }
+            finally
+            {
+                Dlfcn.dlclose(handle);
+            }
+            Class.addPropertyInitialized = true;
+        }
+        return Class.addProperty == null ? IntPtr.Zero : Class.addProperty(cls, name, attributes, count);
+    }
 
     #endregion
 
@@ -926,10 +943,8 @@ public class Class : INativeObject, IEquatable<Class>
 	[DllImport("/usr/lib/libobjc.dylib")]
 	internal static extern bool class_addIvar(IntPtr cls, string name, IntPtr size, byte alignment, string types);
 
-
     [DllImport("/usr/lib/libobjc.dylib")]
     private static extern bool class_addIvar(IntPtr cls, string name, IntPtr size,  ushort alignment, string types);
-
 
     [DllImport("/usr/lib/libobjc.dylib")]
 	internal static extern bool class_addMethod(IntPtr cls, IntPtr name, IntPtr imp, string types);
