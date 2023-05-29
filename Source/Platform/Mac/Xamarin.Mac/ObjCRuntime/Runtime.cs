@@ -142,18 +142,6 @@ public static class Runtime
 		return null;
 	}
 
-    public static T TryGetNSObject<T>(IntPtr ptr) where T : NSObject
-    {
-        lock (lock_obj)
-        {
-            if (object_map.TryGetValue(ptr, out var value))
-            {
-                return value.Target as T;
-            }
-        }
-        return null;
-    }
-
     public static NSObject GetNSObject(IntPtr ptr)
 	{
 		if (ptr == IntPtr.Zero)
@@ -179,6 +167,40 @@ public static class Runtime
 		return new NSObject(ptr);
 	}
 
+    public static void ConnectMethod(MethodInfo method, Selector selector)
+	{
+		if (method == null)
+		{
+			throw new ArgumentNullException("method");
+		}
+		if (selector == null)
+		{
+			throw new ArgumentNullException("selector");
+		}
+		Type declaringType = method.DeclaringType;
+		if (!Class.IsCustomType(declaringType))
+		{
+			throw new ArgumentException("Cannot late bind methods on core types");
+		}
+		ExportAttribute ea = new ExportAttribute(selector.Name);
+		Class @class = new Class(declaringType);
+		Class.RegisterMethod(method, ea, declaringType, @class.Handle);
+	}
+
+    #region
+
+    public static T TryGetNSObject<T>(IntPtr ptr) where T : NSObject
+    {
+        lock (lock_obj)
+        {
+            if (object_map.TryGetValue(ptr, out var value))
+            {
+                return value.Target as T;
+            }
+        }
+        return null;
+    }
+
     public static T GetNSObject<T>(IntPtr ptr) where T : NSObject
     {
         if (ptr == IntPtr.Zero)
@@ -201,7 +223,7 @@ public static class Runtime
         return new NSObject(ptr) as T;
     }
 
-    public static T GetNativeObject<T>(IntPtr ptr) where T : class , INativeObject 
+    public static T GetNativeObject<T>(IntPtr ptr) where T : class, INativeObject
     {
         if (ptr == IntPtr.Zero)
             return default;
@@ -223,23 +245,5 @@ public static class Runtime
         return new NSObject(ptr) as T;
     }
 
-    public static void ConnectMethod(MethodInfo method, Selector selector)
-	{
-		if (method == null)
-		{
-			throw new ArgumentNullException("method");
-		}
-		if (selector == null)
-		{
-			throw new ArgumentNullException("selector");
-		}
-		Type declaringType = method.DeclaringType;
-		if (!Class.IsCustomType(declaringType))
-		{
-			throw new ArgumentException("Cannot late bind methods on core types");
-		}
-		ExportAttribute ea = new ExportAttribute(selector.Name);
-		Class @class = new Class(declaringType);
-		Class.RegisterMethod(method, ea, declaringType, @class.Handle);
-	}
+    #endregion
 }
