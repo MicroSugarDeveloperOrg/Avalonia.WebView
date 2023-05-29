@@ -19,3 +19,4 @@ global using Avalonia.WebView.MacCatalyst.Delegates;
 global using WebViewCore.Events;
 global using Foundation;
 global using CoreGraphics;
+global using AppKit;

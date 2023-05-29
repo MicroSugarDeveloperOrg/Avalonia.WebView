@@ -1,9 +1,10 @@
 ﻿namespace Avalonia.WebView.MacCatalyst;
+
 internal class ViewHandlerProvider : IViewHandlerProvider
 {
     public ViewHandlerProvider()
     {
-        //UIApplication.
+        NSApplication.Init();
     }
 
     IViewHandler IViewHandlerProvider.CreatePlatformWebViewHandler(IVirtualWebView virtualView, IVirtualWebViewControlCallBack virtualViewCallBack, IVirtualBlazorWebViewProvider? provider, Action<WebViewCreationProperties>? configDelegate)
