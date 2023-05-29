@@ -381,7 +381,7 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 
     public static NSSet MakeNativeSet<T>(T[] values) where T : class, INativeObject
     {
-        using NSArray nSArray = NSArray.FromNativeObjects(values);
+        using NSArray nSArray = NSArray.FromNativeObjectsTx(values);
         return Runtime.GetNativeObject<NSSet>(_SetWithArray(nSArray.Handle));
     }
 

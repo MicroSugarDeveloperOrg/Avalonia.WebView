@@ -666,6 +666,103 @@ internal static class Trampolines
         }
     }
 
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<WKContentRuleList, NSError>))]
+    internal delegate void DActionArity2V84(IntPtr block, IntPtr arg1, IntPtr arg2);
+
+    internal static class SDActionArity2V84
+    {
+        internal static readonly DActionArity2V84 Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DActionArity2V84))]
+        private unsafe static void Invoke(IntPtr block, IntPtr arg1, IntPtr arg2)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((Action<WKContentRuleList, NSError>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<WKContentRuleList>(arg1), Runtime.GetNSObjectTx<NSError>(arg2));
+        }
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<string[]>))]
+    internal delegate void DActionArity1V1(IntPtr block, IntPtr obj);
+
+    internal static class SDActionArity1V1
+    {
+        internal static readonly DActionArity1V1 Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DActionArity1V1))]
+        private unsafe static void Invoke(IntPtr block, IntPtr obj)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((Action<string[]>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(NSArray.StringArrayFromHandle(obj));
+        }
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<NSColor>))]
+    internal delegate void DActionArity1V10(IntPtr block, IntPtr obj);
+
+    internal static class SDActionArity1V10
+    {
+        internal static readonly DActionArity1V10 Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DActionArity1V10))]
+        private unsafe static void Invoke(IntPtr block, IntPtr obj)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((Action<NSColor>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<NSColor>(obj));
+        }
+    }
+
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<NSError>))]
+    internal delegate void DActionArity1V11(IntPtr block, IntPtr obj);
+
+    internal static class SDActionArity1V11
+    {
+        internal static readonly DActionArity1V11 Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DActionArity1V11))]
+        private unsafe static void Invoke(IntPtr block, IntPtr obj)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((Action<NSError>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<NSError>(obj));
+        }
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(WKJavascriptEvaluationResult))]
+    internal delegate void DWKJavascriptEvaluationResult(IntPtr block, IntPtr result, IntPtr error);
+
+    internal static class SDWKJavascriptEvaluationResult
+    {
+        internal static readonly DWKJavascriptEvaluationResult Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DWKJavascriptEvaluationResult))]
+        private unsafe static void Invoke(IntPtr block, IntPtr result, IntPtr error)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((WKJavascriptEvaluationResult)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<NSObject>(result), Runtime.GetNSObjectTx<NSError>(error));
+        }
+    }
+
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<NSImage, NSError>))]
+    internal delegate void DActionArity2V86(IntPtr block, IntPtr arg1, IntPtr arg2);
+
+    internal static class SDActionArity2V86
+    {
+        internal static readonly DActionArity2V86 Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DActionArity2V86))]
+        private unsafe static void Invoke(IntPtr block, IntPtr arg1, IntPtr arg2)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((Action<NSImage, NSError>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<NSImage>(arg1), Runtime.GetNSObjectTx<NSError>(arg2));
+        }
+    }
 
     #endregion
 

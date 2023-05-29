@@ -497,15 +497,20 @@ public class NSArray : NSObject
         return array;
     }
 
-    internal static NSArray FromNativeObjects<T>(T[] items) where T : class, INativeObject
+    public static NSArray FromNSObjectsTx<T>(params T[] items) where T : class, INativeObject
+    {
+        return FromNativeObjectsTx(items);
+    }
+
+    internal static NSArray FromNativeObjectsTx<T>(T[] items) where T : class, INativeObject
     {
         if (items == null)
             return new NSArray();
 
-        return FromNativeObjects(items, items.Length);
+        return FromNativeObjectsTx(items, items.Length);
     }
 
-    internal static NSArray FromNativeObjects<T>(T[] items, nint count) where T : class, INativeObject
+    internal static NSArray FromNativeObjectsTx<T>(T[] items, long count) where T : class, INativeObject
     {
         if (items == null)
             return new NSArray();
@@ -683,9 +688,9 @@ public class NSArray : NSObject
         return Messaging.nuint_objc_msgSend_IntPtr(Handle, selIndexOfObject_Handle, anObject);
     }
 
-    internal static IntPtr _FromObjects(IntPtr array, nint count)
+    internal static IntPtr _FromObjects(IntPtr array, long count)
     {
-        return Messaging.IntPtr_objc_msgSend_IntPtr_nint(class_ptr, selArrayWithObjectsCount_Handle, array, count);
+        return Messaging.IntPtr_objc_msgSend_IntPtr_long(class_ptr, selArrayWithObjectsCount_Handle, array, count);
     }
 
     #endregion

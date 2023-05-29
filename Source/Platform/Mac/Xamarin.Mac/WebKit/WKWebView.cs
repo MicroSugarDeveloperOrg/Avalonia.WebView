@@ -1,7 +1,9 @@
 ﻿using AppKit;
+using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 using Security;
+using System.ComponentModel;
 using Xamarin.System;
 
 namespace WebKit;
@@ -137,9 +139,38 @@ public class WKWebView : NSView
 
     private static Type hack = typeof(NSProxy);
 
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    [Export("initWithCoder:")]
+    public WKWebView(NSCoder coder)
+        : base(NSObjectFlag.Empty)
+    {
+        InitializeHandle(Selector.InitWithCoder, coder);
+    }
 
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    protected WKWebView(NSObjectFlag t)
+        : base(t)
+    {
+    }
 
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    protected internal WKWebView(IntPtr handle)
+        : base(handle)
+    {
+    }
 
+    [Export(selInitWithFrame_Configuration_)]
+    public WKWebView(CGRect frame, WKWebViewConfiguration configuration)
+        : base(NSObjectFlag.Empty)
+    {
+        if (configuration == null)
+            throw new ArgumentNullException("configuration");
+
+        if (IsDirectBinding)
+            InitializeWithHandle(Messaging.IntPtr_objc_msgSend_CGRect_IntPtr(Handle, selInitWithFrame_Configuration_Handle, frame, configuration.Handle));
+        else
+            InitializeWithHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect_IntPtr(SuperHandle, selInitWithFrame_Configuration_Handle, frame, configuration.Handle));
+    }
 
     private object? __mt_WeakNavigationDelegate_var;
 
@@ -454,4 +485,255 @@ public class WKWebView : NSView
         }
     }
 
+    [Export(selEvaluateJavaScript_CompletionHandler_)]
+    public unsafe virtual void EvaluateJavaScript(NSString javascript, WKJavascriptEvaluationResult? completionHandler)
+    {
+        if (javascript == null)
+            throw new ArgumentNullException("javascript");
+
+        BlockLiteral* ptr;
+        if (completionHandler == null)
+            ptr = null;
+        else
+        {
+            BlockLiteral blockLiteral = default(BlockLiteral);
+            ptr = &blockLiteral;
+            blockLiteral.SetupBlock(Trampolines.SDWKJavascriptEvaluationResult.Handler, completionHandler);
+        }
+        if (IsDirectBinding)
+            Messaging.void_objc_msgSend_IntPtr_IntPtr(Handle, selEvaluateJavaScript_CompletionHandler_Handle, javascript.Handle, (IntPtr)ptr);
+        else
+            Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(SuperHandle, selEvaluateJavaScript_CompletionHandler_Handle, javascript.Handle, (IntPtr)ptr);
+
+        if (ptr != null)
+            ptr->CleanupBlock();
+    }
+
+    public virtual Task<NSObject> EvaluateJavaScriptAsync(NSString javascript)
+    {
+        TaskCompletionSource<NSObject> tcs = new TaskCompletionSource<NSObject>();
+        EvaluateJavaScript(javascript, delegate (NSObject result_, NSError error_)
+        {
+            if (error_ != null)
+            {
+                tcs.SetException(new NSErrorException(error_));
+            }
+            else
+            {
+                tcs.SetResult(result_);
+            }
+        });
+        return tcs.Task;
+    }
+
+    public void EvaluateJavaScript(string javascript, WKJavascriptEvaluationResult completionHandler) => EvaluateJavaScript((NSString)javascript, completionHandler);
+
+    public Task<NSObject> EvaluateJavaScriptAsync(string javascript)
+    {
+        TaskCompletionSource<NSObject> tcs = new TaskCompletionSource<NSObject>();
+        EvaluateJavaScript(javascript, delegate (NSObject result_, NSError error_)
+        {
+            if (error_ != null)
+                tcs.SetException(new NSErrorException(error_));
+            else
+                tcs.SetResult(result_);
+        });
+        return tcs.Task;
+    }
+
+    [Export(selGoBack)]
+    public virtual WKNavigation GoBack()
+    {
+        if (IsDirectBinding)
+            return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSend(Handle, selGoBackHandle));
+
+        return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selGoBackHandle));
+    }
+
+    [Export(selGoForward)]
+    public virtual WKNavigation GoForward()
+    {
+        if (IsDirectBinding)
+            return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSend(Handle, selGoForwardHandle));
+
+        return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selGoForwardHandle));
+    }
+
+    [Export(selGoToBackForwardListItem_)]
+    public virtual WKNavigation GoTo(WKBackForwardListItem item)
+    {
+        if (item == null)
+            throw new ArgumentNullException("item");
+
+        if (IsDirectBinding)
+            return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selGoToBackForwardListItem_Handle, item.Handle));
+
+        return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selGoToBackForwardListItem_Handle, item.Handle));
+    }
+
+    [Export(selHandlesURLScheme_)]
+    public static bool HandlesUrlScheme(string urlScheme)
+    {
+        if (urlScheme == null)
+            throw new ArgumentNullException("urlScheme");
+
+        IntPtr arg = NSString.CreateNative(urlScheme);
+        bool result = Messaging.bool_objc_msgSend_IntPtr(class_ptr, selHandlesURLScheme_Handle, arg);
+        NSString.ReleaseNative(arg);
+        return result;
+    }
+
+    [Export(selLoadData_MIMEType_CharacterEncodingName_BaseURL_)]
+    public virtual WKNavigation? LoadData(NSData data, string mimeType, string characterEncodingName, NSUrl baseUrl)
+    {
+        if (data == null)
+            throw new ArgumentNullException("data");
+
+        if (mimeType == null)
+            throw new ArgumentNullException("mimeType");
+
+        if (characterEncodingName == null)
+            throw new ArgumentNullException("characterEncodingName");
+
+        if (baseUrl == null)
+            throw new ArgumentNullException("baseUrl");
+
+        IntPtr arg = NSString.CreateNative(mimeType);
+        IntPtr arg2 = NSString.CreateNative(characterEncodingName);
+        WKNavigation result = ((!IsDirectBinding) ? Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr(SuperHandle, selLoadData_MIMEType_CharacterEncodingName_BaseURL_Handle, data.Handle, arg, arg2, baseUrl.Handle)) 
+            : Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(Handle, selLoadData_MIMEType_CharacterEncodingName_BaseURL_Handle, data.Handle, arg, arg2, baseUrl.Handle)));
+        NSString.ReleaseNative(arg);
+        NSString.ReleaseNative(arg2);
+        return result;
+    }
+
+    [Export(selLoadFileURL_AllowingReadAccessToURL_)]
+    public virtual WKNavigation? LoadFileUrl(NSUrl url, NSUrl readAccessUrl)
+    {
+        if (url == null)
+            throw new ArgumentNullException("url");
+
+        if (readAccessUrl == null)
+            throw new ArgumentNullException("readAccessUrl");
+
+        if (IsDirectBinding)
+            return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(Handle, selLoadFileURL_AllowingReadAccessToURL_Handle, url.Handle, readAccessUrl.Handle));
+
+        return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(SuperHandle, selLoadFileURL_AllowingReadAccessToURL_Handle, url.Handle, readAccessUrl.Handle));
+    }
+
+    [Export(selLoadHTMLString_BaseURL_)]
+    public virtual WKNavigation LoadHtmlString(NSString htmlString, NSUrl? baseUrl)
+    {
+        if (htmlString == null)
+            throw new ArgumentNullException("htmlString");
+
+        if (IsDirectBinding)
+            return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(Handle, selLoadHTMLString_BaseURL_Handle, htmlString.Handle, (baseUrl == null) ? IntPtr.Zero : baseUrl.Handle));
+
+        return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(SuperHandle, selLoadHTMLString_BaseURL_Handle, htmlString.Handle, (baseUrl == null) ? IntPtr.Zero : baseUrl.Handle));
+    }
+
+    public WKNavigation LoadHtmlString(string htmlString, NSUrl baseUrl) => LoadHtmlString((NSString)htmlString, baseUrl);
+
+    [Export(selLoadRequest_)]
+    public virtual WKNavigation LoadRequest(NSUrlRequest request)
+    {
+        if (request == null)
+            throw new ArgumentNullException("request");
+
+        if (IsDirectBinding)
+            return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selLoadRequest_Handle, request.Handle));
+
+        return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selLoadRequest_Handle, request.Handle));
+    }
+
+    [Export(selReload)]
+    public virtual WKNavigation Reload()
+    {
+        if (IsDirectBinding)
+            return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSend(Handle, selReloadHandle));
+
+        return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selReloadHandle));
+    }
+
+    [Export(selReloadFromOrigin)]
+    public virtual WKNavigation ReloadFromOrigin()
+    {
+        if (IsDirectBinding)
+            return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSend(Handle, selReloadFromOriginHandle));
+
+        return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selReloadFromOriginHandle));
+    }
+
+    [Export(selSetMagnification_CenteredAtPoint_)]
+    public virtual void SetMagnification(nfloat magnification, CGPoint centerPoint)
+    {
+        if (IsDirectBinding)
+            Messaging.void_objc_msgSend_nfloat_CGPoint(Handle, selSetMagnification_CenteredAtPoint_Handle, magnification, centerPoint);
+        else
+            Messaging.void_objc_msgSendSuper_nfloat_CGPoint(SuperHandle, selSetMagnification_CenteredAtPoint_Handle, magnification, centerPoint);
+    }
+
+    [Export(selStopLoading)]
+    public virtual void StopLoading()
+    {
+        if (IsDirectBinding)
+            Messaging.void_objc_msgSend(Handle, selStopLoadingHandle);
+        else
+            Messaging.void_objc_msgSendSuper(SuperHandle, selStopLoadingHandle);
+    }
+
+    [Export(selTakeSnapshotWithConfiguration_CompletionHandler_)]
+    public unsafe virtual void TakeSnapshot(WKSnapshotConfiguration? snapshotConfiguration, Action<NSImage, NSError> completionHandler)
+    {
+        if (completionHandler == null)
+        {
+            throw new ArgumentNullException("completionHandler");
+        }
+        BlockLiteral blockLiteral = default(BlockLiteral);
+        BlockLiteral* ptr = &blockLiteral;
+        blockLiteral.SetupBlock(Trampolines.SDActionArity2V86.Handler, completionHandler);
+        if (IsDirectBinding)
+            Messaging.void_objc_msgSend_IntPtr_IntPtr(Handle, selTakeSnapshotWithConfiguration_CompletionHandler_Handle, snapshotConfiguration?.Handle ?? IntPtr.Zero, (IntPtr)ptr);
+        else
+            Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(SuperHandle, selTakeSnapshotWithConfiguration_CompletionHandler_Handle, snapshotConfiguration?.Handle ?? IntPtr.Zero, (IntPtr)ptr);
+
+        ptr->CleanupBlock();
+    }
+
+    public virtual Task<NSImage> TakeSnapshotAsync(WKSnapshotConfiguration? snapshotConfiguration)
+    {
+        TaskCompletionSource<NSImage> tcs = new TaskCompletionSource<NSImage>();
+        TakeSnapshot(snapshotConfiguration, delegate (NSImage arg1_, NSError arg2_)
+        {
+            if (arg2_ != null)
+                tcs.SetException(new NSErrorException(arg2_));
+            else
+                tcs.SetResult(arg1_);
+        });
+        return tcs.Task;
+    }
+
+    [Export(selValidateUserInterfaceItem_)]
+    public virtual bool ValidateUserInterfaceItem(INSValidatedUserInterfaceItem item)
+    {
+        if (item == null)
+            throw new ArgumentNullException("item");
+
+        if (IsDirectBinding)
+            return Messaging.bool_objc_msgSend_IntPtr(Handle, selValidateUserInterfaceItem_Handle, item.Handle);
+
+        return Messaging.bool_objc_msgSendSuper_IntPtr(SuperHandle, selValidateUserInterfaceItem_Handle, item.Handle);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        Dispose(disposing);
+        if (Handle == IntPtr.Zero)
+        {
+            __mt_WeakNavigationDelegate_var = null;
+            __mt_WeakUIDelegate_var = null;
+        }
+    }
 }

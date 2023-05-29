@@ -133,7 +133,7 @@ public class NSMutableSet : NSSet, IEnumerable<NSObject>, IEnumerable
 
     #region
     internal NSMutableSet(params INativeObject[] objs)
-    : this(NSArray.FromNativeObjects(objs))
+    : this(NSArray.FromNativeObjectsTx(objs))
     {
     }
 

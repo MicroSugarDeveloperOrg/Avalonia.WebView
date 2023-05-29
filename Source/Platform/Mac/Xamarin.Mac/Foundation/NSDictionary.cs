@@ -97,7 +97,21 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 
 	private static readonly IntPtr selSharedKeySetForKeys_Handle = Selector.GetHandle("sharedKeySetForKeys:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSDictionary");
+    #region
+
+    private const string selObjectsForKeys_NotFoundMarker_ = "objectsForKeys:notFoundMarker:";
+    private static readonly IntPtr selObjectsForKeys_NotFoundMarker_Handle = Selector.GetHandle(selObjectsForKeys_NotFoundMarker_);
+
+    private const string selDictionaryWithObjects_ForKeys_ = "dictionaryWithObjects:forKeys:";
+    private static readonly IntPtr selDictionaryWithObjects_ForKeys_Handle = Selector.GetHandle(selDictionaryWithObjects_ForKeys_);
+
+    private const string selDictionaryWithObjects_ForKeys_Count_ = "dictionaryWithObjects:forKeys:count:";
+    private static readonly IntPtr selDictionaryWithObjects_ForKeys_Count_Handle = Selector.GetHandle(selDictionaryWithObjects_ForKeys_Count_);
+
+    #endregion
+
+
+    private static readonly IntPtr class_ptr = Class.GetHandle("NSDictionary");
 
 	private object __mt_Keys_var;
 
@@ -201,9 +215,9 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 		{
 			if (IsDirectBinding)
 			{
-				return Messaging.UInt64_objc_msgSend(base.Handle, selCountHandle);
+				return Messaging.UInt64_objc_msgSend(Handle, selCountHandle);
 			}
-			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selCountHandle);
+			return Messaging.UInt64_objc_msgSendSuper(SuperHandle, selCountHandle);
 		}
 	}
 
@@ -214,7 +228,7 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 		{
 			using (new NSAutoreleasePool())
 			{
-				return (NSObject[])(__mt_Keys_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAllKeysHandle)) : NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAllKeysHandle))));
+				return (NSObject[])(__mt_Keys_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selAllKeysHandle)) : NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(Handle, selAllKeysHandle))));
 			}
 		}
 	}
@@ -226,7 +240,7 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 		{
 			using (new NSAutoreleasePool())
 			{
-				return (NSObject[])(__mt_Values_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAllValuesHandle)) : NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAllValuesHandle))));
+				return (NSObject[])(__mt_Values_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selAllValuesHandle)) : NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(Handle, selAllValuesHandle))));
 			}
 		}
 	}
@@ -238,9 +252,9 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 		{
 			if (IsDirectBinding)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDescriptionInStringsFileFormatHandle));
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(Handle, selDescriptionInStringsFileFormatHandle));
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDescriptionInStringsFileFormatHandle));
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selDescriptionInStringsFileFormatHandle));
 		}
 	}
 
@@ -249,7 +263,7 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 		[Export("objectEnumerator")]
 		get
 		{
-			return (NSEnumerator)(__mt_ObjectEnumerator_var = ((!IsDirectBinding) ? ((NSEnumerator)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selObjectEnumeratorHandle))) : ((NSEnumerator)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selObjectEnumeratorHandle)))));
+			return (NSEnumerator)(__mt_ObjectEnumerator_var = ((!IsDirectBinding) ? ((NSEnumerator)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selObjectEnumeratorHandle))) : ((NSEnumerator)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selObjectEnumeratorHandle)))));
 		}
 	}
 
@@ -555,7 +569,7 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 
 	public IntPtr LowlevelObjectForKey(IntPtr key)
 	{
-		return Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selObjectForKey_Handle, key);
+		return Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selObjectForKey_Handle, key);
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -565,11 +579,11 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 	{
 		if (IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			Handle = Messaging.IntPtr_objc_msgSend(Handle, Selector.Init);
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			Handle = Messaging.IntPtr_objc_msgSendSuper(SuperHandle, Selector.Init);
 		}
 	}
 
@@ -580,11 +594,11 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 	{
 		if (IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			Handle = Messaging.IntPtr_objc_msgSend_IntPtr(Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
@@ -669,11 +683,11 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 		}
 		if (IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithDictionary_Handle, other.Handle);
+			Handle = Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selInitWithDictionary_Handle, other.Handle);
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithDictionary_Handle, other.Handle);
+			Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selInitWithDictionary_Handle, other.Handle);
 		}
 	}
 
@@ -688,11 +702,11 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 		IntPtr arg = NSString.CreateNative(fileName);
 		if (IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithContentsOfFile_Handle, arg);
+			Handle = Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selInitWithContentsOfFile_Handle, arg);
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithContentsOfFile_Handle, arg);
+			Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selInitWithContentsOfFile_Handle, arg);
 		}
 		NSString.ReleaseNative(arg);
 	}
@@ -711,11 +725,11 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 		}
 		if (IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithObjectsForKeys_Handle, objects.Handle, keys.Handle);
+			Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(Handle, selInitWithObjectsForKeys_Handle, objects.Handle, keys.Handle);
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithObjectsForKeys_Handle, objects.Handle, keys.Handle);
+			Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(SuperHandle, selInitWithObjectsForKeys_Handle, objects.Handle, keys.Handle);
 		}
 	}
 
@@ -729,11 +743,11 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 		}
 		if (IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithContentsOfURL_Handle, url.Handle);
+			Handle = Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selInitWithContentsOfURL_Handle, url.Handle);
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithContentsOfURL_Handle, url.Handle);
+			Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selInitWithContentsOfURL_Handle, url.Handle);
 		}
 	}
 
@@ -746,9 +760,9 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 		}
 		if (IsDirectBinding)
 		{
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selObjectForKey_Handle, key.Handle));
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selObjectForKey_Handle, key.Handle));
 		}
-		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selObjectForKey_Handle, key.Handle));
+		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selObjectForKey_Handle, key.Handle));
 	}
 
 	[Export("allKeysForObject:")]
@@ -762,9 +776,9 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 			}
 			if (IsDirectBinding)
 			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAllKeysForObject_Handle, obj.Handle));
+				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selAllKeysForObject_Handle, obj.Handle));
 			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAllKeysForObject_Handle, obj.Handle));
+			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selAllKeysForObject_Handle, obj.Handle));
 		}
 	}
 
@@ -777,9 +791,9 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 		}
 		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIsEqualToDictionary_Handle, other.Handle);
+			return Messaging.bool_objc_msgSend_IntPtr(Handle, selIsEqualToDictionary_Handle, other.Handle);
 		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selIsEqualToDictionary_Handle, other.Handle);
+		return Messaging.bool_objc_msgSendSuper_IntPtr(SuperHandle, selIsEqualToDictionary_Handle, other.Handle);
 	}
 
 	[Export("objectsForKeys:notFoundMarker:")]
@@ -797,9 +811,9 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 			}
 			if (IsDirectBinding)
 			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selObjectsForKeysNotFoundMarker_Handle, keys.Handle, marker.Handle));
+				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(Handle, selObjectsForKeysNotFoundMarker_Handle, keys.Handle, marker.Handle));
 			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selObjectsForKeysNotFoundMarker_Handle, keys.Handle, marker.Handle));
+			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(SuperHandle, selObjectsForKeysNotFoundMarker_Handle, keys.Handle, marker.Handle));
 		}
 	}
 
@@ -811,7 +825,7 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 			throw new ArgumentNullException("path");
 		}
 		IntPtr arg = NSString.CreateNative(path);
-		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selWriteToFileAtomically_Handle, arg, useAuxiliaryFile) : Messaging.bool_objc_msgSend_IntPtr_bool(base.Handle, selWriteToFileAtomically_Handle, arg, useAuxiliaryFile));
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_bool(SuperHandle, selWriteToFileAtomically_Handle, arg, useAuxiliaryFile) : Messaging.bool_objc_msgSend_IntPtr_bool(Handle, selWriteToFileAtomically_Handle, arg, useAuxiliaryFile));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
@@ -825,9 +839,9 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 		}
 		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr_bool(base.Handle, selWriteToURLAtomically_Handle, url.Handle, atomically);
+			return Messaging.bool_objc_msgSend_IntPtr_bool(Handle, selWriteToURLAtomically_Handle, url.Handle, atomically);
 		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selWriteToURLAtomically_Handle, url.Handle, atomically);
+		return Messaging.bool_objc_msgSendSuper_IntPtr_bool(SuperHandle, selWriteToURLAtomically_Handle, url.Handle, atomically);
 	}
 
 	[Export("sharedKeySetForKeys:")]
@@ -843,14 +857,432 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 		return nSObject;
 	}
 
-	protected override void Dispose(bool disposing)
+    #region
+
+    internal IntPtr _AllKeys()
+    {
+        return Messaging.IntPtr_objc_msgSend(Handle, selAllKeysHandle);
+    }
+
+    internal IntPtr _AllKeysForObject(IntPtr obj)
+    {
+        return Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selAllKeysForObject_Handle, obj);
+    }
+
+    internal IntPtr _AllValues()
+    {
+        return Messaging.IntPtr_objc_msgSend(Handle, selAllValuesHandle);
+    }
+
+    internal IntPtr _ObjectForKey(IntPtr key)
+    {
+        return Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selObjectForKey_Handle, key);
+    }
+
+    internal IntPtr _ObjectsForKeys(IntPtr keys, IntPtr marker)
+    {
+        return Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selObjectsForKeys_NotFoundMarker_Handle, keys, marker);
+    }
+
+    [Export(selDictionaryWithObjects_ForKeys_)]
+    internal static IntPtr _FromObjectsAndKeysInternal(IntPtr objects, IntPtr keys)
+    {
+        return Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selDictionaryWithObjects_ForKeys_Handle, objects, keys);
+    }
+
+    [Export(selDictionaryWithObjects_ForKeys_Count_)]
+    internal static IntPtr _FromObjectsAndKeysInternal(IntPtr objects, IntPtr keys, long count)
+    {
+        return Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_long(class_ptr, selDictionaryWithObjects_ForKeys_Count_Handle, objects, keys, count);
+    }
+
+    internal bool TryGetValueTx<T>(INativeObject key, out T value) where T : class, INativeObject
+    {
+        if (key == null)
+        {
+            throw new ArgumentNullException("key");
+        }
+        value = null;
+        IntPtr intPtr = _ObjectForKey(key.Handle);
+        if (intPtr == IntPtr.Zero)
+        {
+            return false;
+        }
+        value = Runtime.GetNativeObject<T>(intPtr);
+        return true;
+    }
+
+    #endregion
+
+
+    protected override void Dispose(bool disposing)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		Dispose(disposing);
+		if (Handle == IntPtr.Zero)
 		{
 			__mt_Keys_var = null;
 			__mt_Values_var = null;
 			__mt_ObjectEnumerator_var = null;
 		}
 	}
+}
+
+[Register("NSDictionary", SkipRegistration = true)]
+public sealed class NSDictionary<TKey, TValue> : NSDictionary, IDictionary<TKey, TValue>, ICollection<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>, IEnumerable where TKey : class, INativeObject where TValue : class, INativeObject
+{
+    public new TKey[] Keys
+    {
+        get
+        {
+            using (new NSAutoreleasePool())
+            {
+                return NSArray.ArrayFromNativeHandle<TKey>(_AllKeys());
+            }
+        }
+    }
+
+    public new TValue[] Values
+    {
+        get
+        {
+            using (new NSAutoreleasePool())
+            {
+                return NSArray.ArrayFromNativeHandle<TValue>(_AllValues());
+            }
+        }
+    }
+
+    public TValue this[TKey key] => ObjectForKey(key);
+
+    TValue IDictionary<TKey, TValue>.this[TKey key]
+    {
+        get
+        {
+            return this[key];
+        }
+        set
+        {
+            throw new NotSupportedException();
+        }
+    }
+
+    ICollection<TKey> IDictionary<TKey, TValue>.Keys => Keys;
+
+    ICollection<TValue> IDictionary<TKey, TValue>.Values => Values;
+
+    int ICollection<KeyValuePair<TKey, TValue>>.Count => (int)Count;
+
+    bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => true;
+
+    public NSDictionary()
+    {
+    }
+
+    public NSDictionary(NSCoder coder)
+        : base(coder)
+    {
+    }
+
+    public NSDictionary(string filename)
+        : base(filename)
+    {
+    }
+
+    public NSDictionary(NSUrl url)
+        : base(url)
+    {
+    }
+
+    internal NSDictionary(IntPtr handle)
+        : base(handle)
+    {
+    }
+
+    public NSDictionary(NSDictionary<TKey, TValue> other)
+        : base(other)
+    {
+    }
+
+    internal static bool ValidateKeysAndValues(TKey[] keys, TValue[] values)
+    {
+        if (keys == null)
+        {
+            throw new ArgumentNullException("keys");
+        }
+        if (values == null)
+        {
+            throw new ArgumentNullException("values");
+        }
+        if (values.Length != keys.Length)
+        {
+            throw new ArgumentException("values and keys arrays have different sizes");
+        }
+        return true;
+    }
+
+    private NSDictionary(TKey[] keys, TValue[] values, bool validation)
+        : base(NSArray.FromNativeObjectsTx(values), NSArray.FromNativeObjectsTx(keys))
+    {
+    }
+
+    public NSDictionary(TKey[] keys, TValue[] values)
+        : this(keys, values, ValidateKeysAndValues(keys, values))
+    {
+    }
+
+    public NSDictionary(TKey key, TValue value)
+        : base(NSArray.FromNSObjectsTx<TValue>(value), NSArray.FromNSObjectsTx<TKey>(key))
+    {
+    }
+
+    public TValue ObjectForKey(TKey key)
+    {
+        if (key == null)
+        {
+            throw new ArgumentNullException("key");
+        }
+        return Runtime.GetNativeObject<TValue>(_ObjectForKey(key.Handle));
+    }
+
+    public TKey[] KeysForObject(TValue obj)
+    {
+        if (obj == null)
+        {
+            throw new ArgumentNullException("obj");
+        }
+        using (new NSAutoreleasePool())
+        {
+            return NSArray.ArrayFromNativeHandle<TKey>(_AllKeysForObject(obj.Handle));
+        }
+    }
+
+    public TValue[] ObjectsForKeys(TKey[] keys, TValue marker)
+    {
+        if (keys == null)
+        {
+            throw new ArgumentNullException("keys");
+        }
+        if (marker == null)
+        {
+            throw new ArgumentNullException("marker");
+        }
+        if (keys.Length == 0)
+        {
+            return new TValue[0];
+        }
+        using (new NSAutoreleasePool())
+        {
+            return NSArray.ArrayFromNativeHandle<TValue>(_ObjectsForKeys(NSArray.From(keys, -1L).Handle, marker.Handle));
+        }
+    }
+
+    private static NSDictionary<TKey, TValue> GenericFromObjectsAndKeysInternal(NSArray objects, NSArray keys)
+    {
+        return Runtime.GetNativeObject<NSDictionary<TKey, TValue>>(NSDictionary._FromObjectsAndKeysInternal(objects.Handle, keys.Handle));
+    }
+
+    public static NSDictionary<TKey, TValue> FromObjectsAndKeys(TValue[] objects, TKey[] keys, nint count)
+    {
+        if (objects == null)
+        {
+            throw new ArgumentNullException("objects");
+        }
+        if (keys == null)
+        {
+            throw new ArgumentNullException("keys");
+        }
+        if (objects.Length != keys.Length)
+        {
+            throw new ArgumentException("objects and keys arrays have different sizes");
+        }
+        if (count < 1 || objects.Length < count)
+        {
+            throw new ArgumentException("count");
+        }
+        using NSArray objects2 = NSArray.FromNativeObjectsTx(objects, count);
+        using NSArray keys2 = NSArray.FromNativeObjectsTx(keys, count);
+        return GenericFromObjectsAndKeysInternal(objects2, keys2);
+    }
+
+    [Obsolete("'TKey' and 'TValue' are inversed and won't work unless both types are identical. Use the generic overload that takes a count parameter instead.")]
+    public static NSDictionary<TKey, TValue> FromObjectsAndKeys(TKey[] objects, TValue[] keys)
+    {
+        if (objects == null)
+        {
+            throw new ArgumentNullException("objects");
+        }
+        if (keys == null)
+        {
+            throw new ArgumentNullException("keys");
+        }
+        if (objects.Length != keys.Length)
+        {
+            throw new ArgumentException("objects and keys arrays have different sizes");
+        }
+        using NSArray objects2 = NSArray.FromNativeObjectsTx(objects);
+        using NSArray keys2 = NSArray.FromNativeObjectsTx(keys);
+        return GenericFromObjectsAndKeysInternal(objects2, keys2);
+    }
+
+    public new static NSDictionary<TKey, TValue> FromObjectsAndKeys(object[] objects, object[] keys)
+    {
+        if (objects == null)
+        {
+            throw new ArgumentNullException("objects");
+        }
+        if (keys == null)
+        {
+            throw new ArgumentNullException("keys");
+        }
+        if (objects.Length != keys.Length)
+        {
+            throw new ArgumentException("objects and keys arrays have different sizes");
+        }
+        using NSArray objects2 = NSArray.FromObjects(objects);
+        using NSArray keys2 = NSArray.FromObjects(keys);
+        return GenericFromObjectsAndKeysInternal(objects2, keys2);
+    }
+
+    public static NSDictionary<TKey, TValue> FromObjectsAndKeys(NSObject[] objects, NSObject[] keys, long count)
+    {
+        if (objects == null)
+        {
+            throw new ArgumentNullException("objects");
+        }
+        if (keys == null)
+        {
+            throw new ArgumentNullException("keys");
+        }
+        if (objects.Length != keys.Length)
+        {
+            throw new ArgumentException("objects and keys arrays have different sizes");
+        }
+        if (count < 1 || objects.Length < count || keys.Length < count)
+        {
+            throw new ArgumentException("count");
+        }
+        using NSArray objects2 = NSArray.FromNativeObjectsTx(objects, count);
+        using NSArray keys2 = NSArray.FromNativeObjectsTx(keys, count);
+        return GenericFromObjectsAndKeysInternal(objects2, keys2);
+    }
+
+    public static NSDictionary<TKey, TValue> FromObjectsAndKeys(object[] objects, object[] keys, long count)
+    {
+        if (objects == null)
+        {
+            throw new ArgumentNullException("objects");
+        }
+        if (keys == null)
+        {
+            throw new ArgumentNullException("keys");
+        }
+        if (objects.Length != keys.Length)
+        {
+            throw new ArgumentException("objects and keys arrays have different sizes");
+        }
+        if (count < 1 || objects.Length < count || keys.Length < count)
+        {
+            throw new ArgumentException("count");
+        }
+        using NSArray objects2 = NSArray.FromObjects(count, objects);
+        using NSArray keys2 = NSArray.FromObjects(count, keys);
+        return GenericFromObjectsAndKeysInternal(objects2, keys2);
+    }
+
+    public bool ContainsKey(TKey key)
+    {
+        if (key == null)
+        {
+            throw new ArgumentNullException("key");
+        }
+        return _ObjectForKey(key.Handle) != IntPtr.Zero;
+    }
+
+    public bool TryGetValue(TKey key, out TValue value)
+    {
+        return (value = ObjectForKey(key)) != null;
+    }
+
+    bool IDictionary<TKey, TValue>.ContainsKey(TKey key)
+    {
+        return ContainsKey(key);
+    }
+
+    void IDictionary<TKey, TValue>.Add(TKey key, TValue value)
+    {
+        throw new NotSupportedException();
+    }
+
+    bool IDictionary<TKey, TValue>.Remove(TKey key)
+    {
+        throw new NotSupportedException();
+    }
+
+    bool IDictionary<TKey, TValue>.TryGetValue(TKey key, out TValue value)
+    {
+        return TryGetValue(key, out value);
+    }
+
+    void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
+    {
+        throw new NotSupportedException();
+    }
+
+    void ICollection<KeyValuePair<TKey, TValue>>.Clear()
+    {
+        throw new NotSupportedException();
+    }
+
+    bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
+    {
+        if (!TryGetValueTx((INativeObject)item.Key, out TValue value))
+            return false;
+
+        return value == item.Value;
+    }
+
+    void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+    {
+        if (array == null)
+        {
+            throw new ArgumentNullException("array");
+        }
+        if (arrayIndex < 0)
+        {
+            throw new ArgumentOutOfRangeException("arrayIndex");
+        }
+        int num = array.Length;
+        if (num > 0 && arrayIndex >= num)
+        {
+            throw new ArgumentException("arrayIndex is equal to or greater than array.Length");
+        }
+        if (arrayIndex + (int)Count > num)
+        {
+            throw new ArgumentException("Not enough room from arrayIndex to end of array for this dictionary");
+        }
+        int num2 = arrayIndex;
+        foreach (KeyValuePair<TKey, TValue> item in (IEnumerable<KeyValuePair<TKey, TValue>>)this)
+        {
+            array[num2++] = item;
+        }
+    }
+
+    bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
+    {
+        throw new NotSupportedException();
+    }
+
+    IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
+    {
+        TKey[] keys = Keys;
+        foreach (TKey key in keys)
+        {
+            yield return new KeyValuePair<TKey, TValue>(key, ObjectForKey(key));
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 }

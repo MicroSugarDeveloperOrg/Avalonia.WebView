@@ -277,7 +277,123 @@ public class NSUrl : NSObject
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual string AbsoluteString
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    [Export("initWithCoder:")]
+    public NSUrl(NSCoder coder)
+    : base(NSObjectFlag.Empty)
+    {
+        InitializeHandle(Selector.InitWithCoder, coder);
+    }
+
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public NSUrl(NSObjectFlag t)
+        : base(t)
+    {
+    }
+
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public NSUrl(IntPtr handle)
+        : base(handle)
+    {
+    }
+
+    [Export("initWithScheme:host:path:")]
+    public NSUrl(string scheme, string host, string path)
+        : base(NSObjectFlag.Empty)
+    {
+        if (scheme == null)
+        {
+            throw new ArgumentNullException("scheme");
+        }
+        if (host == null)
+        {
+            throw new ArgumentNullException("host");
+        }
+        if (path == null)
+        {
+            throw new ArgumentNullException("path");
+        }
+        IntPtr arg = NSString.CreateNative(scheme);
+        IntPtr arg2 = NSString.CreateNative(host);
+        IntPtr arg3 = NSString.CreateNative(path);
+        if (IsDirectBinding)
+        {
+            base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selInitWithSchemeHostPath_Handle, arg, arg2, arg3);
+        }
+        else
+        {
+            base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selInitWithSchemeHostPath_Handle, arg, arg2, arg3);
+        }
+        NSString.ReleaseNative(arg);
+        NSString.ReleaseNative(arg2);
+        NSString.ReleaseNative(arg3);
+    }
+
+    [Export("initFileURLWithPath:isDirectory:")]
+    public NSUrl(string path, bool isDir)
+        : base(NSObjectFlag.Empty)
+    {
+        if (path == null)
+        {
+            throw new ArgumentNullException("path");
+        }
+        IntPtr arg = NSString.CreateNative(path);
+        if (IsDirectBinding)
+        {
+            base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_bool(base.Handle, selInitFileURLWithPathIsDirectory_Handle, arg, isDir);
+        }
+        else
+        {
+            base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selInitFileURLWithPathIsDirectory_Handle, arg, isDir);
+        }
+        NSString.ReleaseNative(arg);
+    }
+
+    [Export("initWithString:")]
+    public NSUrl(string path)
+        : base(NSObjectFlag.Empty)
+    {
+        if (path == null)
+        {
+            throw new ArgumentNullException("path");
+        }
+        IntPtr arg = NSString.CreateNative(path);
+        if (IsDirectBinding)
+        {
+            base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithString_Handle, arg);
+        }
+        else
+        {
+            base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithString_Handle, arg);
+        }
+        NSString.ReleaseNative(arg);
+    }
+
+    [Export("initWithString:relativeToURL:")]
+    public NSUrl(string path, NSUrl relativeToUrl)
+        : base(NSObjectFlag.Empty)
+    {
+        if (path == null)
+        {
+            throw new ArgumentNullException("path");
+        }
+        if (relativeToUrl == null)
+        {
+            throw new ArgumentNullException("relativeToUrl");
+        }
+        IntPtr arg = NSString.CreateNative(path);
+        if (IsDirectBinding)
+        {
+            base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithStringRelativeToURL_Handle, arg, relativeToUrl.Handle);
+        }
+        else
+        {
+            base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithStringRelativeToURL_Handle, arg, relativeToUrl.Handle);
+        }
+        NSString.ReleaseNative(arg);
+    }
+
+    public virtual string AbsoluteString
 	{
 		[Export("absoluteString")]
 		get
@@ -1712,129 +1828,6 @@ public class NSUrl : NSObject
 		return SetResourceValue(value, key, out error);
 	}
 
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSUrl(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSUrl(NSObjectFlag t)
-		: base(t)
-	{
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSUrl(IntPtr handle)
-		: base(handle)
-	{
-	}
-
-	[Export("initWithScheme:host:path:")]
-	public NSUrl(string scheme, string host, string path)
-		: base(NSObjectFlag.Empty)
-	{
-		if (scheme == null)
-		{
-			throw new ArgumentNullException("scheme");
-		}
-		if (host == null)
-		{
-			throw new ArgumentNullException("host");
-		}
-		if (path == null)
-		{
-			throw new ArgumentNullException("path");
-		}
-		IntPtr arg = NSString.CreateNative(scheme);
-		IntPtr arg2 = NSString.CreateNative(host);
-		IntPtr arg3 = NSString.CreateNative(path);
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selInitWithSchemeHostPath_Handle, arg, arg2, arg3);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selInitWithSchemeHostPath_Handle, arg, arg2, arg3);
-		}
-		NSString.ReleaseNative(arg);
-		NSString.ReleaseNative(arg2);
-		NSString.ReleaseNative(arg3);
-	}
-
-	[Export("initFileURLWithPath:isDirectory:")]
-	public NSUrl(string path, bool isDir)
-		: base(NSObjectFlag.Empty)
-	{
-		if (path == null)
-		{
-			throw new ArgumentNullException("path");
-		}
-		IntPtr arg = NSString.CreateNative(path);
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_bool(base.Handle, selInitFileURLWithPathIsDirectory_Handle, arg, isDir);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selInitFileURLWithPathIsDirectory_Handle, arg, isDir);
-		}
-		NSString.ReleaseNative(arg);
-	}
-
-	[Export("initWithString:")]
-	public NSUrl(string path)
-		: base(NSObjectFlag.Empty)
-	{
-		if (path == null)
-		{
-			throw new ArgumentNullException("path");
-		}
-		IntPtr arg = NSString.CreateNative(path);
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithString_Handle, arg);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithString_Handle, arg);
-		}
-		NSString.ReleaseNative(arg);
-	}
-
-	[Export("initWithString:relativeToURL:")]
-	public NSUrl(string path, NSUrl relativeToUrl)
-		: base(NSObjectFlag.Empty)
-	{
-		if (path == null)
-		{
-			throw new ArgumentNullException("path");
-		}
-		if (relativeToUrl == null)
-		{
-			throw new ArgumentNullException("relativeToUrl");
-		}
-		IntPtr arg = NSString.CreateNative(path);
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithStringRelativeToURL_Handle, arg, relativeToUrl.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithStringRelativeToURL_Handle, arg, relativeToUrl.Handle);
-		}
-		NSString.ReleaseNative(arg);
-	}
-
 	[Export("URLWithString:")]
 	public static NSUrl FromString(string s)
 	{
@@ -2098,7 +2091,29 @@ public class NSUrl : NSObject
 		Marshal.FreeHGlobal(intPtr);
 	}
 
-	protected override void Dispose(bool disposing)
+    public static implicit operator Uri?(NSUrl? url)
+    {
+        if (url is null)
+            return default;
+
+        if (url.RelativePath == url.Path)
+            return new Uri(url.AbsoluteString, UriKind.Absolute);
+
+        return new Uri(url.RelativePath, UriKind.Relative);
+    }
+
+    public static implicit operator NSUrl?(Uri? uri)
+    {
+        if (uri is null)
+            return default;
+
+        if (uri.IsAbsoluteUri)
+            return new NSUrl(uri.AbsoluteUri);
+
+        return new NSUrl(uri.PathAndQuery);
+    }
+
+    protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)

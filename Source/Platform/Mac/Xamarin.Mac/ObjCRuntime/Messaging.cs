@@ -4104,10 +4104,10 @@ public static class Messaging
     public static extern IntPtr IntPtr_objc_msgSendSuper_nuint(IntPtr receiver, IntPtr selector, nuint arg1);
 
     [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
-    public static extern IntPtr IntPtr_objc_msgSend_IntPtr_nint(IntPtr receiver, IntPtr selector, IntPtr arg1, nint arg2);
+    public static extern IntPtr IntPtr_objc_msgSend_IntPtr_long(IntPtr receiver, IntPtr selector, IntPtr arg1, long arg2);
 
     [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
-    public static extern IntPtr IntPtr_objc_msgSendSuper_IntPtr_nint(IntPtr receiver, IntPtr selector, IntPtr arg1, nint arg2);
+    public static extern IntPtr IntPtr_objc_msgSendSuper_IntPtr_long(IntPtr receiver, IntPtr selector, IntPtr arg1, long arg2);
 
     [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
     public static extern void void_objc_msgSend_IntPtr_nuint(IntPtr receiver, IntPtr selector, IntPtr arg1, nuint arg2);
@@ -4126,6 +4126,19 @@ public static class Messaging
 
     [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
     public static extern IntPtr IntPtr_objc_msgSendSuper_CGPoint_IntPtr(IntPtr receiver, IntPtr selector, CGPoint arg1, IntPtr arg2);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern void void_objc_msgSend_nfloat_CGPoint(IntPtr receiver, IntPtr selector, nfloat arg1, CGPoint arg2);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern void void_objc_msgSendSuper_nfloat_CGPoint(IntPtr receiver, IntPtr selector, nfloat arg1, CGPoint arg2);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern IntPtr IntPtr_objc_msgSend_IntPtr_IntPtr_long(IntPtr receiver, IntPtr selector, IntPtr arg1, IntPtr arg2, long arg3);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern IntPtr IntPtr_objc_msgSendSuper_IntPtr_IntPtr_long(IntPtr receiver, IntPtr selector, IntPtr arg1, IntPtr arg2, long arg3);
+
     #endregion
 
 }
