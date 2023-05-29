@@ -39,9 +39,9 @@ public class WKBackForwardListItem : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(Handle, selInitialURLHandle));
+                return Runtime.GetNSObjectTx<NSUrl>(Messaging.IntPtr_objc_msgSend(Handle, selInitialURLHandle));
             }
-            return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selInitialURLHandle));
+            return Runtime.GetNSObjectTx<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selInitialURLHandle));
         }
     }
 
@@ -65,9 +65,9 @@ public class WKBackForwardListItem : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(Handle, selURLHandle));
+                return Runtime.GetNSObjectTx<NSUrl>(Messaging.IntPtr_objc_msgSend(Handle, selURLHandle));
             }
-            return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selURLHandle));
+            return Runtime.GetNSObjectTx<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selURLHandle));
         }
     }
 }

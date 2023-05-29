@@ -26,7 +26,7 @@ public static class WKUIDelegate_Extensions
         {
             throw new ArgumentNullException("windowFeatures");
         }
-        return Runtime.GetNSObject<WKWebView>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(This.Handle, Selector.GetHandle("webView:createWebViewWithConfiguration:forNavigationAction:windowFeatures:"), webView.Handle, configuration.Handle, navigationAction.Handle, windowFeatures.Handle));
+        return Runtime.GetNSObjectTx<WKWebView>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(This.Handle, Selector.GetHandle("webView:createWebViewWithConfiguration:forNavigationAction:windowFeatures:"), webView.Handle, configuration.Handle, navigationAction.Handle, windowFeatures.Handle));
     }
 
     public unsafe static void RunJavaScriptAlertPanel(this IWKUIDelegate This, WKWebView webView, string message, WKFrameInfo frame, Action completionHandler)

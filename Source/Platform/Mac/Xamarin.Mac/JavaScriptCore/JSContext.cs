@@ -117,7 +117,7 @@ public class JSContext : NSObject
         [Export("currentCallee")]
         get
         {
-            return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentCalleeHandle));
+            return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentCalleeHandle));
         }
     }
 
@@ -126,7 +126,7 @@ public class JSContext : NSObject
         [Export("currentContext")]
         get
         {
-            return Runtime.GetNSObject<JSContext>(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentContextHandle));
+            return Runtime.GetNSObjectTx<JSContext>(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentContextHandle));
         }
     }
 
@@ -135,7 +135,7 @@ public class JSContext : NSObject
         [Export("currentThis")]
         get
         {
-            return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentThisHandle));
+            return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentThisHandle));
         }
     }
 
@@ -146,9 +146,9 @@ public class JSContext : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend(Handle, selExceptionHandle));
+                return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend(Handle, selExceptionHandle));
             }
-            return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selExceptionHandle));
+            return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selExceptionHandle));
         }
         [Export("setException:", ArgumentSemantic.Retain)]
         set
@@ -201,9 +201,9 @@ public class JSContext : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend(Handle, selGlobalObjectHandle));
+                return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend(Handle, selGlobalObjectHandle));
             }
-            return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selGlobalObjectHandle));
+            return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selGlobalObjectHandle));
         }
     }
 
@@ -254,9 +254,9 @@ public class JSContext : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<JSVirtualMachine>(Messaging.IntPtr_objc_msgSend(Handle, selVirtualMachineHandle));
+                return Runtime.GetNSObjectTx<JSVirtualMachine>(Messaging.IntPtr_objc_msgSend(Handle, selVirtualMachineHandle));
             }
-            return Runtime.GetNSObject<JSVirtualMachine>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selVirtualMachineHandle));
+            return Runtime.GetNSObjectTx<JSVirtualMachine>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selVirtualMachineHandle));
         }
     }
 
@@ -305,7 +305,7 @@ public class JSContext : NSObject
             throw new ArgumentNullException("sourceUrl");
         }
         IntPtr arg = NSString.CreateNative(script);
-        JSValue result = ((!IsDirectBinding) ? Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(SuperHandle, selEvaluateScript_WithSourceURL_Handle, arg, sourceUrl.Handle)) : Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(Handle, selEvaluateScript_WithSourceURL_Handle, arg, sourceUrl.Handle)));
+        JSValue result = ((!IsDirectBinding) ? Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(SuperHandle, selEvaluateScript_WithSourceURL_Handle, arg, sourceUrl.Handle)) : Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(Handle, selEvaluateScript_WithSourceURL_Handle, arg, sourceUrl.Handle)));
         NSString.ReleaseNative(arg);
         return result;
     }
@@ -318,7 +318,7 @@ public class JSContext : NSObject
             throw new ArgumentNullException("script");
         }
         IntPtr arg = NSString.CreateNative(script);
-        JSValue result = ((!IsDirectBinding) ? Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selEvaluateScript_Handle, arg)) : Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selEvaluateScript_Handle, arg)));
+        JSValue result = ((!IsDirectBinding) ? Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selEvaluateScript_Handle, arg)) : Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selEvaluateScript_Handle, arg)));
         NSString.ReleaseNative(arg);
         return result;
     }
@@ -326,7 +326,7 @@ public class JSContext : NSObject
     [Export("contextWithJSGlobalContextRef:")]
     public static JSContext FromJSGlobalContextRef(IntPtr nativeJsGlobalContextRef)
     {
-        return Runtime.GetNSObject<JSContext>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selContextWithJSGlobalContextRef_Handle, nativeJsGlobalContextRef));
+        return Runtime.GetNSObjectTx<JSContext>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selContextWithJSGlobalContextRef_Handle, nativeJsGlobalContextRef));
     }
 
     [Export("objectForKeyedSubscript:")]
@@ -338,9 +338,9 @@ public class JSContext : NSObject
         }
         if (IsDirectBinding)
         {
-            return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selObjectForKeyedSubscript_Handle, key.Handle));
+            return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selObjectForKeyedSubscript_Handle, key.Handle));
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selObjectForKeyedSubscript_Handle, key.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selObjectForKeyedSubscript_Handle, key.Handle));
     }
 
     [Export("setObject:forKeyedSubscript:")]

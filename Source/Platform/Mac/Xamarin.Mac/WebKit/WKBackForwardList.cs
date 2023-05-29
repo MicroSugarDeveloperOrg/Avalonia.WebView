@@ -47,9 +47,9 @@ public class WKBackForwardList : NSObject
         get
         {
             if (IsDirectBinding)
-                return Runtime.GetNSObject<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSend(Handle, selBackItemHandle));
+                return Runtime.GetNSObjectTx<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSend(Handle, selBackItemHandle));
 
-            return Runtime.GetNSObject<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selBackItemHandle));
+            return Runtime.GetNSObjectTx<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selBackItemHandle));
         }
     }
 
@@ -71,9 +71,9 @@ public class WKBackForwardList : NSObject
         get
         {
             if (IsDirectBinding)
-                return Runtime.GetNSObject<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSend(Handle, selCurrentItemHandle));
+                return Runtime.GetNSObjectTx<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSend(Handle, selCurrentItemHandle));
 
-            return Runtime.GetNSObject<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selCurrentItemHandle));
+            return Runtime.GetNSObjectTx<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selCurrentItemHandle));
         }
     }
 
@@ -83,9 +83,9 @@ public class WKBackForwardList : NSObject
         get
         {
             if (IsDirectBinding)
-                return Runtime.GetNSObject<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSend(Handle, selForwardItemHandle));
+                return Runtime.GetNSObjectTx<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSend(Handle, selForwardItemHandle));
 
-            return Runtime.GetNSObject<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selForwardItemHandle));
+            return Runtime.GetNSObjectTx<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selForwardItemHandle));
         }
     }
 
@@ -105,8 +105,8 @@ public class WKBackForwardList : NSObject
     public virtual WKBackForwardListItem ItemAtIndex(long index)
     {
         if (IsDirectBinding)
-            return Runtime.GetNSObject<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSend_long(Handle, selItemAtIndex_Handle, index));
+            return Runtime.GetNSObjectTx<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSend_long(Handle, selItemAtIndex_Handle, index));
 
-        return Runtime.GetNSObject<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSendSuper_long(SuperHandle, selItemAtIndex_Handle, index));
+        return Runtime.GetNSObjectTx<WKBackForwardListItem>(Messaging.IntPtr_objc_msgSendSuper_long(SuperHandle, selItemAtIndex_Handle, index));
     }
 }

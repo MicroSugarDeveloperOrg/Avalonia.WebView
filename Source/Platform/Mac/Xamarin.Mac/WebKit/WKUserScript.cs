@@ -82,9 +82,9 @@ public class WKUserScript : NSObject
         get
         {
             if (IsDirectBinding)
-                return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSend(Handle, selSourceHandle));
+                return Runtime.GetNSObjectTx<NSString>(Messaging.IntPtr_objc_msgSend(Handle, selSourceHandle));
 
-            return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selSourceHandle));
+            return Runtime.GetNSObjectTx<NSString>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selSourceHandle));
         }
     }
 

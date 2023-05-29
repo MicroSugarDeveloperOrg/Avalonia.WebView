@@ -66,9 +66,9 @@ public class WKFrameInfo : NSObject
         get
         {
             if (IsDirectBinding)
-                return Runtime.GetNSObject<NSUrlRequest>(Messaging.IntPtr_objc_msgSend(Handle, selRequestHandle));
+                return Runtime.GetNSObjectTx<NSUrlRequest>(Messaging.IntPtr_objc_msgSend(Handle, selRequestHandle));
 
-            return Runtime.GetNSObject<NSUrlRequest>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selRequestHandle));
+            return Runtime.GetNSObjectTx<NSUrlRequest>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selRequestHandle));
         }
     }
 
@@ -78,9 +78,9 @@ public class WKFrameInfo : NSObject
         get
         {
             if (IsDirectBinding)
-                return Runtime.GetNSObject<WKSecurityOrigin>(Messaging.IntPtr_objc_msgSend(Handle, selSecurityOriginHandle));
+                return Runtime.GetNSObjectTx<WKSecurityOrigin>(Messaging.IntPtr_objc_msgSend(Handle, selSecurityOriginHandle));
 
-            return Runtime.GetNSObject<WKSecurityOrigin>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selSecurityOriginHandle));
+            return Runtime.GetNSObjectTx<WKSecurityOrigin>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selSecurityOriginHandle));
         }
     }
 
@@ -89,7 +89,7 @@ public class WKFrameInfo : NSObject
         [Export("webView", ArgumentSemantic.Weak)]
         get
         {
-            WKWebView wKWebView = ((!IsDirectBinding) ? Runtime.GetNSObject<WKWebView>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selWebViewHandle)) : Runtime.GetNSObject<WKWebView>(Messaging.IntPtr_objc_msgSend(Handle, selWebViewHandle)));
+            WKWebView wKWebView = ((!IsDirectBinding) ? Runtime.GetNSObjectTx<WKWebView>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selWebViewHandle)) : Runtime.GetNSObjectTx<WKWebView>(Messaging.IntPtr_objc_msgSend(Handle, selWebViewHandle)));
             __mt_WebView_var = wKWebView;
             return wKWebView;
         }

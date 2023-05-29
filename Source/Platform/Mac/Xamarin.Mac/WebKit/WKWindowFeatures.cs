@@ -79,9 +79,9 @@ public class WKWindowFeatures : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selAllowsResizingHandle));
+                return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selAllowsResizingHandle));
             }
-            return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selAllowsResizingHandle));
+            return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selAllowsResizingHandle));
         }
     }
 
@@ -92,9 +92,9 @@ public class WKWindowFeatures : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selHeightHandle));
+                return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selHeightHandle));
             }
-            return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selHeightHandle));
+            return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selHeightHandle));
         }
     }
 
@@ -105,9 +105,9 @@ public class WKWindowFeatures : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selMenuBarVisibilityHandle));
+                return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selMenuBarVisibilityHandle));
             }
-            return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selMenuBarVisibilityHandle));
+            return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selMenuBarVisibilityHandle));
         }
     }
 
@@ -118,9 +118,9 @@ public class WKWindowFeatures : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selStatusBarVisibilityHandle));
+                return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selStatusBarVisibilityHandle));
             }
-            return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selStatusBarVisibilityHandle));
+            return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selStatusBarVisibilityHandle));
         }
     }
 
@@ -131,9 +131,9 @@ public class WKWindowFeatures : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selToolbarsVisibilityHandle));
+                return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selToolbarsVisibilityHandle));
             }
-            return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selToolbarsVisibilityHandle));
+            return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selToolbarsVisibilityHandle));
         }
     }
 
@@ -144,9 +144,9 @@ public class WKWindowFeatures : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selWidthHandle));
+                return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selWidthHandle));
             }
-            return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selWidthHandle));
+            return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selWidthHandle));
         }
     }
 
@@ -157,9 +157,9 @@ public class WKWindowFeatures : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selXHandle));
+                return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selXHandle));
             }
-            return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selXHandle));
+            return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selXHandle));
         }
     }
 
@@ -170,9 +170,9 @@ public class WKWindowFeatures : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selYHandle));
+                return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSend(Handle, selYHandle));
             }
-            return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selYHandle));
+            return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selYHandle));
         }
     }
 

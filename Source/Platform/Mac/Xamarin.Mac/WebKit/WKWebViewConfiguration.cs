@@ -172,9 +172,9 @@ public class WKWebViewConfiguration : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<WKWebpagePreferences>(Messaging.IntPtr_objc_msgSend(Handle, selDefaultWebpagePreferencesHandle));
+                return Runtime.GetNSObjectTx<WKWebpagePreferences>(Messaging.IntPtr_objc_msgSend(Handle, selDefaultWebpagePreferencesHandle));
             }
-            return Runtime.GetNSObject<WKWebpagePreferences>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selDefaultWebpagePreferencesHandle));
+            return Runtime.GetNSObjectTx<WKWebpagePreferences>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selDefaultWebpagePreferencesHandle));
         }
 
         [Export("setDefaultWebpagePreferences:", ArgumentSemantic.Copy)]
@@ -229,9 +229,9 @@ public class WKWebViewConfiguration : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<WKPreferences>(Messaging.IntPtr_objc_msgSend(Handle, selPreferencesHandle));
+                return Runtime.GetNSObjectTx<WKPreferences>(Messaging.IntPtr_objc_msgSend(Handle, selPreferencesHandle));
             }
-            return Runtime.GetNSObject<WKPreferences>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selPreferencesHandle));
+            return Runtime.GetNSObjectTx<WKPreferences>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selPreferencesHandle));
         }
         [Export("setPreferences:", ArgumentSemantic.Retain)]
         set
@@ -259,9 +259,9 @@ public class WKWebViewConfiguration : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<WKProcessPool>(Messaging.IntPtr_objc_msgSend(Handle, selProcessPoolHandle));
+                return Runtime.GetNSObjectTx<WKProcessPool>(Messaging.IntPtr_objc_msgSend(Handle, selProcessPoolHandle));
             }
-            return Runtime.GetNSObject<WKProcessPool>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selProcessPoolHandle));
+            return Runtime.GetNSObjectTx<WKProcessPool>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selProcessPoolHandle));
         }
         [Export("setProcessPool:", ArgumentSemantic.Retain)]
         set
@@ -315,9 +315,9 @@ public class WKWebViewConfiguration : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<WKUserContentController>(Messaging.IntPtr_objc_msgSend(Handle, selUserContentControllerHandle));
+                return Runtime.GetNSObjectTx<WKUserContentController>(Messaging.IntPtr_objc_msgSend(Handle, selUserContentControllerHandle));
             }
-            return Runtime.GetNSObject<WKUserContentController>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selUserContentControllerHandle));
+            return Runtime.GetNSObjectTx<WKUserContentController>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selUserContentControllerHandle));
         }
         [Export("setUserContentController:", ArgumentSemantic.Retain)]
         set
@@ -343,9 +343,9 @@ public class WKWebViewConfiguration : NSObject
         get
         {
             if (IsDirectBinding)
-                return Runtime.GetNSObject<WKWebsiteDataStore>(Messaging.IntPtr_objc_msgSend(Handle, selWebsiteDataStoreHandle));
+                return Runtime.GetNSObjectTx<WKWebsiteDataStore>(Messaging.IntPtr_objc_msgSend(Handle, selWebsiteDataStoreHandle));
 
-            return Runtime.GetNSObject<WKWebsiteDataStore>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selWebsiteDataStoreHandle));
+            return Runtime.GetNSObjectTx<WKWebsiteDataStore>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selWebsiteDataStoreHandle));
         }
 
         [Export("setWebsiteDataStore:", ArgumentSemantic.Retain)]

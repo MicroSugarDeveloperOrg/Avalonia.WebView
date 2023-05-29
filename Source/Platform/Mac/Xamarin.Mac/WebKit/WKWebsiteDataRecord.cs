@@ -24,9 +24,9 @@ public class WKWebsiteDataRecord : NSObject
         {
             if (base.IsDirectBinding)
             {
-                return Runtime.GetNSObject<NSSet<NSString>>(Messaging.IntPtr_objc_msgSend(base.Handle, selDataTypesHandle));
+                return Runtime.GetNSObjectTx<NSSet<NSString>>(Messaging.IntPtr_objc_msgSend(base.Handle, selDataTypesHandle));
             }
-            return Runtime.GetNSObject<NSSet<NSString>>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDataTypesHandle));
+            return Runtime.GetNSObjectTx<NSSet<NSString>>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDataTypesHandle));
         }
     }
 

@@ -307,9 +307,9 @@ public class JSValue : NSObject
         {
             if (base.IsDirectBinding)
             {
-                return Runtime.GetNSObject<JSContext>(Messaging.IntPtr_objc_msgSend(base.Handle, selContextHandle));
+                return Runtime.GetNSObjectTx<JSContext>(Messaging.IntPtr_objc_msgSend(base.Handle, selContextHandle));
             }
-            return Runtime.GetNSObject<JSContext>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContextHandle));
+            return Runtime.GetNSObjectTx<JSContext>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContextHandle));
         }
     }
 
@@ -486,7 +486,7 @@ public class JSValue : NSObject
             throw new ArgumentNullException("arguments");
         }
         NSArray nSArray = NSArray.FromNSObjects(arguments);
-        JSValue result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCallWithArguments_Handle, nSArray.Handle)) : Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCallWithArguments_Handle, nSArray.Handle)));
+        JSValue result = ((!base.IsDirectBinding) ? Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCallWithArguments_Handle, nSArray.Handle)) : Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCallWithArguments_Handle, nSArray.Handle)));
         nSArray.Dispose();
         return result;
     }
@@ -500,7 +500,7 @@ public class JSValue : NSObject
             throw new ArgumentNullException("arguments");
         }
         NSArray nSArray = NSArray.FromNSObjects(arguments);
-        JSValue result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selConstructWithArguments_Handle, nSArray.Handle)) : Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selConstructWithArguments_Handle, nSArray.Handle)));
+        JSValue result = ((!base.IsDirectBinding) ? Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selConstructWithArguments_Handle, nSArray.Handle)) : Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selConstructWithArguments_Handle, nSArray.Handle)));
         nSArray.Dispose();
         return result;
     }
@@ -513,7 +513,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selValueWithNewArrayInContext_Handle, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selValueWithNewArrayInContext_Handle, context.Handle));
     }
 
     [Export("valueWithNewErrorFromMessage:inContext:")]
@@ -529,7 +529,7 @@ public class JSValue : NSObject
             throw new ArgumentNullException("context");
         }
         IntPtr arg = NSString.CreateNative(message);
-        JSValue nSObject = Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selValueWithNewErrorFromMessage_InContext_Handle, arg, context.Handle));
+        JSValue nSObject = Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selValueWithNewErrorFromMessage_InContext_Handle, arg, context.Handle));
         NSString.ReleaseNative(arg);
         return nSObject;
     }
@@ -542,7 +542,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selValueWithNewObjectInContext_Handle, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selValueWithNewObjectInContext_Handle, context.Handle));
     }
 
     [Export("valueWithNewPromiseInContext:fromExecutor:")]
@@ -560,7 +560,7 @@ public class JSValue : NSObject
         BlockLiteral blockLiteral = default(BlockLiteral);
         BlockLiteral* ptr = &blockLiteral;
         blockLiteral.SetupBlock(Trampolines.SDJSPromiseCreationExecutor.Handler, callback);
-        JSValue nSObject = Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selValueWithNewPromiseInContext_FromExecutor_Handle, context.Handle, (IntPtr)ptr));
+        JSValue nSObject = Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selValueWithNewPromiseInContext_FromExecutor_Handle, context.Handle, (IntPtr)ptr));
         ptr->CleanupBlock();
         return nSObject;
     }
@@ -583,7 +583,7 @@ public class JSValue : NSObject
         }
         IntPtr arg = NSString.CreateNative(pattern);
         IntPtr arg2 = NSString.CreateNative(flags);
-        JSValue nSObject = Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selValueWithNewRegularExpressionFromPattern_Flags_InContext_Handle, arg, arg2, context.Handle));
+        JSValue nSObject = Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selValueWithNewRegularExpressionFromPattern_Flags_InContext_Handle, arg, arg2, context.Handle));
         NSString.ReleaseNative(arg);
         NSString.ReleaseNative(arg2);
         return nSObject;
@@ -600,7 +600,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selValueWithNewPromiseRejectedWithReason_InContext_Handle, reason.Handle, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selValueWithNewPromiseRejectedWithReason_InContext_Handle, reason.Handle, context.Handle));
     }
 
     [Export("valueWithNewPromiseResolvedWithResult:inContext:")]
@@ -614,7 +614,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selValueWithNewPromiseResolvedWithResult_InContext_Handle, result.Handle, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selValueWithNewPromiseResolvedWithResult_InContext_Handle, result.Handle, context.Handle));
     }
 
     [Export("valueWithNewSymbolFromDescription:inContext:")]
@@ -629,7 +629,7 @@ public class JSValue : NSObject
             throw new ArgumentNullException("context");
         }
         IntPtr arg = NSString.CreateNative(description);
-        JSValue nSObject = Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selValueWithNewSymbolFromDescription_InContext_Handle, arg, context.Handle));
+        JSValue nSObject = Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selValueWithNewSymbolFromDescription_InContext_Handle, arg, context.Handle));
         NSString.ReleaseNative(arg);
         return nSObject;
     }
@@ -684,7 +684,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selValueWithObject_InContext_Handle, value.Handle, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selValueWithObject_InContext_Handle, value.Handle, context.Handle));
     }
 
     [Export("valueWithBool:inContext:")]
@@ -695,7 +695,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_bool_IntPtr(class_ptr, selValueWithBool_InContext_Handle, value, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_bool_IntPtr(class_ptr, selValueWithBool_InContext_Handle, value, context.Handle));
     }
 
     [Export("valueWithDouble:inContext:")]
@@ -706,7 +706,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_Double_IntPtr(class_ptr, selValueWithDouble_InContext_Handle, value, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_Double_IntPtr(class_ptr, selValueWithDouble_InContext_Handle, value, context.Handle));
     }
 
     [Export("valueWithInt32:inContext:")]
@@ -717,7 +717,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_int_IntPtr(class_ptr, selValueWithInt32_InContext_Handle, ivalue, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_int_IntPtr(class_ptr, selValueWithInt32_InContext_Handle, ivalue, context.Handle));
     }
 
     [Export("valueWithUInt32:inContext:")]
@@ -728,7 +728,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_UInt32_IntPtr(class_ptr, selValueWithUInt32_InContext_Handle, value, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_UInt32_IntPtr(class_ptr, selValueWithUInt32_InContext_Handle, value, context.Handle));
     }
 
     [Export("valueWithPoint:inContext:")]
@@ -739,7 +739,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_CGPoint_IntPtr(class_ptr, selValueWithPoint_InContext_Handle, point, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_CGPoint_IntPtr(class_ptr, selValueWithPoint_InContext_Handle, point, context.Handle));
     }
 
     [Export("valueWithRange:inContext:")]
@@ -750,7 +750,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_NSRange_IntPtr(class_ptr, selValueWithRange_InContext_Handle, range, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_NSRange_IntPtr(class_ptr, selValueWithRange_InContext_Handle, range, context.Handle));
     }
 
     [Export("valueWithRect:inContext:")]
@@ -761,7 +761,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_CGRect_IntPtr(class_ptr, selValueWithRect_InContext_Handle, rect, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_CGRect_IntPtr(class_ptr, selValueWithRect_InContext_Handle, rect, context.Handle));
     }
 
     [Export("valueWithSize:inContext:")]
@@ -772,7 +772,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_CGSize_IntPtr(class_ptr, selValueWithSize_InContext_Handle, size, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_CGSize_IntPtr(class_ptr, selValueWithSize_InContext_Handle, size, context.Handle));
     }
 
     [Export("valueWithJSValueRef:inContext:")]
@@ -782,7 +782,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selValueWithJSValueRef_InContext_Handle, nativeJsValueRefvalue, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selValueWithJSValueRef_InContext_Handle, nativeJsValueRefvalue, context.Handle));
     }
 
     [Export("valueForProperty:")]
@@ -794,7 +794,7 @@ public class JSValue : NSObject
             throw new ArgumentNullException("property");
         }
         IntPtr arg = NSString.CreateNative(property);
-        JSValue result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selValueForProperty_Handle, arg)) : Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selValueForProperty_Handle, arg)));
+        JSValue result = ((!base.IsDirectBinding) ? Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selValueForProperty_Handle, arg)) : Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selValueForProperty_Handle, arg)));
         NSString.ReleaseNative(arg);
         return result;
     }
@@ -805,9 +805,9 @@ public class JSValue : NSObject
     {
         if (base.IsDirectBinding)
         {
-            return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_nuint(base.Handle, selValueAtIndex_Handle, index));
+            return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_nuint(base.Handle, selValueAtIndex_Handle, index));
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSendSuper_nuint(base.SuperHandle, selValueAtIndex_Handle, index));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSendSuper_nuint(base.SuperHandle, selValueAtIndex_Handle, index));
     }
 
     [Export("hasProperty:")]
@@ -838,7 +838,7 @@ public class JSValue : NSObject
         }
         IntPtr arg = NSString.CreateNative(method);
         NSArray nSArray = NSArray.FromNSObjects(arguments);
-        JSValue result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInvokeMethod_WithArguments_Handle, arg, nSArray.Handle)) : Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInvokeMethod_WithArguments_Handle, arg, nSArray.Handle)));
+        JSValue result = ((!base.IsDirectBinding) ? Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInvokeMethod_WithArguments_Handle, arg, nSArray.Handle)) : Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInvokeMethod_WithArguments_Handle, arg, nSArray.Handle)));
         NSString.ReleaseNative(arg);
         nSArray.Dispose();
         return result;
@@ -897,7 +897,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selValueWithNullInContext_Handle, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selValueWithNullInContext_Handle, context.Handle));
     }
 
     [Export("setValue:forProperty:")]
@@ -970,9 +970,9 @@ public class JSValue : NSObject
     {
         if (base.IsDirectBinding)
         {
-            return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSend(base.Handle, selToDateHandle));
+            return Runtime.GetNSObjectTx<NSDate>(Messaging.IntPtr_objc_msgSend(base.Handle, selToDateHandle));
         }
-        return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selToDateHandle));
+        return Runtime.GetNSObjectTx<NSDate>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selToDateHandle));
     }
 
     [Export("toDictionary")]
@@ -981,9 +981,9 @@ public class JSValue : NSObject
     {
         if (base.IsDirectBinding)
         {
-            return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selToDictionaryHandle));
+            return Runtime.GetNSObjectTx<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selToDictionaryHandle));
         }
-        return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selToDictionaryHandle));
+        return Runtime.GetNSObjectTx<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selToDictionaryHandle));
     }
 
     [Export("toDouble")]
@@ -1014,9 +1014,9 @@ public class JSValue : NSObject
     {
         if (base.IsDirectBinding)
         {
-            return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selToNumberHandle));
+            return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selToNumberHandle));
         }
-        return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selToNumberHandle));
+        return Runtime.GetNSObjectTx<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selToNumberHandle));
     }
 
     [Export("toObject")]
@@ -1113,7 +1113,7 @@ public class JSValue : NSObject
         {
             throw new ArgumentNullException("context");
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selValueWithUndefinedInContext_Handle, context.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selValueWithUndefinedInContext_Handle, context.Handle));
     }
 
     [Export("objectAtIndexedSubscript:")]
@@ -1122,9 +1122,9 @@ public class JSValue : NSObject
     {
         if (base.IsDirectBinding)
         {
-            return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_nuint(base.Handle, selObjectAtIndexedSubscript_Handle, index));
+            return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_nuint(base.Handle, selObjectAtIndexedSubscript_Handle, index));
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSendSuper_nuint(base.SuperHandle, selObjectAtIndexedSubscript_Handle, index));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSendSuper_nuint(base.SuperHandle, selObjectAtIndexedSubscript_Handle, index));
     }
 
     [Export("objectForKeyedSubscript:")]
@@ -1137,9 +1137,9 @@ public class JSValue : NSObject
         }
         if (base.IsDirectBinding)
         {
-            return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selObjectForKeyedSubscript_Handle, key.Handle));
+            return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selObjectForKeyedSubscript_Handle, key.Handle));
         }
-        return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selObjectForKeyedSubscript_Handle, key.Handle));
+        return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selObjectForKeyedSubscript_Handle, key.Handle));
     }
 
     [Export("setObject:forKeyedSubscript:")]

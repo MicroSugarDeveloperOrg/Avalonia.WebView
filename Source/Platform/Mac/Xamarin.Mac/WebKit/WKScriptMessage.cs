@@ -65,9 +65,9 @@ public class WKScriptMessage : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<WKFrameInfo>(Messaging.IntPtr_objc_msgSend(Handle, selFrameInfoHandle));
+                return Runtime.GetNSObjectTx<WKFrameInfo>(Messaging.IntPtr_objc_msgSend(Handle, selFrameInfoHandle));
             }
-            return Runtime.GetNSObject<WKFrameInfo>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selFrameInfoHandle));
+            return Runtime.GetNSObjectTx<WKFrameInfo>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selFrameInfoHandle));
         }
     }
 
@@ -89,7 +89,7 @@ public class WKScriptMessage : NSObject
         [Export("webView", ArgumentSemantic.Weak)]
         get
         {
-            WKWebView wKWebView = ((!IsDirectBinding) ? Runtime.GetNSObject<WKWebView>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selWebViewHandle)) : Runtime.GetNSObject<WKWebView>(Messaging.IntPtr_objc_msgSend(Handle, selWebViewHandle)));
+            WKWebView wKWebView = ((!IsDirectBinding) ? Runtime.GetNSObjectTx<WKWebView>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selWebViewHandle)) : Runtime.GetNSObjectTx<WKWebView>(Messaging.IntPtr_objc_msgSend(Handle, selWebViewHandle)));
             __mt_WebView_var = wKWebView;
             return wKWebView;
         }

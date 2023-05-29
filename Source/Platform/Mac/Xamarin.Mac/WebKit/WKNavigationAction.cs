@@ -98,9 +98,9 @@ public class WKNavigationAction : NSObject
         get
         {
             if (IsDirectBinding)
-                return Runtime.GetNSObject<NSUrlRequest>(Messaging.IntPtr_objc_msgSend(Handle, selRequestHandle));
+                return Runtime.GetNSObjectTx<NSUrlRequest>(Messaging.IntPtr_objc_msgSend(Handle, selRequestHandle));
 
-            return Runtime.GetNSObject<NSUrlRequest>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selRequestHandle));
+            return Runtime.GetNSObjectTx<NSUrlRequest>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selRequestHandle));
         }
     }
 
@@ -110,9 +110,9 @@ public class WKNavigationAction : NSObject
         get
         {
             if (IsDirectBinding)
-                return Runtime.GetNSObject<WKFrameInfo>(Messaging.IntPtr_objc_msgSend(Handle, selSourceFrameHandle));
+                return Runtime.GetNSObjectTx<WKFrameInfo>(Messaging.IntPtr_objc_msgSend(Handle, selSourceFrameHandle));
 
-            return Runtime.GetNSObject<WKFrameInfo>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selSourceFrameHandle));
+            return Runtime.GetNSObjectTx<WKFrameInfo>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selSourceFrameHandle));
         }
     }
 
@@ -122,9 +122,9 @@ public class WKNavigationAction : NSObject
         get
         {
             if (IsDirectBinding)
-                return Runtime.GetNSObject<WKFrameInfo>(Messaging.IntPtr_objc_msgSend(Handle, selTargetFrameHandle));
+                return Runtime.GetNSObjectTx<WKFrameInfo>(Messaging.IntPtr_objc_msgSend(Handle, selTargetFrameHandle));
 
-            return Runtime.GetNSObject<WKFrameInfo>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selTargetFrameHandle));
+            return Runtime.GetNSObjectTx<WKFrameInfo>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selTargetFrameHandle));
         }
     }
 

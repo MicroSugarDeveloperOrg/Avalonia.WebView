@@ -73,9 +73,9 @@ public class WKNavigationResponse : NSObject
         {
             if (base.IsDirectBinding)
             {
-                return Runtime.GetNSObject<NSUrlResponse>(Messaging.IntPtr_objc_msgSend(base.Handle, selResponseHandle));
+                return Runtime.GetNSObjectTx<NSUrlResponse>(Messaging.IntPtr_objc_msgSend(base.Handle, selResponseHandle));
             }
-            return Runtime.GetNSObject<NSUrlResponse>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selResponseHandle));
+            return Runtime.GetNSObjectTx<NSUrlResponse>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selResponseHandle));
         }
     }
 }

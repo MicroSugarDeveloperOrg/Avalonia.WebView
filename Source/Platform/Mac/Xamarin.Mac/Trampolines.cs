@@ -518,7 +518,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr obj)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<NSArray>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObject<NSArray>(obj));
+            ((Action<NSArray>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<NSArray>(obj));
         }
     }
 
@@ -567,7 +567,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, nint arg1, IntPtr arg2)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<WKNavigationActionPolicy, WKWebpagePreferences>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((WKNavigationActionPolicy)(long)arg1, Runtime.GetNSObject<WKWebpagePreferences>(arg2));
+            ((Action<WKNavigationActionPolicy, WKWebpagePreferences>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((WKNavigationActionPolicy)(long)arg1, Runtime.GetNSObjectTx<WKWebpagePreferences>(arg2));
         }
     }
 
@@ -583,7 +583,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, nint arg1, IntPtr arg2)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSUrlSessionAuthChallengeDisposition)(long)arg1, Runtime.GetNSObject<NSUrlCredential>(arg2));
+            ((Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSUrlSessionAuthChallengeDisposition)(long)arg1, Runtime.GetNSObjectTx<NSUrlCredential>(arg2));
         }
     }
 
@@ -632,7 +632,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr context, IntPtr exception)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((JSContextExceptionHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObject<JSContext>(context), Runtime.GetNSObject<JSValue>(exception));
+            ((JSContextExceptionHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<JSContext>(context), Runtime.GetNSObjectTx<JSValue>(exception));
         }
     }
 
@@ -662,7 +662,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr resolve, IntPtr rejected)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((JSPromiseCreationExecutor)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObject<JSValue>(resolve), Runtime.GetNSObject<JSValue>(rejected));
+            ((JSPromiseCreationExecutor)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<JSValue>(resolve), Runtime.GetNSObjectTx<JSValue>(rejected));
         }
     }
 

@@ -75,7 +75,7 @@ public class WKWebsiteDataStore : NSObject
         [Export("allWebsiteDataTypes")]
         get
         {
-            return Runtime.GetNSObject<NSSet<NSString>>(Messaging.IntPtr_objc_msgSend(class_ptr, selAllWebsiteDataTypesHandle));
+            return Runtime.GetNSObjectTx<NSSet<NSString>>(Messaging.IntPtr_objc_msgSend(class_ptr, selAllWebsiteDataTypesHandle));
         }
     }
 
@@ -84,7 +84,7 @@ public class WKWebsiteDataStore : NSObject
         [Export("defaultDataStore")]
         get
         {
-            return Runtime.GetNSObject<WKWebsiteDataStore>(Messaging.IntPtr_objc_msgSend(class_ptr, selDefaultDataStoreHandle));
+            return Runtime.GetNSObjectTx<WKWebsiteDataStore>(Messaging.IntPtr_objc_msgSend(class_ptr, selDefaultDataStoreHandle));
         }
     }
 
@@ -95,9 +95,9 @@ public class WKWebsiteDataStore : NSObject
         {
             if (IsDirectBinding)
             {
-                return Runtime.GetNSObject<WKHttpCookieStore>(Messaging.IntPtr_objc_msgSend(Handle, selHttpCookieStoreHandle));
+                return Runtime.GetNSObjectTx<WKHttpCookieStore>(Messaging.IntPtr_objc_msgSend(Handle, selHttpCookieStoreHandle));
             }
-            return Runtime.GetNSObject<WKHttpCookieStore>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selHttpCookieStoreHandle));
+            return Runtime.GetNSObjectTx<WKHttpCookieStore>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selHttpCookieStoreHandle));
         }
     }
 
@@ -106,7 +106,7 @@ public class WKWebsiteDataStore : NSObject
         [Export("nonPersistentDataStore")]
         get
         {
-            return Runtime.GetNSObject<WKWebsiteDataStore>(Messaging.IntPtr_objc_msgSend(class_ptr, selNonPersistentDataStoreHandle));
+            return Runtime.GetNSObjectTx<WKWebsiteDataStore>(Messaging.IntPtr_objc_msgSend(class_ptr, selNonPersistentDataStoreHandle));
         }
     }
 

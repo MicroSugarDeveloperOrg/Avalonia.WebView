@@ -519,7 +519,7 @@ public class NSArray : NSObject
             IntPtr val = items[(long)nint]?.Handle ?? NSNull.Null.Handle;
             Marshal.WriteIntPtr(intPtr, (int)(nint * IntPtr.Size), val);
         }
-        NSArray nSObject = Runtime.GetNSObject<NSArray>(_FromObjects(intPtr, count));
+        NSArray nSObject = Runtime.GetNSObjectTx<NSArray>(_FromObjects(intPtr, count));
         Marshal.FreeHGlobal(intPtr);
         return nSObject;
     }
@@ -570,8 +570,8 @@ public class NSArray : NSObject
             throw new ArgumentNullException("url");
 
         IntPtr arg = IntPtr.Zero;
-        NSArray nSObject = Runtime.GetNSObject<NSArray>(Messaging.IntPtr_objc_msgSend_IntPtr_ref_IntPtr(class_ptr, selArrayWithContentsOfURL_Error_Handle, url.Handle, ref arg));
-        error = Runtime.GetNSObject<NSError>(arg);
+        NSArray nSObject = Runtime.GetNSObjectTx<NSArray>(Messaging.IntPtr_objc_msgSend_IntPtr_ref_IntPtr(class_ptr, selArrayWithContentsOfURL_Error_Handle, url.Handle, ref arg));
+        error = Runtime.GetNSObjectTx<NSError>(arg);
         return nSObject;
     }
 
@@ -593,7 +593,7 @@ public class NSArray : NSObject
 
         IntPtr arg = IntPtr.Zero;
         bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_ref_IntPtr(SuperHandle, selWriteToURL_Error_Handle, url.Handle, ref arg) : Messaging.bool_objc_msgSend_IntPtr_ref_IntPtr(Handle, selWriteToURL_Error_Handle, url.Handle, ref arg));
-        error = Runtime.GetNSObject<NSError>(arg);
+        error = Runtime.GetNSObjectTx<NSError>(arg);
         return result;
     }
 
@@ -736,7 +736,7 @@ public sealed class NSArray<TKey> : NSArray, IEnumerable<TKey>, IEnumerable wher
             Marshal.WriteIntPtr(intPtr, (int)(nint * IntPtr.Size), val);
         }
         IntPtr ptr = NSArray._FromObjects(intPtr, count);
-        NSArray<TKey> nSObject = Runtime.GetNSObject<NSArray<TKey>>(ptr);
+        NSArray<TKey> nSObject = Runtime.GetNSObjectTx<NSArray<TKey>>(ptr);
         Marshal.FreeHGlobal(intPtr);
         return nSObject;
     }

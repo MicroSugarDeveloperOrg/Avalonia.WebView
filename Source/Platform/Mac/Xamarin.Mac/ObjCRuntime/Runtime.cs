@@ -201,7 +201,7 @@ public static class Runtime
         return null;
     }
 
-    public static T GetNSObject<T>(IntPtr ptr) where T : NSObject
+    public static T GetNSObjectTx<T>(IntPtr ptr) where T : NSObject
     {
         if (ptr == IntPtr.Zero)
             return null;

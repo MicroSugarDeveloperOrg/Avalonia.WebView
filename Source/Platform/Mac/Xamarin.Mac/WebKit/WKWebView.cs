@@ -212,9 +212,9 @@ public class WKWebView : NSView
         get
         {
             if (IsDirectBinding)
-                return Runtime.GetNSObject<WKBackForwardList>(Messaging.IntPtr_objc_msgSend(Handle, selBackForwardListHandle));
+                return Runtime.GetNSObjectTx<WKBackForwardList>(Messaging.IntPtr_objc_msgSend(Handle, selBackForwardListHandle));
 
-            return Runtime.GetNSObject<WKBackForwardList>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selBackForwardListHandle));
+            return Runtime.GetNSObjectTx<WKBackForwardList>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selBackForwardListHandle));
         }
     }
 
@@ -261,9 +261,9 @@ public class WKWebView : NSView
         get
         {
             if (IsDirectBinding)
-                return Runtime.GetNSObject<WKWebViewConfiguration>(Messaging.IntPtr_objc_msgSend(Handle, selConfigurationHandle));
+                return Runtime.GetNSObjectTx<WKWebViewConfiguration>(Messaging.IntPtr_objc_msgSend(Handle, selConfigurationHandle));
 
-            return Runtime.GetNSObject<WKWebViewConfiguration>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selConfigurationHandle));
+            return Runtime.GetNSObjectTx<WKWebViewConfiguration>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selConfigurationHandle));
         }
     }
 
@@ -404,9 +404,9 @@ public class WKWebView : NSView
         get
         {
             if (IsDirectBinding)
-                return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(Handle, selURLHandle));
+                return Runtime.GetNSObjectTx<NSUrl>(Messaging.IntPtr_objc_msgSend(Handle, selURLHandle));
 
-            return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selURLHandle));
+            return Runtime.GetNSObjectTx<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selURLHandle));
         }
     }
 

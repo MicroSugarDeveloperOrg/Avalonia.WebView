@@ -10,7 +10,7 @@ internal sealed class WKUrlSchemeTaskWrapper : BaseWrapper, IWKUrlSchemeTask
         [Export("request", ArgumentSemantic.Copy)]
         get
         {
-            return Runtime.GetNSObject<NSUrlRequest>(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.GetHandle("request")));
+            return Runtime.GetNSObjectTx<NSUrlRequest>(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.GetHandle("request")));
         }
     }
 

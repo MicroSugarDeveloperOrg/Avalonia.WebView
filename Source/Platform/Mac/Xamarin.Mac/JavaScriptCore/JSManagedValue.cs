@@ -35,9 +35,9 @@ public class JSManagedValue : NSObject
 		{
 			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSend(Handle, selValueHandle));
+				return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSend(Handle, selValueHandle));
 			}
-			return Runtime.GetNSObject<JSValue>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selValueHandle));
+			return Runtime.GetNSObjectTx<JSValue>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selValueHandle));
 		}
 	}
 
@@ -82,7 +82,7 @@ public class JSManagedValue : NSObject
 		if (value == null)
             throw new ArgumentNullException("value");
 
-        return Runtime.GetNSObject<JSManagedValue>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selManagedValueWithValue_Handle, value.Handle));
+        return Runtime.GetNSObjectTx<JSManagedValue>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selManagedValueWithValue_Handle, value.Handle));
 	}
 
 	[Export("managedValueWithValue:andOwner:")]
@@ -94,6 +94,6 @@ public class JSManagedValue : NSObject
         if (owner == null)
             throw new ArgumentNullException("owner");
 
-        return Runtime.GetNSObject<JSManagedValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selManagedValueWithValue_AndOwner_Handle, value.Handle, owner.Handle));
+        return Runtime.GetNSObjectTx<JSManagedValue>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selManagedValueWithValue_AndOwner_Handle, value.Handle, owner.Handle));
 	}
 }
