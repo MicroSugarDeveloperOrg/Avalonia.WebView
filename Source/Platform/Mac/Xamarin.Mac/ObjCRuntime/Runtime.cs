@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Foundation;
 using Xamarin.Utiles;
 
@@ -272,6 +273,11 @@ public static class Runtime
             return Activator.CreateInstance(type, ptr) as T;
 
         return new NSObject(ptr) as T;
+    }
+
+    internal static IntPtr AllocGCHandle(object? value, GCHandleType type = GCHandleType.Normal)
+    {
+        return GCHandle.ToIntPtr(GCHandle.Alloc(value, type));
     }
 
     #endregion

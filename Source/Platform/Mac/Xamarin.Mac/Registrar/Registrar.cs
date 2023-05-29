@@ -745,17 +745,17 @@ internal abstract class Registrar
             {
                 throw ErrorHelper.CreateError(8018, string.Format("Internal consistency error: BindAs array is not big enough (expected at least {0} elements, got {1} elements) for {2}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new.", 1 + parameters.Length, num, method_base.DeclaringType.FullName + "." + method_base.Name));
             }
-            Marshal.WriteIntPtr(desc, ObjectWrapper.Convert(method_base));
-            Marshal.WriteInt32(desc + IntPtr.Size, (int)argumentSemantic);
+            Marshal.WriteIntPtr(desc, Runtime.AllocGCHandle(method_base));
+            Marshal.WriteInt32((nint)desc + IntPtr.Size, (int)argumentSemantic);
             if (!IsConstructor && ReturnType != NativeReturnType)
             {
-                Marshal.WriteIntPtr(desc + IntPtr.Size + 8, ObjectWrapper.Convert(NativeReturnType));
+                Marshal.WriteIntPtr((nint)desc + IntPtr.Size + 8, Runtime.AllocGCHandle(NativeReturnType));
             }
             for (int i = 0; i < NativeParameters.Length; i++)
             {
                 if (!(parameters[i] == native_parameters[i]))
                 {
-                    Marshal.WriteIntPtr(desc + IntPtr.Size + 8 + IntPtr.Size * (i + 1), ObjectWrapper.Convert(native_parameters[i]));
+                    Marshal.WriteIntPtr((nint)desc + IntPtr.Size + 8 + IntPtr.Size * (i + 1), Runtime.AllocGCHandle(native_parameters[i]));
                 }
             }
         }

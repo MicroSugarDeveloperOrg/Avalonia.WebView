@@ -276,6 +276,7 @@ internal abstract class NativeImplementationBuilder
 			else if (typeof(INativeObject).IsAssignableFrom(Parameters[i - ArgumentOffset].ParameterType) && !IsWrappedType(Parameters[i - ArgumentOffset].ParameterType))
 			{
 				il.Emit(OpCodes.Ldarg, i);
+				//此处需要获取对象的构造函数，由于这里使用了Interface所以大概率这里或抱错获取不到构造
 				il.Emit(OpCodes.Newobj, Parameters[i - ArgumentOffset].ParameterType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[1] { typeof(IntPtr) }, null));
 			}
 			else if (Parameters[i - ArgumentOffset].ParameterType == typeof(string))

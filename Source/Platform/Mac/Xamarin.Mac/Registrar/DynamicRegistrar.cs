@@ -832,8 +832,8 @@ internal class DynamicRegistrar : Registrar
 			try
 			{
 				NSObject nSObject = Runtime.GetNSObject(obj);
-				mthis = ObjectWrapper.Convert(nSObject);
-				if (methodNoThrow.Method.ContainsGenericParameters)
+                mthis = Runtime.AllocGCHandle(nSObject);
+                if (methodNoThrow.Method.ContainsGenericParameters)
 				{
 					methodNoThrow.WriteUnmanagedDescription(desc, Runtime.FindClosedMethod(nSObject.GetType(), methodNoThrow.Method));
 					return;
