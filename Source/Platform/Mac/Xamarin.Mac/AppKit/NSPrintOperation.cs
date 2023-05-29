@@ -1,250 +1,167 @@
+using System;
 using System.ComponentModel;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
 [Register("NSPrintOperation", true)]
 public class NSPrintOperation : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEPSOperationWithView_InsideRect_ToData_ = "EPSOperationWithView:insideRect:toData:";
-
-	private static readonly IntPtr selEPSOperationWithView_InsideRect_ToData_Handle = Selector.GetHandle("EPSOperationWithView:insideRect:toData:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEPSOperationWithView_InsideRect_ToData_PrintInfo_ = "EPSOperationWithView:insideRect:toData:printInfo:";
-
-	private static readonly IntPtr selEPSOperationWithView_InsideRect_ToData_PrintInfo_Handle = Selector.GetHandle("EPSOperationWithView:insideRect:toData:printInfo:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEPSOperationWithView_InsideRect_ToPath_PrintInfo_ = "EPSOperationWithView:insideRect:toPath:printInfo:";
-
-	private static readonly IntPtr selEPSOperationWithView_InsideRect_ToPath_PrintInfo_Handle = Selector.GetHandle("EPSOperationWithView:insideRect:toPath:printInfo:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPDFOperationWithView_InsideRect_ToData_ = "PDFOperationWithView:insideRect:toData:";
-
-	private static readonly IntPtr selPDFOperationWithView_InsideRect_ToData_Handle = Selector.GetHandle("PDFOperationWithView:insideRect:toData:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPDFOperationWithView_InsideRect_ToData_PrintInfo_ = "PDFOperationWithView:insideRect:toData:printInfo:";
-
-	private static readonly IntPtr selPDFOperationWithView_InsideRect_ToData_PrintInfo_Handle = Selector.GetHandle("PDFOperationWithView:insideRect:toData:printInfo:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPDFOperationWithView_InsideRect_ToPath_PrintInfo_ = "PDFOperationWithView:insideRect:toPath:printInfo:";
-
-	private static readonly IntPtr selPDFOperationWithView_InsideRect_ToPath_PrintInfo_Handle = Selector.GetHandle("PDFOperationWithView:insideRect:toPath:printInfo:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCanSpawnSeparateThread = "canSpawnSeparateThread";
-
-	private static readonly IntPtr selCanSpawnSeparateThreadHandle = Selector.GetHandle("canSpawnSeparateThread");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCleanUpOperation = "cleanUpOperation";
-
-	private static readonly IntPtr selCleanUpOperationHandle = Selector.GetHandle("cleanUpOperation");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selContext = "context";
-
-	private static readonly IntPtr selContextHandle = Selector.GetHandle("context");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCreateContext = "createContext";
-
-	private static readonly IntPtr selCreateContextHandle = Selector.GetHandle("createContext");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCurrentOperation = "currentOperation";
-
-	private static readonly IntPtr selCurrentOperationHandle = Selector.GetHandle("currentOperation");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCurrentPage = "currentPage";
-
-	private static readonly IntPtr selCurrentPageHandle = Selector.GetHandle("currentPage");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeliverResult = "deliverResult";
-
-	private static readonly IntPtr selDeliverResultHandle = Selector.GetHandle("deliverResult");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDestroyContext = "destroyContext";
-
-	private static readonly IntPtr selDestroyContextHandle = Selector.GetHandle("destroyContext");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsCopyingOperation = "isCopyingOperation";
-
 	private static readonly IntPtr selIsCopyingOperationHandle = Selector.GetHandle("isCopyingOperation");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selJobTitle = "jobTitle";
-
-	private static readonly IntPtr selJobTitleHandle = Selector.GetHandle("jobTitle");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPageOrder = "pageOrder";
-
-	private static readonly IntPtr selPageOrderHandle = Selector.GetHandle("pageOrder");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPageRange = "pageRange";
-
-	private static readonly IntPtr selPageRangeHandle = Selector.GetHandle("pageRange");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPreferredRenderingQuality = "preferredRenderingQuality";
-
-	private static readonly IntPtr selPreferredRenderingQualityHandle = Selector.GetHandle("preferredRenderingQuality");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPrintInfo = "printInfo";
-
-	private static readonly IntPtr selPrintInfoHandle = Selector.GetHandle("printInfo");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPrintOperationWithView_ = "printOperationWithView:";
-
-	private static readonly IntPtr selPrintOperationWithView_Handle = Selector.GetHandle("printOperationWithView:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPrintOperationWithView_PrintInfo_ = "printOperationWithView:printInfo:";
-
-	private static readonly IntPtr selPrintOperationWithView_PrintInfo_Handle = Selector.GetHandle("printOperationWithView:printInfo:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPrintPanel = "printPanel";
-
-	private static readonly IntPtr selPrintPanelHandle = Selector.GetHandle("printPanel");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRunOperation = "runOperation";
-
-	private static readonly IntPtr selRunOperationHandle = Selector.GetHandle("runOperation");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRunOperationModalForWindow_Delegate_DidRunSelector_ContextInfo_ = "runOperationModalForWindow:delegate:didRunSelector:contextInfo:";
-
-	private static readonly IntPtr selRunOperationModalForWindow_Delegate_DidRunSelector_ContextInfo_Handle = Selector.GetHandle("runOperationModalForWindow:delegate:didRunSelector:contextInfo:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetCanSpawnSeparateThread_ = "setCanSpawnSeparateThread:";
-
-	private static readonly IntPtr selSetCanSpawnSeparateThread_Handle = Selector.GetHandle("setCanSpawnSeparateThread:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetCurrentOperation_ = "setCurrentOperation:";
-
-	private static readonly IntPtr selSetCurrentOperation_Handle = Selector.GetHandle("setCurrentOperation:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetJobTitle_ = "setJobTitle:";
-
-	private static readonly IntPtr selSetJobTitle_Handle = Selector.GetHandle("setJobTitle:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPageOrder_ = "setPageOrder:";
-
-	private static readonly IntPtr selSetPageOrder_Handle = Selector.GetHandle("setPageOrder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPrintInfo_ = "setPrintInfo:";
-
-	private static readonly IntPtr selSetPrintInfo_Handle = Selector.GetHandle("setPrintInfo:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPrintPanel_ = "setPrintPanel:";
-
-	private static readonly IntPtr selSetPrintPanel_Handle = Selector.GetHandle("setPrintPanel:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetShowsPrintPanel_ = "setShowsPrintPanel:";
-
-	private static readonly IntPtr selSetShowsPrintPanel_Handle = Selector.GetHandle("setShowsPrintPanel:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetShowsProgressPanel_ = "setShowsProgressPanel:";
-
-	private static readonly IntPtr selSetShowsProgressPanel_Handle = Selector.GetHandle("setShowsProgressPanel:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selShowsPrintPanel = "showsPrintPanel";
-
-	private static readonly IntPtr selShowsPrintPanelHandle = Selector.GetHandle("showsPrintPanel");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selShowsProgressPanel = "showsProgressPanel";
-
-	private static readonly IntPtr selShowsProgressPanelHandle = Selector.GetHandle("showsProgressPanel");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selView = "view";
 
 	private static readonly IntPtr selViewHandle = Selector.GetHandle("view");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSPrintOperation");
+	private static readonly IntPtr selContextHandle = Selector.GetHandle("context");
+
+	private static readonly IntPtr selPageRangeHandle = Selector.GetHandle("pageRange");
+
+	private static readonly IntPtr selCurrentPageHandle = Selector.GetHandle("currentPage");
+
+	private static readonly IntPtr selCurrentOperationHandle = Selector.GetHandle("currentOperation");
+
+	private static readonly IntPtr selSetCurrentOperation_Handle = Selector.GetHandle("setCurrentOperation:");
+
+	private static readonly IntPtr selJobTitleHandle = Selector.GetHandle("jobTitle");
+
+	private static readonly IntPtr selSetJobTitle_Handle = Selector.GetHandle("setJobTitle:");
+
+	private static readonly IntPtr selShowsPrintPanelHandle = Selector.GetHandle("showsPrintPanel");
+
+	private static readonly IntPtr selSetShowsPrintPanel_Handle = Selector.GetHandle("setShowsPrintPanel:");
+
+	private static readonly IntPtr selShowsProgressPanelHandle = Selector.GetHandle("showsProgressPanel");
+
+	private static readonly IntPtr selSetShowsProgressPanel_Handle = Selector.GetHandle("setShowsProgressPanel:");
+
+	private static readonly IntPtr selPrintPanelHandle = Selector.GetHandle("printPanel");
+
+	private static readonly IntPtr selSetPrintPanel_Handle = Selector.GetHandle("setPrintPanel:");
+
+	private static readonly IntPtr selCanSpawnSeparateThreadHandle = Selector.GetHandle("canSpawnSeparateThread");
+
+	private static readonly IntPtr selSetCanSpawnSeparateThread_Handle = Selector.GetHandle("setCanSpawnSeparateThread:");
+
+	private static readonly IntPtr selPageOrderHandle = Selector.GetHandle("pageOrder");
+
+	private static readonly IntPtr selSetPageOrder_Handle = Selector.GetHandle("setPageOrder:");
+
+	private static readonly IntPtr selPrintInfoHandle = Selector.GetHandle("printInfo");
+
+	private static readonly IntPtr selSetPrintInfo_Handle = Selector.GetHandle("setPrintInfo:");
+
+	private static readonly IntPtr selPrintOperationWithViewPrintInfo_Handle = Selector.GetHandle("printOperationWithView:printInfo:");
+
+	private static readonly IntPtr selPDFOperationWithViewInsideRectToDataPrintInfo_Handle = Selector.GetHandle("PDFOperationWithView:insideRect:toData:printInfo:");
+
+	private static readonly IntPtr selPDFOperationWithViewInsideRectToPathPrintInfo_Handle = Selector.GetHandle("PDFOperationWithView:insideRect:toPath:printInfo:");
+
+	private static readonly IntPtr selEPSOperationWithViewInsideRectToDataPrintInfo_Handle = Selector.GetHandle("EPSOperationWithView:insideRect:toData:printInfo:");
+
+	private static readonly IntPtr selEPSOperationWithViewInsideRectToPathPrintInfo_Handle = Selector.GetHandle("EPSOperationWithView:insideRect:toPath:printInfo:");
+
+	private static readonly IntPtr selPrintOperationWithView_Handle = Selector.GetHandle("printOperationWithView:");
+
+	private static readonly IntPtr selPDFOperationWithViewInsideRectToData_Handle = Selector.GetHandle("PDFOperationWithView:insideRect:toData:");
+
+	private static readonly IntPtr selEPSOperationWithViewInsideRectToData_Handle = Selector.GetHandle("EPSOperationWithView:insideRect:toData:");
+
+	private static readonly IntPtr selRunOperationModalForWindowDelegateDidRunSelectorContextInfo_Handle = Selector.GetHandle("runOperationModalForWindow:delegate:didRunSelector:contextInfo:");
+
+	private static readonly IntPtr selRunOperationHandle = Selector.GetHandle("runOperation");
+
+	private static readonly IntPtr selCreateContextHandle = Selector.GetHandle("createContext");
+
+	private static readonly IntPtr selDestroyContextHandle = Selector.GetHandle("destroyContext");
+
+	private static readonly IntPtr selDeliverResultHandle = Selector.GetHandle("deliverResult");
+
+	private static readonly IntPtr selCleanUpOperationHandle = Selector.GetHandle("cleanUpOperation");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSPrintOperation");
+
+	private object __mt_View_var;
+
+	private object __mt_Context_var;
+
+	private static object __mt_CurrentOperation_var_static;
+
+	private object __mt_PrintPanel_var;
+
+	private object __mt_PrintInfo_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool CanSpawnSeparateThread
+	public virtual bool IsCopyingOperation
 	{
-		[Export("canSpawnSeparateThread")]
+		[Export("isCopyingOperation")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selCanSpawnSeparateThreadHandle);
+				return Messaging.bool_objc_msgSend(base.Handle, selIsCopyingOperationHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCanSpawnSeparateThreadHandle);
-		}
-		[Export("setCanSpawnSeparateThread:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetCanSpawnSeparateThread_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetCanSpawnSeparateThread_Handle, value);
-			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsCopyingOperationHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSView View
+	{
+		[Export("view")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSView)(__mt_View_var = ((!IsDirectBinding) ? ((NSView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selViewHandle))) : ((NSView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selViewHandle)))));
+		}
+	}
+
 	public virtual NSGraphicsContext Context
 	{
 		[Export("context")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSGraphicsContext>(Messaging.IntPtr_objc_msgSend(base.Handle, selContextHandle));
-			}
-			return Runtime.GetNSObject<NSGraphicsContext>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContextHandle));
+			return (NSGraphicsContext)(__mt_Context_var = ((!IsDirectBinding) ? ((NSGraphicsContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContextHandle))) : ((NSGraphicsContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selContextHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSRange PageRange
+	{
+		[Export("pageRange")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.NSRange_objc_msgSend(base.Handle, selPageRangeHandle);
+			}
+			return Messaging.NSRange_objc_msgSendSuper(base.SuperHandle, selPageRangeHandle);
+		}
+	}
+
+	public virtual long CurrentPage
+	{
+		[Export("currentPage")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Int64_objc_msgSend(base.Handle, selCurrentPageHandle);
+			}
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selCurrentPageHandle);
+		}
+	}
+
 	public static NSPrintOperation CurrentOperation
 	{
 		[Export("currentOperation")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return Runtime.GetNSObject<NSPrintOperation>(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentOperationHandle));
+			return (NSPrintOperation)(__mt_CurrentOperation_var_static = (NSPrintOperation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentOperationHandle)));
 		}
 		[Export("setCurrentOperation:")]
 		set
@@ -258,44 +175,13 @@ public class NSPrintOperation : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint CurrentPage
-	{
-		[Export("currentPage")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selCurrentPageHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selCurrentPageHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool IsCopyingOperation
-	{
-		[Export("isCopyingOperation")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsCopyingOperationHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsCopyingOperationHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string JobTitle
 	{
 		[Export("jobTitle")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selJobTitleHandle));
 			}
@@ -310,7 +196,7 @@ public class NSPrintOperation : NSObject
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetJobTitle_Handle, arg);
 			}
@@ -322,136 +208,13 @@ public class NSPrintOperation : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSPrintingPageOrder PageOrder
-	{
-		[Export("pageOrder")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSPrintingPageOrder)Messaging.Int64_objc_msgSend(base.Handle, selPageOrderHandle);
-			}
-			return (NSPrintingPageOrder)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selPageOrderHandle);
-		}
-		[Export("setPageOrder:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetPageOrder_Handle, (long)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetPageOrder_Handle, (long)value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSRange PageRange
-	{
-		[Export("pageRange")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.NSRange_objc_msgSend(base.Handle, selPageRangeHandle);
-			}
-			return Messaging.NSRange_objc_msgSendSuper(base.SuperHandle, selPageRangeHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSPrintRenderingQuality PreferredRenderingQuality
-	{
-		[Export("preferredRenderingQuality")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSPrintRenderingQuality)Messaging.Int64_objc_msgSend(base.Handle, selPreferredRenderingQualityHandle);
-			}
-			return (NSPrintRenderingQuality)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selPreferredRenderingQualityHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSPrintInfo PrintInfo
-	{
-		[Export("printInfo", ArgumentSemantic.Copy)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSPrintInfo>(Messaging.IntPtr_objc_msgSend(base.Handle, selPrintInfoHandle));
-			}
-			return Runtime.GetNSObject<NSPrintInfo>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPrintInfoHandle));
-		}
-		[Export("setPrintInfo:", ArgumentSemantic.Copy)]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPrintInfo_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPrintInfo_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSPrintPanel PrintPanel
-	{
-		[Export("printPanel", ArgumentSemantic.Retain)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSPrintPanel>(Messaging.IntPtr_objc_msgSend(base.Handle, selPrintPanelHandle));
-			}
-			return Runtime.GetNSObject<NSPrintPanel>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPrintPanelHandle));
-		}
-		[Export("setPrintPanel:", ArgumentSemantic.Retain)]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPrintPanel_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPrintPanel_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool ShowsPrintPanel
 	{
 		[Export("showsPrintPanel")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selShowsPrintPanelHandle);
 			}
@@ -461,7 +224,7 @@ public class NSPrintOperation : NSObject
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetShowsPrintPanel_Handle, value);
 			}
@@ -472,14 +235,13 @@ public class NSPrintOperation : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool ShowsProgressPanel
 	{
 		[Export("showsProgressPanel")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selShowsProgressPanelHandle);
 			}
@@ -489,7 +251,7 @@ public class NSPrintOperation : NSObject
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetShowsProgressPanel_Handle, value);
 			}
@@ -500,167 +262,159 @@ public class NSPrintOperation : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSView View
+	public virtual NSPrintPanel PrintPanel
 	{
-		[Export("view")]
+		[Export("printPanel")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			return (NSPrintPanel)(__mt_PrintPanel_var = ((!IsDirectBinding) ? ((NSPrintPanel)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPrintPanelHandle))) : ((NSPrintPanel)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPrintPanelHandle)))));
+		}
+		[Export("setPrintPanel:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
 			{
-				return Runtime.GetNSObject<NSView>(Messaging.IntPtr_objc_msgSend(base.Handle, selViewHandle));
+				throw new ArgumentNullException("value");
 			}
-			return Runtime.GetNSObject<NSView>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selViewHandle));
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPrintPanel_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPrintPanel_Handle, value.Handle);
+			}
+			__mt_PrintPanel_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool CanSpawnSeparateThread
+	{
+		[Export("canSpawnSeparateThread")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selCanSpawnSeparateThreadHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCanSpawnSeparateThreadHandle);
+		}
+		[Export("setCanSpawnSeparateThread:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetCanSpawnSeparateThread_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetCanSpawnSeparateThread_Handle, value);
+			}
+		}
+	}
+
+	public virtual NSPrintingPageOrder PageOrder
+	{
+		[Export("pageOrder")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return (NSPrintingPageOrder)Messaging.Int64_objc_msgSend(base.Handle, selPageOrderHandle);
+			}
+			return (NSPrintingPageOrder)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selPageOrderHandle);
+		}
+		[Export("setPageOrder:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetPageOrder_Handle, (long)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetPageOrder_Handle, (long)value);
+			}
+		}
+	}
+
+	public virtual NSPrintInfo PrintInfo
+	{
+		[Export("printInfo")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSPrintInfo)(__mt_PrintInfo_var = ((!IsDirectBinding) ? ((NSPrintInfo)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPrintInfoHandle))) : ((NSPrintInfo)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPrintInfoHandle)))));
+		}
+		[Export("setPrintInfo:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPrintInfo_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPrintInfo_Handle, value.Handle);
+			}
+			__mt_PrintInfo_var = value;
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSPrintOperation()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSPrintOperation(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSPrintOperation(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSPrintOperation(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSPrintOperation(IntPtr handle)
+	public NSPrintOperation(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("cleanUpOperation")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void CleanUpOperation()
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selCleanUpOperationHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selCleanUpOperationHandle);
-		}
-	}
-
-	[Export("createContext")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSGraphicsContext CreateContext()
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSGraphicsContext>(Messaging.IntPtr_objc_msgSend(base.Handle, selCreateContextHandle));
-		}
-		return Runtime.GetNSObject<NSGraphicsContext>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCreateContextHandle));
-	}
-
-	[Export("deliverResult")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool DeliverResult()
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selDeliverResultHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selDeliverResultHandle);
-	}
-
-	[Export("destroyContext")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DestroyContext()
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selDestroyContextHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDestroyContextHandle);
-		}
-	}
-
-	[Export("EPSOperationWithView:insideRect:toData:printInfo:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSPrintOperation EpsFromView(NSView view, CGRect rect, NSMutableData data, NSPrintInfo printInfo)
-	{
-		NSApplication.EnsureUIThread();
-		if (view == null)
-		{
-			throw new ArgumentNullException("view");
-		}
-		if (data == null)
-		{
-			throw new ArgumentNullException("data");
-		}
-		if (printInfo == null)
-		{
-			throw new ArgumentNullException("printInfo");
-		}
-		return Runtime.GetNSObject<NSPrintOperation>(Messaging.IntPtr_objc_msgSend_IntPtr_CGRect_IntPtr_IntPtr(class_ptr, selEPSOperationWithView_InsideRect_ToData_PrintInfo_Handle, view.Handle, rect, data.Handle, printInfo.Handle));
-	}
-
-	[Export("EPSOperationWithView:insideRect:toPath:printInfo:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSPrintOperation EpsFromView(NSView view, CGRect rect, string path, NSPrintInfo printInfo)
-	{
-		NSApplication.EnsureUIThread();
-		if (view == null)
-		{
-			throw new ArgumentNullException("view");
-		}
-		if (path == null)
-		{
-			throw new ArgumentNullException("path");
-		}
-		if (printInfo == null)
-		{
-			throw new ArgumentNullException("printInfo");
-		}
-		IntPtr arg = NSString.CreateNative(path);
-		NSPrintOperation nSObject = Runtime.GetNSObject<NSPrintOperation>(Messaging.IntPtr_objc_msgSend_IntPtr_CGRect_IntPtr_IntPtr(class_ptr, selEPSOperationWithView_InsideRect_ToPath_PrintInfo_Handle, view.Handle, rect, arg, printInfo.Handle));
-		NSString.ReleaseNative(arg);
-		return nSObject;
-	}
-
-	[Export("EPSOperationWithView:insideRect:toData:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSPrintOperation EpsFromView(NSView view, CGRect rect, NSMutableData data)
-	{
-		NSApplication.EnsureUIThread();
-		if (view == null)
-		{
-			throw new ArgumentNullException("view");
-		}
-		if (data == null)
-		{
-			throw new ArgumentNullException("data");
-		}
-		return Runtime.GetNSObject<NSPrintOperation>(Messaging.IntPtr_objc_msgSend_IntPtr_CGRect_IntPtr(class_ptr, selEPSOperationWithView_InsideRect_ToData_Handle, view.Handle, rect, data.Handle));
-	}
-
 	[Export("printOperationWithView:printInfo:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSPrintOperation FromView(NSView view, NSPrintInfo printInfo)
 	{
 		NSApplication.EnsureUIThread();
@@ -672,23 +426,10 @@ public class NSPrintOperation : NSObject
 		{
 			throw new ArgumentNullException("printInfo");
 		}
-		return Runtime.GetNSObject<NSPrintOperation>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selPrintOperationWithView_PrintInfo_Handle, view.Handle, printInfo.Handle));
-	}
-
-	[Export("printOperationWithView:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSPrintOperation FromView(NSView view)
-	{
-		NSApplication.EnsureUIThread();
-		if (view == null)
-		{
-			throw new ArgumentNullException("view");
-		}
-		return Runtime.GetNSObject<NSPrintOperation>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selPrintOperationWithView_Handle, view.Handle));
+		return (NSPrintOperation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selPrintOperationWithViewPrintInfo_Handle, view.Handle, printInfo.Handle));
 	}
 
 	[Export("PDFOperationWithView:insideRect:toData:printInfo:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSPrintOperation PdfFromView(NSView view, CGRect rect, NSMutableData data, NSPrintInfo printInfo)
 	{
 		NSApplication.EnsureUIThread();
@@ -704,11 +445,10 @@ public class NSPrintOperation : NSObject
 		{
 			throw new ArgumentNullException("printInfo");
 		}
-		return Runtime.GetNSObject<NSPrintOperation>(Messaging.IntPtr_objc_msgSend_IntPtr_CGRect_IntPtr_IntPtr(class_ptr, selPDFOperationWithView_InsideRect_ToData_PrintInfo_Handle, view.Handle, rect, data.Handle, printInfo.Handle));
+		return (NSPrintOperation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_CGRect_IntPtr_IntPtr(class_ptr, selPDFOperationWithViewInsideRectToDataPrintInfo_Handle, view.Handle, rect, data.Handle, printInfo.Handle));
 	}
 
 	[Export("PDFOperationWithView:insideRect:toPath:printInfo:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSPrintOperation PdfFromView(NSView view, CGRect rect, string path, NSPrintInfo printInfo)
 	{
 		NSApplication.EnsureUIThread();
@@ -725,13 +465,64 @@ public class NSPrintOperation : NSObject
 			throw new ArgumentNullException("printInfo");
 		}
 		IntPtr arg = NSString.CreateNative(path);
-		NSPrintOperation nSObject = Runtime.GetNSObject<NSPrintOperation>(Messaging.IntPtr_objc_msgSend_IntPtr_CGRect_IntPtr_IntPtr(class_ptr, selPDFOperationWithView_InsideRect_ToPath_PrintInfo_Handle, view.Handle, rect, arg, printInfo.Handle));
+		NSPrintOperation result = (NSPrintOperation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_CGRect_IntPtr_IntPtr(class_ptr, selPDFOperationWithViewInsideRectToPathPrintInfo_Handle, view.Handle, rect, arg, printInfo.Handle));
 		NSString.ReleaseNative(arg);
-		return nSObject;
+		return result;
+	}
+
+	[Export("EPSOperationWithView:insideRect:toData:printInfo:")]
+	public static NSPrintOperation EpsFromView(NSView view, CGRect rect, NSMutableData data, NSPrintInfo printInfo)
+	{
+		NSApplication.EnsureUIThread();
+		if (view == null)
+		{
+			throw new ArgumentNullException("view");
+		}
+		if (data == null)
+		{
+			throw new ArgumentNullException("data");
+		}
+		if (printInfo == null)
+		{
+			throw new ArgumentNullException("printInfo");
+		}
+		return (NSPrintOperation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_CGRect_IntPtr_IntPtr(class_ptr, selEPSOperationWithViewInsideRectToDataPrintInfo_Handle, view.Handle, rect, data.Handle, printInfo.Handle));
+	}
+
+	[Export("EPSOperationWithView:insideRect:toPath:printInfo:")]
+	public static NSPrintOperation EpsFromView(NSView view, CGRect rect, string path, NSPrintInfo printInfo)
+	{
+		NSApplication.EnsureUIThread();
+		if (view == null)
+		{
+			throw new ArgumentNullException("view");
+		}
+		if (path == null)
+		{
+			throw new ArgumentNullException("path");
+		}
+		if (printInfo == null)
+		{
+			throw new ArgumentNullException("printInfo");
+		}
+		IntPtr arg = NSString.CreateNative(path);
+		NSPrintOperation result = (NSPrintOperation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_CGRect_IntPtr_IntPtr(class_ptr, selEPSOperationWithViewInsideRectToPathPrintInfo_Handle, view.Handle, rect, arg, printInfo.Handle));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("printOperationWithView:")]
+	public static NSPrintOperation FromView(NSView view)
+	{
+		NSApplication.EnsureUIThread();
+		if (view == null)
+		{
+			throw new ArgumentNullException("view");
+		}
+		return (NSPrintOperation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selPrintOperationWithView_Handle, view.Handle));
 	}
 
 	[Export("PDFOperationWithView:insideRect:toData:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSPrintOperation PdfFromView(NSView view, CGRect rect, NSMutableData data)
 	{
 		NSApplication.EnsureUIThread();
@@ -743,23 +534,25 @@ public class NSPrintOperation : NSObject
 		{
 			throw new ArgumentNullException("data");
 		}
-		return Runtime.GetNSObject<NSPrintOperation>(Messaging.IntPtr_objc_msgSend_IntPtr_CGRect_IntPtr(class_ptr, selPDFOperationWithView_InsideRect_ToData_Handle, view.Handle, rect, data.Handle));
+		return (NSPrintOperation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_CGRect_IntPtr(class_ptr, selPDFOperationWithViewInsideRectToData_Handle, view.Handle, rect, data.Handle));
 	}
 
-	[Export("runOperation")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool RunOperation()
+	[Export("EPSOperationWithView:insideRect:toData:")]
+	public static NSPrintOperation EpsFromView(NSView view, CGRect rect, NSMutableData data)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (view == null)
 		{
-			return Messaging.bool_objc_msgSend(base.Handle, selRunOperationHandle);
+			throw new ArgumentNullException("view");
 		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selRunOperationHandle);
+		if (data == null)
+		{
+			throw new ArgumentNullException("data");
+		}
+		return (NSPrintOperation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_CGRect_IntPtr(class_ptr, selEPSOperationWithViewInsideRectToData_Handle, view.Handle, rect, data.Handle));
 	}
 
 	[Export("runOperationModalForWindow:delegate:didRunSelector:contextInfo:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void RunOperationModal(NSWindow docWindow, NSObject del, Selector didRunSelector, IntPtr contextInfo)
 	{
 		NSApplication.EnsureUIThread();
@@ -775,13 +568,86 @@ public class NSPrintOperation : NSObject
 		{
 			throw new ArgumentNullException("didRunSelector");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selRunOperationModalForWindow_Delegate_DidRunSelector_ContextInfo_Handle, docWindow.Handle, del.Handle, didRunSelector.Handle, contextInfo);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selRunOperationModalForWindowDelegateDidRunSelectorContextInfo_Handle, docWindow.Handle, del.Handle, didRunSelector.Handle, contextInfo);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selRunOperationModalForWindow_Delegate_DidRunSelector_ContextInfo_Handle, docWindow.Handle, del.Handle, didRunSelector.Handle, contextInfo);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selRunOperationModalForWindowDelegateDidRunSelectorContextInfo_Handle, docWindow.Handle, del.Handle, didRunSelector.Handle, contextInfo);
+		}
+	}
+
+	[Export("runOperation")]
+	public virtual bool RunOperation()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selRunOperationHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selRunOperationHandle);
+	}
+
+	[Export("createContext")]
+	public virtual NSGraphicsContext CreateContext()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return (NSGraphicsContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCreateContextHandle));
+		}
+		return (NSGraphicsContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCreateContextHandle));
+	}
+
+	[Export("destroyContext")]
+	public virtual void DestroyContext()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selDestroyContextHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDestroyContextHandle);
+		}
+	}
+
+	[Export("deliverResult")]
+	public virtual bool DeliverResult()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selDeliverResultHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selDeliverResultHandle);
+	}
+
+	[Export("cleanUpOperation")]
+	public virtual void CleanUpOperation()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selCleanUpOperationHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selCleanUpOperationHandle);
+		}
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_View_var = null;
+			__mt_Context_var = null;
+			__mt_PrintPanel_var = null;
+			__mt_PrintInfo_var = null;
 		}
 	}
 }

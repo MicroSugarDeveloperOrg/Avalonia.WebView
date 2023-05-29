@@ -1,13 +1,12 @@
+using System;
 using Foundation;
 using ObjCRuntime;
 
 namespace CoreVideo;
 
-[Watch(4, 0)]
 public class CVPixelBufferPoolAllocationSettings : DictionaryContainer
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ThresholdKey;
+	private static readonly NSString ThresholdKey;
 
 	public int? Threshold
 	{
@@ -21,16 +20,20 @@ public class CVPixelBufferPoolAllocationSettings : DictionaryContainer
 		}
 	}
 
-	[Field("kCVPixelBufferPoolAllocationThresholdKey", "CoreVideo")]
-	internal static NSString ThresholdKey
+	static CVPixelBufferPoolAllocationSettings()
 	{
-		get
+		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/CoreVideo.framework/CoreVideo", 0);
+		if (intPtr == IntPtr.Zero)
 		{
-			if (_ThresholdKey == null)
-			{
-				_ThresholdKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVPixelBufferPoolAllocationThresholdKey");
-			}
-			return _ThresholdKey;
+			return;
+		}
+		try
+		{
+			ThresholdKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelBufferPoolAllocationThresholdKey");
+		}
+		finally
+		{
+			Dlfcn.dlclose(intPtr);
 		}
 	}
 

@@ -1,8 +1,10 @@
 using System;
 using Foundation;
+using ObjCRuntime;
 
 namespace CoreText;
 
+[Since(3, 2)]
 public class CTFontTraits
 {
 	internal const int ClassMaskShift = 28;
@@ -28,7 +30,11 @@ public class CTFontTraits
 		get
 		{
 			uint? symbolic = Symbolic;
-			return (!symbolic.HasValue) ? null : new CTFontSymbolicTraits?((CTFontSymbolicTraits)(symbolic.Value & 0xFFFFFFFu));
+			if (symbolic.HasValue)
+			{
+				return (CTFontSymbolicTraits)(symbolic.Value & 0xFFFFFFFu);
+			}
+			return null;
 		}
 		set
 		{
@@ -42,7 +48,11 @@ public class CTFontTraits
 		get
 		{
 			uint? symbolic = Symbolic;
-			return (!symbolic.HasValue) ? null : new CTFontStylisticClass?((CTFontStylisticClass)(symbolic.Value & 0xF0000000u));
+			if (symbolic.HasValue)
+			{
+				return (CTFontStylisticClass)(symbolic.Value & 0xF0000000u);
+			}
+			return null;
 		}
 		set
 		{

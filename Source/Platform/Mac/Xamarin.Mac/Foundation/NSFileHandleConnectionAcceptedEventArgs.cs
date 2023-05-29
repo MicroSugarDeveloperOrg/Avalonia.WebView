@@ -1,14 +1,12 @@
+using System;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 
 public class NSFileHandleConnectionAcceptedEventArgs : NSNotificationEventArgs
 {
-	[Field("NSFileHandleNotificationFileHandleItem", "Foundation")]
 	private static IntPtr k0;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSFileHandle NearSocketConnection
 	{
 		get
@@ -17,26 +15,30 @@ public class NSFileHandleConnectionAcceptedEventArgs : NSNotificationEventArgs
 			{
 				k0 = Dlfcn.GetIntPtr(Libraries.Foundation.Handle, "NSFileHandleNotificationFileHandleItem");
 			}
-			IntPtr ptr = base.Notification.UserInfo?.LowlevelObjectForKey(k0) ?? IntPtr.Zero;
-			return Runtime.GetNSObject<NSFileHandle>(ptr);
+			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k0);
+			if (intPtr == IntPtr.Zero)
+			{
+				return null;
+			}
+			return (NSFileHandle)Runtime.GetNSObject(intPtr);
 		}
 	}
 
-	public nint UnixErrorCode
+	public int UnixErrorCode
 	{
 		get
 		{
 			IntPtr intPtr;
 			using (NSString nSString = new NSString("NSFileHandleError"))
 			{
-				intPtr = base.Notification.UserInfo?.LowlevelObjectForKey(nSString.Handle) ?? IntPtr.Zero;
+				intPtr = base.Notification.UserInfo.LowlevelObjectForKey(nSString.Handle);
 			}
 			if (intPtr == IntPtr.Zero)
 			{
-				return default(nint);
+				return 0;
 			}
-			using NSNumber nSNumber = Runtime.GetNSObject<NSNumber>(intPtr);
-			return nSNumber.NIntValue;
+			using NSNumber nSNumber = new NSNumber(intPtr);
+			return nSNumber.Int32Value;
 		}
 	}
 

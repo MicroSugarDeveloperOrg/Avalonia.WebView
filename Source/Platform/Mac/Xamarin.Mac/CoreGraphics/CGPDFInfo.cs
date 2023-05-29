@@ -7,6 +7,26 @@ namespace CoreGraphics;
 
 public class CGPDFInfo : CGPDFPageInfo
 {
+	private static IntPtr kCGPDFContextTitle;
+
+	private static IntPtr kCGPDFContextAuthor;
+
+	private static IntPtr kCGPDFContextSubject;
+
+	private static IntPtr kCGPDFContextKeywords;
+
+	private static IntPtr kCGPDFContextCreator;
+
+	private static IntPtr kCGPDFContextOwnerPassword;
+
+	private static IntPtr kCGPDFContextUserPassword;
+
+	private static IntPtr kCGPDFContextEncryptionKeyLength;
+
+	private static IntPtr kCGPDFContextAllowsPrinting;
+
+	private static IntPtr kCGPDFContextAllowsCopying;
+
 	public string Title { get; set; }
 
 	public string Author { get; set; }
@@ -27,54 +47,27 @@ public class CGPDFInfo : CGPDFPageInfo
 
 	public bool? AllowsCopying { get; set; }
 
-	public CGPDFAccessPermissions? AccessPermissions { get; set; }
-
-	[Field("kCGPDFContextAccessPermissions", "CoreGraphics")]
-	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.WatchOS, 4, 0, PlatformArchitecture.All, null)]
-	internal static IntPtr kCGPDFContextAccessPermissions
+	static CGPDFInfo()
 	{
-		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.WatchOS, 4, 0, PlatformArchitecture.All, null)]
-		get
+		IntPtr handle = Dlfcn.dlopen("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics", 0);
+		try
 		{
-			return Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextAccessPermissions");
+			kCGPDFContextTitle = Dlfcn.GetIntPtr(handle, "kCGPDFContextTitle");
+			kCGPDFContextAuthor = Dlfcn.GetIntPtr(handle, "kCGPDFContextAuthor");
+			kCGPDFContextSubject = Dlfcn.GetIntPtr(handle, "kCGPDFContextSubject");
+			kCGPDFContextKeywords = Dlfcn.GetIntPtr(handle, "kCGPDFContextKeywords");
+			kCGPDFContextCreator = Dlfcn.GetIntPtr(handle, "kCGPDFContextCreator");
+			kCGPDFContextOwnerPassword = Dlfcn.GetIntPtr(handle, "kCGPDFContextOwnerPassword");
+			kCGPDFContextUserPassword = Dlfcn.GetIntPtr(handle, "kCGPDFContextUserPassword");
+			kCGPDFContextEncryptionKeyLength = Dlfcn.GetIntPtr(handle, "kCGPDFContextEncryptionKeyLength");
+			kCGPDFContextAllowsPrinting = Dlfcn.GetIntPtr(handle, "kCGPDFContextAllowsPrinting");
+			kCGPDFContextAllowsCopying = Dlfcn.GetIntPtr(handle, "kCGPDFContextAllowsCopying");
+		}
+		finally
+		{
+			Dlfcn.dlclose(handle);
 		}
 	}
-
-	[Field("kCGPDFContextAllowsCopying", "CoreGraphics")]
-	internal static IntPtr kCGPDFContextAllowsCopying => Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextAllowsCopying");
-
-	[Field("kCGPDFContextAllowsPrinting", "CoreGraphics")]
-	internal static IntPtr kCGPDFContextAllowsPrinting => Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextAllowsPrinting");
-
-	[Field("kCGPDFContextAuthor", "CoreGraphics")]
-	internal static IntPtr kCGPDFContextAuthor => Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextAuthor");
-
-	[Field("kCGPDFContextCreator", "CoreGraphics")]
-	internal static IntPtr kCGPDFContextCreator => Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextCreator");
-
-	[Field("kCGPDFContextEncryptionKeyLength", "CoreGraphics")]
-	internal static IntPtr kCGPDFContextEncryptionKeyLength => Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextEncryptionKeyLength");
-
-	[Field("kCGPDFContextKeywords", "CoreGraphics")]
-	internal static IntPtr kCGPDFContextKeywords => Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextKeywords");
-
-	[Field("kCGPDFContextOwnerPassword", "CoreGraphics")]
-	internal static IntPtr kCGPDFContextOwnerPassword => Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextOwnerPassword");
-
-	[Field("kCGPDFContextSubject", "CoreGraphics")]
-	internal static IntPtr kCGPDFContextSubject => Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextSubject");
-
-	[Field("kCGPDFContextTitle", "CoreGraphics")]
-	internal static IntPtr kCGPDFContextTitle => Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextTitle");
-
-	[Field("kCGPDFContextUserPassword", "CoreGraphics")]
-	internal static IntPtr kCGPDFContextUserPassword => Dlfcn.GetIntPtr(Libraries.CoreGraphics.Handle, "kCGPDFContextUserPassword");
 
 	internal override NSMutableDictionary ToDictionary()
 	{
@@ -120,15 +113,11 @@ public class CGPDFInfo : CGPDFPageInfo
 		}
 		if (AllowsPrinting.HasValue && !AllowsPrinting.Value)
 		{
-			nSMutableDictionary.LowlevelSetObject(CFBoolean.FalseHandle, kCGPDFContextAllowsPrinting);
+			nSMutableDictionary.LowlevelSetObject(CFBoolean.False.Handle, kCGPDFContextAllowsPrinting);
 		}
 		if (AllowsCopying.HasValue && !AllowsCopying.Value)
 		{
-			nSMutableDictionary.LowlevelSetObject(CFBoolean.FalseHandle, kCGPDFContextAllowsCopying);
-		}
-		if (AccessPermissions.HasValue)
-		{
-			nSMutableDictionary.LowlevelSetObject(NSNumber.FromInt32((int)AccessPermissions.Value), kCGPDFContextAccessPermissions);
+			nSMutableDictionary.LowlevelSetObject(CFBoolean.False.Handle, kCGPDFContextAllowsCopying);
 		}
 		return nSMutableDictionary;
 	}

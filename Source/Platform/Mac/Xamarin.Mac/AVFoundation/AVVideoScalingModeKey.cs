@@ -3,20 +3,15 @@ using ObjCRuntime;
 
 namespace AVFoundation;
 
-[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
 public static class AVVideoScalingModeKey
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Fit;
+	private static NSString _Fit;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Resize;
+	private static NSString _Resize;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ResizeAspect;
+	private static NSString _ResizeAspect;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ResizeAspectFill;
+	private static NSString _ResizeAspectFill;
 
 	[Field("AVVideoScalingModeFit", "AVFoundation")]
 	public static NSString Fit

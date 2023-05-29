@@ -6,70 +6,34 @@ using ObjCRuntime;
 namespace CoreAnimation;
 
 [Register("CAConstraint", true)]
-public class CAConstraint : NSObject, INSCoding, INativeObject, IDisposable, INSSecureCoding
+public class CAConstraint : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAttribute = "attribute";
-
 	private static readonly IntPtr selAttributeHandle = Selector.GetHandle("attribute");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selConstraintWithAttribute_RelativeTo_Attribute_ = "constraintWithAttribute:relativeTo:attribute:";
-
-	private static readonly IntPtr selConstraintWithAttribute_RelativeTo_Attribute_Handle = Selector.GetHandle("constraintWithAttribute:relativeTo:attribute:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selConstraintWithAttribute_RelativeTo_Attribute_Offset_ = "constraintWithAttribute:relativeTo:attribute:offset:";
-
-	private static readonly IntPtr selConstraintWithAttribute_RelativeTo_Attribute_Offset_Handle = Selector.GetHandle("constraintWithAttribute:relativeTo:attribute:offset:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selConstraintWithAttribute_RelativeTo_Attribute_Scale_Offset_ = "constraintWithAttribute:relativeTo:attribute:scale:offset:";
-
-	private static readonly IntPtr selConstraintWithAttribute_RelativeTo_Attribute_Scale_Offset_Handle = Selector.GetHandle("constraintWithAttribute:relativeTo:attribute:scale:offset:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithAttribute_RelativeTo_Attribute_Scale_Offset_ = "initWithAttribute:relativeTo:attribute:scale:offset:";
-
-	private static readonly IntPtr selInitWithAttribute_RelativeTo_Attribute_Scale_Offset_Handle = Selector.GetHandle("initWithAttribute:relativeTo:attribute:scale:offset:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
-
-	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selScale = "scale";
-
-	private static readonly IntPtr selScaleHandle = Selector.GetHandle("scale");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSourceAttribute = "sourceAttribute";
-
-	private static readonly IntPtr selSourceAttributeHandle = Selector.GetHandle("sourceAttribute");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSourceName = "sourceName";
 
 	private static readonly IntPtr selSourceNameHandle = Selector.GetHandle("sourceName");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("CAConstraint");
+	private static readonly IntPtr selSourceAttributeHandle = Selector.GetHandle("sourceAttribute");
+
+	private static readonly IntPtr selScaleHandle = Selector.GetHandle("scale");
+
+	private static readonly IntPtr selConstraintWithAttributeRelativeToAttributeScaleOffset_Handle = Selector.GetHandle("constraintWithAttribute:relativeTo:attribute:scale:offset:");
+
+	private static readonly IntPtr selConstraintWithAttributeRelativeToAttributeOffset_Handle = Selector.GetHandle("constraintWithAttribute:relativeTo:attribute:offset:");
+
+	private static readonly IntPtr selConstraintWithAttributeRelativeToAttribute_Handle = Selector.GetHandle("constraintWithAttribute:relativeTo:attribute:");
+
+	private static readonly IntPtr selInitWithAttributeRelativeToAttributeScaleOffset_Handle = Selector.GetHandle("initWithAttribute:relativeTo:attribute:scale:offset:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("CAConstraint");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CAConstraintAttribute Attribute
 	{
 		[Export("attribute")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (CAConstraintAttribute)Messaging.int_objc_msgSend(base.Handle, selAttributeHandle);
 			}
@@ -77,41 +41,12 @@ public class CAConstraint : NSObject, INSCoding, INativeObject, IDisposable, INS
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nfloat Scale
-	{
-		[Export("scale")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selScaleHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selScaleHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CAConstraintAttribute SourceAttribute
-	{
-		[Export("sourceAttribute")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return (CAConstraintAttribute)Messaging.int_objc_msgSend(base.Handle, selSourceAttributeHandle);
-			}
-			return (CAConstraintAttribute)Messaging.int_objc_msgSendSuper(base.SuperHandle, selSourceAttributeHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string SourceName
 	{
 		[Export("sourceName")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSourceNameHandle));
 			}
@@ -119,104 +54,101 @@ public class CAConstraint : NSObject, INSCoding, INativeObject, IDisposable, INS
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CAConstraintAttribute SourceAttribute
+	{
+		[Export("sourceAttribute")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return (CAConstraintAttribute)Messaging.int_objc_msgSend(base.Handle, selSourceAttributeHandle);
+			}
+			return (CAConstraintAttribute)Messaging.int_objc_msgSendSuper(base.SuperHandle, selSourceAttributeHandle);
+		}
+	}
+
+	public virtual float Scale
+	{
+		[Export("scale")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.float_objc_msgSend(base.Handle, selScaleHandle);
+			}
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selScaleHandle);
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public CAConstraint()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public CAConstraint(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected CAConstraint(NSObjectFlag t)
+	public CAConstraint(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal CAConstraint(IntPtr handle)
+	public CAConstraint(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("initWithAttribute:relativeTo:attribute:scale:offset:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public CAConstraint(CAConstraintAttribute attribute, string relativeToSource, CAConstraintAttribute srcAttr, nfloat scale, nfloat offset)
-		: base(NSObjectFlag.Empty)
-	{
-		if (relativeToSource == null)
-		{
-			throw new ArgumentNullException("relativeToSource");
-		}
-		IntPtr arg = NSString.CreateNative(relativeToSource);
-		if (base.IsDirectBinding)
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_int_IntPtr_int_nfloat_nfloat(base.Handle, selInitWithAttribute_RelativeTo_Attribute_Scale_Offset_Handle, (int)attribute, arg, (int)srcAttr, scale, offset), "initWithAttribute:relativeTo:attribute:scale:offset:");
-		}
-		else
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_int_IntPtr_int_nfloat_nfloat(base.SuperHandle, selInitWithAttribute_RelativeTo_Attribute_Scale_Offset_Handle, (int)attribute, arg, (int)srcAttr, scale, offset), "initWithAttribute:relativeTo:attribute:scale:offset:");
-		}
-		NSString.ReleaseNative(arg);
-	}
-
 	[Export("constraintWithAttribute:relativeTo:attribute:scale:offset:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static CAConstraint Create(CAConstraintAttribute attribute, string relativeToSource, CAConstraintAttribute srcAttr, nfloat scale, nfloat offset)
+	public static CAConstraint Create(CAConstraintAttribute attribute, string relativeToSource, CAConstraintAttribute srcAttr, float scale, float offset)
 	{
 		if (relativeToSource == null)
 		{
 			throw new ArgumentNullException("relativeToSource");
 		}
 		IntPtr arg = NSString.CreateNative(relativeToSource);
-		CAConstraint nSObject = Runtime.GetNSObject<CAConstraint>(Messaging.IntPtr_objc_msgSend_int_IntPtr_int_nfloat_nfloat(class_ptr, selConstraintWithAttribute_RelativeTo_Attribute_Scale_Offset_Handle, (int)attribute, arg, (int)srcAttr, scale, offset));
+		CAConstraint result = (CAConstraint)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_int_IntPtr_int_float_float(class_ptr, selConstraintWithAttributeRelativeToAttributeScaleOffset_Handle, (int)attribute, arg, (int)srcAttr, scale, offset));
 		NSString.ReleaseNative(arg);
-		return nSObject;
+		return result;
 	}
 
 	[Export("constraintWithAttribute:relativeTo:attribute:offset:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static CAConstraint Create(CAConstraintAttribute attribute, string relativeToSource, CAConstraintAttribute srcAttr, nfloat offset)
+	public static CAConstraint Create(CAConstraintAttribute attribute, string relativeToSource, CAConstraintAttribute srcAttr, float offset)
 	{
 		if (relativeToSource == null)
 		{
 			throw new ArgumentNullException("relativeToSource");
 		}
 		IntPtr arg = NSString.CreateNative(relativeToSource);
-		CAConstraint nSObject = Runtime.GetNSObject<CAConstraint>(Messaging.IntPtr_objc_msgSend_int_IntPtr_int_nfloat(class_ptr, selConstraintWithAttribute_RelativeTo_Attribute_Offset_Handle, (int)attribute, arg, (int)srcAttr, offset));
+		CAConstraint result = (CAConstraint)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_int_IntPtr_int_float(class_ptr, selConstraintWithAttributeRelativeToAttributeOffset_Handle, (int)attribute, arg, (int)srcAttr, offset));
 		NSString.ReleaseNative(arg);
-		return nSObject;
+		return result;
 	}
 
 	[Export("constraintWithAttribute:relativeTo:attribute:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static CAConstraint Create(CAConstraintAttribute attribute, string relativeToSource, CAConstraintAttribute srcAttribute)
 	{
 		if (relativeToSource == null)
@@ -224,26 +156,28 @@ public class CAConstraint : NSObject, INSCoding, INativeObject, IDisposable, INS
 			throw new ArgumentNullException("relativeToSource");
 		}
 		IntPtr arg = NSString.CreateNative(relativeToSource);
-		CAConstraint nSObject = Runtime.GetNSObject<CAConstraint>(Messaging.IntPtr_objc_msgSend_int_IntPtr_int(class_ptr, selConstraintWithAttribute_RelativeTo_Attribute_Handle, (int)attribute, arg, (int)srcAttribute));
+		CAConstraint result = (CAConstraint)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_int_IntPtr_int(class_ptr, selConstraintWithAttributeRelativeToAttribute_Handle, (int)attribute, arg, (int)srcAttribute));
 		NSString.ReleaseNative(arg);
-		return nSObject;
+		return result;
 	}
 
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
+	[Export("initWithAttribute:relativeTo:attribute:scale:offset:")]
+	public CAConstraint(CAConstraintAttribute attribute, string relativeToSource, CAConstraintAttribute srcAttr, float scale, float offset)
+		: base(NSObjectFlag.Empty)
 	{
-		if (encoder == null)
+		if (relativeToSource == null)
 		{
-			throw new ArgumentNullException("encoder");
+			throw new ArgumentNullException("relativeToSource");
 		}
-		if (base.IsDirectBinding)
+		IntPtr arg = NSString.CreateNative(relativeToSource);
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
+			base.Handle = Messaging.IntPtr_objc_msgSend_int_IntPtr_int_float_float(base.Handle, selInitWithAttributeRelativeToAttributeScaleOffset_Handle, (int)attribute, arg, (int)srcAttr, scale, offset);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_int_IntPtr_int_float_float(base.SuperHandle, selInitWithAttributeRelativeToAttributeScaleOffset_Handle, (int)attribute, arg, (int)srcAttr, scale, offset);
 		}
+		NSString.ReleaseNative(arg);
 	}
 }

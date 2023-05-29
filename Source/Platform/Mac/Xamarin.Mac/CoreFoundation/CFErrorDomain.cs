@@ -16,10 +16,21 @@ public static class CFErrorDomain
 
 	static CFErrorDomain()
 	{
-		IntPtr handle = Libraries.CoreFoundation.Handle;
-		Cocoa = Dlfcn.GetStringConstant(handle, "kCFErrorDomainCocoa");
-		Mach = Dlfcn.GetStringConstant(handle, "kCFErrorDomainMach");
-		OSStatus = Dlfcn.GetStringConstant(handle, "kCFErrorDomainOSStatus");
-		Posix = Dlfcn.GetStringConstant(handle, "kCFErrorDomainPosix");
+		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", 0);
+		if (intPtr == IntPtr.Zero)
+		{
+			return;
+		}
+		try
+		{
+			Cocoa = Dlfcn.GetStringConstant(intPtr, "kCFErrorDomainCocoa");
+			Mach = Dlfcn.GetStringConstant(intPtr, "kCFErrorDomainMach");
+			OSStatus = Dlfcn.GetStringConstant(intPtr, "kCFErrorDomainOSStatus");
+			Posix = Dlfcn.GetStringConstant(intPtr, "kCFErrorDomainPosix");
+		}
+		finally
+		{
+			Dlfcn.dlclose(intPtr);
+		}
 	}
 }

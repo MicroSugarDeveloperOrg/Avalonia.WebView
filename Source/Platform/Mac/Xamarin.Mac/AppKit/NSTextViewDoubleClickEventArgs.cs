@@ -1,5 +1,5 @@
+using System;
 using CoreGraphics;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
@@ -9,9 +9,9 @@ public class NSTextViewDoubleClickEventArgs : EventArgs
 
 	public CGRect CellFrame { get; set; }
 
-	public nuint CharIndex { get; set; }
+	public ulong CharIndex { get; set; }
 
-	public NSTextViewDoubleClickEventArgs(NSTextAttachmentCell cell, CGRect cellFrame, nuint charIndex)
+	public NSTextViewDoubleClickEventArgs(NSTextAttachmentCell cell, CGRect cellFrame, ulong charIndex)
 	{
 		Cell = cell;
 		CellFrame = cellFrame;

@@ -1,7 +1,6 @@
+using System;
 using System.Runtime.InteropServices;
-using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreFoundation;
 
@@ -17,6 +16,16 @@ public class CFAllocator : INativeObject, IDisposable
 
 	private static CFAllocator Null_cf;
 
+	private static readonly IntPtr default_ptr;
+
+	private static readonly IntPtr system_default_ptr;
+
+	private static readonly IntPtr malloc_ptr;
+
+	private static readonly IntPtr malloc_zone_ptr;
+
+	internal static readonly IntPtr null_ptr;
+
 	private IntPtr handle;
 
 	public IntPtr Handle => handle;
@@ -31,20 +40,22 @@ public class CFAllocator : INativeObject, IDisposable
 
 	public static CFAllocator Null => Null_cf ?? (Null_cf = new CFAllocator(null_ptr));
 
-	[Field("kCFAllocatorDefault", "CoreFoundation")]
-	internal static IntPtr default_ptr => Dlfcn.GetIntPtr(Libraries.CoreFoundation.Handle, "kCFAllocatorDefault");
-
-	[Field("kCFAllocatorMalloc", "CoreFoundation")]
-	internal static IntPtr malloc_ptr => Dlfcn.GetIntPtr(Libraries.CoreFoundation.Handle, "kCFAllocatorMalloc");
-
-	[Field("kCFAllocatorMallocZone", "CoreFoundation")]
-	internal static IntPtr malloc_zone_ptr => Dlfcn.GetIntPtr(Libraries.CoreFoundation.Handle, "kCFAllocatorMallocZone");
-
-	[Field("kCFAllocatorNull", "CoreFoundation")]
-	internal static IntPtr null_ptr => Dlfcn.GetIntPtr(Libraries.CoreFoundation.Handle, "kCFAllocatorNull");
-
-	[Field("kCFAllocatorSystemDefault", "CoreFoundation")]
-	internal static IntPtr system_default_ptr => Dlfcn.GetIntPtr(Libraries.CoreFoundation.Handle, "kCFAllocatorSystemDefault");
+	static CFAllocator()
+	{
+		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", 0);
+		try
+		{
+			default_ptr = Dlfcn.GetIntPtr(intPtr, "kCFAllocatorDefault");
+			system_default_ptr = Dlfcn.GetIntPtr(intPtr, "kCFAllocatorSystemDefault");
+			malloc_ptr = Dlfcn.GetIntPtr(intPtr, "kCFAllocatorMalloc");
+			malloc_zone_ptr = Dlfcn.GetIntPtr(intPtr, "kCFAllocatorMallocZone");
+			null_ptr = Dlfcn.GetIntPtr(intPtr, "kCFAllocatorNull");
+		}
+		finally
+		{
+			Dlfcn.dlclose(intPtr);
+		}
+	}
 
 	public CFAllocator(IntPtr handle)
 	{
@@ -81,11 +92,11 @@ public class CFAllocator : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFAllocatorAllocate(IntPtr allocator, nint size, nuint hint);
+	private static extern IntPtr CFAllocatorAllocate(IntPtr allocator, long size, CFAllocatorFlags hint);
 
-	public IntPtr Allocate(long size)
+	public IntPtr Allocate(long size, CFAllocatorFlags hint = (CFAllocatorFlags)0uL)
 	{
-		return CFAllocatorAllocate(handle, (nint)size, (byte)0);
+		return CFAllocatorAllocate(handle, size, hint);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
@@ -95,7 +106,4 @@ public class CFAllocator : INativeObject, IDisposable
 	{
 		CFAllocatorDeallocate(handle, ptr);
 	}
-
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFAllocatorGetTypeID")]
-	public static extern nint GetTypeID();
 }

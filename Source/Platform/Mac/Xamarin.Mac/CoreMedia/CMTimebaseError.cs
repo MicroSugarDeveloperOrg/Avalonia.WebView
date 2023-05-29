@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace CoreMedia;
 
-[Watch(6, 0)]
 public enum CMTimebaseError
 {
 	None = 0,

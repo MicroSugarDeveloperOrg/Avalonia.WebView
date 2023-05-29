@@ -7,36 +7,24 @@ using ObjCRuntime;
 namespace PdfKit;
 
 [Register("PDFAnnotationCircle", true)]
-[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-[Deprecated(PlatformName.MacOSX, 10, 12, PlatformArchitecture.None, null)]
 public class PdfAnnotationCircle : PdfAnnotation
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInteriorColor = "interiorColor";
-
 	private static readonly IntPtr selInteriorColorHandle = Selector.GetHandle("interiorColor");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetInteriorColor_ = "setInteriorColor:";
 
 	private static readonly IntPtr selSetInteriorColor_Handle = Selector.GetHandle("setInteriorColor:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("PDFAnnotationCircle");
+	private static readonly IntPtr class_ptr = Class.GetHandle("PDFAnnotationCircle");
+
+	private object __mt_InteriorColor_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public new virtual NSColor InteriorColor
+	public virtual NSColor InteriorColor
 	{
 		[Export("interiorColor")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selInteriorColorHandle));
-			}
-			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInteriorColorHandle));
+			return (NSColor)(__mt_InteriorColor_var = ((!IsDirectBinding) ? ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInteriorColorHandle))) : ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selInteriorColorHandle)))));
 		}
 		[Export("setInteriorColor:")]
 		set
@@ -45,7 +33,7 @@ public class PdfAnnotationCircle : PdfAnnotation
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetInteriorColor_Handle, value.Handle);
 			}
@@ -53,53 +41,58 @@ public class PdfAnnotationCircle : PdfAnnotation
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetInteriorColor_Handle, value.Handle);
 			}
+			__mt_InteriorColor_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public PdfAnnotationCircle()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public PdfAnnotationCircle(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected PdfAnnotationCircle(NSObjectFlag t)
+	public PdfAnnotationCircle(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal PdfAnnotationCircle(IntPtr handle)
+	public PdfAnnotationCircle(IntPtr handle)
 		: base(handle)
 	{
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_InteriorColor_var = null;
+		}
 	}
 }

@@ -1,7 +1,7 @@
+using System;
 using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreFoundation;
 
@@ -9,23 +9,11 @@ internal class CFArray : INativeObject, IDisposable
 {
 	internal IntPtr handle;
 
-	private static IntPtr kCFTypeArrayCallbacks_ptr_value;
+	private static readonly IntPtr kCFTypeArrayCallbacks_ptr;
 
 	public IntPtr Handle => handle;
 
-	private static IntPtr kCFTypeArrayCallbacks_ptr
-	{
-		get
-		{
-			if (kCFTypeArrayCallbacks_ptr_value == IntPtr.Zero)
-			{
-				kCFTypeArrayCallbacks_ptr_value = Dlfcn.GetIndirect(Libraries.CoreFoundation.Handle, "kCFTypeArrayCallBacks");
-			}
-			return kCFTypeArrayCallbacks_ptr_value;
-		}
-	}
-
-	public nint Count => CFArrayGetCount(handle);
+	public int Count => CFArrayGetCount(handle);
 
 	internal CFArray(IntPtr handle)
 		: this(handle, owns: false)
@@ -47,7 +35,7 @@ internal class CFArray : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFArrayGetTypeID")]
-	public static extern nint GetTypeID();
+	public static extern int GetTypeID();
 
 	~CFArray()
 	{
@@ -69,6 +57,23 @@ internal class CFArray : INativeObject, IDisposable
 		}
 	}
 
+	static CFArray()
+	{
+		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", 0);
+		if (intPtr == IntPtr.Zero)
+		{
+			return;
+		}
+		try
+		{
+			kCFTypeArrayCallbacks_ptr = Dlfcn.GetIndirect(intPtr, "kCFTypeArrayCallBacks");
+		}
+		finally
+		{
+			Dlfcn.dlclose(intPtr);
+		}
+	}
+
 	public static CFArray FromIntPtrs(params IntPtr[] values)
 	{
 		return new CFArray(Create(values), owns: true);
@@ -80,14 +85,14 @@ internal class CFArray : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFArrayCreate(IntPtr allocator, IntPtr values, nint numValues, IntPtr callBacks);
+	private static extern IntPtr CFArrayCreate(IntPtr allocator, IntPtr values, CFIndex numValues, IntPtr callbacks);
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	internal static extern IntPtr CFArrayGetValueAtIndex(IntPtr theArray, nint idx);
+	private static extern IntPtr CFArrayGetValueAtIndex(IntPtr theArray, IntPtr index);
 
-	public IntPtr GetValue(nint index)
+	public IntPtr GetValue(int index)
 	{
-		return CFArrayGetValueAtIndex(handle, index);
+		return CFArrayGetValueAtIndex(handle, new IntPtr(index));
 	}
 
 	public unsafe static IntPtr Create(params IntPtr[] values)
@@ -117,18 +122,10 @@ internal class CFArray : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern nint CFArrayGetCount(IntPtr theArray);
+	private static extern CFIndex CFArrayGetCount(IntPtr theArray);
 
-	public static nint GetCount(IntPtr array)
+	public static int GetCount(IntPtr array)
 	{
 		return CFArrayGetCount(array);
-	}
-
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFArrayCreateCopy(IntPtr allocator, IntPtr theArray);
-
-	public CFArray Clone()
-	{
-		return new CFArray(CFArrayCreateCopy(IntPtr.Zero, Handle), owns: true);
 	}
 }

@@ -1,9 +1,8 @@
+using System;
 using System.Runtime.InteropServices;
 using CoreFoundation;
-using CoreText;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreGraphics;
 
@@ -13,13 +12,27 @@ public class CGFont : INativeObject, IDisposable
 
 	public IntPtr Handle => handle;
 
-	public nint NumberOfGlyphs => CGFontGetNumberOfGlyphs(handle);
+	public int NumberOfGlyphs => CGFontGetNumberOfGlyphs(handle);
 
 	public int UnitsPerEm => CGFontGetUnitsPerEm(handle);
 
-	public string PostScriptName => CFString.FetchString(CGFontCopyPostScriptName(handle), releaseHandle: true);
+	public string PostScriptName
+	{
+		get
+		{
+			using CFString cFString = new CFString(CGFontCopyPostScriptName(handle), owns: true);
+			return cFString;
+		}
+	}
 
-	public string FullName => CFString.FetchString(CGFontCopyFullName(handle), releaseHandle: true);
+	public string FullName
+	{
+		get
+		{
+			using CFString cFString = new CFString(CGFontCopyFullName(handle), owns: true);
+			return cFString;
+		}
+	}
 
 	public int Ascent => CGFontGetAscent(handle);
 
@@ -33,9 +46,9 @@ public class CGFont : INativeObject, IDisposable
 
 	public CGRect FontBBox => CGFontGetFontBBox(handle);
 
-	public nfloat ItalicAngle => CGFontGetItalicAngle(handle);
+	public double ItalicAngle => CGFontGetItalicAngle(handle);
 
-	public nfloat StemV => CGFontGetStemV(handle);
+	public double StemV => CGFontGetStemV(handle);
 
 	[Preserve(Conditional = true)]
 	internal CGFont(IntPtr handle, bool owns)
@@ -66,7 +79,7 @@ public class CGFont : INativeObject, IDisposable
 	private static extern IntPtr CGFontRetain(IntPtr font);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGFontRelease(IntPtr font);
+	private static extern void CGFontRelease(IntPtr handle);
 
 	protected virtual void Dispose(bool disposing)
 	{
@@ -84,26 +97,22 @@ public class CGFont : INativeObject, IDisposable
 	{
 		if (provider == null)
 		{
-			return null;
+			throw new ArgumentNullException("provider");
 		}
 		return new CGFont(CGFontCreateWithDataProvider(provider.Handle), owns: true);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGFontCreateWithFontName(IntPtr name);
+	private static extern IntPtr CGFontCreateWithFontName(IntPtr CFStringRef_name);
 
 	public static CGFont CreateWithFontName(string name)
 	{
-		if (name == null)
-		{
-			return null;
-		}
 		using CFString cFString = (CFString)name;
-		return new CGFont(CGFontCreateWithFontName(cFString.Handle), owns: true);
+		return new CGFont(CGFontCreateWithFontName(cFString.handle), owns: true);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern nint CGFontGetNumberOfGlyphs(IntPtr font);
+	private static extern int CGFontGetNumberOfGlyphs(IntPtr font);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
 	private static extern int CGFontGetUnitsPerEm(IntPtr font);
@@ -133,18 +142,18 @@ public class CGFont : INativeObject, IDisposable
 	private static extern CGRect CGFontGetFontBBox(IntPtr font);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern nfloat CGFontGetItalicAngle(IntPtr font);
+	private static extern double CGFontGetItalicAngle(IntPtr font);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern nfloat CGFontGetStemV(IntPtr font);
+	private static extern double CGFontGetStemV(IntPtr font);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern ushort CGFontGetGlyphWithGlyphName(IntPtr font, IntPtr name);
+	private static extern ushort CGFontGetGlyphWithGlyphName(IntPtr font, IntPtr CFStringRef_name);
 
 	public ushort GetGlyphWithGlyphName(string s)
 	{
 		using CFString cFString = new CFString(s);
-		return CGFontGetGlyphWithGlyphName(handle, cFString.Handle);
+		return CGFontGetGlyphWithGlyphName(handle, cFString.handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -152,22 +161,10 @@ public class CGFont : INativeObject, IDisposable
 
 	public string GlyphNameForGlyph(ushort glyph)
 	{
-		return CFString.FetchString(CGFontCopyGlyphNameForGlyph(handle, glyph), releaseHandle: true);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private unsafe static extern IntPtr CTFontCreateWithGraphicsFont(IntPtr graphicsFont, nfloat size, CGAffineTransform* matrix, IntPtr attributes);
-
-	public unsafe CTFont ToCTFont(nfloat size)
-	{
-		return new CTFont(CTFontCreateWithGraphicsFont(handle, size, null, IntPtr.Zero), owns: true);
-	}
-
-	public unsafe CTFont ToCTFont(nfloat size, CGAffineTransform matrix)
-	{
-		return new CTFont(CTFontCreateWithGraphicsFont(handle, size, &matrix, IntPtr.Zero), owns: true);
+		using CFString cFString = new CFString(CGFontCopyGlyphNameForGlyph(handle, glyph), owns: true);
+		return cFString;
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText", EntryPoint = "CGFontGetTypeID")]
-	public static extern nint GetTypeID();
+	public static extern int GetTypeID();
 }

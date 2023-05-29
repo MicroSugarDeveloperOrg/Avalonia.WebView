@@ -7,6 +7,14 @@ namespace ImageIO;
 
 public class CGImageThumbnailOptions : CGImageOptions
 {
+	private static IntPtr kCreateThumbnailFromImageIfAbsent;
+
+	private static IntPtr kCreateThumbnailFromImageAlways;
+
+	private static IntPtr kThumbnailMaxPixelSize;
+
+	private static IntPtr kCreateThumbnailWithTransform;
+
 	public bool CreateThumbnailFromImageIfAbsent { get; set; }
 
 	public bool CreateThumbnailFromImageAlways { get; set; }
@@ -15,46 +23,30 @@ public class CGImageThumbnailOptions : CGImageOptions
 
 	public bool CreateThumbnailWithTransform { get; set; }
 
-	[iOS(9, 0)]
-	[Mac(10, 11)]
-	public int? SubsampleFactor { get; set; }
-
-	[Field("kCGImageSourceSubsampleFactor", "ImageIO")]
-	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	internal static IntPtr kCGImageSourceSubsampleFactor
+	private static void Init()
 	{
-		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-		get
+		if (!(kCreateThumbnailWithTransform != IntPtr.Zero))
 		{
-			return Dlfcn.GetIntPtr(Libraries.ImageIO.Handle, "kCGImageSourceSubsampleFactor");
+			IntPtr handle = Libraries.ImageIO.Handle;
+			kCreateThumbnailFromImageIfAbsent = Dlfcn.GetIntPtr(handle, "kCGImageSourceCreateThumbnailFromImageIfAbsent");
+			kCreateThumbnailFromImageAlways = Dlfcn.GetIntPtr(handle, "kCGImageSourceCreateThumbnailFromImageAlways");
+			kThumbnailMaxPixelSize = Dlfcn.GetIntPtr(handle, "kCGImageSourceThumbnailMaxPixelSize");
+			kCreateThumbnailWithTransform = Dlfcn.GetIntPtr(handle, "kCGImageSourceCreateThumbnailWithTransform");
 		}
 	}
 
-	[Field("kCGImageSourceCreateThumbnailFromImageAlways", "ImageIO")]
-	internal static IntPtr kCreateThumbnailFromImageAlways => Dlfcn.GetIntPtr(Libraries.ImageIO.Handle, "kCGImageSourceCreateThumbnailFromImageAlways");
-
-	[Field("kCGImageSourceCreateThumbnailFromImageIfAbsent", "ImageIO")]
-	internal static IntPtr kCreateThumbnailFromImageIfAbsent => Dlfcn.GetIntPtr(Libraries.ImageIO.Handle, "kCGImageSourceCreateThumbnailFromImageIfAbsent");
-
-	[Field("kCGImageSourceCreateThumbnailWithTransform", "ImageIO")]
-	internal static IntPtr kCreateThumbnailWithTransform => Dlfcn.GetIntPtr(Libraries.ImageIO.Handle, "kCGImageSourceCreateThumbnailWithTransform");
-
-	[Field("kCGImageSourceThumbnailMaxPixelSize", "ImageIO")]
-	internal static IntPtr kThumbnailMaxPixelSize => Dlfcn.GetIntPtr(Libraries.ImageIO.Handle, "kCGImageSourceThumbnailMaxPixelSize");
-
 	internal override NSMutableDictionary ToDictionary()
 	{
+		Init();
 		NSMutableDictionary nSMutableDictionary = base.ToDictionary();
-		IntPtr trueHandle = CFBoolean.TrueHandle;
+		IntPtr handle = CFBoolean.True.Handle;
 		if (CreateThumbnailFromImageIfAbsent)
 		{
-			nSMutableDictionary.LowlevelSetObject(trueHandle, kCreateThumbnailFromImageIfAbsent);
+			nSMutableDictionary.LowlevelSetObject(handle, kCreateThumbnailFromImageIfAbsent);
 		}
 		if (CreateThumbnailFromImageAlways)
 		{
-			nSMutableDictionary.LowlevelSetObject(trueHandle, kCreateThumbnailFromImageAlways);
+			nSMutableDictionary.LowlevelSetObject(handle, kCreateThumbnailFromImageAlways);
 		}
 		if (MaxPixelSize.HasValue)
 		{
@@ -62,11 +54,7 @@ public class CGImageThumbnailOptions : CGImageOptions
 		}
 		if (CreateThumbnailWithTransform)
 		{
-			nSMutableDictionary.LowlevelSetObject(trueHandle, kCreateThumbnailWithTransform);
-		}
-		if (SubsampleFactor.HasValue)
-		{
-			nSMutableDictionary.LowlevelSetObject(new NSNumber(SubsampleFactor.Value), kCGImageSourceSubsampleFactor);
+			nSMutableDictionary.LowlevelSetObject(handle, kCreateThumbnailWithTransform);
 		}
 		return nSMutableDictionary;
 	}

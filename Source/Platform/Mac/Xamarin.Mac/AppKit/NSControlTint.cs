@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace AppKit;
 
-[Native]
 public enum NSControlTint : ulong
 {
 	Default = 0uL,

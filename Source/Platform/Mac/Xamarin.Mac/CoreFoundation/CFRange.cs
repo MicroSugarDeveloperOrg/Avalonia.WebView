@@ -1,20 +1,20 @@
-using Xamarin.Mac.System.Mac;
+using System;
 
 namespace CoreFoundation;
 
 public struct CFRange
 {
-	private nint loc;
+	private IntPtr loc;
 
-	private nint len;
+	private IntPtr len;
 
-	public int Location => (int)loc;
+	public int Location => loc.ToInt32();
 
-	public int Length => (int)len;
+	public int Length => len.ToInt32();
 
-	public long LongLocation => loc;
+	public long LongLocation => loc.ToInt64();
 
-	public long LongLength => len;
+	public long LongLength => len.ToInt64();
 
 	public CFRange(int loc, int len)
 		: this((long)loc, (long)len)
@@ -23,14 +23,8 @@ public struct CFRange
 
 	public CFRange(long l, long len)
 	{
-		loc = (nint)l;
-		this.len = (nint)len;
-	}
-
-	public CFRange(nint l, nint len)
-	{
-		loc = l;
-		this.len = len;
+		loc = new IntPtr(l);
+		this.len = new IntPtr(len);
 	}
 
 	public override string ToString()

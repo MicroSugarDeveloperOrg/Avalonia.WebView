@@ -1,10 +1,10 @@
-using Xamarin.Mac.System.Mac;
+using System;
 
 namespace CoreFoundation;
 
 internal struct CFRunLoopSourceContext
 {
-	public nint Version;
+	public CFIndex Version;
 
 	public IntPtr Info;
 

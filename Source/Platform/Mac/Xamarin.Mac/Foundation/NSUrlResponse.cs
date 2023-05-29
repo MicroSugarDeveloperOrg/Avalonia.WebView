@@ -1,83 +1,45 @@
+using System;
 using System.ComponentModel;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 
 [Register("NSURLResponse", true)]
-public class NSUrlResponse : NSObject, INSCoding, INativeObject, IDisposable, INSCopying, INSSecureCoding
+public class NSUrlResponse : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMIMEType = "MIMEType";
+	private static readonly IntPtr selURLHandle = Selector.GetHandle("URL");
 
 	private static readonly IntPtr selMIMETypeHandle = Selector.GetHandle("MIMEType");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selURL = "URL";
-
-	private static readonly IntPtr selURLHandle = Selector.GetHandle("URL");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCopyWithZone_ = "copyWithZone:";
-
-	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpectedContentLength = "expectedContentLength";
-
 	private static readonly IntPtr selExpectedContentLengthHandle = Selector.GetHandle("expectedContentLength");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
-
-	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithURL_MIMEType_ExpectedContentLength_TextEncodingName_ = "initWithURL:MIMEType:expectedContentLength:textEncodingName:";
-
-	private static readonly IntPtr selInitWithURL_MIMEType_ExpectedContentLength_TextEncodingName_Handle = Selector.GetHandle("initWithURL:MIMEType:expectedContentLength:textEncodingName:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSuggestedFilename = "suggestedFilename";
-
-	private static readonly IntPtr selSuggestedFilenameHandle = Selector.GetHandle("suggestedFilename");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTextEncodingName = "textEncodingName";
 
 	private static readonly IntPtr selTextEncodingNameHandle = Selector.GetHandle("textEncodingName");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSURLResponse");
+	private static readonly IntPtr selSuggestedFilenameHandle = Selector.GetHandle("suggestedFilename");
+
+	private static readonly IntPtr selInitWithURLMIMETypeExpectedContentLengthTextEncodingName_Handle = Selector.GetHandle("initWithURL:MIMEType:expectedContentLength:textEncodingName:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSURLResponse");
+
+	private object __mt_Url_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual long ExpectedContentLength
+	public virtual NSUrl Url
 	{
-		[Export("expectedContentLength")]
+		[Export("URL")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.Int64_objc_msgSend(base.Handle, selExpectedContentLengthHandle);
-			}
-			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selExpectedContentLengthHandle);
+			return (NSUrl)(__mt_Url_var = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selURLHandle))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selURLHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string MimeType
 	{
 		[Export("MIMEType")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMIMETypeHandle));
 			}
@@ -85,27 +47,25 @@ public class NSUrlResponse : NSObject, INSCoding, INativeObject, IDisposable, IN
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string SuggestedFilename
+	public virtual long ExpectedContentLength
 	{
-		[Export("suggestedFilename")]
+		[Export("expectedContentLength")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSuggestedFilenameHandle));
+				return Messaging.Int64_objc_msgSend(base.Handle, selExpectedContentLengthHandle);
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSuggestedFilenameHandle));
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selExpectedContentLengthHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string TextEncodingName
 	{
 		[Export("textEncodingName")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selTextEncodingNameHandle));
 			}
@@ -113,71 +73,63 @@ public class NSUrlResponse : NSObject, INSCoding, INativeObject, IDisposable, IN
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSUrl Url
+	public virtual string SuggestedFilename
 	{
-		[Export("URL")]
+		[Export("suggestedFilename")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selURLHandle));
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSuggestedFilenameHandle));
 			}
-			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selURLHandle));
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSuggestedFilenameHandle));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSUrlResponse()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSUrlResponse(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSUrlResponse(NSObjectFlag t)
+	public NSUrlResponse(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSUrlResponse(IntPtr handle)
+	public NSUrlResponse(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithURL:MIMEType:expectedContentLength:textEncodingName:")]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public NSUrlResponse(NSUrl url, string mimetype, nint expectedContentLength, string? textEncodingName)
+	public NSUrlResponse(NSUrl url, string mimetype, long expectedContentLength, string textEncodingName)
 		: base(NSObjectFlag.Empty)
 	{
 		if (url == null)
@@ -190,46 +142,24 @@ public class NSUrlResponse : NSObject, INSCoding, INativeObject, IDisposable, IN
 		}
 		IntPtr arg = NSString.CreateNative(mimetype);
 		IntPtr arg2 = NSString.CreateNative(textEncodingName);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_nint_IntPtr(base.Handle, selInitWithURL_MIMEType_ExpectedContentLength_TextEncodingName_Handle, url.Handle, arg, expectedContentLength, arg2), "initWithURL:MIMEType:expectedContentLength:textEncodingName:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_Int64_IntPtr(base.Handle, selInitWithURLMIMETypeExpectedContentLengthTextEncodingName_Handle, url.Handle, arg, expectedContentLength, arg2);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_nint_IntPtr(base.SuperHandle, selInitWithURL_MIMEType_ExpectedContentLength_TextEncodingName_Handle, url.Handle, arg, expectedContentLength, arg2), "initWithURL:MIMEType:expectedContentLength:textEncodingName:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_Int64_IntPtr(base.SuperHandle, selInitWithURLMIMETypeExpectedContentLengthTextEncodingName_Handle, url.Handle, arg, expectedContentLength, arg2);
 		}
 		NSString.ReleaseNative(arg);
 		NSString.ReleaseNative(arg2);
 	}
 
-	[Export("copyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject Copy(NSZone? zone)
+	protected override void Dispose(bool disposing)
 	{
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
-		}
-		return nSObject;
-	}
-
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
-	{
-		if (encoder == null)
-		{
-			throw new ArgumentNullException("encoder");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
+			__mt_Url_var = null;
 		}
 	}
 }

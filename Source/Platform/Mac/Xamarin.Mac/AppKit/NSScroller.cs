@@ -13,202 +13,134 @@ public class NSScroller : NSControl
 	{
 		public static NSObject ObservePreferredStyleChanged(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
 			return NSNotificationCenter.DefaultCenter.AddObserver(PreferredStyleChangedNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
-		}
-
-		public static NSObject ObservePreferredStyleChanged(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(PreferredStyleChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selArrowsPosition = "arrowsPosition";
-
-	private static readonly IntPtr selArrowsPositionHandle = Selector.GetHandle("arrowsPosition");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCheckSpaceForParts = "checkSpaceForParts";
-
-	private static readonly IntPtr selCheckSpaceForPartsHandle = Selector.GetHandle("checkSpaceForParts");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selControlSize = "controlSize";
-
-	private static readonly IntPtr selControlSizeHandle = Selector.GetHandle("controlSize");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selControlTint = "controlTint";
-
-	private static readonly IntPtr selControlTintHandle = Selector.GetHandle("controlTint");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDrawArrow_Highlight_ = "drawArrow:highlight:";
-
-	private static readonly IntPtr selDrawArrow_Highlight_Handle = Selector.GetHandle("drawArrow:highlight:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDrawKnob = "drawKnob";
-
-	private static readonly IntPtr selDrawKnobHandle = Selector.GetHandle("drawKnob");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDrawKnobSlotInRect_Highlight_ = "drawKnobSlotInRect:highlight:";
-
-	private static readonly IntPtr selDrawKnobSlotInRect_Highlight_Handle = Selector.GetHandle("drawKnobSlotInRect:highlight:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDrawParts = "drawParts";
-
-	private static readonly IntPtr selDrawPartsHandle = Selector.GetHandle("drawParts");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHighlight_ = "highlight:";
-
-	private static readonly IntPtr selHighlight_Handle = Selector.GetHandle("highlight:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHitPart = "hitPart";
-
-	private static readonly IntPtr selHitPartHandle = Selector.GetHandle("hitPart");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithFrame_ = "initWithFrame:";
-
-	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsCompatibleWithOverlayScrollers = "isCompatibleWithOverlayScrollers";
-
-	private static readonly IntPtr selIsCompatibleWithOverlayScrollersHandle = Selector.GetHandle("isCompatibleWithOverlayScrollers");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selKnobProportion = "knobProportion";
-
-	private static readonly IntPtr selKnobProportionHandle = Selector.GetHandle("knobProportion");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selKnobStyle = "knobStyle";
-
-	private static readonly IntPtr selKnobStyleHandle = Selector.GetHandle("knobStyle");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPreferredScrollerStyle = "preferredScrollerStyle";
-
-	private static readonly IntPtr selPreferredScrollerStyleHandle = Selector.GetHandle("preferredScrollerStyle");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRectForPart_ = "rectForPart:";
-
-	private static readonly IntPtr selRectForPart_Handle = Selector.GetHandle("rectForPart:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selScrollerStyle = "scrollerStyle";
-
-	private static readonly IntPtr selScrollerStyleHandle = Selector.GetHandle("scrollerStyle");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selScrollerWidth = "scrollerWidth";
-
 	private static readonly IntPtr selScrollerWidthHandle = Selector.GetHandle("scrollerWidth");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selScrollerWidthForControlSize_ = "scrollerWidthForControlSize:";
-
-	private static readonly IntPtr selScrollerWidthForControlSize_Handle = Selector.GetHandle("scrollerWidthForControlSize:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selScrollerWidthForControlSize_ScrollerStyle_ = "scrollerWidthForControlSize:scrollerStyle:";
-
-	private static readonly IntPtr selScrollerWidthForControlSize_ScrollerStyle_Handle = Selector.GetHandle("scrollerWidthForControlSize:scrollerStyle:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetArrowsPosition_ = "setArrowsPosition:";
-
-	private static readonly IntPtr selSetArrowsPosition_Handle = Selector.GetHandle("setArrowsPosition:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetControlSize_ = "setControlSize:";
-
-	private static readonly IntPtr selSetControlSize_Handle = Selector.GetHandle("setControlSize:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetControlTint_ = "setControlTint:";
-
-	private static readonly IntPtr selSetControlTint_Handle = Selector.GetHandle("setControlTint:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetKnobProportion_ = "setKnobProportion:";
-
-	private static readonly IntPtr selSetKnobProportion_Handle = Selector.GetHandle("setKnobProportion:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetKnobStyle_ = "setKnobStyle:";
-
-	private static readonly IntPtr selSetKnobStyle_Handle = Selector.GetHandle("setKnobStyle:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetScrollerStyle_ = "setScrollerStyle:";
-
-	private static readonly IntPtr selSetScrollerStyle_Handle = Selector.GetHandle("setScrollerStyle:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTestPart_ = "testPart:";
-
-	private static readonly IntPtr selTestPart_Handle = Selector.GetHandle("testPart:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTrackKnob_ = "trackKnob:";
-
-	private static readonly IntPtr selTrackKnob_Handle = Selector.GetHandle("trackKnob:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTrackScrollButtons_ = "trackScrollButtons:";
-
-	private static readonly IntPtr selTrackScrollButtons_Handle = Selector.GetHandle("trackScrollButtons:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUsableParts = "usableParts";
 
 	private static readonly IntPtr selUsablePartsHandle = Selector.GetHandle("usableParts");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSScroller");
+	private static readonly IntPtr selHitPartHandle = Selector.GetHandle("hitPart");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _PreferredStyleChangedNotification;
+	private static readonly IntPtr selArrowsPositionHandle = Selector.GetHandle("arrowsPosition");
+
+	private static readonly IntPtr selSetArrowsPosition_Handle = Selector.GetHandle("setArrowsPosition:");
+
+	private static readonly IntPtr selControlTintHandle = Selector.GetHandle("controlTint");
+
+	private static readonly IntPtr selSetControlTint_Handle = Selector.GetHandle("setControlTint:");
+
+	private static readonly IntPtr selControlSizeHandle = Selector.GetHandle("controlSize");
+
+	private static readonly IntPtr selSetControlSize_Handle = Selector.GetHandle("setControlSize:");
+
+	private static readonly IntPtr selKnobProportionHandle = Selector.GetHandle("knobProportion");
+
+	private static readonly IntPtr selSetKnobProportion_Handle = Selector.GetHandle("setKnobProportion:");
+
+	private static readonly IntPtr selIsCompatibleWithOverlayScrollersHandle = Selector.GetHandle("isCompatibleWithOverlayScrollers");
+
+	private static readonly IntPtr selKnobStyleHandle = Selector.GetHandle("knobStyle");
+
+	private static readonly IntPtr selSetKnobStyle_Handle = Selector.GetHandle("setKnobStyle:");
+
+	private static readonly IntPtr selPreferredScrollerStyleHandle = Selector.GetHandle("preferredScrollerStyle");
+
+	private static readonly IntPtr selScrollerStyleHandle = Selector.GetHandle("scrollerStyle");
+
+	private static readonly IntPtr selSetScrollerStyle_Handle = Selector.GetHandle("setScrollerStyle:");
+
+	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
+
+	private static readonly IntPtr selScrollerWidthForControlSize_Handle = Selector.GetHandle("scrollerWidthForControlSize:");
+
+	private static readonly IntPtr selDrawPartsHandle = Selector.GetHandle("drawParts");
+
+	private static readonly IntPtr selRectForPart_Handle = Selector.GetHandle("rectForPart:");
+
+	private static readonly IntPtr selCheckSpaceForPartsHandle = Selector.GetHandle("checkSpaceForParts");
+
+	private static readonly IntPtr selDrawArrowHighlight_Handle = Selector.GetHandle("drawArrow:highlight:");
+
+	private static readonly IntPtr selDrawKnobHandle = Selector.GetHandle("drawKnob");
+
+	private static readonly IntPtr selDrawKnobSlotInRectHighlight_Handle = Selector.GetHandle("drawKnobSlotInRect:highlight:");
+
+	private static readonly IntPtr selHighlight_Handle = Selector.GetHandle("highlight:");
+
+	private static readonly IntPtr selTestPart_Handle = Selector.GetHandle("testPart:");
+
+	private static readonly IntPtr selTrackKnob_Handle = Selector.GetHandle("trackKnob:");
+
+	private static readonly IntPtr selTrackScrollButtons_Handle = Selector.GetHandle("trackScrollButtons:");
+
+	private static readonly IntPtr selScrollerWidthForControlSizeScrollerStyle_Handle = Selector.GetHandle("scrollerWidthForControlSize:scrollerStyle:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSScroller");
+
+	private static NSString _PreferredStyleChangedNotification;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No effect since 10.7.")]
+	public static double ScrollerWidth
+	{
+		[Export("scrollerWidth")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return Messaging.Double_objc_msgSend(class_ptr, selScrollerWidthHandle);
+		}
+	}
+
+	public virtual NSUsableScrollerParts UsableParts
+	{
+		[Export("usableParts")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return (NSUsableScrollerParts)Messaging.UInt64_objc_msgSend(base.Handle, selUsablePartsHandle);
+			}
+			return (NSUsableScrollerParts)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selUsablePartsHandle);
+		}
+	}
+
+	public virtual NSScrollerPart HitPart
+	{
+		[Export("hitPart")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return (NSScrollerPart)Messaging.UInt64_objc_msgSend(base.Handle, selHitPartHandle);
+			}
+			return (NSScrollerPart)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selHitPartHandle);
+		}
+	}
+
 	public virtual NSScrollArrowPosition ArrowsPosition
 	{
-		[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No effect since 10.7.")]
 		[Export("arrowsPosition")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (NSScrollArrowPosition)Messaging.UInt64_objc_msgSend(base.Handle, selArrowsPositionHandle);
 			}
 			return (NSScrollArrowPosition)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selArrowsPositionHandle);
 		}
-		[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No effect since 10.7.")]
 		[Export("setArrowsPosition:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetArrowsPosition_Handle, (ulong)value);
 			}
@@ -219,66 +151,23 @@ public class NSScroller : NSControl
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static bool CompatibleWithOverlayScrollers
-	{
-		[Export("isCompatibleWithOverlayScrollers")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return Messaging.bool_objc_msgSend(class_ptr, selIsCompatibleWithOverlayScrollersHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public new virtual NSControlSize ControlSize
-	{
-		[Export("controlSize")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSControlSize)Messaging.UInt64_objc_msgSend(base.Handle, selControlSizeHandle);
-			}
-			return (NSControlSize)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selControlSizeHandle);
-		}
-		[Export("setControlSize:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetControlSize_Handle, (ulong)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetControlSize_Handle, (ulong)value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No effect since 10.7.")]
 	public virtual NSControlTint ControlTint
 	{
-		[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No effect since 10.7.")]
 		[Export("controlTint")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (NSControlTint)Messaging.UInt64_objc_msgSend(base.Handle, selControlTintHandle);
 			}
 			return (NSControlTint)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selControlTintHandle);
 		}
-		[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No effect since 10.7.")]
 		[Export("setControlTint:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetControlTint_Handle, (ulong)value);
 			}
@@ -289,57 +178,77 @@ public class NSScroller : NSControl
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSScrollerPart HitPart
+	public virtual NSControlSize ControlSize
 	{
-		[Export("hitPart")]
+		[Export("controlSize")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return (NSScrollerPart)Messaging.UInt64_objc_msgSend(base.Handle, selHitPartHandle);
+				return (NSControlSize)Messaging.UInt64_objc_msgSend(base.Handle, selControlSizeHandle);
 			}
-			return (NSScrollerPart)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selHitPartHandle);
+			return (NSControlSize)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selControlSizeHandle);
+		}
+		[Export("setControlSize:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetControlSize_Handle, (ulong)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetControlSize_Handle, (ulong)value);
+			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nfloat KnobProportion
+	public virtual double KnobProportion
 	{
 		[Export("knobProportion")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selKnobProportionHandle);
+				return Messaging.Double_objc_msgSend(base.Handle, selKnobProportionHandle);
 			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selKnobProportionHandle);
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selKnobProportionHandle);
 		}
 		[Export("setKnobProportion:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetKnobProportion_Handle, value);
+				Messaging.void_objc_msgSend_Double(base.Handle, selSetKnobProportion_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetKnobProportion_Handle, value);
+				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetKnobProportion_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static bool CompatibleWithOverlayScrollers
+	{
+		[Export("isCompatibleWithOverlayScrollers")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return Messaging.bool_objc_msgSend(class_ptr, selIsCompatibleWithOverlayScrollersHandle);
+		}
+	}
+
 	public virtual NSScrollerKnobStyle KnobStyle
 	{
 		[Export("knobStyle")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (NSScrollerKnobStyle)Messaging.Int64_objc_msgSend(base.Handle, selKnobStyleHandle);
 			}
@@ -349,7 +258,7 @@ public class NSScroller : NSControl
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_Int64(base.Handle, selSetKnobStyle_Handle, (long)value);
 			}
@@ -360,7 +269,6 @@ public class NSScroller : NSControl
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSScrollerStyle PreferredScrollerStyle
 	{
 		[Export("preferredScrollerStyle")]
@@ -371,14 +279,13 @@ public class NSScroller : NSControl
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSScrollerStyle ScrollerStyle
 	{
 		[Export("scrollerStyle")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (NSScrollerStyle)Messaging.Int64_objc_msgSend(base.Handle, selScrollerStyleHandle);
 			}
@@ -388,7 +295,7 @@ public class NSScroller : NSControl
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_Int64(base.Handle, selSetScrollerStyle_Handle, (long)value);
 			}
@@ -399,36 +306,7 @@ public class NSScroller : NSControl
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, "Use GetScrollerWidth instead.")]
-	public static nfloat ScrollerWidth
-	{
-		[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, "Use GetScrollerWidth instead.")]
-		[Export("scrollerWidth")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return Messaging.nfloat_objc_msgSend(class_ptr, selScrollerWidthHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSUsableScrollerParts UsableParts
-	{
-		[Export("usableParts")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSUsableScrollerParts)Messaging.UInt64_objc_msgSend(base.Handle, selUsablePartsHandle);
-			}
-			return (NSUsableScrollerParts)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selUsablePartsHandle);
-		}
-	}
-
 	[Field("NSPreferredScrollerStyleDidChangeNotification", "AppKit")]
-	[Advice("Use NSScroller.Notifications.ObservePreferredStyleChanged helper method instead.")]
 	public static NSString PreferredStyleChangedNotification
 	{
 		get
@@ -441,139 +319,76 @@ public class NSScroller : NSControl
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSScroller()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSScroller(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSScroller(NSObjectFlag t)
+	public NSScroller(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSScroller(IntPtr handle)
+	public NSScroller(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithFrame:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSScroller(CGRect frameRect)
 		: base(NSObjectFlag.Empty)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect);
 		}
 	}
 
-	[Export("checkSpaceForParts")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void CheckSpaceForParts()
+	[Export("scrollerWidthForControlSize:")]
+	public static double ScrollerWidthForControlSize(NSControlSize controlSize)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selCheckSpaceForPartsHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selCheckSpaceForPartsHandle);
-		}
-	}
-
-	[Export("drawArrow:highlight:")]
-	[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.None, "Scrollers don't have arrows anymore.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DrawArrow(NSScrollerArrow whichArrow, bool highlight)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_UInt64_bool(base.Handle, selDrawArrow_Highlight_Handle, (ulong)whichArrow, highlight);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_UInt64_bool(base.SuperHandle, selDrawArrow_Highlight_Handle, (ulong)whichArrow, highlight);
-		}
-	}
-
-	[Export("drawKnob")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DrawKnob()
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selDrawKnobHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDrawKnobHandle);
-		}
-	}
-
-	[Export("drawKnobSlotInRect:highlight:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DrawKnobSlot(CGRect slotRect, bool highlight)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGRect_bool(base.Handle, selDrawKnobSlotInRect_Highlight_Handle, slotRect, highlight);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGRect_bool(base.SuperHandle, selDrawKnobSlotInRect_Highlight_Handle, slotRect, highlight);
-		}
+		return Messaging.Double_objc_msgSend_UInt64(class_ptr, selScrollerWidthForControlSize_Handle, (ulong)controlSize);
 	}
 
 	[Export("drawParts")]
-	[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.None, "Not used.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Obsolete("", false)]
 	public virtual void DrawParts()
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selDrawPartsHandle);
 		}
@@ -583,37 +398,12 @@ public class NSScroller : NSControl
 		}
 	}
 
-	[Export("scrollerWidthForControlSize:scrollerStyle:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static nfloat GetScrollerWidth(NSControlSize forControlSize, NSScrollerStyle scrollerStyle)
-	{
-		NSApplication.EnsureUIThread();
-		return Messaging.nfloat_objc_msgSend_UInt64_Int64(class_ptr, selScrollerWidthForControlSize_ScrollerStyle_Handle, (ulong)forControlSize, (long)scrollerStyle);
-	}
-
-	[Export("highlight:")]
-	[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No effect since 10.7.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void Highlight(bool flag)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_bool(base.Handle, selHighlight_Handle, flag);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selHighlight_Handle, flag);
-		}
-	}
-
 	[Export("rectForPart:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGRect RectForPart(NSScrollerPart partCode)
 	{
 		NSApplication.EnsureUIThread();
 		CGRect retval;
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.CGRect_objc_msgSend_stret_UInt64(out retval, base.Handle, selRectForPart_Handle, (ulong)partCode);
 		}
@@ -624,21 +414,81 @@ public class NSScroller : NSControl
 		return retval;
 	}
 
-	[Export("scrollerWidthForControlSize:")]
-	[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, "Use GetScrollerWidth instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static nfloat ScrollerWidthForControlSize(NSControlSize controlSize)
+	[Export("checkSpaceForParts")]
+	public virtual void CheckSpaceForParts()
 	{
 		NSApplication.EnsureUIThread();
-		return Messaging.nfloat_objc_msgSend_UInt64(class_ptr, selScrollerWidthForControlSize_Handle, (ulong)controlSize);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selCheckSpaceForPartsHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selCheckSpaceForPartsHandle);
+		}
+	}
+
+	[Export("drawArrow:highlight:")]
+	public virtual void DrawArrow(NSScrollerArrow whichArrow, bool highlight)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_UInt64_bool(base.Handle, selDrawArrowHighlight_Handle, (ulong)whichArrow, highlight);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_UInt64_bool(base.SuperHandle, selDrawArrowHighlight_Handle, (ulong)whichArrow, highlight);
+		}
+	}
+
+	[Export("drawKnob")]
+	public virtual void DrawKnob()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selDrawKnobHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDrawKnobHandle);
+		}
+	}
+
+	[Export("drawKnobSlotInRect:highlight:")]
+	public virtual void DrawKnobSlot(CGRect slotRect, bool highlight)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGRect_bool(base.Handle, selDrawKnobSlotInRectHighlight_Handle, slotRect, highlight);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGRect_bool(base.SuperHandle, selDrawKnobSlotInRectHighlight_Handle, slotRect, highlight);
+		}
+	}
+
+	[Export("highlight:")]
+	public virtual void Highlight(bool flag)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_bool(base.Handle, selHighlight_Handle, flag);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selHighlight_Handle, flag);
+		}
 	}
 
 	[Export("testPart:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSScrollerPart TestPart(CGPoint thePoint)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return (NSScrollerPart)Messaging.UInt64_objc_msgSend_CGPoint(base.Handle, selTestPart_Handle, thePoint);
 		}
@@ -646,7 +496,6 @@ public class NSScroller : NSControl
 	}
 
 	[Export("trackKnob:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void TrackKnob(NSEvent theEvent)
 	{
 		NSApplication.EnsureUIThread();
@@ -654,7 +503,7 @@ public class NSScroller : NSControl
 		{
 			throw new ArgumentNullException("theEvent");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selTrackKnob_Handle, theEvent.Handle);
 		}
@@ -665,8 +514,6 @@ public class NSScroller : NSControl
 	}
 
 	[Export("trackScrollButtons:")]
-	[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No effect since 10.7.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void TrackScrollButtons(NSEvent theEvent)
 	{
 		NSApplication.EnsureUIThread();
@@ -674,7 +521,7 @@ public class NSScroller : NSControl
 		{
 			throw new ArgumentNullException("theEvent");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selTrackScrollButtons_Handle, theEvent.Handle);
 		}
@@ -682,5 +529,12 @@ public class NSScroller : NSControl
 		{
 			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selTrackScrollButtons_Handle, theEvent.Handle);
 		}
+	}
+
+	[Export("scrollerWidthForControlSize:scrollerStyle:")]
+	public static double GetScrollerWidth(NSControlSize forControlSize, NSScrollerStyle scrollerStyle)
+	{
+		NSApplication.EnsureUIThread();
+		return Messaging.Double_objc_msgSend_UInt64_Int64(class_ptr, selScrollerWidthForControlSizeScrollerStyle_Handle, (ulong)forControlSize, (long)scrollerStyle);
 	}
 }

@@ -11,134 +11,62 @@ public class NSUbiquitousKeyValueStore : NSObject
 	{
 		public static NSObject ObserveDidChangeExternally(EventHandler<NSUbiquitousKeyValueStoreChangeEventArgs> handler)
 		{
-			EventHandler<NSUbiquitousKeyValueStoreChangeEventArgs> handler2 = handler;
 			return NSNotificationCenter.DefaultCenter.AddObserver(DidChangeExternallyNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSUbiquitousKeyValueStoreChangeEventArgs(notification));
+				handler(null, new NSUbiquitousKeyValueStoreChangeEventArgs(notification));
 			});
-		}
-
-		public static NSObject ObserveDidChangeExternally(NSObject objectToObserve, EventHandler<NSUbiquitousKeyValueStoreChangeEventArgs> handler)
-		{
-			EventHandler<NSUbiquitousKeyValueStoreChangeEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DidChangeExternallyNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSUbiquitousKeyValueStoreChangeEventArgs(notification));
-			}, objectToObserve);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selArrayForKey_ = "arrayForKey:";
-
-	private static readonly IntPtr selArrayForKey_Handle = Selector.GetHandle("arrayForKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selBoolForKey_ = "boolForKey:";
-
-	private static readonly IntPtr selBoolForKey_Handle = Selector.GetHandle("boolForKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDataForKey_ = "dataForKey:";
-
-	private static readonly IntPtr selDataForKey_Handle = Selector.GetHandle("dataForKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDefaultStore = "defaultStore";
-
 	private static readonly IntPtr selDefaultStoreHandle = Selector.GetHandle("defaultStore");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDictionaryForKey_ = "dictionaryForKey:";
-
-	private static readonly IntPtr selDictionaryForKey_Handle = Selector.GetHandle("dictionaryForKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDictionaryRepresentation = "dictionaryRepresentation";
-
-	private static readonly IntPtr selDictionaryRepresentationHandle = Selector.GetHandle("dictionaryRepresentation");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDoubleForKey_ = "doubleForKey:";
-
-	private static readonly IntPtr selDoubleForKey_Handle = Selector.GetHandle("doubleForKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLongLongForKey_ = "longLongForKey:";
-
-	private static readonly IntPtr selLongLongForKey_Handle = Selector.GetHandle("longLongForKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selObjectForKey_ = "objectForKey:";
 
 	private static readonly IntPtr selObjectForKey_Handle = Selector.GetHandle("objectForKey:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveObjectForKey_ = "removeObjectForKey:";
+	private static readonly IntPtr selSetObjectForKey_Handle = Selector.GetHandle("setObject:forKey:");
 
 	private static readonly IntPtr selRemoveObjectForKey_Handle = Selector.GetHandle("removeObjectForKey:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetArray_ForKey_ = "setArray:forKey:";
-
-	private static readonly IntPtr selSetArray_ForKey_Handle = Selector.GetHandle("setArray:forKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetBool_ForKey_ = "setBool:forKey:";
-
-	private static readonly IntPtr selSetBool_ForKey_Handle = Selector.GetHandle("setBool:forKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetData_ForKey_ = "setData:forKey:";
-
-	private static readonly IntPtr selSetData_ForKey_Handle = Selector.GetHandle("setData:forKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDictionary_ForKey_ = "setDictionary:forKey:";
-
-	private static readonly IntPtr selSetDictionary_ForKey_Handle = Selector.GetHandle("setDictionary:forKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDouble_ForKey_ = "setDouble:forKey:";
-
-	private static readonly IntPtr selSetDouble_ForKey_Handle = Selector.GetHandle("setDouble:forKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetLongLong_ForKey_ = "setLongLong:forKey:";
-
-	private static readonly IntPtr selSetLongLong_ForKey_Handle = Selector.GetHandle("setLongLong:forKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetObject_ForKey_ = "setObject:forKey:";
-
-	private static readonly IntPtr selSetObject_ForKey_Handle = Selector.GetHandle("setObject:forKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetString_ForKey_ = "setString:forKey:";
-
-	private static readonly IntPtr selSetString_ForKey_Handle = Selector.GetHandle("setString:forKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStringForKey_ = "stringForKey:";
-
 	private static readonly IntPtr selStringForKey_Handle = Selector.GetHandle("stringForKey:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSynchronize = "synchronize";
+	private static readonly IntPtr selArrayForKey_Handle = Selector.GetHandle("arrayForKey:");
+
+	private static readonly IntPtr selDictionaryForKey_Handle = Selector.GetHandle("dictionaryForKey:");
+
+	private static readonly IntPtr selDataForKey_Handle = Selector.GetHandle("dataForKey:");
+
+	private static readonly IntPtr selLongLongForKey_Handle = Selector.GetHandle("longLongForKey:");
+
+	private static readonly IntPtr selDoubleForKey_Handle = Selector.GetHandle("doubleForKey:");
+
+	private static readonly IntPtr selBoolForKey_Handle = Selector.GetHandle("boolForKey:");
+
+	private static readonly IntPtr selSetStringForKey_Handle = Selector.GetHandle("setString:forKey:");
+
+	private static readonly IntPtr selSetDataForKey_Handle = Selector.GetHandle("setData:forKey:");
+
+	private static readonly IntPtr selSetArrayForKey_Handle = Selector.GetHandle("setArray:forKey:");
+
+	private static readonly IntPtr selSetDictionaryForKey_Handle = Selector.GetHandle("setDictionary:forKey:");
+
+	private static readonly IntPtr selSetLongLongForKey_Handle = Selector.GetHandle("setLongLong:forKey:");
+
+	private static readonly IntPtr selSetDoubleForKey_Handle = Selector.GetHandle("setDouble:forKey:");
+
+	private static readonly IntPtr selSetBoolForKey_Handle = Selector.GetHandle("setBool:forKey:");
+
+	private static readonly IntPtr selDictionaryRepresentationHandle = Selector.GetHandle("dictionaryRepresentation");
 
 	private static readonly IntPtr selSynchronizeHandle = Selector.GetHandle("synchronize");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSUbiquitousKeyValueStore");
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSUbiquitousKeyValueStore");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ChangeReasonKey;
+	private static object __mt_DefaultStore_var_static;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ChangedKeysKey;
+	private static NSString _DidChangeExternallyNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidChangeExternallyNotification;
+	private static NSString _ChangeReasonKey;
+
+	private static NSString _ChangedKeysKey;
 
 	public NSObject this[NSString key]
 	{
@@ -152,27 +80,27 @@ public class NSUbiquitousKeyValueStore : NSObject
 		}
 	}
 
-	public NSObject this[string key]
-	{
-		get
-		{
-			return ObjectForKey(key);
-		}
-		set
-		{
-			SetObjectForKey(value, key);
-		}
-	}
-
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSUbiquitousKeyValueStore DefaultStore
 	{
 		[Export("defaultStore")]
 		get
 		{
-			return Runtime.GetNSObject<NSUbiquitousKeyValueStore>(Messaging.IntPtr_objc_msgSend(class_ptr, selDefaultStoreHandle));
+			return (NSUbiquitousKeyValueStore)(__mt_DefaultStore_var_static = (NSUbiquitousKeyValueStore)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selDefaultStoreHandle)));
+		}
+	}
+
+	[Field("NSUbiquitousKeyValueStoreDidChangeExternallyNotification", "Foundation")]
+	public static NSString DidChangeExternallyNotification
+	{
+		get
+		{
+			if (_DidChangeExternallyNotification == null)
+			{
+				_DidChangeExternallyNotification = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSUbiquitousKeyValueStoreDidChangeExternallyNotification");
+			}
+			return _DidChangeExternallyNotification;
 		}
 	}
 
@@ -199,20 +127,6 @@ public class NSUbiquitousKeyValueStore : NSObject
 				_ChangedKeysKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSUbiquitousKeyValueStoreChangedKeysKey");
 			}
 			return _ChangedKeysKey;
-		}
-	}
-
-	[Field("NSUbiquitousKeyValueStoreDidChangeExternallyNotification", "Foundation")]
-	[Advice("Use NSUbiquitousKeyValueStore.Notifications.ObserveDidChangeExternally helper method instead.")]
-	public static NSString DidChangeExternallyNotification
-	{
-		get
-		{
-			if (_DidChangeExternallyNotification == null)
-			{
-				_DidChangeExternallyNotification = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSUbiquitousKeyValueStoreDidChangeExternallyNotification");
-			}
-			return _DidChangeExternallyNotification;
 		}
 	}
 
@@ -251,136 +165,49 @@ public class NSUbiquitousKeyValueStore : NSObject
 		_SetBool(value, key);
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSUbiquitousKeyValueStore()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSUbiquitousKeyValueStore(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSUbiquitousKeyValueStore(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSUbiquitousKeyValueStore(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSUbiquitousKeyValueStore(IntPtr handle)
+	public NSUbiquitousKeyValueStore(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("arrayForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject[] GetArray(string aKey)
-	{
-		if (aKey == null)
-		{
-			throw new ArgumentNullException("aKey");
-		}
-		IntPtr arg = NSString.CreateNative(aKey);
-		NSObject[] result = ((!base.IsDirectBinding) ? NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selArrayForKey_Handle, arg)) : NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selArrayForKey_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("boolForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool GetBool(string aKey)
-	{
-		if (aKey == null)
-		{
-			throw new ArgumentNullException("aKey");
-		}
-		IntPtr arg = NSString.CreateNative(aKey);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selBoolForKey_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selBoolForKey_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("dataForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSData GetData(string aKey)
-	{
-		if (aKey == null)
-		{
-			throw new ArgumentNullException("aKey");
-		}
-		IntPtr arg = NSString.CreateNative(aKey);
-		NSData result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDataForKey_Handle, arg)) : Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDataForKey_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("dictionaryForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary GetDictionary(string aKey)
-	{
-		if (aKey == null)
-		{
-			throw new ArgumentNullException("aKey");
-		}
-		IntPtr arg = NSString.CreateNative(aKey);
-		NSDictionary result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDictionaryForKey_Handle, arg)) : Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDictionaryForKey_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("doubleForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual double GetDouble(string aKey)
-	{
-		if (aKey == null)
-		{
-			throw new ArgumentNullException("aKey");
-		}
-		IntPtr arg = NSString.CreateNative(aKey);
-		double result = ((!base.IsDirectBinding) ? Messaging.Double_objc_msgSendSuper_IntPtr(base.SuperHandle, selDoubleForKey_Handle, arg) : Messaging.Double_objc_msgSend_IntPtr(base.Handle, selDoubleForKey_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("longLongForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual long GetLong(string aKey)
-	{
-		if (aKey == null)
-		{
-			throw new ArgumentNullException("aKey");
-		}
-		IntPtr arg = NSString.CreateNative(aKey);
-		long result = ((!base.IsDirectBinding) ? Messaging.Int64_objc_msgSendSuper_IntPtr(base.SuperHandle, selLongLongForKey_Handle, arg) : Messaging.Int64_objc_msgSend_IntPtr(base.Handle, selLongLongForKey_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("stringForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string GetString(string aKey)
-	{
-		if (aKey == null)
-		{
-			throw new ArgumentNullException("aKey");
-		}
-		IntPtr arg = NSString.CreateNative(aKey);
-		string result = ((!base.IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selStringForKey_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selStringForKey_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
 	[Export("objectForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	internal virtual NSObject ObjectForKey(string aKey)
 	{
 		if (aKey == null)
@@ -388,33 +215,12 @@ public class NSUbiquitousKeyValueStore : NSObject
 			throw new ArgumentNullException("aKey");
 		}
 		IntPtr arg = NSString.CreateNative(aKey);
-		NSObject result = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selObjectForKey_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selObjectForKey_Handle, arg)));
+		NSObject result = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selObjectForKey_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selObjectForKey_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
-	[Export("removeObjectForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void Remove(string aKey)
-	{
-		if (aKey == null)
-		{
-			throw new ArgumentNullException("aKey");
-		}
-		IntPtr arg = NSString.CreateNative(aKey);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveObjectForKey_Handle, arg);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveObjectForKey_Handle, arg);
-		}
-		NSString.ReleaseNative(arg);
-	}
-
 	[Export("setObject:forKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	internal virtual void SetObjectForKey(NSObject anObject, string aKey)
 	{
 		if (anObject == null)
@@ -426,175 +232,128 @@ public class NSUbiquitousKeyValueStore : NSObject
 			throw new ArgumentNullException("aKey");
 		}
 		IntPtr arg = NSString.CreateNative(aKey);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetObject_ForKey_Handle, anObject.Handle, arg);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetObjectForKey_Handle, anObject.Handle, arg);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetObject_ForKey_Handle, anObject.Handle, arg);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetObjectForKey_Handle, anObject.Handle, arg);
 		}
 		NSString.ReleaseNative(arg);
 	}
 
-	[Export("synchronize")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool Synchronize()
-	{
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selSynchronizeHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selSynchronizeHandle);
-	}
-
-	[Export("dictionaryRepresentation")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary ToDictionary()
-	{
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selDictionaryRepresentationHandle));
-		}
-		return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDictionaryRepresentationHandle));
-	}
-
-	[Export("setArray:forKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual void _SetArray(NSObject[] array, string key)
-	{
-		if (array == null)
-		{
-			throw new ArgumentNullException("array");
-		}
-		if (key == null)
-		{
-			throw new ArgumentNullException("key");
-		}
-		NSArray nSArray = NSArray.FromNSObjects(array);
-		IntPtr arg = NSString.CreateNative(key);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetArray_ForKey_Handle, nSArray.Handle, arg);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetArray_ForKey_Handle, nSArray.Handle, arg);
-		}
-		nSArray.Dispose();
-		NSString.ReleaseNative(arg);
-	}
-
-	[Export("setBool:forKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual void _SetBool(bool value, string aKey)
+	[Export("removeObjectForKey:")]
+	public virtual void Remove(string aKey)
 	{
 		if (aKey == null)
 		{
 			throw new ArgumentNullException("aKey");
 		}
 		IntPtr arg = NSString.CreateNative(aKey);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_bool_IntPtr(base.Handle, selSetBool_ForKey_Handle, value, arg);
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveObjectForKey_Handle, arg);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_bool_IntPtr(base.SuperHandle, selSetBool_ForKey_Handle, value, arg);
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveObjectForKey_Handle, arg);
 		}
 		NSString.ReleaseNative(arg);
 	}
 
-	[Export("setData:forKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual void _SetData(NSData data, string key)
-	{
-		if (data == null)
-		{
-			throw new ArgumentNullException("data");
-		}
-		if (key == null)
-		{
-			throw new ArgumentNullException("key");
-		}
-		IntPtr arg = NSString.CreateNative(key);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetData_ForKey_Handle, data.Handle, arg);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetData_ForKey_Handle, data.Handle, arg);
-		}
-		NSString.ReleaseNative(arg);
-	}
-
-	[Export("setDictionary:forKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual void _SetDictionary(NSDictionary aDictionary, string aKey)
-	{
-		if (aDictionary == null)
-		{
-			throw new ArgumentNullException("aDictionary");
-		}
-		if (aKey == null)
-		{
-			throw new ArgumentNullException("aKey");
-		}
-		IntPtr arg = NSString.CreateNative(aKey);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetDictionary_ForKey_Handle, aDictionary.Handle, arg);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetDictionary_ForKey_Handle, aDictionary.Handle, arg);
-		}
-		NSString.ReleaseNative(arg);
-	}
-
-	[Export("setDouble:forKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual void _SetDouble(double value, string aKey)
+	[Export("stringForKey:")]
+	public virtual string GetString(string aKey)
 	{
 		if (aKey == null)
 		{
 			throw new ArgumentNullException("aKey");
 		}
 		IntPtr arg = NSString.CreateNative(aKey);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_Double_IntPtr(base.Handle, selSetDouble_ForKey_Handle, value, arg);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_Double_IntPtr(base.SuperHandle, selSetDouble_ForKey_Handle, value, arg);
-		}
+		string result = ((!IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selStringForKey_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selStringForKey_Handle, arg)));
 		NSString.ReleaseNative(arg);
+		return result;
 	}
 
-	[Export("setLongLong:forKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual void _SetLong(long value, string aKey)
+	[Export("arrayForKey:")]
+	public virtual NSObject[] GetArray(string aKey)
 	{
 		if (aKey == null)
 		{
 			throw new ArgumentNullException("aKey");
 		}
 		IntPtr arg = NSString.CreateNative(aKey);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_Int64_IntPtr(base.Handle, selSetLongLong_ForKey_Handle, value, arg);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_Int64_IntPtr(base.SuperHandle, selSetLongLong_ForKey_Handle, value, arg);
-		}
+		NSObject[] result = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selArrayForKey_Handle, arg)) : NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selArrayForKey_Handle, arg)));
 		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("dictionaryForKey:")]
+	public virtual NSDictionary GetDictionary(string aKey)
+	{
+		if (aKey == null)
+		{
+			throw new ArgumentNullException("aKey");
+		}
+		IntPtr arg = NSString.CreateNative(aKey);
+		NSDictionary result = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDictionaryForKey_Handle, arg))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDictionaryForKey_Handle, arg))));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("dataForKey:")]
+	public virtual NSData GetData(string aKey)
+	{
+		if (aKey == null)
+		{
+			throw new ArgumentNullException("aKey");
+		}
+		IntPtr arg = NSString.CreateNative(aKey);
+		NSData result = ((!IsDirectBinding) ? ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDataForKey_Handle, arg))) : ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDataForKey_Handle, arg))));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("longLongForKey:")]
+	public virtual long GetLong(string aKey)
+	{
+		if (aKey == null)
+		{
+			throw new ArgumentNullException("aKey");
+		}
+		IntPtr arg = NSString.CreateNative(aKey);
+		long result = ((!IsDirectBinding) ? Messaging.Int64_objc_msgSendSuper_IntPtr(base.SuperHandle, selLongLongForKey_Handle, arg) : Messaging.Int64_objc_msgSend_IntPtr(base.Handle, selLongLongForKey_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("doubleForKey:")]
+	public virtual double GetDouble(string aKey)
+	{
+		if (aKey == null)
+		{
+			throw new ArgumentNullException("aKey");
+		}
+		IntPtr arg = NSString.CreateNative(aKey);
+		double result = ((!IsDirectBinding) ? Messaging.Double_objc_msgSendSuper_IntPtr(base.SuperHandle, selDoubleForKey_Handle, arg) : Messaging.Double_objc_msgSend_IntPtr(base.Handle, selDoubleForKey_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("boolForKey:")]
+	public virtual bool GetBool(string aKey)
+	{
+		if (aKey == null)
+		{
+			throw new ArgumentNullException("aKey");
+		}
+		IntPtr arg = NSString.CreateNative(aKey);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selBoolForKey_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selBoolForKey_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
 	}
 
 	[Export("setString:forKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	internal virtual void _SetString(string aString, string aKey)
 	{
 		if (aString == null)
@@ -607,15 +366,163 @@ public class NSUbiquitousKeyValueStore : NSObject
 		}
 		IntPtr arg = NSString.CreateNative(aString);
 		IntPtr arg2 = NSString.CreateNative(aKey);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetString_ForKey_Handle, arg, arg2);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetStringForKey_Handle, arg, arg2);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetString_ForKey_Handle, arg, arg2);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetStringForKey_Handle, arg, arg2);
 		}
 		NSString.ReleaseNative(arg);
 		NSString.ReleaseNative(arg2);
+	}
+
+	[Export("setData:forKey:")]
+	internal virtual void _SetData(NSData data, string key)
+	{
+		if (data == null)
+		{
+			throw new ArgumentNullException("data");
+		}
+		if (key == null)
+		{
+			throw new ArgumentNullException("key");
+		}
+		IntPtr arg = NSString.CreateNative(key);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetDataForKey_Handle, data.Handle, arg);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetDataForKey_Handle, data.Handle, arg);
+		}
+		NSString.ReleaseNative(arg);
+	}
+
+	[Export("setArray:forKey:")]
+	internal virtual void _SetArray(NSObject[] array, string key)
+	{
+		if (array == null)
+		{
+			throw new ArgumentNullException("array");
+		}
+		if (key == null)
+		{
+			throw new ArgumentNullException("key");
+		}
+		NSArray nSArray = NSArray.FromNSObjects(array);
+		IntPtr arg = NSString.CreateNative(key);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetArrayForKey_Handle, nSArray.Handle, arg);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetArrayForKey_Handle, nSArray.Handle, arg);
+		}
+		nSArray.Dispose();
+		NSString.ReleaseNative(arg);
+	}
+
+	[Export("setDictionary:forKey:")]
+	internal virtual void _SetDictionary(NSDictionary aDictionary, string aKey)
+	{
+		if (aDictionary == null)
+		{
+			throw new ArgumentNullException("aDictionary");
+		}
+		if (aKey == null)
+		{
+			throw new ArgumentNullException("aKey");
+		}
+		IntPtr arg = NSString.CreateNative(aKey);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetDictionaryForKey_Handle, aDictionary.Handle, arg);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetDictionaryForKey_Handle, aDictionary.Handle, arg);
+		}
+		NSString.ReleaseNative(arg);
+	}
+
+	[Export("setLongLong:forKey:")]
+	internal virtual void _SetLong(long value, string aKey)
+	{
+		if (aKey == null)
+		{
+			throw new ArgumentNullException("aKey");
+		}
+		IntPtr arg = NSString.CreateNative(aKey);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_Int64_IntPtr(base.Handle, selSetLongLongForKey_Handle, value, arg);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_Int64_IntPtr(base.SuperHandle, selSetLongLongForKey_Handle, value, arg);
+		}
+		NSString.ReleaseNative(arg);
+	}
+
+	[Export("setDouble:forKey:")]
+	internal virtual void _SetDouble(double value, string aKey)
+	{
+		if (aKey == null)
+		{
+			throw new ArgumentNullException("aKey");
+		}
+		IntPtr arg = NSString.CreateNative(aKey);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_Double_IntPtr(base.Handle, selSetDoubleForKey_Handle, value, arg);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_Double_IntPtr(base.SuperHandle, selSetDoubleForKey_Handle, value, arg);
+		}
+		NSString.ReleaseNative(arg);
+	}
+
+	[Export("setBool:forKey:")]
+	internal virtual void _SetBool(bool value, string aKey)
+	{
+		if (aKey == null)
+		{
+			throw new ArgumentNullException("aKey");
+		}
+		IntPtr arg = NSString.CreateNative(aKey);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_bool_IntPtr(base.Handle, selSetBoolForKey_Handle, value, arg);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_bool_IntPtr(base.SuperHandle, selSetBoolForKey_Handle, value, arg);
+		}
+		NSString.ReleaseNative(arg);
+	}
+
+	[Export("dictionaryRepresentation")]
+	public virtual NSDictionary DictionaryRepresentation()
+	{
+		if (IsDirectBinding)
+		{
+			return (NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDictionaryRepresentationHandle));
+		}
+		return (NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDictionaryRepresentationHandle));
+	}
+
+	[Export("synchronize")]
+	public virtual bool Synchronize()
+	{
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selSynchronizeHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selSynchronizeHandle);
 	}
 }

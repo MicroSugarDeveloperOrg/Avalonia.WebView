@@ -2,15 +2,17 @@ using ObjCRuntime;
 
 namespace CoreLocation;
 
-[Native]
-public enum CLError : long
+public enum CLError
 {
 	LocationUnknown,
 	Denied,
 	Network,
 	HeadingFailure,
+	[Since(4, 0)]
 	RegionMonitoringDenied,
+	[Since(4, 0)]
 	RegionMonitoringFailure,
+	[Since(4, 0)]
 	RegionMonitoringSetupDelayed,
 	RegionMonitoringResponseDelayed,
 	GeocodeFoundNoResult,
@@ -20,7 +22,5 @@ public enum CLError : long
 	DeferredNotUpdatingLocation,
 	DeferredAccuracyTooLow,
 	DeferredDistanceFiltered,
-	DeferredCanceled,
-	RangingFailure,
-	RangingUnavailable
+	DeferredCanceled
 }

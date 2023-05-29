@@ -1,5 +1,0 @@
-using Foundation;
-
-namespace Metal;
-
-public delegate void MTLNewComputePipelineStateWithReflectionCompletionHandler(IMTLComputePipelineState computePipelineState, MTLComputePipelineReflection reflection, NSError error);

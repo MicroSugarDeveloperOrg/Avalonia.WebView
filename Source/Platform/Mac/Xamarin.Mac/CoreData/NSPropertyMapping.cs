@@ -8,48 +8,32 @@ namespace CoreData;
 [Register("NSPropertyMapping", true)]
 public class NSPropertyMapping : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selName = "name";
-
 	private static readonly IntPtr selNameHandle = Selector.GetHandle("name");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetName_ = "setName:";
 
 	private static readonly IntPtr selSetName_Handle = Selector.GetHandle("setName:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetUserInfo_ = "setUserInfo:";
-
-	private static readonly IntPtr selSetUserInfo_Handle = Selector.GetHandle("setUserInfo:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetValueExpression_ = "setValueExpression:";
+	private static readonly IntPtr selValueExpressionHandle = Selector.GetHandle("valueExpression");
 
 	private static readonly IntPtr selSetValueExpression_Handle = Selector.GetHandle("setValueExpression:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUserInfo = "userInfo";
-
 	private static readonly IntPtr selUserInfoHandle = Selector.GetHandle("userInfo");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selValueExpression = "valueExpression";
+	private static readonly IntPtr selSetUserInfo_Handle = Selector.GetHandle("setUserInfo:");
 
-	private static readonly IntPtr selValueExpressionHandle = Selector.GetHandle("valueExpression");
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSPropertyMapping");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSPropertyMapping");
+	private object __mt_ValueExpression_var;
+
+	private object __mt_UserInfo_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string? Name
+	public virtual string Name
 	{
 		[Export("name")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNameHandle));
 			}
@@ -58,8 +42,12 @@ public class NSPropertyMapping : NSObject
 		[Export("setName:")]
 		set
 		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetName_Handle, arg);
 			}
@@ -71,85 +59,107 @@ public class NSPropertyMapping : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary? UserInfo
+	public virtual NSExpression ValueExpression
 	{
-		[Export("userInfo", ArgumentSemantic.Retain)]
+		[Export("valueExpression")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selUserInfoHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUserInfoHandle));
+			return (NSExpression)(__mt_ValueExpression_var = ((!IsDirectBinding) ? ((NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selValueExpressionHandle))) : ((NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selValueExpressionHandle)))));
 		}
-		[Export("setUserInfo:", ArgumentSemantic.Retain)]
+		[Export("setValueExpression:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetUserInfo_Handle, value?.Handle ?? IntPtr.Zero);
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetValueExpression_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetUserInfo_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetValueExpression_Handle, value.Handle);
 			}
+			__mt_ValueExpression_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSExpression? ValueExpression
+	public virtual NSDictionary UserInfo
 	{
-		[Export("valueExpression", ArgumentSemantic.Retain)]
+		[Export("userInfo")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend(base.Handle, selValueExpressionHandle));
-			}
-			return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selValueExpressionHandle));
+			return (NSDictionary)(__mt_UserInfo_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUserInfoHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selUserInfoHandle)))));
 		}
-		[Export("setValueExpression:", ArgumentSemantic.Retain)]
+		[Export("setUserInfo:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetValueExpression_Handle, value?.Handle ?? IntPtr.Zero);
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetUserInfo_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetValueExpression_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetUserInfo_Handle, value.Handle);
 			}
+			__mt_UserInfo_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSPropertyMapping()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSPropertyMapping(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSPropertyMapping(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSPropertyMapping(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSPropertyMapping(IntPtr handle)
+	public NSPropertyMapping(IntPtr handle)
 		: base(handle)
 	{
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_ValueExpression_var = null;
+			__mt_UserInfo_var = null;
+		}
 	}
 }

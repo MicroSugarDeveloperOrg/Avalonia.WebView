@@ -4,6 +4,7 @@ using ObjCRuntime;
 
 namespace CoreText;
 
+[Since(3, 2)]
 public static class CTFontDescriptorAttributeKey
 {
 	public static readonly NSString Url;
@@ -52,28 +53,39 @@ public static class CTFontDescriptorAttributeKey
 
 	static CTFontDescriptorAttributeKey()
 	{
-		IntPtr handle = Libraries.CoreText.Handle;
-		Url = Dlfcn.GetStringConstant(handle, "kCTFontURLAttribute");
-		Name = Dlfcn.GetStringConstant(handle, "kCTFontNameAttribute");
-		DisplayName = Dlfcn.GetStringConstant(handle, "kCTFontDisplayNameAttribute");
-		FamilyName = Dlfcn.GetStringConstant(handle, "kCTFontFamilyNameAttribute");
-		StyleName = Dlfcn.GetStringConstant(handle, "kCTFontStyleNameAttribute");
-		Traits = Dlfcn.GetStringConstant(handle, "kCTFontTraitsAttribute");
-		Variation = Dlfcn.GetStringConstant(handle, "kCTFontVariationAttribute");
-		Size = Dlfcn.GetStringConstant(handle, "kCTFontSizeAttribute");
-		Matrix = Dlfcn.GetStringConstant(handle, "kCTFontMatrixAttribute");
-		CascadeList = Dlfcn.GetStringConstant(handle, "kCTFontCascadeListAttribute");
-		CharacterSet = Dlfcn.GetStringConstant(handle, "kCTFontCharacterSetAttribute");
-		Languages = Dlfcn.GetStringConstant(handle, "kCTFontLanguagesAttribute");
-		BaselineAdjust = Dlfcn.GetStringConstant(handle, "kCTFontBaselineAdjustAttribute");
-		MacintoshEncodings = Dlfcn.GetStringConstant(handle, "kCTFontMacintoshEncodingsAttribute");
-		Features = Dlfcn.GetStringConstant(handle, "kCTFontFeaturesAttribute");
-		FeatureSettings = Dlfcn.GetStringConstant(handle, "kCTFontFeatureSettingsAttribute");
-		FixedAdvance = Dlfcn.GetStringConstant(handle, "kCTFontFixedAdvanceAttribute");
-		FontOrientation = Dlfcn.GetStringConstant(handle, "kCTFontOrientationAttribute");
-		FontFormat = Dlfcn.GetStringConstant(handle, "kCTFontFormatAttribute");
-		RegistrationScope = Dlfcn.GetStringConstant(handle, "kCTFontRegistrationScopeAttribute");
-		Priority = Dlfcn.GetStringConstant(handle, "kCTFontPriorityAttribute");
-		Enabled = Dlfcn.GetStringConstant(handle, "kCTFontEnabledAttribute");
+		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText", 0);
+		if (intPtr == IntPtr.Zero)
+		{
+			return;
+		}
+		try
+		{
+			Url = Dlfcn.GetStringConstant(intPtr, "kCTFontURLAttribute");
+			Name = Dlfcn.GetStringConstant(intPtr, "kCTFontNameAttribute");
+			DisplayName = Dlfcn.GetStringConstant(intPtr, "kCTFontDisplayNameAttribute");
+			FamilyName = Dlfcn.GetStringConstant(intPtr, "kCTFontFamilyNameAttribute");
+			StyleName = Dlfcn.GetStringConstant(intPtr, "kCTFontStyleNameAttribute");
+			Traits = Dlfcn.GetStringConstant(intPtr, "kCTFontTraitsAttribute");
+			Variation = Dlfcn.GetStringConstant(intPtr, "kCTFontVariationAttribute");
+			Size = Dlfcn.GetStringConstant(intPtr, "kCTFontSizeAttribute");
+			Matrix = Dlfcn.GetStringConstant(intPtr, "kCTFontMatrixAttribute");
+			CascadeList = Dlfcn.GetStringConstant(intPtr, "kCTFontCascadeListAttribute");
+			CharacterSet = Dlfcn.GetStringConstant(intPtr, "kCTFontCharacterSetAttribute");
+			Languages = Dlfcn.GetStringConstant(intPtr, "kCTFontLanguagesAttribute");
+			BaselineAdjust = Dlfcn.GetStringConstant(intPtr, "kCTFontBaselineAdjustAttribute");
+			MacintoshEncodings = Dlfcn.GetStringConstant(intPtr, "kCTFontMacintoshEncodingsAttribute");
+			Features = Dlfcn.GetStringConstant(intPtr, "kCTFontFeaturesAttribute");
+			FeatureSettings = Dlfcn.GetStringConstant(intPtr, "kCTFontFeatureSettingsAttribute");
+			FixedAdvance = Dlfcn.GetStringConstant(intPtr, "kCTFontFixedAdvanceAttribute");
+			FontOrientation = Dlfcn.GetStringConstant(intPtr, "kCTFontOrientationAttribute");
+			FontFormat = Dlfcn.GetStringConstant(intPtr, "kCTFontFormatAttribute");
+			RegistrationScope = Dlfcn.GetStringConstant(intPtr, "kCTFontRegistrationScopeAttribute");
+			Priority = Dlfcn.GetStringConstant(intPtr, "kCTFontPriorityAttribute");
+			Enabled = Dlfcn.GetStringConstant(intPtr, "kCTFontEnabledAttribute");
+		}
+		finally
+		{
+			Dlfcn.dlclose(intPtr);
+		}
 	}
 }

@@ -2,4 +2,4 @@ using CoreGraphics;
 
 namespace AppKit;
 
-public delegate NSImage NSSharingServiceTransitionImageForShareItem(NSSharingService sharingService, INSPasteboardWriting item, CGRect contentRect);
+public delegate NSImage NSSharingServiceTransitionImageForShareItem(NSSharingService sharingService, NSPasteboardWriting item, CGRect contentRect);

@@ -1,6 +1,6 @@
+using System;
 using System.Runtime.InteropServices;
 using CoreFoundation;
-using Xamarin.Mac.System.Mac;
 
 namespace AudioToolbox;
 
@@ -22,8 +22,7 @@ public class AudioFileMarkerList : IDisposable
 			{
 				throw new ArgumentOutOfRangeException("index");
 			}
-			AudioFileMarker* ptr = (AudioFileMarker*)((byte*)(void*)this.ptr + (nint)8 * (nint)sizeof(AudioFileMarker) + (nint)(index * sizeof(AudioFileMarker)) * (nint)sizeof(AudioFileMarker));
-			return *ptr;
+			return *(AudioFileMarker*)((byte*)(void*)ptr + (nint)8 * (nint)sizeof(AudioFileMarker) + (nint)(index * sizeof(AudioFileMarker)) * (nint)sizeof(AudioFileMarker));
 		}
 	}
 
@@ -36,6 +35,7 @@ public class AudioFileMarkerList : IDisposable
 	~AudioFileMarkerList()
 	{
 		Dispose(disposing: false);
+		GC.SuppressFinalize(this);
 	}
 
 	public void Dispose()
@@ -53,7 +53,6 @@ public class AudioFileMarkerList : IDisposable
 			}
 			Marshal.FreeHGlobal(ptr);
 			ptr = IntPtr.Zero;
-			GC.SuppressFinalize(this);
 		}
 	}
 }

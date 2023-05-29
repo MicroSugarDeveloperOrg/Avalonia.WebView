@@ -3,12 +3,12 @@ using System;
 namespace CoreGraphics;
 
 [Flags]
-public enum CGWindowListOption : uint
+public enum CGWindowListOption
 {
-	All = 0u,
-	OnScreenOnly = 1u,
-	OnScreenAboveWindow = 2u,
-	OnScreenBelowWindow = 4u,
-	IncludingWindow = 8u,
-	ExcludeDesktopElements = 0x10u
+	All = 0,
+	OnScreenOnly = 1,
+	OnScreenAboveWindow = 2,
+	OnScreenBelowWindow = 4,
+	IncludingWindow = 8,
+	ExcludeDesktopElements = 0x10
 }

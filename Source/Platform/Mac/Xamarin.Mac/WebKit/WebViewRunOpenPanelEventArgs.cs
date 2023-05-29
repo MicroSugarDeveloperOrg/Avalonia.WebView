@@ -4,9 +4,9 @@ namespace WebKit;
 
 public class WebViewRunOpenPanelEventArgs : EventArgs
 {
-	public IWebOpenPanelResultListener ResultListener { get; set; }
+	public WebOpenPanelResultListener ResultListener { get; set; }
 
-	public WebViewRunOpenPanelEventArgs(IWebOpenPanelResultListener resultListener)
+	public WebViewRunOpenPanelEventArgs(WebOpenPanelResultListener resultListener)
 	{
 		ResultListener = resultListener;
 	}

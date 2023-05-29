@@ -5,66 +5,77 @@ using ObjCRuntime;
 namespace Foundation;
 
 [Protocol]
-[Register("NSKeyedUnarchiverDelegate", false)]
+[Register("NSKeyedUnarchiverDelegate", true)]
 [Model]
-public class NSKeyedUnarchiverDelegate : NSObject, INSKeyedUnarchiverDelegate, INativeObject, IDisposable
+public class NSKeyedUnarchiverDelegate : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSKeyedUnarchiverDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSKeyedUnarchiverDelegate(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSKeyedUnarchiverDelegate(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSKeyedUnarchiverDelegate(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSKeyedUnarchiverDelegate(IntPtr handle)
+	public NSKeyedUnarchiverDelegate(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
-	}
-
-	[Export("unarchiver:cannotDecodeObjectOfClassName:originalClasses:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual Class CannotDecodeClass(NSKeyedUnarchiver unarchiver, string klass, string[] classes)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("unarchiver:didDecodeObject:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSObject DecodedObject(NSKeyedUnarchiver unarchiver, NSObject obj)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("unarchiverDidFinish:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Finished(NSKeyedUnarchiver unarchiver)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
+	[Export("unarchiver:cannotDecodeObjectOfClassName:originalClasses:")]
+	public virtual Class CannotDecodeClass(NSKeyedUnarchiver unarchiver, string klass, string[] classes)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
 	[Export("unarchiverWillFinish:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Finishing(NSKeyedUnarchiver unarchiver)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("unarchiver:willReplaceObject:withObject:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ReplacingObject(NSKeyedUnarchiver unarchiver, NSObject oldObject, NSObject newObject)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();

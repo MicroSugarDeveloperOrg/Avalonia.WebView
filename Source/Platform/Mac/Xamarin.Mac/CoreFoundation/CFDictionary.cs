@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreFoundation;
 
+[Since(3, 2)]
 internal class CFDictionary : INativeObject, IDisposable
 {
 	public static IntPtr KeyCallbacks;
@@ -13,7 +14,7 @@ internal class CFDictionary : INativeObject, IDisposable
 
 	public IntPtr Handle { get; private set; }
 
-	public nint Count => CFDictionaryGetCount(Handle);
+	public int Count => CFDictionaryGetCount(Handle);
 
 	public CFDictionary(IntPtr handle)
 		: this(handle, owns: false)
@@ -30,7 +31,7 @@ internal class CFDictionary : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFDictionaryGetTypeID")]
-	public static extern nint GetTypeID();
+	public static extern int GetTypeID();
 
 	~CFDictionary()
 	{
@@ -43,7 +44,7 @@ internal class CFDictionary : INativeObject, IDisposable
 		GC.SuppressFinalize(this);
 	}
 
-	protected virtual void Dispose(bool disposing)
+	public virtual void Dispose(bool disposing)
 	{
 		if (Handle != IntPtr.Zero)
 		{
@@ -54,9 +55,16 @@ internal class CFDictionary : INativeObject, IDisposable
 
 	static CFDictionary()
 	{
-		IntPtr handle = Libraries.CoreFoundation.Handle;
-		KeyCallbacks = Dlfcn.GetIndirect(handle, "kCFTypeDictionaryKeyCallBacks");
-		ValueCallbacks = Dlfcn.GetIndirect(handle, "kCFTypeDictionaryValueCallBacks");
+		IntPtr handle = Dlfcn.dlopen("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", 0);
+		try
+		{
+			KeyCallbacks = Dlfcn.GetIndirect(handle, "kCFTypeDictionaryKeyCallBacks");
+			ValueCallbacks = Dlfcn.GetIndirect(handle, "kCFTypeDictionaryValueCallBacks");
+		}
+		finally
+		{
+			Dlfcn.dlclose(handle);
+		}
 	}
 
 	public static CFDictionary FromObjectAndKey(INativeObject obj, INativeObject key)
@@ -89,7 +97,7 @@ internal class CFDictionary : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFDictionaryCreate(IntPtr allocator, IntPtr[] keys, IntPtr[] vals, nint len, IntPtr keyCallbacks, IntPtr valCallbacks);
+	private static extern IntPtr CFDictionaryCreate(IntPtr allocator, IntPtr[] keys, IntPtr[] vals, int len, IntPtr keyCallbacks, IntPtr valCallbacks);
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
 	private static extern IntPtr CFDictionaryGetValue(IntPtr theDict, IntPtr key);
@@ -100,16 +108,16 @@ internal class CFDictionary : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern nint CFDictionaryGetCount(IntPtr theDict);
+	private static extern int CFDictionaryGetCount(IntPtr theDict);
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
 	private static extern void CFDictionaryGetKeysAndValues(IntPtr theDict, IntPtr[] keys, IntPtr[] values);
 
 	public void GetKeysAndValues(out IntPtr[] keys, out IntPtr[] values)
 	{
-		nint count = Count;
-		keys = new IntPtr[(long)count];
-		values = new IntPtr[(long)count];
+		int count = Count;
+		keys = new IntPtr[count];
+		values = new IntPtr[count];
 		CFDictionaryGetKeysAndValues(Handle, keys, values);
 	}
 
@@ -126,14 +134,14 @@ internal class CFDictionary : INativeObject, IDisposable
 	public string GetStringValue(string key)
 	{
 		using CFString cFString = new CFString(key);
-		return CFString.FetchString(CFDictionaryGetValue(Handle, cFString.Handle));
+		return CFString.FetchString(CFDictionaryGetValue(Handle, cFString.handle));
 	}
 
 	public int GetInt32Value(string key)
 	{
 		int value = 0;
 		using CFString cFString = new CFString(key);
-		if (!CFNumberGetValue(CFDictionaryGetValue(Handle, cFString.Handle), (nint)3, out value))
+		if (!CFNumberGetValue(CFDictionaryGetValue(Handle, cFString.Handle), 3, out value))
 		{
 			throw new KeyNotFoundException($"Key {key} not found");
 		}
@@ -144,7 +152,7 @@ internal class CFDictionary : INativeObject, IDisposable
 	{
 		long value = 0L;
 		using CFString cFString = new CFString(key);
-		if (!CFNumberGetValue(CFDictionaryGetValue(Handle, cFString.Handle), (nint)4, out value))
+		if (!CFNumberGetValue(CFDictionaryGetValue(Handle, cFString.Handle), 4, out value))
 		{
 			throw new KeyNotFoundException($"Key {key} not found");
 		}
@@ -154,27 +162,27 @@ internal class CFDictionary : INativeObject, IDisposable
 	public IntPtr GetIntPtrValue(string key)
 	{
 		using CFString cFString = new CFString(key);
-		return CFDictionaryGetValue(Handle, cFString.Handle);
+		return CFDictionaryGetValue(Handle, cFString.handle);
 	}
 
 	public CFDictionary GetDictionaryValue(string key)
 	{
 		using CFString cFString = new CFString(key);
-		IntPtr intPtr = CFDictionaryGetValue(Handle, cFString.Handle);
+		IntPtr intPtr = CFDictionaryGetValue(Handle, cFString.handle);
 		return (intPtr == IntPtr.Zero) ? null : new CFDictionary(intPtr);
 	}
 
 	public bool ContainsKey(string key)
 	{
 		using CFString cFString = new CFString(key);
-		return CFDictionaryContainsKey(Handle, cFString.Handle);
+		return CFDictionaryContainsKey(Handle, cFString.handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	internal static extern bool CFNumberGetValue(IntPtr number, nint theType, out int value);
+	private static extern bool CFNumberGetValue(IntPtr number, int theType, out int value);
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	internal static extern bool CFNumberGetValue(IntPtr number, nint theType, out long value);
+	private static extern bool CFNumberGetValue(IntPtr number, int theType, out long value);
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
 	private static extern bool CFDictionaryContainsKey(IntPtr theDict, IntPtr key);

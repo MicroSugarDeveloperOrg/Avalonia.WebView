@@ -1,8 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
-using CoreFoundation;
 using Foundation;
-using ObjCRuntime;
 
 namespace CoreGraphics;
 
@@ -11,105 +9,100 @@ public class CGContextPDF : CGContext
 	private bool closed;
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private unsafe static extern IntPtr CGPDFContextCreateWithURL(IntPtr url, CGRect* mediaBox, IntPtr auxiliaryInfo);
+	private static extern IntPtr CGPDFContextCreateWithURL(IntPtr url, ref CGRect rect, IntPtr dictionary);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private unsafe static extern IntPtr CGPDFContextCreate(IntPtr consumer, CGRect* mediaBox, IntPtr auxiliaryInfo);
+	private static extern IntPtr CGPDFContextCreateWithURL(IntPtr url, IntPtr rect, IntPtr dictionary);
 
-	private unsafe CGContextPDF(CGDataConsumer dataConsumer, CGRect* mediaBox, CGPDFInfo info)
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	private static extern IntPtr CGPDFContextCreate(IntPtr dataConsumer, ref CGRect rect, IntPtr dictionary);
+
+	public CGContextPDF(CGDataConsumer dataConsumer, CGRect mediaBox, CGPDFInfo info)
 	{
-		using NSMutableDictionary self = info?.ToDictionary();
-		base.Handle = CGPDFContextCreate(dataConsumer.GetHandle(), mediaBox, self.GetHandle());
+		if (dataConsumer == null)
+		{
+			throw new ArgumentNullException("dataConsumer");
+		}
+		handle = CGPDFContextCreate(dataConsumer.Handle, ref mediaBox, info?.ToDictionary().Handle ?? IntPtr.Zero);
 	}
 
-	public unsafe CGContextPDF(CGDataConsumer dataConsumer, CGRect mediaBox, CGPDFInfo info)
-		: this(dataConsumer, &mediaBox, info)
+	public CGContextPDF(NSUrl url, CGRect mediaBox, CGPDFInfo info)
 	{
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		handle = CGPDFContextCreateWithURL(url.Handle, ref mediaBox, info?.ToDictionary().Handle ?? IntPtr.Zero);
 	}
 
-	public unsafe CGContextPDF(CGDataConsumer dataConsumer, CGRect mediaBox)
-		: this(dataConsumer, &mediaBox, null)
+	public CGContextPDF(NSUrl url, CGRect mediaBox)
 	{
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		handle = CGPDFContextCreateWithURL(url.Handle, ref mediaBox, IntPtr.Zero);
 	}
 
-	public unsafe CGContextPDF(CGDataConsumer dataConsumer, CGPDFInfo info)
-		: this(dataConsumer, null, info)
+	public CGContextPDF(NSUrl url, CGPDFInfo info)
 	{
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		handle = CGPDFContextCreateWithURL(url.Handle, IntPtr.Zero, info?.ToDictionary().Handle ?? IntPtr.Zero);
 	}
 
-	public unsafe CGContextPDF(CGDataConsumer dataConsumer)
-		: this(dataConsumer, null, null)
+	public CGContextPDF(NSUrl url)
 	{
-	}
-
-	private unsafe CGContextPDF(NSUrl url, CGRect* mediaBox, CGPDFInfo info)
-	{
-		using NSMutableDictionary self = info?.ToDictionary();
-		base.Handle = CGPDFContextCreateWithURL(url.GetHandle(), mediaBox, self.GetHandle());
-	}
-
-	public unsafe CGContextPDF(NSUrl url, CGRect mediaBox, CGPDFInfo info)
-		: this(url, &mediaBox, info)
-	{
-	}
-
-	public unsafe CGContextPDF(NSUrl url, CGRect mediaBox)
-		: this(url, &mediaBox, null)
-	{
-	}
-
-	public unsafe CGContextPDF(NSUrl url, CGPDFInfo info)
-		: this(url, null, info)
-	{
-	}
-
-	public unsafe CGContextPDF(NSUrl url)
-		: this(url, null, null)
-	{
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		handle = CGPDFContextCreateWithURL(url.Handle, IntPtr.Zero, IntPtr.Zero);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGPDFContextClose(IntPtr context);
+	private static extern void CGPDFContextClose(IntPtr handle);
 
 	public void Close()
 	{
 		if (!closed)
 		{
-			CGPDFContextClose(base.Handle);
+			CGPDFContextClose(handle);
 			closed = true;
 		}
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGPDFContextBeginPage(IntPtr context, IntPtr pageInfo);
+	private static extern void CGPDFContextBeginPage(IntPtr handle, IntPtr dict);
 
 	public void BeginPage(CGPDFPageInfo info)
 	{
-		using NSMutableDictionary nSMutableDictionary = info?.ToDictionary();
-		CGPDFContextBeginPage(base.Handle, nSMutableDictionary?.Handle ?? IntPtr.Zero);
+		CGPDFContextBeginPage(handle, info?.ToDictionary().Handle ?? IntPtr.Zero);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGPDFContextEndPage(IntPtr context);
+	private static extern void CGPDFContextEndPage(IntPtr handle);
 
 	public new void EndPage()
 	{
-		CGPDFContextEndPage(base.Handle);
+		CGPDFContextEndPage(handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGPDFContextAddDocumentMetadata(IntPtr context, IntPtr metadata);
+	private static extern void CGPDFContextAddDocumentMetadata(IntPtr handle, IntPtr nsDataHandle);
 
 	public void AddDocumentMetadata(NSData data)
 	{
 		if (data != null)
 		{
-			CGPDFContextAddDocumentMetadata(base.Handle, data.Handle);
+			CGPDFContextAddDocumentMetadata(handle, data.Handle);
 		}
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGPDFContextSetURLForRect(IntPtr context, IntPtr url, CGRect rect);
+	private static extern void CGPDFContextSetURLForRect(IntPtr handle, IntPtr urlh, CGRect rect);
 
 	public void SetUrl(NSUrl url, CGRect region)
 	{
@@ -117,11 +110,11 @@ public class CGContextPDF : CGContext
 		{
 			throw new ArgumentNullException("url");
 		}
-		CGPDFContextSetURLForRect(base.Handle, url.Handle, region);
+		CGPDFContextSetURLForRect(handle, url.Handle, region);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGPDFContextAddDestinationAtPoint(IntPtr context, IntPtr name, CGPoint point);
+	private static extern void CGPDFContextAddDestinationAtPoint(IntPtr handle, IntPtr cfstring, CGPoint point);
 
 	public void AddDestination(string name, CGPoint point)
 	{
@@ -129,12 +122,11 @@ public class CGContextPDF : CGContext
 		{
 			throw new ArgumentNullException("name");
 		}
-		using CFString cFString = new CFString(name);
-		CGPDFContextAddDestinationAtPoint(base.Handle, cFString.Handle, point);
+		CGPDFContextAddDestinationAtPoint(handle, new NSString(name).Handle, point);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGPDFContextSetDestinationForRect(IntPtr context, IntPtr name, CGRect rect);
+	private static extern void CGPDFContextSetDestinationForRect(IntPtr handle, IntPtr cfstr, CGRect rect);
 
 	public void SetDestination(string name, CGRect rect)
 	{
@@ -142,50 +134,7 @@ public class CGContextPDF : CGContext
 		{
 			throw new ArgumentNullException("name");
 		}
-		using CFString cFString = new CFString(name);
-		CGPDFContextSetDestinationForRect(base.Handle, cFString.Handle, rect);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	[Mac(10, 15)]
-	[iOS(13, 0)]
-	[TV(13, 0)]
-	[Watch(6, 0)]
-	private static extern void CGPDFContextBeginTag(IntPtr context, CGPdfTagType tagType, IntPtr tagProperties);
-
-	[Mac(10, 15)]
-	[iOS(13, 0)]
-	[TV(13, 0)]
-	[Watch(6, 0)]
-	public void BeginTag(CGPdfTagType tagType, NSDictionary tagProperties)
-	{
-		CGPDFContextBeginTag(base.Handle, tagType, tagProperties.GetHandle());
-	}
-
-	[Mac(10, 15)]
-	[iOS(13, 0)]
-	[TV(13, 0)]
-	[Watch(6, 0)]
-	public void BeginTag(CGPdfTagType tagType, CGPdfTagProperties tagProperties)
-	{
-		NSDictionary self = tagProperties?.Dictionary;
-		CGPDFContextBeginTag(base.Handle, tagType, self.GetHandle());
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	[Mac(10, 15)]
-	[iOS(13, 0)]
-	[TV(13, 0)]
-	[Watch(6, 0)]
-	private static extern void CGPDFContextEndTag(IntPtr context);
-
-	[Mac(10, 15)]
-	[iOS(13, 0)]
-	[TV(13, 0)]
-	[Watch(6, 0)]
-	public void EndTag()
-	{
-		CGPDFContextEndTag(base.Handle);
+		CGPDFContextSetDestinationForRect(handle, new NSString(name).Handle, rect);
 	}
 
 	protected override void Dispose(bool disposing)

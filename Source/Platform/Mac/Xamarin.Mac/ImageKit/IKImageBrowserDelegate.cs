@@ -1,66 +1,77 @@
+using System;
 using System.ComponentModel;
 using AppKit;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace ImageKit;
 
-[Protocol(IsInformal = true)]
-[Register("IKImageBrowserDelegate", false)]
+[Register("IKImageBrowserDelegate", true)]
 [Model]
-public class IKImageBrowserDelegate : NSObject, IIKImageBrowserDelegate, INativeObject, IDisposable
+public class IKImageBrowserDelegate : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public IKImageBrowserDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected IKImageBrowserDelegate(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public IKImageBrowserDelegate(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public IKImageBrowserDelegate(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal IKImageBrowserDelegate(IntPtr handle)
+	public IKImageBrowserDelegate(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[Export("imageBrowser:backgroundWasRightClickedWithEvent:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void BackgroundWasRightClicked(IKImageBrowserView browser, NSEvent nsevent)
+	[Export("imageBrowserSelectionDidChange:")]
+	public virtual void SelectionDidChange(IKImageBrowserView browser)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("imageBrowser:cellWasDoubleClickedAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void CellWasDoubleClicked(IKImageBrowserView browser, nint index)
+	public virtual void CellWasDoubleClicked(IKImageBrowserView browser, int index)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("imageBrowser:cellWasRightClickedAtIndex:withEvent:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void CellWasRightClicked(IKImageBrowserView browser, nint index, NSEvent nsevent)
+	public virtual void CellWasRightClicked(IKImageBrowserView browser, int index, NSEvent nsevent)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("imageBrowserSelectionDidChange:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SelectionDidChange(IKImageBrowserView browser)
+	[Export("imageBrowser:backgroundWasRightClickedWithEvent:")]
+	public virtual void BackgroundWasRightClicked(IKImageBrowserView browser, NSEvent nsevent)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

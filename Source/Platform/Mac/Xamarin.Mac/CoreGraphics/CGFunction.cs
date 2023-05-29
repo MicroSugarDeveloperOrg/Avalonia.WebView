@@ -1,15 +1,13 @@
+using System;
 using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreGraphics;
 
 public class CGFunction : INativeObject, IDisposable
 {
-	private unsafe delegate void CGFunctionEvaluateCallback(IntPtr info, nfloat* data, nfloat* outData);
-
-	private delegate void CGFunctionReleaseCallback(IntPtr info);
+	private unsafe delegate void CGFunctionEvaluateCallback(IntPtr info, double* data, double* outData);
 
 	private struct CGFunctionCallbacks
 	{
@@ -17,41 +15,23 @@ public class CGFunction : INativeObject, IDisposable
 
 		public CGFunctionEvaluateCallback evaluate;
 
-		public CGFunctionReleaseCallback release;
+		public IntPtr release;
 	}
 
-	public unsafe delegate void CGFunctionEvaluate(nfloat* data, nfloat* outData);
+	public unsafe delegate void CGFunctionEvaluate(double* data, double* outData);
 
-	private IntPtr handle;
+	internal IntPtr handle;
+
+	private GCHandle gch;
 
 	private CGFunctionEvaluate evaluate;
 
-	private static CGFunctionCallbacks cbacks;
-
 	public IntPtr Handle => handle;
-
-	public CGFunctionEvaluate EvaluateFunction
-	{
-		get
-		{
-			return evaluate;
-		}
-		set
-		{
-			evaluate = value;
-		}
-	}
-
-	unsafe static CGFunction()
-	{
-		cbacks.version = 0u;
-		cbacks.evaluate = EvaluateCallback;
-		cbacks.release = ReleaseCallback;
-	}
 
 	internal CGFunction(IntPtr handle)
 		: this(handle, owns: false)
 	{
+		this.handle = handle;
 	}
 
 	[Preserve(Conditional = true)]
@@ -76,10 +56,10 @@ public class CGFunction : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGFunctionRelease(IntPtr function);
+	private static extern void CGFunctionRelease(IntPtr handle);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGFunctionRetain(IntPtr function);
+	private static extern void CGFunctionRetain(IntPtr handle);
 
 	protected virtual void Dispose(bool disposing)
 	{
@@ -87,13 +67,15 @@ public class CGFunction : INativeObject, IDisposable
 		{
 			CGFunctionRelease(handle);
 			handle = IntPtr.Zero;
+			gch.Free();
+			evaluate = null;
 		}
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGFunctionCreate(IntPtr data, nint domainDimension, nfloat[] domain, nint rangeDimension, nfloat[] range, ref CGFunctionCallbacks callbacks);
+	private static extern IntPtr CGFunctionCreate(IntPtr data, IntPtr domainCount, double[] domain, IntPtr rangeDomain, double[] range, ref CGFunctionCallbacks callbacks);
 
-	public CGFunction(nfloat[] domain, nfloat[] range, CGFunctionEvaluate callback)
+	public unsafe CGFunction(double[] domain, double[] range, CGFunctionEvaluate callback)
 	{
 		if (domain != null && domain.Length % 2 != 0)
 		{
@@ -108,18 +90,16 @@ public class CGFunction : INativeObject, IDisposable
 			throw new ArgumentNullException("callback");
 		}
 		evaluate = callback;
-		GCHandle value = GCHandle.Alloc(this);
-		handle = CGFunctionCreate(GCHandle.ToIntPtr(value), (domain != null) ? (domain.Length / 2) : 0, domain, (range != null) ? (range.Length / 2) : 0, range, ref cbacks);
+		CGFunctionCallbacks callbacks = default(CGFunctionCallbacks);
+		callbacks.version = 0u;
+		callbacks.evaluate = EvaluateCallback;
+		callbacks.release = IntPtr.Zero;
+		gch = GCHandle.Alloc(this);
+		handle = CGFunctionCreate(GCHandle.ToIntPtr(gch), (domain != null) ? new IntPtr(domain.Length / 2) : IntPtr.Zero, domain, (range != null) ? new IntPtr(range.Length / 2) : IntPtr.Zero, range, ref callbacks);
 	}
 
-	private static void ReleaseCallback(IntPtr info)
+	private unsafe static void EvaluateCallback(IntPtr info, double* input, double* output)
 	{
-		GCHandle.FromIntPtr(info).Free();
-	}
-
-	private unsafe static void EvaluateCallback(IntPtr info, nfloat* input, nfloat* output)
-	{
-		CGFunction cGFunction = (CGFunction)GCHandle.FromIntPtr(info).Target;
-		cGFunction.evaluate?.Invoke(input, output);
+		((CGFunction)GCHandle.FromIntPtr(info).Target).evaluate(input, output);
 	}
 }

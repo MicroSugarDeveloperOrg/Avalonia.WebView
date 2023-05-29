@@ -1,62 +1,23 @@
 using System;
 using CoreFoundation;
 using Foundation;
-using LocalAuthentication;
 using ObjCRuntime;
 
 namespace Security;
 
 public class SecRecord : IDisposable
 {
-	private NSMutableDictionary _queryDict;
-
-	private SecAccessControl _secAccessControl;
-
-	internal NSMutableDictionary queryDict
-	{
-		get
-		{
-			return _queryDict;
-		}
-		set
-		{
-			_queryDict = ((value != null) ? ((NSMutableDictionary)value.MutableCopy()) : null);
-		}
-	}
+	internal NSMutableDictionary queryDict;
 
 	public SecAccessible Accessible
 	{
 		get
 		{
-			return KeysAccessible.ToSecAccessible(Fetch(SecAttributeKey.Accessible));
+			return KeysAccessible.ToSecAccessible(Fetch(SecAttributeKey.AttrAccessible));
 		}
 		set
 		{
-			SetValue(KeysAccessible.FromSecAccessible(value), SecAttributeKey.Accessible);
-		}
-	}
-
-	public bool Synchronizable
-	{
-		get
-		{
-			return FetchBool(SecAttributeKey.Synchronizable, defaultValue: false);
-		}
-		set
-		{
-			SetValue(new NSNumber(value ? 1 : 0), SecAttributeKey.Synchronizable);
-		}
-	}
-
-	public bool SynchronizableAny
-	{
-		get
-		{
-			return FetchBool(SecAttributeKey.SynchronizableAny, defaultValue: false);
-		}
-		set
-		{
-			SetValue(new NSNumber(value ? 1 : 0), SecAttributeKey.SynchronizableAny);
+			SetValue(KeysAccessible.FromSecAccessible(value), SecAttributeKey.AttrAccessible);
 		}
 	}
 
@@ -64,7 +25,7 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return (NSDate)FetchObject(SecAttributeKey.CreationDate);
+			return (NSDate)FetchObject(SecAttributeKey.AttrCreationDate);
 		}
 		set
 		{
@@ -72,7 +33,7 @@ public class SecRecord : IDisposable
 			{
 				throw new ArgumentNullException("value");
 			}
-			SetValue(value, SecAttributeKey.CreationDate);
+			SetValue(value, SecAttributeKey.AttrCreationDate);
 		}
 	}
 
@@ -80,7 +41,7 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return (NSDate)FetchObject(SecAttributeKey.ModificationDate);
+			return (NSDate)FetchObject(SecAttributeKey.AttrModificationDate);
 		}
 		set
 		{
@@ -88,7 +49,7 @@ public class SecRecord : IDisposable
 			{
 				throw new ArgumentNullException("value");
 			}
-			SetValue(value, SecAttributeKey.ModificationDate);
+			SetValue(value, SecAttributeKey.AttrModificationDate);
 		}
 	}
 
@@ -96,11 +57,15 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return FetchString(SecAttributeKey.Description);
+			return FetchString(SecAttributeKey.AttrDescription);
 		}
 		set
 		{
-			SetValue(value, SecAttributeKey.Description);
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			SetValue(new NSString(value), SecAttributeKey.AttrDescription);
 		}
 	}
 
@@ -108,11 +73,15 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return FetchString(SecAttributeKey.Comment);
+			return FetchString(SecAttributeKey.AttrComment);
 		}
 		set
 		{
-			SetValue(value, SecAttributeKey.Comment);
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			SetValue(new NSString(value), SecAttributeKey.AttrComment);
 		}
 	}
 
@@ -120,11 +89,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return FetchInt(SecAttributeKey.Creator);
+			return FetchNumber(SecAttributeKey.AttrCreator).Int32Value;
 		}
 		set
 		{
-			SetValue(new NSNumber(value), SecAttributeKey.Creator);
+			SetValue(new NSNumber(value), SecAttributeKey.AttrCreator);
 		}
 	}
 
@@ -132,11 +101,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return FetchInt(SecAttributeKey.Type);
+			return FetchNumber(SecAttributeKey.AttrType).Int32Value;
 		}
 		set
 		{
-			SetValue(new NSNumber(value), SecAttributeKey.Type);
+			SetValue(new NSNumber(value), SecAttributeKey.AttrType);
 		}
 	}
 
@@ -144,11 +113,15 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return FetchString(SecAttributeKeys.LabelKey.Handle);
+			return FetchString(SecAttributeKey.AttrLabel);
 		}
 		set
 		{
-			SetValue(value, SecAttributeKeys.LabelKey.Handle);
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			SetValue(new NSString(value), SecAttributeKey.AttrLabel);
 		}
 	}
 
@@ -156,11 +129,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return Fetch(SecAttributeKey.IsInvisible) == CFBoolean.TrueHandle;
+			return Fetch(SecAttributeKey.AttrIsInvisible) == CFBoolean.True.Handle;
 		}
 		set
 		{
-			SetValue(CFBoolean.ToHandle(value), SecAttributeKey.IsInvisible);
+			SetValue(CFBoolean.FromBoolean(value).Handle, SecAttributeKey.AttrIsInvisible);
 		}
 	}
 
@@ -168,11 +141,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return Fetch(SecAttributeKey.IsNegative) == CFBoolean.TrueHandle;
+			return Fetch(SecAttributeKey.AttrIsNegative) == CFBoolean.True.Handle;
 		}
 		set
 		{
-			SetValue(CFBoolean.ToHandle(value), SecAttributeKey.IsNegative);
+			SetValue(CFBoolean.FromBoolean(value).Handle, SecAttributeKey.AttrIsNegative);
 		}
 	}
 
@@ -180,11 +153,15 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return FetchString(SecAttributeKey.Account);
+			return FetchString(SecAttributeKey.AttrAccount);
 		}
 		set
 		{
-			SetValue(value, SecAttributeKey.Account);
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			SetValue(new NSString(value), SecAttributeKey.AttrAccount);
 		}
 	}
 
@@ -192,36 +169,7 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return FetchString(SecAttributeKey.Service);
-		}
-		set
-		{
-			SetValue(value, SecAttributeKey.Service);
-		}
-	}
-
-	[iOS(9, 0)]
-	[Mac(10, 11)]
-	public SecAuthenticationUI AuthenticationUI
-	{
-		get
-		{
-			NSString nSString = Fetch<NSString>(SecItem.UseAuthenticationUI);
-			return (nSString == null) ? SecAuthenticationUI.NotSet : SecAuthenticationUIExtensions.GetValue(nSString);
-		}
-		set
-		{
-			SetValue((NSObject)value.GetConstant(), SecItem.UseAuthenticationUI);
-		}
-	}
-
-	[iOS(9, 0)]
-	[Mac(10, 11)]
-	public LAContext AuthenticationContext
-	{
-		get
-		{
-			return Fetch<LAContext>(SecItem.UseAuthenticationContext);
+			return FetchString(SecAttributeKey.AttrService);
 		}
 		set
 		{
@@ -229,24 +177,7 @@ public class SecRecord : IDisposable
 			{
 				throw new ArgumentNullException("value");
 			}
-			SetValue(value.Handle, SecItem.UseAuthenticationContext);
-		}
-	}
-
-	public SecAccessControl AccessControl
-	{
-		get
-		{
-			return _secAccessControl;
-		}
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			_secAccessControl = value;
-			SetValue(value.Handle, SecAttributeKeys.AccessControlKey.Handle);
+			SetValue(new NSString(value), SecAttributeKey.AttrService);
 		}
 	}
 
@@ -254,7 +185,7 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return Fetch<NSData>(SecAttributeKey.Generic);
+			return FetchData(SecAttributeKey.AttrGeneric);
 		}
 		set
 		{
@@ -262,7 +193,7 @@ public class SecRecord : IDisposable
 			{
 				throw new ArgumentNullException("value");
 			}
-			SetValue(value, SecAttributeKey.Generic);
+			SetValue(value, SecAttributeKey.AttrGeneric);
 		}
 	}
 
@@ -270,11 +201,15 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return FetchString(SecAttributeKey.SecurityDomain);
+			return FetchString(SecAttributeKey.AttrSecurityDomain);
 		}
 		set
 		{
-			SetValue(value, SecAttributeKey.SecurityDomain);
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			SetValue(new NSString(value), SecAttributeKey.AttrSecurityDomain);
 		}
 	}
 
@@ -282,11 +217,15 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return FetchString(SecAttributeKey.Server);
+			return FetchString(SecAttributeKey.AttrServer);
 		}
 		set
 		{
-			SetValue(value, SecAttributeKey.Server);
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			SetValue(new NSString(value), SecAttributeKey.AttrServer);
 		}
 	}
 
@@ -294,11 +233,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return SecProtocolKeys.ToSecProtocol(Fetch(SecAttributeKey.Protocol));
+			return SecProtocolKeys.ToSecProtocol(Fetch(SecAttributeKey.AttrProtocol));
 		}
 		set
 		{
-			SetValue(SecProtocolKeys.FromSecProtocol(value), SecAttributeKey.Protocol);
+			SetValue(SecProtocolKeys.FromSecProtocol(value), SecAttributeKey.AttrProtocol);
 		}
 	}
 
@@ -306,7 +245,7 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			IntPtr intPtr = Fetch(SecAttributeKey.AuthenticationType);
+			IntPtr intPtr = Fetch(SecAttributeKey.AttrAuthenticationType);
 			if (intPtr == IntPtr.Zero)
 			{
 				return SecAuthenticationType.Default;
@@ -315,7 +254,7 @@ public class SecRecord : IDisposable
 		}
 		set
 		{
-			SetValue(KeysAuthenticationType.FromSecAuthenticationType(value), SecAttributeKey.AuthenticationType);
+			SetValue(KeysAuthenticationType.FromSecAuthenticationType(value), SecAttributeKey.AttrAuthenticationType);
 		}
 	}
 
@@ -323,11 +262,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return FetchInt(SecAttributeKey.Port);
+			return FetchNumber(SecAttributeKey.AttrPort).Int32Value;
 		}
 		set
 		{
-			SetValue(new NSNumber(value), SecAttributeKey.Port);
+			SetValue(new NSNumber(value), SecAttributeKey.AttrPort);
 		}
 	}
 
@@ -335,104 +274,7 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return FetchString(SecAttributeKey.Path);
-		}
-		set
-		{
-			SetValue(value, SecAttributeKey.Path);
-		}
-	}
-
-	public string Subject => FetchString(SecAttributeKey.Subject);
-
-	public NSData Issuer => Fetch<NSData>(SecAttributeKey.Issuer);
-
-	public NSData SerialNumber => Fetch<NSData>(SecAttributeKey.SerialNumber);
-
-	public NSData SubjectKeyID => Fetch<NSData>(SecAttributeKey.SubjectKeyID);
-
-	public NSData PublicKeyHash => Fetch<NSData>(SecAttributeKey.PublicKeyHash);
-
-	public NSNumber CertificateType => Fetch<NSNumber>(SecAttributeKey.CertificateType);
-
-	public NSNumber CertificateEncoding => Fetch<NSNumber>(SecAttributeKey.CertificateEncoding);
-
-	public SecKeyClass KeyClass
-	{
-		get
-		{
-			IntPtr intPtr = Fetch(SecAttributeKey.KeyClass);
-			if (intPtr == IntPtr.Zero)
-			{
-				return SecKeyClass.Invalid;
-			}
-			using NSString constant = new NSString(intPtr);
-			return SecKeyClassExtensions.GetValue(constant);
-		}
-		set
-		{
-			NSString constant = value.GetConstant();
-			if (constant == null)
-			{
-				throw new ArgumentException("Unknown value");
-			}
-			SetValue((NSObject)constant, SecAttributeKey.KeyClass);
-		}
-	}
-
-	public string ApplicationLabel
-	{
-		get
-		{
-			return FetchString(SecAttributeKey.ApplicationLabel);
-		}
-		set
-		{
-			SetValue(value, SecAttributeKey.ApplicationLabel);
-		}
-	}
-
-	public bool IsPermanent
-	{
-		get
-		{
-			return Fetch(SecAttributeKeys.IsPermanentKey.Handle) == CFBoolean.TrueHandle;
-		}
-		set
-		{
-			SetValue(CFBoolean.ToHandle(value), SecAttributeKeys.IsPermanentKey.Handle);
-		}
-	}
-
-	public bool IsSensitive
-	{
-		get
-		{
-			return Fetch(SecAttributeKey.IsSensitive) == CFBoolean.TrueHandle;
-		}
-		set
-		{
-			SetValue(CFBoolean.ToHandle(value), SecAttributeKey.IsSensitive);
-		}
-	}
-
-	public bool IsExtractable
-	{
-		get
-		{
-			return Fetch(SecAttributeKey.IsExtractable) == CFBoolean.TrueHandle;
-		}
-		set
-		{
-			SetValue(CFBoolean.ToHandle(value), SecAttributeKey.IsExtractable);
-		}
-	}
-
-	public NSData ApplicationTag
-	{
-		get
-		{
-			return Fetch<NSData>(SecAttributeKeys.ApplicationTagKey.Handle);
+			return FetchString(SecAttributeKey.AttrPath);
 		}
 		set
 		{
@@ -440,7 +282,95 @@ public class SecRecord : IDisposable
 			{
 				throw new ArgumentNullException("value");
 			}
-			SetValue(value, SecAttributeKeys.ApplicationTagKey.Handle);
+			SetValue(new NSString(value), SecAttributeKey.AttrPath);
+		}
+	}
+
+	public string Subject => FetchString(SecAttributeKey.AttrSubject);
+
+	public NSData Issuer => FetchData(SecAttributeKey.AttrIssuer);
+
+	public NSData SerialNumber => FetchData(SecAttributeKey.AttrSerialNumber);
+
+	public NSData SubjectKeyID => FetchData(SecAttributeKey.AttrSubjectKeyID);
+
+	public NSData PublicKeyHash => FetchData(SecAttributeKey.AttrPublicKeyHash);
+
+	public NSNumber CertificateType => FetchNumber(SecAttributeKey.AttrCertificateType);
+
+	public NSNumber CertificateEncoding => FetchNumber(SecAttributeKey.AttrCertificateEncoding);
+
+	public SecKeyClass KeyClass
+	{
+		get
+		{
+			IntPtr intPtr = Fetch(SecAttributeKey.AttrKeyClass);
+			if (intPtr == ClassKeys.Public)
+			{
+				return SecKeyClass.Public;
+			}
+			if (intPtr == ClassKeys.Private)
+			{
+				return SecKeyClass.Private;
+			}
+			if (intPtr == ClassKeys.Symmetric)
+			{
+				return SecKeyClass.Symmetric;
+			}
+			throw new Exception("Unknown value");
+		}
+		set
+		{
+			SetValue(value switch
+			{
+				SecKeyClass.Private => ClassKeys.Private, 
+				SecKeyClass.Public => ClassKeys.Public, 
+				_ => ClassKeys.Symmetric, 
+			}, SecAttributeKey.AttrKeyClass);
+		}
+	}
+
+	public string ApplicationLabel
+	{
+		get
+		{
+			return FetchString(SecAttributeKey.AttrApplicationLabel);
+		}
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			SetValue(new NSString(value), SecAttributeKey.AttrApplicationLabel);
+		}
+	}
+
+	public bool IsPermanent
+	{
+		get
+		{
+			return Fetch(SecAttributeKey.AttrIsPermanent) == CFBoolean.True.Handle;
+		}
+		set
+		{
+			SetValue(CFBoolean.FromBoolean(value).Handle, SecAttributeKey.AttrIsPermanent);
+		}
+	}
+
+	public NSData ApplicationTag
+	{
+		get
+		{
+			return FetchData(SecAttributeKey.AttrApplicationTag);
+		}
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			SetValue(value, SecAttributeKey.AttrApplicationTag);
 		}
 	}
 
@@ -448,22 +378,15 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			IntPtr intPtr = Fetch(SecKeyGenerationAttributeKeys.KeyTypeKey.Handle);
-			if (intPtr == IntPtr.Zero)
+			if (Fetch(SecAttributeKey.AttrKeyType) == KeyTypeKeys.RSA)
 			{
-				return SecKeyType.Invalid;
+				return SecKeyType.RSA;
 			}
-			using NSString constant = new NSString(intPtr);
-			return SecKeyTypeExtensions.GetValue(constant);
+			return SecKeyType.EC;
 		}
 		set
 		{
-			NSString constant = value.GetConstant();
-			if (constant == null)
-			{
-				throw new ArgumentException("Unknown value");
-			}
-			SetValue((NSObject)constant, SecKeyGenerationAttributeKeys.KeyTypeKey.Handle);
+			SetValue((value == SecKeyType.RSA) ? KeyTypeKeys.RSA : KeyTypeKeys.EC, SecAttributeKey.AttrKeyType);
 		}
 	}
 
@@ -471,11 +394,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return FetchInt(SecKeyGenerationAttributeKeys.KeySizeInBitsKey.Handle);
+			return FetchNumber(SecAttributeKey.AttrKeySizeInBits).Int32Value;
 		}
 		set
 		{
-			SetValue(new NSNumber(value), SecKeyGenerationAttributeKeys.KeySizeInBitsKey.Handle);
+			SetValue(new NSNumber(value), SecAttributeKey.AttrKeySizeInBits);
 		}
 	}
 
@@ -483,11 +406,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return FetchInt(SecAttributeKeys.EffectiveKeySizeKey.Handle);
+			return FetchNumber(SecAttributeKey.AttrEffectiveKeySize).Int32Value;
 		}
 		set
 		{
-			SetValue(new NSNumber(value), SecAttributeKeys.EffectiveKeySizeKey.Handle);
+			SetValue(new NSNumber(value), SecAttributeKey.AttrEffectiveKeySize);
 		}
 	}
 
@@ -495,11 +418,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return Fetch(SecAttributeKeys.CanEncryptKey.Handle) == CFBoolean.TrueHandle;
+			return Fetch(SecAttributeKey.AttrCanEncrypt) == CFBoolean.True.Handle;
 		}
 		set
 		{
-			SetValue(CFBoolean.ToHandle(value), SecAttributeKeys.CanEncryptKey.Handle);
+			SetValue(CFBoolean.FromBoolean(value).Handle, SecAttributeKey.AttrCanEncrypt);
 		}
 	}
 
@@ -507,11 +430,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return Fetch(SecAttributeKeys.CanDecryptKey.Handle) == CFBoolean.TrueHandle;
+			return Fetch(SecAttributeKey.AttrCanDecrypt) == CFBoolean.True.Handle;
 		}
 		set
 		{
-			SetValue(CFBoolean.ToHandle(value), SecAttributeKeys.CanDecryptKey.Handle);
+			SetValue(CFBoolean.FromBoolean(value).Handle, SecAttributeKey.AttrCanDecrypt);
 		}
 	}
 
@@ -519,11 +442,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return Fetch(SecAttributeKeys.CanDeriveKey.Handle) == CFBoolean.TrueHandle;
+			return Fetch(SecAttributeKey.AttrCanDerive) == CFBoolean.True.Handle;
 		}
 		set
 		{
-			SetValue(CFBoolean.ToHandle(value), SecAttributeKeys.CanDeriveKey.Handle);
+			SetValue(CFBoolean.FromBoolean(value).Handle, SecAttributeKey.AttrCanDerive);
 		}
 	}
 
@@ -531,11 +454,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return Fetch(SecAttributeKeys.CanSignKey.Handle) == CFBoolean.TrueHandle;
+			return Fetch(SecAttributeKey.AttrCanSign) == CFBoolean.True.Handle;
 		}
 		set
 		{
-			SetValue(CFBoolean.ToHandle(value), SecAttributeKeys.CanSignKey.Handle);
+			SetValue(CFBoolean.FromBoolean(value).Handle, SecAttributeKey.AttrCanSign);
 		}
 	}
 
@@ -543,11 +466,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return Fetch(SecAttributeKeys.CanVerifyKey.Handle) == CFBoolean.TrueHandle;
+			return Fetch(SecAttributeKey.AttrCanVerify) == CFBoolean.True.Handle;
 		}
 		set
 		{
-			SetValue(CFBoolean.ToHandle(value), SecAttributeKeys.CanVerifyKey.Handle);
+			SetValue(CFBoolean.FromBoolean(value).Handle, SecAttributeKey.AttrCanVerify);
 		}
 	}
 
@@ -555,11 +478,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return Fetch(SecKeyGenerationAttributeKeys.CanWrapKey.Handle) == CFBoolean.TrueHandle;
+			return Fetch(SecAttributeKey.AttrCanWrap) == CFBoolean.True.Handle;
 		}
 		set
 		{
-			SetValue(CFBoolean.ToHandle(value), SecKeyGenerationAttributeKeys.CanWrapKey.Handle);
+			SetValue(CFBoolean.FromBoolean(value).Handle, SecAttributeKey.AttrCanWrap);
 		}
 	}
 
@@ -567,11 +490,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return Fetch(SecAttributeKeys.CanUnwrapKey.Handle) == CFBoolean.TrueHandle;
+			return Fetch(SecAttributeKey.AttrCanUnwrap) == CFBoolean.True.Handle;
 		}
 		set
 		{
-			SetValue(CFBoolean.ToHandle(value), SecAttributeKeys.CanUnwrapKey.Handle);
+			SetValue(CFBoolean.FromBoolean(value).Handle, SecAttributeKey.AttrCanUnwrap);
 		}
 	}
 
@@ -579,27 +502,15 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return FetchString(SecAttributeKey.AccessGroup);
+			return FetchString(SecAttributeKey.AttrAccessGroup);
 		}
 		set
 		{
-			SetValue(value, SecAttributeKey.AccessGroup);
-		}
-	}
-
-	[iOS(11, 0)]
-	[TV(11, 0)]
-	[Watch(4, 0)]
-	[Mac(10, 13)]
-	public bool PersistentReference
-	{
-		get
-		{
-			return Fetch(SecAttributeKey.PersistentReference) == CFBoolean.TrueHandle;
-		}
-		set
-		{
-			SetValue(CFBoolean.ToHandle(value), SecAttributeKey.PersistentReference);
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			SetValue(new NSString(value), SecAttributeKey.AttrAccessGroup);
 		}
 	}
 
@@ -607,8 +518,7 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			IntPtr intPtr = Fetch(SecItem.MatchPolicy);
-			return (intPtr == IntPtr.Zero) ? null : new SecPolicy(intPtr);
+			return new SecPolicy(Fetch(SecItem.MatchPolicy));
 		}
 		set
 		{
@@ -620,11 +530,11 @@ public class SecRecord : IDisposable
 		}
 	}
 
-	public SecKeyChain[] MatchItemList
+	public NSArray MatchItemList
 	{
 		get
 		{
-			return NSArray.ArrayFromHandle<SecKeyChain>(Fetch(SecItem.MatchItemList));
+			return (NSArray)Runtime.GetNSObject(Fetch(SecItem.MatchItemList));
 		}
 		set
 		{
@@ -632,17 +542,12 @@ public class SecRecord : IDisposable
 			{
 				throw new ArgumentNullException("value");
 			}
-			using NSArray val = NSArray.FromNativeObjects(value);
-			SetValue(val, SecItem.MatchItemList);
+			SetValue(value, SecItem.MatchItemList);
 		}
 	}
 
 	public NSData[] MatchIssuers
 	{
-		get
-		{
-			return NSArray.ArrayFromHandle<NSData>(Fetch(SecItem.MatchIssuers));
-		}
 		set
 		{
 			if (value == null)
@@ -661,7 +566,11 @@ public class SecRecord : IDisposable
 		}
 		set
 		{
-			SetValue(value, SecItem.MatchEmailAddressIfPresent);
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			SetValue(new NSString(value), SecItem.MatchEmailAddressIfPresent);
 		}
 	}
 
@@ -673,7 +582,11 @@ public class SecRecord : IDisposable
 		}
 		set
 		{
-			SetValue(value, SecItem.MatchSubjectContains);
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			SetValue(new NSString(value), SecItem.MatchSubjectContains);
 		}
 	}
 
@@ -681,11 +594,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return Fetch(SecItem.MatchCaseInsensitive) == CFBoolean.TrueHandle;
+			return Fetch(SecItem.MatchCaseInsensitive) == CFBoolean.True.Handle;
 		}
 		set
 		{
-			SetValue(CFBoolean.ToHandle(value), SecItem.MatchCaseInsensitive);
+			SetValue(CFBoolean.FromBoolean(value).Handle, SecItem.MatchCaseInsensitive);
 		}
 	}
 
@@ -693,11 +606,11 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return Fetch(SecItem.MatchTrustedOnly) == CFBoolean.TrueHandle;
+			return Fetch(SecItem.MatchTrustedOnly) == CFBoolean.True.Handle;
 		}
 		set
 		{
-			SetValue(CFBoolean.ToHandle(value), SecItem.MatchTrustedOnly);
+			SetValue(CFBoolean.FromBoolean(value).Handle, SecItem.MatchTrustedOnly);
 		}
 	}
 
@@ -721,7 +634,7 @@ public class SecRecord : IDisposable
 	{
 		get
 		{
-			return Fetch<NSData>(SecItem.ValueData);
+			return FetchData(SecItem.ValueData);
 		}
 		set
 		{
@@ -733,64 +646,37 @@ public class SecRecord : IDisposable
 		}
 	}
 
+	public NSObject ValueRef
+	{
+		get
+		{
+			return FetchObject(SecItem.ValueRef);
+		}
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			SetValue(value, SecItem.ValueRef);
+		}
+	}
+
 	internal SecRecord(NSMutableDictionary dict)
 	{
 		queryDict = dict;
 	}
 
-	public SecRecord()
-	{
-		queryDict = new NSMutableDictionary();
-	}
-
 	public SecRecord(SecKind secKind)
 	{
-		IntPtr obj = SecClass.FromSecKind(secKind);
-		queryDict = NSMutableDictionary.LowlevelFromObjectAndKey(obj, SecClass.SecClassKey);
-	}
-
-	public SecRecord(SecCertificate certificate)
-		: this(SecKind.Certificate)
-	{
-		SetCertificate(certificate);
-	}
-
-	public SecRecord(SecIdentity identity)
-		: this(SecKind.Identity)
-	{
-		SetIdentity(identity);
-	}
-
-	public SecRecord(SecKey key)
-		: this(SecKind.Key)
-	{
-		SetKey(key);
-	}
-
-	public SecCertificate GetCertificate()
-	{
-		CheckClass(SecClass.Certificate);
-		return GetValueRef<SecCertificate>();
-	}
-
-	public SecIdentity GetIdentity()
-	{
-		CheckClass(SecClass.Identity);
-		return GetValueRef<SecIdentity>();
-	}
-
-	public SecKey GetKey()
-	{
-		CheckClass(SecClass.Key);
-		return GetValueRef<SecKey>();
-	}
-
-	private void CheckClass(IntPtr secClass)
-	{
-		IntPtr intPtr = queryDict.LowlevelObjectForKey(SecClass.SecClassKey);
-		if (intPtr != secClass)
+		IntPtr intPtr = SecClass.FromSecKind(secKind);
+		if (intPtr == SecClass.Identity)
 		{
-			throw new InvalidOperationException("SecRecord of incompatible SecClass");
+			queryDict = new NSMutableDictionary();
+		}
+		else
+		{
+			queryDict = NSMutableDictionary.LowlevelFromObjectAndKey(intPtr, SecClass.SecClassKey);
 		}
 	}
 
@@ -799,18 +685,13 @@ public class SecRecord : IDisposable
 		return new SecRecord(NSMutableDictionary.FromDictionary(queryDict));
 	}
 
-	public NSDictionary ToDictionary()
-	{
-		return queryDict;
-	}
-
 	public void Dispose()
 	{
 		Dispose(disposing: true);
 		GC.SuppressFinalize(this);
 	}
 
-	protected virtual void Dispose(bool disposing)
+	public virtual void Dispose(bool disposing)
 	{
 		if (queryDict != null && disposing)
 		{
@@ -831,28 +712,22 @@ public class SecRecord : IDisposable
 
 	private NSObject FetchObject(IntPtr key)
 	{
-		return Runtime.GetNSObject(Fetch(key));
+		return Runtime.GetNSObject(queryDict.LowlevelObjectForKey(key));
 	}
 
 	private string FetchString(IntPtr key)
 	{
-		return (NSString)FetchObject(key);
+		return (NSString)Runtime.GetNSObject(queryDict.LowlevelObjectForKey(key));
 	}
 
-	private int FetchInt(IntPtr key)
+	private NSNumber FetchNumber(IntPtr key)
 	{
-		return ((NSNumber)FetchObject(key))?.Int32Value ?? (-1);
+		return (NSNumber)Runtime.GetNSObject(queryDict.LowlevelObjectForKey(key));
 	}
 
-	private bool FetchBool(IntPtr key, bool defaultValue)
+	private NSData FetchData(IntPtr key)
 	{
-		NSNumber nSNumber = (NSNumber)FetchObject(key);
-		return (nSNumber == null) ? defaultValue : (nSNumber.Int32Value != 0);
-	}
-
-	private T Fetch<T>(IntPtr key) where T : NSObject
-	{
-		return (T)FetchObject(key);
+		return (NSData)Runtime.GetNSObject(queryDict.LowlevelObjectForKey(key));
 	}
 
 	private void SetValue(NSObject val, IntPtr key)
@@ -863,41 +738,5 @@ public class SecRecord : IDisposable
 	private void SetValue(IntPtr val, IntPtr key)
 	{
 		queryDict.LowlevelSetObject(val, key);
-	}
-
-	private void SetValue(string value, IntPtr key)
-	{
-		if (value == null)
-		{
-			throw new ArgumentNullException("value");
-		}
-		IntPtr intPtr = NSString.CreateNative(value);
-		queryDict.LowlevelSetObject(intPtr, key);
-		NSString.ReleaseNative(intPtr);
-	}
-
-	public T GetValueRef<T>() where T : class, INativeObject
-	{
-		return Runtime.GetINativeObject<T>(queryDict.LowlevelObjectForKey(SecItem.ValueRef), owns: false);
-	}
-
-	public void SetValueRef(INativeObject value)
-	{
-		SetValue(value?.Handle ?? IntPtr.Zero, SecItem.ValueRef);
-	}
-
-	public void SetCertificate(SecCertificate cert)
-	{
-		SetValueRef(cert);
-	}
-
-	public void SetIdentity(SecIdentity identity)
-	{
-		SetValueRef(identity);
-	}
-
-	public void SetKey(SecKey key)
-	{
-		SetValueRef(key);
 	}
 }

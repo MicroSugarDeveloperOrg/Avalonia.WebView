@@ -1,8 +1,8 @@
+using System;
 using System.Runtime.InteropServices;
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace Security;
 
@@ -12,7 +12,7 @@ public class SecPolicy : INativeObject, IDisposable
 
 	public IntPtr Handle => handle;
 
-	public SecPolicy(IntPtr handle)
+	internal SecPolicy(IntPtr handle)
 		: this(handle, owns: false)
 	{
 	}
@@ -36,13 +36,10 @@ public class SecPolicy : INativeObject, IDisposable
 
 	public static SecPolicy CreateSslPolicy(bool server, string hostName)
 	{
-		NSString nSString = ((hostName == null) ? null : new NSString(hostName));
-		IntPtr hostname = ((nSString == null) ? IntPtr.Zero : nSString.Handle);
+		CFString cFString = ((hostName == null) ? null : new CFString(hostName));
+		IntPtr hostname = cFString?.Handle ?? IntPtr.Zero;
 		SecPolicy result = new SecPolicy(SecPolicyCreateSSL(server, hostname), owns: true);
-		if (nSString != null)
-		{
-			nSString.Dispose();
-		}
+		cFString?.Dispose();
 		return result;
 	}
 
@@ -75,7 +72,7 @@ public class SecPolicy : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/Security.framework/Security", EntryPoint = "SecPolicyGetTypeID")]
-	public static extern nint GetTypeID();
+	public static extern int GetTypeID();
 
 	public static bool operator ==(SecPolicy a, SecPolicy b)
 	{
@@ -112,50 +109,5 @@ public class SecPolicy : INativeObject, IDisposable
 	public override int GetHashCode()
 	{
 		return (int)Handle;
-	}
-
-	[DllImport("/System/Library/Frameworks/Security.framework/Security")]
-	[iOS(7, 0)]
-	private static extern IntPtr SecPolicyCopyProperties(IntPtr policyRef);
-
-	[iOS(7, 0)]
-	public NSDictionary GetProperties()
-	{
-		IntPtr ptr = SecPolicyCopyProperties(Handle);
-		return Runtime.GetNSObject<NSDictionary>(ptr, owns: true);
-	}
-
-	[DllImport("/System/Library/Frameworks/Security.framework/Security")]
-	[Mac(10, 9)]
-	private static extern IntPtr SecPolicyCreateRevocation(nuint revocationFlags);
-
-	[Mac(10, 9)]
-	[iOS(7, 0)]
-	public static SecPolicy CreateRevocationPolicy(SecRevocation revocationFlags)
-	{
-		IntPtr intPtr = SecPolicyCreateRevocation((nuint)(ulong)revocationFlags);
-		return (intPtr == IntPtr.Zero) ? null : new SecPolicy(intPtr, owns: true);
-	}
-
-	[DllImport("/System/Library/Frameworks/Security.framework/Security")]
-	[Mac(10, 9)]
-	[iOS(7, 0)]
-	private static extern IntPtr SecPolicyCreateWithProperties(IntPtr policyIdentifier, IntPtr properties);
-
-	[Mac(10, 9)]
-	[iOS(7, 0)]
-	public static SecPolicy CreatePolicy(NSString policyIdentifier, NSDictionary properties)
-	{
-		if (policyIdentifier == null)
-		{
-			throw new ArgumentNullException("policyIdentifier");
-		}
-		IntPtr properties2 = properties?.Handle ?? IntPtr.Zero;
-		IntPtr intPtr = SecPolicyCreateWithProperties(policyIdentifier.Handle, properties2);
-		if (intPtr == IntPtr.Zero)
-		{
-			throw new ArgumentException("Unknown policyIdentifier");
-		}
-		return new SecPolicy(intPtr, owns: true);
 	}
 }

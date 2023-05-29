@@ -3,33 +3,15 @@ using ObjCRuntime;
 
 namespace CoreImage;
 
-[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
 public static class CIUIParameterSet
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Advanced;
+	private static NSString _Basic;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Basic;
+	private static NSString _Intermediate;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Development;
+	private static NSString _Advanced;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Intermediate;
-
-	[Field("kCIUISetAdvanced", "Quartz")]
-	public static NSString Advanced
-	{
-		get
-		{
-			if (_Advanced == null)
-			{
-				_Advanced = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIUISetAdvanced");
-			}
-			return _Advanced;
-		}
-	}
+	private static NSString _Development;
 
 	[Field("kCIUISetBasic", "Quartz")]
 	public static NSString Basic
@@ -44,19 +26,6 @@ public static class CIUIParameterSet
 		}
 	}
 
-	[Field("kCIUISetDevelopment", "Quartz")]
-	public static NSString Development
-	{
-		get
-		{
-			if (_Development == null)
-			{
-				_Development = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIUISetDevelopment");
-			}
-			return _Development;
-		}
-	}
-
 	[Field("kCIUISetIntermediate", "Quartz")]
 	public static NSString Intermediate
 	{
@@ -67,6 +36,32 @@ public static class CIUIParameterSet
 				_Intermediate = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIUISetIntermediate");
 			}
 			return _Intermediate;
+		}
+	}
+
+	[Field("kCIUISetAdvanced", "Quartz")]
+	public static NSString Advanced
+	{
+		get
+		{
+			if (_Advanced == null)
+			{
+				_Advanced = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIUISetAdvanced");
+			}
+			return _Advanced;
+		}
+	}
+
+	[Field("kCIUISetDevelopment", "Quartz")]
+	public static NSString Development
+	{
+		get
+		{
+			if (_Development == null)
+			{
+				_Development = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIUISetDevelopment");
+			}
+			return _Development;
 		}
 	}
 }

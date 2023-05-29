@@ -2,8 +2,8 @@ using System;
 
 namespace Foundation;
 
-[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-public sealed class FieldAttribute : Attribute
+[AttributeUsage(AttributeTargets.Property)]
+public class FieldAttribute : Attribute
 {
 	public string SymbolName { get; set; }
 

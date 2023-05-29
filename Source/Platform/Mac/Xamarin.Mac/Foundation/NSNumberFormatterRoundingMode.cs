@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace Foundation;
 
-[Native]
 public enum NSNumberFormatterRoundingMode : ulong
 {
 	Ceiling,

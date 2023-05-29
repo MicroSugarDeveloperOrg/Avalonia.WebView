@@ -1,18 +1,16 @@
-using System;
-
 namespace AppKit;
 
 public struct NSEdgeInsets
 {
-	public nfloat Top;
+	public double Top;
 
-	public nfloat Left;
+	public double Left;
 
-	public nfloat Bottom;
+	public double Bottom;
 
-	public nfloat Right;
+	public double Right;
 
-	public NSEdgeInsets(nfloat top, nfloat left, nfloat bottom, nfloat right)
+	public NSEdgeInsets(double top, double left, double bottom, double right)
 	{
 		Top = top;
 		Left = left;

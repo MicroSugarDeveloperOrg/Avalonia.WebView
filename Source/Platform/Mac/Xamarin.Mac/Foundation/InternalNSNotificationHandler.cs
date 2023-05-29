@@ -13,7 +13,6 @@ internal class InternalNSNotificationHandler : NSObject
 	{
 		this.notificationCenter = notificationCenter;
 		this.notify = notify;
-		base.IsDirectBinding = false;
 	}
 
 	[Export("post:")]

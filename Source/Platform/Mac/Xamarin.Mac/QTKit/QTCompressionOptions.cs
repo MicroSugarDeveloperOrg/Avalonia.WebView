@@ -8,78 +8,28 @@ namespace QTKit;
 [Register("QTCompressionOptions", true)]
 public class QTCompressionOptions : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCompressionOptionsIdentifiersForMediaType_ = "compressionOptionsIdentifiersForMediaType:";
-
-	private static readonly IntPtr selCompressionOptionsIdentifiersForMediaType_Handle = Selector.GetHandle("compressionOptionsIdentifiersForMediaType:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCompressionOptionsWithIdentifier_ = "compressionOptionsWithIdentifier:";
-
-	private static readonly IntPtr selCompressionOptionsWithIdentifier_Handle = Selector.GetHandle("compressionOptionsWithIdentifier:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsEqualToCompressionOptions_ = "isEqualToCompressionOptions:";
-
-	private static readonly IntPtr selIsEqualToCompressionOptions_Handle = Selector.GetHandle("isEqualToCompressionOptions:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLocalizedCompressionOptionsSummary = "localizedCompressionOptionsSummary";
-
-	private static readonly IntPtr selLocalizedCompressionOptionsSummaryHandle = Selector.GetHandle("localizedCompressionOptionsSummary");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLocalizedDisplayName = "localizedDisplayName";
+	private static readonly IntPtr selMediaTypeHandle = Selector.GetHandle("mediaType");
 
 	private static readonly IntPtr selLocalizedDisplayNameHandle = Selector.GetHandle("localizedDisplayName");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMediaType = "mediaType";
+	private static readonly IntPtr selLocalizedCompressionOptionsSummaryHandle = Selector.GetHandle("localizedCompressionOptionsSummary");
 
-	private static readonly IntPtr selMediaTypeHandle = Selector.GetHandle("mediaType");
+	private static readonly IntPtr selCompressionOptionsIdentifiersForMediaType_Handle = Selector.GetHandle("compressionOptionsIdentifiersForMediaType:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("QTCompressionOptions");
+	private static readonly IntPtr selCompressionOptionsWithIdentifier_Handle = Selector.GetHandle("compressionOptionsWithIdentifier:");
 
-	public QTMediaType MediaTypeValue => QTMedia.QTMediaTypeFromNSString((NSString)MediaType);
+	private static readonly IntPtr selIsEqualToCompressionOptions_Handle = Selector.GetHandle("isEqualToCompressionOptions:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("QTCompressionOptions");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string LocalizedCompressionOptionsSummary
-	{
-		[Export("localizedCompressionOptionsSummary")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedCompressionOptionsSummaryHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizedCompressionOptionsSummaryHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string LocalizedDisplayName
-	{
-		[Export("localizedDisplayName")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedDisplayNameHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizedDisplayNameHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string MediaType
 	{
 		[Export("mediaType")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMediaTypeHandle));
 			}
@@ -87,57 +37,75 @@ public class QTCompressionOptions : NSObject
 		}
 	}
 
-	public string[] GetCompressionOptionsIdentifiers(QTMediaType forMediaType)
+	public virtual string LocalizedDisplayName
 	{
-		return GetCompressionOptionsIdentifiers(QTMedia.NSStringFromQTMediaType(forMediaType));
+		[Export("localizedDisplayName")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedDisplayNameHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizedDisplayNameHandle));
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string LocalizedCompressionOptionsSummary
+	{
+		[Export("localizedCompressionOptionsSummary")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedCompressionOptionsSummaryHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizedCompressionOptionsSummaryHandle));
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public QTCompressionOptions()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected QTCompressionOptions(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public QTCompressionOptions(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public QTCompressionOptions(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal QTCompressionOptions(IntPtr handle)
+	public QTCompressionOptions(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("compressionOptionsWithIdentifier:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSObject FromIdentifier(string identifier)
-	{
-		if (identifier == null)
-		{
-			throw new ArgumentNullException("identifier");
-		}
-		IntPtr arg = NSString.CreateNative(identifier);
-		NSObject nSObject = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selCompressionOptionsWithIdentifier_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return nSObject;
-	}
-
 	[Export("compressionOptionsIdentifiersForMediaType:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static string[] GetCompressionOptionsIdentifiers(string forMediaType)
 	{
 		if (forMediaType == null)
@@ -150,15 +118,27 @@ public class QTCompressionOptions : NSObject
 		return result;
 	}
 
+	[Export("compressionOptionsWithIdentifier:")]
+	public static NSObject FromIdentifier(string identifier)
+	{
+		if (identifier == null)
+		{
+			throw new ArgumentNullException("identifier");
+		}
+		IntPtr arg = NSString.CreateNative(identifier);
+		NSObject nSObject = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selCompressionOptionsWithIdentifier_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return nSObject;
+	}
+
 	[Export("isEqualToCompressionOptions:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsEqualToCompressionOptions(QTCompressionOptions compressionOptions)
 	{
 		if (compressionOptions == null)
 		{
 			throw new ArgumentNullException("compressionOptions");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIsEqualToCompressionOptions_Handle, compressionOptions.Handle);
 		}

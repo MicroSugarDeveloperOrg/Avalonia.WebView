@@ -6,46 +6,59 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Protocol]
-[Register("AVPlayerItemOutputPullDelegate", false)]
+[Register("AVPlayerItemOutputPullDelegate", true)]
 [Model]
-[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-public class AVPlayerItemOutputPullDelegate : NSObject, IAVPlayerItemOutputPullDelegate, INativeObject, IDisposable
+public class AVPlayerItemOutputPullDelegate : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public AVPlayerItemOutputPullDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected AVPlayerItemOutputPullDelegate(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public AVPlayerItemOutputPullDelegate(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public AVPlayerItemOutputPullDelegate(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal AVPlayerItemOutputPullDelegate(IntPtr handle)
+	public AVPlayerItemOutputPullDelegate(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
 	}
 
 	[Export("outputMediaDataWillChange:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void OutputMediaDataWillChange(AVPlayerItemOutput sender)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("outputSequenceWasFlushed:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void OutputSequenceWasFlushed(AVPlayerItemOutput output)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();

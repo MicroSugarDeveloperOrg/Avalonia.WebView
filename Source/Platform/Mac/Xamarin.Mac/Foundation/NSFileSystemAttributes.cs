@@ -19,18 +19,20 @@ public class NSFileSystemAttributes
 		this.dict = dict;
 	}
 
-	internal static NSFileSystemAttributes FromDictionary(NSDictionary dict)
+	internal static NSFileSystemAttributes FromDict(NSDictionary dict)
 	{
 		if (dict == null)
 		{
 			return null;
 		}
 		NSFileSystemAttributes nSFileSystemAttributes = new NSFileSystemAttributes(dict);
-		nSFileSystemAttributes.Size = NSFileAttributes.fetch_ulong(dict, NSFileManager.SystemSize).GetValueOrDefault();
-		nSFileSystemAttributes.FreeSize = NSFileAttributes.fetch_ulong(dict, NSFileManager.SystemFreeSize).GetValueOrDefault();
-		nSFileSystemAttributes.Nodes = NSFileAttributes.fetch_long(dict, NSFileManager.SystemNodes).GetValueOrDefault();
-		nSFileSystemAttributes.FreeNodes = NSFileAttributes.fetch_long(dict, NSFileManager.SystemFreeNodes).GetValueOrDefault();
-		nSFileSystemAttributes.Number = NSFileAttributes.fetch_uint(dict, NSFileManager.SystemFreeNodes).GetValueOrDefault();
+		ulong b = 0uL;
+		uint b2 = 0u;
+		nSFileSystemAttributes.Size = (NSFileAttributes.fetch(dict, NSFileManager.SystemSize, ref b) ? b : 0);
+		nSFileSystemAttributes.FreeSize = (NSFileAttributes.fetch(dict, NSFileManager.SystemFreeSize, ref b) ? b : 0);
+		nSFileSystemAttributes.Nodes = (long)(NSFileAttributes.fetch(dict, NSFileManager.SystemNodes, ref b) ? b : 0);
+		nSFileSystemAttributes.FreeNodes = (long)(NSFileAttributes.fetch(dict, NSFileManager.SystemFreeNodes, ref b) ? b : 0);
+		nSFileSystemAttributes.Number = (NSFileAttributes.fetch(dict, NSFileManager.SystemFreeNodes, ref b2) ? b2 : 0u);
 		return nSFileSystemAttributes;
 	}
 

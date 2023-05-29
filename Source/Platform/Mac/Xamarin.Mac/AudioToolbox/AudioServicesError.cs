@@ -7,8 +7,5 @@ public enum AudioServicesError
 	BadPropertySize = 561211770,
 	BadSpecifierSizeError = 561213539,
 	SystemSoundUnspecifiedError = -1500,
-	SystemSoundClientTimedOutError = -1501,
-	[iOS(10, 0)]
-	[Mac(10, 12)]
-	SystemSoundExceededMaximumDurationError = -1502
+	SystemSoundClientTimedOutError = -1501
 }

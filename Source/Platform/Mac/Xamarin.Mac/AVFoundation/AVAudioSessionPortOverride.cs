@@ -1,11 +1,7 @@
-using ObjCRuntime;
-
 namespace AVFoundation;
 
-[Native]
-public enum AVAudioSessionPortOverride : ulong
+public enum AVAudioSessionPortOverride
 {
-	None = 0uL,
-	[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
-	Speaker = 1936747378uL
+	None = 0,
+	Speaker = 1936747378
 }

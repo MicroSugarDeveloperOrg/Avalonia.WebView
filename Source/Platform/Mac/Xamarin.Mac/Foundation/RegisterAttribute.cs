@@ -2,7 +2,7 @@ using System;
 
 namespace Foundation;
 
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public sealed class RegisterAttribute : Attribute
 {
 	private string name;
@@ -32,8 +32,6 @@ public sealed class RegisterAttribute : Attribute
 			is_wrapper = value;
 		}
 	}
-
-	public bool SkipRegistration { get; set; }
 
 	public RegisterAttribute()
 	{

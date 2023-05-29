@@ -1,9 +1,6 @@
-using ObjCRuntime;
-
 namespace QTKit;
 
-[Native]
-public enum QTCaptureDevicePlaybackMode : ulong
+public enum QTCaptureDevicePlaybackMode
 {
 	NotPlaying,
 	Playing

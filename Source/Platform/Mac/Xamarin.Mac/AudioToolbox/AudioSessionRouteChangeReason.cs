@@ -8,6 +8,5 @@ public enum AudioSessionRouteChangeReason
 	CategoryChange = 3,
 	Override = 4,
 	WakeFromSleep = 6,
-	NoSuitableRouteForCategory = 7,
-	RouteConfigurationChange = 8
+	NoSuitableRouteForCategory = 7
 }

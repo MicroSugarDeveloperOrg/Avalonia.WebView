@@ -3,19 +3,37 @@ using System.Runtime.InteropServices;
 
 namespace ObjCRuntime;
 
-public class Selector : IEquatable<Selector>, INativeObject
+[StructLayout(LayoutKind.Sequential)]
+public class Selector : IEquatable<Selector>
 {
-	internal static readonly IntPtr Init = GetHandle("init");
+	[MonoNativeFunctionWrapper]
+	private delegate int getFrameLengthDelegate(IntPtr @this, IntPtr sel);
 
-	internal static readonly IntPtr InitWithCoder = GetHandle("initWithCoder:");
+	public static readonly IntPtr Init = GetHandle("init");
 
-    private static IntPtr MethodSignatureForSelector = GetHandle("methodSignatureForSelector:");
+	public static readonly IntPtr InitWithCoder = GetHandle("initWithCoder:");
 
-    private static IntPtr FrameLength = GetHandle("frameLength");
+	private static IntPtr MethodSignatureForSelector = GetHandle("methodSignatureForSelector:");
 
-    internal static IntPtr RetainCount = GetHandle("retainCount");
+	private static IntPtr FrameLength = GetHandle("frameLength");
 
-    internal static IntPtr AllocHandle = GetHandle("alloc");
+	internal static IntPtr RetainCount = GetHandle("retainCount");
+
+	internal const string Alloc = "alloc";
+
+	internal const string Release = "release";
+
+	internal const string Retain = "retain";
+
+	internal const string Autorelease = "autorelease";
+
+	internal const string DoesNotRecognizeSelector = "doesNotRecognizeSelector:";
+
+	internal const string PerformSelectorOnMainThreadWithObjectWaitUntilDone = "performSelectorOnMainThread:withObject:waitUntilDone:";
+
+	internal const string PerformSelectorWithObjectAfterDelay = "performSelector:withObject:afterDelay:";
+
+	internal static IntPtr AllocHandle = GetHandle("alloc");
 
 	internal static IntPtr ReleaseHandle = GetHandle("release");
 
@@ -29,33 +47,11 @@ public class Selector : IEquatable<Selector>, INativeObject
 
 	internal static IntPtr PerformSelectorWithObjectAfterDelayHandle = GetHandle("performSelector:withObject:afterDelay:");
 
-	internal const string Alloc = "alloc";
-
-	internal const string Class = "class";
-
-	internal const string Release = "release";
-
-	internal const string Retain = "retain";
-
-	internal const string Autorelease = "autorelease";
-
-	internal const string Dealloc = "dealloc";
-
-	internal const string DoesNotRecognizeSelector = "doesNotRecognizeSelector:";
-
-	internal const string PerformSelectorOnMainThreadWithObjectWaitUntilDone = "performSelectorOnMainThread:withObject:waitUntilDone:";
-
-	internal const string PerformSelectorInBackground = "performSelectorInBackground:withObject:";
-
-	internal const string PerformSelectorWithObjectAfterDelay = "performSelector:withObject:afterDelay:";
-
-	private IntPtr handle;
-
-	private string name;
+	internal IntPtr handle;
 
 	public IntPtr Handle => handle;
 
-	public string Name => name;
+	public string Name => Messaging.StringFromNativeUtf8(sel_getName(handle));
 
 	public Selector(IntPtr sel)
 		: this(sel, check: true)
@@ -69,22 +65,30 @@ public class Selector : IEquatable<Selector>, INativeObject
 			throw new ArgumentException("sel is not a selector handle.");
 		}
 		handle = sel;
-		name = GetName(sel);
 	}
 
-    public Selector(string name, bool alloc) => this.handle = Selector.GetHandle(name);
-
-    public Selector(string name)
+	public Selector(string name, bool alloc)
 	{
-		this.name = name;
 		handle = GetHandle(name);
 	}
 
-    [MonoPInvokeCallback(typeof(getFrameLengthDelegate))]
-    public static int GetFrameLength(IntPtr @this, IntPtr sel) => Messaging.int_objc_msgSend(Messaging.IntPtr_objc_msgSend_IntPtr(@this, MethodSignatureForSelector, sel), FrameLength);
+	public Selector(string name)
+		: this(name, alloc: false)
+	{
+	}
 
+	[MonoPInvokeCallback(typeof(getFrameLengthDelegate))]
+	public static int GetFrameLength(IntPtr @this, IntPtr sel)
+	{
+		return Messaging.int_objc_msgSend(Messaging.IntPtr_objc_msgSend_IntPtr(@this, MethodSignatureForSelector, sel), FrameLength);
+	}
 
-    public static bool operator !=(Selector left, Selector right)
+	public static Selector Register(IntPtr handle)
+	{
+		return new Selector(handle);
+	}
+
+	public static bool operator !=(Selector left, Selector right)
 	{
 		return !(left == right);
 	}
@@ -118,12 +122,7 @@ public class Selector : IEquatable<Selector>, INativeObject
 
 	public override int GetHashCode()
 	{
-		return handle.GetHashCode();
-	}
-
-	internal static string GetName(IntPtr handle)
-	{
-		return Marshal.PtrToStringAuto(sel_getName(handle));
+		return (int)handle;
 	}
 
 	public static Selector FromHandle(IntPtr sel)
@@ -135,11 +134,6 @@ public class Selector : IEquatable<Selector>, INativeObject
 		return new Selector(sel, check: false);
 	}
 
-	public static Selector Register(IntPtr handle)
-	{
-		return new Selector(handle);
-	}
-
 	[DllImport("/usr/lib/libobjc.dylib")]
 	private static extern IntPtr sel_getName(IntPtr sel);
 
@@ -148,7 +142,4 @@ public class Selector : IEquatable<Selector>, INativeObject
 
 	[DllImport("/usr/lib/libobjc.dylib")]
 	private static extern bool sel_isMapped(IntPtr sel);
-
-    [MonoNativeFunctionWrapper]
-    private delegate int getFrameLengthDelegate(IntPtr @this, IntPtr sel);
 }

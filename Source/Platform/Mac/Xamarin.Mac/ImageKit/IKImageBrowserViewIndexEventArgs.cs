@@ -1,12 +1,12 @@
-using Xamarin.Mac.System.Mac;
+using System;
 
 namespace ImageKit;
 
 public class IKImageBrowserViewIndexEventArgs : EventArgs
 {
-	public nint Index { get; set; }
+	public int Index { get; set; }
 
-	public IKImageBrowserViewIndexEventArgs(nint index)
+	public IKImageBrowserViewIndexEventArgs(int index)
 	{
 		Index = index;
 	}

@@ -5,78 +5,64 @@ using ObjCRuntime;
 
 namespace AppKit;
 
-[Protocol]
-[Register("NSPathControlDelegate", false)]
+[Register("NSPathControlDelegate", true)]
 [Model]
-public class NSPathControlDelegate : NSObject, INSPathControlDelegate, INativeObject, IDisposable
+public abstract class NSPathControlDelegate : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSPathControlDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSPathControlDelegate(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSPathControlDelegate(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSPathControlDelegate(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSPathControlDelegate(IntPtr handle)
+	public NSPathControlDelegate(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
-	}
-
-	[Export("pathControl:acceptDrop:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AcceptDrop(NSPathControl pathControl, NSDraggingInfo info)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("pathControl:shouldDragItem:withPasteboard:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool ShouldDragItem(NSPathControl pathControl, NSPathControlItem pathItem, NSPasteboard pasteboard)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("pathControl:shouldDragPathComponentCell:withPasteboard:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool ShouldDragPathComponentCell(NSPathControl pathControl, NSPathComponentCell pathComponentCell, NSPasteboard pasteboard)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
+	public abstract bool ShouldDragPathComponentCell(NSPathControl pathControl, NSPathComponentCell pathComponentCell, NSPasteboard pasteboard);
 
 	[Export("pathControl:validateDrop:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDragOperation ValidateDrop(NSPathControl pathControl, NSDraggingInfo info)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
+	public abstract NSDragOperation ValidateDrop(NSPathControl pathControl, NSDraggingInfo info);
+
+	[Export("pathControl:acceptDrop:")]
+	public abstract bool AcceptDrop(NSPathControl pathControl, NSDraggingInfo info);
 
 	[Export("pathControl:willDisplayOpenPanel:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void WillDisplayOpenPanel(NSPathControl pathControl, NSOpenPanel openPanel)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
+	public abstract void WillDisplayOpenPanel(NSPathControl pathControl, NSOpenPanel openPanel);
 
 	[Export("pathControl:willPopUpMenu:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void WillPopUpMenu(NSPathControl pathControl, NSMenu menu)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
+	public abstract void WillPopUpMenu(NSPathControl pathControl, NSMenu menu);
 }

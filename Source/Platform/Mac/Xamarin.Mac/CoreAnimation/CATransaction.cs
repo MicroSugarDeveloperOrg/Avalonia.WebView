@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
@@ -8,99 +9,50 @@ namespace CoreAnimation;
 [Register("CATransaction", true)]
 public class CATransaction : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAnimationDuration = "animationDuration";
-
 	private static readonly IntPtr selAnimationDurationHandle = Selector.GetHandle("animationDuration");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAnimationTimingFunction = "animationTimingFunction";
-
-	private static readonly IntPtr selAnimationTimingFunctionHandle = Selector.GetHandle("animationTimingFunction");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selBegin = "begin";
-
-	private static readonly IntPtr selBeginHandle = Selector.GetHandle("begin");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCommit = "commit";
-
-	private static readonly IntPtr selCommitHandle = Selector.GetHandle("commit");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCompletionBlock = "completionBlock";
-
-	private static readonly IntPtr selCompletionBlockHandle = Selector.GetHandle("completionBlock");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDisableActions = "disableActions";
-
-	private static readonly IntPtr selDisableActionsHandle = Selector.GetHandle("disableActions");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFlush = "flush";
-
-	private static readonly IntPtr selFlushHandle = Selector.GetHandle("flush");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLock = "lock";
-
-	private static readonly IntPtr selLockHandle = Selector.GetHandle("lock");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAnimationDuration_ = "setAnimationDuration:";
 
 	private static readonly IntPtr selSetAnimationDuration_Handle = Selector.GetHandle("setAnimationDuration:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAnimationTimingFunction_ = "setAnimationTimingFunction:";
+	private static readonly IntPtr selAnimationTimingFunctionHandle = Selector.GetHandle("animationTimingFunction");
 
 	private static readonly IntPtr selSetAnimationTimingFunction_Handle = Selector.GetHandle("setAnimationTimingFunction:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetCompletionBlock_ = "setCompletionBlock:";
-
-	private static readonly IntPtr selSetCompletionBlock_Handle = Selector.GetHandle("setCompletionBlock:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDisableActions_ = "setDisableActions:";
+	private static readonly IntPtr selDisableActionsHandle = Selector.GetHandle("disableActions");
 
 	private static readonly IntPtr selSetDisableActions_Handle = Selector.GetHandle("setDisableActions:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetValue_ForKey_ = "setValue:forKey:";
+	private static readonly IntPtr selCompletionBlockHandle = Selector.GetHandle("completionBlock");
 
-	private static readonly IntPtr selSetValue_ForKey_Handle = Selector.GetHandle("setValue:forKey:");
+	private static readonly IntPtr selSetCompletionBlock_Handle = Selector.GetHandle("setCompletionBlock:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUnlock = "unlock";
+	private static readonly IntPtr selBeginHandle = Selector.GetHandle("begin");
+
+	private static readonly IntPtr selCommitHandle = Selector.GetHandle("commit");
+
+	private static readonly IntPtr selFlushHandle = Selector.GetHandle("flush");
+
+	private static readonly IntPtr selLockHandle = Selector.GetHandle("lock");
 
 	private static readonly IntPtr selUnlockHandle = Selector.GetHandle("unlock");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selValueForKey_ = "valueForKey:";
-
 	private static readonly IntPtr selValueForKey_Handle = Selector.GetHandle("valueForKey:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("CATransaction");
+	private static readonly IntPtr selSetValueForKey_Handle = Selector.GetHandle("setValue:forKey:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _AnimationDurationKey;
+	private static readonly IntPtr class_ptr = Class.GetHandle("CATransaction");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _CompletionBlockKey;
+	private static object __mt_AnimationTimingFunction_var_static;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DisableActionsKey;
+	private static NSString _AnimationDurationKey;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _TimingFunctionKey;
+	private static NSString _DisableActionsKey;
+
+	private static NSString _TimingFunctionKey;
+
+	private static NSString _CompletionBlockKey;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static double AnimationDuration
 	{
 		[Export("animationDuration")]
@@ -115,13 +67,12 @@ public class CATransaction : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static CAMediaTimingFunction? AnimationTimingFunction
+	public static CAMediaTimingFunction AnimationTimingFunction
 	{
 		[Export("animationTimingFunction")]
 		get
 		{
-			return Runtime.GetNSObject<CAMediaTimingFunction>(Messaging.IntPtr_objc_msgSend(class_ptr, selAnimationTimingFunctionHandle));
+			return (CAMediaTimingFunction)(__mt_AnimationTimingFunction_var_static = (CAMediaTimingFunction)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selAnimationTimingFunctionHandle)));
 		}
 		[Export("setAnimationTimingFunction:")]
 		set
@@ -130,29 +81,6 @@ public class CATransaction : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe static Action? CompletionBlock
-	{
-		[Export("completionBlock")]
-		[return: DelegateProxy(typeof(Trampolines.SDAction))]
-		get
-		{
-			IntPtr block = Messaging.IntPtr_objc_msgSend(class_ptr, selCompletionBlockHandle);
-			return Trampolines.NIDAction.Create(block);
-		}
-		[Export("setCompletionBlock:")]
-		[param: BlockProxy(typeof(Trampolines.NIDAction))]
-		set
-		{
-			BlockLiteral blockLiteral = default(BlockLiteral);
-			BlockLiteral* ptr = &blockLiteral;
-			blockLiteral.SetupBlockUnsafe(Trampolines.SDAction.Handler, value);
-			Messaging.void_objc_msgSend_IntPtr(class_ptr, selSetCompletionBlock_Handle, (IntPtr)ptr);
-			ptr->CleanupBlock();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static bool DisableActions
 	{
 		[Export("disableActions")]
@@ -167,6 +95,30 @@ public class CATransaction : NSObject
 		}
 	}
 
+	[Since(4, 0)]
+	public unsafe static NSAction CompletionBlock
+	{
+		[Export("completionBlock")]
+		get
+		{
+			BlockLiteral* ptr = (BlockLiteral*)(void*)Messaging.IntPtr_objc_msgSend(class_ptr, selCompletionBlockHandle);
+			if (ptr == null)
+			{
+				return null;
+			}
+			return (NSAction)((ptr->global_handle != IntPtr.Zero) ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target);
+		}
+		[Export("setCompletionBlock:")]
+		set
+		{
+			BlockLiteral blockLiteral = default(BlockLiteral);
+			BlockLiteral* ptr = &blockLiteral;
+			blockLiteral.SetupBlock(Trampolines.SDNSAction.Handler, value);
+			Messaging.void_objc_msgSend_IntPtr(class_ptr, selSetCompletionBlock_Handle, (IntPtr)ptr);
+			ptr->CleanupBlock();
+		}
+	}
+
 	[Field("kCATransactionAnimationDuration", "CoreAnimation")]
 	public static NSString AnimationDurationKey
 	{
@@ -177,19 +129,6 @@ public class CATransaction : NSObject
 				_AnimationDurationKey = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCATransactionAnimationDuration");
 			}
 			return _AnimationDurationKey;
-		}
-	}
-
-	[Field("kCATransactionCompletionBlock", "CoreAnimation")]
-	public static NSString CompletionBlockKey
-	{
-		get
-		{
-			if (_CompletionBlockKey == null)
-			{
-				_CompletionBlockKey = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCATransactionCompletionBlock");
-			}
-			return _CompletionBlockKey;
 		}
 	}
 
@@ -219,84 +158,92 @@ public class CATransaction : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Field("kCATransactionCompletionBlock", "CoreAnimation")]
+	public static NSString CompletionBlockKey
+	{
+		get
+		{
+			if (_CompletionBlockKey == null)
+			{
+				_CompletionBlockKey = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCATransactionCompletionBlock");
+			}
+			return _CompletionBlockKey;
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public CATransaction()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected CATransaction(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public CATransaction(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public CATransaction(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal CATransaction(IntPtr handle)
+	public CATransaction(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("begin")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static void Begin()
 	{
 		Messaging.void_objc_msgSend(class_ptr, selBeginHandle);
 	}
 
 	[Export("commit")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static void Commit()
 	{
 		Messaging.void_objc_msgSend(class_ptr, selCommitHandle);
 	}
 
 	[Export("flush")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static void Flush()
 	{
 		Messaging.void_objc_msgSend(class_ptr, selFlushHandle);
 	}
 
 	[Export("lock")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static void Lock()
 	{
 		Messaging.void_objc_msgSend(class_ptr, selLockHandle);
 	}
 
-	[Export("setValue:forKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public new static void SetValueForKey(NSObject? anObject, NSString key)
-	{
-		if (key == null)
-		{
-			throw new ArgumentNullException("key");
-		}
-		Messaging.void_objc_msgSend_IntPtr_IntPtr(class_ptr, selSetValue_ForKey_Handle, anObject?.Handle ?? IntPtr.Zero, key.Handle);
-	}
-
 	[Export("unlock")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static void Unlock()
 	{
 		Messaging.void_objc_msgSend(class_ptr, selUnlockHandle);
 	}
 
 	[Export("valueForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new static NSObject ValueForKey(NSString key)
 	{
 		if (key == null)
@@ -304,5 +251,19 @@ public class CATransaction : NSObject
 			throw new ArgumentNullException("key");
 		}
 		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selValueForKey_Handle, key.Handle));
+	}
+
+	[Export("setValue:forKey:")]
+	public new static void SetValueForKey(NSObject anObject, NSString key)
+	{
+		if (anObject == null)
+		{
+			throw new ArgumentNullException("anObject");
+		}
+		if (key == null)
+		{
+			throw new ArgumentNullException("key");
+		}
+		Messaging.void_objc_msgSend_IntPtr_IntPtr(class_ptr, selSetValueForKey_Handle, anObject.Handle, key.Handle);
 	}
 }

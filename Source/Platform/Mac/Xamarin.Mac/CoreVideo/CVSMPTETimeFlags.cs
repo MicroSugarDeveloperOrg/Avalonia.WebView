@@ -1,12 +1,10 @@
 using System;
-using ObjCRuntime;
 
 namespace CoreVideo;
 
 [Flags]
-[Watch(4, 0)]
-public enum CVSMPTETimeFlags : uint
+public enum CVSMPTETimeFlags
 {
-	Valid = 1u,
-	Running = 2u
+	Valid = 1,
+	Running = 2
 }

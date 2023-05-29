@@ -1,5 +1,8 @@
+using ObjCRuntime;
+
 namespace CoreText;
 
+[Since(3, 2)]
 public enum CTFontPriority : uint
 {
 	System = 10000u,

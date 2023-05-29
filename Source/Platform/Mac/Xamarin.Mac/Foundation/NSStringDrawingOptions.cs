@@ -1,10 +1,5 @@
-using System;
-using ObjCRuntime;
-
 namespace Foundation;
 
-[Flags]
-[Native]
 public enum NSStringDrawingOptions : ulong
 {
 	UsesLineFragmentOrigin = 1uL,

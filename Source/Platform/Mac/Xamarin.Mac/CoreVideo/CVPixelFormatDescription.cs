@@ -5,7 +5,7 @@ using ObjCRuntime;
 
 namespace CoreVideo;
 
-[Watch(4, 0)]
+[Since(4, 0)]
 public static class CVPixelFormatDescription
 {
 	public static readonly NSString NameKey;
@@ -52,70 +52,44 @@ public static class CVPixelFormatDescription
 
 	public static readonly NSString FillExtendedPixelsCallbackKey;
 
-	[iOS(8, 0)]
-	[Mac(10, 10)]
-	public static readonly NSString ContainsRgb;
-
-	[iOS(8, 0)]
-	[Mac(10, 10)]
-	public static readonly NSString ContainsYCbCr;
-
-	[iOS(9, 0)]
-	[Mac(10, 10)]
-	public static readonly NSString ComponentRangeKey;
-
-	[iOS(9, 0)]
-	[Mac(10, 10)]
-	public static readonly NSString ComponentRangeFullRangeKey;
-
-	[iOS(9, 0)]
-	[Mac(10, 10)]
-	public static readonly NSString ComponentRangeVideoRangeKey;
-
-	[iOS(9, 0)]
-	[Mac(10, 10)]
-	public static readonly NSString ComponentRangeWideRangeKey;
-
-	[iOS(12, 0)]
-	[TV(12, 0)]
-	[Watch(5, 0)]
-	[Mac(10, 14)]
-	public static readonly NSString ContainsGrayscaleKey;
-
-	public static NSNumber[] AllTypes => NSArray.ArrayFromHandle<NSNumber>(CVPixelFormatDescriptionArrayCreateWithAllPixelFormatTypes(IntPtr.Zero));
+	public static NSDictionary[] AllTypes => NSArray.ArrayFromHandle<NSDictionary>(CVPixelFormatDescriptionArrayCreateWithAllPixelFormatTypes(IntPtr.Zero));
 
 	static CVPixelFormatDescription()
 	{
-		IntPtr handle = Libraries.CoreVideo.Handle;
-		NameKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatName");
-		ConstantKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatConstant");
-		CodecTypeKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatCodecType");
-		FourCCKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatFourCC");
-		PlanesKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatPlanes");
-		BlockWidthKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatBlockWidth");
-		BlockHeightKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatBlockHeight");
-		BitsPerBlockKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatBitsPerBlock");
-		BlockHorizontalAlignmentKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatBlockHorizontalAlignment");
-		BlockVerticalAlignmentKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatBlockVerticalAlignment");
-		BlackBlockKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatBlackBlock");
-		HorizontalSubsamplingKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatHorizontalSubsampling");
-		VerticalSubsamplingKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatVerticalSubsampling");
-		OpenGLFormatKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatOpenGLFormat");
-		OpenGLTypeKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatOpenGLType");
-		OpenGLInternalFormatKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatOpenGLInternalFormat");
-		CGBitmapInfoKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatCGBitmapInfo");
-		QDCompatibilityKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatQDCompatibility");
-		CGBitmapContextCompatibilityKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatCGBitmapContextCompatibility");
-		CGImageCompatibilityKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatCGImageCompatibility");
-		OpenGLCompatibilityKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatOpenGLCompatibility");
-		FillExtendedPixelsCallbackKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatFillExtendedPixelsCallback");
-		ContainsRgb = Dlfcn.GetStringConstant(handle, "kCVPixelFormatContainsRGB");
-		ContainsYCbCr = Dlfcn.GetStringConstant(handle, "kCVPixelFormatContainsYCbCr");
-		ComponentRangeKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatComponentRange");
-		ComponentRangeFullRangeKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatComponentRange_FullRange");
-		ComponentRangeVideoRangeKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatComponentRange_VideoRange");
-		ComponentRangeWideRangeKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatComponentRange_WideRange");
-		ContainsGrayscaleKey = Dlfcn.GetStringConstant(handle, "kCVPixelFormatContainsGrayscale");
+		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/CoreVideo.framework/CoreVideo", 0);
+		if (intPtr == IntPtr.Zero)
+		{
+			return;
+		}
+		try
+		{
+			NameKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatName");
+			ConstantKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatConstant");
+			CodecTypeKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatCodecType");
+			FourCCKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatFourCC");
+			PlanesKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatPlanes");
+			BlockWidthKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatBlockWidth");
+			BlockHeightKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatBlockHeight");
+			BitsPerBlockKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatBitsPerBlock");
+			BlockHorizontalAlignmentKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatBlockHorizontalAlignment");
+			BlockVerticalAlignmentKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatBlockVerticalAlignment");
+			BlackBlockKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatBlackBlock");
+			HorizontalSubsamplingKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatHorizontalSubsampling");
+			VerticalSubsamplingKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatVerticalSubsampling");
+			OpenGLFormatKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatOpenGLFormat");
+			OpenGLTypeKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatOpenGLType");
+			OpenGLInternalFormatKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatOpenGLInternalFormat");
+			CGBitmapInfoKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatCGBitmapInfo");
+			QDCompatibilityKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatQDCompatibility");
+			CGBitmapContextCompatibilityKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatCGBitmapContextCompatibility");
+			CGImageCompatibilityKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatCGImageCompatibility");
+			OpenGLCompatibilityKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatOpenGLCompatibility");
+			FillExtendedPixelsCallbackKey = Dlfcn.GetStringConstant(intPtr, "kCVPixelFormatFillExtendedPixelsCallback");
+		}
+		finally
+		{
+			Dlfcn.dlclose(intPtr);
+		}
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
@@ -126,12 +100,7 @@ public static class CVPixelFormatDescription
 
 	public static NSDictionary Create(int pixelFormat)
 	{
-		return Runtime.GetNSObject<NSDictionary>(CVPixelFormatDescriptionCreateWithPixelFormatType(IntPtr.Zero, pixelFormat));
-	}
-
-	public static NSDictionary Create(CVPixelFormatType pixelFormat)
-	{
-		return Runtime.GetNSObject<NSDictionary>(CVPixelFormatDescriptionCreateWithPixelFormatType(IntPtr.Zero, (int)pixelFormat));
+		return (NSDictionary)Runtime.GetNSObject(CVPixelFormatDescriptionCreateWithPixelFormatType(IntPtr.Zero, pixelFormat));
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
@@ -139,19 +108,6 @@ public static class CVPixelFormatDescription
 
 	public static void Register(NSDictionary description, int pixelFormat)
 	{
-		if (description == null)
-		{
-			throw new ArgumentNullException("description");
-		}
 		CVPixelFormatDescriptionRegisterDescriptionWithPixelFormatType(description.Handle, pixelFormat);
-	}
-
-	public static void Register(NSDictionary description, CVPixelFormatType pixelFormat)
-	{
-		if (description == null)
-		{
-			throw new ArgumentNullException("description");
-		}
-		CVPixelFormatDescriptionRegisterDescriptionWithPixelFormatType(description.Handle, (int)pixelFormat);
 	}
 }

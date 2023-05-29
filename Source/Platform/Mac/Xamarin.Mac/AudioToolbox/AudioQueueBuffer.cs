@@ -1,5 +1,4 @@
 using System;
-using ObjCRuntime;
 
 namespace AudioToolbox;
 
@@ -25,6 +24,6 @@ public struct AudioQueueBuffer
 	{
 		byte* target = (byte*)(void*)AudioData;
 		byte* source2 = (byte*)(void*)source;
-		Runtime.memcpy(target, source2, size);
+		AudioQueue.memcpy(target, source2, size);
 	}
 }

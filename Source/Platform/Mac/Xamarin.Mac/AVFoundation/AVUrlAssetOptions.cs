@@ -1,10 +1,8 @@
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AVFoundation;
 
-[Watch(6, 0)]
 public class AVUrlAssetOptions : DictionaryContainer
 {
 	public bool? PreferPreciseDurationAndTiming
@@ -19,15 +17,16 @@ public class AVUrlAssetOptions : DictionaryContainer
 		}
 	}
 
+	[Since(5, 0)]
 	public AVAssetReferenceRestrictions? ReferenceRestrictions
 	{
 		get
 		{
-			return (AVAssetReferenceRestrictions?)(ulong?)GetNUIntValue(AVUrlAsset.ReferenceRestrictionsKey);
+			return (AVAssetReferenceRestrictions?)GetInt32Value(AVUrlAsset.ReferenceRestrictionsKey);
 		}
 		set
 		{
-			SetNumberValue(AVUrlAsset.ReferenceRestrictionsKey, (nuint?)(ulong?)value);
+			SetNumberValue(AVUrlAsset.ReferenceRestrictionsKey, (int?)value);
 		}
 	}
 

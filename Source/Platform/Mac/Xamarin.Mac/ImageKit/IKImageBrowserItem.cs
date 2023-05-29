@@ -1,85 +1,71 @@
+using System;
 using System.ComponentModel;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace ImageKit;
 
-[Protocol(IsInformal = true)]
-[Register("IKImageBrowserItem", false)]
+[Register("IKImageBrowserItem", true)]
 [Model]
-public abstract class IKImageBrowserItem : NSObject, IIKImageBrowserItem, INativeObject, IDisposable
+public abstract class IKImageBrowserItem : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _CGImageRepresentationType;
+	private static NSString _PathRepresentationType;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _CGImageSourceRepresentationType;
+	private static NSString _NSURLRepresentationType;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _IconRefPathRepresentationType;
+	private static NSString _NSImageRepresentationType;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _IconRefRepresentationType;
+	private static NSString _CGImageRepresentationType;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _NSBitmapImageRepresentationType;
+	private static NSString _CGImageSourceRepresentationType;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _NSDataRepresentationType;
+	private static NSString _NSDataRepresentationType;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _NSImageRepresentationType;
+	private static NSString _NSBitmapImageRepresentationType;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _NSURLRepresentationType;
+	private static NSString _QTMovieRepresentationType;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _PDFPageRepresentationType;
+	private static NSString _QTMoviePathRepresentationType;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _PathRepresentationType;
+	private static NSString _QCCompositionRepresentationType;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _QCCompositionPathRepresentationType;
+	private static NSString _QCCompositionPathRepresentationType;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _QCCompositionRepresentationType;
+	private static NSString _QuickLookPathRepresentationType;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _QTMoviePathRepresentationType;
+	private static NSString _IconRefPathRepresentationType;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _QTMovieRepresentationType;
+	private static NSString _IconRefRepresentationType;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _QuickLookPathRepresentationType;
+	private static NSString _PDFPageRepresentationType;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public abstract NSObject ImageRepresentation
+	public abstract string ImageUID
 	{
-		[Export("imageRepresentation")]
+		[Export("imageUID")]
 		get;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public abstract NSString ImageRepresentationType
 	{
 		[Export("imageRepresentationType")]
 		get;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string ImageSubtitle
+	public abstract NSObject ImageRepresentation
 	{
-		[Export("imageSubtitle")]
+		[Export("imageRepresentation")]
+		get;
+	}
+
+	public virtual int ImageVersion
+	{
+		[Export("imageVersion")]
 		get
 		{
 			throw new ModelNotImplementedException();
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string ImageTitle
 	{
 		[Export("imageTitle")]
@@ -89,30 +75,60 @@ public abstract class IKImageBrowserItem : NSObject, IIKImageBrowserItem, INativ
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public abstract string ImageUID
+	public virtual string ImageSubtitle
 	{
-		[Export("imageUID")]
-		get;
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint ImageVersion
-	{
-		[Export("imageVersion")]
+		[Export("imageSubtitle")]
 		get
 		{
 			throw new ModelNotImplementedException();
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsSelectable
 	{
 		[Export("isSelectable")]
 		get
 		{
 			throw new ModelNotImplementedException();
+		}
+	}
+
+	[Field("IKImageBrowserPathRepresentationType", "ImageKit")]
+	public static NSString PathRepresentationType
+	{
+		get
+		{
+			if (_PathRepresentationType == null)
+			{
+				_PathRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserPathRepresentationType");
+			}
+			return _PathRepresentationType;
+		}
+	}
+
+	[Field("IKImageBrowserNSURLRepresentationType", "ImageKit")]
+	public static NSString NSURLRepresentationType
+	{
+		get
+		{
+			if (_NSURLRepresentationType == null)
+			{
+				_NSURLRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserNSURLRepresentationType");
+			}
+			return _NSURLRepresentationType;
+		}
+	}
+
+	[Field("IKImageBrowserNSImageRepresentationType", "ImageKit")]
+	public static NSString NSImageRepresentationType
+	{
+		get
+		{
+			if (_NSImageRepresentationType == null)
+			{
+				_NSImageRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserNSImageRepresentationType");
+			}
+			return _NSImageRepresentationType;
 		}
 	}
 
@@ -142,6 +158,97 @@ public abstract class IKImageBrowserItem : NSObject, IIKImageBrowserItem, INativ
 		}
 	}
 
+	[Field("IKImageBrowserNSDataRepresentationType", "ImageKit")]
+	public static NSString NSDataRepresentationType
+	{
+		get
+		{
+			if (_NSDataRepresentationType == null)
+			{
+				_NSDataRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserNSDataRepresentationType");
+			}
+			return _NSDataRepresentationType;
+		}
+	}
+
+	[Field("IKImageBrowserNSBitmapImageRepresentationType", "ImageKit")]
+	public static NSString NSBitmapImageRepresentationType
+	{
+		get
+		{
+			if (_NSBitmapImageRepresentationType == null)
+			{
+				_NSBitmapImageRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserNSBitmapImageRepresentationType");
+			}
+			return _NSBitmapImageRepresentationType;
+		}
+	}
+
+	[Field("IKImageBrowserQTMovieRepresentationType", "ImageKit")]
+	public static NSString QTMovieRepresentationType
+	{
+		get
+		{
+			if (_QTMovieRepresentationType == null)
+			{
+				_QTMovieRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserQTMovieRepresentationType");
+			}
+			return _QTMovieRepresentationType;
+		}
+	}
+
+	[Field("IKImageBrowserQTMoviePathRepresentationType", "ImageKit")]
+	public static NSString QTMoviePathRepresentationType
+	{
+		get
+		{
+			if (_QTMoviePathRepresentationType == null)
+			{
+				_QTMoviePathRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserQTMoviePathRepresentationType");
+			}
+			return _QTMoviePathRepresentationType;
+		}
+	}
+
+	[Field("IKImageBrowserQCCompositionRepresentationType", "ImageKit")]
+	public static NSString QCCompositionRepresentationType
+	{
+		get
+		{
+			if (_QCCompositionRepresentationType == null)
+			{
+				_QCCompositionRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserQCCompositionRepresentationType");
+			}
+			return _QCCompositionRepresentationType;
+		}
+	}
+
+	[Field("IKImageBrowserQCCompositionPathRepresentationType", "ImageKit")]
+	public static NSString QCCompositionPathRepresentationType
+	{
+		get
+		{
+			if (_QCCompositionPathRepresentationType == null)
+			{
+				_QCCompositionPathRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserQCCompositionPathRepresentationType");
+			}
+			return _QCCompositionPathRepresentationType;
+		}
+	}
+
+	[Field("IKImageBrowserQuickLookPathRepresentationType", "ImageKit")]
+	public static NSString QuickLookPathRepresentationType
+	{
+		get
+		{
+			if (_QuickLookPathRepresentationType == null)
+			{
+				_QuickLookPathRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserQuickLookPathRepresentationType");
+			}
+			return _QuickLookPathRepresentationType;
+		}
+	}
+
 	[Field("IKImageBrowserIconRefPathRepresentationType", "ImageKit")]
 	public static NSString IconRefPathRepresentationType
 	{
@@ -168,58 +275,6 @@ public abstract class IKImageBrowserItem : NSObject, IIKImageBrowserItem, INativ
 		}
 	}
 
-	[Field("IKImageBrowserNSBitmapImageRepresentationType", "ImageKit")]
-	public static NSString NSBitmapImageRepresentationType
-	{
-		get
-		{
-			if (_NSBitmapImageRepresentationType == null)
-			{
-				_NSBitmapImageRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserNSBitmapImageRepresentationType");
-			}
-			return _NSBitmapImageRepresentationType;
-		}
-	}
-
-	[Field("IKImageBrowserNSDataRepresentationType", "ImageKit")]
-	public static NSString NSDataRepresentationType
-	{
-		get
-		{
-			if (_NSDataRepresentationType == null)
-			{
-				_NSDataRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserNSDataRepresentationType");
-			}
-			return _NSDataRepresentationType;
-		}
-	}
-
-	[Field("IKImageBrowserNSImageRepresentationType", "ImageKit")]
-	public static NSString NSImageRepresentationType
-	{
-		get
-		{
-			if (_NSImageRepresentationType == null)
-			{
-				_NSImageRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserNSImageRepresentationType");
-			}
-			return _NSImageRepresentationType;
-		}
-	}
-
-	[Field("IKImageBrowserNSURLRepresentationType", "ImageKit")]
-	public static NSString NSURLRepresentationType
-	{
-		get
-		{
-			if (_NSURLRepresentationType == null)
-			{
-				_NSURLRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserNSURLRepresentationType");
-			}
-			return _NSURLRepresentationType;
-		}
-	}
-
 	[Field("IKImageBrowserPDFPageRepresentationType", "ImageKit")]
 	public static NSString PDFPageRepresentationType
 	{
@@ -233,107 +288,45 @@ public abstract class IKImageBrowserItem : NSObject, IIKImageBrowserItem, INativ
 		}
 	}
 
-	[Field("IKImageBrowserPathRepresentationType", "ImageKit")]
-	public static NSString PathRepresentationType
-	{
-		get
-		{
-			if (_PathRepresentationType == null)
-			{
-				_PathRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserPathRepresentationType");
-			}
-			return _PathRepresentationType;
-		}
-	}
-
-	[Field("IKImageBrowserQCCompositionPathRepresentationType", "ImageKit")]
-	public static NSString QCCompositionPathRepresentationType
-	{
-		get
-		{
-			if (_QCCompositionPathRepresentationType == null)
-			{
-				_QCCompositionPathRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserQCCompositionPathRepresentationType");
-			}
-			return _QCCompositionPathRepresentationType;
-		}
-	}
-
-	[Field("IKImageBrowserQCCompositionRepresentationType", "ImageKit")]
-	public static NSString QCCompositionRepresentationType
-	{
-		get
-		{
-			if (_QCCompositionRepresentationType == null)
-			{
-				_QCCompositionRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserQCCompositionRepresentationType");
-			}
-			return _QCCompositionRepresentationType;
-		}
-	}
-
-	[Field("IKImageBrowserQTMoviePathRepresentationType", "ImageKit")]
-	public static NSString QTMoviePathRepresentationType
-	{
-		get
-		{
-			if (_QTMoviePathRepresentationType == null)
-			{
-				_QTMoviePathRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserQTMoviePathRepresentationType");
-			}
-			return _QTMoviePathRepresentationType;
-		}
-	}
-
-	[Field("IKImageBrowserQTMovieRepresentationType", "ImageKit")]
-	public static NSString QTMovieRepresentationType
-	{
-		get
-		{
-			if (_QTMovieRepresentationType == null)
-			{
-				_QTMovieRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserQTMovieRepresentationType");
-			}
-			return _QTMovieRepresentationType;
-		}
-	}
-
-	[Field("IKImageBrowserQuickLookPathRepresentationType", "ImageKit")]
-	public static NSString QuickLookPathRepresentationType
-	{
-		get
-		{
-			if (_QuickLookPathRepresentationType == null)
-			{
-				_QuickLookPathRepresentationType = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserQuickLookPathRepresentationType");
-			}
-			return _QuickLookPathRepresentationType;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
-	protected IKImageBrowserItem()
+	public IKImageBrowserItem()
 		: base(NSObjectFlag.Empty)
 	{
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected IKImageBrowserItem(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public IKImageBrowserItem(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public IKImageBrowserItem(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal IKImageBrowserItem(IntPtr handle)
+	public IKImageBrowserItem(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
 	}
 }

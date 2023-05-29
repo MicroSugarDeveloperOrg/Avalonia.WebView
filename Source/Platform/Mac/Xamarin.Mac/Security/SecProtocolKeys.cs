@@ -1,274 +1,609 @@
 using System;
-using CoreFoundation;
-using Foundation;
 using ObjCRuntime;
 
 namespace Security;
 
 internal static class SecProtocolKeys
 {
-	[Field("kSecAttrProtocolAFP", "Security")]
-	public static IntPtr AFP => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolAFP");
+	private static IntPtr _AttrProtocolFTP;
 
-	[Field("kSecAttrProtocolAppleTalk", "Security")]
-	public static IntPtr AppleTalk => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolAppleTalk");
+	private static IntPtr _AttrProtocolFTPAccount;
 
-	[Field("kSecAttrProtocolDAAP", "Security")]
-	public static IntPtr DAAP => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolDAAP");
+	private static IntPtr _AttrProtocolHTTP;
 
-	[Field("kSecAttrProtocolEPPC", "Security")]
-	public static IntPtr EPPC => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolEPPC");
+	private static IntPtr _AttrProtocolIRC;
 
-	[Field("kSecAttrProtocolFTP", "Security")]
-	public static IntPtr FTP => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolFTP");
+	private static IntPtr _AttrProtocolNNTP;
 
-	[Field("kSecAttrProtocolFTPAccount", "Security")]
-	public static IntPtr FTPAccount => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolFTPAccount");
+	private static IntPtr _AttrProtocolPOP3;
 
-	[Field("kSecAttrProtocolFTPProxy", "Security")]
-	public static IntPtr FTPProxy => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolFTPProxy");
+	private static IntPtr _AttrProtocolSMTP;
 
-	[Field("kSecAttrProtocolFTPS", "Security")]
-	public static IntPtr FTPS => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolFTPS");
+	private static IntPtr _AttrProtocolSOCKS;
 
-	[Field("kSecAttrProtocolHTTP", "Security")]
-	public static IntPtr HTTP => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolHTTP");
+	private static IntPtr _AttrProtocolIMAP;
 
-	[Field("kSecAttrProtocolHTTPProxy", "Security")]
-	public static IntPtr HTTPProxy => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolHTTPProxy");
+	private static IntPtr _AttrProtocolLDAP;
 
-	[Field("kSecAttrProtocolHTTPS", "Security")]
-	public static IntPtr HTTPS => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolHTTPS");
+	private static IntPtr _AttrProtocolAppleTalk;
 
-	[Field("kSecAttrProtocolHTTPSProxy", "Security")]
-	public static IntPtr HTTPSProxy => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolHTTPSProxy");
+	private static IntPtr _AttrProtocolAFP;
 
-	[Field("kSecAttrProtocolIMAP", "Security")]
-	public static IntPtr IMAP => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolIMAP");
+	private static IntPtr _AttrProtocolTelnet;
 
-	[Field("kSecAttrProtocolIMAPS", "Security")]
-	public static IntPtr IMAPS => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolIMAPS");
+	private static IntPtr _AttrProtocolSSH;
 
-	[Field("kSecAttrProtocolIPP", "Security")]
-	public static IntPtr IPP => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolIPP");
+	private static IntPtr _AttrProtocolFTPS;
 
-	[Field("kSecAttrProtocolIRC", "Security")]
-	public static IntPtr IRC => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolIRC");
+	private static IntPtr _AttrProtocolHTTPS;
 
-	[Field("kSecAttrProtocolIRCS", "Security")]
-	public static IntPtr IRCS => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolIRCS");
+	private static IntPtr _AttrProtocolHTTPProxy;
 
-	[Field("kSecAttrProtocolLDAP", "Security")]
-	public static IntPtr LDAP => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolLDAP");
+	private static IntPtr _AttrProtocolHTTPSProxy;
 
-	[Field("kSecAttrProtocolLDAPS", "Security")]
-	public static IntPtr LDAPS => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolLDAPS");
+	private static IntPtr _AttrProtocolFTPProxy;
 
-	[Field("kSecAttrProtocolNNTP", "Security")]
-	public static IntPtr NNTP => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolNNTP");
+	private static IntPtr _AttrProtocolSMB;
 
-	[Field("kSecAttrProtocolNNTPS", "Security")]
-	public static IntPtr NNTPS => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolNNTPS");
+	private static IntPtr _AttrProtocolRTSP;
 
-	[Field("kSecAttrProtocolPOP3", "Security")]
-	public static IntPtr POP3 => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolPOP3");
+	private static IntPtr _AttrProtocolRTSPProxy;
 
-	[Field("kSecAttrProtocolPOP3S", "Security")]
-	public static IntPtr POP3S => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolPOP3S");
+	private static IntPtr _AttrProtocolDAAP;
 
-	[Field("kSecAttrProtocolRTSP", "Security")]
-	public static IntPtr RTSP => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolRTSP");
+	private static IntPtr _AttrProtocolEPPC;
 
-	[Field("kSecAttrProtocolRTSPProxy", "Security")]
-	public static IntPtr RTSPProxy => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolRTSPProxy");
+	private static IntPtr _AttrProtocolIPP;
 
-	[Field("kSecAttrProtocolSMB", "Security")]
-	public static IntPtr SMB => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolSMB");
+	private static IntPtr _AttrProtocolNNTPS;
 
-	[Field("kSecAttrProtocolSMTP", "Security")]
-	public static IntPtr SMTP => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolSMTP");
+	private static IntPtr _AttrProtocolLDAPS;
 
-	[Field("kSecAttrProtocolSOCKS", "Security")]
-	public static IntPtr SOCKS => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolSOCKS");
+	private static IntPtr _AttrProtocolTelnetS;
 
-	[Field("kSecAttrProtocolSSH", "Security")]
-	public static IntPtr SSH => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolSSH");
+	private static IntPtr _AttrProtocolIMAPS;
 
-	[Field("kSecAttrProtocolTelnet", "Security")]
-	public static IntPtr Telnet => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolTelnet");
+	private static IntPtr _AttrProtocolIRCS;
 
-	[Field("kSecAttrProtocolTelnetS", "Security")]
-	public static IntPtr TelnetS => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecAttrProtocolTelnetS");
+	private static IntPtr _AttrProtocolPOP3S;
+
+	public static IntPtr AttrProtocolFTP
+	{
+		get
+		{
+			if (_AttrProtocolFTP == IntPtr.Zero)
+			{
+				_AttrProtocolFTP = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolFTP");
+			}
+			return _AttrProtocolFTP;
+		}
+	}
+
+	public static IntPtr AttrProtocolFTPAccount
+	{
+		get
+		{
+			if (_AttrProtocolFTPAccount == IntPtr.Zero)
+			{
+				_AttrProtocolFTPAccount = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolFTPAccount");
+			}
+			return _AttrProtocolFTPAccount;
+		}
+	}
+
+	public static IntPtr AttrProtocolHTTP
+	{
+		get
+		{
+			if (_AttrProtocolHTTP == IntPtr.Zero)
+			{
+				_AttrProtocolHTTP = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolHTTP");
+			}
+			return _AttrProtocolHTTP;
+		}
+	}
+
+	public static IntPtr AttrProtocolIRC
+	{
+		get
+		{
+			if (_AttrProtocolIRC == IntPtr.Zero)
+			{
+				_AttrProtocolIRC = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolIRC");
+			}
+			return _AttrProtocolIRC;
+		}
+	}
+
+	public static IntPtr AttrProtocolNNTP
+	{
+		get
+		{
+			if (_AttrProtocolNNTP == IntPtr.Zero)
+			{
+				_AttrProtocolNNTP = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolNNTP");
+			}
+			return _AttrProtocolNNTP;
+		}
+	}
+
+	public static IntPtr AttrProtocolPOP3
+	{
+		get
+		{
+			if (_AttrProtocolPOP3 == IntPtr.Zero)
+			{
+				_AttrProtocolPOP3 = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolPOP3");
+			}
+			return _AttrProtocolPOP3;
+		}
+	}
+
+	public static IntPtr AttrProtocolSMTP
+	{
+		get
+		{
+			if (_AttrProtocolSMTP == IntPtr.Zero)
+			{
+				_AttrProtocolSMTP = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolSMTP");
+			}
+			return _AttrProtocolSMTP;
+		}
+	}
+
+	public static IntPtr AttrProtocolSOCKS
+	{
+		get
+		{
+			if (_AttrProtocolSOCKS == IntPtr.Zero)
+			{
+				_AttrProtocolSOCKS = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolSOCKS");
+			}
+			return _AttrProtocolSOCKS;
+		}
+	}
+
+	public static IntPtr AttrProtocolIMAP
+	{
+		get
+		{
+			if (_AttrProtocolIMAP == IntPtr.Zero)
+			{
+				_AttrProtocolIMAP = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolIMAP");
+			}
+			return _AttrProtocolIMAP;
+		}
+	}
+
+	public static IntPtr AttrProtocolLDAP
+	{
+		get
+		{
+			if (_AttrProtocolLDAP == IntPtr.Zero)
+			{
+				_AttrProtocolLDAP = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolLDAP");
+			}
+			return _AttrProtocolLDAP;
+		}
+	}
+
+	public static IntPtr AttrProtocolAppleTalk
+	{
+		get
+		{
+			if (_AttrProtocolAppleTalk == IntPtr.Zero)
+			{
+				_AttrProtocolAppleTalk = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolAppleTalk");
+			}
+			return _AttrProtocolAppleTalk;
+		}
+	}
+
+	public static IntPtr AttrProtocolAFP
+	{
+		get
+		{
+			if (_AttrProtocolAFP == IntPtr.Zero)
+			{
+				_AttrProtocolAFP = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolAFP");
+			}
+			return _AttrProtocolAFP;
+		}
+	}
+
+	public static IntPtr AttrProtocolTelnet
+	{
+		get
+		{
+			if (_AttrProtocolTelnet == IntPtr.Zero)
+			{
+				_AttrProtocolTelnet = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolTelnet");
+			}
+			return _AttrProtocolTelnet;
+		}
+	}
+
+	public static IntPtr AttrProtocolSSH
+	{
+		get
+		{
+			if (_AttrProtocolSSH == IntPtr.Zero)
+			{
+				_AttrProtocolSSH = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolSSH");
+			}
+			return _AttrProtocolSSH;
+		}
+	}
+
+	public static IntPtr AttrProtocolFTPS
+	{
+		get
+		{
+			if (_AttrProtocolFTPS == IntPtr.Zero)
+			{
+				_AttrProtocolFTPS = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolFTPS");
+			}
+			return _AttrProtocolFTPS;
+		}
+	}
+
+	public static IntPtr AttrProtocolHTTPS
+	{
+		get
+		{
+			if (_AttrProtocolHTTPS == IntPtr.Zero)
+			{
+				_AttrProtocolHTTPS = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolHTTPS");
+			}
+			return _AttrProtocolHTTPS;
+		}
+	}
+
+	public static IntPtr AttrProtocolHTTPProxy
+	{
+		get
+		{
+			if (_AttrProtocolHTTPProxy == IntPtr.Zero)
+			{
+				_AttrProtocolHTTPProxy = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolHTTPProxy");
+			}
+			return _AttrProtocolHTTPProxy;
+		}
+	}
+
+	public static IntPtr AttrProtocolHTTPSProxy
+	{
+		get
+		{
+			if (_AttrProtocolHTTPSProxy == IntPtr.Zero)
+			{
+				_AttrProtocolHTTPSProxy = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolHTTPSProxy");
+			}
+			return _AttrProtocolHTTPSProxy;
+		}
+	}
+
+	public static IntPtr AttrProtocolFTPProxy
+	{
+		get
+		{
+			if (_AttrProtocolFTPProxy == IntPtr.Zero)
+			{
+				_AttrProtocolFTPProxy = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolFTPProxy");
+			}
+			return _AttrProtocolFTPProxy;
+		}
+	}
+
+	public static IntPtr AttrProtocolSMB
+	{
+		get
+		{
+			if (_AttrProtocolSMB == IntPtr.Zero)
+			{
+				_AttrProtocolSMB = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolSMB");
+			}
+			return _AttrProtocolSMB;
+		}
+	}
+
+	public static IntPtr AttrProtocolRTSP
+	{
+		get
+		{
+			if (_AttrProtocolRTSP == IntPtr.Zero)
+			{
+				_AttrProtocolRTSP = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolRTSP");
+			}
+			return _AttrProtocolRTSP;
+		}
+	}
+
+	public static IntPtr AttrProtocolRTSPProxy
+	{
+		get
+		{
+			if (_AttrProtocolRTSPProxy == IntPtr.Zero)
+			{
+				_AttrProtocolRTSPProxy = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolRTSPProxy");
+			}
+			return _AttrProtocolRTSPProxy;
+		}
+	}
+
+	public static IntPtr AttrProtocolDAAP
+	{
+		get
+		{
+			if (_AttrProtocolDAAP == IntPtr.Zero)
+			{
+				_AttrProtocolDAAP = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolDAAP");
+			}
+			return _AttrProtocolDAAP;
+		}
+	}
+
+	public static IntPtr AttrProtocolEPPC
+	{
+		get
+		{
+			if (_AttrProtocolEPPC == IntPtr.Zero)
+			{
+				_AttrProtocolEPPC = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolEPPC");
+			}
+			return _AttrProtocolEPPC;
+		}
+	}
+
+	public static IntPtr AttrProtocolIPP
+	{
+		get
+		{
+			if (_AttrProtocolIPP == IntPtr.Zero)
+			{
+				_AttrProtocolIPP = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolIPP");
+			}
+			return _AttrProtocolIPP;
+		}
+	}
+
+	public static IntPtr AttrProtocolNNTPS
+	{
+		get
+		{
+			if (_AttrProtocolNNTPS == IntPtr.Zero)
+			{
+				_AttrProtocolNNTPS = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolNNTPS");
+			}
+			return _AttrProtocolNNTPS;
+		}
+	}
+
+	public static IntPtr AttrProtocolLDAPS
+	{
+		get
+		{
+			if (_AttrProtocolLDAPS == IntPtr.Zero)
+			{
+				_AttrProtocolLDAPS = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolLDAPS");
+			}
+			return _AttrProtocolLDAPS;
+		}
+	}
+
+	public static IntPtr AttrProtocolTelnetS
+	{
+		get
+		{
+			if (_AttrProtocolTelnetS == IntPtr.Zero)
+			{
+				_AttrProtocolTelnetS = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolTelnetS");
+			}
+			return _AttrProtocolTelnetS;
+		}
+	}
+
+	public static IntPtr AttrProtocolIMAPS
+	{
+		get
+		{
+			if (_AttrProtocolIMAPS == IntPtr.Zero)
+			{
+				_AttrProtocolIMAPS = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolIMAPS");
+			}
+			return _AttrProtocolIMAPS;
+		}
+	}
+
+	public static IntPtr AttrProtocolIRCS
+	{
+		get
+		{
+			if (_AttrProtocolIRCS == IntPtr.Zero)
+			{
+				_AttrProtocolIRCS = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolIRCS");
+			}
+			return _AttrProtocolIRCS;
+		}
+	}
+
+	public static IntPtr AttrProtocolPOP3S
+	{
+		get
+		{
+			if (_AttrProtocolPOP3S == IntPtr.Zero)
+			{
+				_AttrProtocolPOP3S = Dlfcn.GetIntPtr(SecItem.securityLibrary, "kSecAttrProtocolPOP3S");
+			}
+			return _AttrProtocolPOP3S;
+		}
+	}
 
 	public static IntPtr FromSecProtocol(SecProtocol protocol)
 	{
 		return protocol switch
 		{
-			SecProtocol.Ftp => FTP, 
-			SecProtocol.FtpAccount => FTPAccount, 
-			SecProtocol.Http => HTTP, 
-			SecProtocol.Irc => IRC, 
-			SecProtocol.Nntp => NNTP, 
-			SecProtocol.Pop3 => POP3, 
-			SecProtocol.Smtp => SMTP, 
-			SecProtocol.Socks => SOCKS, 
-			SecProtocol.Imap => IMAP, 
-			SecProtocol.Ldap => LDAP, 
-			SecProtocol.AppleTalk => AppleTalk, 
-			SecProtocol.Afp => AFP, 
-			SecProtocol.Telnet => Telnet, 
-			SecProtocol.Ssh => SSH, 
-			SecProtocol.Ftps => FTPS, 
-			SecProtocol.Https => HTTPS, 
-			SecProtocol.HttpProxy => HTTPProxy, 
-			SecProtocol.HttpsProxy => HTTPSProxy, 
-			SecProtocol.FtpProxy => FTPProxy, 
-			SecProtocol.Smb => SMB, 
-			SecProtocol.Rtsp => RTSP, 
-			SecProtocol.RtspProxy => RTSPProxy, 
-			SecProtocol.Daap => DAAP, 
-			SecProtocol.Eppc => EPPC, 
-			SecProtocol.Ipp => IPP, 
-			SecProtocol.Nntps => NNTPS, 
-			SecProtocol.Ldaps => LDAPS, 
-			SecProtocol.Telnets => TelnetS, 
-			SecProtocol.Imaps => IMAPS, 
-			SecProtocol.Ircs => IRCS, 
-			SecProtocol.Pop3s => POP3S, 
+			SecProtocol.Ftp => AttrProtocolFTP, 
+			SecProtocol.FtpAccount => AttrProtocolFTPAccount, 
+			SecProtocol.Http => AttrProtocolHTTP, 
+			SecProtocol.Irc => AttrProtocolIRC, 
+			SecProtocol.Nntp => AttrProtocolNNTP, 
+			SecProtocol.Pop3 => AttrProtocolPOP3, 
+			SecProtocol.Smtp => AttrProtocolSMTP, 
+			SecProtocol.Socks => AttrProtocolSOCKS, 
+			SecProtocol.Imap => AttrProtocolIMAP, 
+			SecProtocol.Ldap => AttrProtocolLDAP, 
+			SecProtocol.AppleTalk => AttrProtocolAppleTalk, 
+			SecProtocol.Afp => AttrProtocolAFP, 
+			SecProtocol.Telnet => AttrProtocolTelnet, 
+			SecProtocol.Ssh => AttrProtocolSSH, 
+			SecProtocol.Ftps => AttrProtocolFTPS, 
+			SecProtocol.Https => AttrProtocolHTTPS, 
+			SecProtocol.HttpProxy => AttrProtocolHTTPProxy, 
+			SecProtocol.HttpsProxy => AttrProtocolHTTPSProxy, 
+			SecProtocol.FtpProxy => AttrProtocolFTPProxy, 
+			SecProtocol.Smb => AttrProtocolSMB, 
+			SecProtocol.Rtsp => AttrProtocolRTSP, 
+			SecProtocol.RtspProxy => AttrProtocolRTSPProxy, 
+			SecProtocol.Daap => AttrProtocolDAAP, 
+			SecProtocol.Eppc => AttrProtocolEPPC, 
+			SecProtocol.Ipp => AttrProtocolIPP, 
+			SecProtocol.Nntps => AttrProtocolNNTPS, 
+			SecProtocol.Ldaps => AttrProtocolLDAPS, 
+			SecProtocol.Telnets => AttrProtocolTelnetS, 
+			SecProtocol.Imaps => AttrProtocolIMAPS, 
+			SecProtocol.Ircs => AttrProtocolIRCS, 
+			SecProtocol.Pop3s => AttrProtocolPOP3S, 
 			_ => throw new ArgumentException("protocol"), 
 		};
 	}
 
 	public static SecProtocol ToSecProtocol(IntPtr handle)
 	{
-		if (handle == IntPtr.Zero)
-		{
-			return SecProtocol.Invalid;
-		}
-		if (CFType.Equal(handle, FTP))
+		if (handle == AttrProtocolFTP)
 		{
 			return SecProtocol.Ftp;
 		}
-		if (CFType.Equal(handle, FTPAccount))
+		if (handle == AttrProtocolFTPAccount)
 		{
 			return SecProtocol.FtpAccount;
 		}
-		if (CFType.Equal(handle, HTTP))
+		if (handle == AttrProtocolHTTP)
 		{
 			return SecProtocol.Http;
 		}
-		if (CFType.Equal(handle, IRC))
+		if (handle == AttrProtocolIRC)
 		{
 			return SecProtocol.Irc;
 		}
-		if (CFType.Equal(handle, NNTP))
+		if (handle == AttrProtocolNNTP)
 		{
 			return SecProtocol.Nntp;
 		}
-		if (CFType.Equal(handle, POP3))
+		if (handle == AttrProtocolPOP3)
 		{
 			return SecProtocol.Pop3;
 		}
-		if (CFType.Equal(handle, SMTP))
+		if (handle == AttrProtocolSMTP)
 		{
 			return SecProtocol.Smtp;
 		}
-		if (CFType.Equal(handle, SOCKS))
+		if (handle == AttrProtocolSOCKS)
 		{
 			return SecProtocol.Socks;
 		}
-		if (CFType.Equal(handle, IMAP))
+		if (handle == AttrProtocolIMAP)
 		{
 			return SecProtocol.Imap;
 		}
-		if (CFType.Equal(handle, LDAP))
+		if (handle == AttrProtocolLDAP)
 		{
 			return SecProtocol.Ldap;
 		}
-		if (CFType.Equal(handle, AppleTalk))
+		if (handle == AttrProtocolAppleTalk)
 		{
 			return SecProtocol.AppleTalk;
 		}
-		if (CFType.Equal(handle, AFP))
+		if (handle == AttrProtocolAFP)
 		{
 			return SecProtocol.Afp;
 		}
-		if (CFType.Equal(handle, Telnet))
+		if (handle == AttrProtocolTelnet)
 		{
 			return SecProtocol.Telnet;
 		}
-		if (CFType.Equal(handle, SSH))
+		if (handle == AttrProtocolSSH)
 		{
 			return SecProtocol.Ssh;
 		}
-		if (CFType.Equal(handle, FTPS))
+		if (handle == AttrProtocolFTPS)
 		{
 			return SecProtocol.Ftps;
 		}
-		if (CFType.Equal(handle, HTTPS))
+		if (handle == AttrProtocolHTTPS)
 		{
 			return SecProtocol.Https;
 		}
-		if (CFType.Equal(handle, HTTPProxy))
+		if (handle == AttrProtocolHTTPProxy)
 		{
 			return SecProtocol.HttpProxy;
 		}
-		if (CFType.Equal(handle, HTTPSProxy))
+		if (handle == AttrProtocolHTTPSProxy)
 		{
 			return SecProtocol.HttpsProxy;
 		}
-		if (CFType.Equal(handle, FTPProxy))
+		if (handle == AttrProtocolFTPProxy)
 		{
 			return SecProtocol.FtpProxy;
 		}
-		if (CFType.Equal(handle, SMB))
+		if (handle == AttrProtocolSMB)
 		{
 			return SecProtocol.Smb;
 		}
-		if (CFType.Equal(handle, RTSP))
+		if (handle == AttrProtocolRTSP)
 		{
 			return SecProtocol.Rtsp;
 		}
-		if (CFType.Equal(handle, RTSPProxy))
+		if (handle == AttrProtocolRTSPProxy)
 		{
 			return SecProtocol.RtspProxy;
 		}
-		if (CFType.Equal(handle, DAAP))
+		if (handle == AttrProtocolDAAP)
 		{
 			return SecProtocol.Daap;
 		}
-		if (CFType.Equal(handle, EPPC))
+		if (handle == AttrProtocolEPPC)
 		{
 			return SecProtocol.Eppc;
 		}
-		if (CFType.Equal(handle, IPP))
+		if (handle == AttrProtocolIPP)
 		{
 			return SecProtocol.Ipp;
 		}
-		if (CFType.Equal(handle, NNTPS))
+		if (handle == AttrProtocolNNTPS)
 		{
 			return SecProtocol.Nntps;
 		}
-		if (CFType.Equal(handle, LDAPS))
+		if (handle == AttrProtocolLDAPS)
 		{
 			return SecProtocol.Ldaps;
 		}
-		if (CFType.Equal(handle, TelnetS))
+		if (handle == AttrProtocolTelnetS)
 		{
 			return SecProtocol.Telnets;
 		}
-		if (CFType.Equal(handle, IMAPS))
+		if (handle == AttrProtocolIMAPS)
 		{
 			return SecProtocol.Imaps;
 		}
-		if (CFType.Equal(handle, IRCS))
+		if (handle == AttrProtocolIRCS)
 		{
 			return SecProtocol.Ircs;
 		}
-		if (CFType.Equal(handle, POP3S))
+		if (handle == AttrProtocolPOP3S)
 		{
 			return SecProtocol.Pop3s;
 		}
-		return SecProtocol.Invalid;
+		throw new ArgumentException("handle");
 	}
 }

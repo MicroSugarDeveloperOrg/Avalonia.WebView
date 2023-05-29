@@ -1,6 +1,6 @@
+using System;
 using System.Runtime.InteropServices;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreFoundation;
 
@@ -11,10 +11,6 @@ public class CFUrl : INativeObject, IDisposable
 	public IntPtr Handle => handle;
 
 	public string FileSystemPath => GetFileSystemPath(handle);
-
-	[iOS(7, 0)]
-	[Mac(10, 9)]
-	public bool IsFileReference => CFURLIsFileReferenceURL(handle);
 
 	~CFUrl()
 	{
@@ -36,36 +32,27 @@ public class CFUrl : INativeObject, IDisposable
 		}
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFURLCreateWithFileSystemPath(IntPtr allocator, IntPtr filePath, nint pathStyle, [MarshalAs(UnmanagedType.I1)] bool isDirectory);
+	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", CharSet = CharSet.Unicode)]
+	private static extern IntPtr CFURLCreateWithFileSystemPath(IntPtr allocator, IntPtr cfstringref, CFUrlPathStyle pathstyle, bool isdir);
 
 	internal CFUrl(IntPtr handle)
 	{
 		this.handle = handle;
 	}
 
-	internal CFUrl(IntPtr handle, bool owned)
-	{
-		if (!owned)
-		{
-			CFObject.CFRetain(handle);
-		}
-		this.handle = handle;
-	}
-
 	public static CFUrl FromFile(string filename)
 	{
 		using CFString cFString = new CFString(filename);
-		IntPtr intPtr = CFURLCreateWithFileSystemPath(IntPtr.Zero, cFString.Handle, (nint)0L, isDirectory: false);
+		IntPtr intPtr = CFURLCreateWithFileSystemPath(IntPtr.Zero, cFString.Handle, CFUrlPathStyle.POSIX, isdir: false);
 		if (intPtr == IntPtr.Zero)
 		{
 			return null;
 		}
-		return new CFUrl(intPtr, owned: true);
+		return new CFUrl(intPtr);
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFURLCreateWithString(IntPtr allocator, IntPtr URLString, IntPtr baseURL);
+	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", CharSet = CharSet.Unicode)]
+	private static extern IntPtr CFURLCreateWithString(IntPtr allocator, IntPtr stringref, IntPtr baseUrl);
 
 	public static CFUrl FromUrlString(string url, CFUrl baseurl)
 	{
@@ -80,7 +67,7 @@ public class CFUrl : INativeObject, IDisposable
 		{
 			return null;
 		}
-		return new CFUrl(intPtr, owned: true);
+		return new CFUrl(intPtr);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
@@ -93,7 +80,7 @@ public class CFUrl : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFURLCopyFileSystemPath(IntPtr anURL, nint style);
+	private static extern IntPtr CFURLCopyFileSystemPath(IntPtr cfUrl, int style);
 
 	internal static string GetFileSystemPath(IntPtr hcfurl)
 	{
@@ -101,12 +88,6 @@ public class CFUrl : INativeObject, IDisposable
 		return cFString.ToString();
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	[iOS(7, 0)]
-	[Mac(10, 9)]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static extern bool CFURLIsFileReferenceURL(IntPtr url);
-
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFURLGetTypeID")]
-	public static extern nint GetTypeID();
+	public static extern int GetTypeID();
 }

@@ -6,51 +6,32 @@ using ObjCRuntime;
 namespace PdfKit;
 
 [Register("PDFAnnotationLink", true)]
-[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-[Deprecated(PlatformName.MacOSX, 10, 12, PlatformArchitecture.None, null)]
 public class PdfAnnotationLink : PdfAnnotation
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selURL = "URL";
-
-	private static readonly IntPtr selURLHandle = Selector.GetHandle("URL");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDestination = "destination";
-
 	private static readonly IntPtr selDestinationHandle = Selector.GetHandle("destination");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDestination_ = "setDestination:";
 
 	private static readonly IntPtr selSetDestination_Handle = Selector.GetHandle("setDestination:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetHighlighted_ = "setHighlighted:";
-
-	private static readonly IntPtr selSetHighlighted_Handle = Selector.GetHandle("setHighlighted:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetURL_ = "setURL:";
+	private static readonly IntPtr selURLHandle = Selector.GetHandle("URL");
 
 	private static readonly IntPtr selSetURL_Handle = Selector.GetHandle("setURL:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("PDFAnnotationLink");
+	private static readonly IntPtr selSetHighlighted_Handle = Selector.GetHandle("setHighlighted:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("PDFAnnotationLink");
+
+	private object __mt_Destination_var;
+
+	private object __mt_Url_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public new virtual PdfDestination Destination
+	public virtual PdfDestination Destination
 	{
 		[Export("destination")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<PdfDestination>(Messaging.IntPtr_objc_msgSend(base.Handle, selDestinationHandle));
-			}
-			return Runtime.GetNSObject<PdfDestination>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDestinationHandle));
+			return (PdfDestination)(__mt_Destination_var = ((!IsDirectBinding) ? ((PdfDestination)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDestinationHandle))) : ((PdfDestination)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDestinationHandle)))));
 		}
 		[Export("setDestination:")]
 		set
@@ -59,7 +40,7 @@ public class PdfAnnotationLink : PdfAnnotation
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDestination_Handle, value.Handle);
 			}
@@ -67,20 +48,16 @@ public class PdfAnnotationLink : PdfAnnotation
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDestination_Handle, value.Handle);
 			}
+			__mt_Destination_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public new virtual NSUrl Url
+	public virtual NSUrl Url
 	{
 		[Export("URL")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selURLHandle));
-			}
-			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selURLHandle));
+			return (NSUrl)(__mt_Url_var = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selURLHandle))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selURLHandle)))));
 		}
 		[Export("setURL:")]
 		set
@@ -89,7 +66,7 @@ public class PdfAnnotationLink : PdfAnnotation
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetURL_Handle, value.Handle);
 			}
@@ -97,67 +74,72 @@ public class PdfAnnotationLink : PdfAnnotation
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetURL_Handle, value.Handle);
 			}
+			__mt_Url_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public PdfAnnotationLink()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public PdfAnnotationLink(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected PdfAnnotationLink(NSObjectFlag t)
+	public PdfAnnotationLink(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal PdfAnnotationLink(IntPtr handle)
+	public PdfAnnotationLink(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("setHighlighted:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SetHighlighted(bool highlighted)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_bool(base.Handle, selSetHighlighted_Handle, highlighted);
 		}
 		else
 		{
 			Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetHighlighted_Handle, highlighted);
+		}
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_Destination_var = null;
+			__mt_Url_var = null;
 		}
 	}
 }

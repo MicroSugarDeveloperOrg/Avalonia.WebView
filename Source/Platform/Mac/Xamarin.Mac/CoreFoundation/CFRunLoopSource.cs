@@ -1,6 +1,6 @@
+using System;
 using System.Runtime.InteropServices;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreFoundation;
 
@@ -10,16 +10,16 @@ public class CFRunLoopSource : INativeObject, IDisposable
 
 	public IntPtr Handle => handle;
 
-	public nint Order => CFRunLoopSourceGetOrder(handle);
+	public int Order => CFRunLoopSourceGetOrder(handle);
 
-	public bool IsValid => CFRunLoopSourceIsValid(handle);
+	public bool IsValid => CFRunLoopSourceIsValid(handle) != 0;
 
-	public CFRunLoopSource(IntPtr handle)
+	internal CFRunLoopSource(IntPtr handle)
 		: this(handle, ownsHandle: false)
 	{
 	}
 
-	public CFRunLoopSource(IntPtr handle, bool ownsHandle)
+	internal CFRunLoopSource(IntPtr handle, bool ownsHandle)
 	{
 		if (!ownsHandle)
 		{
@@ -34,7 +34,7 @@ public class CFRunLoopSource : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern nint CFRunLoopSourceGetOrder(IntPtr source);
+	private static extern CFIndex CFRunLoopSourceGetOrder(IntPtr source);
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
 	private static extern void CFRunLoopSourceInvalidate(IntPtr source);
@@ -45,8 +45,7 @@ public class CFRunLoopSource : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static extern bool CFRunLoopSourceIsValid(IntPtr source);
+	private static extern int CFRunLoopSourceIsValid(IntPtr source);
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
 	private static extern void CFRunLoopSourceSignal(IntPtr source);
@@ -62,7 +61,7 @@ public class CFRunLoopSource : INativeObject, IDisposable
 		GC.SuppressFinalize(this);
 	}
 
-	protected virtual void Dispose(bool disposing)
+	public virtual void Dispose(bool disposing)
 	{
 		if (handle != IntPtr.Zero)
 		{

@@ -2,7 +2,7 @@ using ObjCRuntime;
 
 namespace AppKit;
 
-[Native]
+[Lion]
 public enum NSTextFinderAction : long
 {
 	ShowFindInterface = 1L,

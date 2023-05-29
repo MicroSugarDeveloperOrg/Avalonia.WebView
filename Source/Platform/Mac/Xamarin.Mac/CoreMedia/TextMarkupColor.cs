@@ -1,9 +1,7 @@
 using System;
-using ObjCRuntime;
 
 namespace CoreMedia;
 
-[Watch(6, 0)]
 public struct TextMarkupColor
 {
 	public float Red { get; private set; }

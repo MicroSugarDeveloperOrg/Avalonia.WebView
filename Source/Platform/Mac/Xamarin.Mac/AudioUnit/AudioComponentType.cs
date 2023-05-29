@@ -10,7 +10,5 @@ public enum AudioComponentType : uint
 	Mixer = 1635085688u,
 	Panner = 1635086446u,
 	OfflineEffect = 1635086188u,
-	Generator = 1635084142u,
-	[iOS(7, 0)]
-	MIDIProcessor = 1635085673u
+	Generator = 1635084142u
 }

@@ -1,8 +1,10 @@
 using System;
 using Foundation;
+using ObjCRuntime;
 
 namespace CoreText;
 
+[Since(3, 2)]
 public class CTFrameAttributes
 {
 	public NSDictionary Dictionary { get; private set; }
@@ -12,7 +14,11 @@ public class CTFrameAttributes
 		get
 		{
 			uint? uInt32Value = Adapter.GetUInt32Value(Dictionary, CTFrameAttributeKey.Progression);
-			return (!uInt32Value.HasValue) ? null : new CTFrameProgression?((CTFrameProgression)uInt32Value.Value);
+			if (uInt32Value.HasValue)
+			{
+				return (CTFrameProgression)uInt32Value.Value;
+			}
+			return null;
 		}
 		set
 		{

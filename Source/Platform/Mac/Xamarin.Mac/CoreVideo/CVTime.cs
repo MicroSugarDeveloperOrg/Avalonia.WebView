@@ -1,9 +1,9 @@
+using System;
 using System.Runtime.InteropServices;
 using ObjCRuntime;
 
 namespace CoreVideo;
 
-[Watch(4, 0)]
 public struct CVTime
 {
 	public long TimeValue;
@@ -11,6 +11,8 @@ public struct CVTime
 	public long TimeScale;
 
 	public CVTimeFlags TimeFlags;
+
+	private static IntPtr CoreVideo_libraryHandle = Dlfcn.dlopen("/System/Library/Frameworks/CoreVideo.framework/CoreVideo", 0);
 
 	public int Flags
 	{
@@ -24,9 +26,9 @@ public struct CVTime
 		}
 	}
 
-	public static CVTime ZeroTime => (CVTime)Marshal.PtrToStructure(Dlfcn.GetIndirect(Libraries.CoreVideo.Handle, "kCVZeroTime"), typeof(CVTime));
+	public static CVTime ZeroTime => (CVTime)Marshal.PtrToStructure(Dlfcn.GetIndirect(CoreVideo_libraryHandle, "kCVZeroTime"), typeof(CVTime));
 
-	public static CVTime IndefiniteTime => (CVTime)Marshal.PtrToStructure(Dlfcn.GetIndirect(Libraries.CoreVideo.Handle, "kCVIndefiniteTime"), typeof(CVTime));
+	public static CVTime IndefiniteTime => (CVTime)Marshal.PtrToStructure(Dlfcn.GetIndirect(CoreVideo_libraryHandle, "kCVIndefiniteTime"), typeof(CVTime));
 
 	public override bool Equals(object other)
 	{
@@ -34,7 +36,11 @@ public struct CVTime
 		{
 			return false;
 		}
-		return TimeValue == cVTime.TimeValue && TimeScale == cVTime.TimeScale && TimeFlags == cVTime.TimeFlags;
+		if (TimeValue == cVTime.TimeValue && TimeScale == cVTime.TimeScale)
+		{
+			return TimeFlags == cVTime.TimeFlags;
+		}
+		return false;
 	}
 
 	public override int GetHashCode()
@@ -43,11 +49,11 @@ public struct CVTime
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo", EntryPoint = "CVGetCurrentHostTime")]
-	public static extern ulong GetCurrentHostTime();
+	public static extern long GetCurrentHostTime();
 
 	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo", EntryPoint = "CVGetHostClockFrequency")]
 	public static extern double GetHostClockFrequency();
 
 	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo", EntryPoint = "CVGetHostClockMinimumTimeDelta")]
-	public static extern uint GetHostClockMinimumTimeDelta();
+	public static extern int GetHostClockMinimumTimeDelta();
 }

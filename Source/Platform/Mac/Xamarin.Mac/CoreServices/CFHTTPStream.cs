@@ -5,32 +5,23 @@ using ObjCRuntime;
 
 namespace CoreServices;
 
-[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, "Use 'NSUrlSession'.")]
-[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, "Use 'NSUrlSession'.")]
 public class CFHTTPStream : CFReadStream
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? __AttemptPersistentConnection;
+	private static readonly NSString _AttemptPersistentConnection;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? __FinalRequest;
+	private static readonly NSString _FinalURL;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? __FinalURL;
+	private static readonly NSString _FinalRequest;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? __Proxy;
+	private static readonly NSString _Proxy;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? __RequestBytesWrittenCount;
+	private static readonly NSString _RequestBytesWrittenCount;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? __ResponseHeader;
+	private static readonly NSString _ResponseHeader;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? __ShouldAutoredirect;
+	private static readonly NSString _ShouldAutoredirect;
 
-	public Uri FinalURL
+	public CFUrl FinalURL
 	{
 		get
 		{
@@ -44,8 +35,7 @@ public class CFHTTPStream : CFReadStream
 				CFObject.CFRelease(property);
 				throw new InvalidCastException();
 			}
-			using CFUrl cFUrl = new CFUrl(property);
-			return new Uri(cFUrl.ToString());
+			return new CFUrl(property);
 		}
 	}
 
@@ -58,11 +48,11 @@ public class CFHTTPStream : CFReadStream
 			{
 				return false;
 			}
-			if (property == CFBoolean.FalseHandle)
+			if (property == CFBoolean.False.Handle)
 			{
 				return false;
 			}
-			if (property == CFBoolean.TrueHandle)
+			if (property == CFBoolean.True.Handle)
 			{
 				return true;
 			}
@@ -97,11 +87,11 @@ public class CFHTTPStream : CFReadStream
 			{
 				return false;
 			}
-			if (property == CFBoolean.FalseHandle)
+			if (property == CFBoolean.False.Handle)
 			{
 				return false;
 			}
-			if (property == CFBoolean.TrueHandle)
+			if (property == CFBoolean.True.Handle)
 			{
 				return true;
 			}
@@ -121,123 +111,37 @@ public class CFHTTPStream : CFReadStream
 		}
 	}
 
-	[Field("kCFStreamPropertyHTTPAttemptPersistentConnection", "CFNetwork")]
-	[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, null)]
-	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
-	internal static NSString _AttemptPersistentConnection
+	static CFHTTPStream()
 	{
-		[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, null)]
-		[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
-		get
+		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/CoreServices.framework/Frameworks/CFNetwork.framework/CFNetwork", 0);
+		if (intPtr == IntPtr.Zero)
 		{
-			if (__AttemptPersistentConnection == null)
-			{
-				__AttemptPersistentConnection = Dlfcn.GetStringConstant(Libraries.CFNetwork.Handle, "kCFStreamPropertyHTTPAttemptPersistentConnection");
-			}
-			return __AttemptPersistentConnection;
+			throw new InvalidOperationException();
+		}
+		try
+		{
+			_AttemptPersistentConnection = GetStringConstant(intPtr, "kCFStreamPropertyHTTPAttemptPersistentConnection");
+			_FinalURL = GetStringConstant(intPtr, "kCFStreamPropertyHTTPFinalURL");
+			_FinalRequest = GetStringConstant(intPtr, "kCFStreamPropertyHTTPFinalRequest");
+			_Proxy = GetStringConstant(intPtr, "kCFStreamPropertyHTTPProxy");
+			_RequestBytesWrittenCount = GetStringConstant(intPtr, "kCFStreamPropertyHTTPRequestBytesWrittenCount");
+			_ResponseHeader = GetStringConstant(intPtr, "kCFStreamPropertyHTTPResponseHeader");
+			_ShouldAutoredirect = GetStringConstant(intPtr, "kCFStreamPropertyHTTPShouldAutoredirect");
+		}
+		finally
+		{
+			Dlfcn.dlclose(intPtr);
 		}
 	}
 
-	[Field("kCFStreamPropertyHTTPFinalRequest", "CFNetwork")]
-	[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, null)]
-	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
-	internal static NSString _FinalRequest
+	private static NSString GetStringConstant(IntPtr handle, string name)
 	{
-		[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, null)]
-		[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
-		get
+		NSString stringConstant = Dlfcn.GetStringConstant(handle, name);
+		if (stringConstant == null)
 		{
-			if (__FinalRequest == null)
-			{
-				__FinalRequest = Dlfcn.GetStringConstant(Libraries.CFNetwork.Handle, "kCFStreamPropertyHTTPFinalRequest");
-			}
-			return __FinalRequest;
+			throw new InvalidOperationException($"Cannot get '{name}' property.");
 		}
-	}
-
-	[Field("kCFStreamPropertyHTTPFinalURL", "CFNetwork")]
-	[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, null)]
-	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
-	internal static NSString _FinalURL
-	{
-		[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, null)]
-		[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
-		get
-		{
-			if (__FinalURL == null)
-			{
-				__FinalURL = Dlfcn.GetStringConstant(Libraries.CFNetwork.Handle, "kCFStreamPropertyHTTPFinalURL");
-			}
-			return __FinalURL;
-		}
-	}
-
-	[Field("kCFStreamPropertyHTTPProxy", "CFNetwork")]
-	[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, null)]
-	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
-	internal static NSString _Proxy
-	{
-		[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, null)]
-		[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
-		get
-		{
-			if (__Proxy == null)
-			{
-				__Proxy = Dlfcn.GetStringConstant(Libraries.CFNetwork.Handle, "kCFStreamPropertyHTTPProxy");
-			}
-			return __Proxy;
-		}
-	}
-
-	[Field("kCFStreamPropertyHTTPRequestBytesWrittenCount", "CFNetwork")]
-	[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, null)]
-	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
-	internal static NSString _RequestBytesWrittenCount
-	{
-		[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, null)]
-		[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
-		get
-		{
-			if (__RequestBytesWrittenCount == null)
-			{
-				__RequestBytesWrittenCount = Dlfcn.GetStringConstant(Libraries.CFNetwork.Handle, "kCFStreamPropertyHTTPRequestBytesWrittenCount");
-			}
-			return __RequestBytesWrittenCount;
-		}
-	}
-
-	[Field("kCFStreamPropertyHTTPResponseHeader", "CFNetwork")]
-	[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, null)]
-	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
-	internal static NSString _ResponseHeader
-	{
-		[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, null)]
-		[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
-		get
-		{
-			if (__ResponseHeader == null)
-			{
-				__ResponseHeader = Dlfcn.GetStringConstant(Libraries.CFNetwork.Handle, "kCFStreamPropertyHTTPResponseHeader");
-			}
-			return __ResponseHeader;
-		}
-	}
-
-	[Field("kCFStreamPropertyHTTPShouldAutoredirect", "CFNetwork")]
-	[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, null)]
-	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
-	internal static NSString _ShouldAutoredirect
-	{
-		[Deprecated(PlatformName.iOS, 9, 0, PlatformArchitecture.None, null)]
-		[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
-		get
-		{
-			if (__ShouldAutoredirect == null)
-			{
-				__ShouldAutoredirect = Dlfcn.GetStringConstant(Libraries.CFNetwork.Handle, "kCFStreamPropertyHTTPShouldAutoredirect");
-			}
-			return __ShouldAutoredirect;
-		}
+		return stringConstant;
 	}
 
 	internal CFHTTPStream(IntPtr handle)
@@ -273,14 +177,5 @@ public class CFHTTPStream : CFReadStream
 			throw new InvalidCastException();
 		}
 		return new CFHTTPMessage(property);
-	}
-
-	public void SetProxy(CFProxySettings proxySettings)
-	{
-		if (proxySettings == null)
-		{
-			throw new ArgumentNullException("proxySettings");
-		}
-		SetProperty(_Proxy, proxySettings.Dictionary);
 	}
 }

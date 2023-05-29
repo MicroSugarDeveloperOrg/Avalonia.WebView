@@ -1,7 +1,5 @@
+using System;
 using System.Runtime.InteropServices;
-using Foundation;
-using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreFoundation;
 
@@ -15,14 +13,8 @@ public abstract class CFRunLoopSourceCustom : CFRunLoopSource
 
 	private GCHandle gch;
 
-	private static ScheduleCallback ScheduleDelegate = Schedule;
-
-	private static CancelCallback CancelDelegate = Cancel;
-
-	private static PerformCallback PerformDelegate = Perform;
-
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFRunLoopSourceCreate(IntPtr allocator, nint order, IntPtr context);
+	private static extern IntPtr CFRunLoopSourceCreate(IntPtr allocator, int order, IntPtr context);
 
 	protected CFRunLoopSourceCustom()
 		: base(IntPtr.Zero, ownsHandle: true)
@@ -31,9 +23,9 @@ public abstract class CFRunLoopSourceCustom : CFRunLoopSource
 		CFRunLoopSourceContext structure = new CFRunLoopSourceContext
 		{
 			Info = GCHandle.ToIntPtr(gch),
-			Schedule = Marshal.GetFunctionPointerForDelegate(ScheduleDelegate),
-			Cancel = Marshal.GetFunctionPointerForDelegate(CancelDelegate),
-			Perform = Marshal.GetFunctionPointerForDelegate(PerformDelegate)
+			Schedule = Marshal.GetFunctionPointerForDelegate<ScheduleCallback>(Schedule),
+			Cancel = Marshal.GetFunctionPointerForDelegate<CancelCallback>(Cancel),
+			Perform = Marshal.GetFunctionPointerForDelegate<PerformCallback>(Perform)
 		};
 		IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(CFRunLoopSourceContext)));
 		try
@@ -55,34 +47,49 @@ public abstract class CFRunLoopSourceCustom : CFRunLoopSource
 	private static void Schedule(IntPtr info, IntPtr runLoop, IntPtr mode)
 	{
 		CFRunLoopSourceCustom cFRunLoopSourceCustom = GCHandle.FromIntPtr(info).Target as CFRunLoopSourceCustom;
-		using CFRunLoop loop = new CFRunLoop(runLoop);
-		using NSString mode2 = new NSString(mode);
-		cFRunLoopSourceCustom.OnSchedule(loop, mode2);
+		CFRunLoop cFRunLoop = new CFRunLoop(runLoop);
+		CFString cFString = new CFString(mode);
+		try
+		{
+			cFRunLoopSourceCustom.OnSchedule(cFRunLoop, cFString);
+		}
+		finally
+		{
+			cFRunLoop.Dispose();
+			cFString.Dispose();
+		}
 	}
 
-	protected abstract void OnSchedule(CFRunLoop loop, NSString mode);
+	protected abstract void OnSchedule(CFRunLoop loop, string mode);
 
 	[MonoPInvokeCallback(typeof(CancelCallback))]
 	private static void Cancel(IntPtr info, IntPtr runLoop, IntPtr mode)
 	{
 		CFRunLoopSourceCustom cFRunLoopSourceCustom = GCHandle.FromIntPtr(info).Target as CFRunLoopSourceCustom;
-		using CFRunLoop loop = new CFRunLoop(runLoop);
-		using NSString mode2 = new NSString(mode);
-		cFRunLoopSourceCustom.OnCancel(loop, mode2);
+		CFRunLoop cFRunLoop = new CFRunLoop(runLoop);
+		CFString cFString = new CFString(mode);
+		try
+		{
+			cFRunLoopSourceCustom.OnCancel(cFRunLoop, cFString);
+		}
+		finally
+		{
+			cFRunLoop.Dispose();
+			cFString.Dispose();
+		}
 	}
 
-	protected abstract void OnCancel(CFRunLoop loop, NSString mode);
+	protected abstract void OnCancel(CFRunLoop loop, string mode);
 
 	[MonoPInvokeCallback(typeof(PerformCallback))]
 	private static void Perform(IntPtr info)
 	{
-		CFRunLoopSourceCustom cFRunLoopSourceCustom = GCHandle.FromIntPtr(info).Target as CFRunLoopSourceCustom;
-		cFRunLoopSourceCustom.OnPerform();
+		(GCHandle.FromIntPtr(info).Target as CFRunLoopSourceCustom).OnPerform();
 	}
 
 	protected abstract void OnPerform();
 
-	protected override void Dispose(bool disposing)
+	public override void Dispose(bool disposing)
 	{
 		if (disposing && gch.IsAllocated)
 		{

@@ -1,7 +1,7 @@
+using System;
 using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreFoundation;
 
@@ -13,7 +13,7 @@ public class CFWriteStream : CFStream
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFWriteStreamCopyError(IntPtr stream);
+	private static extern IntPtr CFWriteStreamCopyError(IntPtr handle);
 
 	public override CFException GetError()
 	{
@@ -26,8 +26,7 @@ public class CFWriteStream : CFStream
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static extern bool CFWriteStreamOpen(IntPtr stream);
+	private static extern bool CFWriteStreamOpen(IntPtr handle);
 
 	protected override bool DoOpen()
 	{
@@ -35,7 +34,7 @@ public class CFWriteStream : CFStream
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern void CFWriteStreamClose(IntPtr stream);
+	private static extern void CFWriteStreamClose(IntPtr handle);
 
 	protected override void DoClose()
 	{
@@ -43,15 +42,14 @@ public class CFWriteStream : CFStream
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern nint CFWriteStreamGetStatus(IntPtr stream);
+	private static extern CFStreamStatus CFWriteStreamGetStatus(IntPtr handle);
 
 	protected override CFStreamStatus DoGetStatus()
 	{
-		return (CFStreamStatus)(long)CFWriteStreamGetStatus(base.Handle);
+		return CFWriteStreamGetStatus(base.Handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	[return: MarshalAs(UnmanagedType.I1)]
 	private static extern bool CFWriteStreamCanAcceptBytes(IntPtr handle);
 
 	public bool CanAcceptBytes()
@@ -60,23 +58,15 @@ public class CFWriteStream : CFStream
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern nint CFWriteStreamWrite(IntPtr handle, IntPtr buffer, nint count);
+	private static extern CFIndex CFWriteStreamWrite(IntPtr handle, IntPtr buffer, CFIndex count);
 
 	public int Write(byte[] buffer)
 	{
-		if (buffer == null)
-		{
-			throw new ArgumentNullException("buffer");
-		}
 		return Write(buffer, 0, buffer.Length);
 	}
 
-	public unsafe int Write(byte[] buffer, nint offset, nint count)
+	public int Write(byte[] buffer, int offset, int count)
 	{
-		if (buffer == null)
-		{
-			throw new ArgumentNullException("buffer");
-		}
 		CheckHandle();
 		if (offset < 0)
 		{
@@ -90,75 +80,54 @@ public class CFWriteStream : CFStream
 		{
 			throw new ArgumentException();
 		}
-		fixed (byte* ptr = buffer)
+		GCHandle gCHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+		try
 		{
-			return (int)CFWriteStreamWrite(base.Handle, (IntPtr)ptr + (int)offset, count);
+			return CFWriteStreamWrite(buffer: new IntPtr(gCHandle.AddrOfPinnedObject().ToInt64() + offset), handle: base.Handle, count: count);
+		}
+		finally
+		{
+			gCHandle.Free();
 		}
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static extern bool CFWriteStreamSetClient(IntPtr stream, nint streamEvents, CFStreamCallback clientCB, IntPtr clientContext);
+	private static extern bool CFWriteStreamSetClient(IntPtr stream, CFIndex eventTypes, CFStreamCallback cb, IntPtr context);
 
-	protected override bool DoSetClient(CFStreamCallback callback, nint eventTypes, IntPtr context)
+	protected override bool DoSetClient(CFStreamCallback callback, CFIndex eventTypes, IntPtr context)
 	{
 		return CFWriteStreamSetClient(base.Handle, eventTypes, callback, context);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern void CFWriteStreamScheduleWithRunLoop(IntPtr stream, IntPtr runLoop, IntPtr runLoopMode);
+	private static extern void CFWriteStreamScheduleWithRunLoop(IntPtr handle, IntPtr loop, IntPtr mode);
 
 	protected override void ScheduleWithRunLoop(CFRunLoop loop, NSString mode)
 	{
-		if (loop == null)
-		{
-			throw new ArgumentNullException("loop");
-		}
-		if (mode == null)
-		{
-			throw new ArgumentNullException("mode");
-		}
 		CFWriteStreamScheduleWithRunLoop(base.Handle, loop.Handle, mode.Handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern void CFWriteStreamUnscheduleFromRunLoop(IntPtr stream, IntPtr runLoop, IntPtr runLoopMode);
+	private static extern void CFWriteStreamUnscheduleFromRunLoop(IntPtr handle, IntPtr loop, IntPtr mode);
 
 	protected override void UnscheduleFromRunLoop(CFRunLoop loop, NSString mode)
 	{
-		if (loop == null)
-		{
-			throw new ArgumentNullException("loop");
-		}
-		if (mode == null)
-		{
-			throw new ArgumentNullException("mode");
-		}
 		CFWriteStreamUnscheduleFromRunLoop(base.Handle, loop.Handle, mode.Handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFWriteStreamSetProperty(IntPtr stream, IntPtr propertyName);
+	private static extern IntPtr CFReadStreamCopyProperty(IntPtr handle, IntPtr name);
 
 	protected override IntPtr DoGetProperty(NSString name)
 	{
-		if (name == null)
-		{
-			throw new ArgumentNullException("name");
-		}
-		return CFWriteStreamSetProperty(base.Handle, name.Handle);
+		return CFReadStreamCopyProperty(base.Handle, name.Handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	[return: MarshalAs(UnmanagedType.I1)]
-	private static extern bool CFWriteStreamSetProperty(IntPtr stream, IntPtr propertyName, IntPtr value);
+	private static extern bool CFWriteStreamSetProperty(IntPtr handle, IntPtr name, IntPtr value);
 
 	protected override bool DoSetProperty(NSString name, INativeObject value)
 	{
-		if (name == null)
-		{
-			throw new ArgumentNullException("name");
-		}
-		return CFWriteStreamSetProperty(base.Handle, name.Handle, value?.Handle ?? IntPtr.Zero);
+		return CFWriteStreamSetProperty(base.Handle, name.Handle, value.Handle);
 	}
 }

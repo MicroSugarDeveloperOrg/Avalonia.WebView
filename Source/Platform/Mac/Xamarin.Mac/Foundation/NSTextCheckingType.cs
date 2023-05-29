@@ -1,8 +1,5 @@
-using System;
-
 namespace Foundation;
 
-[Flags]
 public enum NSTextCheckingType : ulong
 {
 	Orthography = 1uL,
@@ -14,8 +11,5 @@ public enum NSTextCheckingType : ulong
 	Quote = 0x40uL,
 	Dash = 0x80uL,
 	Replacement = 0x100uL,
-	Correction = 0x200uL,
-	RegularExpression = 0x400uL,
-	PhoneNumber = 0x800uL,
-	TransitInformation = 0x1000uL
+	Correction = 0x200uL
 }

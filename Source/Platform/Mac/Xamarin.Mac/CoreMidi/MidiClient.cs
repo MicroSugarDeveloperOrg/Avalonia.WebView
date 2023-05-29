@@ -12,11 +12,11 @@ public class MidiClient : MidiObject
 
 		public int MessageSize;
 
-		public int Parent;
+		public IntPtr Parent;
 
 		public MidiObjectType ParentType;
 
-		public int Child;
+		public IntPtr Child;
 
 		public MidiObjectType ChildType;
 	}
@@ -27,7 +27,7 @@ public class MidiClient : MidiObject
 
 		public int MessageSize;
 
-		public int ObjectHandle;
+		public IntPtr ObjectHandle;
 
 		public MidiObjectType ObjectType;
 
@@ -40,7 +40,7 @@ public class MidiClient : MidiObject
 
 		public int MessageSize;
 
-		public int DeviceRef;
+		public IntPtr DeviceRef;
 
 		public int ErrorCode;
 	}
@@ -64,26 +64,23 @@ public class MidiClient : MidiObject
 	public event EventHandler<IOErrorEventArgs> IOError;
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIClientCreate(IntPtr str, MidiNotifyProc callback, IntPtr context, out int handle);
+	private static extern int MIDIClientCreate(IntPtr str, MidiNotifyProc callback, IntPtr context, out IntPtr handle);
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIClientDispose(int handle);
+	private static extern int MIDIClientDispose(IntPtr handle);
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDISourceCreate(int handle, IntPtr name, out int endpoint);
+	private static extern int MIDISourceCreate(IntPtr handle, IntPtr name, out IntPtr endpoint);
 
 	internal override void DisposeHandle()
 	{
-		if (handle != 0)
+		if (handle != IntPtr.Zero)
 		{
 			if (owns)
 			{
 				MIDIClientDispose(handle);
 			}
-			handle = 0;
-		}
-		if (gch.IsAllocated)
-		{
+			handle = IntPtr.Zero;
 			gch.Free();
 		}
 	}
@@ -96,7 +93,7 @@ public class MidiClient : MidiObject
 		if (num != 0)
 		{
 			gch.Free();
-			handle = 0;
+			handle = IntPtr.Zero;
 			throw new MidiException((MidiError)num);
 		}
 		Name = name;
@@ -107,29 +104,14 @@ public class MidiClient : MidiObject
 		return Name;
 	}
 
-	public MidiEndpoint CreateVirtualSource(string name, out MidiError statusCode)
+	public MidiEndpoint CreateVirtualSource(string name)
 	{
 		using NSString nSString = new NSString(name);
-		int endpoint;
-		int num = MIDISourceCreate(handle, nSString.Handle, out endpoint);
-		if (num != 0)
+		if (MIDISourceCreate(handle, nSString.Handle, out var endpoint) != 0)
 		{
-			statusCode = (MidiError)num;
 			return null;
 		}
-		statusCode = MidiError.Ok;
 		return new MidiEndpoint(endpoint, owns: true);
-	}
-
-	public MidiEndpoint CreateVirtualDestination(string name, out MidiError status)
-	{
-		MidiEndpoint midiEndpoint = new MidiEndpoint(this, name, out status);
-		if (status == MidiError.Ok)
-		{
-			return midiEndpoint;
-		}
-		midiEndpoint.Dispose();
-		return null;
 	}
 
 	public MidiPort CreateInputPort(string name)
@@ -199,7 +181,7 @@ public class MidiClient : MidiObject
 		}
 	}
 
-	protected override void Dispose(bool disposing)
+	public override void Dispose(bool disposing)
 	{
 		this.SetupChanged = null;
 		this.ObjectAdded = null;

@@ -1,16 +1,14 @@
+using System;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
 public class NSWorkspaceFileOperationEventArgs : NSNotificationEventArgs
 {
-	[Field("NSOperationNumber", "AppKit")]
 	private static IntPtr k0;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public nint FileType
+	public int FileType
 	{
 		get
 		{
@@ -18,13 +16,13 @@ public class NSWorkspaceFileOperationEventArgs : NSNotificationEventArgs
 			{
 				k0 = Dlfcn.GetIntPtr(Libraries.AppKit.Handle, "NSOperationNumber");
 			}
-			IntPtr intPtr = base.Notification.UserInfo?.LowlevelObjectForKey(k0) ?? IntPtr.Zero;
+			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k0);
 			if (intPtr == IntPtr.Zero)
 			{
-				return default(nint);
+				return 0;
 			}
-			using NSNumber nSNumber = Runtime.GetNSObject<NSNumber>(intPtr);
-			return nSNumber.NIntValue;
+			using NSNumber nSNumber = new NSNumber(intPtr);
+			return nSNumber.Int32Value;
 		}
 	}
 

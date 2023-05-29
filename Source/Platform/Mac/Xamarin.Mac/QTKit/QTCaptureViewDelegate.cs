@@ -6,39 +6,53 @@ using ObjCRuntime;
 
 namespace QTKit;
 
-[Protocol(IsInformal = true)]
-[Register("QTCaptureView_Delegate", false)]
+[Register("QTCaptureView_Delegate", true)]
 [Model]
-public class QTCaptureViewDelegate : NSObject, IQTCaptureViewDelegate, INativeObject, IDisposable
+public class QTCaptureViewDelegate : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public QTCaptureViewDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected QTCaptureViewDelegate(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public QTCaptureViewDelegate(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public QTCaptureViewDelegate(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal QTCaptureViewDelegate(IntPtr handle)
+	public QTCaptureViewDelegate(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
 	}
 
 	[Export("view:willDisplayImage:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CIImage WillDisplayImage(QTCaptureView view, CIImage image)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();

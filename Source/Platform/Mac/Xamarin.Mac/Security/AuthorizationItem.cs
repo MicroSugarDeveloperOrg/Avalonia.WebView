@@ -1,4 +1,4 @@
-using Xamarin.Mac.System.Mac;
+using System;
 
 namespace Security;
 
@@ -6,7 +6,7 @@ internal struct AuthorizationItem
 {
 	public IntPtr name;
 
-	public nint valueLen;
+	public IntPtr valueLen;
 
 	public IntPtr value;
 

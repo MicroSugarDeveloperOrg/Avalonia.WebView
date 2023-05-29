@@ -1,8 +1,8 @@
+using System;
 using System.Runtime.InteropServices;
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreGraphics;
 
@@ -12,16 +12,16 @@ public class CGColor : INativeObject, IDisposable
 
 	public IntPtr Handle => handle;
 
-	public nint NumberOfComponents => CGColorGetNumberOfComponents(handle);
+	public int NumberOfComponents => CGColorGetNumberOfComponents(handle);
 
-	public unsafe nfloat[] Components
+	public unsafe double[] Components
 	{
 		get
 		{
-			int num = (int)NumberOfComponents;
-			nfloat[] array = new nfloat[num];
-			nfloat* ptr = CGColorGetComponents(handle);
-			for (int i = 0; i < num; i++)
+			int numberOfComponents = NumberOfComponents;
+			double[] array = new double[numberOfComponents];
+			double* ptr = CGColorGetComponents(handle);
+			for (int i = 0; i < numberOfComponents; i++)
 			{
 				array[i] = ptr[i];
 			}
@@ -29,25 +29,11 @@ public class CGColor : INativeObject, IDisposable
 		}
 	}
 
-	public nfloat Alpha => CGColorGetAlpha(handle);
+	public double Alpha => CGColorGetAlpha(handle);
 
-	public CGColorSpace ColorSpace
-	{
-		get
-		{
-			IntPtr intPtr = CGColorGetColorSpace(handle);
-			return (intPtr == IntPtr.Zero) ? null : new CGColorSpace(intPtr, owns: false);
-		}
-	}
+	public CGColorSpace ColorSpace => new CGColorSpace(CGColorGetColorSpace(handle));
 
-	public CGPattern Pattern
-	{
-		get
-		{
-			IntPtr intPtr = CGColorGetPattern(handle);
-			return (intPtr == IntPtr.Zero) ? null : new CGPattern(intPtr);
-		}
-	}
+	public CGPattern Pattern => new CGPattern(CGColorGetPattern(handle));
 
 	~CGColor()
 	{
@@ -77,9 +63,9 @@ public class CGColor : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGColorCreate(IntPtr space, nfloat[] components);
+	private static extern IntPtr CGColorCreate(IntPtr space, double[] components);
 
-	public CGColor(CGColorSpace colorspace, nfloat[] components)
+	public CGColor(CGColorSpace colorspace, double[] components)
 	{
 		if (components == null)
 		{
@@ -97,28 +83,28 @@ public class CGColor : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGColorCreateGenericGray(nfloat gray, nfloat alpha);
+	private static extern IntPtr CGColorCreateGenericGray(double gray, double alpha);
 
-	public CGColor(nfloat gray, nfloat alpha)
+	public CGColor(double gray, double alpha)
 	{
 		handle = CGColorCreateGenericGray(gray, alpha);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGColorCreateGenericRGB(nfloat red, nfloat green, nfloat blue, nfloat alpha);
+	private static extern IntPtr CGColorCreateGenericRGB(double red, double green, double blue, double alpha);
 
-	public CGColor(nfloat red, nfloat green, nfloat blue, nfloat alpha)
+	public CGColor(double red, double green, double blue, double alpha)
 	{
 		handle = CGColorCreateGenericRGB(red, green, blue, alpha);
 	}
 
-	public CGColor(nfloat red, nfloat green, nfloat blue)
+	public CGColor(double red, double green, double blue)
 	{
-		handle = CGColorCreateGenericRGB(red, green, blue, 1f);
+		handle = CGColorCreateGenericRGB(red, green, blue, 1.0);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGColorGetConstantColor(IntPtr colorName);
+	private static extern IntPtr CGColorGetConstantColor(IntPtr cfstring_colorName);
 
 	public CGColor(string name)
 	{
@@ -127,18 +113,17 @@ public class CGColor : INativeObject, IDisposable
 			throw new ArgumentNullException("name");
 		}
 		using CFString cFString = new CFString(name);
-		handle = CGColorGetConstantColor(cFString.Handle);
+		handle = CGColorGetConstantColor(cFString.handle);
 		if (handle == IntPtr.Zero)
 		{
 			throw new ArgumentException("name");
 		}
-		CGColorRetain(handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGColorCreateWithPattern(IntPtr space, IntPtr pattern, nfloat[] components);
+	private static extern IntPtr CGColorCreateWithPattern(IntPtr space, IntPtr pattern, double[] components);
 
-	public CGColor(CGColorSpace colorspace, CGPattern pattern, nfloat[] components)
+	public CGColor(CGColorSpace colorspace, CGPattern pattern, double[] components)
 	{
 		if (colorspace == null)
 		{
@@ -156,7 +141,7 @@ public class CGColor : INativeObject, IDisposable
 		{
 			throw new ArgumentNullException("components");
 		}
-		handle = CGColorCreateWithPattern(colorspace.handle, pattern.Handle, components);
+		handle = CGColorCreateWithPattern(colorspace.handle, pattern.handle, components);
 		if (handle == IntPtr.Zero)
 		{
 			throw new ArgumentException();
@@ -164,9 +149,9 @@ public class CGColor : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGColorCreateCopyWithAlpha(IntPtr color, nfloat alpha);
+	private static extern IntPtr CGColorCreateCopyWithAlpha(IntPtr color, double alpha);
 
-	public CGColor(CGColor source, nfloat alpha)
+	public CGColor(CGColor source, double alpha)
 	{
 		if (source == null)
 		{
@@ -208,13 +193,13 @@ public class CGColor : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern nint CGColorGetNumberOfComponents(IntPtr color);
+	private static extern int CGColorGetNumberOfComponents(IntPtr color);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private unsafe static extern nfloat* CGColorGetComponents(IntPtr color);
+	private unsafe static extern double* CGColorGetComponents(IntPtr color);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern nfloat CGColorGetAlpha(IntPtr color);
+	private static extern double CGColorGetAlpha(IntPtr color);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
 	private static extern IntPtr CGColorGetColorSpace(IntPtr color);
@@ -223,10 +208,10 @@ public class CGColor : INativeObject, IDisposable
 	private static extern IntPtr CGColorGetPattern(IntPtr color);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGColorRetain(IntPtr color);
+	private static extern void CGColorRetain(IntPtr handle);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGColorRelease(IntPtr color);
+	private static extern void CGColorRelease(IntPtr handle);
 
 	protected virtual void Dispose(bool disposing)
 	{
@@ -235,50 +220,5 @@ public class CGColor : INativeObject, IDisposable
 			CGColorRelease(handle);
 			handle = IntPtr.Zero;
 		}
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	[iOS(9, 0)]
-	[Mac(10, 11)]
-	private static extern IntPtr CGColorCreateCopyByMatchingToColorSpace(IntPtr space, CGColorRenderingIntent intent, IntPtr color, IntPtr options);
-
-	private static CGColor CreateByMatchingToColorSpace(CGColorSpace space, CGColorRenderingIntent intent, CGColor color, NSDictionary options)
-	{
-		IntPtr intPtr = CGColorCreateCopyByMatchingToColorSpace(space?.Handle ?? IntPtr.Zero, intent, (color == null) ? IntPtr.Zero : color.Handle, options?.Handle ?? IntPtr.Zero);
-		return (intPtr == IntPtr.Zero) ? null : new CGColor(intPtr);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	[Mac(10, 15)]
-	[iOS(13, 0)]
-	[TV(13, 0)]
-	[Watch(6, 0)]
-	private static extern IntPtr CGColorCreateSRGB(nfloat red, nfloat green, nfloat blue, nfloat alpha);
-
-	[Mac(10, 15)]
-	[iOS(13, 0)]
-	[TV(13, 0)]
-	[Watch(6, 0)]
-	public static CGColor CreateSrgb(nfloat red, nfloat green, nfloat blue, nfloat alpha)
-	{
-		IntPtr intPtr = CGColorCreateSRGB(red, green, blue, alpha);
-		return (intPtr == IntPtr.Zero) ? null : new CGColor(intPtr);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	[Mac(10, 15)]
-	[iOS(13, 0)]
-	[TV(13, 0)]
-	[Watch(6, 0)]
-	private static extern IntPtr CGColorCreateGenericGrayGamma2_2(nfloat gray, nfloat alpha);
-
-	[Mac(10, 15)]
-	[iOS(13, 0)]
-	[TV(13, 0)]
-	[Watch(6, 0)]
-	public static CGColor CreateGenericGrayGamma2_2(nfloat gray, nfloat alpha)
-	{
-		IntPtr intPtr = CGColorCreateGenericGrayGamma2_2(gray, alpha);
-		return (intPtr == IntPtr.Zero) ? null : new CGColor(intPtr);
 	}
 }

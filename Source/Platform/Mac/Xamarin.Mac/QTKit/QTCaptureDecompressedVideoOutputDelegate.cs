@@ -6,47 +6,60 @@ using ObjCRuntime;
 
 namespace QTKit;
 
-[Protocol(IsInformal = true)]
-[Register("QTCaptureDecompressedVideoOutput_Delegate", false)]
+[Register("QTCaptureDecompressedVideoOutput_Delegate", true)]
 [Model]
-public class QTCaptureDecompressedVideoOutputDelegate : NSObject, IQTCaptureDecompressedVideoOutputDelegate, INativeObject, IDisposable
+public class QTCaptureDecompressedVideoOutputDelegate : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public QTCaptureDecompressedVideoOutputDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected QTCaptureDecompressedVideoOutputDelegate(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public QTCaptureDecompressedVideoOutputDelegate(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public QTCaptureDecompressedVideoOutputDelegate(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal QTCaptureDecompressedVideoOutputDelegate(IntPtr handle)
+	public QTCaptureDecompressedVideoOutputDelegate(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[Export("captureOutput:didDropVideoFrameWithSampleBuffer:fromConnection:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DidDropVideoFrame(QTCaptureOutput captureOutput, QTSampleBuffer sampleBuffer, QTCaptureConnection connection)
+	[Export("captureOutput:didOutputVideoFrame:withSampleBuffer:fromConnection:")]
+	public virtual void DidOutputVideoFrame(QTCaptureOutput captureOutput, CVImageBuffer videoFrame, QTSampleBuffer sampleBuffer, QTCaptureConnection connection)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("captureOutput:didOutputVideoFrame:withSampleBuffer:fromConnection:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DidOutputVideoFrame(QTCaptureOutput captureOutput, CVImageBuffer videoFrame, QTSampleBuffer sampleBuffer, QTCaptureConnection connection)
+	[Export("captureOutput:didDropVideoFrameWithSampleBuffer:fromConnection:")]
+	public virtual void DidDropVideoFrame(QTCaptureOutput captureOutput, QTSampleBuffer sampleBuffer, QTCaptureConnection connection)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

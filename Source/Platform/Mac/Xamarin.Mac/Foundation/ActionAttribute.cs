@@ -6,7 +6,6 @@ namespace Foundation;
 public sealed class ActionAttribute : ExportAttribute
 {
 	public ActionAttribute()
-		: base(null)
 	{
 	}
 

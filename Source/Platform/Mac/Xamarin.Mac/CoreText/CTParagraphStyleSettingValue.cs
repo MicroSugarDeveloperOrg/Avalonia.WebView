@@ -1,5 +1,5 @@
+using System;
 using System.Runtime.InteropServices;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreText;
 
@@ -10,10 +10,7 @@ internal struct CTParagraphStyleSettingValue
 	public byte int8;
 
 	[FieldOffset(0)]
-	public nfloat single;
-
-	[FieldOffset(0)]
-	public nuint native_uint;
+	public float single;
 
 	[FieldOffset(0)]
 	public IntPtr pointer;

@@ -1,9 +1,6 @@
-using ObjCRuntime;
-
 namespace Foundation;
 
-[Native]
-public enum NSUbiquitousKeyValueStoreChangeReason : long
+public enum NSUbiquitousKeyValueStoreChangeReason
 {
 	ServerChange,
 	InitialSyncChange,

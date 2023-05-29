@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using ObjCRuntime;
 
 namespace AudioToolbox;
 
@@ -29,8 +28,11 @@ public abstract class AudioSource : AudioFile
 	[MonoPInvokeCallback(typeof(ReadProc))]
 	private static int SourceRead(IntPtr clientData, long inPosition, int requestCount, IntPtr buffer, out int actualCount)
 	{
-		AudioSource audioSource = GCHandle.FromIntPtr(clientData).Target as AudioSource;
-		return (!audioSource.Read(inPosition, requestCount, buffer, out actualCount)) ? 1 : 0;
+		if (!(GCHandle.FromIntPtr(clientData).Target as AudioSource).Read(inPosition, requestCount, buffer, out actualCount))
+		{
+			return 1;
+		}
+		return 0;
 	}
 
 	public abstract bool Read(long position, int requestCount, IntPtr buffer, out int actualCount);
@@ -38,8 +40,11 @@ public abstract class AudioSource : AudioFile
 	[MonoPInvokeCallback(typeof(WriteProc))]
 	private static int SourceWrite(IntPtr clientData, long position, int requestCount, IntPtr buffer, out int actualCount)
 	{
-		AudioSource audioSource = GCHandle.FromIntPtr(clientData).Target as AudioSource;
-		return (!audioSource.Write(position, requestCount, buffer, out actualCount)) ? 1 : 0;
+		if (!(GCHandle.FromIntPtr(clientData).Target as AudioSource).Write(position, requestCount, buffer, out actualCount))
+		{
+			return 1;
+		}
+		return 0;
 	}
 
 	public abstract bool Write(long position, int requestCount, IntPtr buffer, out int actualCount);
@@ -47,15 +52,13 @@ public abstract class AudioSource : AudioFile
 	[MonoPInvokeCallback(typeof(GetSizeProc))]
 	private static long SourceGetSize(IntPtr clientData)
 	{
-		AudioSource audioSource = GCHandle.FromIntPtr(clientData).Target as AudioSource;
-		return audioSource.Size;
+		return (GCHandle.FromIntPtr(clientData).Target as AudioSource).Size;
 	}
 
 	[MonoPInvokeCallback(typeof(SetSizeProc))]
 	private static int SourceSetSize(IntPtr clientData, long size)
 	{
-		AudioSource audioSource = GCHandle.FromIntPtr(clientData).Target as AudioSource;
-		audioSource.Size = size;
+		(GCHandle.FromIntPtr(clientData).Target as AudioSource).Size = size;
 		return 0;
 	}
 

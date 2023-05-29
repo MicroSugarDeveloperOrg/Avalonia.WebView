@@ -6,49 +6,16 @@ using ObjCRuntime;
 
 namespace ImageKit;
 
-[Protocol]
-[Register("IKImageEditPanelDataSource", false)]
+[Register("IKImageEditPanelDataSource", true)]
 [Model]
-public abstract class IKImageEditPanelDataSource : NSObject, IIKImageEditPanelDataSource, INativeObject, IDisposable
+public abstract class IKImageEditPanelDataSource : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool HasAdjustMode
-	{
-		[Export("hasAdjustMode")]
-		get
-		{
-			throw new ModelNotImplementedException();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool HasDetailsMode
-	{
-		[Export("hasDetailsMode")]
-		get
-		{
-			throw new ModelNotImplementedException();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool HasEffectsMode
-	{
-		[Export("hasEffectsMode")]
-		get
-		{
-			throw new ModelNotImplementedException();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public abstract CGImage Image
 	{
 		[Export("image")]
 		get;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDictionary ImageProperties
 	{
 		[Export("imageProperties")]
@@ -58,40 +25,81 @@ public abstract class IKImageEditPanelDataSource : NSObject, IIKImageEditPanelDa
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool HasAdjustMode
+	{
+		[Export("hasAdjustMode")]
+		get
+		{
+			throw new ModelNotImplementedException();
+		}
+	}
+
+	public virtual bool HasEffectsMode
+	{
+		[Export("hasEffectsMode")]
+		get
+		{
+			throw new ModelNotImplementedException();
+		}
+	}
+
+	public virtual bool HasDetailsMode
+	{
+		[Export("hasDetailsMode")]
+		get
+		{
+			throw new ModelNotImplementedException();
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
-	protected IKImageEditPanelDataSource()
+	public IKImageEditPanelDataSource()
 		: base(NSObjectFlag.Empty)
 	{
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected IKImageEditPanelDataSource(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public IKImageEditPanelDataSource(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public IKImageEditPanelDataSource(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal IKImageEditPanelDataSource(IntPtr handle)
+	public IKImageEditPanelDataSource(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
 	}
 
+	[Export("setImage:imageProperties:")]
+	public abstract void SetImageAndProperties(CGImage image, NSDictionary metaData);
+
 	[Export("thumbnailWithMaximumSize:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGImage GetThumbnail(CGSize maximumSize)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
-
-	[Export("setImage:imageProperties:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public abstract void SetImageAndProperties(CGImage image, NSDictionary metaData);
 }

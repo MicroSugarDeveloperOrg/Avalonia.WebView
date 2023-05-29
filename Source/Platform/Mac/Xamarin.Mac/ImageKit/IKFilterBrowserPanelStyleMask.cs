@@ -3,8 +3,8 @@ using System;
 namespace ImageKit;
 
 [Flags]
-public enum IKFilterBrowserPanelStyleMask : uint
+public enum IKFilterBrowserPanelStyleMask
 {
-	Normal = 0u,
-	Textured = 0x100u
+	Normal = 0,
+	Textured = 0x100
 }

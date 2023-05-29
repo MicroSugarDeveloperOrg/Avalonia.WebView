@@ -1,12 +1,10 @@
-using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
+using System;
 
 namespace CoreVideo;
 
-[Watch(4, 0)]
 public struct CVFillExtendedPixelsCallBackData
 {
-	public nint Version;
+	public int Version;
 
 	public CVFillExtendedPixelsCallBack FillCallBack;
 

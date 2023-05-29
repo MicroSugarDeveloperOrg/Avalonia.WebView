@@ -1,9 +1,10 @@
 using System;
+using System.Runtime.InteropServices;
 
 namespace ObjCRuntime;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public sealed class AdoptsAttribute : Attribute
+public class AdoptsAttribute : Attribute
 {
 	private IntPtr handle;
 
@@ -15,11 +16,14 @@ public sealed class AdoptsAttribute : Attribute
 		{
 			if (handle == IntPtr.Zero && ProtocolType != null)
 			{
-				handle = Runtime.GetProtocol(ProtocolType);
+				handle = objc_getProtocol(ProtocolType);
 			}
 			return handle;
 		}
 	}
+
+	[DllImport("/usr/lib/libobjc.dylib")]
+	internal static extern IntPtr objc_getProtocol(string proto);
 
 	public AdoptsAttribute(string protocolType)
 	{

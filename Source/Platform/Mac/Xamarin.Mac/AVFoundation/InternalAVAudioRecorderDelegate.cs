@@ -13,11 +13,6 @@ internal class InternalAVAudioRecorderDelegate : AVAudioRecorderDelegate
 
 	internal EventHandler<AVErrorEventArgs> cbEncoderError;
 
-	public InternalAVAudioRecorderDelegate()
-	{
-		base.IsDirectBinding = false;
-	}
-
 	[Preserve(Conditional = true)]
 	public override void FinishedRecording(AVAudioRecorder recorder, bool flag)
 	{

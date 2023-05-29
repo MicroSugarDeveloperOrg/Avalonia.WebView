@@ -1,25 +1,20 @@
+using System;
 using System.Runtime.InteropServices;
 using CoreFoundation;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreText;
 
+[Since(3, 2)]
 public class CTLine : INativeObject, IDisposable
 {
-	public delegate void CaretEdgeEnumerator(double offset, nint charIndex, bool leadingEdge, ref bool stop);
-
-	private delegate void CaretEdgeEnumeratorProxy(IntPtr block, double offset, nint charIndex, [MarshalAs(UnmanagedType.I1)] bool leadingEdge, [MarshalAs(UnmanagedType.I1)] ref bool stop);
-
 	internal IntPtr handle;
-
-	private static readonly CaretEdgeEnumeratorProxy static_enumerate = TrampolineEnumerate;
 
 	public IntPtr Handle => handle;
 
-	public nint GlyphCount => CTLineGetGlyphCount(handle);
+	public int GlyphCount => CTLineGetGlyphCount(handle);
 
 	public NSRange StringRange => CTLineGetStringRange(handle);
 
@@ -88,9 +83,9 @@ public class CTLine : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern IntPtr CTLineCreateJustifiedLine(IntPtr line, nfloat justificationFactor, double justificationWidth);
+	private static extern IntPtr CTLineCreateJustifiedLine(IntPtr line, double justificationFactor, double justificationWidth);
 
-	public CTLine GetJustifiedLine(nfloat justificationFactor, double justificationWidth)
+	public CTLine GetJustifiedLine(double justificationFactor, double justificationWidth)
 	{
 		IntPtr intPtr = CTLineCreateJustifiedLine(handle, justificationFactor, justificationWidth);
 		if (intPtr == IntPtr.Zero)
@@ -101,7 +96,7 @@ public class CTLine : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern nint CTLineGetGlyphCount(IntPtr line);
+	private static extern int CTLineGetGlyphCount(IntPtr line);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
 	private static extern IntPtr CTLineGetGlyphRuns(IntPtr line);
@@ -120,9 +115,9 @@ public class CTLine : INativeObject, IDisposable
 	private static extern NSRange CTLineGetStringRange(IntPtr line);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern double CTLineGetPenOffsetForFlush(IntPtr line, nfloat flushFactor, double flushWidth);
+	private static extern double CTLineGetPenOffsetForFlush(IntPtr line, double flushFactor, double flushWidth);
 
-	public double GetPenOffsetForFlush(nfloat flushFactor, double flushWidth)
+	public double GetPenOffsetForFlush(double flushFactor, double flushWidth)
 	{
 		return CTLineGetPenOffsetForFlush(handle, flushFactor, flushWidth);
 	}
@@ -144,21 +139,26 @@ public class CTLine : INativeObject, IDisposable
 
 	public CGRect GetImageBounds(CGContext context)
 	{
-		return CTLineGetImageBounds(handle, context.GetHandle());
+		if (context == null)
+		{
+			throw new ArgumentNullException("context");
+		}
+		return CTLineGetImageBounds(handle, context.Handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern CGRect CTLineGetBoundsWithOptions(IntPtr line, nuint options);
+	private static extern CGRect CTLineGetBoundsWithOptions(IntPtr line, CTLineBoundsOptions options);
 
+	[Since(6, 0)]
 	public CGRect GetBounds(CTLineBoundsOptions options)
 	{
-		return CTLineGetBoundsWithOptions(handle, (nuint)(ulong)options);
+		return CTLineGetBoundsWithOptions(handle, options);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern double CTLineGetTypographicBounds(IntPtr line, out nfloat ascent, out nfloat descent, out nfloat leading);
+	private static extern double CTLineGetTypographicBounds(IntPtr line, out double ascent, out double descent, out double leading);
 
-	public double GetTypographicBounds(out nfloat ascent, out nfloat descent, out nfloat leading)
+	public double GetTypographicBounds(out double ascent, out double descent, out double leading)
 	{
 		return CTLineGetTypographicBounds(handle, out ascent, out descent, out leading);
 	}
@@ -175,54 +175,26 @@ public class CTLine : INativeObject, IDisposable
 	private static extern double CTLineGetTrailingWhitespaceWidth(IntPtr line);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern nint CTLineGetStringIndexForPosition(IntPtr line, CGPoint position);
+	private static extern int CTLineGetStringIndexForPosition(IntPtr line, CGPoint position);
 
-	public nint GetStringIndexForPosition(CGPoint position)
+	public int GetStringIndexForPosition(CGPoint position)
 	{
 		return CTLineGetStringIndexForPosition(handle, position);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern nfloat CTLineGetOffsetForStringIndex(IntPtr line, nint charIndex, out nfloat secondaryOffset);
+	private static extern double CTLineGetOffsetForStringIndex(IntPtr line, int charIndex, out double secondaryOffset);
 
-	public nfloat GetOffsetForStringIndex(nint charIndex, out nfloat secondaryOffset)
+	public double GetOffsetForStringIndex(int charIndex, out double secondaryOffset)
 	{
 		return CTLineGetOffsetForStringIndex(handle, charIndex, out secondaryOffset);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern nfloat CTLineGetOffsetForStringIndex(IntPtr line, nint charIndex, IntPtr secondaryOffset);
+	private static extern double CTLineGetOffsetForStringIndex(IntPtr line, int charIndex, IntPtr secondaryOffset);
 
-	public nfloat GetOffsetForStringIndex(nint charIndex)
+	public double GetOffsetForStringIndex(int charIndex)
 	{
 		return CTLineGetOffsetForStringIndex(handle, charIndex, IntPtr.Zero);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	[iOS(9, 0)]
-	[Mac(10, 11)]
-	private unsafe static extern void CTLineEnumerateCaretOffsets(IntPtr line, BlockLiteral* blockEnumerator);
-
-	[MonoPInvokeCallback(typeof(CaretEdgeEnumeratorProxy))]
-	private unsafe static void TrampolineEnumerate(IntPtr blockPtr, double offset, nint charIndex, bool leadingEdge, ref bool stop)
-	{
-		BlockLiteral* ptr = (BlockLiteral*)(void*)blockPtr;
-		((CaretEdgeEnumerator)ptr->Target)?.Invoke(offset, charIndex, leadingEdge, ref stop);
-	}
-
-	[iOS(9, 0)]
-	[Mac(10, 11)]
-	[BindingImpl(BindingImplOptions.Optimizable)]
-	public unsafe void EnumerateCaretOffsets(CaretEdgeEnumerator enumerator)
-	{
-		if (enumerator == null)
-		{
-			throw new ArgumentNullException("enumerator");
-		}
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(static_enumerate, enumerator);
-		CTLineEnumerateCaretOffsets(handle, ptr);
-		ptr->CleanupBlock();
 	}
 }

@@ -1,9 +1,7 @@
 using System;
-using ObjCRuntime;
 
 namespace Foundation;
 
-[Native]
 [Flags]
 public enum NSMachPortRights : ulong
 {

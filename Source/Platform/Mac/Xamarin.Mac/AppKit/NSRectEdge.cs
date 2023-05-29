@@ -1,9 +1,6 @@
-using ObjCRuntime;
-
 namespace AppKit;
 
-[Native]
-public enum NSRectEdge : ulong
+public enum NSRectEdge
 {
 	MinXEdge,
 	MinYEdge,

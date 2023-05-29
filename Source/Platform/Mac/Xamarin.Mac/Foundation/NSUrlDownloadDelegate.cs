@@ -1,120 +1,123 @@
+using System;
 using System.ComponentModel;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 
-[Protocol(Name = "NSURLDownloadDelegate")]
-[Register("NSUrlDownloadDelegate", false)]
+[Register("NSUrlDownloadDelegate", true)]
 [Model]
-public class NSUrlDownloadDelegate : NSObject, INSUrlDownloadDelegate, INativeObject, IDisposable
+public class NSUrlDownloadDelegate : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSUrlDownloadDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSUrlDownloadDelegate(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSUrlDownloadDelegate(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSUrlDownloadDelegate(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSUrlDownloadDelegate(IntPtr handle)
+	public NSUrlDownloadDelegate(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
-	}
-
-	[Export("download:didCancelAuthenticationChallenge:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void CanceledAuthenticationChallenge(NSUrlDownload download, NSUrlAuthenticationChallenge challenge)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("download:didCreateDestination:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void CreatedDestination(NSUrlDownload download, string path)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("download:decideDestinationWithSuggestedFilename:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DecideDestination(NSUrlDownload download, string suggestedFilename)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("download:shouldDecodeSourceDataOfMIMEType:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool DecodeSourceData(NSUrlDownload download, string encodingType)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("downloadDidBegin:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void DownloadBegan(NSUrlDownload download)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("download:didFailWithError:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void FailedWithError(NSUrlDownload download, NSError error)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("downloadDidFinish:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void Finished(NSUrlDownload download)
+	[Export("download:willSendRequest:redirectResponse:")]
+	public virtual NSUrlRequest WillSendRequest(NSUrlDownload download, NSUrlRequest request, NSUrlResponse redirectResponse)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("download:didReceiveAuthenticationChallenge:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ReceivedAuthenticationChallenge(NSUrlDownload download, NSUrlAuthenticationChallenge challenge)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("download:didReceiveDataOfLength:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ReceivedData(NSUrlDownload download, nuint length)
+	[Export("download:didCancelAuthenticationChallenge:")]
+	public virtual void CanceledAuthenticationChallenge(NSUrlDownload download, NSUrlAuthenticationChallenge challenge)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("download:didReceiveResponse:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ReceivedResponse(NSUrlDownload download, NSUrlResponse response)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("download:willResumeWithResponse:fromByte:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Resume(NSUrlDownload download, NSUrlResponse response, long startingByte)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("download:willSendRequest:redirectResponse:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSUrlRequest WillSendRequest(NSUrlDownload download, NSUrlRequest request, NSUrlResponse redirectResponse)
+	[Export("download:didReceiveDataOfLength:")]
+	public virtual void ReceivedData(NSUrlDownload download, uint length)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("download:shouldDecodeSourceDataOfMIMEType:")]
+	public virtual bool DecodeSourceData(NSUrlDownload download, string encodingType)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("download:decideDestinationWithSuggestedFilename:")]
+	public virtual void DecideDestination(NSUrlDownload download, string suggestedFilename)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("download:didCreateDestination:")]
+	public virtual void CreatedDestination(NSUrlDownload download, string path)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("downloadDidFinish:")]
+	public virtual void Finished(NSUrlDownload download)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("download:didFailWithError:")]
+	public virtual void FailedWithError(NSUrlDownload download, NSError error)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

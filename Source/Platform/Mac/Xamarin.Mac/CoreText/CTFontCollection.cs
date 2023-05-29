@@ -1,14 +1,15 @@
+using System;
 using System.Runtime.InteropServices;
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreText;
 
+[Since(3, 2)]
 public class CTFontCollection : INativeObject, IDisposable
 {
-	private delegate nint CTFontCollectionSortDescriptorsCallback(IntPtr first, IntPtr second, IntPtr refCon);
+	private delegate int CTFontCollectionSortDescriptorsCallback(IntPtr first, IntPtr second, IntPtr refCon);
 
 	internal IntPtr handle;
 
@@ -64,20 +65,7 @@ public class CTFontCollection : INativeObject, IDisposable
 
 	public CTFontCollection(CTFontDescriptor[] queryDescriptors, CTFontCollectionOptions options)
 	{
-        CFArray obj;
-		if (queryDescriptors != null)
-		{
-			obj = CFArray.FromNativeObjects(queryDescriptors);
-		}
-		else
-		{
-			obj = null;
-		}
-
-		if (obj is null)
-			return;
-
-		using (CFArray cFArray = obj)
+		using (CFArray cFArray = ((queryDescriptors == null) ? null : CFArray.FromNativeObjects(queryDescriptors)))
 		{
 			handle = CTFontCollectionCreateWithFontDescriptors(cFArray?.Handle ?? IntPtr.Zero, options?.Dictionary.Handle ?? IntPtr.Zero);
 		}
@@ -92,21 +80,8 @@ public class CTFontCollection : INativeObject, IDisposable
 
 	public CTFontCollection WithFontDescriptors(CTFontDescriptor[] queryDescriptors, CTFontCollectionOptions options)
 	{
-        CFArray obj;
-		if (queryDescriptors != null)
-		{
-			obj = CFArray.FromNativeObjects(queryDescriptors);
-		}
-		else
-		{
-			obj = null;
-		}
-
-		if (obj is null)
-            return null;
-
-        IntPtr intPtr;
-		using (CFArray cFArray = obj)
+		IntPtr intPtr;
+		using (CFArray cFArray = ((queryDescriptors == null) ? null : CFArray.FromNativeObjects(queryDescriptors)))
 		{
 			intPtr = CTFontCollectionCreateCopyWithFontDescriptors(handle, cFArray?.Handle ?? IntPtr.Zero, options?.Dictionary.Handle ?? IntPtr.Zero);
 		}
@@ -125,28 +100,7 @@ public class CTFontCollection : INativeObject, IDisposable
 		IntPtr intPtr = CTFontCollectionCreateMatchingFontDescriptors(handle);
 		if (intPtr == IntPtr.Zero)
 		{
-			return Array.Empty<CTFontDescriptor>();
-		}
-		CTFontDescriptor[] result = NSArray.ArrayFromHandle(intPtr, (IntPtr fd) => new CTFontDescriptor(fd, owns: false));
-		CFObject.CFRelease(intPtr);
-		return result;
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	[iOS(12, 0)]
-	[TV(12, 0)]
-	[Watch(5, 0)]
-	private static extern IntPtr CTFontCollectionCreateMatchingFontDescriptorsWithOptions(IntPtr collection, IntPtr options);
-
-	[iOS(12, 0)]
-	[TV(12, 0)]
-	[Watch(5, 0)]
-	public CTFontDescriptor[] GetMatchingFontDescriptors(CTFontCollectionOptions options)
-	{
-		IntPtr intPtr = CTFontCollectionCreateMatchingFontDescriptorsWithOptions(handle, options?.Dictionary.Handle ?? IntPtr.Zero);
-		if (intPtr == IntPtr.Zero)
-		{
-			return Array.Empty<CTFontDescriptor>();
+			return new CTFontDescriptor[0];
 		}
 		CTFontDescriptor[] result = NSArray.ArrayFromHandle(intPtr, (IntPtr fd) => new CTFontDescriptor(fd, owns: false));
 		CFObject.CFRelease(intPtr);
@@ -157,7 +111,7 @@ public class CTFontCollection : INativeObject, IDisposable
 	private static extern IntPtr CTFontCollectionCreateMatchingFontDescriptorsSortedWithCallback(IntPtr collection, CTFontCollectionSortDescriptorsCallback sortCallback, IntPtr refCon);
 
 	[MonoPInvokeCallback(typeof(CTFontCollectionSortDescriptorsCallback))]
-	private static nint CompareDescriptors(IntPtr first, IntPtr second, IntPtr context)
+	private static int CompareDescriptors(IntPtr first, IntPtr second, IntPtr context)
 	{
 		if (!(GCHandle.FromIntPtr(context).Target is Comparison<CTFontDescriptor> comparison))
 		{
@@ -171,13 +125,13 @@ public class CTFontCollection : INativeObject, IDisposable
 		GCHandle value = GCHandle.Alloc(comparer);
 		try
 		{
-			IntPtr intPtr = CTFontCollectionCreateMatchingFontDescriptorsSortedWithCallback(handle, CompareDescriptors, GCHandle.ToIntPtr(value));
-			if (intPtr == IntPtr.Zero)
+			IntPtr cfArrayRef = CTFontCollectionCreateMatchingFontDescriptorsSortedWithCallback(handle, CompareDescriptors, GCHandle.ToIntPtr(value));
+			if (cfArrayRef == IntPtr.Zero)
 			{
 				return new CTFontDescriptor[0];
 			}
-			CTFontDescriptor[] result = NSArray.ArrayFromHandle(intPtr, (IntPtr fd) => new CTFontDescriptor(fd, owns: false));
-			CFObject.CFRelease(intPtr);
+			CTFontDescriptor[] result = NSArray.ArrayFromHandle(cfArrayRef, (IntPtr fd) => new CTFontDescriptor(cfArrayRef, owns: false));
+			CFObject.CFRelease(cfArrayRef);
 			return result;
 		}
 		finally

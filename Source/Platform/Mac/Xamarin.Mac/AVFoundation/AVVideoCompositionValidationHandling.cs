@@ -7,55 +7,57 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Protocol]
-[Register("AVVideoCompositionValidationHandling", false)]
+[Register("AVVideoCompositionValidationHandling", true)]
 [Model]
-[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-public class AVVideoCompositionValidationHandling : NSObject, IAVVideoCompositionValidationHandling, INativeObject, IDisposable
+public class AVVideoCompositionValidationHandling : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected AVVideoCompositionValidationHandling(NSObjectFlag t)
-		: base(t)
+	[Export("initWithCoder:")]
+	public AVVideoCompositionValidationHandling(NSCoder coder)
+		: base(NSObjectFlag.Empty)
 	{
-		base.IsDirectBinding = false;
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal AVVideoCompositionValidationHandling(IntPtr handle)
+	public AVVideoCompositionValidationHandling(NSObjectFlag t)
+		: base(t)
+	{
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public AVVideoCompositionValidationHandling(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
+	}
+
+	[Export("videoComposition:shouldContinueValidatingAfterFindingInvalidValueForKey:")]
+	public virtual bool ShouldContinueValidatingAfterFindingInvalidValueForKey(AVVideoComposition videoComposition, string key)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("videoComposition:shouldContinueValidatingAfterFindingEmptyTimeRange:")]
-	[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool ShouldContinueValidatingAfterFindingEmptyTimeRange(AVVideoComposition videoComposition, CMTimeRange timeRange)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("videoComposition:shouldContinueValidatingAfterFindingInvalidTimeRangeInInstruction:")]
-	[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool ShouldContinueValidatingAfterFindingInvalidTimeRangeInInstruction(AVVideoComposition videoComposition, AVVideoCompositionInstruction videoCompositionInstruction)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("videoComposition:shouldContinueValidatingAfterFindingInvalidTrackIDInInstruction:layerInstruction:asset:")]
-	[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool ShouldContinueValidatingAfterFindingInvalidTrackIDInInstruction(AVVideoComposition videoComposition, AVVideoCompositionInstruction videoCompositionInstruction, AVVideoCompositionLayerInstruction layerInstruction, AVAsset asset)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("videoComposition:shouldContinueValidatingAfterFindingInvalidValueForKey:")]
-	[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool ShouldContinueValidatingAfterFindingInvalidValueForKey(AVVideoComposition videoComposition, string key)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

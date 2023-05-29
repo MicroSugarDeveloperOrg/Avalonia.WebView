@@ -13,11 +13,6 @@ internal sealed class InternalAVAudioPlayerDelegate : AVAudioPlayerDelegate
 
 	internal EventHandler<AVErrorEventArgs> cbDecoderError;
 
-	public InternalAVAudioPlayerDelegate()
-	{
-		base.IsDirectBinding = false;
-	}
-
 	[Preserve(Conditional = true)]
 	public override void FinishedPlaying(AVAudioPlayer player, bool flag)
 	{

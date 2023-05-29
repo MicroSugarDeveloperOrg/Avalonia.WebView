@@ -4,6 +4,7 @@ using ObjCRuntime;
 
 namespace CoreText;
 
+[Since(3, 2)]
 public class CTFontVariationAxes
 {
 	public NSDictionary Dictionary { get; private set; }
@@ -65,22 +66,6 @@ public class CTFontVariationAxes
 		set
 		{
 			Adapter.SetValue(Dictionary, CTFontVariationAxisKey.Name, value);
-		}
-	}
-
-	[iOS(11, 0)]
-	[Mac(10, 13)]
-	[Watch(4, 0)]
-	[TV(11, 0)]
-	public bool? Hidden
-	{
-		get
-		{
-			return Adapter.GetBoolValue(Dictionary, CTFontVariationAxisKey.Hidden);
-		}
-		set
-		{
-			Adapter.SetValue(Dictionary, CTFontVariationAxisKey.Hidden, value);
 		}
 	}
 

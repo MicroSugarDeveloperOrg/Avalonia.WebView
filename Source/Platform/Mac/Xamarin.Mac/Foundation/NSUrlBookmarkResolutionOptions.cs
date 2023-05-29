@@ -1,10 +1,8 @@
 using System;
-using ObjCRuntime;
 
 namespace Foundation;
 
 [Flags]
-[Native]
 public enum NSUrlBookmarkResolutionOptions : ulong
 {
 	WithoutUI = 0x100uL,

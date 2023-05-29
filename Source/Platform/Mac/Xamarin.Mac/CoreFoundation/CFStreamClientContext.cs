@@ -1,6 +1,6 @@
+using System;
 using System.Runtime.InteropServices;
-using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
+using Foundation;
 
 namespace CoreFoundation;
 
@@ -16,9 +16,9 @@ public struct CFStreamClientContext
 	private delegate IntPtr CopyDescriptionDelegate(IntPtr info);
 
 	[MonoNativeFunctionWrapper]
-	private delegate void CallbackDelegate(IntPtr stream, IntPtr eventType, IntPtr info);
+	private delegate void CallbackDelegate(IntPtr stream, CFStreamEventType eventType, IntPtr info);
 
-	public nint Version;
+	public int Version;
 
 	public IntPtr Info;
 
@@ -46,16 +46,14 @@ public struct CFStreamClientContext
 
 	public override string ToString()
 	{
-		if (copyDescription != IntPtr.Zero)
+		if (copyDescription == IntPtr.Zero)
 		{
-			IntPtr intPtr = CFReadStreamRef_InvokeCopyDescription(copyDescription, Info);
-			if (intPtr != IntPtr.Zero)
-			{
-				using (CFString cFString = new CFString(intPtr, owns: true))
-				{
-					return cFString.ToString();
-				}
-			}
+			return base.ToString();
+		}
+		IntPtr intPtr = CFReadStreamRef_InvokeCopyDescription(copyDescription, Info);
+		if (!(intPtr == IntPtr.Zero))
+		{
+			return new NSString(intPtr).ToString();
 		}
 		return base.ToString();
 	}
@@ -85,6 +83,6 @@ public struct CFStreamClientContext
 
 	private static void CFReadStreamRef_InvokeCallback(IntPtr callback, IntPtr stream, CFStreamEventType eventType, IntPtr info)
 	{
-		((CallbackDelegate)Marshal.GetDelegateForFunctionPointer(callback, typeof(CallbackDelegate)))(stream, (IntPtr)(long)eventType, info);
+		((CallbackDelegate)Marshal.GetDelegateForFunctionPointer(callback, typeof(CallbackDelegate)))(stream, eventType, info);
 	}
 }

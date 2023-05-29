@@ -5,55 +5,66 @@ using ObjCRuntime;
 
 namespace WebKit;
 
-[Protocol]
-[Register("Xamarin_Mac__WebKit_WebPolicyDecisionListener", false)]
+[Register("WebPolicyDecisionListener", true)]
 [Model]
-[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
-public class WebPolicyDecisionListener : NSObject, IWebPolicyDecisionListener, INativeObject, IDisposable
+public class WebPolicyDecisionListener : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public WebPolicyDecisionListener()
 		: base(NSObjectFlag.Empty)
 	{
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected WebPolicyDecisionListener(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public WebPolicyDecisionListener(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public WebPolicyDecisionListener(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal WebPolicyDecisionListener(IntPtr handle)
+	public WebPolicyDecisionListener(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
+	}
+
+	[Export("use")]
+	public virtual void Use()
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("download")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Download()
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("ignore")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Ignore()
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("use")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void Use()
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

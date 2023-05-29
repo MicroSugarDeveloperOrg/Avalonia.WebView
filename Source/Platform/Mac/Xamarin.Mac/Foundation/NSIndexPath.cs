@@ -1,364 +1,214 @@
+using System;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 
 [Register("NSIndexPath", true)]
-public class NSIndexPath : NSObject, INSCoding, INativeObject, IDisposable, INSCopying, INSSecureCoding
+public class NSIndexPath : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCompare_ = "compare:";
-
-	private static readonly IntPtr selCompare_Handle = Selector.GetHandle("compare:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCopyWithZone_ = "copyWithZone:";
-
-	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGetIndexes_ = "getIndexes:";
-
-	private static readonly IntPtr selGetIndexes_Handle = Selector.GetHandle("getIndexes:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGetIndexes_Range_ = "getIndexes:range:";
-
-	private static readonly IntPtr selGetIndexes_Range_Handle = Selector.GetHandle("getIndexes:range:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIndexAtPosition_ = "indexAtPosition:";
-
-	private static readonly IntPtr selIndexAtPosition_Handle = Selector.GetHandle("indexAtPosition:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIndexPathByAddingIndex_ = "indexPathByAddingIndex:";
-
-	private static readonly IntPtr selIndexPathByAddingIndex_Handle = Selector.GetHandle("indexPathByAddingIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIndexPathByRemovingLastIndex = "indexPathByRemovingLastIndex";
-
-	private static readonly IntPtr selIndexPathByRemovingLastIndexHandle = Selector.GetHandle("indexPathByRemovingLastIndex");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIndexPathForItem_InSection_ = "indexPathForItem:inSection:";
-
-	private static readonly IntPtr selIndexPathForItem_InSection_Handle = Selector.GetHandle("indexPathForItem:inSection:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIndexPathWithIndex_ = "indexPathWithIndex:";
+	private static readonly IntPtr selLengthHandle = Selector.GetHandle("length");
 
 	private static readonly IntPtr selIndexPathWithIndex_Handle = Selector.GetHandle("indexPathWithIndex:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIndexPathWithIndexes_Length_ = "indexPathWithIndexes:length:";
+	private static readonly IntPtr selIndexPathWithIndexesLength_Handle = Selector.GetHandle("indexPathWithIndexes:length:");
 
-	private static readonly IntPtr selIndexPathWithIndexes_Length_Handle = Selector.GetHandle("indexPathWithIndexes:length:");
+	private static readonly IntPtr selIndexPathByAddingIndex_Handle = Selector.GetHandle("indexPathByAddingIndex:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
+	private static readonly IntPtr selIndexPathByRemovingLastIndexHandle = Selector.GetHandle("indexPathByRemovingLastIndex");
 
-	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
+	private static readonly IntPtr selIndexAtPosition_Handle = Selector.GetHandle("indexAtPosition:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selItem = "item";
+	private static readonly IntPtr selGetIndexes_Handle = Selector.GetHandle("getIndexes:");
 
-	private static readonly IntPtr selItemHandle = Selector.GetHandle("item");
+	private static readonly IntPtr selCompare_Handle = Selector.GetHandle("compare:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLength = "length";
-
-	private static readonly IntPtr selLengthHandle = Selector.GetHandle("length");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSection = "section";
-
-	private static readonly IntPtr selSectionHandle = Selector.GetHandle("section");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSIndexPath");
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSIndexPath");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	public virtual nint Item
-	{
-		[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-		[Export("item")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selItemHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selItemHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint Length
+	public virtual ulong Length
 	{
 		[Export("length")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nint_objc_msgSend(base.Handle, selLengthHandle);
+				return Messaging.UInt64_objc_msgSend(base.Handle, selLengthHandle);
 			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selLengthHandle);
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selLengthHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	public virtual nint Section
-	{
-		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-		[Export("section")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selSectionHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selSectionHandle);
-		}
-	}
-
-	public unsafe static NSIndexPath Create(params nint[] indexes)
+	[Advice("Use NSIndexPath.Create (int[]) instead")]
+	public NSIndexPath FromIndexes(uint[] indexes)
 	{
 		if (indexes == null)
 		{
 			throw new ArgumentNullException("indexes");
 		}
-		fixed (nint* ptr = indexes)
+		IntPtr intPtr = Marshal.AllocHGlobal(4 * indexes.Length);
+		for (int i = 0; i < indexes.Length; i++)
 		{
-			return _FromIndex((IntPtr)ptr, indexes.Length);
+			Marshal.WriteInt32(intPtr, i * 4, (int)indexes[i]);
 		}
+		NSIndexPath result = _FromIndex(intPtr, (ulong)indexes.Length);
+		Marshal.FreeHGlobal(intPtr);
+		return result;
 	}
 
-	public unsafe static NSIndexPath Create(params nuint[] indexes)
+	public static NSIndexPath Create(params int[] indexes)
 	{
 		if (indexes == null)
 		{
 			throw new ArgumentNullException("indexes");
 		}
-		fixed (nuint* ptr = indexes)
+		IntPtr intPtr = Marshal.AllocHGlobal(4 * indexes.Length);
+		for (int i = 0; i < indexes.Length; i++)
 		{
-			return _FromIndex((IntPtr)ptr, indexes.Length);
+			Marshal.WriteInt32(intPtr, i * 4, indexes[i]);
 		}
+		NSIndexPath result = _FromIndex(intPtr, (ulong)indexes.Length);
+		Marshal.FreeHGlobal(intPtr);
+		return result;
 	}
 
-	public unsafe static NSIndexPath Create(params int[] indexes)
+	public static NSIndexPath Create(params uint[] indexes)
 	{
 		if (indexes == null)
 		{
 			throw new ArgumentNullException("indexes");
 		}
-		fixed (nint* ptr = Array.ConvertAll(indexes, (Converter<int, nint>)((int v) => v)))
+		IntPtr intPtr = Marshal.AllocHGlobal(4 * indexes.Length);
+		for (int i = 0; i < indexes.Length; i++)
 		{
-			return _FromIndex((IntPtr)ptr, indexes.Length);
+			Marshal.WriteInt32(intPtr, i * 4, (int)indexes[i]);
 		}
+		NSIndexPath result = _FromIndex(intPtr, (ulong)indexes.Length);
+		Marshal.FreeHGlobal(intPtr);
+		return result;
 	}
 
-	public unsafe static NSIndexPath Create(params uint[] indexes)
+	public uint[] GetIndexes()
 	{
-		if (indexes == null)
+		int num = (int)Length;
+		IntPtr intPtr = Marshal.AllocHGlobal(4 * num);
+		uint[] array = new uint[num];
+		for (int i = 0; i < num; i++)
 		{
-			throw new ArgumentNullException("indexes");
+			array[i] = (uint)Marshal.ReadInt32(intPtr, i * 4);
 		}
-		fixed (nuint* ptr = Array.ConvertAll(indexes, (Converter<uint, nuint>)((uint v) => v)))
-		{
-			return _FromIndex((IntPtr)ptr, indexes.Length);
-		}
-	}
-
-	public unsafe nuint[] GetIndexes()
-	{
-		nuint[] array = new nuint[(long)Length];
-		fixed (nuint* ptr = array)
-		{
-			_GetIndexes((IntPtr)ptr);
-		}
+		Marshal.FreeHGlobal(intPtr);
 		return array;
 	}
 
-	[iOS(9, 0)]
-	[Mac(10, 11)]
-	public unsafe nuint[] GetIndexes(NSRange range)
+	public override bool Equals(object obj)
 	{
-		nuint[] array = new nuint[(long)range.Length];
-		fixed (nuint* ptr = array)
+		if (obj == null)
 		{
-			_GetIndexes((IntPtr)ptr, range);
+			return false;
 		}
-		return array;
+		if (!(obj is NSIndexPath other))
+		{
+			return false;
+		}
+		return Compare(other) == 0;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override int GetHashCode()
+	{
+		return (int)Length;
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSIndexPath()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSIndexPath(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSIndexPath(NSObjectFlag t)
+	public NSIndexPath(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSIndexPath(IntPtr handle)
+	public NSIndexPath(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("compare:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint Compare(NSIndexPath other)
-	{
-		if (other == null)
-		{
-			throw new ArgumentNullException("other");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.nint_objc_msgSend_IntPtr(base.Handle, selCompare_Handle, other.Handle);
-		}
-		return Messaging.nint_objc_msgSendSuper_IntPtr(base.SuperHandle, selCompare_Handle, other.Handle);
-	}
-
-	[Export("copyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject Copy(NSZone? zone)
-	{
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
-		{
-			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
-		}
-		return nSObject;
-	}
-
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
-	{
-		if (encoder == null)
-		{
-			throw new ArgumentNullException("encoder");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-	}
-
 	[Export("indexPathWithIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSIndexPath FromIndex(nuint index)
+	public static NSIndexPath FromIndex(ulong index)
 	{
-		return Runtime.GetNSObject<NSIndexPath>(Messaging.IntPtr_objc_msgSend_nuint(class_ptr, selIndexPathWithIndex_Handle, index));
-	}
-
-	[Export("indexPathForItem:inSection:")]
-	[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSIndexPath FromItemSection(nint item, nint section)
-	{
-		return Runtime.GetNSObject<NSIndexPath>(Messaging.IntPtr_objc_msgSend_nint_nint(class_ptr, selIndexPathForItem_InSection_Handle, item, section));
-	}
-
-	[Export("indexAtPosition:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nuint IndexAtPosition(nint position)
-	{
-		if (base.IsDirectBinding)
-		{
-			return Messaging.nuint_objc_msgSend_nint(base.Handle, selIndexAtPosition_Handle, position);
-		}
-		return Messaging.nuint_objc_msgSendSuper_nint(base.SuperHandle, selIndexAtPosition_Handle, position);
-	}
-
-	[Export("indexPathByAddingIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSIndexPath IndexPathByAddingIndex(nuint index)
-	{
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSIndexPath>(Messaging.IntPtr_objc_msgSend_nuint(base.Handle, selIndexPathByAddingIndex_Handle, index));
-		}
-		return Runtime.GetNSObject<NSIndexPath>(Messaging.IntPtr_objc_msgSendSuper_nuint(base.SuperHandle, selIndexPathByAddingIndex_Handle, index));
-	}
-
-	[Export("indexPathByRemovingLastIndex")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSIndexPath IndexPathByRemovingLastIndex()
-	{
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSIndexPath>(Messaging.IntPtr_objc_msgSend(base.Handle, selIndexPathByRemovingLastIndexHandle));
-		}
-		return Runtime.GetNSObject<NSIndexPath>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selIndexPathByRemovingLastIndexHandle));
+		return (NSIndexPath)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64(class_ptr, selIndexPathWithIndex_Handle, index));
 	}
 
 	[Export("indexPathWithIndexes:length:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal static NSIndexPath _FromIndex(IntPtr indexes, nint len)
+	internal static NSIndexPath _FromIndex(IntPtr indexes, ulong len)
 	{
-		return Runtime.GetNSObject<NSIndexPath>(Messaging.IntPtr_objc_msgSend_IntPtr_nint(class_ptr, selIndexPathWithIndexes_Length_Handle, indexes, len));
+		return (NSIndexPath)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64(class_ptr, selIndexPathWithIndexesLength_Handle, indexes, len));
+	}
+
+	[Export("indexPathByAddingIndex:")]
+	public virtual NSIndexPath IndexPathByAddingIndex(ulong index)
+	{
+		if (IsDirectBinding)
+		{
+			return (NSIndexPath)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64(base.Handle, selIndexPathByAddingIndex_Handle, index));
+		}
+		return (NSIndexPath)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_UInt64(base.SuperHandle, selIndexPathByAddingIndex_Handle, index));
+	}
+
+	[Export("indexPathByRemovingLastIndex")]
+	public virtual NSIndexPath IndexPathByRemovingLastIndex()
+	{
+		if (IsDirectBinding)
+		{
+			return (NSIndexPath)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selIndexPathByRemovingLastIndexHandle));
+		}
+		return (NSIndexPath)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selIndexPathByRemovingLastIndexHandle));
+	}
+
+	[Export("indexAtPosition:")]
+	public virtual ulong IndexAtPosition(ulong position)
+	{
+		if (IsDirectBinding)
+		{
+			return Messaging.UInt64_objc_msgSend_UInt64(base.Handle, selIndexAtPosition_Handle, position);
+		}
+		return Messaging.UInt64_objc_msgSendSuper_UInt64(base.SuperHandle, selIndexAtPosition_Handle, position);
 	}
 
 	[Export("getIndexes:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	internal virtual void _GetIndexes(IntPtr target)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selGetIndexes_Handle, target);
 		}
@@ -368,19 +218,17 @@ public class NSIndexPath : NSObject, INSCoding, INativeObject, IDisposable, INSC
 		}
 	}
 
-	[Export("getIndexes:range:")]
-	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual void _GetIndexes(IntPtr target, NSRange positionRange)
+	[Export("compare:")]
+	public virtual long Compare(NSIndexPath other)
 	{
-		if (base.IsDirectBinding)
+		if (other == null)
 		{
-			Messaging.void_objc_msgSend_IntPtr_NSRange(base.Handle, selGetIndexes_Range_Handle, target, positionRange);
+			throw new ArgumentNullException("other");
 		}
-		else
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_NSRange(base.SuperHandle, selGetIndexes_Range_Handle, target, positionRange);
+			return Messaging.Int64_objc_msgSend_IntPtr(base.Handle, selCompare_Handle, other.Handle);
 		}
+		return Messaging.Int64_objc_msgSendSuper_IntPtr(base.SuperHandle, selCompare_Handle, other.Handle);
 	}
 }

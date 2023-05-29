@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace Foundation;
 
-[Native]
 public enum NSExpressionType : ulong
 {
 	ConstantValue = 0uL,
@@ -15,7 +12,5 @@ public enum NSExpressionType : ulong
 	MinusSet = 7uL,
 	Subquery = 13uL,
 	NSAggregate = 14uL,
-	AnyKey = 15uL,
-	Block = 19uL,
-	Conditional = 20uL
+	Block = 19uL
 }

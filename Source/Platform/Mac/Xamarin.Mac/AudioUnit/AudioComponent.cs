@@ -1,9 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
-using AppKit;
-using AudioToolbox;
 using CoreFoundation;
-using Foundation;
 using ObjCRuntime;
 
 namespace AudioUnit;
@@ -26,7 +23,7 @@ public class AudioComponent : INativeObject
 		}
 	}
 
-	public AudioComponentDescription? Description
+	public AudioComponentDescription Description
 	{
 		get
 		{
@@ -50,55 +47,6 @@ public class AudioComponent : INativeObject
 		}
 	}
 
-	[NoWatch]
-	[NoTV]
-	[Mac(10, 13)]
-	[iOS(11, 0)]
-	public AudioComponentInfo[] ComponentList
-	{
-		get
-		{
-			using CFString cFString = new CFString(Name);
-			IntPtr intPtr = AudioUnitExtensionCopyComponentList(cFString.Handle);
-			if (intPtr == IntPtr.Zero)
-			{
-				return null;
-			}
-			using NSArray nSArray = Runtime.GetNSObject<NSArray>(intPtr, owns: true);
-			if (nSArray == null)
-			{
-				return null;
-			}
-			NSDictionary[] array = NSArray.FromArray<NSDictionary>(nSArray);
-			AudioComponentInfo[] array2 = new AudioComponentInfo[array.Length];
-			for (int i = 0; i < array2.Length; i++)
-			{
-				array2[i] = new AudioComponentInfo(array[i]);
-			}
-			return array2;
-		}
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			using CFString cFString = new CFString(Name);
-			NSDictionary[] array = new NSDictionary[value.Length];
-			for (int i = 0; i < value.Length; i++)
-			{
-				array[i] = value[i].Dictionary;
-			}
-			using NSArray nSArray = NSArray.FromNSObjects(array);
-			AudioConverterError audioConverterError = (AudioConverterError)AudioUnitExtensionSetComponentList(cFString.Handle, nSArray.Handle);
-			if (audioConverterError == AudioConverterError.None)
-			{
-				return;
-			}
-			throw new InvalidOperationException("ComponentList could not be set, error " + audioConverterError);
-		}
-	}
-
 	internal AudioComponent(IntPtr handle)
 	{
 		this.handle = handle;
@@ -109,62 +57,58 @@ public class AudioComponent : INativeObject
 		return new AudioUnit(this);
 	}
 
-	public static AudioComponent FindNextComponent(AudioComponent cmp, ref AudioComponentDescription cd)
+	public static AudioComponent FindNextComponent(AudioComponent cmp, AudioComponentDescription cd)
 	{
-		IntPtr inComponent = cmp?.Handle ?? IntPtr.Zero;
-		inComponent = AudioComponentFindNext(inComponent, ref cd);
-		return (inComponent != IntPtr.Zero) ? new AudioComponent(inComponent) : null;
+		IntPtr intPtr = ((cmp != null) ? AudioComponentFindNext(cmp.Handle, cd) : AudioComponentFindNext(IntPtr.Zero, cd));
+		if (intPtr != IntPtr.Zero)
+		{
+			return new AudioComponent(intPtr);
+		}
+		return null;
 	}
 
-	public static AudioComponent FindComponent(ref AudioComponentDescription cd)
+	public static AudioComponent FindComponent(AudioComponentDescription cd)
 	{
-		return FindNextComponent(null, ref cd);
+		return FindNextComponent(null, cd);
 	}
 
 	public static AudioComponent FindComponent(AudioTypeOutput output)
 	{
-		AudioComponentDescription cd = AudioComponentDescription.CreateOutput(output);
-		return FindComponent(ref cd);
+		return FindComponent(AudioComponentDescription.CreateOutput(output));
 	}
 
 	public static AudioComponent FindComponent(AudioTypeMusicDevice musicDevice)
 	{
-		AudioComponentDescription cd = AudioComponentDescription.CreateMusicDevice(musicDevice);
-		return FindComponent(ref cd);
+		return FindComponent(AudioComponentDescription.CreateMusicDevice(musicDevice));
 	}
 
 	public static AudioComponent FindComponent(AudioTypeConverter conveter)
 	{
-		AudioComponentDescription cd = AudioComponentDescription.CreateConverter(conveter);
-		return FindComponent(ref cd);
+		return FindComponent(AudioComponentDescription.CreateConverter(conveter));
 	}
 
 	public static AudioComponent FindComponent(AudioTypeEffect effect)
 	{
-		AudioComponentDescription cd = AudioComponentDescription.CreateEffect(effect);
-		return FindComponent(ref cd);
+		return FindComponent(AudioComponentDescription.CreateEffect(effect));
 	}
 
 	public static AudioComponent FindComponent(AudioTypeMixer mixer)
 	{
-		AudioComponentDescription cd = AudioComponentDescription.CreateMixer(mixer);
-		return FindComponent(ref cd);
+		return FindComponent(AudioComponentDescription.CreateMixer(mixer));
 	}
 
 	public static AudioComponent FindComponent(AudioTypePanner panner)
 	{
-		AudioComponentDescription cd = AudioComponentDescription.CreatePanner(panner);
-		return FindComponent(ref cd);
+		return FindComponent(AudioComponentDescription.CreatePanner(panner));
 	}
 
 	public static AudioComponent FindComponent(AudioTypeGenerator generator)
 	{
-		AudioComponentDescription cd = AudioComponentDescription.CreateGenerator(generator);
-		return FindComponent(ref cd);
+		return FindComponent(AudioComponentDescription.CreateGenerator(generator));
 	}
 
 	[DllImport("/System/Library/Frameworks/AudioUnit.framework/AudioUnit")]
-	private static extern IntPtr AudioComponentFindNext(IntPtr inComponent, ref AudioComponentDescription inDesc);
+	private static extern IntPtr AudioComponentFindNext(IntPtr inComponent, AudioComponentDescription inDesc);
 
 	[DllImport("/System/Library/Frameworks/AudioUnit.framework/AudioUnit")]
 	private static extern int AudioComponentCopyName(IntPtr component, out IntPtr cfstr);
@@ -173,29 +117,17 @@ public class AudioComponent : INativeObject
 	private static extern int AudioComponentGetDescription(IntPtr component, out AudioComponentDescription desc);
 
 	[DllImport("/System/Library/Frameworks/AudioUnit.framework/AudioUnit")]
-	private static extern int AudioComponentGetVersion(IntPtr component, out int version);
+	private static extern int AudioComponentCount(AudioComponentDescription desc);
 
-	[DllImport("/System/Library/Frameworks/AudioUnit.framework/AudioUnit")]
-	[Mac(10, 11)]
-	private static extern IntPtr AudioComponentGetIcon(IntPtr comp);
-
-	[Mac(10, 11)]
-	public NSImage GetIcon()
+	private static int CountMatches(AudioComponentDescription desc)
 	{
-		return new NSImage(AudioComponentGetIcon(handle));
+		if (desc == null)
+		{
+			throw new ArgumentNullException("desc");
+		}
+		return AudioComponentCount(desc);
 	}
 
 	[DllImport("/System/Library/Frameworks/AudioUnit.framework/AudioUnit")]
-	[NoWatch]
-	[NoTV]
-	[Mac(10, 13)]
-	[iOS(11, 0)]
-	private static extern int AudioUnitExtensionSetComponentList(IntPtr extensionIdentifier, IntPtr audioComponentInfo);
-
-	[DllImport("/System/Library/Frameworks/AudioUnit.framework/AudioUnit")]
-	[NoWatch]
-	[NoTV]
-	[Mac(10, 13)]
-	[iOS(11, 0)]
-	private static extern IntPtr AudioUnitExtensionCopyComponentList(IntPtr extensionIdentifier);
+	private static extern int AudioComponentGetVersion(IntPtr component, out int version);
 }

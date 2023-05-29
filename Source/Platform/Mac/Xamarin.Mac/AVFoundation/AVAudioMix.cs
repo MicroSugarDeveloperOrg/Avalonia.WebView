@@ -6,96 +6,73 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Register("AVAudioMix", true)]
-[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-public class AVAudioMix : NSObject, INSCopying, INativeObject, IDisposable, INSMutableCopying
+public class AVAudioMix : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCopyWithZone_ = "copyWithZone:";
-
-	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInputParameters = "inputParameters";
-
 	private static readonly IntPtr selInputParametersHandle = Selector.GetHandle("inputParameters");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMutableCopyWithZone_ = "mutableCopyWithZone:";
+	private static readonly IntPtr class_ptr = Class.GetHandle("AVAudioMix");
 
-	private static readonly IntPtr selMutableCopyWithZone_Handle = Selector.GetHandle("mutableCopyWithZone:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVAudioMix");
+	private object __mt_InputParameters_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual AVAudioMixInputParameters[] InputParameters
 	{
 		[Export("inputParameters", ArgumentSemantic.Copy)]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<AVAudioMixInputParameters>(Messaging.IntPtr_objc_msgSend(base.Handle, selInputParametersHandle));
-			}
-			return NSArray.ArrayFromHandle<AVAudioMixInputParameters>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInputParametersHandle));
+			return (AVAudioMixInputParameters[])(__mt_InputParameters_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<AVAudioMixInputParameters>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInputParametersHandle)) : NSArray.ArrayFromHandle<AVAudioMixInputParameters>(Messaging.IntPtr_objc_msgSend(base.Handle, selInputParametersHandle))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public AVAudioMix()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected AVAudioMix(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public AVAudioMix(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public AVAudioMix(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal AVAudioMix(IntPtr handle)
+	public AVAudioMix(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("copyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject Copy(NSZone? zone)
+	protected override void Dispose(bool disposing)
 	{
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
+			__mt_InputParameters_var = null;
 		}
-		return nSObject;
-	}
-
-	[Export("mutableCopyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject MutableCopy(NSZone? zone)
-	{
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selMutableCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selMutableCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
-		{
-			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
-		}
-		return nSObject;
 	}
 }

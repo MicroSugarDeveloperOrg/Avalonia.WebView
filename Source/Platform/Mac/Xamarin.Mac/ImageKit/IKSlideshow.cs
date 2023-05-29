@@ -1,144 +1,82 @@
+using System;
 using System.ComponentModel;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace ImageKit;
 
 [Register("IKSlideshow", true)]
 public class IKSlideshow : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAutoPlayDelay = "autoPlayDelay";
+	private static readonly IntPtr selSharedSlideshowHandle = Selector.GetHandle("sharedSlideshow");
 
 	private static readonly IntPtr selAutoPlayDelayHandle = Selector.GetHandle("autoPlayDelay");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCanExportToApplication_ = "canExportToApplication:";
-
-	private static readonly IntPtr selCanExportToApplication_Handle = Selector.GetHandle("canExportToApplication:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExportSlideshowItem_ToApplication_ = "exportSlideshowItem:toApplication:";
-
-	private static readonly IntPtr selExportSlideshowItem_ToApplication_Handle = Selector.GetHandle("exportSlideshowItem:toApplication:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIndexOfCurrentSlideshowItem = "indexOfCurrentSlideshowItem";
+	private static readonly IntPtr selSetAutoPlayDelay_Handle = Selector.GetHandle("setAutoPlayDelay:");
 
 	private static readonly IntPtr selIndexOfCurrentSlideshowItemHandle = Selector.GetHandle("indexOfCurrentSlideshowItem");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selReloadData = "reloadData";
-
-	private static readonly IntPtr selReloadDataHandle = Selector.GetHandle("reloadData");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selReloadSlideshowItemAtIndex_ = "reloadSlideshowItemAtIndex:";
-
-	private static readonly IntPtr selReloadSlideshowItemAtIndex_Handle = Selector.GetHandle("reloadSlideshowItemAtIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRunSlideshowWithDataSource_InMode_Options_ = "runSlideshowWithDataSource:inMode:options:";
-
-	private static readonly IntPtr selRunSlideshowWithDataSource_InMode_Options_Handle = Selector.GetHandle("runSlideshowWithDataSource:inMode:options:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAutoPlayDelay_ = "setAutoPlayDelay:";
-
-	private static readonly IntPtr selSetAutoPlayDelay_Handle = Selector.GetHandle("setAutoPlayDelay:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSharedSlideshow = "sharedSlideshow";
-
-	private static readonly IntPtr selSharedSlideshowHandle = Selector.GetHandle("sharedSlideshow");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStopSlideshow_ = "stopSlideshow:";
+	private static readonly IntPtr selRunSlideshowWithDataSourceInModeOptions_Handle = Selector.GetHandle("runSlideshowWithDataSource:inMode:options:");
 
 	private static readonly IntPtr selStopSlideshow_Handle = Selector.GetHandle("stopSlideshow:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("IKSlideshow");
+	private static readonly IntPtr selReloadDataHandle = Selector.GetHandle("reloadData");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ApertureBundleIdentifier;
+	private static readonly IntPtr selReloadSlideshowItemAtIndex_Handle = Selector.GetHandle("reloadSlideshowItemAtIndex:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _AudioFile;
+	private static readonly IntPtr selCanExportToApplication_Handle = Selector.GetHandle("canExportToApplication:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _IPhotoBundleIdentifier;
+	private static readonly IntPtr selExportSlideshowItemToApplication_Handle = Selector.GetHandle("exportSlideshowItem:toApplication:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _MailBundleIdentifier;
+	private static readonly IntPtr class_ptr = Class.GetHandle("IKSlideshow");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ModeImages;
+	private static object __mt_SharedSlideshow_var_static;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ModeOther;
+	private static NSString _ModeImages;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ModePDF;
+	private static NSString _ModePDF;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _PDFDisplayBox;
+	private static NSString _ModeOther;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _PDFDisplayMode;
+	private static NSString _WrapAround;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _PDFDisplaysAsBook;
+	private static NSString _StartPaused;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _PhotosBundleIdentifier;
+	private static NSString _StartIndex;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Screen;
+	private static NSString _Screen;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _StartIndex;
+	private static NSString _AudioFile;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _StartPaused;
+	private static NSString _PDFDisplayBox;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WrapAround;
+	private static NSString _PDFDisplayMode;
+
+	private static NSString _PDFDisplaysAsBook;
+
+	private static NSString _IPhotoBundleIdentifier;
+
+	private static NSString _ApertureBundleIdentifier;
+
+	private static NSString _MailBundleIdentifier;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint IndexOfCurrentSlideshowItem
-	{
-		[Export("indexOfCurrentSlideshowItem")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selIndexOfCurrentSlideshowItemHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selIndexOfCurrentSlideshowItemHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static IKSlideshow SharedSlideshow
 	{
 		[Export("sharedSlideshow")]
 		get
 		{
-			return Runtime.GetNSObject<IKSlideshow>(Messaging.IntPtr_objc_msgSend(class_ptr, selSharedSlideshowHandle));
+			return (IKSlideshow)(__mt_SharedSlideshow_var_static = (IKSlideshow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selSharedSlideshowHandle)));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual double autoPlayDelay
 	{
 		[Export("autoPlayDelay")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.Double_objc_msgSend(base.Handle, selAutoPlayDelayHandle);
 			}
@@ -147,7 +85,7 @@ public class IKSlideshow : NSObject
 		[Export("setAutoPlayDelay:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_Double(base.Handle, selSetAutoPlayDelay_Handle, value);
 			}
@@ -158,55 +96,16 @@ public class IKSlideshow : NSObject
 		}
 	}
 
-	[Field("IK_ApertureBundleIdentifier", "ImageKit")]
-	public static NSString ApertureBundleIdentifier
+	public virtual int IndexOfCurrentSlideshowItem
 	{
+		[Export("indexOfCurrentSlideshowItem")]
 		get
 		{
-			if (_ApertureBundleIdentifier == null)
+			if (IsDirectBinding)
 			{
-				_ApertureBundleIdentifier = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IK_ApertureBundleIdentifier");
+				return Messaging.int_objc_msgSend(base.Handle, selIndexOfCurrentSlideshowItemHandle);
 			}
-			return _ApertureBundleIdentifier;
-		}
-	}
-
-	[Field("IKSlideshowAudioFile", "ImageKit")]
-	public static NSString AudioFile
-	{
-		get
-		{
-			if (_AudioFile == null)
-			{
-				_AudioFile = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKSlideshowAudioFile");
-			}
-			return _AudioFile;
-		}
-	}
-
-	[Field("IK_iPhotoBundleIdentifier", "ImageKit")]
-	public static NSString IPhotoBundleIdentifier
-	{
-		get
-		{
-			if (_IPhotoBundleIdentifier == null)
-			{
-				_IPhotoBundleIdentifier = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IK_iPhotoBundleIdentifier");
-			}
-			return _IPhotoBundleIdentifier;
-		}
-	}
-
-	[Field("IK_MailBundleIdentifier", "ImageKit")]
-	public static NSString MailBundleIdentifier
-	{
-		get
-		{
-			if (_MailBundleIdentifier == null)
-			{
-				_MailBundleIdentifier = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IK_MailBundleIdentifier");
-			}
-			return _MailBundleIdentifier;
+			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selIndexOfCurrentSlideshowItemHandle);
 		}
 	}
 
@@ -223,6 +122,19 @@ public class IKSlideshow : NSObject
 		}
 	}
 
+	[Field("IKSlideshowModePDF", "ImageKit")]
+	public static NSString ModePDF
+	{
+		get
+		{
+			if (_ModePDF == null)
+			{
+				_ModePDF = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKSlideshowModePDF");
+			}
+			return _ModePDF;
+		}
+	}
+
 	[Field("IKSlideshowModeOther", "ImageKit")]
 	public static NSString ModeOther
 	{
@@ -236,16 +148,68 @@ public class IKSlideshow : NSObject
 		}
 	}
 
-	[Field("IKSlideshowModePDF", "ImageKit")]
-	public static NSString ModePDF
+	[Field("IKSlideshowWrapAround", "ImageKit")]
+	public static NSString WrapAround
 	{
 		get
 		{
-			if (_ModePDF == null)
+			if (_WrapAround == null)
 			{
-				_ModePDF = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKSlideshowModePDF");
+				_WrapAround = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKSlideshowWrapAround");
 			}
-			return _ModePDF;
+			return _WrapAround;
+		}
+	}
+
+	[Field("IKSlideshowStartPaused", "ImageKit")]
+	public static NSString StartPaused
+	{
+		get
+		{
+			if (_StartPaused == null)
+			{
+				_StartPaused = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKSlideshowStartPaused");
+			}
+			return _StartPaused;
+		}
+	}
+
+	[Field("IKSlideshowStartIndex", "ImageKit")]
+	public static NSString StartIndex
+	{
+		get
+		{
+			if (_StartIndex == null)
+			{
+				_StartIndex = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKSlideshowStartIndex");
+			}
+			return _StartIndex;
+		}
+	}
+
+	[Field("IKSlideshowScreen", "ImageKit")]
+	public static NSString Screen
+	{
+		get
+		{
+			if (_Screen == null)
+			{
+				_Screen = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKSlideshowScreen");
+			}
+			return _Screen;
+		}
+	}
+
+	[Field("IKSlideshowAudioFile", "ImageKit")]
+	public static NSString AudioFile
+	{
+		get
+		{
+			if (_AudioFile == null)
+			{
+				_AudioFile = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKSlideshowAudioFile");
+			}
+			return _AudioFile;
 		}
 	}
 
@@ -288,105 +252,158 @@ public class IKSlideshow : NSObject
 		}
 	}
 
-	[Field("IK_PhotosBundleIdentifier", "ImageKit")]
-	[Introduced(PlatformName.MacOSX, 10, 10, 3, PlatformArchitecture.All, null)]
-	public static NSString PhotosBundleIdentifier
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, 3, PlatformArchitecture.All, null)]
-		get
-		{
-			if (_PhotosBundleIdentifier == null)
-			{
-				_PhotosBundleIdentifier = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IK_PhotosBundleIdentifier");
-			}
-			return _PhotosBundleIdentifier;
-		}
-	}
-
-	[Field("IKSlideshowScreen", "ImageKit")]
-	public static NSString Screen
+	[Field("IK_iPhotoBundleIdentifier", "ImageKit")]
+	public static NSString IPhotoBundleIdentifier
 	{
 		get
 		{
-			if (_Screen == null)
+			if (_IPhotoBundleIdentifier == null)
 			{
-				_Screen = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKSlideshowScreen");
+				_IPhotoBundleIdentifier = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IK_iPhotoBundleIdentifier");
 			}
-			return _Screen;
+			return _IPhotoBundleIdentifier;
 		}
 	}
 
-	[Field("IKSlideshowStartIndex", "ImageKit")]
-	public static NSString StartIndex
+	[Field("IK_ApertureBundleIdentifier", "ImageKit")]
+	public static NSString ApertureBundleIdentifier
 	{
 		get
 		{
-			if (_StartIndex == null)
+			if (_ApertureBundleIdentifier == null)
 			{
-				_StartIndex = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKSlideshowStartIndex");
+				_ApertureBundleIdentifier = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IK_ApertureBundleIdentifier");
 			}
-			return _StartIndex;
+			return _ApertureBundleIdentifier;
 		}
 	}
 
-	[Field("IKSlideshowStartPaused", "ImageKit")]
-	public static NSString StartPaused
+	[Field("IK_MailBundleIdentifier", "ImageKit")]
+	public static NSString MailBundleIdentifier
 	{
 		get
 		{
-			if (_StartPaused == null)
+			if (_MailBundleIdentifier == null)
 			{
-				_StartPaused = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKSlideshowStartPaused");
+				_MailBundleIdentifier = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IK_MailBundleIdentifier");
 			}
-			return _StartPaused;
+			return _MailBundleIdentifier;
 		}
 	}
 
-	[Field("IKSlideshowWrapAround", "ImageKit")]
-	public static NSString WrapAround
-	{
-		get
-		{
-			if (_WrapAround == null)
-			{
-				_WrapAround = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKSlideshowWrapAround");
-			}
-			return _WrapAround;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public IKSlideshow()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected IKSlideshow(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public IKSlideshow(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public IKSlideshow(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal IKSlideshow(IntPtr handle)
+	public IKSlideshow(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("runSlideshowWithDataSource:inMode:options:")]
+	public virtual void RunSlideshow(IKSlideshowDataSource dataSource, string slideshowMode, NSDictionary slideshowOptions)
+	{
+		if (dataSource == null)
+		{
+			throw new ArgumentNullException("dataSource");
+		}
+		if (slideshowMode == null)
+		{
+			throw new ArgumentNullException("slideshowMode");
+		}
+		if (slideshowOptions == null)
+		{
+			throw new ArgumentNullException("slideshowOptions");
+		}
+		IntPtr arg = NSString.CreateNative(slideshowMode);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selRunSlideshowWithDataSourceInModeOptions_Handle, dataSource.Handle, arg, slideshowOptions.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selRunSlideshowWithDataSourceInModeOptions_Handle, dataSource.Handle, arg, slideshowOptions.Handle);
+		}
+		NSString.ReleaseNative(arg);
+	}
+
+	[Export("stopSlideshow:")]
+	public virtual void StopSlideshow(NSObject sender)
+	{
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selStopSlideshow_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selStopSlideshow_Handle, sender.Handle);
+		}
+	}
+
+	[Export("reloadData")]
+	public virtual void ReloadData()
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selReloadDataHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selReloadDataHandle);
+		}
+	}
+
+	[Export("reloadSlideshowItemAtIndex:")]
+	public virtual void ReloadSlideshowItem(int index)
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_int(base.Handle, selReloadSlideshowItemAtIndex_Handle, index);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selReloadSlideshowItemAtIndex_Handle, index);
+		}
+	}
+
 	[Export("canExportToApplication:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static bool CanExportToApplication(string applicationBundleIdentifier)
 	{
 		if (applicationBundleIdentifier == null)
@@ -400,7 +417,6 @@ public class IKSlideshow : NSObject
 	}
 
 	[Export("exportSlideshowItem:toApplication:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static void ExportSlideshowItemtoApplication(NSObject item, string applicationBundleIdentifier)
 	{
 		if (item == null)
@@ -412,86 +428,7 @@ public class IKSlideshow : NSObject
 			throw new ArgumentNullException("applicationBundleIdentifier");
 		}
 		IntPtr arg = NSString.CreateNative(applicationBundleIdentifier);
-		Messaging.void_objc_msgSend_IntPtr_IntPtr(class_ptr, selExportSlideshowItem_ToApplication_Handle, item.Handle, arg);
+		Messaging.void_objc_msgSend_IntPtr_IntPtr(class_ptr, selExportSlideshowItemToApplication_Handle, item.Handle, arg);
 		NSString.ReleaseNative(arg);
-	}
-
-	[Export("reloadData")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ReloadData()
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selReloadDataHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selReloadDataHandle);
-		}
-	}
-
-	[Export("reloadSlideshowItemAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ReloadSlideshowItem(nint index)
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint(base.Handle, selReloadSlideshowItemAtIndex_Handle, index);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selReloadSlideshowItemAtIndex_Handle, index);
-		}
-	}
-
-	[Export("runSlideshowWithDataSource:inMode:options:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RunSlideshow(IIKSlideshowDataSource dataSource, string slideshowMode, NSDictionary slideshowOptions)
-	{
-		if (dataSource != null)
-		{
-			if (!(dataSource is NSObject))
-			{
-				throw new ArgumentException("The object passed of type " + dataSource.GetType()?.ToString() + " does not derive from NSObject");
-			}
-			if (slideshowMode == null)
-			{
-				throw new ArgumentNullException("slideshowMode");
-			}
-			if (slideshowOptions == null)
-			{
-				throw new ArgumentNullException("slideshowOptions");
-			}
-			IntPtr arg = NSString.CreateNative(slideshowMode);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selRunSlideshowWithDataSource_InMode_Options_Handle, dataSource.Handle, arg, slideshowOptions.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selRunSlideshowWithDataSource_InMode_Options_Handle, dataSource.Handle, arg, slideshowOptions.Handle);
-			}
-			NSString.ReleaseNative(arg);
-			return;
-		}
-		throw new ArgumentNullException("dataSource");
-	}
-
-	[Export("stopSlideshow:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void StopSlideshow(NSObject sender)
-	{
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selStopSlideshow_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selStopSlideshow_Handle, sender.Handle);
-		}
 	}
 }

@@ -9,176 +9,158 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Register("AVPlayerItemVideoOutput", true)]
-[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
 public class AVPlayerItemVideoOutput : AVPlayerItemOutput
 {
-	private enum InitMode
-	{
-		PixelAttributes,
-		OutputSettings
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCopyPixelBufferForItemTime_ItemTimeForDisplay_ = "copyPixelBufferForItemTime:itemTimeForDisplay:";
-
-	private static readonly IntPtr selCopyPixelBufferForItemTime_ItemTimeForDisplay_Handle = Selector.GetHandle("copyPixelBufferForItemTime:itemTimeForDisplay:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDelegate = "delegate";
-
 	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDelegateQueue = "delegateQueue";
 
 	private static readonly IntPtr selDelegateQueueHandle = Selector.GetHandle("delegateQueue");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHasNewPixelBufferForItemTime_ = "hasNewPixelBufferForItemTime:";
+	private static readonly IntPtr selInitWithPixelBufferAttributes_Handle = Selector.GetHandle("initWithPixelBufferAttributes:");
 
 	private static readonly IntPtr selHasNewPixelBufferForItemTime_Handle = Selector.GetHandle("hasNewPixelBufferForItemTime:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithOutputSettings_ = "initWithOutputSettings:";
+	private static readonly IntPtr selCopyPixelBufferForItemTimeItemTimeForDisplay_Handle = Selector.GetHandle("copyPixelBufferForItemTime:itemTimeForDisplay:");
 
-	private static readonly IntPtr selInitWithOutputSettings_Handle = Selector.GetHandle("initWithOutputSettings:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithPixelBufferAttributes_ = "initWithPixelBufferAttributes:";
-
-	private static readonly IntPtr selInitWithPixelBufferAttributes_Handle = Selector.GetHandle("initWithPixelBufferAttributes:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRequestNotificationOfMediaDataChangeWithAdvanceInterval_ = "requestNotificationOfMediaDataChangeWithAdvanceInterval:";
+	private static readonly IntPtr selSetDelegateQueue_Handle = Selector.GetHandle("setDelegate:queue:");
 
 	private static readonly IntPtr selRequestNotificationOfMediaDataChangeWithAdvanceInterval_Handle = Selector.GetHandle("requestNotificationOfMediaDataChangeWithAdvanceInterval:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDelegate_Queue_ = "setDelegate:queue:";
+	private static readonly IntPtr class_ptr = Class.GetHandle("AVPlayerItemVideoOutput");
 
-	private static readonly IntPtr selSetDelegate_Queue_Handle = Selector.GetHandle("setDelegate:queue:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVPlayerItemVideoOutput");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_WeakDelegate_var;
+	private object __mt_WeakDelegate_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public IAVPlayerItemOutputPullDelegate? Delegate => WeakDelegate as IAVPlayerItemOutputPullDelegate;
+	public virtual NSObject WeakDelegate
+	{
+		[Export("delegate")]
+		get
+		{
+			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
+		}
+	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual DispatchQueue? DelegateQueue
+	public AVPlayerItemOutputPullDelegate Delegate => WeakDelegate as AVPlayerItemOutputPullDelegate;
+
+	public virtual DispatchQueue DelegateQueue
 	{
 		[Export("delegateQueue")]
 		get
 		{
-			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateQueueHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateQueueHandle));
-			return (intPtr == IntPtr.Zero) ? null : new DispatchQueue(intPtr);
+			if (IsDirectBinding)
+			{
+				return new DispatchQueue(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateQueueHandle));
+			}
+			return new DispatchQueue(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateQueueHandle));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject? WeakDelegate
-	{
-		[Export("delegate", ArgumentSemantic.Weak)]
-		get
-		{
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
-			MarkDirty();
-			__mt_WeakDelegate_var = nSObject;
-			return nSObject;
-		}
-	}
-
-	private AVPlayerItemVideoOutput(NSDictionary data, InitMode mode)
-		: base(NSObjectFlag.Empty)
-	{
-		switch (mode)
-		{
-		case InitMode.PixelAttributes:
-			InitializeHandle(_FromPixelBufferAttributes(data), "initWithPixelBufferAttributes:");
-			break;
-		case InitMode.OutputSettings:
-			InitializeHandle(_FromOutputSettings(data), "initWithOutputSettings:");
-			break;
-		default:
-			throw new ArgumentException("mode");
-		}
-	}
-
-	[DesignatedInitializer]
-	[Advice("Please use the constructor that uses one of the available StrongDictionaries. This constructor expects PixelBuffer attributes.")]
-	protected AVPlayerItemVideoOutput(NSDictionary pixelBufferAttributes)
-		: this(pixelBufferAttributes, InitMode.PixelAttributes)
-	{
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public AVPlayerItemVideoOutput()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected AVPlayerItemVideoOutput(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public AVPlayerItemVideoOutput(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public AVPlayerItemVideoOutput(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal AVPlayerItemVideoOutput(IntPtr handle)
+	public AVPlayerItemVideoOutput(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public AVPlayerItemVideoOutput(CVPixelBufferAttributes attributes)
-		: this(attributes.GetDictionary(), InitMode.PixelAttributes)
+	[Export("initWithPixelBufferAttributes:")]
+	protected AVPlayerItemVideoOutput(NSDictionary pixelBufferAttributes)
+		: base(NSObjectFlag.Empty)
 	{
+		if (pixelBufferAttributes == null)
+		{
+			throw new ArgumentNullException("pixelBufferAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithPixelBufferAttributes_Handle, pixelBufferAttributes.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithPixelBufferAttributes_Handle, pixelBufferAttributes.Handle);
+		}
 	}
 
-	[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public AVPlayerItemVideoOutput(AVPlayerItemVideoOutputSettings settings)
-		: this(settings.GetDictionary(), InitMode.OutputSettings)
+	public AVPlayerItemVideoOutput(CVPixelBufferAttributes attributes)
+		: this(attributes?.Dictionary)
 	{
 	}
 
 	[Export("hasNewPixelBufferForItemTime:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool HasNewPixelBufferForItemTime(CMTime itemTime)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend_CMTime(base.Handle, selHasNewPixelBufferForItemTime_Handle, itemTime);
 		}
 		return Messaging.bool_objc_msgSendSuper_CMTime(base.SuperHandle, selHasNewPixelBufferForItemTime_Handle, itemTime);
 	}
 
+	[Export("copyPixelBufferForItemTime:itemTimeForDisplay:")]
+	protected virtual IntPtr WeakCopyPixelBuffer(CMTime itemTime, ref CMTime outItemTimeForDisplay)
+	{
+		if (IsDirectBinding)
+		{
+			return Messaging.IntPtr_objc_msgSend_CMTime_out_CMTime(base.Handle, selCopyPixelBufferForItemTimeItemTimeForDisplay_Handle, itemTime, out outItemTimeForDisplay);
+		}
+		return Messaging.IntPtr_objc_msgSendSuper_CMTime_out_CMTime(base.SuperHandle, selCopyPixelBufferForItemTimeItemTimeForDisplay_Handle, itemTime, out outItemTimeForDisplay);
+	}
+
+	[Export("setDelegate:queue:")]
+	public virtual void SetDelegate(AVPlayerItemOutputPullDelegate delegateClass, DispatchQueue delegateQueue)
+	{
+		if (delegateClass == null)
+		{
+			throw new ArgumentNullException("delegateClass");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetDelegateQueue_Handle, delegateClass.Handle, delegateQueue.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetDelegateQueue_Handle, delegateClass.Handle, delegateQueue.Handle);
+		}
+	}
+
 	[Export("requestNotificationOfMediaDataChangeWithAdvanceInterval:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void RequestNotificationOfMediaDataChange(double advanceInterval)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_Double(base.Handle, selRequestNotificationOfMediaDataChangeWithAdvanceInterval_Handle, advanceInterval);
 		}
@@ -188,54 +170,6 @@ public class AVPlayerItemVideoOutput : AVPlayerItemOutput
 		}
 	}
 
-	[Export("setDelegate:queue:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SetDelegate(IAVPlayerItemOutputPullDelegate? delegateClass, DispatchQueue? delegateQueue)
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetDelegate_Queue_Handle, delegateClass?.Handle ?? IntPtr.Zero, (delegateQueue == null) ? IntPtr.Zero : delegateQueue.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetDelegate_Queue_Handle, delegateClass?.Handle ?? IntPtr.Zero, (delegateQueue == null) ? IntPtr.Zero : delegateQueue.Handle);
-		}
-	}
-
-	[Export("copyPixelBufferForItemTime:itemTimeForDisplay:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	protected virtual IntPtr WeakCopyPixelBuffer(CMTime itemTime, ref CMTime outItemTimeForDisplay)
-	{
-		if (base.IsDirectBinding)
-		{
-			return Messaging.IntPtr_objc_msgSend_CMTime_ref_CMTime(base.Handle, selCopyPixelBufferForItemTime_ItemTimeForDisplay_Handle, itemTime, ref outItemTimeForDisplay);
-		}
-		return Messaging.IntPtr_objc_msgSendSuper_CMTime_ref_CMTime(base.SuperHandle, selCopyPixelBufferForItemTime_ItemTimeForDisplay_Handle, itemTime, ref outItemTimeForDisplay);
-	}
-
-	[Export("initWithOutputSettings:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual IntPtr _FromOutputSettings(NSDictionary? outputSettings)
-	{
-		if (base.IsDirectBinding)
-		{
-			return Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithOutputSettings_Handle, outputSettings?.Handle ?? IntPtr.Zero);
-		}
-		return Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithOutputSettings_Handle, outputSettings?.Handle ?? IntPtr.Zero);
-	}
-
-	[Export("initWithPixelBufferAttributes:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual IntPtr _FromPixelBufferAttributes(NSDictionary? pixelBufferAttributes)
-	{
-		if (base.IsDirectBinding)
-		{
-			return Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithPixelBufferAttributes_Handle, pixelBufferAttributes?.Handle ?? IntPtr.Zero);
-		}
-		return Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithPixelBufferAttributes_Handle, pixelBufferAttributes?.Handle ?? IntPtr.Zero);
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);

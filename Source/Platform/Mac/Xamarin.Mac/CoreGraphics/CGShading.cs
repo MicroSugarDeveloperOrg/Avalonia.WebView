@@ -52,9 +52,9 @@ public class CGShading : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGShadingCreateRadial(IntPtr space, CGPoint start, nfloat startRadius, CGPoint end, nfloat endRadius, IntPtr function, bool extendStart, bool extendEnd);
+	private static extern IntPtr CGShadingCreateRadial(IntPtr space, CGPoint start, double startRadius, CGPoint end, double endRadius, IntPtr function, bool extendStart, bool extendEnd);
 
-	public static CGShading CreateRadial(CGColorSpace colorspace, CGPoint start, nfloat startRadius, CGPoint end, nfloat endRadius, CGFunction function, bool extendStart, bool extendEnd)
+	public static CGShading CreateRadial(CGColorSpace colorspace, CGPoint start, double startRadius, CGPoint end, double endRadius, CGFunction function, bool extendStart, bool extendEnd)
 	{
 		if (colorspace == null)
 		{
@@ -87,10 +87,10 @@ public class CGShading : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGShadingRelease(IntPtr shading);
+	private static extern void CGShadingRelease(IntPtr handle);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGShadingRetain(IntPtr shading);
+	private static extern void CGShadingRetain(IntPtr handle);
 
 	protected virtual void Dispose(bool disposing)
 	{

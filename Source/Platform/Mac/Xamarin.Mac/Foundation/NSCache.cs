@@ -1,7 +1,6 @@
+using System;
 using System.ComponentModel;
-using AppKit;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 
@@ -9,18 +8,12 @@ namespace Foundation;
 public class NSCache : NSObject
 {
 	[Register]
-	internal class _NSCacheDelegate : NSObject, INSCacheDelegate, INativeObject, IDisposable
+	private sealed class _NSCacheDelegate : NSCacheDelegate
 	{
-		internal EventHandler<NSObjectEventArgs>? willEvictObject;
-
-		public _NSCacheDelegate()
-		{
-			base.IsDirectBinding = false;
-		}
+		internal EventHandler<NSObjectEventArgs> willEvictObject;
 
 		[Preserve(Conditional = true)]
-		[Export("cache:willEvictObject:")]
-		public void WillEvictObject(NSCache cache, NSObject obj)
+		public override void WillEvictObject(NSCache cache, NSObject obj)
 		{
 			EventHandler<NSObjectEventArgs> eventHandler = willEvictObject;
 			if (eventHandler != null)
@@ -31,166 +24,48 @@ public class NSCache : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCountLimit = "countLimit";
-
-	private static readonly IntPtr selCountLimitHandle = Selector.GetHandle("countLimit");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDelegate = "delegate";
-
-	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEvictsObjectsWithDiscardedContent = "evictsObjectsWithDiscardedContent";
-
-	private static readonly IntPtr selEvictsObjectsWithDiscardedContentHandle = Selector.GetHandle("evictsObjectsWithDiscardedContent");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selName = "name";
-
 	private static readonly IntPtr selNameHandle = Selector.GetHandle("name");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selObjectForKey_ = "objectForKey:";
-
-	private static readonly IntPtr selObjectForKey_Handle = Selector.GetHandle("objectForKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveAllObjects = "removeAllObjects";
-
-	private static readonly IntPtr selRemoveAllObjectsHandle = Selector.GetHandle("removeAllObjects");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveObjectForKey_ = "removeObjectForKey:";
-
-	private static readonly IntPtr selRemoveObjectForKey_Handle = Selector.GetHandle("removeObjectForKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetCountLimit_ = "setCountLimit:";
-
-	private static readonly IntPtr selSetCountLimit_Handle = Selector.GetHandle("setCountLimit:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDelegate_ = "setDelegate:";
-
-	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetEvictsObjectsWithDiscardedContent_ = "setEvictsObjectsWithDiscardedContent:";
-
-	private static readonly IntPtr selSetEvictsObjectsWithDiscardedContent_Handle = Selector.GetHandle("setEvictsObjectsWithDiscardedContent:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetName_ = "setName:";
 
 	private static readonly IntPtr selSetName_Handle = Selector.GetHandle("setName:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetObject_ForKey_ = "setObject:forKey:";
+	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
 
-	private static readonly IntPtr selSetObject_ForKey_Handle = Selector.GetHandle("setObject:forKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetObject_ForKey_Cost_ = "setObject:forKey:cost:";
-
-	private static readonly IntPtr selSetObject_ForKey_Cost_Handle = Selector.GetHandle("setObject:forKey:cost:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetTotalCostLimit_ = "setTotalCostLimit:";
-
-	private static readonly IntPtr selSetTotalCostLimit_Handle = Selector.GetHandle("setTotalCostLimit:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTotalCostLimit = "totalCostLimit";
+	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
 
 	private static readonly IntPtr selTotalCostLimitHandle = Selector.GetHandle("totalCostLimit");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSCache");
+	private static readonly IntPtr selSetTotalCostLimit_Handle = Selector.GetHandle("setTotalCostLimit:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_WeakDelegate_var;
+	private static readonly IntPtr selCountLimitHandle = Selector.GetHandle("countLimit");
+
+	private static readonly IntPtr selSetCountLimit_Handle = Selector.GetHandle("setCountLimit:");
+
+	private static readonly IntPtr selEvictsObjectsWithDiscardedContentHandle = Selector.GetHandle("evictsObjectsWithDiscardedContent");
+
+	private static readonly IntPtr selSetEvictsObjectsWithDiscardedContent_Handle = Selector.GetHandle("setEvictsObjectsWithDiscardedContent:");
+
+	private static readonly IntPtr selObjectForKey_Handle = Selector.GetHandle("objectForKey:");
+
+	private static readonly IntPtr selSetObjectForKey_Handle = Selector.GetHandle("setObject:forKey:");
+
+	private static readonly IntPtr selSetObjectForKeyCost_Handle = Selector.GetHandle("setObject:forKey:cost:");
+
+	private static readonly IntPtr selRemoveObjectForKey_Handle = Selector.GetHandle("removeObjectForKey:");
+
+	private static readonly IntPtr selRemoveAllObjectsHandle = Selector.GetHandle("removeAllObjects");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSCache");
+
+	private object __mt_WeakDelegate_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nuint CountLimit
-	{
-		[Export("countLimit")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selCountLimitHandle);
-			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selCountLimitHandle);
-		}
-		[Export("setCountLimit:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nuint(base.Handle, selSetCountLimit_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nuint(base.SuperHandle, selSetCountLimit_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public INSCacheDelegate Delegate
-	{
-		get
-		{
-			return WeakDelegate as INSCacheDelegate;
-		}
-		set
-		{
-			NSObject nSObject = value as NSObject;
-			if (value != null && nSObject == null)
-			{
-				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
-			}
-			WeakDelegate = nSObject;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool EvictsObjectsWithDiscardedContent
-	{
-		[Export("evictsObjectsWithDiscardedContent")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selEvictsObjectsWithDiscardedContentHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selEvictsObjectsWithDiscardedContentHandle);
-		}
-		[Export("setEvictsObjectsWithDiscardedContent:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetEvictsObjectsWithDiscardedContent_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetEvictsObjectsWithDiscardedContent_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string Name
 	{
 		[Export("name")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNameHandle));
 			}
@@ -204,7 +79,7 @@ public class NSCache : NSObject
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetName_Handle, arg);
 			}
@@ -216,61 +91,118 @@ public class NSCache : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nuint TotalCostLimit
+	public virtual NSObject WeakDelegate
 	{
-		[Export("totalCostLimit")]
+		[Export("delegate")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selTotalCostLimitHandle);
-			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selTotalCostLimitHandle);
+			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
 		}
-		[Export("setTotalCostLimit:")]
+		[Export("setDelegate:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_nuint(base.Handle, selSetTotalCostLimit_Handle, value);
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_nuint(base.SuperHandle, selSetTotalCostLimit_Handle, value);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value.Handle);
 			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject? WeakDelegate
-	{
-		[Export("delegate", ArgumentSemantic.Assign)]
-		get
-		{
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
-			MarkDirty();
-			__mt_WeakDelegate_var = nSObject;
-			return nSObject;
-		}
-		[Export("setDelegate:", ArgumentSemantic.Assign)]
-		set
-		{
-			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakDelegate_var, value, GetInternalEventDelegateType);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			MarkDirty();
 			__mt_WeakDelegate_var = value;
 		}
 	}
 
-	internal virtual Type GetInternalEventDelegateType => typeof(_NSCacheDelegate);
+	public NSCacheDelegate Delegate
+	{
+		get
+		{
+			return WeakDelegate as NSCacheDelegate;
+		}
+		set
+		{
+			WeakDelegate = value;
+		}
+	}
+
+	public virtual ulong TotalCostLimit
+	{
+		[Export("totalCostLimit")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selTotalCostLimitHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selTotalCostLimitHandle);
+		}
+		[Export("setTotalCostLimit:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetTotalCostLimit_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetTotalCostLimit_Handle, value);
+			}
+		}
+	}
+
+	public virtual ulong CountLimit
+	{
+		[Export("countLimit")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selCountLimitHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selCountLimitHandle);
+		}
+		[Export("setCountLimit:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetCountLimit_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetCountLimit_Handle, value);
+			}
+		}
+	}
+
+	public virtual bool EvictsObjectsWithDiscardedContent
+	{
+		[Export("evictsObjectsWithDiscardedContent")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selEvictsObjectsWithDiscardedContentHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selEvictsObjectsWithDiscardedContentHandle);
+		}
+		[Export("setEvictsObjectsWithDiscardedContent:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetEvictsObjectsWithDiscardedContent_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetEvictsObjectsWithDiscardedContent_Handle, value);
+			}
+		}
+	}
 
 	public event EventHandler<NSObjectEventArgs> WillEvictObject
 	{
@@ -286,107 +218,63 @@ public class NSCache : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSCache()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSCache(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSCache(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSCache(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSCache(IntPtr handle)
+	public NSCache(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("objectForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSObject ObjectForKey(NSObject key)
 	{
 		if (key == null)
 		{
 			throw new ArgumentNullException("key");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selObjectForKey_Handle, key.Handle));
 		}
 		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selObjectForKey_Handle, key.Handle));
 	}
 
-	[Export("removeAllObjects")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RemoveAllObjects()
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selRemoveAllObjectsHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRemoveAllObjectsHandle);
-		}
-	}
-
-	[Export("removeObjectForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RemoveObjectForKey(NSObject key)
-	{
-		if (key == null)
-		{
-			throw new ArgumentNullException("key");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveObjectForKey_Handle, key.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveObjectForKey_Handle, key.Handle);
-		}
-	}
-
-	[Export("setObject:forKey:cost:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SetCost(NSObject obj, NSObject key, nuint cost)
-	{
-		if (obj == null)
-		{
-			throw new ArgumentNullException("obj");
-		}
-		if (key == null)
-		{
-			throw new ArgumentNullException("key");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_nuint(base.Handle, selSetObject_ForKey_Cost_Handle, obj.Handle, key.Handle, cost);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_nuint(base.SuperHandle, selSetObject_ForKey_Cost_Handle, obj.Handle, key.Handle, cost);
-		}
-	}
-
 	[Export("setObject:forKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SetObjectforKey(NSObject obj, NSObject key)
 	{
 		if (obj == null)
@@ -397,36 +285,77 @@ public class NSCache : NSObject
 		{
 			throw new ArgumentNullException("key");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetObject_ForKey_Handle, obj.Handle, key.Handle);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetObjectForKey_Handle, obj.Handle, key.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetObject_ForKey_Handle, obj.Handle, key.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetObjectForKey_Handle, obj.Handle, key.Handle);
 		}
 	}
 
-	internal virtual _NSCacheDelegate CreateInternalEventDelegateType()
+	[Export("setObject:forKey:cost:")]
+	public virtual void SetCost(NSObject obj, NSObject key, ulong cost)
 	{
-		return new _NSCacheDelegate();
+		if (obj == null)
+		{
+			throw new ArgumentNullException("obj");
+		}
+		if (key == null)
+		{
+			throw new ArgumentNullException("key");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr_UInt64(base.Handle, selSetObjectForKeyCost_Handle, obj.Handle, key.Handle, cost);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_UInt64(base.SuperHandle, selSetObjectForKeyCost_Handle, obj.Handle, key.Handle, cost);
+		}
 	}
 
-	internal _NSCacheDelegate EnsureNSCacheDelegate()
+	[Export("removeObjectForKey:")]
+	public virtual void RemoveObjectForKey(NSObject key)
 	{
-		if (WeakDelegate != null)
+		if (key == null)
 		{
-			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakDelegate, GetInternalEventDelegateType);
+			throw new ArgumentNullException("key");
 		}
-		_NSCacheDelegate nSCacheDelegate = Delegate as _NSCacheDelegate;
-		if (nSCacheDelegate == null)
+		if (IsDirectBinding)
 		{
-			nSCacheDelegate = (_NSCacheDelegate)(Delegate = CreateInternalEventDelegateType());
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveObjectForKey_Handle, key.Handle);
 		}
-		return nSCacheDelegate;
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveObjectForKey_Handle, key.Handle);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export("removeAllObjects")]
+	public virtual void RemoveAllObjects()
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selRemoveAllObjectsHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRemoveAllObjectsHandle);
+		}
+	}
+
+	private _NSCacheDelegate EnsureNSCacheDelegate()
+	{
+		NSObject nSObject = WeakDelegate;
+		if (nSObject == null || !(nSObject is _NSCacheDelegate))
+		{
+			nSObject = (WeakDelegate = new _NSCacheDelegate());
+		}
+		return (_NSCacheDelegate)nSObject;
+	}
+
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);

@@ -1,74 +1,20 @@
-using System.ComponentModel;
+using System;
 using System.Runtime.InteropServices;
 using CoreFoundation;
-using CoreGraphics;
 using Foundation;
-using Xamarin.Mac.System.Mac;
 
 namespace ObjCRuntime;
 
 public static class Dlfcn
 {
-	public enum RTLD
-	{
-		Next = -1,
-		Default = -2,
-		Self = -3,
-		MainOnly = -5
-	}
-
-	internal struct Dl_info
-	{
-		internal IntPtr dli_fname;
-
-		internal IntPtr dli_fbase;
-
-		internal IntPtr dli_sname;
-
-		internal IntPtr dli_saddr;
-	}
-
-	private static bool warningShown;
-
-	[DllImport("/usr/lib/libc.dylib")]
-	internal static extern int dladdr(IntPtr addr, out Dl_info info);
-
 	[DllImport("/usr/lib/libSystem.dylib")]
 	public static extern int dlclose(IntPtr handle);
 
-	[DllImport("/usr/lib/libSystem.dylib", EntryPoint = "dlopen")]
-	internal static extern IntPtr _dlopen(string path, int mode);
-
-	public static IntPtr dlopen(string path, int mode)
-	{
-		IntPtr intPtr = _dlopen(path, mode);
-		if (intPtr != IntPtr.Zero)
-		{
-			return intPtr;
-		}
-		if (path.IndexOf('/') == -1)
-		{
-			if (!warningShown)
-			{
-				Console.WriteLine("You are using dlopen without a full path, retrying by prepending /usr/lib");
-				warningShown = true;
-			}
-			intPtr = _dlopen("/usr/lib/" + path, mode);
-			if (intPtr != IntPtr.Zero)
-			{
-				return intPtr;
-			}
-		}
-		return IntPtr.Zero;
-	}
+	[DllImport("/usr/lib/libSystem.dylib")]
+	public static extern IntPtr dlopen(string path, int mode);
 
 	[DllImport("/usr/lib/libSystem.dylib")]
 	public static extern IntPtr dlsym(IntPtr handle, string symbol);
-
-	public static IntPtr dlsym(RTLD lookupType, string symbol)
-	{
-		return dlsym((IntPtr)(int)lookupType, symbol);
-	}
 
 	[DllImport("/usr/lib/libSystem.dylib", EntryPoint = "dlerror")]
 	internal static extern IntPtr dlerror_();
@@ -132,25 +78,6 @@ public static class Dlfcn
 		}
 	}
 
-	public static uint GetUInt32(IntPtr handle, string symbol)
-	{
-		IntPtr intPtr = dlsym(handle, symbol);
-		if (intPtr == IntPtr.Zero)
-		{
-			return 0u;
-		}
-		return (uint)Marshal.ReadInt32(intPtr);
-	}
-
-	public static void SetUInt32(IntPtr handle, string symbol, uint value)
-	{
-		IntPtr intPtr = dlsym(handle, symbol);
-		if (!(intPtr == IntPtr.Zero))
-		{
-			Marshal.WriteInt32(intPtr, (int)value);
-		}
-	}
-
 	public static long GetInt64(IntPtr handle, string symbol)
 	{
 		IntPtr intPtr = dlsym(handle, symbol);
@@ -167,35 +94,6 @@ public static class Dlfcn
 		if (!(intPtr == IntPtr.Zero))
 		{
 			Marshal.WriteInt64(intPtr, value);
-		}
-	}
-
-	public static ulong GetUInt64(IntPtr handle, string symbol)
-	{
-		IntPtr intPtr = dlsym(handle, symbol);
-		if (intPtr == IntPtr.Zero)
-		{
-			return 0uL;
-		}
-		return (ulong)Marshal.ReadInt64(intPtr);
-	}
-
-	[Obsolete("Use 'SetInt64' for long values instead.")]
-	public static void SetUInt64(IntPtr handle, string symbol, long value)
-	{
-		IntPtr intPtr = dlsym(handle, symbol);
-		if (!(intPtr == IntPtr.Zero))
-		{
-			Marshal.WriteInt64(intPtr, value);
-		}
-	}
-
-	public static void SetUInt64(IntPtr handle, string symbol, ulong value)
-	{
-		IntPtr intPtr = dlsym(handle, symbol);
-		if (!(intPtr == IntPtr.Zero))
-		{
-			Marshal.WriteInt64(intPtr, (long)value);
 		}
 	}
 
@@ -236,50 +134,6 @@ public static class Dlfcn
 		}
 	}
 
-	public static nint GetNInt(IntPtr handle, string symbol)
-	{
-		return (nint)GetIntPtr(handle, symbol);
-	}
-
-	public static void SetNInt(IntPtr handle, string symbol, nint value)
-	{
-		SetIntPtr(handle, symbol, (IntPtr)value);
-	}
-
-	public static nuint GetNUInt(IntPtr handle, string symbol)
-	{
-		return (nuint)GetIntPtr(handle, symbol);
-	}
-
-	public static void SetNUInt(IntPtr handle, string symbol, nuint value)
-	{
-		SetIntPtr(handle, symbol, (IntPtr)value);
-	}
-
-	public unsafe static nfloat GetNFloat(IntPtr handle, string symbol)
-	{
-		IntPtr intPtr = dlsym(handle, symbol);
-		if (intPtr == IntPtr.Zero)
-		{
-			return 0;
-		}
-		if (sizeof(IntPtr) == 4)
-		{
-			return *(float*)(void*)intPtr;
-		}
-		return (nfloat)(*(double*)(void*)intPtr);
-	}
-
-	public unsafe static void SetNFloat(IntPtr handle, string symbol, nfloat value)
-	{
-		IntPtr intPtr = dlsym(handle, symbol);
-		if (!(intPtr == IntPtr.Zero))
-		{
-			nfloat* ptr = (nfloat*)(void*)intPtr;
-			*ptr = value;
-		}
-	}
-
 	public static IntPtr GetIntPtr(IntPtr handle, string symbol)
 	{
 		IntPtr intPtr = dlsym(handle, symbol);
@@ -296,39 +150,6 @@ public static class Dlfcn
 		if (!(intPtr == IntPtr.Zero))
 		{
 			Marshal.WriteIntPtr(intPtr, value);
-		}
-	}
-
-	public unsafe static CGRect GetCGRect(IntPtr handle, string symbol)
-	{
-		IntPtr intPtr = dlsym(handle, symbol);
-		if (intPtr == IntPtr.Zero)
-		{
-			return CGRect.Empty;
-		}
-		nfloat* ptr = (nfloat*)(void*)intPtr;
-		return new CGRect(*ptr, ptr[1], ptr[2], ptr[3]);
-	}
-
-	public unsafe static CGSize GetCGSize(IntPtr handle, string symbol)
-	{
-		IntPtr intPtr = dlsym(handle, symbol);
-		if (intPtr == IntPtr.Zero)
-		{
-			return CGSize.Empty;
-		}
-		nfloat* ptr = (nfloat*)(void*)intPtr;
-		return new CGSize(*ptr, ptr[1]);
-	}
-
-	public unsafe static void SetCGSize(IntPtr handle, string symbol, CGSize value)
-	{
-		IntPtr intPtr = dlsym(handle, symbol);
-		if (!(intPtr == IntPtr.Zero))
-		{
-			nfloat* ptr = (nfloat*)(void*)intPtr;
-			*ptr = value.Width;
-			ptr[1] = value.Height;
 		}
 	}
 
@@ -455,15 +276,5 @@ public static class Dlfcn
 		{
 			dlclose(intPtr);
 		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public unsafe static IntPtr CachePointer(IntPtr handle, string constant, IntPtr* storage)
-	{
-		if (*storage == IntPtr.Zero)
-		{
-			*storage = GetIntPtr(handle, constant);
-		}
-		return *storage;
 	}
 }

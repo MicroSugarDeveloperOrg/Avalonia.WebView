@@ -7,270 +7,208 @@ using ObjCRuntime;
 namespace PdfKit;
 
 [Register("PDFBorder", true)]
-[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
-public class PdfBorder : NSObject, INSCoding, INativeObject, IDisposable, INSCopying
+public class PdfBorder : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selBorderKeyValues = "borderKeyValues";
-
-	private static readonly IntPtr selBorderKeyValuesHandle = Selector.GetHandle("borderKeyValues");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCopyWithZone_ = "copyWithZone:";
-
-	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDashPattern = "dashPattern";
-
-	private static readonly IntPtr selDashPatternHandle = Selector.GetHandle("dashPattern");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDrawInRect_ = "drawInRect:";
-
-	private static readonly IntPtr selDrawInRect_Handle = Selector.GetHandle("drawInRect:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
-
-	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLineWidth = "lineWidth";
-
-	private static readonly IntPtr selLineWidthHandle = Selector.GetHandle("lineWidth");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDashPattern_ = "setDashPattern:";
-
-	private static readonly IntPtr selSetDashPattern_Handle = Selector.GetHandle("setDashPattern:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetLineWidth_ = "setLineWidth:";
-
-	private static readonly IntPtr selSetLineWidth_Handle = Selector.GetHandle("setLineWidth:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetStyle_ = "setStyle:";
+	private static readonly IntPtr selStyleHandle = Selector.GetHandle("style");
 
 	private static readonly IntPtr selSetStyle_Handle = Selector.GetHandle("setStyle:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStyle = "style";
+	private static readonly IntPtr selLineWidthHandle = Selector.GetHandle("lineWidth");
 
-	private static readonly IntPtr selStyleHandle = Selector.GetHandle("style");
+	private static readonly IntPtr selSetLineWidth_Handle = Selector.GetHandle("setLineWidth:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("PDFBorder");
+	private static readonly IntPtr selHorizontalCornerRadiusHandle = Selector.GetHandle("horizontalCornerRadius");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_WeakDashPattern_var;
+	private static readonly IntPtr selSetHorizontalCornerRadius_Handle = Selector.GetHandle("setHorizontalCornerRadius:");
 
-	[Obsolete("Empty stub (not a public API).")]
-	public virtual nfloat HorizontalCornerRadius { get; set; }
+	private static readonly IntPtr selVerticalCornerRadiusHandle = Selector.GetHandle("verticalCornerRadius");
 
-	[Obsolete("Empty stub (not a public API).")]
-	public virtual nfloat VerticalCornerRadius { get; set; }
+	private static readonly IntPtr selSetVerticalCornerRadius_Handle = Selector.GetHandle("setVerticalCornerRadius:");
 
-	private nfloat[] DashPattern
-	{
-		get
-		{
-			NSArray weakDashPattern = WeakDashPattern;
-			if (weakDashPattern == null)
-			{
-				return null;
-			}
-			nfloat[] array = new nfloat[(ulong)weakDashPattern.Count];
-			for (uint num = 0u; num < array.Length; num++)
-			{
-				array[num] = weakDashPattern.GetItem<NSNumber>(num).NFloatValue;
-			}
-			return array;
-		}
-		set
-		{
-			if (value == null)
-			{
-				WeakDashPattern = null;
-				return;
-			}
-			NSNumber[] array = new NSNumber[value.Length];
-			for (int i = 0; i < array.Length; i++)
-			{
-				array[i] = new NSNumber(value[i]);
-			}
-			WeakDashPattern = NSArray.FromNSObjects(array);
-		}
-	}
+	private static readonly IntPtr selDashPatternHandle = Selector.GetHandle("dashPattern");
+
+	private static readonly IntPtr selSetDashPattern_Handle = Selector.GetHandle("setDashPattern:");
+
+	private static readonly IntPtr selDrawInRect_Handle = Selector.GetHandle("drawInRect:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("PDFBorder");
+
+	private object __mt_DashPattern_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nfloat LineWidth
-	{
-		[Export("lineWidth")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selLineWidthHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selLineWidthHandle);
-		}
-		[Export("setLineWidth:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetLineWidth_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetLineWidth_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual PdfBorderStyle Style
 	{
 		[Export("style")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return (PdfBorderStyle)Messaging.Int64_objc_msgSend(base.Handle, selStyleHandle);
+				return (PdfBorderStyle)Messaging.int_objc_msgSend(base.Handle, selStyleHandle);
 			}
-			return (PdfBorderStyle)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selStyleHandle);
+			return (PdfBorderStyle)Messaging.int_objc_msgSendSuper(base.SuperHandle, selStyleHandle);
 		}
 		[Export("setStyle:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetStyle_Handle, (long)value);
+				Messaging.void_objc_msgSend_int(base.Handle, selSetStyle_Handle, (int)value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetStyle_Handle, (long)value);
+				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetStyle_Handle, (int)value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-	public virtual NSDictionary WeakBorderKeyValues
+	public virtual float LineWidth
 	{
-		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-		[Export("borderKeyValues", ArgumentSemantic.Copy)]
+		[Export("lineWidth")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selBorderKeyValuesHandle));
+				return Messaging.float_objc_msgSend(base.Handle, selLineWidthHandle);
 			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBorderKeyValuesHandle));
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selLineWidthHandle);
 		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSArray? WeakDashPattern
-	{
-		[Export("dashPattern", ArgumentSemantic.Assign)]
-		get
-		{
-			NSArray nSArray = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSArray>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDashPatternHandle)) : Runtime.GetNSObject<NSArray>(Messaging.IntPtr_objc_msgSend(base.Handle, selDashPatternHandle)));
-			MarkDirty();
-			__mt_WeakDashPattern_var = nSArray;
-			return nSArray;
-		}
-		[Export("setDashPattern:", ArgumentSemantic.Assign)]
+		[Export("setLineWidth:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDashPattern_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSend_float(base.Handle, selSetLineWidth_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDashPattern_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetLineWidth_Handle, value);
 			}
-			MarkDirty();
-			__mt_WeakDashPattern_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual float HorizontalCornerRadius
+	{
+		[Export("horizontalCornerRadius")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.float_objc_msgSend(base.Handle, selHorizontalCornerRadiusHandle);
+			}
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selHorizontalCornerRadiusHandle);
+		}
+		[Export("setHorizontalCornerRadius:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_float(base.Handle, selSetHorizontalCornerRadius_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetHorizontalCornerRadius_Handle, value);
+			}
+		}
+	}
+
+	public virtual float VerticalCornerRadius
+	{
+		[Export("verticalCornerRadius")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.float_objc_msgSend(base.Handle, selVerticalCornerRadiusHandle);
+			}
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selVerticalCornerRadiusHandle);
+		}
+		[Export("setVerticalCornerRadius:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_float(base.Handle, selSetVerticalCornerRadius_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetVerticalCornerRadius_Handle, value);
+			}
+		}
+	}
+
+	public virtual NSArray DashPattern
+	{
+		[Export("dashPattern")]
+		get
+		{
+			return (NSArray)(__mt_DashPattern_var = ((!IsDirectBinding) ? ((NSArray)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDashPatternHandle))) : ((NSArray)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDashPatternHandle)))));
+		}
+		[Export("setDashPattern:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDashPattern_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDashPattern_Handle, value.Handle);
+			}
+			__mt_DashPattern_var = value;
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public PdfBorder()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public PdfBorder(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected PdfBorder(NSObjectFlag t)
+	public PdfBorder(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal PdfBorder(IntPtr handle)
+	public PdfBorder(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("copyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject Copy(NSZone? zone)
-	{
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
-		{
-			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
-		}
-		return nSObject;
-	}
-
 	[Export("drawInRect:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Draw(CGRect rect)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_CGRect(base.Handle, selDrawInRect_Handle, rect);
 		}
@@ -280,31 +218,12 @@ public class PdfBorder : NSObject, INSCoding, INativeObject, IDisposable, INSCop
 		}
 	}
 
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
-	{
-		if (encoder == null)
-		{
-			throw new ArgumentNullException("encoder");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
-			__mt_WeakDashPattern_var = null;
+			__mt_DashPattern_var = null;
 		}
 	}
 }

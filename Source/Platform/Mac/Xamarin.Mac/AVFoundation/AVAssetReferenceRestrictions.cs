@@ -1,15 +1,11 @@
-using ObjCRuntime;
-
 namespace AVFoundation;
 
-[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-[Native]
-public enum AVAssetReferenceRestrictions : ulong
+public enum AVAssetReferenceRestrictions
 {
-	ForbidNone = 0uL,
-	ForbidRemoteReferenceToLocal = 1uL,
-	ForbidLocalReferenceToRemote = 2uL,
-	ForbidCrossSiteReference = 4uL,
-	ForbidLocalReferenceToLocal = 8uL,
-	ForbidAll = 65535uL
+	ForbidNone = 0,
+	ForbidRemoteReferenceToLocal = 1,
+	ForbidLocalReferenceToRemote = 2,
+	ForbidCrossSiteReference = 4,
+	ForbidLocalReferenceToLocal = 8,
+	ForbidAll = 65535
 }

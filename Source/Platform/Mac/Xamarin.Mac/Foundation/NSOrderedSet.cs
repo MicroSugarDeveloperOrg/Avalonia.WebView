@@ -1,149 +1,70 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 
 [Register("NSOrderedSet", true)]
-public class NSOrderedSet : NSObject, IEnumerable<NSObject>, IEnumerable, INSCoding, INativeObject, IDisposable, INSCopying, INSMutableCopying, INSSecureCoding
+public class NSOrderedSet : NSObject, IEnumerable<NSObject>, IEnumerable
 {
 	internal const string selSetWithArray = "orderedSetWithArray:";
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selArray = "array";
-
-	private static readonly IntPtr selArrayHandle = Selector.GetHandle("array");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selContainsObject_ = "containsObject:";
-
-	private static readonly IntPtr selContainsObject_Handle = Selector.GetHandle("containsObject:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCopyWithZone_ = "copyWithZone:";
-
-	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCount = "count";
-
 	private static readonly IntPtr selCountHandle = Selector.GetHandle("count");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFirstObject = "firstObject";
-
-	private static readonly IntPtr selFirstObjectHandle = Selector.GetHandle("firstObject");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIndexOfObject_ = "indexOfObject:";
-
-	private static readonly IntPtr selIndexOfObject_Handle = Selector.GetHandle("indexOfObject:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithArray_ = "initWithArray:";
-
-	private static readonly IntPtr selInitWithArray_Handle = Selector.GetHandle("initWithArray:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
-
-	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithObject_ = "initWithObject:";
 
 	private static readonly IntPtr selInitWithObject_Handle = Selector.GetHandle("initWithObject:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithOrderedSet_ = "initWithOrderedSet:";
-
-	private static readonly IntPtr selInitWithOrderedSet_Handle = Selector.GetHandle("initWithOrderedSet:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithSet_ = "initWithSet:";
+	private static readonly IntPtr selInitWithArray_Handle = Selector.GetHandle("initWithArray:");
 
 	private static readonly IntPtr selInitWithSet_Handle = Selector.GetHandle("initWithSet:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIntersectsOrderedSet_ = "intersectsOrderedSet:";
-
-	private static readonly IntPtr selIntersectsOrderedSet_Handle = Selector.GetHandle("intersectsOrderedSet:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIntersectsSet_ = "intersectsSet:";
-
-	private static readonly IntPtr selIntersectsSet_Handle = Selector.GetHandle("intersectsSet:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsEqualToOrderedSet_ = "isEqualToOrderedSet:";
-
-	private static readonly IntPtr selIsEqualToOrderedSet_Handle = Selector.GetHandle("isEqualToOrderedSet:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsSubsetOfOrderedSet_ = "isSubsetOfOrderedSet:";
-
-	private static readonly IntPtr selIsSubsetOfOrderedSet_Handle = Selector.GetHandle("isSubsetOfOrderedSet:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsSubsetOfSet_ = "isSubsetOfSet:";
-
-	private static readonly IntPtr selIsSubsetOfSet_Handle = Selector.GetHandle("isSubsetOfSet:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLastObject = "lastObject";
-
-	private static readonly IntPtr selLastObjectHandle = Selector.GetHandle("lastObject");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMutableCopyWithZone_ = "mutableCopyWithZone:";
-
-	private static readonly IntPtr selMutableCopyWithZone_Handle = Selector.GetHandle("mutableCopyWithZone:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selObjectAtIndex_ = "objectAtIndex:";
+	private static readonly IntPtr selInitWithOrderedSet_Handle = Selector.GetHandle("initWithOrderedSet:");
 
 	private static readonly IntPtr selObjectAtIndex_Handle = Selector.GetHandle("objectAtIndex:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selObjectEnumerator = "objectEnumerator";
+	private static readonly IntPtr selArrayHandle = Selector.GetHandle("array");
+
+	private static readonly IntPtr selIndexOfObject_Handle = Selector.GetHandle("indexOfObject:");
 
 	private static readonly IntPtr selObjectEnumeratorHandle = Selector.GetHandle("objectEnumerator");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selReversedOrderedSet = "reversedOrderedSet";
+	private static readonly IntPtr selSetHandle = Selector.GetHandle("set");
+
+	private static readonly IntPtr selContainsObject_Handle = Selector.GetHandle("containsObject:");
+
+	private static readonly IntPtr selFirstObjectHandle = Selector.GetHandle("firstObject");
+
+	private static readonly IntPtr selLastObjectHandle = Selector.GetHandle("lastObject");
+
+	private static readonly IntPtr selIsEqualToOrderedSet_Handle = Selector.GetHandle("isEqualToOrderedSet:");
+
+	private static readonly IntPtr selIntersectsOrderedSet_Handle = Selector.GetHandle("intersectsOrderedSet:");
+
+	private static readonly IntPtr selIntersectsSet_Handle = Selector.GetHandle("intersectsSet:");
+
+	private static readonly IntPtr selIsSubsetOfOrderedSet_Handle = Selector.GetHandle("isSubsetOfOrderedSet:");
+
+	private static readonly IntPtr selIsSubsetOfSet_Handle = Selector.GetHandle("isSubsetOfSet:");
 
 	private static readonly IntPtr selReversedOrderedSetHandle = Selector.GetHandle("reversedOrderedSet");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSet = "set";
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSOrderedSet");
 
-	private static readonly IntPtr selSetHandle = Selector.GetHandle("set");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSOrderedSet");
-
-	public NSObject this[nint idx] => GetObject(idx);
+	public NSObject this[int idx] => GetObject(idx);
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint Count
+	public virtual int Count
 	{
 		[Export("count")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nint_objc_msgSend(base.Handle, selCountHandle);
+				return Messaging.int_objc_msgSend(base.Handle, selCountHandle);
 			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selCountHandle);
+			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selCountHandle);
 		}
 	}
 
@@ -162,10 +83,9 @@ public class NSOrderedSet : NSObject, IEnumerable<NSObject>, IEnumerable, INSCod
 	{
 	}
 
-	public T[] ToArray<T>() where T : class, INativeObject
+	public T[] ToArray<T>() where T : NSObject
 	{
-		IntPtr intPtr = _ToArray();
-		return NSArray.ArrayFromHandle<T>(intPtr);
+		return NSArray.ArrayFromHandle<T>(_ToArray());
 	}
 
 	public static NSOrderedSet MakeNSOrderedSet<T>(T[] values) where T : NSObject
@@ -210,29 +130,14 @@ public class NSOrderedSet : NSObject, IEnumerable<NSObject>, IEnumerable, INSCod
 	{
 		if (first == null)
 		{
-			return new NSOrderedSet(second);
+			return second;
 		}
 		if (second == null)
 		{
-			return new NSOrderedSet(first);
+			return first;
 		}
-		NSMutableOrderedSet nSMutableOrderedSet = new NSMutableOrderedSet(first);
-		nSMutableOrderedSet.UnionSet(second);
-		return nSMutableOrderedSet;
-	}
-
-	public static NSOrderedSet operator +(NSOrderedSet first, NSSet second)
-	{
-		if (first == null)
-		{
-			return new NSOrderedSet(second);
-		}
-		if (second == null)
-		{
-			return new NSOrderedSet(first);
-		}
-		NSMutableOrderedSet nSMutableOrderedSet = new NSMutableOrderedSet(first);
-		nSMutableOrderedSet.UnionSet(second);
+		NSMutableOrderedSet nSMutableOrderedSet = new NSMutableOrderedSet();
+		nSMutableOrderedSet.UnionSet(second.AsSet());
 		return nSMutableOrderedSet;
 	}
 
@@ -244,10 +149,10 @@ public class NSOrderedSet : NSObject, IEnumerable<NSObject>, IEnumerable, INSCod
 		}
 		if (second == null)
 		{
-			return new NSOrderedSet(first);
+			return first;
 		}
 		NSMutableOrderedSet nSMutableOrderedSet = new NSMutableOrderedSet(first);
-		nSMutableOrderedSet.MinusSet(second);
+		nSMutableOrderedSet.MinusSet(second.AsSet());
 		return nSMutableOrderedSet;
 	}
 
@@ -259,7 +164,7 @@ public class NSOrderedSet : NSObject, IEnumerable<NSObject>, IEnumerable, INSCod
 		}
 		if (second == null)
 		{
-			return new NSOrderedSet(first);
+			return first;
 		}
 		NSMutableOrderedSet nSMutableOrderedSet = new NSMutableOrderedSet(first);
 		nSMutableOrderedSet.MinusSet(second);
@@ -268,43 +173,12 @@ public class NSOrderedSet : NSObject, IEnumerable<NSObject>, IEnumerable, INSCod
 
 	public static bool operator ==(NSOrderedSet first, NSOrderedSet second)
 	{
-		if ((object)first == null)
-		{
-			return (object)second == null;
-		}
-		if ((object)second == null)
-		{
-			return false;
-		}
 		return first.IsEqualToOrderedSet(second);
 	}
 
 	public static bool operator !=(NSOrderedSet first, NSOrderedSet second)
 	{
-		if ((object)first == null)
-		{
-			return (object)second != null;
-		}
-		if ((object)second == null)
-		{
-			return true;
-		}
 		return !first.IsEqualToOrderedSet(second);
-	}
-
-	public override bool Equals(object other)
-	{
-		NSOrderedSet nSOrderedSet = other as NSOrderedSet;
-		if (nSOrderedSet == null)
-		{
-			return false;
-		}
-		return IsEqualToOrderedSet(nSOrderedSet);
-	}
-
-	public override int GetHashCode()
-	{
-		return (int)GetNativeHash();
 	}
 
 	public bool Contains(object obj)
@@ -312,56 +186,49 @@ public class NSOrderedSet : NSObject, IEnumerable<NSObject>, IEnumerable, INSCod
 		return Contains(NSObject.FromObject(obj));
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSOrderedSet()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSOrderedSet(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSOrderedSet(NSObjectFlag t)
+	public NSOrderedSet(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSOrderedSet(IntPtr handle)
+	public NSOrderedSet(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithObject:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSOrderedSet(NSObject start)
 		: base(NSObjectFlag.Empty)
 	{
@@ -369,18 +236,17 @@ public class NSOrderedSet : NSObject, IEnumerable<NSObject>, IEnumerable, INSCod
 		{
 			throw new ArgumentNullException("start");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithObject_Handle, start.Handle), "initWithObject:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithObject_Handle, start.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithObject_Handle, start.Handle), "initWithObject:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithObject_Handle, start.Handle);
 		}
 	}
 
 	[Export("initWithArray:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	internal NSOrderedSet(NSArray array)
 		: base(NSObjectFlag.Empty)
 	{
@@ -388,18 +254,17 @@ public class NSOrderedSet : NSObject, IEnumerable<NSObject>, IEnumerable, INSCod
 		{
 			throw new ArgumentNullException("array");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithArray_Handle, array.Handle), "initWithArray:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithArray_Handle, array.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithArray_Handle, array.Handle), "initWithArray:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithArray_Handle, array.Handle);
 		}
 	}
 
 	[Export("initWithSet:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSOrderedSet(NSSet source)
 		: base(NSObjectFlag.Empty)
 	{
@@ -407,18 +272,17 @@ public class NSOrderedSet : NSObject, IEnumerable<NSObject>, IEnumerable, INSCod
 		{
 			throw new ArgumentNullException("source");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithSet_Handle, source.Handle), "initWithSet:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithSet_Handle, source.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithSet_Handle, source.Handle), "initWithSet:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithSet_Handle, source.Handle);
 		}
 	}
 
 	[Export("initWithOrderedSet:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSOrderedSet(NSOrderedSet source)
 		: base(NSObjectFlag.Empty)
 	{
@@ -426,130 +290,126 @@ public class NSOrderedSet : NSObject, IEnumerable<NSObject>, IEnumerable, INSCod
 		{
 			throw new ArgumentNullException("source");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithOrderedSet_Handle, source.Handle), "initWithOrderedSet:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithOrderedSet_Handle, source.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithOrderedSet_Handle, source.Handle), "initWithOrderedSet:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithOrderedSet_Handle, source.Handle);
 		}
+	}
+
+	[Export("objectAtIndex:")]
+	internal virtual NSObject GetObject(int idx)
+	{
+		if (IsDirectBinding)
+		{
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_int(base.Handle, selObjectAtIndex_Handle, idx));
+		}
+		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_int(base.SuperHandle, selObjectAtIndex_Handle, idx));
+	}
+
+	[Export("array")]
+	internal virtual IntPtr _ToArray()
+	{
+		if (IsDirectBinding)
+		{
+			return Messaging.IntPtr_objc_msgSend(base.Handle, selArrayHandle);
+		}
+		return Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selArrayHandle);
+	}
+
+	[Export("indexOfObject:")]
+	public virtual int IndexOf(NSObject obj)
+	{
+		if (obj == null)
+		{
+			throw new ArgumentNullException("obj");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.int_objc_msgSend_IntPtr(base.Handle, selIndexOfObject_Handle, obj.Handle);
+		}
+		return Messaging.int_objc_msgSendSuper_IntPtr(base.SuperHandle, selIndexOfObject_Handle, obj.Handle);
+	}
+
+	[Export("objectEnumerator")]
+	internal virtual NSEnumerator _GetEnumerator()
+	{
+		if (IsDirectBinding)
+		{
+			return (NSEnumerator)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selObjectEnumeratorHandle));
+		}
+		return (NSEnumerator)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selObjectEnumeratorHandle));
 	}
 
 	[Export("set")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSSet AsSet()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return Runtime.GetNSObject<NSSet>(Messaging.IntPtr_objc_msgSend(base.Handle, selSetHandle));
+			return (NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSetHandle));
 		}
-		return Runtime.GetNSObject<NSSet>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSetHandle));
+		return (NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSetHandle));
 	}
 
 	[Export("containsObject:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Contains(NSObject obj)
 	{
 		if (obj == null)
 		{
 			throw new ArgumentNullException("obj");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selContainsObject_Handle, obj.Handle);
 		}
 		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selContainsObject_Handle, obj.Handle);
 	}
 
-	[Export("copyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject Copy(NSZone? zone)
-	{
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
-		{
-			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
-		}
-		return nSObject;
-	}
-
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
-	{
-		if (encoder == null)
-		{
-			throw new ArgumentNullException("encoder");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-	}
-
 	[Export("firstObject")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSObject FirstObject()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFirstObjectHandle));
 		}
 		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFirstObjectHandle));
 	}
 
-	[Export("objectAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual NSObject GetObject(nint idx)
+	[Export("lastObject")]
+	public virtual NSObject LastObject()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_nint(base.Handle, selObjectAtIndex_Handle, idx));
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selLastObjectHandle));
 		}
-		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_nint(base.SuperHandle, selObjectAtIndex_Handle, idx));
+		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLastObjectHandle));
 	}
 
-	[Export("reversedOrderedSet")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSOrderedSet GetReverseOrderedSet()
+	[Export("isEqualToOrderedSet:")]
+	public virtual bool IsEqualToOrderedSet(NSOrderedSet other)
 	{
-		if (base.IsDirectBinding)
+		if (other == null)
 		{
-			return Runtime.GetNSObject<NSOrderedSet>(Messaging.IntPtr_objc_msgSend(base.Handle, selReversedOrderedSetHandle));
+			throw new ArgumentNullException("other");
 		}
-		return Runtime.GetNSObject<NSOrderedSet>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selReversedOrderedSetHandle));
-	}
-
-	[Export("indexOfObject:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint IndexOf(NSObject obj)
-	{
-		if (obj == null)
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("obj");
+			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIsEqualToOrderedSet_Handle, other.Handle);
 		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.nint_objc_msgSend_IntPtr(base.Handle, selIndexOfObject_Handle, obj.Handle);
-		}
-		return Messaging.nint_objc_msgSendSuper_IntPtr(base.SuperHandle, selIndexOfObject_Handle, obj.Handle);
+		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selIsEqualToOrderedSet_Handle, other.Handle);
 	}
 
 	[Export("intersectsOrderedSet:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Intersects(NSOrderedSet other)
 	{
 		if (other == null)
 		{
 			throw new ArgumentNullException("other");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIntersectsOrderedSet_Handle, other.Handle);
 		}
@@ -557,44 +417,27 @@ public class NSOrderedSet : NSObject, IEnumerable<NSObject>, IEnumerable, INSCod
 	}
 
 	[Export("intersectsSet:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Intersects(NSSet other)
 	{
 		if (other == null)
 		{
 			throw new ArgumentNullException("other");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIntersectsSet_Handle, other.Handle);
 		}
 		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selIntersectsSet_Handle, other.Handle);
 	}
 
-	[Export("isEqualToOrderedSet:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool IsEqualToOrderedSet(NSOrderedSet other)
-	{
-		if (other == null)
-		{
-			throw new ArgumentNullException("other");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIsEqualToOrderedSet_Handle, other.Handle);
-		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selIsEqualToOrderedSet_Handle, other.Handle);
-	}
-
 	[Export("isSubsetOfOrderedSet:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsSubset(NSOrderedSet other)
 	{
 		if (other == null)
 		{
 			throw new ArgumentNullException("other");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIsSubsetOfOrderedSet_Handle, other.Handle);
 		}
@@ -602,302 +445,26 @@ public class NSOrderedSet : NSObject, IEnumerable<NSObject>, IEnumerable, INSCod
 	}
 
 	[Export("isSubsetOfSet:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsSubset(NSSet other)
 	{
 		if (other == null)
 		{
 			throw new ArgumentNullException("other");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIsSubsetOfSet_Handle, other.Handle);
 		}
 		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selIsSubsetOfSet_Handle, other.Handle);
 	}
 
-	[Export("lastObject")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject LastObject()
+	[Export("reversedOrderedSet")]
+	public virtual NSOrderedSet GetReverseOrderedSet()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selLastObjectHandle));
+			return (NSOrderedSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selReversedOrderedSetHandle));
 		}
-		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLastObjectHandle));
-	}
-
-	[Export("mutableCopyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject MutableCopy(NSZone? zone)
-	{
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selMutableCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selMutableCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
-		{
-			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
-		}
-		return nSObject;
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal IntPtr _AsSet()
-	{
-		return Messaging.IntPtr_objc_msgSend(base.Handle, selSetHandle);
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal bool _Contains(IntPtr obj)
-	{
-		return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selContainsObject_Handle, obj);
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal IntPtr _FirstObject()
-	{
-		return Messaging.IntPtr_objc_msgSend(base.Handle, selFirstObjectHandle);
-	}
-
-	[Export("objectEnumerator")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual NSEnumerator _GetEnumerator()
-	{
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSEnumerator>(Messaging.IntPtr_objc_msgSend(base.Handle, selObjectEnumeratorHandle));
-		}
-		return Runtime.GetNSObject<NSEnumerator>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selObjectEnumeratorHandle));
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal IntPtr _GetObject(nint idx)
-	{
-		return Messaging.IntPtr_objc_msgSend_nint(base.Handle, selObjectAtIndex_Handle, idx);
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal nint _IndexOf(IntPtr obj)
-	{
-		return Messaging.nint_objc_msgSend_IntPtr(base.Handle, selIndexOfObject_Handle, obj);
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal IntPtr _LastObject()
-	{
-		return Messaging.IntPtr_objc_msgSend(base.Handle, selLastObjectHandle);
-	}
-
-	[Export("array")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual IntPtr _ToArray()
-	{
-		if (base.IsDirectBinding)
-		{
-			return Messaging.IntPtr_objc_msgSend(base.Handle, selArrayHandle);
-		}
-		return Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selArrayHandle);
-	}
-}
-[Register("NSOrderedSet", SkipRegistration = true)]
-public sealed class NSOrderedSet<TKey> : NSOrderedSet, IEnumerable<TKey>, IEnumerable where TKey : class, INativeObject
-{
-	public new TKey this[nint idx]
-	{
-		get
-		{
-			IntPtr ptr = _GetObject(idx);
-			return Runtime.GetINativeObject<TKey>(ptr, owns: false);
-		}
-	}
-
-	public NSOrderedSet()
-	{
-	}
-
-	public NSOrderedSet(NSCoder coder)
-		: base(coder)
-	{
-	}
-
-	internal NSOrderedSet(IntPtr handle)
-		: base(handle)
-	{
-	}
-
-	public NSOrderedSet(TKey start)
-		: base(start)
-	{
-	}
-
-	public NSOrderedSet(params TKey[] objs)
-		: base(objs)
-	{
-	}
-
-	public NSOrderedSet(NSSet<TKey> source)
-		: base(source)
-	{
-	}
-
-	public NSOrderedSet(NSOrderedSet<TKey> other)
-		: base(other)
-	{
-	}
-
-	public NSOrderedSet(NSMutableOrderedSet<TKey> other)
-		: base(other)
-	{
-	}
-
-	public TKey[] ToArray()
-	{
-		return ToArray<TKey>();
-	}
-
-	public bool Contains(TKey obj)
-	{
-		if (obj == null)
-		{
-			throw new ArgumentNullException("obj");
-		}
-		return _Contains(obj.Handle);
-	}
-
-	public nint IndexOf(TKey obj)
-	{
-		if (obj == null)
-		{
-			throw new ArgumentNullException("obj");
-		}
-		return _IndexOf(obj.Handle);
-	}
-
-	public new TKey FirstObject()
-	{
-		IntPtr ptr = _FirstObject();
-		return Runtime.GetINativeObject<TKey>(ptr, owns: false);
-	}
-
-	public new TKey LastObject()
-	{
-		IntPtr ptr = _LastObject();
-		return Runtime.GetINativeObject<TKey>(ptr, owns: false);
-	}
-
-	public new NSSet<TKey> AsSet()
-	{
-		IntPtr ptr = _AsSet();
-		return Runtime.GetINativeObject<NSSet<TKey>>(ptr, owns: false);
-	}
-
-	IEnumerator<TKey> IEnumerable<TKey>.GetEnumerator()
-	{
-		return new NSFastEnumerator<TKey>(this);
-	}
-
-	IEnumerator IEnumerable.GetEnumerator()
-	{
-		return new NSFastEnumerator<TKey>(this);
-	}
-
-	public static NSOrderedSet<TKey>operator +(NSOrderedSet<TKey> first, NSOrderedSet<TKey> second)
-	{
-		if (first == null)
-		{
-			return (second != null) ? new NSOrderedSet<TKey>(second) : null;
-		}
-		if (second == null)
-		{
-			return new NSOrderedSet<TKey>(first);
-		}
-		NSMutableOrderedSet<TKey> nSMutableOrderedSet = new NSMutableOrderedSet<TKey>(first);
-		nSMutableOrderedSet.UnionSet(second);
-		return new NSOrderedSet<TKey>(nSMutableOrderedSet);
-	}
-
-	public static NSOrderedSet<TKey>operator +(NSOrderedSet<TKey> first, NSSet<TKey> second)
-	{
-		if (first == null)
-		{
-			return (second != null) ? new NSOrderedSet<TKey>(second) : null;
-		}
-		if (second == null)
-		{
-			return new NSOrderedSet<TKey>(first);
-		}
-		NSMutableOrderedSet<TKey> nSMutableOrderedSet = new NSMutableOrderedSet<TKey>(first);
-		nSMutableOrderedSet.UnionSet(second);
-		return new NSOrderedSet<TKey>(nSMutableOrderedSet);
-	}
-
-	public static NSOrderedSet<TKey>operator -(NSOrderedSet<TKey> first, NSOrderedSet<TKey> second)
-	{
-		if (first == null)
-		{
-			return null;
-		}
-		if (second == null)
-		{
-			return new NSOrderedSet<TKey>(first);
-		}
-		NSMutableOrderedSet<TKey> nSMutableOrderedSet = new NSMutableOrderedSet<TKey>(first);
-		nSMutableOrderedSet.MinusSet(second);
-		return new NSOrderedSet<TKey>(nSMutableOrderedSet);
-	}
-
-	public static NSOrderedSet<TKey>operator -(NSOrderedSet<TKey> first, NSSet<TKey> second)
-	{
-		if (first == null)
-		{
-			return null;
-		}
-		if (second == null)
-		{
-			return new NSOrderedSet<TKey>(first);
-		}
-		NSMutableOrderedSet<TKey> nSMutableOrderedSet = new NSMutableOrderedSet<TKey>(first);
-		nSMutableOrderedSet.MinusSet(second);
-		return new NSOrderedSet<TKey>(nSMutableOrderedSet);
-	}
-
-	public static bool operator ==(NSOrderedSet<TKey> first, NSOrderedSet<TKey> second)
-	{
-		if ((object)first == null)
-		{
-			return (object)second == null;
-		}
-		if ((object)second == null)
-		{
-			return false;
-		}
-		return first.IsEqualToOrderedSet(second);
-	}
-
-	public static bool operator !=(NSOrderedSet<TKey> first, NSOrderedSet<TKey> second)
-	{
-		if ((object)first == null)
-		{
-			return (object)second != null;
-		}
-		if ((object)second == null)
-		{
-			return true;
-		}
-		return !first.IsEqualToOrderedSet(second);
-	}
-
-	public override bool Equals(object other)
-	{
-		NSOrderedSet<TKey> nSOrderedSet = other as NSOrderedSet<TKey>;
-		if (nSOrderedSet == null)
-		{
-			return false;
-		}
-		return IsEqualToOrderedSet(nSOrderedSet);
-	}
-
-	public override int GetHashCode()
-	{
-		return (int)GetNativeHash();
+		return (NSOrderedSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selReversedOrderedSetHandle));
 	}
 }

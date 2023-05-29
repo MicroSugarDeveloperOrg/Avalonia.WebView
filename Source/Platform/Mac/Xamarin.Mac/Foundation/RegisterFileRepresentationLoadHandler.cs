@@ -1,3 +1,0 @@
-namespace Foundation;
-
-public delegate NSProgress RegisterFileRepresentationLoadHandler(RegisterFileRepresentationCompletionHandler completionHandler);

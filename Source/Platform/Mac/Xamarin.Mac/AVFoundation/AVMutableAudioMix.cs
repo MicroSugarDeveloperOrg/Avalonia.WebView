@@ -6,40 +6,26 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Register("AVMutableAudioMix", true)]
-[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
 public class AVMutableAudioMix : AVAudioMix
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAudioMix = "audioMix";
-
-	private static readonly IntPtr selAudioMixHandle = Selector.GetHandle("audioMix");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInputParameters = "inputParameters";
-
 	private static readonly IntPtr selInputParametersHandle = Selector.GetHandle("inputParameters");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetInputParameters_ = "setInputParameters:";
 
 	private static readonly IntPtr selSetInputParameters_Handle = Selector.GetHandle("setInputParameters:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVMutableAudioMix");
+	private static readonly IntPtr selAudioMixHandle = Selector.GetHandle("audioMix");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("AVMutableAudioMix");
+
+	private object __mt_InputParameters_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new virtual AVAudioMixInputParameters[] InputParameters
 	{
 		[Export("inputParameters", ArgumentSemantic.Copy)]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<AVAudioMixInputParameters>(Messaging.IntPtr_objc_msgSend(base.Handle, selInputParametersHandle));
-			}
-			return NSArray.ArrayFromHandle<AVAudioMixInputParameters>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInputParametersHandle));
+			return (AVAudioMixInputParameters[])(__mt_InputParameters_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<AVAudioMixInputParameters>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInputParametersHandle)) : NSArray.ArrayFromHandle<AVAudioMixInputParameters>(Messaging.IntPtr_objc_msgSend(base.Handle, selInputParametersHandle))));
 		}
 		[Export("setInputParameters:", ArgumentSemantic.Copy)]
 		set
@@ -49,7 +35,7 @@ public class AVMutableAudioMix : AVAudioMix
 				throw new ArgumentNullException("value");
 			}
 			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetInputParameters_Handle, nSArray.Handle);
 			}
@@ -58,43 +44,64 @@ public class AVMutableAudioMix : AVAudioMix
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetInputParameters_Handle, nSArray.Handle);
 			}
 			nSArray.Dispose();
+			__mt_InputParameters_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public AVMutableAudioMix()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected AVMutableAudioMix(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public AVMutableAudioMix(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public AVMutableAudioMix(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal AVMutableAudioMix(IntPtr handle)
+	public AVMutableAudioMix(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("audioMix")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static AVMutableAudioMix Create()
 	{
-		return Runtime.GetNSObject<AVMutableAudioMix>(Messaging.IntPtr_objc_msgSend(class_ptr, selAudioMixHandle));
+		return (AVMutableAudioMix)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selAudioMixHandle));
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_InputParameters_var = null;
+		}
 	}
 }

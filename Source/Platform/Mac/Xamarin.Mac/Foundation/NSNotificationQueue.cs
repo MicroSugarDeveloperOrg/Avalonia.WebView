@@ -7,79 +7,75 @@ namespace Foundation;
 [Register("NSNotificationQueue", true)]
 public class NSNotificationQueue : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDefaultQueue = "defaultQueue";
-
 	private static readonly IntPtr selDefaultQueueHandle = Selector.GetHandle("defaultQueue");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDequeueNotificationsMatching_CoalesceMask_ = "dequeueNotificationsMatching:coalesceMask:";
-
-	private static readonly IntPtr selDequeueNotificationsMatching_CoalesceMask_Handle = Selector.GetHandle("dequeueNotificationsMatching:coalesceMask:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEnqueueNotification_PostingStyle_ = "enqueueNotification:postingStyle:";
-
-	private static readonly IntPtr selEnqueueNotification_PostingStyle_Handle = Selector.GetHandle("enqueueNotification:postingStyle:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEnqueueNotification_PostingStyle_CoalesceMask_ForModes_ = "enqueueNotification:postingStyle:coalesceMask:forModes:";
-
-	private static readonly IntPtr selEnqueueNotification_PostingStyle_CoalesceMask_ForModes_Handle = Selector.GetHandle("enqueueNotification:postingStyle:coalesceMask:forModes:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithNotificationCenter_ = "initWithNotificationCenter:";
 
 	private static readonly IntPtr selInitWithNotificationCenter_Handle = Selector.GetHandle("initWithNotificationCenter:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSNotificationQueue");
+	private static readonly IntPtr selEnqueueNotificationPostingStyle_Handle = Selector.GetHandle("enqueueNotification:postingStyle:");
+
+	private static readonly IntPtr selEnqueueNotificationPostingStyleCoalesceMaskForModes_Handle = Selector.GetHandle("enqueueNotification:postingStyle:coalesceMask:forModes:");
+
+	private static readonly IntPtr selDequeueNotificationsMatchingCoalesceMask_Handle = Selector.GetHandle("dequeueNotificationsMatching:coalesceMask:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSNotificationQueue");
+
+	[ThreadStatic]
+	private static object __mt_DefaultQueue_var_static;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSNotificationQueue DefaultQueue
+	public static NSObject DefaultQueue
 	{
-		[Export("defaultQueue", ArgumentSemantic.Retain)]
+		[Export("defaultQueue")]
 		get
 		{
-			return Runtime.GetNSObject<NSNotificationQueue>(Messaging.IntPtr_objc_msgSend(class_ptr, selDefaultQueueHandle));
+			return (NSObject)(__mt_DefaultQueue_var_static = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selDefaultQueueHandle)));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSNotificationQueue()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSNotificationQueue(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSNotificationQueue(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSNotificationQueue(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSNotificationQueue(IntPtr handle)
+	public NSNotificationQueue(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithNotificationCenter:")]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSNotificationQueue(NSNotificationCenter notificationCenter)
 		: base(NSObjectFlag.Empty)
 	{
@@ -87,54 +83,34 @@ public class NSNotificationQueue : NSObject
 		{
 			throw new ArgumentNullException("notificationCenter");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithNotificationCenter_Handle, notificationCenter.Handle), "initWithNotificationCenter:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithNotificationCenter_Handle, notificationCenter.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithNotificationCenter_Handle, notificationCenter.Handle), "initWithNotificationCenter:");
-		}
-	}
-
-	[Export("dequeueNotificationsMatching:coalesceMask:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DequeueNotificationsMatchingcoalesceMask(NSNotification notification, NSNotificationCoalescing coalesceMask)
-	{
-		if (notification == null)
-		{
-			throw new ArgumentNullException("notification");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_UInt64(base.Handle, selDequeueNotificationsMatching_CoalesceMask_Handle, notification.Handle, (ulong)coalesceMask);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selDequeueNotificationsMatching_CoalesceMask_Handle, notification.Handle, (ulong)coalesceMask);
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithNotificationCenter_Handle, notificationCenter.Handle);
 		}
 	}
 
 	[Export("enqueueNotification:postingStyle:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void EnqueueNotification(NSNotification notification, NSPostingStyle postingStyle)
 	{
 		if (notification == null)
 		{
 			throw new ArgumentNullException("notification");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_UInt64(base.Handle, selEnqueueNotification_PostingStyle_Handle, notification.Handle, (ulong)postingStyle);
+			Messaging.void_objc_msgSend_IntPtr_UInt64(base.Handle, selEnqueueNotificationPostingStyle_Handle, notification.Handle, (ulong)postingStyle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selEnqueueNotification_PostingStyle_Handle, notification.Handle, (ulong)postingStyle);
+			Messaging.void_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selEnqueueNotificationPostingStyle_Handle, notification.Handle, (ulong)postingStyle);
 		}
 	}
 
 	[Export("enqueueNotification:postingStyle:coalesceMask:forModes:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void EnqueueNotification(NSNotification notification, NSPostingStyle postingStyle, NSNotificationCoalescing coalesceMask, string[] modes)
 	{
 		if (notification == null)
@@ -146,14 +122,31 @@ public class NSNotificationQueue : NSObject
 			throw new ArgumentNullException("modes");
 		}
 		NSArray nSArray = NSArray.FromStrings(modes);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_UInt64_UInt64_IntPtr(base.Handle, selEnqueueNotification_PostingStyle_CoalesceMask_ForModes_Handle, notification.Handle, (ulong)postingStyle, (ulong)coalesceMask, nSArray.Handle);
+			Messaging.void_objc_msgSend_IntPtr_UInt64_UInt64_IntPtr(base.Handle, selEnqueueNotificationPostingStyleCoalesceMaskForModes_Handle, notification.Handle, (ulong)postingStyle, (ulong)coalesceMask, nSArray.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_UInt64_UInt64_IntPtr(base.SuperHandle, selEnqueueNotification_PostingStyle_CoalesceMask_ForModes_Handle, notification.Handle, (ulong)postingStyle, (ulong)coalesceMask, nSArray.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr_UInt64_UInt64_IntPtr(base.SuperHandle, selEnqueueNotificationPostingStyleCoalesceMaskForModes_Handle, notification.Handle, (ulong)postingStyle, (ulong)coalesceMask, nSArray.Handle);
 		}
 		nSArray.Dispose();
+	}
+
+	[Export("dequeueNotificationsMatching:coalesceMask:")]
+	public virtual void DequeueNotificationsMatchingcoalesceMask(NSNotification notification, NSNotificationCoalescing coalesceMask)
+	{
+		if (notification == null)
+		{
+			throw new ArgumentNullException("notification");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_UInt64(base.Handle, selDequeueNotificationsMatchingCoalesceMask_Handle, notification.Handle, (ulong)coalesceMask);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selDequeueNotificationsMatchingCoalesceMask_Handle, notification.Handle, (ulong)coalesceMask);
+		}
 	}
 }

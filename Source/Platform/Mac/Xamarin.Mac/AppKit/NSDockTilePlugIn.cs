@@ -5,43 +5,55 @@ using ObjCRuntime;
 
 namespace AppKit;
 
-[Protocol]
-[Register("NSDockTilePlugIn", false)]
+[Register("NSDockTilePlugIn", true)]
 [Model]
-public abstract class NSDockTilePlugIn : NSObject, INSDockTilePlugIn, INativeObject, IDisposable
+public abstract class NSDockTilePlugIn : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
-	protected NSDockTilePlugIn()
+	public NSDockTilePlugIn()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSDockTilePlugIn(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSDockTilePlugIn(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSDockTilePlugIn(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSDockTilePlugIn(IntPtr handle)
+	public NSDockTilePlugIn(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[Export("dockMenu")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public abstract NSMenu DockMenu();
-
 	[Export("setDockTile:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public abstract void SetDockTile(NSDockTile dockTile);
+
+	[Export("dockMenu")]
+	public abstract NSMenu DockMenu();
 }

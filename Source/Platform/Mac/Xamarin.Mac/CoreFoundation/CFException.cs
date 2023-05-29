@@ -1,14 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreFoundation;
 
 public class CFException : Exception
 {
-	public nint Code { get; private set; }
+	public int Code { get; private set; }
 
 	public NSString Domain { get; private set; }
 
@@ -16,7 +16,7 @@ public class CFException : Exception
 
 	public string RecoverySuggestion { get; private set; }
 
-	public CFException(string description, NSString domain, nint code, string failureReason, string recoverySuggestion)
+	public CFException(string description, NSString domain, int code, string failureReason, string recoverySuggestion)
 		: base(description)
 	{
 		Code = code;
@@ -34,16 +34,16 @@ public class CFException : Exception
 	{
 		if (cfErrorHandle == IntPtr.Zero)
 		{
-			throw new ArgumentNullException("cfErrorHandle");
+			throw new ArgumentException("cfErrorHandle must not be null.", "cfErrorHandle");
 		}
-		CFException ex = new CFException(CFString.FetchString(CFErrorCopyDescription(cfErrorHandle), releaseHandle: true), (NSString)Runtime.GetNSObject(CFErrorGetDomain(cfErrorHandle)), CFErrorGetCode(cfErrorHandle), CFString.FetchString(CFErrorCopyFailureReason(cfErrorHandle), releaseHandle: true), CFString.FetchString(CFErrorCopyRecoverySuggestion(cfErrorHandle), releaseHandle: true));
+		CFException ex = new CFException(ToString(CFErrorCopyDescription(cfErrorHandle)), (NSString)Runtime.GetNSObject(CFErrorGetDomain(cfErrorHandle)), CFErrorGetCode(cfErrorHandle), ToString(CFErrorCopyFailureReason(cfErrorHandle)), ToString(CFErrorCopyRecoverySuggestion(cfErrorHandle)));
 		IntPtr intPtr = CFErrorCopyUserInfo(cfErrorHandle);
 		if (intPtr != IntPtr.Zero)
 		{
 			using NSDictionary nSDictionary = new NSDictionary(intPtr);
 			foreach (KeyValuePair<NSObject, NSObject> item in nSDictionary)
 			{
-				ex.Data.Add(item.Key?.ToString(), item.Value?.ToString());
+				ex.Data.Add(item.Key, item.Value);
 			}
 		}
 		if (release)
@@ -51,6 +51,21 @@ public class CFException : Exception
 			CFObject.CFRelease(cfErrorHandle);
 		}
 		return ex;
+	}
+
+	private static string ToString(IntPtr cfStringRef)
+	{
+		return ToString(cfStringRef, release: true);
+	}
+
+	private static string ToString(IntPtr cfStringRef, bool release)
+	{
+		string result = CFString.FetchString(cfStringRef);
+		if (release && cfStringRef != IntPtr.Zero)
+		{
+			CFObject.CFRelease(cfStringRef);
+		}
+		return result;
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
@@ -66,7 +81,7 @@ public class CFException : Exception
 	private static extern IntPtr CFErrorCopyUserInfo(IntPtr err);
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern nint CFErrorGetCode(IntPtr err);
+	private static extern int CFErrorGetCode(IntPtr err);
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
 	private static extern IntPtr CFErrorGetDomain(IntPtr err);

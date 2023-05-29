@@ -1,43 +1,24 @@
 using System;
 using System.ComponentModel;
-using AppKit;
 using ObjCRuntime;
 
 namespace Foundation;
 
 [Register("NSUserNotificationCenter", true)]
-[Advice("'NSUserNotification' usages should be replaced with 'UserNotifications' framework.")]
+[MountainLion]
 public class NSUserNotificationCenter : NSObject
 {
 	[Register]
-	internal class _NSUserNotificationCenterDelegate : NSObject, INSUserNotificationCenterDelegate, INativeObject, IDisposable
+	private sealed class _NSUserNotificationCenterDelegate : NSUserNotificationCenterDelegate
 	{
-		internal EventHandler<UNCDidActivateNotificationEventArgs>? didActivateNotification;
+		internal EventHandler<UNCDidDeliverNotificationEventArgs> didDeliverNotification;
 
-		internal EventHandler<UNCDidDeliverNotificationEventArgs>? didDeliverNotification;
+		internal EventHandler<UNCDidActivateNotificationEventArgs> didActivateNotification;
 
-		internal UNCShouldPresentNotification? shouldPresentNotification;
-
-		public _NSUserNotificationCenterDelegate()
-		{
-			base.IsDirectBinding = false;
-		}
+		internal UNCShouldPresentNotification shouldPresentNotification;
 
 		[Preserve(Conditional = true)]
-		[Export("userNotificationCenter:didActivateNotification:")]
-		public void DidActivateNotification(NSUserNotificationCenter center, NSUserNotification notification)
-		{
-			EventHandler<UNCDidActivateNotificationEventArgs> eventHandler = didActivateNotification;
-			if (eventHandler != null)
-			{
-				UNCDidActivateNotificationEventArgs e = new UNCDidActivateNotificationEventArgs(notification);
-				eventHandler(center, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("userNotificationCenter:didDeliverNotification:")]
-		public void DidDeliverNotification(NSUserNotificationCenter center, NSUserNotification notification)
+		public override void DidDeliverNotification(NSUserNotificationCenter center, NSUserNotification notification)
 		{
 			EventHandler<UNCDidDeliverNotificationEventArgs> eventHandler = didDeliverNotification;
 			if (eventHandler != null)
@@ -48,131 +29,108 @@ public class NSUserNotificationCenter : NSObject
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("userNotificationCenter:shouldPresentNotification:")]
-		public bool ShouldPresentNotification(NSUserNotificationCenter center, NSUserNotification notification)
+		public override void DidActivateNotification(NSUserNotificationCenter center, NSUserNotification notification)
+		{
+			EventHandler<UNCDidActivateNotificationEventArgs> eventHandler = didActivateNotification;
+			if (eventHandler != null)
+			{
+				UNCDidActivateNotificationEventArgs e = new UNCDidActivateNotificationEventArgs(notification);
+				eventHandler(center, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		public override bool ShouldPresentNotification(NSUserNotificationCenter center, NSUserNotification notification)
 		{
 			return shouldPresentNotification?.Invoke(center, notification) ?? false;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDefaultUserNotificationCenter = "defaultUserNotificationCenter";
-
 	private static readonly IntPtr selDefaultUserNotificationCenterHandle = Selector.GetHandle("defaultUserNotificationCenter");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDelegate = "delegate";
 
 	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeliverNotification_ = "deliverNotification:";
-
-	private static readonly IntPtr selDeliverNotification_Handle = Selector.GetHandle("deliverNotification:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeliveredNotifications = "deliveredNotifications";
-
-	private static readonly IntPtr selDeliveredNotificationsHandle = Selector.GetHandle("deliveredNotifications");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveAllDeliveredNotifications = "removeAllDeliveredNotifications";
-
-	private static readonly IntPtr selRemoveAllDeliveredNotificationsHandle = Selector.GetHandle("removeAllDeliveredNotifications");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveDeliveredNotification_ = "removeDeliveredNotification:";
-
-	private static readonly IntPtr selRemoveDeliveredNotification_Handle = Selector.GetHandle("removeDeliveredNotification:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveScheduledNotification_ = "removeScheduledNotification:";
-
-	private static readonly IntPtr selRemoveScheduledNotification_Handle = Selector.GetHandle("removeScheduledNotification:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selScheduleNotification_ = "scheduleNotification:";
-
-	private static readonly IntPtr selScheduleNotification_Handle = Selector.GetHandle("scheduleNotification:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selScheduledNotifications = "scheduledNotifications";
+	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
 
 	private static readonly IntPtr selScheduledNotificationsHandle = Selector.GetHandle("scheduledNotifications");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDelegate_ = "setDelegate:";
-
-	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetScheduledNotifications_ = "setScheduledNotifications:";
-
 	private static readonly IntPtr selSetScheduledNotifications_Handle = Selector.GetHandle("setScheduledNotifications:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSUserNotificationCenter");
+	private static readonly IntPtr selDeliveredNotificationsHandle = Selector.GetHandle("deliveredNotifications");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_WeakDelegate_var;
+	private static readonly IntPtr selScheduleNotification_Handle = Selector.GetHandle("scheduleNotification:");
+
+	private static readonly IntPtr selRemoveScheduledNotification_Handle = Selector.GetHandle("removeScheduledNotification:");
+
+	private static readonly IntPtr selDeliverNotification_Handle = Selector.GetHandle("deliverNotification:");
+
+	private static readonly IntPtr selRemoveDeliveredNotification_Handle = Selector.GetHandle("removeDeliveredNotification:");
+
+	private static readonly IntPtr selRemoveAllDeliveredNotificationsHandle = Selector.GetHandle("removeAllDeliveredNotifications");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSUserNotificationCenter");
+
+	private static object __mt_DefaultUserNotificationCenter_var_static;
+
+	private object __mt_WeakDelegate_var;
+
+	private object __mt_ScheduledNotifications_var;
+
+	private object __mt_DeliveredNotifications_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSUserNotificationCenter DefaultUserNotificationCenter
 	{
 		[Export("defaultUserNotificationCenter")]
 		get
 		{
-			return Runtime.GetNSObject<NSUserNotificationCenter>(Messaging.IntPtr_objc_msgSend(class_ptr, selDefaultUserNotificationCenterHandle));
+			return (NSUserNotificationCenter)(__mt_DefaultUserNotificationCenter_var_static = (NSUserNotificationCenter)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selDefaultUserNotificationCenterHandle)));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public INSUserNotificationCenterDelegate? Delegate
+	public virtual NSObject WeakDelegate
+	{
+		[Export("delegate")]
+		get
+		{
+			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
+		}
+		[Export("setDelegate:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			__mt_WeakDelegate_var = value;
+		}
+	}
+
+	public NSUserNotificationCenterDelegate Delegate
 	{
 		get
 		{
-			return WeakDelegate as INSUserNotificationCenterDelegate;
+			return WeakDelegate as NSUserNotificationCenterDelegate;
 		}
 		set
 		{
-			NSObject nSObject = value as NSObject;
-			if (value != null && nSObject == null)
-			{
-				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
-			}
-			WeakDelegate = nSObject;
+			WeakDelegate = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSUserNotification[] DeliveredNotifications
-	{
-		[Export("deliveredNotifications")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSUserNotification>(Messaging.IntPtr_objc_msgSend(base.Handle, selDeliveredNotificationsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSUserNotification>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDeliveredNotificationsHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSUserNotification[] ScheduledNotifications
 	{
-		[Export("scheduledNotifications", ArgumentSemantic.Copy)]
+		[Export("scheduledNotifications")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSUserNotification>(Messaging.IntPtr_objc_msgSend(base.Handle, selScheduledNotificationsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSUserNotification>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selScheduledNotificationsHandle));
+			return (NSUserNotification[])(__mt_ScheduledNotifications_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSUserNotification>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selScheduledNotificationsHandle)) : NSArray.ArrayFromHandle<NSUserNotification>(Messaging.IntPtr_objc_msgSend(base.Handle, selScheduledNotificationsHandle))));
 		}
-		[Export("setScheduledNotifications:", ArgumentSemantic.Copy)]
+		[Export("setScheduledNotifications:")]
 		set
 		{
 			if (value == null)
@@ -180,7 +138,7 @@ public class NSUserNotificationCenter : NSObject
 				throw new ArgumentNullException("value");
 			}
 			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetScheduledNotifications_Handle, nSArray.Handle);
 			}
@@ -189,40 +147,20 @@ public class NSUserNotificationCenter : NSObject
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetScheduledNotifications_Handle, nSArray.Handle);
 			}
 			nSArray.Dispose();
+			__mt_ScheduledNotifications_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject? WeakDelegate
+	public virtual NSUserNotification[] DeliveredNotifications
 	{
-		[Export("delegate", ArgumentSemantic.Assign)]
+		[Export("deliveredNotifications")]
 		get
 		{
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
-			MarkDirty();
-			__mt_WeakDelegate_var = nSObject;
-			return nSObject;
-		}
-		[Export("setDelegate:", ArgumentSemantic.Assign)]
-		set
-		{
-			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakDelegate_var, value, GetInternalEventDelegateType);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			MarkDirty();
-			__mt_WeakDelegate_var = value;
+			return (NSUserNotification[])(__mt_DeliveredNotifications_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSUserNotification>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDeliveredNotificationsHandle)) : NSArray.ArrayFromHandle<NSUserNotification>(Messaging.IntPtr_objc_msgSend(base.Handle, selDeliveredNotificationsHandle))));
 		}
 	}
 
-	internal virtual Type GetInternalEventDelegateType => typeof(_NSUserNotificationCenterDelegate);
-
-	public UNCShouldPresentNotification? ShouldPresentNotification
+	public UNCShouldPresentNotification ShouldPresentNotification
 	{
 		get
 		{
@@ -231,20 +169,6 @@ public class NSUserNotificationCenter : NSObject
 		set
 		{
 			EnsureNSUserNotificationCenterDelegate().shouldPresentNotification = value;
-		}
-	}
-
-	public event EventHandler<UNCDidActivateNotificationEventArgs> DidActivateNotification
-	{
-		add
-		{
-			_NSUserNotificationCenterDelegate nSUserNotificationCenterDelegate = EnsureNSUserNotificationCenterDelegate();
-			nSUserNotificationCenterDelegate.didActivateNotification = (EventHandler<UNCDidActivateNotificationEventArgs>)System.Delegate.Combine(nSUserNotificationCenterDelegate.didActivateNotification, value);
-		}
-		remove
-		{
-			_NSUserNotificationCenterDelegate nSUserNotificationCenterDelegate = EnsureNSUserNotificationCenterDelegate();
-			nSUserNotificationCenterDelegate.didActivateNotification = (EventHandler<UNCDidActivateNotificationEventArgs>)System.Delegate.Remove(nSUserNotificationCenterDelegate.didActivateNotification, value);
 		}
 	}
 
@@ -262,97 +186,55 @@ public class NSUserNotificationCenter : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public event EventHandler<UNCDidActivateNotificationEventArgs> DidActivateNotification
+	{
+		add
+		{
+			_NSUserNotificationCenterDelegate nSUserNotificationCenterDelegate = EnsureNSUserNotificationCenterDelegate();
+			nSUserNotificationCenterDelegate.didActivateNotification = (EventHandler<UNCDidActivateNotificationEventArgs>)System.Delegate.Combine(nSUserNotificationCenterDelegate.didActivateNotification, value);
+		}
+		remove
+		{
+			_NSUserNotificationCenterDelegate nSUserNotificationCenterDelegate = EnsureNSUserNotificationCenterDelegate();
+			nSUserNotificationCenterDelegate.didActivateNotification = (EventHandler<UNCDidActivateNotificationEventArgs>)System.Delegate.Remove(nSUserNotificationCenterDelegate.didActivateNotification, value);
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSUserNotificationCenter(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSUserNotificationCenter(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSUserNotificationCenter(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSUserNotificationCenter(IntPtr handle)
+	public NSUserNotificationCenter(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("deliverNotification:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DeliverNotification(NSUserNotification notification)
-	{
-		if (notification == null)
-		{
-			throw new ArgumentNullException("notification");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selDeliverNotification_Handle, notification.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selDeliverNotification_Handle, notification.Handle);
-		}
-	}
-
-	[Export("removeAllDeliveredNotifications")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RemoveAllDeliveredNotifications()
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selRemoveAllDeliveredNotificationsHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRemoveAllDeliveredNotificationsHandle);
-		}
-	}
-
-	[Export("removeDeliveredNotification:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RemoveDeliveredNotification(NSUserNotification notification)
-	{
-		if (notification == null)
-		{
-			throw new ArgumentNullException("notification");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveDeliveredNotification_Handle, notification.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveDeliveredNotification_Handle, notification.Handle);
-		}
-	}
-
-	[Export("removeScheduledNotification:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RemoveScheduledNotification(NSUserNotification notification)
-	{
-		if (notification == null)
-		{
-			throw new ArgumentNullException("notification");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveScheduledNotification_Handle, notification.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveScheduledNotification_Handle, notification.Handle);
-		}
-	}
-
 	[Export("scheduleNotification:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ScheduleNotification(NSUserNotification notification)
 	{
 		if (notification == null)
 		{
 			throw new ArgumentNullException("notification");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selScheduleNotification_Handle, notification.Handle);
 		}
@@ -360,34 +242,95 @@ public class NSUserNotificationCenter : NSObject
 		{
 			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selScheduleNotification_Handle, notification.Handle);
 		}
+		_ = ScheduledNotifications;
 	}
 
-	internal virtual _NSUserNotificationCenterDelegate CreateInternalEventDelegateType()
+	[Export("removeScheduledNotification:")]
+	public virtual void RemoveScheduledNotification(NSUserNotification notification)
 	{
-		return new _NSUserNotificationCenterDelegate();
+		if (notification == null)
+		{
+			throw new ArgumentNullException("notification");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveScheduledNotification_Handle, notification.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveScheduledNotification_Handle, notification.Handle);
+		}
+		_ = ScheduledNotifications;
 	}
 
-	internal _NSUserNotificationCenterDelegate EnsureNSUserNotificationCenterDelegate()
+	[Export("deliverNotification:")]
+	public virtual void DeliverNotification(NSUserNotification notification)
 	{
-		if (WeakDelegate != null)
+		if (notification == null)
 		{
-			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakDelegate, GetInternalEventDelegateType);
+			throw new ArgumentNullException("notification");
 		}
-		_NSUserNotificationCenterDelegate nSUserNotificationCenterDelegate = Delegate as _NSUserNotificationCenterDelegate;
-		if (nSUserNotificationCenterDelegate == null)
+		if (IsDirectBinding)
 		{
-			nSUserNotificationCenterDelegate = (_NSUserNotificationCenterDelegate)(Delegate = CreateInternalEventDelegateType());
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selDeliverNotification_Handle, notification.Handle);
 		}
-		return nSUserNotificationCenterDelegate;
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selDeliverNotification_Handle, notification.Handle);
+		}
+		_ = DeliveredNotifications;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export("removeDeliveredNotification:")]
+	public virtual void RemoveDeliveredNotification(NSUserNotification notification)
+	{
+		if (notification == null)
+		{
+			throw new ArgumentNullException("notification");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveDeliveredNotification_Handle, notification.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveDeliveredNotification_Handle, notification.Handle);
+		}
+		_ = DeliveredNotifications;
+	}
+
+	[Export("removeAllDeliveredNotifications")]
+	public virtual void RemoveAllDeliveredNotifications()
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selRemoveAllDeliveredNotificationsHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRemoveAllDeliveredNotificationsHandle);
+		}
+		_ = DeliveredNotifications;
+	}
+
+	private _NSUserNotificationCenterDelegate EnsureNSUserNotificationCenterDelegate()
+	{
+		NSObject nSObject = WeakDelegate;
+		if (nSObject == null || !(nSObject is _NSUserNotificationCenterDelegate))
+		{
+			nSObject = (WeakDelegate = new _NSUserNotificationCenterDelegate());
+		}
+		return (_NSUserNotificationCenterDelegate)nSObject;
+	}
+
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
 			__mt_WeakDelegate_var = null;
+			__mt_ScheduledNotifications_var = null;
+			__mt_DeliveredNotifications_var = null;
 		}
 	}
 }

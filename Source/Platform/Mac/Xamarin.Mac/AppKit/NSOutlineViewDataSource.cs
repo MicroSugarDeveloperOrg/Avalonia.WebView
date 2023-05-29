@@ -1,153 +1,124 @@
+using System;
 using System.ComponentModel;
-using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
-[Protocol]
-[Register("NSOutlineViewDataSource", false)]
+[Register("NSOutlineViewDataSource", true)]
 [Model]
-public class NSOutlineViewDataSource : NSObject, INSOutlineViewDataSource, INativeObject, IDisposable
+public class NSOutlineViewDataSource : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSOutlineViewDataSource()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSOutlineViewDataSource(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSOutlineViewDataSource(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSOutlineViewDataSource(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSOutlineViewDataSource(IntPtr handle)
+	public NSOutlineViewDataSource(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
-	}
-
-	[Export("outlineView:acceptDrop:item:childIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AcceptDrop(NSOutlineView outlineView, NSDraggingInfo info, NSObject? item, nint index)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("outlineView:draggingSession:endedAtPoint:operation:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DraggingSessionEnded(NSOutlineView outlineView, NSDraggingSession session, CGPoint screenPoint, NSDragOperation operation)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("outlineView:draggingSession:willBeginAtPoint:forItems:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DraggingSessionWillBegin(NSOutlineView outlineView, NSDraggingSession session, CGPoint screenPoint, NSArray draggedItems)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("outlineView:namesOfPromisedFilesDroppedAtDestination:forDraggedItems:")]
-	[Deprecated(PlatformName.MacOSX, 10, 13, PlatformArchitecture.None, "Use 'NSFilePromiseReceiver' objects instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string[] FilesDropped(NSOutlineView outlineView, NSUrl dropDestination, NSArray items)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("outlineView:child:ofItem:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject GetChild(NSOutlineView outlineView, nint childIndex, NSObject? item)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("outlineView:numberOfChildrenOfItem:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint GetChildrenCount(NSOutlineView outlineView, NSObject? item)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("outlineView:objectValueForTableColumn:byItem:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject GetObjectValue(NSOutlineView outlineView, NSTableColumn? tableColumn, NSObject? item)
+	public virtual NSObject GetChild(NSOutlineView outlineView, long childIndex, NSObject item)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("outlineView:isItemExpandable:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool ItemExpandable(NSOutlineView outlineView, NSObject item)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("outlineView:itemForPersistentObject:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject ItemForPersistentObject(NSOutlineView outlineView, NSObject theObject)
+	[Export("outlineView:numberOfChildrenOfItem:")]
+	public virtual long GetChildrenCount(NSOutlineView outlineView, NSObject item)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("outlineView:writeItems:toPasteboard:")]
-	[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool OutlineViewwriteItemstoPasteboard(NSOutlineView outlineView, NSArray items, NSPasteboard pboard)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("outlineView:pasteboardWriterForItem:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual INSPasteboardWriting PasteboardWriterForItem(NSOutlineView outlineView, NSObject item)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("outlineView:persistentObjectForItem:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject PersistentObjectForItem(NSOutlineView outlineView, NSObject? item)
+	[Export("outlineView:objectValueForTableColumn:byItem:")]
+	public virtual NSObject GetObjectValue(NSOutlineView outlineView, NSTableColumn tableColumn, NSObject item)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("outlineView:setObjectValue:forTableColumn:byItem:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SetObjectValue(NSOutlineView outlineView, NSObject? theObject, NSTableColumn? tableColumn, NSObject? item)
+	public virtual void SetObjectValue(NSOutlineView outlineView, NSObject theObject, NSTableColumn tableColumn, NSObject item)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("outlineView:itemForPersistentObject:")]
+	public virtual NSObject ItemForPersistentObject(NSOutlineView outlineView, NSObject theObject)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("outlineView:persistentObjectForItem:")]
+	public virtual NSObject PersistentObjectForItem(NSOutlineView outlineView, NSObject item)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("outlineView:sortDescriptorsDidChange:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SortDescriptorsChanged(NSOutlineView outlineView, NSSortDescriptor[] oldDescriptors)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("outlineView:updateDraggingItemsForDrag:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void UpdateDraggingItemsForDrag(NSOutlineView outlineView, NSDraggingInfo draggingInfo)
+	[Export("outlineView:writeItems:toPasteboard:")]
+	public virtual bool OutlineViewwriteItemstoPasteboard(NSOutlineView outlineView, NSArray items, NSPasteboard pboard)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("outlineView:validateDrop:proposedItem:proposedChildIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDragOperation ValidateDrop(NSOutlineView outlineView, NSDraggingInfo info, NSObject? item, nint index)
+	public virtual NSDragOperation ValidateDrop(NSOutlineView outlineView, NSDraggingInfo info, NSObject item, long index)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("outlineView:acceptDrop:item:childIndex:")]
+	public virtual bool AcceptDrop(NSOutlineView outlineView, NSDraggingInfo info, NSObject item, long index)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("outlineView:namesOfPromisedFilesDroppedAtDestination:forDraggedItems:")]
+	public virtual string[] FilesDropped(NSOutlineView outlineView, NSUrl dropDestination, NSArray items)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

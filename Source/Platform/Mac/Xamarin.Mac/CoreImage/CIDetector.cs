@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Foundation;
 using ObjCRuntime;
@@ -8,76 +9,57 @@ namespace CoreImage;
 [Register("CIDetector", true)]
 public class CIDetector : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDetectorOfType_Context_Options_ = "detectorOfType:context:options:";
-
-	private static readonly IntPtr selDetectorOfType_Context_Options_Handle = Selector.GetHandle("detectorOfType:context:options:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFeaturesInImage_ = "featuresInImage:";
+	private static readonly IntPtr selDetectorOfTypeContextOptions_Handle = Selector.GetHandle("detectorOfType:context:options:");
 
 	private static readonly IntPtr selFeaturesInImage_Handle = Selector.GetHandle("featuresInImage:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFeaturesInImage_Options_ = "featuresInImage:options:";
+	private static readonly IntPtr selFeaturesInImageOptions_Handle = Selector.GetHandle("featuresInImage:options:");
 
-	private static readonly IntPtr selFeaturesInImage_Options_Handle = Selector.GetHandle("featuresInImage:options:");
+	private static readonly IntPtr class_ptr = Class.GetHandle("CIDetector");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("CIDetector");
+	private static NSString _TypeFace;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Accuracy;
+	private static NSString _ImageOrientation;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _AccuracyHigh;
+	private static NSString _Accuracy;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _AccuracyLow;
+	private static NSString _AccuracyLow;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _AspectRatio;
+	private static NSString _AccuracyHigh;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _EyeBlink;
+	private static NSString _Tracking;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _FocalLength;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ImageOrientation;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _MaxFeatureCount;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _MinFeatureSize;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _NumberOfAngles;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ReturnSubFeatures;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Smile;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Tracking;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _TypeFace;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _TypeQRCode;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _TypeRectangle;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _TypeText;
+	private static NSString _MinFeatureSize;
 
 	public override IntPtr ClassHandle => class_ptr;
+
+	[Field("CIDetectorTypeFace", "CoreImage")]
+	internal static NSString TypeFace
+	{
+		get
+		{
+			if (_TypeFace == null)
+			{
+				_TypeFace = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorTypeFace");
+			}
+			return _TypeFace;
+		}
+	}
+
+	[Field("CIDetectorImageOrientation", "CoreImage")]
+	[MountainLion]
+	internal static NSString ImageOrientation
+	{
+		[MountainLion]
+		get
+		{
+			if (_ImageOrientation == null)
+			{
+				_ImageOrientation = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorImageOrientation");
+			}
+			return _ImageOrientation;
+		}
+	}
 
 	[Field("CIDetectorAccuracy", "CoreImage")]
 	internal static NSString Accuracy
@@ -89,19 +71,6 @@ public class CIDetector : NSObject
 				_Accuracy = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorAccuracy");
 			}
 			return _Accuracy;
-		}
-	}
-
-	[Field("CIDetectorAccuracyHigh", "CoreImage")]
-	internal static NSString AccuracyHigh
-	{
-		get
-		{
-			if (_AccuracyHigh == null)
-			{
-				_AccuracyHigh = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorAccuracyHigh");
-			}
-			return _AccuracyHigh;
 		}
 	}
 
@@ -118,150 +87,16 @@ public class CIDetector : NSObject
 		}
 	}
 
-	[Field("CIDetectorAspectRatio", "CoreImage")]
-	[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public static NSString AspectRatio
-	{
-		[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		get
-		{
-			if (_AspectRatio == null)
-			{
-				_AspectRatio = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorAspectRatio");
-			}
-			return _AspectRatio;
-		}
-	}
-
-	[Field("CIDetectorEyeBlink", "CoreImage")]
-	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-	internal static NSString EyeBlink
-	{
-		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-		get
-		{
-			if (_EyeBlink == null)
-			{
-				_EyeBlink = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorEyeBlink");
-			}
-			return _EyeBlink;
-		}
-	}
-
-	[Field("CIDetectorFocalLength", "CoreImage")]
-	[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public static NSString FocalLength
-	{
-		[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		get
-		{
-			if (_FocalLength == null)
-			{
-				_FocalLength = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorFocalLength");
-			}
-			return _FocalLength;
-		}
-	}
-
-	[Field("CIDetectorImageOrientation", "CoreImage")]
-	internal static NSString ImageOrientation
+	[Field("CIDetectorAccuracyHigh", "CoreImage")]
+	internal static NSString AccuracyHigh
 	{
 		get
 		{
-			if (_ImageOrientation == null)
+			if (_AccuracyHigh == null)
 			{
-				_ImageOrientation = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorImageOrientation");
+				_AccuracyHigh = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorAccuracyHigh");
 			}
-			return _ImageOrientation;
-		}
-	}
-
-	[Field("CIDetectorMaxFeatureCount", "CoreImage")]
-	[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
-	internal static NSString MaxFeatureCount
-	{
-		[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
-		get
-		{
-			if (_MaxFeatureCount == null)
-			{
-				_MaxFeatureCount = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorMaxFeatureCount");
-			}
-			return _MaxFeatureCount;
-		}
-	}
-
-	[Field("CIDetectorMinFeatureSize", "CoreImage")]
-	internal static NSString MinFeatureSize
-	{
-		get
-		{
-			if (_MinFeatureSize == null)
-			{
-				_MinFeatureSize = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorMinFeatureSize");
-			}
-			return _MinFeatureSize;
-		}
-	}
-
-	[Field("CIDetectorNumberOfAngles", "CoreImage")]
-	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	public static NSString NumberOfAngles
-	{
-		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-		get
-		{
-			if (_NumberOfAngles == null)
-			{
-				_NumberOfAngles = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorNumberOfAngles");
-			}
-			return _NumberOfAngles;
-		}
-	}
-
-	[Field("CIDetectorReturnSubFeatures", "CoreImage")]
-	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	public static NSString ReturnSubFeatures
-	{
-		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-		get
-		{
-			if (_ReturnSubFeatures == null)
-			{
-				_ReturnSubFeatures = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorReturnSubFeatures");
-			}
-			return _ReturnSubFeatures;
-		}
-	}
-
-	[Field("CIDetectorSmile", "CoreImage")]
-	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-	internal static NSString Smile
-	{
-		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-		get
-		{
-			if (_Smile == null)
-			{
-				_Smile = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorSmile");
-			}
-			return _Smile;
+			return _AccuracyHigh;
 		}
 	}
 
@@ -278,67 +113,16 @@ public class CIDetector : NSObject
 		}
 	}
 
-	[Field("CIDetectorTypeFace", "CoreImage")]
-	internal static NSString TypeFace
+	[Field("CIDetectorMinFeatureSize", "CoreImage")]
+	internal static NSString MinFeatureSize
 	{
 		get
 		{
-			if (_TypeFace == null)
+			if (_MinFeatureSize == null)
 			{
-				_TypeFace = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorTypeFace");
+				_MinFeatureSize = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorMinFeatureSize");
 			}
-			return _TypeFace;
-		}
-	}
-
-	[Field("CIDetectorTypeQRCode", "CoreImage")]
-	[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public static NSString TypeQRCode
-	{
-		[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		get
-		{
-			if (_TypeQRCode == null)
-			{
-				_TypeQRCode = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorTypeQRCode");
-			}
-			return _TypeQRCode;
-		}
-	}
-
-	[Field("CIDetectorTypeRectangle", "CoreImage")]
-	[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public static NSString TypeRectangle
-	{
-		[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		get
-		{
-			if (_TypeRectangle == null)
-			{
-				_TypeRectangle = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorTypeRectangle");
-			}
-			return _TypeRectangle;
-		}
-	}
-
-	[Field("CIDetectorTypeText", "CoreImage")]
-	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	public static NSString TypeText
-	{
-		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-		get
-		{
-			if (_TypeText == null)
-			{
-				_TypeText = Dlfcn.GetStringConstant(Libraries.CoreImage.Handle, "CIDetectorTypeText");
-			}
-			return _TypeText;
+			return _MinFeatureSize;
 		}
 	}
 
@@ -364,38 +148,25 @@ public class CIDetector : NSObject
 
 	public static CIDetector CreateFaceDetector(CIContext context, FaceDetectorAccuracy? accuracy = null, float? minFeatureSize = null, bool? trackingEnabled = null)
 	{
-		CIDetectorOptions cIDetectorOptions = new CIDetectorOptions
+		List<NSObject> list = new List<NSObject>(3);
+		List<NSObject> list2 = new List<NSObject>(3);
+		if (accuracy.HasValue)
 		{
-			Accuracy = accuracy,
-			MinFeatureSize = minFeatureSize,
-			TrackingEnabled = trackingEnabled
-		};
-		using NSDictionary options = cIDetectorOptions.ToDictionary();
+			list.Add(Accuracy);
+			list2.Add((accuracy == FaceDetectorAccuracy.High) ? AccuracyHigh : AccuracyLow);
+		}
+		if (MinFeatureSize != null && minFeatureSize.HasValue)
+		{
+			list.Add(MinFeatureSize);
+			list2.Add(new NSNumber(minFeatureSize.Value));
+		}
+		if (Tracking != null && trackingEnabled.HasValue)
+		{
+			list.Add(Tracking);
+			list2.Add(NSObject.FromObject(true));
+		}
+		using NSDictionary options = NSDictionary.FromObjectsAndKeys(list2.ToArray(), list.ToArray());
 		return FromType(TypeFace, context, options);
-	}
-
-	public static CIDetector CreateFaceDetector(CIContext context, CIDetectorOptions detectorOptions)
-	{
-		using NSDictionary options = detectorOptions?.ToDictionary();
-		return FromType(TypeFace, context, options);
-	}
-
-	public static CIDetector CreateRectangleDetector(CIContext context, CIDetectorOptions detectorOptions)
-	{
-		using NSDictionary options = detectorOptions?.ToDictionary();
-		return FromType(TypeRectangle, context, options);
-	}
-
-	public static CIDetector CreateQRDetector(CIContext context, CIDetectorOptions detectorOptions)
-	{
-		using NSDictionary options = detectorOptions?.ToDictionary();
-		return FromType(TypeQRCode, context, options);
-	}
-
-	public static CIDetector CreateTextDetector(CIContext context, CIDetectorOptions detectorOptions)
-	{
-		using NSDictionary options = detectorOptions?.ToDictionary();
-		return FromType(TypeText, context, options);
 	}
 
 	public CIFeature[] FeaturesInImage(CIImage image, CIImageOrientation orientation)
@@ -407,29 +178,47 @@ public class CIDetector : NSObject
 		return FeaturesInImage(image, options);
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected CIDetector(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public CIDetector(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public CIDetector(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal CIDetector(IntPtr handle)
+	public CIDetector(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("detectorOfType:context:options:")]
+	internal static CIDetector FromType(NSString detectorType, CIContext context, NSDictionary options)
+	{
+		return (CIDetector)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selDetectorOfTypeContextOptions_Handle, (detectorType == null) ? IntPtr.Zero : detectorType.Handle, context?.Handle ?? IntPtr.Zero, options?.Handle ?? IntPtr.Zero));
+	}
+
 	[Export("featuresInImage:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CIFeature[] FeaturesInImage(CIImage image)
 	{
 		if (image == null)
 		{
 			throw new ArgumentNullException("image");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return NSArray.ArrayFromHandle<CIFeature>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selFeaturesInImage_Handle, image.Handle));
 		}
@@ -437,24 +226,20 @@ public class CIDetector : NSObject
 	}
 
 	[Export("featuresInImage:options:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CIFeature[] FeaturesInImage(CIImage image, NSDictionary? options)
+	public virtual CIFeature[] FeaturesInImage(CIImage image, NSDictionary options)
 	{
 		if (image == null)
 		{
 			throw new ArgumentNullException("image");
 		}
-		if (base.IsDirectBinding)
+		if (options == null)
 		{
-			return NSArray.ArrayFromHandle<CIFeature>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selFeaturesInImage_Options_Handle, image.Handle, options?.Handle ?? IntPtr.Zero));
+			throw new ArgumentNullException("options");
 		}
-		return NSArray.ArrayFromHandle<CIFeature>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selFeaturesInImage_Options_Handle, image.Handle, options?.Handle ?? IntPtr.Zero));
-	}
-
-	[Export("detectorOfType:context:options:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal static CIDetector FromType(NSString? detectorType, CIContext? context, NSDictionary? options)
-	{
-		return Runtime.GetNSObject<CIDetector>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selDetectorOfType_Context_Options_Handle, (detectorType == null) ? IntPtr.Zero : detectorType.Handle, context?.Handle ?? IntPtr.Zero, options?.Handle ?? IntPtr.Zero));
+		if (IsDirectBinding)
+		{
+			return NSArray.ArrayFromHandle<CIFeature>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selFeaturesInImageOptions_Handle, image.Handle, options.Handle));
+		}
+		return NSArray.ArrayFromHandle<CIFeature>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selFeaturesInImageOptions_Handle, image.Handle, options.Handle));
 	}
 }

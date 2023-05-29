@@ -1,6 +1,6 @@
 namespace WebKit;
 
-public enum WebNavigationType : uint
+public enum WebNavigationType
 {
 	LinkClicked,
 	FormSubmitted,

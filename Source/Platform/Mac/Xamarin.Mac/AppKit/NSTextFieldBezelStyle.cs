@@ -1,9 +1,6 @@
-using ObjCRuntime;
-
 namespace AppKit;
 
-[Native]
-public enum NSTextFieldBezelStyle : ulong
+public enum NSTextFieldBezelStyle
 {
 	Square,
 	Rounded

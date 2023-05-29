@@ -9,192 +9,113 @@ namespace CoreAnimation;
 [Register("CAKeyframeAnimation", true)]
 public class CAKeyFrameAnimation : CAPropertyAnimation
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAnimationWithKeyPath_ = "animationWithKeyPath:";
-
-	private static readonly IntPtr selAnimationWithKeyPath_Handle = Selector.GetHandle("animationWithKeyPath:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selBiasValues = "biasValues";
-
-	private static readonly IntPtr selBiasValuesHandle = Selector.GetHandle("biasValues");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCalculationMode = "calculationMode";
-
-	private static readonly IntPtr selCalculationModeHandle = Selector.GetHandle("calculationMode");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selContinuityValues = "continuityValues";
-
-	private static readonly IntPtr selContinuityValuesHandle = Selector.GetHandle("continuityValues");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selKeyTimes = "keyTimes";
-
-	private static readonly IntPtr selKeyTimesHandle = Selector.GetHandle("keyTimes");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPath = "path";
-
-	private static readonly IntPtr selPathHandle = Selector.GetHandle("path");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRotationMode = "rotationMode";
-
-	private static readonly IntPtr selRotationModeHandle = Selector.GetHandle("rotationMode");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetBiasValues_ = "setBiasValues:";
-
-	private static readonly IntPtr selSetBiasValues_Handle = Selector.GetHandle("setBiasValues:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetCalculationMode_ = "setCalculationMode:";
-
-	private static readonly IntPtr selSetCalculationMode_Handle = Selector.GetHandle("setCalculationMode:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetContinuityValues_ = "setContinuityValues:";
-
-	private static readonly IntPtr selSetContinuityValues_Handle = Selector.GetHandle("setContinuityValues:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetKeyTimes_ = "setKeyTimes:";
-
-	private static readonly IntPtr selSetKeyTimes_Handle = Selector.GetHandle("setKeyTimes:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPath_ = "setPath:";
-
-	private static readonly IntPtr selSetPath_Handle = Selector.GetHandle("setPath:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetRotationMode_ = "setRotationMode:";
-
-	private static readonly IntPtr selSetRotationMode_Handle = Selector.GetHandle("setRotationMode:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetTensionValues_ = "setTensionValues:";
-
-	private static readonly IntPtr selSetTensionValues_Handle = Selector.GetHandle("setTensionValues:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetTimingFunctions_ = "setTimingFunctions:";
-
-	private static readonly IntPtr selSetTimingFunctions_Handle = Selector.GetHandle("setTimingFunctions:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetValues_ = "setValues:";
+	private static readonly IntPtr selValuesHandle = Selector.GetHandle("values");
 
 	private static readonly IntPtr selSetValues_Handle = Selector.GetHandle("setValues:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTensionValues = "tensionValues";
+	private static readonly IntPtr selPathHandle = Selector.GetHandle("path");
 
-	private static readonly IntPtr selTensionValuesHandle = Selector.GetHandle("tensionValues");
+	private static readonly IntPtr selSetPath_Handle = Selector.GetHandle("setPath:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTimingFunctions = "timingFunctions";
+	private static readonly IntPtr selKeyTimesHandle = Selector.GetHandle("keyTimes");
+
+	private static readonly IntPtr selSetKeyTimes_Handle = Selector.GetHandle("setKeyTimes:");
 
 	private static readonly IntPtr selTimingFunctionsHandle = Selector.GetHandle("timingFunctions");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selValues = "values";
+	private static readonly IntPtr selSetTimingFunctions_Handle = Selector.GetHandle("setTimingFunctions:");
 
-	private static readonly IntPtr selValuesHandle = Selector.GetHandle("values");
+	private static readonly IntPtr selCalculationModeHandle = Selector.GetHandle("calculationMode");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("CAKeyframeAnimation");
+	private static readonly IntPtr selSetCalculationMode_Handle = Selector.GetHandle("setCalculationMode:");
 
-	public virtual string CalculationMode
-	{
-		get
-		{
-			return _CalculationMode;
-		}
-		set
-		{
-			NSString calculationMode = ((value == CAAnimation.AnimationLinear) ? CAAnimation.AnimationLinear : ((value == CAAnimation.AnimationDescrete) ? CAAnimation.AnimationDescrete : ((value == CAAnimation.AnimationPaced) ? CAAnimation.AnimationPaced : ((value == CAAnimation.AnimationCubic) ? CAAnimation.AnimationCubic : ((!(value == CAAnimation.AnimationCubicPaced)) ? ((NSString)value) : CAAnimation.AnimationCubicPaced)))));
-			_CalculationMode = calculationMode;
-		}
-	}
+	private static readonly IntPtr selRotationModeHandle = Selector.GetHandle("rotationMode");
+
+	private static readonly IntPtr selSetRotationMode_Handle = Selector.GetHandle("setRotationMode:");
+
+	private static readonly IntPtr selAnimationWithKeyPath_Handle = Selector.GetHandle("animationWithKeyPath:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("CAKeyframeAnimation");
+
+	private object __mt_Values_var;
+
+	private object __mt_KeyTimes_var;
+
+	private object __mt_TimingFunctions_var;
+
+	private static NSString _CalculationLinear;
+
+	private static NSString _CalculationDiscrete;
+
+	private static NSString _CalculationPaced;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSNumber[]? BiasValues
+	public virtual NSObject[] Values
 	{
-		[Export("biasValues", ArgumentSemantic.Copy)]
+		[Export("values", ArgumentSemantic.Copy)]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selBiasValuesHandle));
-			}
-			return NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBiasValuesHandle));
+			return (NSObject[])(__mt_Values_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selValuesHandle)) : NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selValuesHandle))));
 		}
-		[Export("setBiasValues:", ArgumentSemantic.Copy)]
+		[Export("setValues:", ArgumentSemantic.Copy)]
 		set
 		{
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBiasValues_Handle, nSArray?.Handle ?? IntPtr.Zero);
+				throw new ArgumentNullException("value");
+			}
+			NSArray nSArray = NSArray.FromNSObjects(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetValues_Handle, nSArray.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBiasValues_Handle, nSArray?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetValues_Handle, nSArray.Handle);
 			}
-			nSArray?.Dispose();
+			nSArray.Dispose();
+			__mt_Values_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSNumber[]? ContinuityValues
+	public virtual CGPath Path
 	{
-		[Export("continuityValues", ArgumentSemantic.Copy)]
+		[Export("path")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selContinuityValuesHandle));
+				return new CGPath(Messaging.IntPtr_objc_msgSend(base.Handle, selPathHandle));
 			}
-			return NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContinuityValuesHandle));
+			return new CGPath(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPathHandle));
 		}
-		[Export("setContinuityValues:", ArgumentSemantic.Copy)]
+		[Export("setPath:")]
 		set
 		{
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetContinuityValues_Handle, nSArray?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPath_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetContinuityValues_Handle, nSArray?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPath_Handle, value.Handle);
 			}
-			nSArray?.Dispose();
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSNumber[]? KeyTimes
+	public virtual NSNumber[] KeyTimes
 	{
 		[Export("keyTimes", ArgumentSemantic.Copy)]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selKeyTimesHandle));
-			}
-			return NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selKeyTimesHandle));
+			return (NSNumber[])(__mt_KeyTimes_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selKeyTimesHandle)) : NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selKeyTimesHandle))));
 		}
 		[Export("setKeyTimes:", ArgumentSemantic.Copy)]
 		set
 		{
 			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetKeyTimes_Handle, nSArray?.Handle ?? IntPtr.Zero);
 			}
@@ -203,39 +124,75 @@ public class CAKeyFrameAnimation : CAPropertyAnimation
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetKeyTimes_Handle, nSArray?.Handle ?? IntPtr.Zero);
 			}
 			nSArray?.Dispose();
+			__mt_KeyTimes_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGPath? Path
+	public virtual CAMediaTimingFunction[] TimingFunctions
 	{
-		[Export("path")]
+		[Export("timingFunctions", ArgumentSemantic.Copy)]
 		get
 		{
-			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPathHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selPathHandle));
-			return (intPtr == IntPtr.Zero) ? null : new CGPath(intPtr);
+			return (CAMediaTimingFunction[])(__mt_TimingFunctions_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<CAMediaTimingFunction>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTimingFunctionsHandle)) : NSArray.ArrayFromHandle<CAMediaTimingFunction>(Messaging.IntPtr_objc_msgSend(base.Handle, selTimingFunctionsHandle))));
 		}
-		[Export("setPath:")]
+		[Export("setTimingFunctions:", ArgumentSemantic.Copy)]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPath_Handle, (value == null) ? IntPtr.Zero : value.Handle);
+				throw new ArgumentNullException("value");
+			}
+			NSArray nSArray = NSArray.FromNSObjects(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTimingFunctions_Handle, nSArray.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPath_Handle, (value == null) ? IntPtr.Zero : value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTimingFunctions_Handle, nSArray.Handle);
 			}
+			nSArray.Dispose();
+			__mt_TimingFunctions_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string? RotationMode
+	public virtual string CalculationMode
+	{
+		[Export("calculationMode", ArgumentSemantic.Copy)]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCalculationModeHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCalculationModeHandle));
+		}
+		[Export("setCalculationMode:", ArgumentSemantic.Copy)]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCalculationMode_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCalculationMode_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual string RotationMode
 	{
 		[Export("rotationMode", ArgumentSemantic.Copy)]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selRotationModeHandle));
 			}
@@ -245,7 +202,7 @@ public class CAKeyFrameAnimation : CAPropertyAnimation
 		set
 		{
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetRotationMode_Handle, arg);
 			}
@@ -257,217 +214,114 @@ public class CAKeyFrameAnimation : CAPropertyAnimation
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSNumber[]? TensionValues
-	{
-		[Export("tensionValues", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selTensionValuesHandle));
-			}
-			return NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTensionValuesHandle));
-		}
-		[Export("setTensionValues:", ArgumentSemantic.Copy)]
-		set
-		{
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTensionValues_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTensionValues_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CAMediaTimingFunction[]? TimingFunctions
-	{
-		[Export("timingFunctions", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<CAMediaTimingFunction>(Messaging.IntPtr_objc_msgSend(base.Handle, selTimingFunctionsHandle));
-			}
-			return NSArray.ArrayFromHandle<CAMediaTimingFunction>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTimingFunctionsHandle));
-		}
-		[Export("setTimingFunctions:", ArgumentSemantic.Copy)]
-		set
-		{
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTimingFunctions_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTimingFunctions_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject[]? Values
-	{
-		[Export("values", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selValuesHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selValuesHandle));
-		}
-		[Export("setValues:", ArgumentSemantic.Copy)]
-		set
-		{
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetValues_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetValues_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual NSString _CalculationMode
-	{
-		[Export("calculationMode", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSend(base.Handle, selCalculationModeHandle));
-			}
-			return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCalculationModeHandle));
-		}
-		[Export("setCalculationMode:", ArgumentSemantic.Copy)]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCalculationMode_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCalculationMode_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal NSArray _Values
+	[Field("kCAAnimationLinear", "CoreAnimation")]
+	public static NSString CalculationLinear
 	{
 		get
 		{
-			if (base.IsDirectBinding)
+			if (_CalculationLinear == null)
 			{
-				return Runtime.GetNSObject<NSArray>(Messaging.IntPtr_objc_msgSend(base.Handle, selValuesHandle));
+				_CalculationLinear = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAAnimationLinear");
 			}
-			return Runtime.GetNSObject<NSArray>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selValuesHandle));
+			return _CalculationLinear;
 		}
-		set
+	}
+
+	[Field("kCAAnimationDiscrete", "CoreAnimation")]
+	public static NSString CalculationDiscrete
+	{
+		get
 		{
-			if (value == null)
+			if (_CalculationDiscrete == null)
 			{
-				throw new ArgumentNullException("value");
+				_CalculationDiscrete = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAAnimationDiscrete");
 			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetValues_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetValues_Handle, value.Handle);
-			}
+			return _CalculationDiscrete;
 		}
 	}
 
-	public static CAKeyFrameAnimation GetFromKeyPath(string path)
+	[Field("kCAAnimationDiscrete", "CoreAnimation")]
+	public static NSString CalculationPaced
 	{
-		return FromKeyPath(path);
+		get
+		{
+			if (_CalculationPaced == null)
+			{
+				_CalculationPaced = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAAnimationDiscrete");
+			}
+			return _CalculationPaced;
+		}
 	}
 
-	public T[] GetValuesAs<T>() where T : class, INativeObject
+	[Obsolete("This method in the future will return a CAKeyFrameAnimation, update your source, or use GetFromKeyPath to avoid this warning for now")]
+	public new static CAPropertyAnimation FromKeyPath(string path)
 	{
-		return NSArray.FromArrayNative<T>(_Values);
+		return GetFromKeyPath(path);
 	}
 
-	public void SetValues(INativeObject[] value)
-	{
-		_Values = NSArray.FromNSObjects(value);
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public CAKeyFrameAnimation()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public CAKeyFrameAnimation(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected CAKeyFrameAnimation(NSObjectFlag t)
+	public CAKeyFrameAnimation(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal CAKeyFrameAnimation(IntPtr handle)
+	public CAKeyFrameAnimation(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("animationWithKeyPath:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public new static CAKeyFrameAnimation FromKeyPath(string? path)
+	public static CAKeyFrameAnimation GetFromKeyPath(string path)
 	{
+		if (path == null)
+		{
+			throw new ArgumentNullException("path");
+		}
 		IntPtr arg = NSString.CreateNative(path);
-		CAKeyFrameAnimation nSObject = Runtime.GetNSObject<CAKeyFrameAnimation>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selAnimationWithKeyPath_Handle, arg));
+		CAKeyFrameAnimation result = (CAKeyFrameAnimation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selAnimationWithKeyPath_Handle, arg));
 		NSString.ReleaseNative(arg);
-		return nSObject;
+		return result;
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_Values_var = null;
+			__mt_KeyTimes_var = null;
+			__mt_TimingFunctions_var = null;
+		}
 	}
 }

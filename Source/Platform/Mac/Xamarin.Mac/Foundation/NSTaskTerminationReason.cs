@@ -1,10 +1,7 @@
-using ObjCRuntime;
-
 namespace Foundation;
 
-[Native]
-public enum NSTaskTerminationReason : long
+public enum NSTaskTerminationReason
 {
-	Exit = 1L,
+	Exit = 1,
 	UncaughtSignal
 }

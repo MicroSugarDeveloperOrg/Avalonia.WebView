@@ -1,100 +1,52 @@
+using System;
 using System.ComponentModel;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 
 [Register("NSInvocation", true)]
 public class NSInvocation : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGetArgument_AtIndex_ = "getArgument:atIndex:";
+	private static readonly IntPtr selSelectorHandle = Selector.GetHandle("selector");
 
-	private static readonly IntPtr selGetArgument_AtIndex_Handle = ObjCRuntime.Selector.GetHandle("getArgument:atIndex:");
+	private static readonly IntPtr selSetSelector_Handle = Selector.GetHandle("setSelector:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGetReturnValue_ = "getReturnValue:";
+	private static readonly IntPtr selTargetHandle = Selector.GetHandle("target");
 
-	private static readonly IntPtr selGetReturnValue_Handle = ObjCRuntime.Selector.GetHandle("getReturnValue:");
+	private static readonly IntPtr selSetTarget_Handle = Selector.GetHandle("setTarget:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInvoke = "invoke";
+	private static readonly IntPtr selMethodSignatureHandle = Selector.GetHandle("methodSignature");
 
-	private static readonly IntPtr selInvokeHandle = ObjCRuntime.Selector.GetHandle("invoke");
+	private static readonly IntPtr selSetArgumentAtIndex_Handle = Selector.GetHandle("setArgument:atIndex:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInvokeWithTarget_ = "invokeWithTarget:";
+	private static readonly IntPtr selGetArgumentAtIndex_Handle = Selector.GetHandle("getArgument:atIndex:");
 
-	private static readonly IntPtr selInvokeWithTarget_Handle = ObjCRuntime.Selector.GetHandle("invokeWithTarget:");
+	private static readonly IntPtr selSetReturnValue_Handle = Selector.GetHandle("setReturnValue:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMethodSignature = "methodSignature";
+	private static readonly IntPtr selGetReturnValue_Handle = Selector.GetHandle("getReturnValue:");
 
-	private static readonly IntPtr selMethodSignatureHandle = ObjCRuntime.Selector.GetHandle("methodSignature");
+	private static readonly IntPtr selInvokeHandle = Selector.GetHandle("invoke");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSelector = "selector";
+	private static readonly IntPtr selInvokeWithTarget_Handle = Selector.GetHandle("invokeWithTarget:");
 
-	private static readonly IntPtr selSelectorHandle = ObjCRuntime.Selector.GetHandle("selector");
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSInvocation");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetArgument_AtIndex_ = "setArgument:atIndex:";
+	private object __mt_Target_var;
 
-	private static readonly IntPtr selSetArgument_AtIndex_Handle = ObjCRuntime.Selector.GetHandle("setArgument:atIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetReturnValue_ = "setReturnValue:";
-
-	private static readonly IntPtr selSetReturnValue_Handle = ObjCRuntime.Selector.GetHandle("setReturnValue:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetSelector_ = "setSelector:";
-
-	private static readonly IntPtr selSetSelector_Handle = ObjCRuntime.Selector.GetHandle("setSelector:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetTarget_ = "setTarget:";
-
-	private static readonly IntPtr selSetTarget_Handle = ObjCRuntime.Selector.GetHandle("setTarget:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTarget = "target";
-
-	private static readonly IntPtr selTargetHandle = ObjCRuntime.Selector.GetHandle("target");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSInvocation");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_Target_var;
+	private object __mt_MethodSignature_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSMethodSignature MethodSignature
-	{
-		[Export("methodSignature")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSMethodSignature>(Messaging.IntPtr_objc_msgSend(base.Handle, selMethodSignatureHandle));
-			}
-			return Runtime.GetNSObject<NSMethodSignature>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMethodSignatureHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual Selector Selector
 	{
 		[Export("selector")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return ObjCRuntime.Selector.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectorHandle));
+				return Selector.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectorHandle));
 			}
-			return ObjCRuntime.Selector.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectorHandle));
+			return Selector.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectorHandle));
 		}
 		[Export("setSelector:")]
 		set
@@ -103,7 +55,7 @@ public class NSInvocation : NSObject
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSelector_Handle, value.Handle);
 			}
@@ -114,52 +66,124 @@ public class NSInvocation : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject? Target
+	public virtual NSObject Target
 	{
-		[Export("target", ArgumentSemantic.Assign)]
+		[Export("target")]
 		get
 		{
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTargetHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTargetHandle)));
-			MarkDirty();
-			__mt_Target_var = nSObject;
-			return nSObject;
+			return (NSObject)(__mt_Target_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTargetHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTargetHandle))));
 		}
-		[Export("setTarget:", ArgumentSemantic.Assign)]
+		[Export("setTarget:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTarget_Handle, value?.Handle ?? IntPtr.Zero);
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTarget_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTarget_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTarget_Handle, value.Handle);
 			}
-			MarkDirty();
 			__mt_Target_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSMethodSignature MethodSignature
+	{
+		[Export("methodSignature")]
+		get
+		{
+			return (NSMethodSignature)(__mt_MethodSignature_var = ((!IsDirectBinding) ? ((NSMethodSignature)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMethodSignatureHandle))) : ((NSMethodSignature)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMethodSignatureHandle)))));
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSInvocation(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSInvocation(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSInvocation(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSInvocation(IntPtr handle)
+	public NSInvocation(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("setArgument:atIndex:")]
+	internal virtual void _SetArgument(IntPtr buffer, int index)
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_int(base.Handle, selSetArgumentAtIndex_Handle, buffer, index);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_int(base.SuperHandle, selSetArgumentAtIndex_Handle, buffer, index);
+		}
+	}
+
+	[Export("getArgument:atIndex:")]
+	internal virtual void _GetArgument(IntPtr buffer, int index)
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_int(base.Handle, selGetArgumentAtIndex_Handle, buffer, index);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_int(base.SuperHandle, selGetArgumentAtIndex_Handle, buffer, index);
+		}
+	}
+
+	[Export("setReturnValue:")]
+	internal virtual void _SetReturnValue(IntPtr buffer)
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetReturnValue_Handle, buffer);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetReturnValue_Handle, buffer);
+		}
+	}
+
+	[Export("getReturnValue:")]
+	internal virtual void _GetReturnValue(IntPtr buffer)
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selGetReturnValue_Handle, buffer);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selGetReturnValue_Handle, buffer);
+		}
+	}
+
 	[Export("invoke")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Invoke()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selInvokeHandle);
 		}
@@ -170,14 +194,13 @@ public class NSInvocation : NSObject
 	}
 
 	[Export("invokeWithTarget:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Invoke(NSObject target)
 	{
 		if (target == null)
 		{
 			throw new ArgumentNullException("target");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selInvokeWithTarget_Handle, target.Handle);
 		}
@@ -187,69 +210,13 @@ public class NSInvocation : NSObject
 		}
 	}
 
-	[Export("getArgument:atIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual void _GetArgument(IntPtr buffer, nint index)
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_nint(base.Handle, selGetArgument_AtIndex_Handle, buffer, index);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_nint(base.SuperHandle, selGetArgument_AtIndex_Handle, buffer, index);
-		}
-	}
-
-	[Export("getReturnValue:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual void _GetReturnValue(IntPtr buffer)
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selGetReturnValue_Handle, buffer);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selGetReturnValue_Handle, buffer);
-		}
-	}
-
-	[Export("setArgument:atIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual void _SetArgument(IntPtr buffer, nint index)
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_nint(base.Handle, selSetArgument_AtIndex_Handle, buffer, index);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_nint(base.SuperHandle, selSetArgument_AtIndex_Handle, buffer, index);
-		}
-	}
-
-	[Export("setReturnValue:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual void _SetReturnValue(IntPtr buffer)
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetReturnValue_Handle, buffer);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetReturnValue_Handle, buffer);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
 			__mt_Target_var = null;
+			__mt_MethodSignature_var = null;
 		}
 	}
 }

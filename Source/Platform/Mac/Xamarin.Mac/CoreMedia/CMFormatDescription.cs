@@ -1,14 +1,15 @@
+using System;
 using System.Runtime.InteropServices;
 using AudioToolbox;
 using CoreFoundation;
 using CoreGraphics;
+using CoreVideo;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreMedia;
 
-[Watch(6, 0)]
+[Since(4, 0)]
 public class CMFormatDescription : INativeObject, IDisposable
 {
 	internal IntPtr handle;
@@ -17,19 +18,89 @@ public class CMFormatDescription : INativeObject, IDisposable
 
 	public uint MediaSubType => CMFormatDescriptionGetMediaSubType(handle);
 
-	public AudioFormatType AudioFormatType => (MediaType == CMMediaType.Audio) ? ((AudioFormatType)MediaSubType) : ((AudioFormatType)0u);
+	public AudioFormatType AudioFormatType
+	{
+		get
+		{
+			if (MediaType != CMMediaType.Audio)
+			{
+				return (AudioFormatType)0;
+			}
+			return (AudioFormatType)MediaSubType;
+		}
+	}
 
-	public CMSubtitleFormatType SubtitleFormatType => (MediaType == CMMediaType.Subtitle) ? ((CMSubtitleFormatType)MediaSubType) : ((CMSubtitleFormatType)0u);
+	public CMSubtitleFormatType SubtitleFormatType
+	{
+		get
+		{
+			if (MediaType != CMMediaType.Subtitle)
+			{
+				return (CMSubtitleFormatType)0u;
+			}
+			return (CMSubtitleFormatType)MediaSubType;
+		}
+	}
 
-	public CMClosedCaptionFormatType ClosedCaptionFormatType => (MediaType == CMMediaType.ClosedCaption) ? ((CMClosedCaptionFormatType)MediaSubType) : ((CMClosedCaptionFormatType)0u);
+	public CMClosedCaptionFormatType ClosedCaptionFormatType
+	{
+		get
+		{
+			if (MediaType != CMMediaType.ClosedCaption)
+			{
+				return (CMClosedCaptionFormatType)0u;
+			}
+			return (CMClosedCaptionFormatType)MediaSubType;
+		}
+	}
 
-	public CMMuxedStreamType MuxedStreamType => (MediaType == CMMediaType.Muxed) ? ((CMMuxedStreamType)MediaSubType) : ((CMMuxedStreamType)0u);
+	public CMMuxedStreamType MuxedStreamType
+	{
+		get
+		{
+			if (MediaType != CMMediaType.Muxed)
+			{
+				return (CMMuxedStreamType)0u;
+			}
+			return (CMMuxedStreamType)MediaSubType;
+		}
+	}
 
-	public CMVideoCodecType VideoCodecType => (MediaType == CMMediaType.Video) ? ((CMVideoCodecType)MediaSubType) : ((CMVideoCodecType)0u);
+	public CMVideoCodecType VideoCodecType
+	{
+		get
+		{
+			if (MediaType != CMMediaType.Video)
+			{
+				return (CMVideoCodecType)0;
+			}
+			return (CMVideoCodecType)MediaSubType;
+		}
+	}
 
-	public CMMetadataFormatType MetadataFormatType => (MediaType == CMMediaType.Metadata) ? ((CMMetadataFormatType)MediaSubType) : ((CMMetadataFormatType)0u);
+	public CMMetadataFormatType MetadataFormatType
+	{
+		get
+		{
+			if (MediaType != CMMediaType.TimedMetadata)
+			{
+				return (CMMetadataFormatType)0u;
+			}
+			return (CMMetadataFormatType)MediaSubType;
+		}
+	}
 
-	public CMTimeCodeFormatType TimeCodeFormatType => (MediaType == CMMediaType.TimeCode) ? ((CMTimeCodeFormatType)MediaSubType) : ((CMTimeCodeFormatType)0u);
+	public CMTimeCodeFormatType TimeCodeFormatType
+	{
+		get
+		{
+			if (MediaType != CMMediaType.TimeCode)
+			{
+				return (CMTimeCodeFormatType)0u;
+			}
+			return (CMTimeCodeFormatType)MediaSubType;
+		}
+	}
 
 	public CMMediaType MediaType => CMFormatDescriptionGetMediaType(handle);
 
@@ -50,7 +121,7 @@ public class CMFormatDescription : INativeObject, IDisposable
 	{
 		get
 		{
-			nint size;
+			int size;
 			IntPtr intPtr = CMAudioFormatDescriptionGetChannelLayout(handle, out size);
 			if (intPtr == IntPtr.Zero || size == 0)
 			{
@@ -64,16 +135,16 @@ public class CMFormatDescription : INativeObject, IDisposable
 	{
 		get
 		{
-			nint size;
+			int size;
 			IntPtr intPtr = CMAudioFormatDescriptionGetFormatList(handle, out size);
 			if (intPtr == IntPtr.Zero)
 			{
 				return null;
 			}
-			nint nint = size / sizeof(AudioFormat);
-			AudioFormat[] array = new AudioFormat[(long)nint];
+			int num = size / sizeof(AudioFormat);
+			AudioFormat[] array = new AudioFormat[num];
 			AudioFormat* ptr = (AudioFormat*)(void*)intPtr;
-			for (int i = 0; i < nint; i++)
+			for (int i = 0; i < num; i++)
 			{
 				array[i] = ptr[i];
 			}
@@ -85,14 +156,17 @@ public class CMFormatDescription : INativeObject, IDisposable
 	{
 		get
 		{
-			nint size;
+			int size;
 			IntPtr intPtr = CMAudioFormatDescriptionGetMagicCookie(handle, out size);
 			if (intPtr == IntPtr.Zero)
 			{
 				return null;
 			}
-			byte[] array = new byte[(long)size];
-			Marshal.Copy(intPtr, array, 0, array.Length);
+			byte[] array = new byte[size];
+			for (int i = 0; i < size; i++)
+			{
+				array[i] = Marshal.ReadByte(intPtr, i);
+			}
 			return array;
 		}
 	}
@@ -123,9 +197,12 @@ public class CMFormatDescription : INativeObject, IDisposable
 		}
 	}
 
+	[Advice("Use CMVideoFormatDescription")]
+	public CMVideoDimensions VideoDimensions => CMVideoFormatDescriptionGetDimensions(handle);
+
 	internal CMFormatDescription(IntPtr handle)
-		: this(handle, owns: false)
 	{
+		this.handle = handle;
 	}
 
 	[Preserve(Conditional = true)]
@@ -158,8 +235,8 @@ public class CMFormatDescription : INativeObject, IDisposable
 		}
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	private static extern IntPtr CMFormatDescriptionGetExtensions(IntPtr desc);
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	private static extern IntPtr CMFormatDescriptionGetExtensions(IntPtr handle);
 
 	public NSDictionary GetExtensions()
 	{
@@ -168,48 +245,34 @@ public class CMFormatDescription : INativeObject, IDisposable
 		{
 			return null;
 		}
-		return Runtime.GetNSObject<NSDictionary>(intPtr);
+		return (NSDictionary)Runtime.GetNSObject(intPtr);
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	private static extern IntPtr CMFormatDescriptionGetExtension(IntPtr desc, IntPtr extensionkey);
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	private static extern uint CMFormatDescriptionGetMediaSubType(IntPtr handle);
 
-	public NSObject GetExtension(string extensionKey)
-	{
-		using NSString nSString = new NSString(extensionKey);
-		IntPtr intPtr = CMFormatDescriptionGetExtension(handle, nSString.Handle);
-		if (intPtr == IntPtr.Zero)
-		{
-			return null;
-		}
-		return Runtime.GetNSObject<NSObject>(intPtr);
-	}
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	private static extern CMMediaType CMFormatDescriptionGetMediaType(IntPtr handle);
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	private static extern uint CMFormatDescriptionGetMediaSubType(IntPtr desc);
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	private static extern int CMFormatDescriptionGetTypeID();
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	private static extern CMMediaType CMFormatDescriptionGetMediaType(IntPtr desc);
-
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	private static extern nint CMFormatDescriptionGetTypeID();
-
-	public static nint GetTypeID()
+	public static int GetTypeID()
 	{
 		return CMFormatDescriptionGetTypeID();
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	private static extern CMFormatDescriptionError CMFormatDescriptionCreate(IntPtr allocator, CMMediaType mediaType, uint mediaSubtype, IntPtr extensions, out IntPtr descOut);
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	private static extern CMFormatDescriptionError CMFormatDescriptionCreate(IntPtr allocator, CMMediaType mediaType, uint mediaSubtype, IntPtr extensions, out IntPtr handle);
 
 	public static CMFormatDescription Create(CMMediaType mediaType, uint mediaSubtype, out CMFormatDescriptionError error)
 	{
-		error = CMFormatDescriptionCreate(IntPtr.Zero, mediaType, mediaSubtype, IntPtr.Zero, out var descOut);
+		error = CMFormatDescriptionCreate(IntPtr.Zero, mediaType, mediaSubtype, IntPtr.Zero, out var intPtr);
 		if (error != 0)
 		{
 			return null;
 		}
-		return Create(mediaType, descOut, owns: true);
+		return Create(mediaType, intPtr, owns: true);
 	}
 
 	public static CMFormatDescription Create(IntPtr handle, bool owns)
@@ -217,51 +280,72 @@ public class CMFormatDescription : INativeObject, IDisposable
 		return Create(CMFormatDescriptionGetMediaType(handle), handle, owns);
 	}
 
-	public static CMFormatDescription Create(IntPtr handle)
-	{
-		return Create(handle, owns: false);
-	}
-
 	private static CMFormatDescription Create(CMMediaType type, IntPtr handle, bool owns)
 	{
 		return type switch
 		{
-			CMMediaType.Video => new CMVideoFormatDescription(handle, owns), 
-			CMMediaType.Audio => new CMAudioFormatDescription(handle, owns), 
-			_ => new CMFormatDescription(handle, owns), 
+			CMMediaType.Video => new CMVideoFormatDescription(handle), 
+			CMMediaType.Audio => new CMAudioFormatDescription(handle), 
+			_ => new CMFormatDescription(handle), 
 		};
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	private static extern IntPtr CMAudioFormatDescriptionGetStreamBasicDescription(IntPtr desc);
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	private static extern IntPtr CMAudioFormatDescriptionGetStreamBasicDescription(IntPtr handle);
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	private static extern IntPtr CMAudioFormatDescriptionGetChannelLayout(IntPtr desc, out nint size);
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	private static extern IntPtr CMAudioFormatDescriptionGetChannelLayout(IntPtr handle, out int size);
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	private static extern IntPtr CMAudioFormatDescriptionGetFormatList(IntPtr desc, out nint size);
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	private static extern IntPtr CMAudioFormatDescriptionGetFormatList(IntPtr handle, out int size);
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	private static extern IntPtr CMAudioFormatDescriptionGetMagicCookie(IntPtr desc, out nint size);
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	private static extern IntPtr CMAudioFormatDescriptionGetMagicCookie(IntPtr handle, out int size);
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	private static extern IntPtr CMAudioFormatDescriptionGetMostCompatibleFormat(IntPtr desc);
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	private static extern IntPtr CMAudioFormatDescriptionGetMostCompatibleFormat(IntPtr handle);
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	private static extern IntPtr CMAudioFormatDescriptionGetRichestDecodableFormat(IntPtr desc);
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	private static extern IntPtr CMAudioFormatDescriptionGetRichestDecodableFormat(IntPtr handle);
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	internal static extern CMVideoDimensions CMVideoFormatDescriptionGetDimensions(IntPtr videoDesc);
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	internal static extern CMVideoDimensions CMVideoFormatDescriptionGetDimensions(IntPtr handle);
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	internal static extern CGRect CMVideoFormatDescriptionGetCleanAperture(IntPtr videoDesc, bool originIsAtTopLeft);
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	internal static extern CGRect CMVideoFormatDescriptionGetCleanAperture(IntPtr handle, bool originIsAtTopLeft);
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	internal static extern IntPtr CMVideoFormatDescriptionGetExtensionKeysCommonWithImageBuffers();
+	[Advice("Use CMVideoFormatDescription")]
+	public CGRect GetVideoCleanAperture(bool originIsAtTopLeft)
+	{
+		return CMVideoFormatDescriptionGetCleanAperture(handle, originIsAtTopLeft);
+	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	internal static extern CGSize CMVideoFormatDescriptionGetPresentationDimensions(IntPtr videoDesc, bool usePixelAspectRatio, bool useCleanAperture);
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	private static extern IntPtr CMVideoFormatDescriptionGetExtensionKeysCommonWithImageBuffers();
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	internal static extern bool CMVideoFormatDescriptionMatchesImageBuffer(IntPtr videoDesc, IntPtr imageBuffer);
+	public static NSObject[] GetExtensionKeysCommonWithImageBuffers()
+	{
+		return NSArray.ArrayFromHandle<NSString>(CMVideoFormatDescriptionGetExtensionKeysCommonWithImageBuffers());
+	}
+
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	internal static extern CGSize CMVideoFormatDescriptionGetPresentationDimensions(IntPtr handle, bool usePixelAspectRatio, bool useCleanAperture);
+
+	[Advice("Use CMVideoFormatDescription")]
+	public CGSize GetVideoPresentationDimensions(bool usePixelAspectRatio, bool useCleanAperture)
+	{
+		return CMVideoFormatDescriptionGetPresentationDimensions(handle, usePixelAspectRatio, useCleanAperture);
+	}
+
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	private static extern int CMVideoFormatDescriptionMatchesImageBuffer(IntPtr handle, IntPtr imageBufferRef);
+
+	public bool VideoMatchesImageBuffer(CVImageBuffer imageBuffer)
+	{
+		if (imageBuffer == null)
+		{
+			throw new ArgumentNullException("imageBuffer");
+		}
+		return CMVideoFormatDescriptionMatchesImageBuffer(handle, imageBuffer.Handle) != 0;
+	}
 }

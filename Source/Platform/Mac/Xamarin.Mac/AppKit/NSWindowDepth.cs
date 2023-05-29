@@ -1,8 +1,8 @@
 namespace AppKit;
 
-public enum NSWindowDepth
+public enum NSWindowDepth : long
 {
-	TwentyfourBitRgb = 520,
-	SixtyfourBitRgb = 528,
-	OneHundredTwentyEightBitRgb = 544
+	TwentyfourBitRgb = 520L,
+	SixtyfourBitRgb = 528L,
+	OneHundredTwentyEightBitRgb = 544L
 }

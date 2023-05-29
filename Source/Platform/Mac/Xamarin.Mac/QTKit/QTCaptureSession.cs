@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
@@ -8,104 +9,60 @@ namespace QTKit;
 [Register("QTCaptureSession", true)]
 public class QTCaptureSession : NSObject
 {
-	public static class Notifications
-	{
-		public static NSObject ObserveRuntimeError(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(RuntimeErrorNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveRuntimeError(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(RuntimeErrorNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddInput_Error_ = "addInput:error:";
-
-	private static readonly IntPtr selAddInput_Error_Handle = Selector.GetHandle("addInput:error:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddOutput_Error_ = "addOutput:error:";
-
-	private static readonly IntPtr selAddOutput_Error_Handle = Selector.GetHandle("addOutput:error:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInputs = "inputs";
-
 	private static readonly IntPtr selInputsHandle = Selector.GetHandle("inputs");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsRunning = "isRunning";
-
-	private static readonly IntPtr selIsRunningHandle = Selector.GetHandle("isRunning");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOutputs = "outputs";
 
 	private static readonly IntPtr selOutputsHandle = Selector.GetHandle("outputs");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveInput_ = "removeInput:";
+	private static readonly IntPtr selIsRunningHandle = Selector.GetHandle("isRunning");
+
+	private static readonly IntPtr selAddInputError_Handle = Selector.GetHandle("addInput:error:");
 
 	private static readonly IntPtr selRemoveInput_Handle = Selector.GetHandle("removeInput:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveOutput_ = "removeOutput:";
+	private static readonly IntPtr selAddOutputError_Handle = Selector.GetHandle("addOutput:error:");
 
 	private static readonly IntPtr selRemoveOutput_Handle = Selector.GetHandle("removeOutput:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStartRunning = "startRunning";
-
 	private static readonly IntPtr selStartRunningHandle = Selector.GetHandle("startRunning");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStopRunning = "stopRunning";
 
 	private static readonly IntPtr selStopRunningHandle = Selector.GetHandle("stopRunning");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("QTCaptureSession");
+	private static readonly IntPtr class_ptr = Class.GetHandle("QTCaptureSession");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ErrorKey;
+	private object __mt_Inputs_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _RuntimeErrorNotification;
+	private object __mt_Outputs_var;
+
+	private static NSString _RuntimeErrorNotification;
+
+	private static NSString _ErrorKey;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual QTCaptureInput[] Inputs
 	{
 		[Export("inputs")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<QTCaptureInput>(Messaging.IntPtr_objc_msgSend(base.Handle, selInputsHandle));
-			}
-			return NSArray.ArrayFromHandle<QTCaptureInput>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInputsHandle));
+			return (QTCaptureInput[])(__mt_Inputs_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<QTCaptureInput>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInputsHandle)) : NSArray.ArrayFromHandle<QTCaptureInput>(Messaging.IntPtr_objc_msgSend(base.Handle, selInputsHandle))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual QTCaptureOutput[] Outputs
+	{
+		[Export("outputs")]
+		get
+		{
+			return (QTCaptureOutput[])(__mt_Outputs_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<QTCaptureOutput>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOutputsHandle)) : NSArray.ArrayFromHandle<QTCaptureOutput>(Messaging.IntPtr_objc_msgSend(base.Handle, selOutputsHandle))));
+		}
+	}
+
 	public virtual bool IsRunning
 	{
 		[Export("isRunning")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsRunningHandle);
 			}
@@ -113,17 +70,16 @@ public class QTCaptureSession : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual QTCaptureOutput[] Outputs
+	[Field("QTCaptureSessionRuntimeErrorNotification", "QTKit")]
+	public static NSString RuntimeErrorNotification
 	{
-		[Export("outputs")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (_RuntimeErrorNotification == null)
 			{
-				return NSArray.ArrayFromHandle<QTCaptureOutput>(Messaging.IntPtr_objc_msgSend(base.Handle, selOutputsHandle));
+				_RuntimeErrorNotification = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureSessionRuntimeErrorNotification");
 			}
-			return NSArray.ArrayFromHandle<QTCaptureOutput>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOutputsHandle));
+			return _RuntimeErrorNotification;
 		}
 	}
 
@@ -140,87 +96,72 @@ public class QTCaptureSession : NSObject
 		}
 	}
 
-	[Field("QTCaptureSessionRuntimeErrorNotification", "QTKit")]
-	[Advice("Use QTCaptureSession.Notifications.ObserveRuntimeError helper method instead.")]
-	public static NSString RuntimeErrorNotification
-	{
-		get
-		{
-			if (_RuntimeErrorNotification == null)
-			{
-				_RuntimeErrorNotification = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureSessionRuntimeErrorNotification");
-			}
-			return _RuntimeErrorNotification;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public QTCaptureSession()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected QTCaptureSession(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public QTCaptureSession(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public QTCaptureSession(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal QTCaptureSession(IntPtr handle)
+	public QTCaptureSession(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("addInput:error:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool AddInput(QTCaptureInput input, out NSError error)
 	{
 		if (input == null)
 		{
 			throw new ArgumentNullException("input");
 		}
-		IntPtr arg = IntPtr.Zero;
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_ref_IntPtr(base.SuperHandle, selAddInput_Error_Handle, input.Handle, ref arg) : Messaging.bool_objc_msgSend_IntPtr_ref_IntPtr(base.Handle, selAddInput_Error_Handle, input.Handle, ref arg));
-		error = Runtime.GetNSObject<NSError>(arg);
-		return result;
-	}
-
-	[Export("addOutput:error:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AddOutput(QTCaptureOutput output, out NSError error)
-	{
-		if (output == null)
-		{
-			throw new ArgumentNullException("output");
-		}
-		IntPtr arg = IntPtr.Zero;
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_ref_IntPtr(base.SuperHandle, selAddOutput_Error_Handle, output.Handle, ref arg) : Messaging.bool_objc_msgSend_IntPtr_ref_IntPtr(base.Handle, selAddOutput_Error_Handle, output.Handle, ref arg));
-		error = Runtime.GetNSObject<NSError>(arg);
+		IntPtr intPtr = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr, 0);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selAddInputError_Handle, input.Handle, intPtr) : Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selAddInputError_Handle, input.Handle, intPtr));
+		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
+		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
+		Marshal.FreeHGlobal(intPtr);
 		return result;
 	}
 
 	[Export("removeInput:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void RemoveInput(QTCaptureInput input)
 	{
 		if (input == null)
 		{
 			throw new ArgumentNullException("input");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveInput_Handle, input.Handle);
 		}
@@ -230,15 +171,30 @@ public class QTCaptureSession : NSObject
 		}
 	}
 
+	[Export("addOutput:error:")]
+	public virtual bool AddOutput(QTCaptureOutput output, out NSError error)
+	{
+		if (output == null)
+		{
+			throw new ArgumentNullException("output");
+		}
+		IntPtr intPtr = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr, 0);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selAddOutputError_Handle, output.Handle, intPtr) : Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selAddOutputError_Handle, output.Handle, intPtr));
+		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
+		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
+		Marshal.FreeHGlobal(intPtr);
+		return result;
+	}
+
 	[Export("removeOutput:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void RemoveOutput(QTCaptureOutput output)
 	{
 		if (output == null)
 		{
 			throw new ArgumentNullException("output");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveOutput_Handle, output.Handle);
 		}
@@ -249,10 +205,9 @@ public class QTCaptureSession : NSObject
 	}
 
 	[Export("startRunning")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void StartRunning()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selStartRunningHandle);
 		}
@@ -263,16 +218,25 @@ public class QTCaptureSession : NSObject
 	}
 
 	[Export("stopRunning")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void StopRunning()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selStopRunningHandle);
 		}
 		else
 		{
 			Messaging.void_objc_msgSendSuper(base.SuperHandle, selStopRunningHandle);
+		}
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_Inputs_var = null;
+			__mt_Outputs_var = null;
 		}
 	}
 }

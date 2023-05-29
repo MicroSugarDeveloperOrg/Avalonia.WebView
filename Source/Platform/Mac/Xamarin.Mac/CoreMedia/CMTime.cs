@@ -5,35 +5,34 @@ using ObjCRuntime;
 
 namespace CoreMedia;
 
-[Watch(6, 0)]
 public struct CMTime
 {
 	[Flags]
-	public enum Flags : uint
+	public enum Flags
 	{
-		Valid = 1u,
-		HasBeenRounded = 2u,
-		PositiveInfinity = 4u,
-		NegativeInfinity = 8u,
-		Indefinite = 0x10u,
-		ImpliedValueFlagsMask = 0x1Cu
+		Valid = 1,
+		HasBeenRounded = 2,
+		PositiveInfinity = 4,
+		NegativeInfinity = 8,
+		Indefinite = 0x10,
+		ImpliedValueFlagsMask = 0x1C
 	}
 
-	public static readonly CMTime Invalid;
+	public static CMTime Invalid;
 
 	private const Flags kIndefinite = Flags.Valid | Flags.Indefinite;
 
-	public static readonly CMTime Indefinite;
+	public static CMTime Indefinite;
 
 	private const Flags kPositive = Flags.Valid | Flags.PositiveInfinity;
 
-	public static readonly CMTime PositiveInfinity;
+	public static CMTime PositiveInfinity;
 
 	private const Flags kNegative = Flags.Valid | Flags.NegativeInfinity;
 
-	public static readonly CMTime NegativeInfinity;
+	public static CMTime NegativeInfinity;
 
-	public static readonly CMTime Zero;
+	public static CMTime Zero;
 
 	public const int MaxTimeScale = int.MaxValue;
 
@@ -55,10 +54,6 @@ public struct CMTime
 
 	public bool IsInvalid => (TimeFlags & Flags.Valid) == 0;
 
-	public bool IsNumeric => (TimeFlags & (Flags.ImpliedValueFlagsMask | Flags.Valid)) == Flags.Valid;
-
-	public bool HasBeenRounded => IsNumeric && (TimeFlags & Flags.HasBeenRounded) != 0;
-
 	public bool IsIndefinite => (TimeFlags & (Flags.Valid | Flags.Indefinite)) == (Flags.Valid | Flags.Indefinite);
 
 	public bool IsPositiveInfinity => (TimeFlags & (Flags.Valid | Flags.PositiveInfinity)) == (Flags.Valid | Flags.PositiveInfinity);
@@ -69,7 +64,9 @@ public struct CMTime
 
 	public double Seconds => CMTimeGetSeconds(this);
 
-	public string Description => NSString.FromHandle(CMTimeCopyDescription(IntPtr.Zero, this));
+	public IntPtr AsDictionary => CMTimeCopyAsDictionary(this, IntPtr.Zero);
+
+	public string Description => NSString.FromHandle(CMTimeCopyDescription(IntPtr.Zero, this)).ToString();
 
 	private CMTime(Flags f)
 	{
@@ -103,10 +100,10 @@ public struct CMTime
 		TimeEpoch = epoch;
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern CMTime CMTimeAbsoluteValue(CMTime time);
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern int CMTimeCompare(CMTime time1, CMTime time2);
 
 	public static int Compare(CMTime time1, CMTime time2)
@@ -116,43 +113,21 @@ public struct CMTime
 
 	public static bool operator ==(CMTime time1, CMTime time2)
 	{
-		return CMTimeCompare(time1, time2) == 0;
+		return Compare(time1, time2) == 0;
 	}
 
 	public static bool operator !=(CMTime time1, CMTime time2)
 	{
-		return CMTimeCompare(time1, time2) != 0;
-	}
-
-	public static bool operator <(CMTime time1, CMTime time2)
-	{
-		return CMTimeCompare(time1, time2) == -1;
-	}
-
-	public static bool operator <=(CMTime time1, CMTime time2)
-	{
-		int num = CMTimeCompare(time1, time2);
-		return num <= 0;
-	}
-
-	public static bool operator >(CMTime time1, CMTime time2)
-	{
-		return CMTimeCompare(time1, time2) == 1;
-	}
-
-	public static bool operator >=(CMTime time1, CMTime time2)
-	{
-		int num = CMTimeCompare(time1, time2);
-		return num >= 0;
+		return !(time1 == time2);
 	}
 
 	public override bool Equals(object obj)
 	{
-		if (!(obj is CMTime cMTime))
+		if (!(obj is CMTime))
 		{
 			return false;
 		}
-		return cMTime == this;
+		return (CMTime)obj == this;
 	}
 
 	public override int GetHashCode()
@@ -160,7 +135,7 @@ public struct CMTime
 		return Value.GetHashCode() ^ TimeScale.GetHashCode() ^ TimeFlags.GetHashCode() ^ TimeEpoch.GetHashCode();
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern CMTime CMTimeAdd(CMTime addend1, CMTime addend2);
 
 	public static CMTime Add(CMTime time1, CMTime time2)
@@ -168,15 +143,15 @@ public struct CMTime
 		return CMTimeAdd(time1, time2);
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	private static extern CMTime CMTimeSubtract(CMTime minuend, CMTime subtrahend);
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
+	private static extern CMTime CMTimeSubtract(CMTime minuend, CMTime subtraend);
 
 	public static CMTime Subtract(CMTime minuend, CMTime subtraend)
 	{
 		return CMTimeSubtract(minuend, subtraend);
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern CMTime CMTimeMultiply(CMTime time, int multiplier);
 
 	public static CMTime Multiply(CMTime time, int multiplier)
@@ -184,24 +159,12 @@ public struct CMTime
 		return CMTimeMultiply(time, multiplier);
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern CMTime CMTimeMultiplyByFloat64(CMTime time, double multiplier);
 
 	public static CMTime Multiply(CMTime time, double multiplier)
 	{
 		return CMTimeMultiplyByFloat64(time, multiplier);
-	}
-
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	[iOS(7, 1)]
-	[Mac(10, 10)]
-	private static extern CMTime CMTimeMultiplyByRatio(CMTime time, int multiplier, int divisor);
-
-	[iOS(7, 1)]
-	[Mac(10, 10)]
-	public static CMTime Multiply(CMTime time, int multiplier, int divisor)
-	{
-		return CMTimeMultiplyByRatio(time, multiplier, divisor);
 	}
 
 	public static CMTime operator +(CMTime time1, CMTime time2)
@@ -224,7 +187,7 @@ public struct CMTime
 		return Multiply(time, multiplier);
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern CMTime CMTimeConvertScale(CMTime time, int newScale, CMTimeRoundingMethod method);
 
 	public CMTime ConvertScale(int newScale, CMTimeRoundingMethod method)
@@ -232,10 +195,10 @@ public struct CMTime
 		return CMTimeConvertScale(this, newScale, method);
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern double CMTimeGetSeconds(CMTime time);
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern CMTime CMTimeMakeWithSeconds(double seconds, int preferredTimeScale);
 
 	public static CMTime FromSeconds(double seconds, int preferredTimeScale)
@@ -243,7 +206,7 @@ public struct CMTime
 		return CMTimeMakeWithSeconds(seconds, preferredTimeScale);
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern CMTime CMTimeMaximum(CMTime time1, CMTime time2);
 
 	public static CMTime GetMaximum(CMTime time1, CMTime time2)
@@ -251,7 +214,7 @@ public struct CMTime
 		return CMTimeMaximum(time1, time2);
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern CMTime CMTimeMinimum(CMTime time1, CMTime time2);
 
 	public static CMTime GetMinimum(CMTime time1, CMTime time2)
@@ -259,43 +222,34 @@ public struct CMTime
 		return CMTimeMinimum(time1, time2);
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
-	[TV(12, 0)]
-	[Mac(10, 14)]
-	[iOS(12, 0)]
-	private static extern CMTime CMTimeFoldIntoRange(CMTime time, CMTimeRange foldRange);
-
-	[TV(12, 0)]
-	[Mac(10, 14)]
-	[iOS(12, 0)]
-	public static CMTime Fold(CMTime time, CMTimeRange foldRange)
-	{
-		return CMTimeFoldIntoRange(time, foldRange);
-	}
-
 	static CMTime()
 	{
-		Invalid = new CMTime((Flags)0u);
+		Invalid = new CMTime((Flags)0);
 		Indefinite = new CMTime(Flags.Valid | Flags.Indefinite);
 		PositiveInfinity = new CMTime(Flags.Valid | Flags.PositiveInfinity);
 		NegativeInfinity = new CMTime(Flags.Valid | Flags.NegativeInfinity);
 		Zero = new CMTime(Flags.Valid, 1);
-		IntPtr handle = Libraries.CoreMedia.Handle;
-		ValueKey = Dlfcn.GetStringConstant(handle, "kCMTimeValueKey");
-		ScaleKey = Dlfcn.GetStringConstant(handle, "kCMTimeScaleKey");
-		EpochKey = Dlfcn.GetStringConstant(handle, "kCMTimeEpochKey");
-		FlagsKey = Dlfcn.GetStringConstant(handle, "kCMTimeFlagsKey");
+		IntPtr intPtr = Dlfcn.dlopen("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia", 0);
+		if (intPtr != IntPtr.Zero)
+		{
+			try
+			{
+				ValueKey = Dlfcn.GetStringConstant(intPtr, "kCMTimeValueKey");
+				ScaleKey = Dlfcn.GetStringConstant(intPtr, "kCMTimeScaleKey");
+				EpochKey = Dlfcn.GetStringConstant(intPtr, "kCMTimeEpochKey");
+				FlagsKey = Dlfcn.GetStringConstant(intPtr, "kCMTimeFlagsKey");
+			}
+			finally
+			{
+				Dlfcn.dlclose(intPtr);
+			}
+		}
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern IntPtr CMTimeCopyAsDictionary(CMTime time, IntPtr allocator);
 
-	public NSDictionary ToDictionary()
-	{
-		return new NSDictionary(CMTimeCopyAsDictionary(this, IntPtr.Zero), alloced: true);
-	}
-
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern IntPtr CMTimeCopyDescription(IntPtr allocator, CMTime time);
 
 	public override string ToString()
@@ -303,15 +257,11 @@ public struct CMTime
 		return Description;
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern CMTime CMTimeMakeFromDictionary(IntPtr dict);
 
-	public static CMTime FromDictionary(NSDictionary dict)
+	public static CMTime FromDictionary(IntPtr dict)
 	{
-		if (dict == null)
-		{
-			throw new ArgumentNullException("dict");
-		}
-		return CMTimeMakeFromDictionary(dict.Handle);
+		return CMTimeMakeFromDictionary(dict);
 	}
 }

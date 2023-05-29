@@ -5,7 +5,7 @@ using ObjCRuntime;
 namespace AppKit;
 
 [Register("__monomac_internal_ActionDispatcher")]
-internal class ActionDispatcher : NSObject, INSMenuValidation, INativeObject, IDisposable
+internal class ActionDispatcher : NSObject
 {
 	private const string skey = "__monomac_internal_ActionDispatcher_activated:";
 
@@ -18,18 +18,6 @@ internal class ActionDispatcher : NSObject, INSMenuValidation, INativeObject, ID
 	public EventHandler Activated;
 
 	public EventHandler DoubleActivated;
-
-	public Func<NSMenuItem, bool> ValidateMenuItemFunc;
-
-	[Preserve]
-	public bool WorksWhenModal
-	{
-		[Export("worksWhenModal")]
-		get
-		{
-			return true;
-		}
-	}
 
 	[Preserve]
 	[Export("__monomac_internal_ActionDispatcher_activated:")]
@@ -47,13 +35,11 @@ internal class ActionDispatcher : NSObject, INSMenuValidation, INativeObject, ID
 
 	public ActionDispatcher(EventHandler handler)
 	{
-		base.IsDirectBinding = false;
 		Activated = handler;
 	}
 
 	public ActionDispatcher()
 	{
-		base.IsDirectBinding = false;
 	}
 
 	public static NSObject SetupAction(NSObject target, EventHandler handler)
@@ -62,9 +48,9 @@ internal class ActionDispatcher : NSObject, INSMenuValidation, INativeObject, ID
 		if (actionDispatcher == null)
 		{
 			actionDispatcher = new ActionDispatcher();
+			ActionDispatcher actionDispatcher2 = actionDispatcher;
+			actionDispatcher2.Activated = (EventHandler)Delegate.Combine(actionDispatcher2.Activated, handler);
 		}
-		ActionDispatcher actionDispatcher2 = actionDispatcher;
-		actionDispatcher2.Activated = (EventHandler)Delegate.Combine(actionDispatcher2.Activated, handler);
 		return actionDispatcher;
 	}
 
@@ -82,9 +68,9 @@ internal class ActionDispatcher : NSObject, INSMenuValidation, INativeObject, ID
 		if (actionDispatcher == null)
 		{
 			actionDispatcher = new ActionDispatcher();
+			ActionDispatcher actionDispatcher2 = actionDispatcher;
+			actionDispatcher2.DoubleActivated = (EventHandler)Delegate.Combine(actionDispatcher2.DoubleActivated, doubleHandler);
 		}
-		ActionDispatcher actionDispatcher2 = actionDispatcher;
-		actionDispatcher2.DoubleActivated = (EventHandler)Delegate.Combine(actionDispatcher2.DoubleActivated, doubleHandler);
 		return actionDispatcher;
 	}
 
@@ -94,14 +80,5 @@ internal class ActionDispatcher : NSObject, INSMenuValidation, INativeObject, ID
 		{
 			actionDispatcher.DoubleActivated = (EventHandler)Delegate.Remove(actionDispatcher.DoubleActivated, doubleHandler);
 		}
-	}
-
-	public bool ValidateMenuItem(NSMenuItem menuItem)
-	{
-		if (ValidateMenuItemFunc != null)
-		{
-			return ValidateMenuItemFunc(menuItem);
-		}
-		return true;
 	}
 }

@@ -1,10 +1,8 @@
-using Xamarin.Mac.System.Mac;
-
 namespace Darwin;
 
 public struct TimeSpec
 {
-	public nint Seconds;
+	public int Seconds;
 
-	public nint NanoSeconds;
+	public int NanoSeconds;
 }

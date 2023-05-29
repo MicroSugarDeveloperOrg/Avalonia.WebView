@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace Foundation;
 
-[Native]
 public enum NSNetServicesStatus : long
 {
 	UnknownError = -72000L,

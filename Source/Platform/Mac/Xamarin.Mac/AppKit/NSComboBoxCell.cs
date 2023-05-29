@@ -1,315 +1,103 @@
+using System;
 using System.ComponentModel;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
 [Register("NSComboBoxCell", true)]
 public class NSComboBoxCell : NSTextFieldCell
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddItemWithObjectValue_ = "addItemWithObjectValue:";
-
-	private static readonly IntPtr selAddItemWithObjectValue_Handle = Selector.GetHandle("addItemWithObjectValue:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddItemsWithObjectValues_ = "addItemsWithObjectValues:";
-
-	private static readonly IntPtr selAddItemsWithObjectValues_Handle = Selector.GetHandle("addItemsWithObjectValues:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCompletedString_ = "completedString:";
-
-	private static readonly IntPtr selCompletedString_Handle = Selector.GetHandle("completedString:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCompletes = "completes";
-
-	private static readonly IntPtr selCompletesHandle = Selector.GetHandle("completes");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDataSource = "dataSource";
-
-	private static readonly IntPtr selDataSourceHandle = Selector.GetHandle("dataSource");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeselectItemAtIndex_ = "deselectItemAtIndex:";
-
-	private static readonly IntPtr selDeselectItemAtIndex_Handle = Selector.GetHandle("deselectItemAtIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHasVerticalScroller = "hasVerticalScroller";
-
 	private static readonly IntPtr selHasVerticalScrollerHandle = Selector.GetHandle("hasVerticalScroller");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIndexOfItemWithObjectValue_ = "indexOfItemWithObjectValue:";
-
-	private static readonly IntPtr selIndexOfItemWithObjectValue_Handle = Selector.GetHandle("indexOfItemWithObjectValue:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIndexOfSelectedItem = "indexOfSelectedItem";
-
-	private static readonly IntPtr selIndexOfSelectedItemHandle = Selector.GetHandle("indexOfSelectedItem");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitTextCell_ = "initTextCell:";
-
-	private static readonly IntPtr selInitTextCell_Handle = Selector.GetHandle("initTextCell:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInsertItemWithObjectValue_AtIndex_ = "insertItemWithObjectValue:atIndex:";
-
-	private static readonly IntPtr selInsertItemWithObjectValue_AtIndex_Handle = Selector.GetHandle("insertItemWithObjectValue:atIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIntercellSpacing = "intercellSpacing";
-
-	private static readonly IntPtr selIntercellSpacingHandle = Selector.GetHandle("intercellSpacing");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsButtonBordered = "isButtonBordered";
-
-	private static readonly IntPtr selIsButtonBorderedHandle = Selector.GetHandle("isButtonBordered");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selItemHeight = "itemHeight";
-
-	private static readonly IntPtr selItemHeightHandle = Selector.GetHandle("itemHeight");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selItemObjectValueAtIndex_ = "itemObjectValueAtIndex:";
-
-	private static readonly IntPtr selItemObjectValueAtIndex_Handle = Selector.GetHandle("itemObjectValueAtIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNoteNumberOfItemsChanged = "noteNumberOfItemsChanged";
-
-	private static readonly IntPtr selNoteNumberOfItemsChangedHandle = Selector.GetHandle("noteNumberOfItemsChanged");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNumberOfItems = "numberOfItems";
-
-	private static readonly IntPtr selNumberOfItemsHandle = Selector.GetHandle("numberOfItems");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNumberOfVisibleItems = "numberOfVisibleItems";
-
-	private static readonly IntPtr selNumberOfVisibleItemsHandle = Selector.GetHandle("numberOfVisibleItems");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selObjectValueOfSelectedItem = "objectValueOfSelectedItem";
-
-	private static readonly IntPtr selObjectValueOfSelectedItemHandle = Selector.GetHandle("objectValueOfSelectedItem");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selObjectValues = "objectValues";
-
-	private static readonly IntPtr selObjectValuesHandle = Selector.GetHandle("objectValues");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selReloadData = "reloadData";
-
-	private static readonly IntPtr selReloadDataHandle = Selector.GetHandle("reloadData");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveAllItems = "removeAllItems";
-
-	private static readonly IntPtr selRemoveAllItemsHandle = Selector.GetHandle("removeAllItems");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveItemAtIndex_ = "removeItemAtIndex:";
-
-	private static readonly IntPtr selRemoveItemAtIndex_Handle = Selector.GetHandle("removeItemAtIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveItemWithObjectValue_ = "removeItemWithObjectValue:";
-
-	private static readonly IntPtr selRemoveItemWithObjectValue_Handle = Selector.GetHandle("removeItemWithObjectValue:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selScrollItemAtIndexToTop_ = "scrollItemAtIndexToTop:";
-
-	private static readonly IntPtr selScrollItemAtIndexToTop_Handle = Selector.GetHandle("scrollItemAtIndexToTop:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selScrollItemAtIndexToVisible_ = "scrollItemAtIndexToVisible:";
-
-	private static readonly IntPtr selScrollItemAtIndexToVisible_Handle = Selector.GetHandle("scrollItemAtIndexToVisible:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSelectItemAtIndex_ = "selectItemAtIndex:";
-
-	private static readonly IntPtr selSelectItemAtIndex_Handle = Selector.GetHandle("selectItemAtIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSelectItemWithObjectValue_ = "selectItemWithObjectValue:";
-
-	private static readonly IntPtr selSelectItemWithObjectValue_Handle = Selector.GetHandle("selectItemWithObjectValue:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetButtonBordered_ = "setButtonBordered:";
-
-	private static readonly IntPtr selSetButtonBordered_Handle = Selector.GetHandle("setButtonBordered:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetCompletes_ = "setCompletes:";
-
-	private static readonly IntPtr selSetCompletes_Handle = Selector.GetHandle("setCompletes:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDataSource_ = "setDataSource:";
-
-	private static readonly IntPtr selSetDataSource_Handle = Selector.GetHandle("setDataSource:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetHasVerticalScroller_ = "setHasVerticalScroller:";
 
 	private static readonly IntPtr selSetHasVerticalScroller_Handle = Selector.GetHandle("setHasVerticalScroller:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetIntercellSpacing_ = "setIntercellSpacing:";
+	private static readonly IntPtr selIntercellSpacingHandle = Selector.GetHandle("intercellSpacing");
 
 	private static readonly IntPtr selSetIntercellSpacing_Handle = Selector.GetHandle("setIntercellSpacing:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetItemHeight_ = "setItemHeight:";
+	private static readonly IntPtr selItemHeightHandle = Selector.GetHandle("itemHeight");
 
 	private static readonly IntPtr selSetItemHeight_Handle = Selector.GetHandle("setItemHeight:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetNumberOfVisibleItems_ = "setNumberOfVisibleItems:";
+	private static readonly IntPtr selNumberOfVisibleItemsHandle = Selector.GetHandle("numberOfVisibleItems");
 
 	private static readonly IntPtr selSetNumberOfVisibleItems_Handle = Selector.GetHandle("setNumberOfVisibleItems:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetUsesDataSource_ = "setUsesDataSource:";
+	private static readonly IntPtr selIsButtonBorderedHandle = Selector.GetHandle("isButtonBordered");
 
-	private static readonly IntPtr selSetUsesDataSource_Handle = Selector.GetHandle("setUsesDataSource:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUsesDataSource = "usesDataSource";
+	private static readonly IntPtr selSetButtonBordered_Handle = Selector.GetHandle("setButtonBordered:");
 
 	private static readonly IntPtr selUsesDataSourceHandle = Selector.GetHandle("usesDataSource");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSComboBoxCell");
+	private static readonly IntPtr selSetUsesDataSource_Handle = Selector.GetHandle("setUsesDataSource:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_DataSource_var;
+	private static readonly IntPtr selIndexOfSelectedItemHandle = Selector.GetHandle("indexOfSelectedItem");
+
+	private static readonly IntPtr selNumberOfItemsHandle = Selector.GetHandle("numberOfItems");
+
+	private static readonly IntPtr selCompletesHandle = Selector.GetHandle("completes");
+
+	private static readonly IntPtr selSetCompletes_Handle = Selector.GetHandle("setCompletes:");
+
+	private static readonly IntPtr selDataSourceHandle = Selector.GetHandle("dataSource");
+
+	private static readonly IntPtr selSetDataSource_Handle = Selector.GetHandle("setDataSource:");
+
+	private static readonly IntPtr selObjectValueOfSelectedItemHandle = Selector.GetHandle("objectValueOfSelectedItem");
+
+	private static readonly IntPtr selObjectValuesHandle = Selector.GetHandle("objectValues");
+
+	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
+
+	private static readonly IntPtr selReloadDataHandle = Selector.GetHandle("reloadData");
+
+	private static readonly IntPtr selNoteNumberOfItemsChangedHandle = Selector.GetHandle("noteNumberOfItemsChanged");
+
+	private static readonly IntPtr selScrollItemAtIndexToTop_Handle = Selector.GetHandle("scrollItemAtIndexToTop:");
+
+	private static readonly IntPtr selScrollItemAtIndexToVisible_Handle = Selector.GetHandle("scrollItemAtIndexToVisible:");
+
+	private static readonly IntPtr selSelectItemAtIndex_Handle = Selector.GetHandle("selectItemAtIndex:");
+
+	private static readonly IntPtr selDeselectItemAtIndex_Handle = Selector.GetHandle("deselectItemAtIndex:");
+
+	private static readonly IntPtr selAddItemWithObjectValue_Handle = Selector.GetHandle("addItemWithObjectValue:");
+
+	private static readonly IntPtr selAddItemsWithObjectValues_Handle = Selector.GetHandle("addItemsWithObjectValues:");
+
+	private static readonly IntPtr selInsertItemWithObjectValueAtIndex_Handle = Selector.GetHandle("insertItemWithObjectValue:atIndex:");
+
+	private static readonly IntPtr selRemoveItemWithObjectValue_Handle = Selector.GetHandle("removeItemWithObjectValue:");
+
+	private static readonly IntPtr selRemoveItemAtIndex_Handle = Selector.GetHandle("removeItemAtIndex:");
+
+	private static readonly IntPtr selRemoveAllItemsHandle = Selector.GetHandle("removeAllItems");
+
+	private static readonly IntPtr selSelectItemWithObjectValue_Handle = Selector.GetHandle("selectItemWithObjectValue:");
+
+	private static readonly IntPtr selItemObjectValueAtIndex_Handle = Selector.GetHandle("itemObjectValueAtIndex:");
+
+	private static readonly IntPtr selIndexOfItemWithObjectValue_Handle = Selector.GetHandle("indexOfItemWithObjectValue:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSComboBoxCell");
+
+	private object __mt_DataSource_var;
+
+	private object __mt_SelectedValue_var;
+
+	private object __mt_Values_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool ButtonBordered
-	{
-		[Export("isButtonBordered")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsButtonBorderedHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsButtonBorderedHandle);
-		}
-		[Export("setButtonBordered:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetButtonBordered_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetButtonBordered_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool Completes
-	{
-		[Export("completes")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selCompletesHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCompletesHandle);
-		}
-		[Export("setCompletes:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetCompletes_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetCompletes_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint Count
-	{
-		[Export("numberOfItems")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selNumberOfItemsHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selNumberOfItemsHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual INSComboBoxCellDataSource? DataSource
-	{
-		[Export("dataSource", ArgumentSemantic.Assign)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			INSComboBoxCellDataSource iNSComboBoxCellDataSource = ((!base.IsDirectBinding) ? Runtime.GetINativeObject<INSComboBoxCellDataSource>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDataSourceHandle), owns: false) : Runtime.GetINativeObject<INSComboBoxCellDataSource>(Messaging.IntPtr_objc_msgSend(base.Handle, selDataSourceHandle), owns: false));
-			MarkDirty();
-			__mt_DataSource_var = iNSComboBoxCellDataSource;
-			return iNSComboBoxCellDataSource;
-		}
-		[Export("setDataSource:", ArgumentSemantic.Assign)]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDataSource_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDataSource_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			MarkDirty();
-			__mt_DataSource_var = value;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool HasVerticalScroller
 	{
 		[Export("hasVerticalScroller")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selHasVerticalScrollerHandle);
 			}
@@ -319,7 +107,7 @@ public class NSComboBoxCell : NSTextFieldCell
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetHasVerticalScroller_Handle, value);
 			}
@@ -330,14 +118,13 @@ public class NSComboBoxCell : NSTextFieldCell
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGSize IntercellSpacing
 	{
 		[Export("intercellSpacing")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.CGSize_objc_msgSend(base.Handle, selIntercellSpacingHandle);
 			}
@@ -347,7 +134,7 @@ public class NSComboBoxCell : NSTextFieldCell
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_CGSize(base.Handle, selSetIntercellSpacing_Handle, value);
 			}
@@ -358,72 +145,94 @@ public class NSComboBoxCell : NSTextFieldCell
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nfloat ItemHeight
+	public virtual double ItemHeight
 	{
 		[Export("itemHeight")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selItemHeightHandle);
+				return Messaging.Double_objc_msgSend(base.Handle, selItemHeightHandle);
 			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selItemHeightHandle);
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selItemHeightHandle);
 		}
 		[Export("setItemHeight:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetItemHeight_Handle, value);
+				Messaging.void_objc_msgSend_Double(base.Handle, selSetItemHeight_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetItemHeight_Handle, value);
+				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetItemHeight_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint SelectedIndex
+	public virtual long VisibleItems
 	{
-		[Export("indexOfSelectedItem")]
+		[Export("numberOfVisibleItems")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nint_objc_msgSend(base.Handle, selIndexOfSelectedItemHandle);
+				return Messaging.Int64_objc_msgSend(base.Handle, selNumberOfVisibleItemsHandle);
 			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selIndexOfSelectedItemHandle);
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selNumberOfVisibleItemsHandle);
+		}
+		[Export("setNumberOfVisibleItems:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetNumberOfVisibleItems_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetNumberOfVisibleItems_Handle, value);
+			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject SelectedValue
+	public virtual bool ButtonBordered
 	{
-		[Export("objectValueOfSelectedItem")]
+		[Export("isButtonBordered")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selObjectValueOfSelectedItemHandle));
+				return Messaging.bool_objc_msgSend(base.Handle, selIsButtonBorderedHandle);
 			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selObjectValueOfSelectedItemHandle));
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsButtonBorderedHandle);
+		}
+		[Export("setButtonBordered:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetButtonBordered_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetButtonBordered_Handle, value);
+			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool UsesDataSource
 	{
 		[Export("usesDataSource")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selUsesDataSourceHandle);
 			}
@@ -433,7 +242,7 @@ public class NSComboBoxCell : NSTextFieldCell
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetUsesDataSource_Handle, value);
 			}
@@ -444,122 +253,251 @@ public class NSComboBoxCell : NSTextFieldCell
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual long SelectedIndex
+	{
+		[Export("indexOfSelectedItem")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Int64_objc_msgSend(base.Handle, selIndexOfSelectedItemHandle);
+			}
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selIndexOfSelectedItemHandle);
+		}
+	}
+
+	public virtual long Count
+	{
+		[Export("numberOfItems")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Int64_objc_msgSend(base.Handle, selNumberOfItemsHandle);
+			}
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selNumberOfItemsHandle);
+		}
+	}
+
+	public virtual bool Completes
+	{
+		[Export("completes")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selCompletesHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selCompletesHandle);
+		}
+		[Export("setCompletes:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetCompletes_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetCompletes_Handle, value);
+			}
+		}
+	}
+
+	public virtual NSComboBoxCellDataSource DataSource
+	{
+		[Export("dataSource")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSComboBoxCellDataSource)(__mt_DataSource_var = ((!IsDirectBinding) ? ((NSComboBoxCellDataSource)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDataSourceHandle))) : ((NSComboBoxCellDataSource)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDataSourceHandle)))));
+		}
+		[Export("setDataSource:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDataSource_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDataSource_Handle, value.Handle);
+			}
+			__mt_DataSource_var = value;
+		}
+	}
+
+	public virtual NSObject SelectedValue
+	{
+		[Export("objectValueOfSelectedItem")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSObject)(__mt_SelectedValue_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selObjectValueOfSelectedItemHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selObjectValueOfSelectedItemHandle))));
+		}
+	}
+
 	public virtual NSObject[] Values
 	{
 		[Export("objectValues")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selObjectValuesHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selObjectValuesHandle));
+			return (NSObject[])(__mt_Values_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selObjectValuesHandle)) : NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selObjectValuesHandle))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint VisibleItems
-	{
-		[Export("numberOfVisibleItems")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selNumberOfVisibleItemsHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selNumberOfVisibleItemsHandle);
-		}
-		[Export("setNumberOfVisibleItems:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetNumberOfVisibleItems_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetNumberOfVisibleItems_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSComboBoxCell()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSComboBoxCell(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSComboBoxCell(NSObjectFlag t)
+	public NSComboBoxCell(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSComboBoxCell(IntPtr handle)
+	public NSComboBoxCell(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("initTextCell:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public NSComboBoxCell(string aString)
+	[Export("initWithFrame:")]
+	public NSComboBoxCell(CGRect frameRect)
 		: base(NSObjectFlag.Empty)
 	{
 		NSApplication.EnsureUIThread();
-		if (aString == null)
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("aString");
-		}
-		IntPtr arg = NSString.CreateNative(aString);
-		if (base.IsDirectBinding)
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitTextCell_Handle, arg), "initTextCell:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitTextCell_Handle, arg), "initTextCell:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect);
 		}
-		NSString.ReleaseNative(arg);
+	}
+
+	[Export("reloadData")]
+	public virtual void ReloadData()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selReloadDataHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selReloadDataHandle);
+		}
+	}
+
+	[Export("noteNumberOfItemsChanged")]
+	public virtual void NoteNumberOfItemsChanged()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selNoteNumberOfItemsChangedHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selNoteNumberOfItemsChangedHandle);
+		}
+	}
+
+	[Export("scrollItemAtIndexToTop:")]
+	public virtual void ScrollItemAtIndexToTop(int scrollItemIndex)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_int(base.Handle, selScrollItemAtIndexToTop_Handle, scrollItemIndex);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selScrollItemAtIndexToTop_Handle, scrollItemIndex);
+		}
+	}
+
+	[Export("scrollItemAtIndexToVisible:")]
+	public virtual void ScrollItemAtIndexToVisible(int scrollItemIndex)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_int(base.Handle, selScrollItemAtIndexToVisible_Handle, scrollItemIndex);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selScrollItemAtIndexToVisible_Handle, scrollItemIndex);
+		}
+	}
+
+	[Export("selectItemAtIndex:")]
+	public virtual void SelectItem(int itemIndex)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_int(base.Handle, selSelectItemAtIndex_Handle, itemIndex);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSelectItemAtIndex_Handle, itemIndex);
+		}
+	}
+
+	[Export("deselectItemAtIndex:")]
+	public virtual void DeselectItem(int itemIndex)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_int(base.Handle, selDeselectItemAtIndex_Handle, itemIndex);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selDeselectItemAtIndex_Handle, itemIndex);
+		}
 	}
 
 	[Export("addItemWithObjectValue:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Add(NSObject object1)
 	{
 		NSApplication.EnsureUIThread();
@@ -567,7 +505,7 @@ public class NSComboBoxCell : NSTextFieldCell
 		{
 			throw new ArgumentNullException("object1");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddItemWithObjectValue_Handle, object1.Handle);
 		}
@@ -578,7 +516,6 @@ public class NSComboBoxCell : NSTextFieldCell
 	}
 
 	[Export("addItemsWithObjectValues:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Add(NSObject[] items)
 	{
 		NSApplication.EnsureUIThread();
@@ -587,7 +524,7 @@ public class NSComboBoxCell : NSTextFieldCell
 			throw new ArgumentNullException("items");
 		}
 		NSArray nSArray = NSArray.FromNSObjects(items);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddItemsWithObjectValues_Handle, nSArray.Handle);
 		}
@@ -596,117 +533,29 @@ public class NSComboBoxCell : NSTextFieldCell
 			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAddItemsWithObjectValues_Handle, nSArray.Handle);
 		}
 		nSArray.Dispose();
-	}
-
-	[Export("completedString:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string CompletedString(string substring)
-	{
-		NSApplication.EnsureUIThread();
-		if (substring == null)
-		{
-			throw new ArgumentNullException("substring");
-		}
-		IntPtr arg = NSString.CreateNative(substring);
-		string result = ((!base.IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCompletedString_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCompletedString_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("deselectItemAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DeselectItem(nint itemIndex)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint(base.Handle, selDeselectItemAtIndex_Handle, itemIndex);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selDeselectItemAtIndex_Handle, itemIndex);
-		}
-	}
-
-	[Export("itemObjectValueAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSComboBox GetItem(nint index)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSComboBox>(Messaging.IntPtr_objc_msgSend_nint(base.Handle, selItemObjectValueAtIndex_Handle, index));
-		}
-		return Runtime.GetNSObject<NSComboBox>(Messaging.IntPtr_objc_msgSendSuper_nint(base.SuperHandle, selItemObjectValueAtIndex_Handle, index));
-	}
-
-	[Export("indexOfItemWithObjectValue:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint IndexOf(NSObject object1)
-	{
-		NSApplication.EnsureUIThread();
-		if (object1 == null)
-		{
-			throw new ArgumentNullException("object1");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.nint_objc_msgSend_IntPtr(base.Handle, selIndexOfItemWithObjectValue_Handle, object1.Handle);
-		}
-		return Messaging.nint_objc_msgSendSuper_IntPtr(base.SuperHandle, selIndexOfItemWithObjectValue_Handle, object1.Handle);
+		_ = Values;
 	}
 
 	[Export("insertItemWithObjectValue:atIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void Insert(NSObject object1, nint index)
+	public virtual void Insert(NSObject object1, int index)
 	{
 		NSApplication.EnsureUIThread();
 		if (object1 == null)
 		{
 			throw new ArgumentNullException("object1");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_nint(base.Handle, selInsertItemWithObjectValue_AtIndex_Handle, object1.Handle, index);
+			Messaging.void_objc_msgSend_IntPtr_int(base.Handle, selInsertItemWithObjectValueAtIndex_Handle, object1.Handle, index);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_nint(base.SuperHandle, selInsertItemWithObjectValue_AtIndex_Handle, object1.Handle, index);
+			Messaging.void_objc_msgSendSuper_IntPtr_int(base.SuperHandle, selInsertItemWithObjectValueAtIndex_Handle, object1.Handle, index);
 		}
-	}
-
-	[Export("noteNumberOfItemsChanged")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void NoteNumberOfItemsChanged()
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selNoteNumberOfItemsChangedHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selNoteNumberOfItemsChangedHandle);
-		}
-	}
-
-	[Export("reloadData")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ReloadData()
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selReloadDataHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selReloadDataHandle);
-		}
+		_ = Values;
 	}
 
 	[Export("removeItemWithObjectValue:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Remove(NSObject object1)
 	{
 		NSApplication.EnsureUIThread();
@@ -714,7 +563,7 @@ public class NSComboBoxCell : NSTextFieldCell
 		{
 			throw new ArgumentNullException("object1");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveItemWithObjectValue_Handle, object1.Handle);
 		}
@@ -722,14 +571,29 @@ public class NSComboBoxCell : NSTextFieldCell
 		{
 			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveItemWithObjectValue_Handle, object1.Handle);
 		}
+		_ = Values;
+	}
+
+	[Export("removeItemAtIndex:")]
+	public virtual void RemoveAt(int index)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_int(base.Handle, selRemoveItemAtIndex_Handle, index);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selRemoveItemAtIndex_Handle, index);
+		}
+		_ = Values;
 	}
 
 	[Export("removeAllItems")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void RemoveAll()
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selRemoveAllItemsHandle);
 		}
@@ -737,55 +601,10 @@ public class NSComboBoxCell : NSTextFieldCell
 		{
 			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRemoveAllItemsHandle);
 		}
-	}
-
-	[Export("removeItemAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RemoveAt(nint index)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint(base.Handle, selRemoveItemAtIndex_Handle, index);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selRemoveItemAtIndex_Handle, index);
-		}
-	}
-
-	[Export("scrollItemAtIndexToTop:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ScrollItemAtIndexToTop(nint scrollItemIndex)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint(base.Handle, selScrollItemAtIndexToTop_Handle, scrollItemIndex);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selScrollItemAtIndexToTop_Handle, scrollItemIndex);
-		}
-	}
-
-	[Export("scrollItemAtIndexToVisible:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ScrollItemAtIndexToVisible(nint scrollItemIndex)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint(base.Handle, selScrollItemAtIndexToVisible_Handle, scrollItemIndex);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selScrollItemAtIndexToVisible_Handle, scrollItemIndex);
-		}
+		_ = Values;
 	}
 
 	[Export("selectItemWithObjectValue:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Select(NSObject object1)
 	{
 		NSApplication.EnsureUIThread();
@@ -793,7 +612,7 @@ public class NSComboBoxCell : NSTextFieldCell
 		{
 			throw new ArgumentNullException("object1");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSelectItemWithObjectValue_Handle, object1.Handle);
 		}
@@ -803,28 +622,40 @@ public class NSComboBoxCell : NSTextFieldCell
 		}
 	}
 
-	[Export("selectItemAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SelectItem(nint itemIndex)
+	[Export("itemObjectValueAtIndex:")]
+	public virtual NSComboBox GetItem(int index)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_nint(base.Handle, selSelectItemAtIndex_Handle, itemIndex);
+			return (NSComboBox)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_int(base.Handle, selItemObjectValueAtIndex_Handle, index));
 		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSelectItemAtIndex_Handle, itemIndex);
-		}
+		return (NSComboBox)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_int(base.SuperHandle, selItemObjectValueAtIndex_Handle, index));
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export("indexOfItemWithObjectValue:")]
+	public virtual long IndexOf(NSObject object1)
+	{
+		NSApplication.EnsureUIThread();
+		if (object1 == null)
+		{
+			throw new ArgumentNullException("object1");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.Int64_objc_msgSend_IntPtr(base.Handle, selIndexOfItemWithObjectValue_Handle, object1.Handle);
+		}
+		return Messaging.Int64_objc_msgSendSuper_IntPtr(base.SuperHandle, selIndexOfItemWithObjectValue_Handle, object1.Handle);
+	}
+
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
 			__mt_DataSource_var = null;
+			__mt_SelectedValue_var = null;
+			__mt_Values_var = null;
 		}
 	}
 }

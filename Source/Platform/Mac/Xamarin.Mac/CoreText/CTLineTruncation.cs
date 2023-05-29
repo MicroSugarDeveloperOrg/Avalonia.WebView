@@ -1,6 +1,9 @@
+using ObjCRuntime;
+
 namespace CoreText;
 
-public enum CTLineTruncation : uint
+[Since(3, 2)]
+public enum CTLineTruncation
 {
 	Start,
 	End,

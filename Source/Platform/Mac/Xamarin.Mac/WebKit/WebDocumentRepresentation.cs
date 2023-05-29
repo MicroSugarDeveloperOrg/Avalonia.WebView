@@ -5,72 +5,79 @@ using ObjCRuntime;
 
 namespace WebKit;
 
-[Protocol]
-[Register("WebDocumentRepresentation", false)]
+[Register("WebDocumentRepresentation", true)]
 [Model]
-[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
-public abstract class WebDocumentRepresentation : NSObject, IWebDocumentRepresentation, INativeObject, IDisposable
+public abstract class WebDocumentRepresentation : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public abstract bool CanProvideDocumentSource
 	{
 		[Export("canProvideDocumentSource")]
 		get;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public abstract string DocumentSource
 	{
 		[Export("documentSource")]
 		get;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public abstract string Title
 	{
 		[Export("title")]
 		get;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
-	protected WebDocumentRepresentation()
+	public WebDocumentRepresentation()
 		: base(NSObjectFlag.Empty)
 	{
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected WebDocumentRepresentation(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public WebDocumentRepresentation(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public WebDocumentRepresentation(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal WebDocumentRepresentation(IntPtr handle)
+	public WebDocumentRepresentation(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[Export("finishedLoadingWithDataSource:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public abstract void FinishedLoading(WebDataSource dataSource);
+	[Export("setDataSource:")]
+	public abstract void SetDataSource(WebDataSource dataSource);
 
 	[Export("receivedData:withDataSource:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public abstract void ReceivedData(NSData data, WebDataSource dataSource);
 
 	[Export("receivedError:withDataSource:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public abstract void ReceivedError(NSError error, WebDataSource dataSource);
 
-	[Export("setDataSource:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public abstract void SetDataSource(WebDataSource dataSource);
+	[Export("finishedLoadingWithDataSource:")]
+	public abstract void FinishedLoading(WebDataSource dataSource);
 }

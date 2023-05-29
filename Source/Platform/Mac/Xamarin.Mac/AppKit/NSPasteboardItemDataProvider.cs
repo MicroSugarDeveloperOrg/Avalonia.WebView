@@ -5,43 +5,55 @@ using ObjCRuntime;
 
 namespace AppKit;
 
-[Protocol]
-[Register("NSPasteboardItemDataProvider", false)]
+[Register("NSPasteboardItemDataProvider", true)]
 [Model]
-public abstract class NSPasteboardItemDataProvider : NSObject, INSPasteboardItemDataProvider, INativeObject, IDisposable
+public abstract class NSPasteboardItemDataProvider : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
-	protected NSPasteboardItemDataProvider()
+	public NSPasteboardItemDataProvider()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSPasteboardItemDataProvider(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSPasteboardItemDataProvider(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSPasteboardItemDataProvider(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSPasteboardItemDataProvider(IntPtr handle)
+	public NSPasteboardItemDataProvider(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[Export("pasteboardFinishedWithDataProvider:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public abstract void FinishedWithDataProvider(NSPasteboard pasteboard);
-
 	[Export("pasteboard:item:provideDataForType:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public abstract void ProvideDataForType(NSPasteboard pasteboard, NSPasteboardItem item, string type);
+
+	[Export("pasteboardFinishedWithDataProvider:")]
+	public abstract void FinishedWithDataProvider(NSPasteboard pasteboard);
 }

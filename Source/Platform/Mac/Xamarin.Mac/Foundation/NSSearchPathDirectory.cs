@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace Foundation;
 
-[Native]
 public enum NSSearchPathDirectory : ulong
 {
 	ApplicationDirectory = 1uL,
@@ -27,9 +24,6 @@ public enum NSSearchPathDirectory : ulong
 	PrinterDescriptionDirectory = 20uL,
 	SharedPublicDirectory = 21uL,
 	PreferencePanesDirectory = 22uL,
-	[NoWatch]
-	[NoiOS]
-	[NoTV]
 	ApplicationScriptsDirectory = 23uL,
 	ItemReplacementDirectory = 99uL,
 	AllApplicationsDirectory = 100uL,

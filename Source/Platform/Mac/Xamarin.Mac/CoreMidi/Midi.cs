@@ -1,61 +1,88 @@
+using System;
 using System.Runtime.InteropServices;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreMidi;
 
 public static class Midi
 {
-	public static nint DestinationCount => MIDIGetNumberOfDestinations();
+	public static int DestinationCount => MIDIGetNumberOfDestinations();
 
-	public static nint SourceCount => MIDIGetNumberOfSources();
+	public static int SourceCount => MIDIGetNumberOfSources();
 
-	public static nint ExternalDeviceCount => MIDIGetNumberOfExternalDevices();
+	public static int ExternalDeviceCount => MIDIGetNumberOfExternalDevices();
 
-	public static nint DeviceCount => MIDIGetNumberOfDevices();
+	public static int DeviceCount => MIDIGetNumberOfDevices();
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
 	private static extern void MIDIRestart();
+
+	[DllImport("/usr/lib/libSystem.dylib")]
+	internal static extern void memcpy(IntPtr target, IntPtr source, int n);
 
 	public static void Restart()
 	{
 		MIDIRestart();
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern nint MIDIGetNumberOfDestinations();
-
-	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern nint MIDIGetNumberOfSources();
-
-	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern nint MIDIGetNumberOfExternalDevices();
-
-	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern nint MIDIGetNumberOfDevices();
-
-	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIGetExternalDevice(nint item);
-
-	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIGetDevice(nint item);
-
-	public static MidiDevice GetDevice(nint deviceIndex)
+	internal static IntPtr EncodePackets(MidiPacket[] packets)
 	{
-		int num = MIDIGetDevice(deviceIndex);
-		if (num == 0)
+		int num = 4;
+		for (int num2 = packets.Length; num2 > 0; num2--)
 		{
-			return null;
+			int length = packets[num2 - 1].Length;
+			length = (length + 3) & -4;
+			num += 12 + length;
 		}
-		return new MidiDevice(num);
+		IntPtr intPtr = Marshal.AllocHGlobal(num);
+		Marshal.WriteInt32(intPtr, 0, packets.Length);
+		int num3 = 4;
+		for (int i = 0; i < packets.Length; i++)
+		{
+			Marshal.WriteInt64(intPtr, num3, packets[i].TimeStamp);
+			num3 += 8;
+			Marshal.WriteInt16(intPtr, num3, (short)packets[i].Length);
+			num3 += 2;
+			memcpy((IntPtr)((long)intPtr + num3), packets[i].Bytes, packets[i].Length);
+			num3 += (packets[i].Length + 3) & -4;
+		}
+		return intPtr;
 	}
 
-	public static MidiDevice GetExternalDevice(nint deviceIndex)
+	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
+	private static extern int MIDIGetNumberOfDestinations();
+
+	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
+	private static extern int MIDIGetNumberOfSources();
+
+	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
+	private static extern int MIDIGetNumberOfExternalDevices();
+
+	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
+	private static extern int MIDIGetNumberOfDevices();
+
+	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
+	private static extern IntPtr MIDIGetExternalDevice(int item);
+
+	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
+	private static extern IntPtr MIDIGetDevice(int item);
+
+	public static MidiDevice GetDevice(int deviceIndex)
 	{
-		int num = MIDIGetExternalDevice(deviceIndex);
-		if (num == 0)
+		IntPtr intPtr = MIDIGetDevice(deviceIndex);
+		if (intPtr == IntPtr.Zero)
 		{
 			return null;
 		}
-		return new MidiDevice(num);
+		return new MidiDevice(intPtr);
+	}
+
+	public static MidiDevice GetExternalDevice(int deviceIndex)
+	{
+		IntPtr intPtr = MIDIGetExternalDevice(deviceIndex);
+		if (intPtr == IntPtr.Zero)
+		{
+			return null;
+		}
+		return new MidiDevice(intPtr);
 	}
 }

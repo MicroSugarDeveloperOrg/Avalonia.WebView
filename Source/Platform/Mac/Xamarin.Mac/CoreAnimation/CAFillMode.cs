@@ -1,71 +1,14 @@
-using Foundation;
-using ObjCRuntime;
-
 namespace CoreAnimation;
 
-public static class CAFillMode
+public class CAFillMode
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Backwards;
+	public const string Removed = "removed";
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Both;
+	public const string Forwards = "forwards";
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Forwards;
+	public const string Backwards = "backwards";
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Removed;
+	public const string Both = "both";
 
-	[Field("kCAFillModeBackwards", "CoreAnimation")]
-	public static NSString Backwards
-	{
-		get
-		{
-			if (_Backwards == null)
-			{
-				_Backwards = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAFillModeBackwards");
-			}
-			return _Backwards;
-		}
-	}
-
-	[Field("kCAFillModeBoth", "CoreAnimation")]
-	public static NSString Both
-	{
-		get
-		{
-			if (_Both == null)
-			{
-				_Both = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAFillModeBoth");
-			}
-			return _Both;
-		}
-	}
-
-	[Field("kCAFillModeForwards", "CoreAnimation")]
-	public static NSString Forwards
-	{
-		get
-		{
-			if (_Forwards == null)
-			{
-				_Forwards = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAFillModeForwards");
-			}
-			return _Forwards;
-		}
-	}
-
-	[Field("kCAFillModeRemoved", "CoreAnimation")]
-	public static NSString Removed
-	{
-		get
-		{
-			if (_Removed == null)
-			{
-				_Removed = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAFillModeRemoved");
-			}
-			return _Removed;
-		}
-	}
+	public const string Frozen = "frozen";
 }

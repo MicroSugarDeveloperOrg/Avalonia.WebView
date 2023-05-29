@@ -1,143 +1,75 @@
+using System;
 using System.ComponentModel;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
 [Register("NSSearchFieldCell", true)]
 public class NSSearchFieldCell : NSTextFieldCell
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCancelButtonCell = "cancelButtonCell";
-
-	private static readonly IntPtr selCancelButtonCellHandle = Selector.GetHandle("cancelButtonCell");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCancelButtonRectForBounds_ = "cancelButtonRectForBounds:";
-
-	private static readonly IntPtr selCancelButtonRectForBounds_Handle = Selector.GetHandle("cancelButtonRectForBounds:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitTextCell_ = "initTextCell:";
-
-	private static readonly IntPtr selInitTextCell_Handle = Selector.GetHandle("initTextCell:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMaximumRecents = "maximumRecents";
-
-	private static readonly IntPtr selMaximumRecentsHandle = Selector.GetHandle("maximumRecents");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRecentSearches = "recentSearches";
-
-	private static readonly IntPtr selRecentSearchesHandle = Selector.GetHandle("recentSearches");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRecentsAutosaveName = "recentsAutosaveName";
-
-	private static readonly IntPtr selRecentsAutosaveNameHandle = Selector.GetHandle("recentsAutosaveName");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selResetCancelButtonCell = "resetCancelButtonCell";
-
-	private static readonly IntPtr selResetCancelButtonCellHandle = Selector.GetHandle("resetCancelButtonCell");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selResetSearchButtonCell = "resetSearchButtonCell";
-
-	private static readonly IntPtr selResetSearchButtonCellHandle = Selector.GetHandle("resetSearchButtonCell");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSearchButtonCell = "searchButtonCell";
-
 	private static readonly IntPtr selSearchButtonCellHandle = Selector.GetHandle("searchButtonCell");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSearchButtonRectForBounds_ = "searchButtonRectForBounds:";
-
-	private static readonly IntPtr selSearchButtonRectForBounds_Handle = Selector.GetHandle("searchButtonRectForBounds:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSearchMenuTemplate = "searchMenuTemplate";
-
-	private static readonly IntPtr selSearchMenuTemplateHandle = Selector.GetHandle("searchMenuTemplate");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSearchTextRectForBounds_ = "searchTextRectForBounds:";
-
-	private static readonly IntPtr selSearchTextRectForBounds_Handle = Selector.GetHandle("searchTextRectForBounds:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSendsSearchStringImmediately = "sendsSearchStringImmediately";
-
-	private static readonly IntPtr selSendsSearchStringImmediatelyHandle = Selector.GetHandle("sendsSearchStringImmediately");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSendsWholeSearchString = "sendsWholeSearchString";
-
-	private static readonly IntPtr selSendsWholeSearchStringHandle = Selector.GetHandle("sendsWholeSearchString");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetCancelButtonCell_ = "setCancelButtonCell:";
-
-	private static readonly IntPtr selSetCancelButtonCell_Handle = Selector.GetHandle("setCancelButtonCell:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMaximumRecents_ = "setMaximumRecents:";
-
-	private static readonly IntPtr selSetMaximumRecents_Handle = Selector.GetHandle("setMaximumRecents:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetRecentSearches_ = "setRecentSearches:";
-
-	private static readonly IntPtr selSetRecentSearches_Handle = Selector.GetHandle("setRecentSearches:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetRecentsAutosaveName_ = "setRecentsAutosaveName:";
-
-	private static readonly IntPtr selSetRecentsAutosaveName_Handle = Selector.GetHandle("setRecentsAutosaveName:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetSearchButtonCell_ = "setSearchButtonCell:";
 
 	private static readonly IntPtr selSetSearchButtonCell_Handle = Selector.GetHandle("setSearchButtonCell:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetSearchMenuTemplate_ = "setSearchMenuTemplate:";
+	private static readonly IntPtr selCancelButtonCellHandle = Selector.GetHandle("cancelButtonCell");
+
+	private static readonly IntPtr selSetCancelButtonCell_Handle = Selector.GetHandle("setCancelButtonCell:");
+
+	private static readonly IntPtr selSearchMenuTemplateHandle = Selector.GetHandle("searchMenuTemplate");
 
 	private static readonly IntPtr selSetSearchMenuTemplate_Handle = Selector.GetHandle("setSearchMenuTemplate:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetSendsSearchStringImmediately_ = "setSendsSearchStringImmediately:";
-
-	private static readonly IntPtr selSetSendsSearchStringImmediately_Handle = Selector.GetHandle("setSendsSearchStringImmediately:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetSendsWholeSearchString_ = "setSendsWholeSearchString:";
+	private static readonly IntPtr selSendsWholeSearchStringHandle = Selector.GetHandle("sendsWholeSearchString");
 
 	private static readonly IntPtr selSetSendsWholeSearchString_Handle = Selector.GetHandle("setSendsWholeSearchString:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSSearchFieldCell");
+	private static readonly IntPtr selMaximumRecentsHandle = Selector.GetHandle("maximumRecents");
+
+	private static readonly IntPtr selSetMaximumRecents_Handle = Selector.GetHandle("setMaximumRecents:");
+
+	private static readonly IntPtr selRecentSearchesHandle = Selector.GetHandle("recentSearches");
+
+	private static readonly IntPtr selSetRecentSearches_Handle = Selector.GetHandle("setRecentSearches:");
+
+	private static readonly IntPtr selRecentsAutosaveNameHandle = Selector.GetHandle("recentsAutosaveName");
+
+	private static readonly IntPtr selSetRecentsAutosaveName_Handle = Selector.GetHandle("setRecentsAutosaveName:");
+
+	private static readonly IntPtr selSendsSearchStringImmediatelyHandle = Selector.GetHandle("sendsSearchStringImmediately");
+
+	private static readonly IntPtr selSetSendsSearchStringImmediately_Handle = Selector.GetHandle("setSendsSearchStringImmediately:");
+
+	private static readonly IntPtr selResetSearchButtonCellHandle = Selector.GetHandle("resetSearchButtonCell");
+
+	private static readonly IntPtr selResetCancelButtonCellHandle = Selector.GetHandle("resetCancelButtonCell");
+
+	private static readonly IntPtr selSearchTextRectForBounds_Handle = Selector.GetHandle("searchTextRectForBounds:");
+
+	private static readonly IntPtr selSearchButtonRectForBounds_Handle = Selector.GetHandle("searchButtonRectForBounds:");
+
+	private static readonly IntPtr selCancelButtonRectForBounds_Handle = Selector.GetHandle("cancelButtonRectForBounds:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSSearchFieldCell");
+
+	private object __mt_SearchButtonCell_var;
+
+	private object __mt_CancelButtonCell_var;
+
+	private object __mt_SearchMenuTemplate_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSButtonCell CancelButtonCell
+	public virtual NSButtonCell SearchButtonCell
 	{
-		[Export("cancelButtonCell", ArgumentSemantic.Retain)]
+		[Export("searchButtonCell")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSButtonCell>(Messaging.IntPtr_objc_msgSend(base.Handle, selCancelButtonCellHandle));
-			}
-			return Runtime.GetNSObject<NSButtonCell>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCancelButtonCellHandle));
+			return (NSButtonCell)(__mt_SearchButtonCell_var = ((!IsDirectBinding) ? ((NSButtonCell)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSearchButtonCellHandle))) : ((NSButtonCell)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSearchButtonCellHandle)))));
 		}
-		[Export("setCancelButtonCell:", ArgumentSemantic.Retain)]
+		[Export("setSearchButtonCell:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -145,7 +77,35 @@ public class NSSearchFieldCell : NSTextFieldCell
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSearchButtonCell_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSearchButtonCell_Handle, value.Handle);
+			}
+			__mt_SearchButtonCell_var = value;
+		}
+	}
+
+	public virtual NSButtonCell CancelButtonCell
+	{
+		[Export("cancelButtonCell")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSButtonCell)(__mt_CancelButtonCell_var = ((!IsDirectBinding) ? ((NSButtonCell)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCancelButtonCellHandle))) : ((NSButtonCell)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCancelButtonCellHandle)))));
+		}
+		[Export("setCancelButtonCell:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCancelButtonCell_Handle, value.Handle);
 			}
@@ -153,45 +113,99 @@ public class NSSearchFieldCell : NSTextFieldCell
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCancelButtonCell_Handle, value.Handle);
 			}
+			__mt_CancelButtonCell_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint MaximumRecents
+	public virtual NSMenu SearchMenuTemplate
+	{
+		[Export("searchMenuTemplate")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSMenu)(__mt_SearchMenuTemplate_var = ((!IsDirectBinding) ? ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSearchMenuTemplateHandle))) : ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSearchMenuTemplateHandle)))));
+		}
+		[Export("setSearchMenuTemplate:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSearchMenuTemplate_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSearchMenuTemplate_Handle, value.Handle);
+			}
+			__mt_SearchMenuTemplate_var = value;
+		}
+	}
+
+	public virtual bool SendsWholeSearchString
+	{
+		[Export("sendsWholeSearchString")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selSendsWholeSearchStringHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selSendsWholeSearchStringHandle);
+		}
+		[Export("setSendsWholeSearchString:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetSendsWholeSearchString_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetSendsWholeSearchString_Handle, value);
+			}
+		}
+	}
+
+	public virtual long MaximumRecents
 	{
 		[Export("maximumRecents")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nint_objc_msgSend(base.Handle, selMaximumRecentsHandle);
+				return Messaging.Int64_objc_msgSend(base.Handle, selMaximumRecentsHandle);
 			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selMaximumRecentsHandle);
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selMaximumRecentsHandle);
 		}
 		[Export("setMaximumRecents:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetMaximumRecents_Handle, value);
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetMaximumRecents_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetMaximumRecents_Handle, value);
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetMaximumRecents_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string[] RecentSearches
 	{
 		[Export("recentSearches")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selRecentSearchesHandle));
 			}
@@ -206,7 +220,7 @@ public class NSSearchFieldCell : NSTextFieldCell
 				throw new ArgumentNullException("value");
 			}
 			NSArray nSArray = NSArray.FromStrings(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetRecentSearches_Handle, nSArray.Handle);
 			}
@@ -218,14 +232,13 @@ public class NSSearchFieldCell : NSTextFieldCell
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string RecentsAutosaveName
 	{
 		[Export("recentsAutosaveName")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selRecentsAutosaveNameHandle));
 			}
@@ -240,7 +253,7 @@ public class NSSearchFieldCell : NSTextFieldCell
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetRecentsAutosaveName_Handle, arg);
 			}
@@ -252,78 +265,13 @@ public class NSSearchFieldCell : NSTextFieldCell
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSButtonCell SearchButtonCell
-	{
-		[Export("searchButtonCell", ArgumentSemantic.Retain)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSButtonCell>(Messaging.IntPtr_objc_msgSend(base.Handle, selSearchButtonCellHandle));
-			}
-			return Runtime.GetNSObject<NSButtonCell>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSearchButtonCellHandle));
-		}
-		[Export("setSearchButtonCell:", ArgumentSemantic.Retain)]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSearchButtonCell_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSearchButtonCell_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSMenu SearchMenuTemplate
-	{
-		[Export("searchMenuTemplate", ArgumentSemantic.Retain)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSMenu>(Messaging.IntPtr_objc_msgSend(base.Handle, selSearchMenuTemplateHandle));
-			}
-			return Runtime.GetNSObject<NSMenu>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSearchMenuTemplateHandle));
-		}
-		[Export("setSearchMenuTemplate:", ArgumentSemantic.Retain)]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSearchMenuTemplate_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSearchMenuTemplate_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool SendsSearchStringImmediately
 	{
 		[Export("sendsSearchStringImmediately")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selSendsSearchStringImmediatelyHandle);
 			}
@@ -333,7 +281,7 @@ public class NSSearchFieldCell : NSTextFieldCell
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetSendsSearchStringImmediately_Handle, value);
 			}
@@ -344,144 +292,53 @@ public class NSSearchFieldCell : NSTextFieldCell
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool SendsWholeSearchString
-	{
-		[Export("sendsWholeSearchString")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selSendsWholeSearchStringHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selSendsWholeSearchStringHandle);
-		}
-		[Export("setSendsWholeSearchString:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetSendsWholeSearchString_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetSendsWholeSearchString_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSSearchFieldCell()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSSearchFieldCell(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSSearchFieldCell(NSObjectFlag t)
+	public NSSearchFieldCell(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSSearchFieldCell(IntPtr handle)
+	public NSSearchFieldCell(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("initTextCell:")]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public NSSearchFieldCell(string aString)
-		: base(NSObjectFlag.Empty)
-	{
-		NSApplication.EnsureUIThread();
-		if (aString == null)
-		{
-			throw new ArgumentNullException("aString");
-		}
-		IntPtr arg = NSString.CreateNative(aString);
-		if (base.IsDirectBinding)
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitTextCell_Handle, arg), "initTextCell:");
-		}
-		else
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitTextCell_Handle, arg), "initTextCell:");
-		}
-		NSString.ReleaseNative(arg);
-	}
-
-	[Export("cancelButtonRectForBounds:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGRect CancelButtonRectForBounds(CGRect rect)
-	{
-		NSApplication.EnsureUIThread();
-		CGRect retval;
-		if (base.IsDirectBinding)
-		{
-			Messaging.CGRect_objc_msgSend_stret_CGRect(out retval, base.Handle, selCancelButtonRectForBounds_Handle, rect);
-		}
-		else
-		{
-			Messaging.CGRect_objc_msgSendSuper_stret_CGRect(out retval, base.SuperHandle, selCancelButtonRectForBounds_Handle, rect);
-		}
-		return retval;
-	}
-
-	[Export("resetCancelButtonCell")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ResetCancelButtonCell()
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selResetCancelButtonCellHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selResetCancelButtonCellHandle);
-		}
-	}
-
 	[Export("resetSearchButtonCell")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ResetSearchButtonCell()
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selResetSearchButtonCellHandle);
 		}
@@ -491,13 +348,42 @@ public class NSSearchFieldCell : NSTextFieldCell
 		}
 	}
 
+	[Export("resetCancelButtonCell")]
+	public virtual void ResetCancelButtonCell()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selResetCancelButtonCellHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selResetCancelButtonCellHandle);
+		}
+	}
+
+	[Export("searchTextRectForBounds:")]
+	public virtual CGRect SearchTextRectForBounds(CGRect rect)
+	{
+		NSApplication.EnsureUIThread();
+		CGRect retval;
+		if (IsDirectBinding)
+		{
+			Messaging.CGRect_objc_msgSend_stret_CGRect(out retval, base.Handle, selSearchTextRectForBounds_Handle, rect);
+		}
+		else
+		{
+			Messaging.CGRect_objc_msgSendSuper_stret_CGRect(out retval, base.SuperHandle, selSearchTextRectForBounds_Handle, rect);
+		}
+		return retval;
+	}
+
 	[Export("searchButtonRectForBounds:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGRect SearchButtonRectForBounds(CGRect rect)
 	{
 		NSApplication.EnsureUIThread();
 		CGRect retval;
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.CGRect_objc_msgSend_stret_CGRect(out retval, base.Handle, selSearchButtonRectForBounds_Handle, rect);
 		}
@@ -508,20 +394,30 @@ public class NSSearchFieldCell : NSTextFieldCell
 		return retval;
 	}
 
-	[Export("searchTextRectForBounds:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGRect SearchTextRectForBounds(CGRect rect)
+	[Export("cancelButtonRectForBounds:")]
+	public virtual CGRect CancelButtonRectForBounds(CGRect rect)
 	{
 		NSApplication.EnsureUIThread();
 		CGRect retval;
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.CGRect_objc_msgSend_stret_CGRect(out retval, base.Handle, selSearchTextRectForBounds_Handle, rect);
+			Messaging.CGRect_objc_msgSend_stret_CGRect(out retval, base.Handle, selCancelButtonRectForBounds_Handle, rect);
 		}
 		else
 		{
-			Messaging.CGRect_objc_msgSendSuper_stret_CGRect(out retval, base.SuperHandle, selSearchTextRectForBounds_Handle, rect);
+			Messaging.CGRect_objc_msgSendSuper_stret_CGRect(out retval, base.SuperHandle, selCancelButtonRectForBounds_Handle, rect);
 		}
 		return retval;
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_SearchButtonCell_var = null;
+			__mt_CancelButtonCell_var = null;
+			__mt_SearchMenuTemplate_var = null;
+		}
 	}
 }

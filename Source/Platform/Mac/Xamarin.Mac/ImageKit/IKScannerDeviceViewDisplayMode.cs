@@ -1,11 +1,7 @@
-using ObjCRuntime;
-
 namespace ImageKit;
 
-[Native]
-public enum IKScannerDeviceViewDisplayMode : long
+public enum IKScannerDeviceViewDisplayMode
 {
-	None = -1L,
 	Simple,
 	Advanced
 }

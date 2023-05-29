@@ -6,79 +6,34 @@ using ObjCRuntime;
 namespace WebKit;
 
 [Register("DOMDocumentType", true)]
-[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
 public class DomDocumentType : DomNode
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEntities = "entities";
+	private static readonly IntPtr selNameHandle = Selector.GetHandle("name");
 
 	private static readonly IntPtr selEntitiesHandle = Selector.GetHandle("entities");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInternalSubset = "internalSubset";
-
-	private static readonly IntPtr selInternalSubsetHandle = Selector.GetHandle("internalSubset");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selName = "name";
-
-	private static readonly IntPtr selNameHandle = Selector.GetHandle("name");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNotations = "notations";
-
 	private static readonly IntPtr selNotationsHandle = Selector.GetHandle("notations");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPublicId = "publicId";
 
 	private static readonly IntPtr selPublicIdHandle = Selector.GetHandle("publicId");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSystemId = "systemId";
-
 	private static readonly IntPtr selSystemIdHandle = Selector.GetHandle("systemId");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("DOMDocumentType");
+	private static readonly IntPtr selInternalSubsetHandle = Selector.GetHandle("internalSubset");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("DOMDocumentType");
+
+	private object __mt_Entities_var;
+
+	private object __mt_Notations_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual DomNamedNodeMap Entities
-	{
-		[Export("entities", ArgumentSemantic.Retain)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<DomNamedNodeMap>(Messaging.IntPtr_objc_msgSend(base.Handle, selEntitiesHandle));
-			}
-			return Runtime.GetNSObject<DomNamedNodeMap>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntitiesHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string InternalSubset
-	{
-		[Export("internalSubset", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selInternalSubsetHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInternalSubsetHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new virtual string Name
 	{
-		[Export("name", ArgumentSemantic.Copy)]
+		[Export("name")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNameHandle));
 			}
@@ -86,27 +41,30 @@ public class DomDocumentType : DomNode
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual DomNamedNodeMap Notations
+	public virtual DomNamedNodeMap Entities
 	{
-		[Export("notations", ArgumentSemantic.Retain)]
+		[Export("entities")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<DomNamedNodeMap>(Messaging.IntPtr_objc_msgSend(base.Handle, selNotationsHandle));
-			}
-			return Runtime.GetNSObject<DomNamedNodeMap>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNotationsHandle));
+			return (DomNamedNodeMap)(__mt_Entities_var = ((!IsDirectBinding) ? ((DomNamedNodeMap)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntitiesHandle))) : ((DomNamedNodeMap)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selEntitiesHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string PublicId
+	public virtual DomNamedNodeMap Notations
 	{
-		[Export("publicId", ArgumentSemantic.Copy)]
+		[Export("notations")]
 		get
 		{
-			if (base.IsDirectBinding)
+			return (DomNamedNodeMap)(__mt_Notations_var = ((!IsDirectBinding) ? ((DomNamedNodeMap)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNotationsHandle))) : ((DomNamedNodeMap)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selNotationsHandle)))));
+		}
+	}
+
+	public virtual string PublicId
+	{
+		[Export("publicId")]
+		get
+		{
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPublicIdHandle));
 			}
@@ -114,13 +72,12 @@ public class DomDocumentType : DomNode
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string SystemId
 	{
-		[Export("systemId", ArgumentSemantic.Copy)]
+		[Export("systemId")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSystemIdHandle));
 			}
@@ -128,17 +85,53 @@ public class DomDocumentType : DomNode
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string InternalSubset
+	{
+		[Export("internalSubset")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selInternalSubsetHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInternalSubsetHandle));
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected DomDocumentType(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public DomDocumentType(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public DomDocumentType(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal DomDocumentType(IntPtr handle)
+	public DomDocumentType(IntPtr handle)
 		: base(handle)
 	{
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_Entities_var = null;
+			__mt_Notations_var = null;
+		}
 	}
 }

@@ -26,10 +26,6 @@ public enum AudioQueueStatus
 	InvalidTapType = -66667,
 	EnqueueDuringReset = -66632,
 	InvalidOfflineMode = -66626,
-	BufferEnqueuedTwice = -66666,
-	[iOS(10, 0)]
-	[Mac(10, 12)]
-	CannotStartYet = -66665,
 	QueueStopped = 1937010544,
 	DataFormatError = 1718449215,
 	UnsupportedProperty = 1886547824,

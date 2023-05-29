@@ -1,19 +1,23 @@
-using Xamarin.Mac.System.Mac;
-
 namespace Foundation;
 
 public struct NSRange
 {
-	public nint Location;
+	public ulong Location;
 
-	public nint Length;
+	public ulong Length;
 
-	public static readonly nint NotFound = nint.MaxValue;
+	public const ulong NotFound = ulong.MaxValue;
 
-	public NSRange(nint start, nint len)
+	public NSRange(ulong start, ulong len)
 	{
 		Location = start;
 		Length = len;
+	}
+
+	public NSRange(int start, int len)
+	{
+		Location = (ulong)start;
+		Length = (ulong)len;
 	}
 
 	public override string ToString()

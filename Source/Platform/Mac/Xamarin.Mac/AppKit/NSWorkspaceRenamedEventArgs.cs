@@ -6,19 +6,14 @@ namespace AppKit;
 
 public class NSWorkspaceRenamedEventArgs : NSNotificationEventArgs
 {
-	[Field("NSWorkspaceVolumeLocalizedNameKey", "AppKit")]
 	private static IntPtr k0;
 
-	[Field("NSWorkspaceVolumeURLKey", "AppKit")]
 	private static IntPtr k1;
 
-	[Field("NSWorkspaceVolumeOldLocalizedNameKey", "AppKit")]
 	private static IntPtr k2;
 
-	[Field("NSWorkspaceVolumeOldURLKey", "AppKit")]
 	private static IntPtr k3;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public string VolumeLocalizedName
 	{
 		get
@@ -27,12 +22,15 @@ public class NSWorkspaceRenamedEventArgs : NSNotificationEventArgs
 			{
 				k0 = Dlfcn.GetIntPtr(Libraries.AppKit.Handle, "NSWorkspaceVolumeLocalizedNameKey");
 			}
-			IntPtr usrhandle = base.Notification.UserInfo?.LowlevelObjectForKey(k0) ?? IntPtr.Zero;
-			return NSString.FromHandle(usrhandle);
+			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k0);
+			if (intPtr == IntPtr.Zero)
+			{
+				return null;
+			}
+			return NSString.FromHandle(intPtr);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSUrl VolumeUrl
 	{
 		get
@@ -41,12 +39,15 @@ public class NSWorkspaceRenamedEventArgs : NSNotificationEventArgs
 			{
 				k1 = Dlfcn.GetIntPtr(Libraries.AppKit.Handle, "NSWorkspaceVolumeURLKey");
 			}
-			IntPtr ptr = base.Notification.UserInfo?.LowlevelObjectForKey(k1) ?? IntPtr.Zero;
-			return Runtime.GetNSObject<NSUrl>(ptr);
+			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k1);
+			if (intPtr == IntPtr.Zero)
+			{
+				return null;
+			}
+			return (NSUrl)Runtime.GetNSObject(intPtr);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public string OldVolumeLocalizedName
 	{
 		get
@@ -55,12 +56,15 @@ public class NSWorkspaceRenamedEventArgs : NSNotificationEventArgs
 			{
 				k2 = Dlfcn.GetIntPtr(Libraries.AppKit.Handle, "NSWorkspaceVolumeOldLocalizedNameKey");
 			}
-			IntPtr usrhandle = base.Notification.UserInfo?.LowlevelObjectForKey(k2) ?? IntPtr.Zero;
-			return NSString.FromHandle(usrhandle);
+			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k2);
+			if (intPtr == IntPtr.Zero)
+			{
+				return null;
+			}
+			return NSString.FromHandle(intPtr);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSUrl OldVolumeUrl
 	{
 		get
@@ -69,8 +73,12 @@ public class NSWorkspaceRenamedEventArgs : NSNotificationEventArgs
 			{
 				k3 = Dlfcn.GetIntPtr(Libraries.AppKit.Handle, "NSWorkspaceVolumeOldURLKey");
 			}
-			IntPtr ptr = base.Notification.UserInfo?.LowlevelObjectForKey(k3) ?? IntPtr.Zero;
-			return Runtime.GetNSObject<NSUrl>(ptr);
+			IntPtr intPtr = base.Notification.UserInfo.LowlevelObjectForKey(k3);
+			if (intPtr == IntPtr.Zero)
+			{
+				return null;
+			}
+			return (NSUrl)Runtime.GetNSObject(intPtr);
 		}
 	}
 

@@ -5,43 +5,55 @@ using ObjCRuntime;
 
 namespace AppKit;
 
-[Protocol]
-[Register("NSPrintPanelAccessorizing", false)]
+[Register("NSPrintPanelAccessorizing", true)]
 [Model]
-public abstract class NSPrintPanelAccessorizing : NSObject, INSPrintPanelAccessorizing, INativeObject, IDisposable
+public abstract class NSPrintPanelAccessorizing : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
-	protected NSPrintPanelAccessorizing()
+	public NSPrintPanelAccessorizing()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSPrintPanelAccessorizing(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSPrintPanelAccessorizing(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSPrintPanelAccessorizing(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSPrintPanelAccessorizing(IntPtr handle)
+	public NSPrintPanelAccessorizing(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[Export("keyPathsForValuesAffectingPreview")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public abstract NSSet KeyPathsForValuesAffectingPreview();
-
 	[Export("localizedSummaryItems")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public abstract NSDictionary[] LocalizedSummaryItems();
+
+	[Export("keyPathsForValuesAffectingPreview")]
+	public abstract NSSet KeyPathsForValuesAffectingPreview();
 }

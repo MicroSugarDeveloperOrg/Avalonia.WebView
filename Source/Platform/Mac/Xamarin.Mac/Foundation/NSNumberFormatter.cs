@@ -1,815 +1,375 @@
+using System;
 using System.ComponentModel;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 
 [Register("NSNumberFormatter", true)]
 public class NSNumberFormatter : NSFormatter
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAllowsFloats = "allowsFloats";
-
-	private static readonly IntPtr selAllowsFloatsHandle = Selector.GetHandle("allowsFloats");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAlwaysShowsDecimalSeparator = "alwaysShowsDecimalSeparator";
-
-	private static readonly IntPtr selAlwaysShowsDecimalSeparatorHandle = Selector.GetHandle("alwaysShowsDecimalSeparator");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCurrencyCode = "currencyCode";
-
-	private static readonly IntPtr selCurrencyCodeHandle = Selector.GetHandle("currencyCode");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCurrencyDecimalSeparator = "currencyDecimalSeparator";
-
-	private static readonly IntPtr selCurrencyDecimalSeparatorHandle = Selector.GetHandle("currencyDecimalSeparator");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCurrencyGroupingSeparator = "currencyGroupingSeparator";
-
-	private static readonly IntPtr selCurrencyGroupingSeparatorHandle = Selector.GetHandle("currencyGroupingSeparator");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCurrencySymbol = "currencySymbol";
-
-	private static readonly IntPtr selCurrencySymbolHandle = Selector.GetHandle("currencySymbol");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDecimalSeparator = "decimalSeparator";
-
-	private static readonly IntPtr selDecimalSeparatorHandle = Selector.GetHandle("decimalSeparator");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDefaultFormatterBehavior = "defaultFormatterBehavior";
-
-	private static readonly IntPtr selDefaultFormatterBehaviorHandle = Selector.GetHandle("defaultFormatterBehavior");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExponentSymbol = "exponentSymbol";
-
-	private static readonly IntPtr selExponentSymbolHandle = Selector.GetHandle("exponentSymbol");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFormatWidth = "formatWidth";
-
-	private static readonly IntPtr selFormatWidthHandle = Selector.GetHandle("formatWidth");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFormatterBehavior = "formatterBehavior";
-
-	private static readonly IntPtr selFormatterBehaviorHandle = Selector.GetHandle("formatterBehavior");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGeneratesDecimalNumbers = "generatesDecimalNumbers";
-
-	private static readonly IntPtr selGeneratesDecimalNumbersHandle = Selector.GetHandle("generatesDecimalNumbers");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGroupingSeparator = "groupingSeparator";
-
-	private static readonly IntPtr selGroupingSeparatorHandle = Selector.GetHandle("groupingSeparator");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGroupingSize = "groupingSize";
-
-	private static readonly IntPtr selGroupingSizeHandle = Selector.GetHandle("groupingSize");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInternationalCurrencySymbol = "internationalCurrencySymbol";
-
-	private static readonly IntPtr selInternationalCurrencySymbolHandle = Selector.GetHandle("internationalCurrencySymbol");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsLenient = "isLenient";
-
-	private static readonly IntPtr selIsLenientHandle = Selector.GetHandle("isLenient");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsPartialStringValidationEnabled = "isPartialStringValidationEnabled";
-
-	private static readonly IntPtr selIsPartialStringValidationEnabledHandle = Selector.GetHandle("isPartialStringValidationEnabled");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLocale = "locale";
-
-	private static readonly IntPtr selLocaleHandle = Selector.GetHandle("locale");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLocalizedStringFromNumber_NumberStyle_ = "localizedStringFromNumber:numberStyle:";
-
-	private static readonly IntPtr selLocalizedStringFromNumber_NumberStyle_Handle = Selector.GetHandle("localizedStringFromNumber:numberStyle:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMaximum = "maximum";
-
-	private static readonly IntPtr selMaximumHandle = Selector.GetHandle("maximum");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMaximumFractionDigits = "maximumFractionDigits";
-
-	private static readonly IntPtr selMaximumFractionDigitsHandle = Selector.GetHandle("maximumFractionDigits");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMaximumIntegerDigits = "maximumIntegerDigits";
-
-	private static readonly IntPtr selMaximumIntegerDigitsHandle = Selector.GetHandle("maximumIntegerDigits");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMaximumSignificantDigits = "maximumSignificantDigits";
-
-	private static readonly IntPtr selMaximumSignificantDigitsHandle = Selector.GetHandle("maximumSignificantDigits");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMinimum = "minimum";
-
-	private static readonly IntPtr selMinimumHandle = Selector.GetHandle("minimum");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMinimumFractionDigits = "minimumFractionDigits";
-
-	private static readonly IntPtr selMinimumFractionDigitsHandle = Selector.GetHandle("minimumFractionDigits");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMinimumIntegerDigits = "minimumIntegerDigits";
-
-	private static readonly IntPtr selMinimumIntegerDigitsHandle = Selector.GetHandle("minimumIntegerDigits");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMinimumSignificantDigits = "minimumSignificantDigits";
-
-	private static readonly IntPtr selMinimumSignificantDigitsHandle = Selector.GetHandle("minimumSignificantDigits");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMinusSign = "minusSign";
-
-	private static readonly IntPtr selMinusSignHandle = Selector.GetHandle("minusSign");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMultiplier = "multiplier";
-
-	private static readonly IntPtr selMultiplierHandle = Selector.GetHandle("multiplier");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNegativeFormat = "negativeFormat";
-
-	private static readonly IntPtr selNegativeFormatHandle = Selector.GetHandle("negativeFormat");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNegativeInfinitySymbol = "negativeInfinitySymbol";
-
-	private static readonly IntPtr selNegativeInfinitySymbolHandle = Selector.GetHandle("negativeInfinitySymbol");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNegativePrefix = "negativePrefix";
-
-	private static readonly IntPtr selNegativePrefixHandle = Selector.GetHandle("negativePrefix");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNegativeSuffix = "negativeSuffix";
-
-	private static readonly IntPtr selNegativeSuffixHandle = Selector.GetHandle("negativeSuffix");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNilSymbol = "nilSymbol";
-
-	private static readonly IntPtr selNilSymbolHandle = Selector.GetHandle("nilSymbol");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNotANumberSymbol = "notANumberSymbol";
-
-	private static readonly IntPtr selNotANumberSymbolHandle = Selector.GetHandle("notANumberSymbol");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNumberFromString_ = "numberFromString:";
-
-	private static readonly IntPtr selNumberFromString_Handle = Selector.GetHandle("numberFromString:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNumberStyle = "numberStyle";
-
 	private static readonly IntPtr selNumberStyleHandle = Selector.GetHandle("numberStyle");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPaddingCharacter = "paddingCharacter";
-
-	private static readonly IntPtr selPaddingCharacterHandle = Selector.GetHandle("paddingCharacter");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPaddingPosition = "paddingPosition";
-
-	private static readonly IntPtr selPaddingPositionHandle = Selector.GetHandle("paddingPosition");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPerMillSymbol = "perMillSymbol";
-
-	private static readonly IntPtr selPerMillSymbolHandle = Selector.GetHandle("perMillSymbol");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPercentSymbol = "percentSymbol";
-
-	private static readonly IntPtr selPercentSymbolHandle = Selector.GetHandle("percentSymbol");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPlusSign = "plusSign";
-
-	private static readonly IntPtr selPlusSignHandle = Selector.GetHandle("plusSign");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPositiveFormat = "positiveFormat";
-
-	private static readonly IntPtr selPositiveFormatHandle = Selector.GetHandle("positiveFormat");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPositiveInfinitySymbol = "positiveInfinitySymbol";
-
-	private static readonly IntPtr selPositiveInfinitySymbolHandle = Selector.GetHandle("positiveInfinitySymbol");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPositivePrefix = "positivePrefix";
-
-	private static readonly IntPtr selPositivePrefixHandle = Selector.GetHandle("positivePrefix");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPositiveSuffix = "positiveSuffix";
-
-	private static readonly IntPtr selPositiveSuffixHandle = Selector.GetHandle("positiveSuffix");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRoundingIncrement = "roundingIncrement";
-
-	private static readonly IntPtr selRoundingIncrementHandle = Selector.GetHandle("roundingIncrement");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRoundingMode = "roundingMode";
-
-	private static readonly IntPtr selRoundingModeHandle = Selector.GetHandle("roundingMode");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSecondaryGroupingSize = "secondaryGroupingSize";
-
-	private static readonly IntPtr selSecondaryGroupingSizeHandle = Selector.GetHandle("secondaryGroupingSize");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAllowsFloats_ = "setAllowsFloats:";
-
-	private static readonly IntPtr selSetAllowsFloats_Handle = Selector.GetHandle("setAllowsFloats:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAlwaysShowsDecimalSeparator_ = "setAlwaysShowsDecimalSeparator:";
-
-	private static readonly IntPtr selSetAlwaysShowsDecimalSeparator_Handle = Selector.GetHandle("setAlwaysShowsDecimalSeparator:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetCurrencyCode_ = "setCurrencyCode:";
-
-	private static readonly IntPtr selSetCurrencyCode_Handle = Selector.GetHandle("setCurrencyCode:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetCurrencyDecimalSeparator_ = "setCurrencyDecimalSeparator:";
-
-	private static readonly IntPtr selSetCurrencyDecimalSeparator_Handle = Selector.GetHandle("setCurrencyDecimalSeparator:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetCurrencyGroupingSeparator_ = "setCurrencyGroupingSeparator:";
-
-	private static readonly IntPtr selSetCurrencyGroupingSeparator_Handle = Selector.GetHandle("setCurrencyGroupingSeparator:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetCurrencySymbol_ = "setCurrencySymbol:";
-
-	private static readonly IntPtr selSetCurrencySymbol_Handle = Selector.GetHandle("setCurrencySymbol:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDecimalSeparator_ = "setDecimalSeparator:";
-
-	private static readonly IntPtr selSetDecimalSeparator_Handle = Selector.GetHandle("setDecimalSeparator:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDefaultFormatterBehavior_ = "setDefaultFormatterBehavior:";
-
-	private static readonly IntPtr selSetDefaultFormatterBehavior_Handle = Selector.GetHandle("setDefaultFormatterBehavior:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetExponentSymbol_ = "setExponentSymbol:";
-
-	private static readonly IntPtr selSetExponentSymbol_Handle = Selector.GetHandle("setExponentSymbol:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetFormatWidth_ = "setFormatWidth:";
-
-	private static readonly IntPtr selSetFormatWidth_Handle = Selector.GetHandle("setFormatWidth:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetFormatterBehavior_ = "setFormatterBehavior:";
-
-	private static readonly IntPtr selSetFormatterBehavior_Handle = Selector.GetHandle("setFormatterBehavior:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetGeneratesDecimalNumbers_ = "setGeneratesDecimalNumbers:";
-
-	private static readonly IntPtr selSetGeneratesDecimalNumbers_Handle = Selector.GetHandle("setGeneratesDecimalNumbers:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetGroupingSeparator_ = "setGroupingSeparator:";
-
-	private static readonly IntPtr selSetGroupingSeparator_Handle = Selector.GetHandle("setGroupingSeparator:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetGroupingSize_ = "setGroupingSize:";
-
-	private static readonly IntPtr selSetGroupingSize_Handle = Selector.GetHandle("setGroupingSize:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetInternationalCurrencySymbol_ = "setInternationalCurrencySymbol:";
-
-	private static readonly IntPtr selSetInternationalCurrencySymbol_Handle = Selector.GetHandle("setInternationalCurrencySymbol:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetLenient_ = "setLenient:";
-
-	private static readonly IntPtr selSetLenient_Handle = Selector.GetHandle("setLenient:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetLocale_ = "setLocale:";
-
-	private static readonly IntPtr selSetLocale_Handle = Selector.GetHandle("setLocale:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMaximum_ = "setMaximum:";
-
-	private static readonly IntPtr selSetMaximum_Handle = Selector.GetHandle("setMaximum:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMaximumFractionDigits_ = "setMaximumFractionDigits:";
-
-	private static readonly IntPtr selSetMaximumFractionDigits_Handle = Selector.GetHandle("setMaximumFractionDigits:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMaximumIntegerDigits_ = "setMaximumIntegerDigits:";
-
-	private static readonly IntPtr selSetMaximumIntegerDigits_Handle = Selector.GetHandle("setMaximumIntegerDigits:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMaximumSignificantDigits_ = "setMaximumSignificantDigits:";
-
-	private static readonly IntPtr selSetMaximumSignificantDigits_Handle = Selector.GetHandle("setMaximumSignificantDigits:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMinimum_ = "setMinimum:";
-
-	private static readonly IntPtr selSetMinimum_Handle = Selector.GetHandle("setMinimum:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMinimumFractionDigits_ = "setMinimumFractionDigits:";
-
-	private static readonly IntPtr selSetMinimumFractionDigits_Handle = Selector.GetHandle("setMinimumFractionDigits:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMinimumIntegerDigits_ = "setMinimumIntegerDigits:";
-
-	private static readonly IntPtr selSetMinimumIntegerDigits_Handle = Selector.GetHandle("setMinimumIntegerDigits:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMinimumSignificantDigits_ = "setMinimumSignificantDigits:";
-
-	private static readonly IntPtr selSetMinimumSignificantDigits_Handle = Selector.GetHandle("setMinimumSignificantDigits:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMinusSign_ = "setMinusSign:";
-
-	private static readonly IntPtr selSetMinusSign_Handle = Selector.GetHandle("setMinusSign:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMultiplier_ = "setMultiplier:";
-
-	private static readonly IntPtr selSetMultiplier_Handle = Selector.GetHandle("setMultiplier:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetNegativeFormat_ = "setNegativeFormat:";
-
-	private static readonly IntPtr selSetNegativeFormat_Handle = Selector.GetHandle("setNegativeFormat:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetNegativeInfinitySymbol_ = "setNegativeInfinitySymbol:";
-
-	private static readonly IntPtr selSetNegativeInfinitySymbol_Handle = Selector.GetHandle("setNegativeInfinitySymbol:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetNegativePrefix_ = "setNegativePrefix:";
-
-	private static readonly IntPtr selSetNegativePrefix_Handle = Selector.GetHandle("setNegativePrefix:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetNegativeSuffix_ = "setNegativeSuffix:";
-
-	private static readonly IntPtr selSetNegativeSuffix_Handle = Selector.GetHandle("setNegativeSuffix:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetNilSymbol_ = "setNilSymbol:";
-
-	private static readonly IntPtr selSetNilSymbol_Handle = Selector.GetHandle("setNilSymbol:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetNotANumberSymbol_ = "setNotANumberSymbol:";
-
-	private static readonly IntPtr selSetNotANumberSymbol_Handle = Selector.GetHandle("setNotANumberSymbol:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetNumberStyle_ = "setNumberStyle:";
 
 	private static readonly IntPtr selSetNumberStyle_Handle = Selector.GetHandle("setNumberStyle:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPaddingCharacter_ = "setPaddingCharacter:";
+	private static readonly IntPtr selLocaleHandle = Selector.GetHandle("locale");
 
-	private static readonly IntPtr selSetPaddingCharacter_Handle = Selector.GetHandle("setPaddingCharacter:");
+	private static readonly IntPtr selSetLocale_Handle = Selector.GetHandle("setLocale:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPaddingPosition_ = "setPaddingPosition:";
+	private static readonly IntPtr selGeneratesDecimalNumbersHandle = Selector.GetHandle("generatesDecimalNumbers");
 
-	private static readonly IntPtr selSetPaddingPosition_Handle = Selector.GetHandle("setPaddingPosition:");
+	private static readonly IntPtr selSetGeneratesDecimalNumbers_Handle = Selector.GetHandle("setGeneratesDecimalNumbers:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPartialStringValidationEnabled_ = "setPartialStringValidationEnabled:";
+	private static readonly IntPtr selFormatterBehaviorHandle = Selector.GetHandle("formatterBehavior");
 
-	private static readonly IntPtr selSetPartialStringValidationEnabled_Handle = Selector.GetHandle("setPartialStringValidationEnabled:");
+	private static readonly IntPtr selSetFormatterBehavior_Handle = Selector.GetHandle("setFormatterBehavior:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPerMillSymbol_ = "setPerMillSymbol:";
+	private static readonly IntPtr selDefaultFormatterBehaviorHandle = Selector.GetHandle("defaultFormatterBehavior");
 
-	private static readonly IntPtr selSetPerMillSymbol_Handle = Selector.GetHandle("setPerMillSymbol:");
+	private static readonly IntPtr selSetDefaultFormatterBehavior_Handle = Selector.GetHandle("setDefaultFormatterBehavior:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPercentSymbol_ = "setPercentSymbol:";
+	private static readonly IntPtr selNegativeFormatHandle = Selector.GetHandle("negativeFormat");
 
-	private static readonly IntPtr selSetPercentSymbol_Handle = Selector.GetHandle("setPercentSymbol:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPlusSign_ = "setPlusSign:";
-
-	private static readonly IntPtr selSetPlusSign_Handle = Selector.GetHandle("setPlusSign:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPositiveFormat_ = "setPositiveFormat:";
-
-	private static readonly IntPtr selSetPositiveFormat_Handle = Selector.GetHandle("setPositiveFormat:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPositiveInfinitySymbol_ = "setPositiveInfinitySymbol:";
-
-	private static readonly IntPtr selSetPositiveInfinitySymbol_Handle = Selector.GetHandle("setPositiveInfinitySymbol:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPositivePrefix_ = "setPositivePrefix:";
-
-	private static readonly IntPtr selSetPositivePrefix_Handle = Selector.GetHandle("setPositivePrefix:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPositiveSuffix_ = "setPositiveSuffix:";
-
-	private static readonly IntPtr selSetPositiveSuffix_Handle = Selector.GetHandle("setPositiveSuffix:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetRoundingIncrement_ = "setRoundingIncrement:";
-
-	private static readonly IntPtr selSetRoundingIncrement_Handle = Selector.GetHandle("setRoundingIncrement:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetRoundingMode_ = "setRoundingMode:";
-
-	private static readonly IntPtr selSetRoundingMode_Handle = Selector.GetHandle("setRoundingMode:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetSecondaryGroupingSize_ = "setSecondaryGroupingSize:";
-
-	private static readonly IntPtr selSetSecondaryGroupingSize_Handle = Selector.GetHandle("setSecondaryGroupingSize:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetTextAttributesForNegativeInfinity_ = "setTextAttributesForNegativeInfinity:";
-
-	private static readonly IntPtr selSetTextAttributesForNegativeInfinity_Handle = Selector.GetHandle("setTextAttributesForNegativeInfinity:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetTextAttributesForNegativeValues_ = "setTextAttributesForNegativeValues:";
-
-	private static readonly IntPtr selSetTextAttributesForNegativeValues_Handle = Selector.GetHandle("setTextAttributesForNegativeValues:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetTextAttributesForNil_ = "setTextAttributesForNil:";
-
-	private static readonly IntPtr selSetTextAttributesForNil_Handle = Selector.GetHandle("setTextAttributesForNil:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetTextAttributesForNotANumber_ = "setTextAttributesForNotANumber:";
-
-	private static readonly IntPtr selSetTextAttributesForNotANumber_Handle = Selector.GetHandle("setTextAttributesForNotANumber:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetTextAttributesForPositiveInfinity_ = "setTextAttributesForPositiveInfinity:";
-
-	private static readonly IntPtr selSetTextAttributesForPositiveInfinity_Handle = Selector.GetHandle("setTextAttributesForPositiveInfinity:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetTextAttributesForPositiveValues_ = "setTextAttributesForPositiveValues:";
-
-	private static readonly IntPtr selSetTextAttributesForPositiveValues_Handle = Selector.GetHandle("setTextAttributesForPositiveValues:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetTextAttributesForZero_ = "setTextAttributesForZero:";
-
-	private static readonly IntPtr selSetTextAttributesForZero_Handle = Selector.GetHandle("setTextAttributesForZero:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetUsesGroupingSeparator_ = "setUsesGroupingSeparator:";
-
-	private static readonly IntPtr selSetUsesGroupingSeparator_Handle = Selector.GetHandle("setUsesGroupingSeparator:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetUsesSignificantDigits_ = "setUsesSignificantDigits:";
-
-	private static readonly IntPtr selSetUsesSignificantDigits_Handle = Selector.GetHandle("setUsesSignificantDigits:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetZeroSymbol_ = "setZeroSymbol:";
-
-	private static readonly IntPtr selSetZeroSymbol_Handle = Selector.GetHandle("setZeroSymbol:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStringFromNumber_ = "stringFromNumber:";
-
-	private static readonly IntPtr selStringFromNumber_Handle = Selector.GetHandle("stringFromNumber:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTextAttributesForNegativeInfinity = "textAttributesForNegativeInfinity";
-
-	private static readonly IntPtr selTextAttributesForNegativeInfinityHandle = Selector.GetHandle("textAttributesForNegativeInfinity");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTextAttributesForNegativeValues = "textAttributesForNegativeValues";
+	private static readonly IntPtr selSetNegativeFormat_Handle = Selector.GetHandle("setNegativeFormat:");
 
 	private static readonly IntPtr selTextAttributesForNegativeValuesHandle = Selector.GetHandle("textAttributesForNegativeValues");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTextAttributesForNil = "textAttributesForNil";
+	private static readonly IntPtr selSetTextAttributesForNegativeValues_Handle = Selector.GetHandle("setTextAttributesForNegativeValues:");
 
-	private static readonly IntPtr selTextAttributesForNilHandle = Selector.GetHandle("textAttributesForNil");
+	private static readonly IntPtr selPositiveFormatHandle = Selector.GetHandle("positiveFormat");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTextAttributesForNotANumber = "textAttributesForNotANumber";
-
-	private static readonly IntPtr selTextAttributesForNotANumberHandle = Selector.GetHandle("textAttributesForNotANumber");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTextAttributesForPositiveInfinity = "textAttributesForPositiveInfinity";
-
-	private static readonly IntPtr selTextAttributesForPositiveInfinityHandle = Selector.GetHandle("textAttributesForPositiveInfinity");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTextAttributesForPositiveValues = "textAttributesForPositiveValues";
+	private static readonly IntPtr selSetPositiveFormat_Handle = Selector.GetHandle("setPositiveFormat:");
 
 	private static readonly IntPtr selTextAttributesForPositiveValuesHandle = Selector.GetHandle("textAttributesForPositiveValues");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTextAttributesForZero = "textAttributesForZero";
+	private static readonly IntPtr selSetTextAttributesForPositiveValues_Handle = Selector.GetHandle("setTextAttributesForPositiveValues:");
 
-	private static readonly IntPtr selTextAttributesForZeroHandle = Selector.GetHandle("textAttributesForZero");
+	private static readonly IntPtr selAllowsFloatsHandle = Selector.GetHandle("allowsFloats");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUsesGroupingSeparator = "usesGroupingSeparator";
+	private static readonly IntPtr selSetAllowsFloats_Handle = Selector.GetHandle("setAllowsFloats:");
+
+	private static readonly IntPtr selDecimalSeparatorHandle = Selector.GetHandle("decimalSeparator");
+
+	private static readonly IntPtr selSetDecimalSeparator_Handle = Selector.GetHandle("setDecimalSeparator:");
+
+	private static readonly IntPtr selAlwaysShowsDecimalSeparatorHandle = Selector.GetHandle("alwaysShowsDecimalSeparator");
+
+	private static readonly IntPtr selSetAlwaysShowsDecimalSeparator_Handle = Selector.GetHandle("setAlwaysShowsDecimalSeparator:");
+
+	private static readonly IntPtr selCurrencyDecimalSeparatorHandle = Selector.GetHandle("currencyDecimalSeparator");
+
+	private static readonly IntPtr selSetCurrencyDecimalSeparator_Handle = Selector.GetHandle("setCurrencyDecimalSeparator:");
 
 	private static readonly IntPtr selUsesGroupingSeparatorHandle = Selector.GetHandle("usesGroupingSeparator");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUsesSignificantDigits = "usesSignificantDigits";
+	private static readonly IntPtr selSetUsesGroupingSeparator_Handle = Selector.GetHandle("setUsesGroupingSeparator:");
 
-	private static readonly IntPtr selUsesSignificantDigitsHandle = Selector.GetHandle("usesSignificantDigits");
+	private static readonly IntPtr selGroupingSeparatorHandle = Selector.GetHandle("groupingSeparator");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selZeroSymbol = "zeroSymbol";
+	private static readonly IntPtr selSetGroupingSeparator_Handle = Selector.GetHandle("setGroupingSeparator:");
 
 	private static readonly IntPtr selZeroSymbolHandle = Selector.GetHandle("zeroSymbol");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSNumberFormatter");
+	private static readonly IntPtr selSetZeroSymbol_Handle = Selector.GetHandle("setZeroSymbol:");
+
+	private static readonly IntPtr selTextAttributesForZeroHandle = Selector.GetHandle("textAttributesForZero");
+
+	private static readonly IntPtr selSetTextAttributesForZero_Handle = Selector.GetHandle("setTextAttributesForZero:");
+
+	private static readonly IntPtr selNilSymbolHandle = Selector.GetHandle("nilSymbol");
+
+	private static readonly IntPtr selSetNilSymbol_Handle = Selector.GetHandle("setNilSymbol:");
+
+	private static readonly IntPtr selTextAttributesForNilHandle = Selector.GetHandle("textAttributesForNil");
+
+	private static readonly IntPtr selSetTextAttributesForNil_Handle = Selector.GetHandle("setTextAttributesForNil:");
+
+	private static readonly IntPtr selNotANumberSymbolHandle = Selector.GetHandle("notANumberSymbol");
+
+	private static readonly IntPtr selSetNotANumberSymbol_Handle = Selector.GetHandle("setNotANumberSymbol:");
+
+	private static readonly IntPtr selTextAttributesForNotANumberHandle = Selector.GetHandle("textAttributesForNotANumber");
+
+	private static readonly IntPtr selSetTextAttributesForNotANumber_Handle = Selector.GetHandle("setTextAttributesForNotANumber:");
+
+	private static readonly IntPtr selPositiveInfinitySymbolHandle = Selector.GetHandle("positiveInfinitySymbol");
+
+	private static readonly IntPtr selSetPositiveInfinitySymbol_Handle = Selector.GetHandle("setPositiveInfinitySymbol:");
+
+	private static readonly IntPtr selTextAttributesForPositiveInfinityHandle = Selector.GetHandle("textAttributesForPositiveInfinity");
+
+	private static readonly IntPtr selSetTextAttributesForPositiveInfinity_Handle = Selector.GetHandle("setTextAttributesForPositiveInfinity:");
+
+	private static readonly IntPtr selNegativeInfinitySymbolHandle = Selector.GetHandle("negativeInfinitySymbol");
+
+	private static readonly IntPtr selSetNegativeInfinitySymbol_Handle = Selector.GetHandle("setNegativeInfinitySymbol:");
+
+	private static readonly IntPtr selTextAttributesForNegativeInfinityHandle = Selector.GetHandle("textAttributesForNegativeInfinity");
+
+	private static readonly IntPtr selSetTextAttributesForNegativeInfinity_Handle = Selector.GetHandle("setTextAttributesForNegativeInfinity:");
+
+	private static readonly IntPtr selPositivePrefixHandle = Selector.GetHandle("positivePrefix");
+
+	private static readonly IntPtr selSetPositivePrefix_Handle = Selector.GetHandle("setPositivePrefix:");
+
+	private static readonly IntPtr selPositiveSuffixHandle = Selector.GetHandle("positiveSuffix");
+
+	private static readonly IntPtr selSetPositiveSuffix_Handle = Selector.GetHandle("setPositiveSuffix:");
+
+	private static readonly IntPtr selNegativePrefixHandle = Selector.GetHandle("negativePrefix");
+
+	private static readonly IntPtr selSetNegativePrefix_Handle = Selector.GetHandle("setNegativePrefix:");
+
+	private static readonly IntPtr selNegativeSuffixHandle = Selector.GetHandle("negativeSuffix");
+
+	private static readonly IntPtr selSetNegativeSuffix_Handle = Selector.GetHandle("setNegativeSuffix:");
+
+	private static readonly IntPtr selCurrencyCodeHandle = Selector.GetHandle("currencyCode");
+
+	private static readonly IntPtr selSetCurrencyCode_Handle = Selector.GetHandle("setCurrencyCode:");
+
+	private static readonly IntPtr selCurrencySymbolHandle = Selector.GetHandle("currencySymbol");
+
+	private static readonly IntPtr selSetCurrencySymbol_Handle = Selector.GetHandle("setCurrencySymbol:");
+
+	private static readonly IntPtr selInternationalCurrencySymbolHandle = Selector.GetHandle("internationalCurrencySymbol");
+
+	private static readonly IntPtr selSetInternationalCurrencySymbol_Handle = Selector.GetHandle("setInternationalCurrencySymbol:");
+
+	private static readonly IntPtr selPercentSymbolHandle = Selector.GetHandle("percentSymbol");
+
+	private static readonly IntPtr selSetPercentSymbol_Handle = Selector.GetHandle("setPercentSymbol:");
+
+	private static readonly IntPtr selPerMillSymbolHandle = Selector.GetHandle("perMillSymbol");
+
+	private static readonly IntPtr selSetPerMillSymbol_Handle = Selector.GetHandle("setPerMillSymbol:");
+
+	private static readonly IntPtr selMinusSignHandle = Selector.GetHandle("minusSign");
+
+	private static readonly IntPtr selSetMinusSign_Handle = Selector.GetHandle("setMinusSign:");
+
+	private static readonly IntPtr selPlusSignHandle = Selector.GetHandle("plusSign");
+
+	private static readonly IntPtr selSetPlusSign_Handle = Selector.GetHandle("setPlusSign:");
+
+	private static readonly IntPtr selExponentSymbolHandle = Selector.GetHandle("exponentSymbol");
+
+	private static readonly IntPtr selSetExponentSymbol_Handle = Selector.GetHandle("setExponentSymbol:");
+
+	private static readonly IntPtr selGroupingSizeHandle = Selector.GetHandle("groupingSize");
+
+	private static readonly IntPtr selSetGroupingSize_Handle = Selector.GetHandle("setGroupingSize:");
+
+	private static readonly IntPtr selSecondaryGroupingSizeHandle = Selector.GetHandle("secondaryGroupingSize");
+
+	private static readonly IntPtr selSetSecondaryGroupingSize_Handle = Selector.GetHandle("setSecondaryGroupingSize:");
+
+	private static readonly IntPtr selMultiplierHandle = Selector.GetHandle("multiplier");
+
+	private static readonly IntPtr selSetMultiplier_Handle = Selector.GetHandle("setMultiplier:");
+
+	private static readonly IntPtr selFormatWidthHandle = Selector.GetHandle("formatWidth");
+
+	private static readonly IntPtr selSetFormatWidth_Handle = Selector.GetHandle("setFormatWidth:");
+
+	private static readonly IntPtr selPaddingCharacterHandle = Selector.GetHandle("paddingCharacter");
+
+	private static readonly IntPtr selSetPaddingCharacter_Handle = Selector.GetHandle("setPaddingCharacter:");
+
+	private static readonly IntPtr selPaddingPositionHandle = Selector.GetHandle("paddingPosition");
+
+	private static readonly IntPtr selSetPaddingPosition_Handle = Selector.GetHandle("setPaddingPosition:");
+
+	private static readonly IntPtr selRoundingModeHandle = Selector.GetHandle("roundingMode");
+
+	private static readonly IntPtr selSetRoundingMode_Handle = Selector.GetHandle("setRoundingMode:");
+
+	private static readonly IntPtr selRoundingIncrementHandle = Selector.GetHandle("roundingIncrement");
+
+	private static readonly IntPtr selSetRoundingIncrement_Handle = Selector.GetHandle("setRoundingIncrement:");
+
+	private static readonly IntPtr selMinimumIntegerDigitsHandle = Selector.GetHandle("minimumIntegerDigits");
+
+	private static readonly IntPtr selSetMinimumIntegerDigits_Handle = Selector.GetHandle("setMinimumIntegerDigits:");
+
+	private static readonly IntPtr selMaximumIntegerDigitsHandle = Selector.GetHandle("maximumIntegerDigits");
+
+	private static readonly IntPtr selSetMaximumIntegerDigits_Handle = Selector.GetHandle("setMaximumIntegerDigits:");
+
+	private static readonly IntPtr selMinimumFractionDigitsHandle = Selector.GetHandle("minimumFractionDigits");
+
+	private static readonly IntPtr selSetMinimumFractionDigits_Handle = Selector.GetHandle("setMinimumFractionDigits:");
+
+	private static readonly IntPtr selMaximumFractionDigitsHandle = Selector.GetHandle("maximumFractionDigits");
+
+	private static readonly IntPtr selSetMaximumFractionDigits_Handle = Selector.GetHandle("setMaximumFractionDigits:");
+
+	private static readonly IntPtr selMinimumHandle = Selector.GetHandle("minimum");
+
+	private static readonly IntPtr selSetMinimum_Handle = Selector.GetHandle("setMinimum:");
+
+	private static readonly IntPtr selMaximumHandle = Selector.GetHandle("maximum");
+
+	private static readonly IntPtr selSetMaximum_Handle = Selector.GetHandle("setMaximum:");
+
+	private static readonly IntPtr selCurrencyGroupingSeparatorHandle = Selector.GetHandle("currencyGroupingSeparator");
+
+	private static readonly IntPtr selSetCurrencyGroupingSeparator_Handle = Selector.GetHandle("setCurrencyGroupingSeparator:");
+
+	private static readonly IntPtr selIsLenientHandle = Selector.GetHandle("isLenient");
+
+	private static readonly IntPtr selSetLenient_Handle = Selector.GetHandle("setLenient:");
+
+	private static readonly IntPtr selUsesSignificantDigitsHandle = Selector.GetHandle("usesSignificantDigits");
+
+	private static readonly IntPtr selSetUsesSignificantDigits_Handle = Selector.GetHandle("setUsesSignificantDigits:");
+
+	private static readonly IntPtr selMinimumSignificantDigitsHandle = Selector.GetHandle("minimumSignificantDigits");
+
+	private static readonly IntPtr selSetMinimumSignificantDigits_Handle = Selector.GetHandle("setMinimumSignificantDigits:");
+
+	private static readonly IntPtr selMaximumSignificantDigitsHandle = Selector.GetHandle("maximumSignificantDigits");
+
+	private static readonly IntPtr selSetMaximumSignificantDigits_Handle = Selector.GetHandle("setMaximumSignificantDigits:");
+
+	private static readonly IntPtr selIsPartialStringValidationEnabledHandle = Selector.GetHandle("isPartialStringValidationEnabled");
+
+	private static readonly IntPtr selSetPartialStringValidationEnabled_Handle = Selector.GetHandle("setPartialStringValidationEnabled:");
+
+	private static readonly IntPtr selStringFromNumber_Handle = Selector.GetHandle("stringFromNumber:");
+
+	private static readonly IntPtr selNumberFromString_Handle = Selector.GetHandle("numberFromString:");
+
+	private static readonly IntPtr selLocalizedStringFromNumberNumberStyle_Handle = Selector.GetHandle("localizedStringFromNumber:numberStyle:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSNumberFormatter");
+
+	private object __mt_Locale_var;
+
+	private object __mt_TextAttributesForNegativeValues_var;
+
+	private object __mt_TextAttributesForPositiveValues_var;
+
+	private object __mt_TextAttributesForZero_var;
+
+	private object __mt_TextAttributesForNil_var;
+
+	private object __mt_TextAttributesForNotANumber_var;
+
+	private object __mt_TextAttributesForPositiveInfinity_var;
+
+	private object __mt_TextAttributesForNegativeInfinity_var;
+
+	private object __mt_Multiplier_var;
+
+	private object __mt_RoundingIncrement_var;
+
+	private object __mt_Minimum_var;
+
+	private object __mt_Maximum_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AllowsFloats
+	public virtual NSNumberFormatterStyle NumberStyle
 	{
-		[Export("allowsFloats")]
+		[Export("numberStyle")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAllowsFloatsHandle);
+				return (NSNumberFormatterStyle)Messaging.UInt64_objc_msgSend(base.Handle, selNumberStyleHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAllowsFloatsHandle);
+			return (NSNumberFormatterStyle)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selNumberStyleHandle);
 		}
-		[Export("setAllowsFloats:")]
+		[Export("setNumberStyle:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsFloats_Handle, value);
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetNumberStyle_Handle, (ulong)value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAllowsFloats_Handle, value);
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetNumberStyle_Handle, (ulong)value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AlwaysShowsDecimalSeparator
+	public virtual NSLocale Locale
 	{
-		[Export("alwaysShowsDecimalSeparator")]
+		[Export("locale")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAlwaysShowsDecimalSeparatorHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAlwaysShowsDecimalSeparatorHandle);
+			return (NSLocale)(__mt_Locale_var = ((!IsDirectBinding) ? ((NSLocale)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocaleHandle))) : ((NSLocale)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selLocaleHandle)))));
 		}
-		[Export("setAlwaysShowsDecimalSeparator:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAlwaysShowsDecimalSeparator_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAlwaysShowsDecimalSeparator_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string CurrencyCode
-	{
-		[Export("currencyCode")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrencyCodeHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrencyCodeHandle));
-		}
-		[Export("setCurrencyCode:")]
+		[Export("setLocale:")]
 		set
 		{
 			if (value == null)
 			{
 				throw new ArgumentNullException("value");
 			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCurrencyCode_Handle, arg);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetLocale_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCurrencyCode_Handle, arg);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetLocale_Handle, value.Handle);
 			}
-			NSString.ReleaseNative(arg);
+			__mt_Locale_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string CurrencyDecimalSeparator
+	public virtual bool GeneratesDecimalNumbers
 	{
-		[Export("currencyDecimalSeparator")]
+		[Export("generatesDecimalNumbers")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrencyDecimalSeparatorHandle));
+				return Messaging.bool_objc_msgSend(base.Handle, selGeneratesDecimalNumbersHandle);
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrencyDecimalSeparatorHandle));
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selGeneratesDecimalNumbersHandle);
 		}
-		[Export("setCurrencyDecimalSeparator:")]
+		[Export("setGeneratesDecimalNumbers:")]
 		set
 		{
-			if (value == null)
+			if (IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCurrencyDecimalSeparator_Handle, arg);
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetGeneratesDecimalNumbers_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCurrencyDecimalSeparator_Handle, arg);
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetGeneratesDecimalNumbers_Handle, value);
 			}
-			NSString.ReleaseNative(arg);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string CurrencyGroupingSeparator
+	public virtual NSNumberFormatterBehavior FormatterBehavior
 	{
-		[Export("currencyGroupingSeparator")]
+		[Export("formatterBehavior")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrencyGroupingSeparatorHandle));
+				return (NSNumberFormatterBehavior)Messaging.UInt64_objc_msgSend(base.Handle, selFormatterBehaviorHandle);
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrencyGroupingSeparatorHandle));
+			return (NSNumberFormatterBehavior)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selFormatterBehaviorHandle);
 		}
-		[Export("setCurrencyGroupingSeparator:")]
+		[Export("setFormatterBehavior:")]
 		set
 		{
-			if (value == null)
+			if (IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCurrencyGroupingSeparator_Handle, arg);
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetFormatterBehavior_Handle, (ulong)value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCurrencyGroupingSeparator_Handle, arg);
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetFormatterBehavior_Handle, (ulong)value);
 			}
-			NSString.ReleaseNative(arg);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string CurrencySymbol
-	{
-		[Export("currencySymbol")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrencySymbolHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrencySymbolHandle));
-		}
-		[Export("setCurrencySymbol:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCurrencySymbol_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCurrencySymbol_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string DecimalSeparator
-	{
-		[Export("decimalSeparator")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDecimalSeparatorHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDecimalSeparatorHandle));
-		}
-		[Export("setDecimalSeparator:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDecimalSeparator_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDecimalSeparator_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSNumberFormatterBehavior DefaultFormatterBehavior
 	{
 		[Export("defaultFormatterBehavior")]
@@ -824,535 +384,12 @@ public class NSNumberFormatter : NSFormatter
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string ExponentSymbol
-	{
-		[Export("exponentSymbol")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selExponentSymbolHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selExponentSymbolHandle));
-		}
-		[Export("setExponentSymbol:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetExponentSymbol_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetExponentSymbol_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nuint FormatWidth
-	{
-		[Export("formatWidth")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selFormatWidthHandle);
-			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selFormatWidthHandle);
-		}
-		[Export("setFormatWidth:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nuint(base.Handle, selSetFormatWidth_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nuint(base.SuperHandle, selSetFormatWidth_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSNumberFormatterBehavior FormatterBehavior
-	{
-		[Export("formatterBehavior")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return (NSNumberFormatterBehavior)Messaging.UInt64_objc_msgSend(base.Handle, selFormatterBehaviorHandle);
-			}
-			return (NSNumberFormatterBehavior)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selFormatterBehaviorHandle);
-		}
-		[Export("setFormatterBehavior:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetFormatterBehavior_Handle, (ulong)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetFormatterBehavior_Handle, (ulong)value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool GeneratesDecimalNumbers
-	{
-		[Export("generatesDecimalNumbers")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selGeneratesDecimalNumbersHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selGeneratesDecimalNumbersHandle);
-		}
-		[Export("setGeneratesDecimalNumbers:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetGeneratesDecimalNumbers_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetGeneratesDecimalNumbers_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string GroupingSeparator
-	{
-		[Export("groupingSeparator")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selGroupingSeparatorHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selGroupingSeparatorHandle));
-		}
-		[Export("setGroupingSeparator:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetGroupingSeparator_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetGroupingSeparator_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nuint GroupingSize
-	{
-		[Export("groupingSize")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selGroupingSizeHandle);
-			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selGroupingSizeHandle);
-		}
-		[Export("setGroupingSize:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nuint(base.Handle, selSetGroupingSize_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nuint(base.SuperHandle, selSetGroupingSize_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string InternationalCurrencySymbol
-	{
-		[Export("internationalCurrencySymbol")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selInternationalCurrencySymbolHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInternationalCurrencySymbolHandle));
-		}
-		[Export("setInternationalCurrencySymbol:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetInternationalCurrencySymbol_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetInternationalCurrencySymbol_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool Lenient
-	{
-		[Export("isLenient")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsLenientHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsLenientHandle);
-		}
-		[Export("setLenient:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetLenient_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetLenient_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSLocale Locale
-	{
-		[Export("locale", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSLocale>(Messaging.IntPtr_objc_msgSend(base.Handle, selLocaleHandle));
-			}
-			return Runtime.GetNSObject<NSLocale>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocaleHandle));
-		}
-		[Export("setLocale:", ArgumentSemantic.Copy)]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetLocale_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetLocale_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSNumber? Maximum
-	{
-		[Export("maximum", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selMaximumHandle));
-			}
-			return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMaximumHandle));
-		}
-		[Export("setMaximum:", ArgumentSemantic.Copy)]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMaximum_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMaximum_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint MaximumFractionDigits
-	{
-		[Export("maximumFractionDigits")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selMaximumFractionDigitsHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selMaximumFractionDigitsHandle);
-		}
-		[Export("setMaximumFractionDigits:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetMaximumFractionDigits_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetMaximumFractionDigits_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint MaximumIntegerDigits
-	{
-		[Export("maximumIntegerDigits")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selMaximumIntegerDigitsHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selMaximumIntegerDigitsHandle);
-		}
-		[Export("setMaximumIntegerDigits:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetMaximumIntegerDigits_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetMaximumIntegerDigits_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nuint MaximumSignificantDigits
-	{
-		[Export("maximumSignificantDigits")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selMaximumSignificantDigitsHandle);
-			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selMaximumSignificantDigitsHandle);
-		}
-		[Export("setMaximumSignificantDigits:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nuint(base.Handle, selSetMaximumSignificantDigits_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nuint(base.SuperHandle, selSetMaximumSignificantDigits_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSNumber? Minimum
-	{
-		[Export("minimum", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selMinimumHandle));
-			}
-			return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMinimumHandle));
-		}
-		[Export("setMinimum:", ArgumentSemantic.Copy)]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMinimum_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMinimum_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint MinimumFractionDigits
-	{
-		[Export("minimumFractionDigits")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selMinimumFractionDigitsHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selMinimumFractionDigitsHandle);
-		}
-		[Export("setMinimumFractionDigits:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetMinimumFractionDigits_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetMinimumFractionDigits_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint MinimumIntegerDigits
-	{
-		[Export("minimumIntegerDigits")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selMinimumIntegerDigitsHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selMinimumIntegerDigitsHandle);
-		}
-		[Export("setMinimumIntegerDigits:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetMinimumIntegerDigits_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetMinimumIntegerDigits_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nuint MinimumSignificantDigits
-	{
-		[Export("minimumSignificantDigits")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selMinimumSignificantDigitsHandle);
-			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selMinimumSignificantDigitsHandle);
-		}
-		[Export("setMinimumSignificantDigits:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nuint(base.Handle, selSetMinimumSignificantDigits_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nuint(base.SuperHandle, selSetMinimumSignificantDigits_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string MinusSign
-	{
-		[Export("minusSign")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMinusSignHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMinusSignHandle));
-		}
-		[Export("setMinusSign:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMinusSign_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMinusSign_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSNumber? Multiplier
-	{
-		[Export("multiplier", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selMultiplierHandle));
-			}
-			return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMultiplierHandle));
-		}
-		[Export("setMultiplier:", ArgumentSemantic.Copy)]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMultiplier_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMultiplier_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string NegativeFormat
 	{
 		[Export("negativeFormat")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNegativeFormatHandle));
 			}
@@ -1366,7 +403,7 @@ public class NSNumberFormatter : NSFormatter
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetNegativeFormat_Handle, arg);
 			}
@@ -1378,379 +415,38 @@ public class NSNumberFormatter : NSFormatter
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string NegativeInfinitySymbol
+	public virtual NSDictionary TextAttributesForNegativeValues
 	{
-		[Export("negativeInfinitySymbol")]
+		[Export("textAttributesForNegativeValues")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNegativeInfinitySymbolHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNegativeInfinitySymbolHandle));
+			return (NSDictionary)(__mt_TextAttributesForNegativeValues_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextAttributesForNegativeValuesHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTextAttributesForNegativeValuesHandle)))));
 		}
-		[Export("setNegativeInfinitySymbol:")]
+		[Export("setTextAttributesForNegativeValues:")]
 		set
 		{
 			if (value == null)
 			{
 				throw new ArgumentNullException("value");
 			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetNegativeInfinitySymbol_Handle, arg);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextAttributesForNegativeValues_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetNegativeInfinitySymbol_Handle, arg);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextAttributesForNegativeValues_Handle, value.Handle);
 			}
-			NSString.ReleaseNative(arg);
+			__mt_TextAttributesForNegativeValues_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string NegativePrefix
-	{
-		[Export("negativePrefix")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNegativePrefixHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNegativePrefixHandle));
-		}
-		[Export("setNegativePrefix:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetNegativePrefix_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetNegativePrefix_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string NegativeSuffix
-	{
-		[Export("negativeSuffix")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNegativeSuffixHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNegativeSuffixHandle));
-		}
-		[Export("setNegativeSuffix:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetNegativeSuffix_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetNegativeSuffix_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string NilSymbol
-	{
-		[Export("nilSymbol")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNilSymbolHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNilSymbolHandle));
-		}
-		[Export("setNilSymbol:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetNilSymbol_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetNilSymbol_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string NotANumberSymbol
-	{
-		[Export("notANumberSymbol")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNotANumberSymbolHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNotANumberSymbolHandle));
-		}
-		[Export("setNotANumberSymbol:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetNotANumberSymbol_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetNotANumberSymbol_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSNumberFormatterStyle NumberStyle
-	{
-		[Export("numberStyle")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return (NSNumberFormatterStyle)Messaging.UInt64_objc_msgSend(base.Handle, selNumberStyleHandle);
-			}
-			return (NSNumberFormatterStyle)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selNumberStyleHandle);
-		}
-		[Export("setNumberStyle:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetNumberStyle_Handle, (ulong)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetNumberStyle_Handle, (ulong)value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string PaddingCharacter
-	{
-		[Export("paddingCharacter")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPaddingCharacterHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPaddingCharacterHandle));
-		}
-		[Export("setPaddingCharacter:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPaddingCharacter_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPaddingCharacter_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSNumberFormatterPadPosition PaddingPosition
-	{
-		[Export("paddingPosition")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return (NSNumberFormatterPadPosition)Messaging.UInt64_objc_msgSend(base.Handle, selPaddingPositionHandle);
-			}
-			return (NSNumberFormatterPadPosition)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selPaddingPositionHandle);
-		}
-		[Export("setPaddingPosition:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetPaddingPosition_Handle, (ulong)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetPaddingPosition_Handle, (ulong)value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool PartialStringValidationEnabled
-	{
-		[Export("isPartialStringValidationEnabled")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsPartialStringValidationEnabledHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsPartialStringValidationEnabledHandle);
-		}
-		[Export("setPartialStringValidationEnabled:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetPartialStringValidationEnabled_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetPartialStringValidationEnabled_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string PerMillSymbol
-	{
-		[Export("perMillSymbol")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPerMillSymbolHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPerMillSymbolHandle));
-		}
-		[Export("setPerMillSymbol:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPerMillSymbol_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPerMillSymbol_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string PercentSymbol
-	{
-		[Export("percentSymbol")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPercentSymbolHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPercentSymbolHandle));
-		}
-		[Export("setPercentSymbol:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPercentSymbol_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPercentSymbol_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string PlusSign
-	{
-		[Export("plusSign")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPlusSignHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPlusSignHandle));
-		}
-		[Export("setPlusSign:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPlusSign_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPlusSign_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string PositiveFormat
 	{
 		[Export("positiveFormat")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPositiveFormatHandle));
 			}
@@ -1764,7 +460,7 @@ public class NSNumberFormatter : NSFormatter
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPositiveFormat_Handle, arg);
 			}
@@ -1776,13 +472,377 @@ public class NSNumberFormatter : NSFormatter
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary TextAttributesForPositiveValues
+	{
+		[Export("textAttributesForPositiveValues")]
+		get
+		{
+			return (NSDictionary)(__mt_TextAttributesForPositiveValues_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextAttributesForPositiveValuesHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTextAttributesForPositiveValuesHandle)))));
+		}
+		[Export("setTextAttributesForPositiveValues:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextAttributesForPositiveValues_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextAttributesForPositiveValues_Handle, value.Handle);
+			}
+			__mt_TextAttributesForPositiveValues_var = value;
+		}
+	}
+
+	public virtual bool AllowsFloats
+	{
+		[Export("allowsFloats")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selAllowsFloatsHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAllowsFloatsHandle);
+		}
+		[Export("setAllowsFloats:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsFloats_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAllowsFloats_Handle, value);
+			}
+		}
+	}
+
+	public virtual string DecimalSeparator
+	{
+		[Export("decimalSeparator")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDecimalSeparatorHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDecimalSeparatorHandle));
+		}
+		[Export("setDecimalSeparator:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDecimalSeparator_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDecimalSeparator_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual bool AlwaysShowsDecimalSeparator
+	{
+		[Export("alwaysShowsDecimalSeparator")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selAlwaysShowsDecimalSeparatorHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAlwaysShowsDecimalSeparatorHandle);
+		}
+		[Export("setAlwaysShowsDecimalSeparator:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetAlwaysShowsDecimalSeparator_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAlwaysShowsDecimalSeparator_Handle, value);
+			}
+		}
+	}
+
+	public virtual string CurrencyDecimalSeparator
+	{
+		[Export("currencyDecimalSeparator")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrencyDecimalSeparatorHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrencyDecimalSeparatorHandle));
+		}
+		[Export("setCurrencyDecimalSeparator:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCurrencyDecimalSeparator_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCurrencyDecimalSeparator_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual bool UsesGroupingSeparator
+	{
+		[Export("usesGroupingSeparator")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selUsesGroupingSeparatorHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selUsesGroupingSeparatorHandle);
+		}
+		[Export("setUsesGroupingSeparator:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetUsesGroupingSeparator_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetUsesGroupingSeparator_Handle, value);
+			}
+		}
+	}
+
+	public virtual string GroupingSeparator
+	{
+		[Export("groupingSeparator")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selGroupingSeparatorHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selGroupingSeparatorHandle));
+		}
+		[Export("setGroupingSeparator:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetGroupingSeparator_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetGroupingSeparator_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual string ZeroSymbol
+	{
+		[Export("zeroSymbol")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selZeroSymbolHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selZeroSymbolHandle));
+		}
+		[Export("setZeroSymbol:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetZeroSymbol_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetZeroSymbol_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual NSDictionary TextAttributesForZero
+	{
+		[Export("textAttributesForZero")]
+		get
+		{
+			return (NSDictionary)(__mt_TextAttributesForZero_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextAttributesForZeroHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTextAttributesForZeroHandle)))));
+		}
+		[Export("setTextAttributesForZero:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextAttributesForZero_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextAttributesForZero_Handle, value.Handle);
+			}
+			__mt_TextAttributesForZero_var = value;
+		}
+	}
+
+	public virtual string NilSymbol
+	{
+		[Export("nilSymbol")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNilSymbolHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNilSymbolHandle));
+		}
+		[Export("setNilSymbol:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetNilSymbol_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetNilSymbol_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual NSDictionary TextAttributesForNil
+	{
+		[Export("textAttributesForNil")]
+		get
+		{
+			return (NSDictionary)(__mt_TextAttributesForNil_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextAttributesForNilHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTextAttributesForNilHandle)))));
+		}
+		[Export("setTextAttributesForNil:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextAttributesForNil_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextAttributesForNil_Handle, value.Handle);
+			}
+			__mt_TextAttributesForNil_var = value;
+		}
+	}
+
+	public virtual string NotANumberSymbol
+	{
+		[Export("notANumberSymbol")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNotANumberSymbolHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNotANumberSymbolHandle));
+		}
+		[Export("setNotANumberSymbol:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetNotANumberSymbol_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetNotANumberSymbol_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual NSDictionary TextAttributesForNotANumber
+	{
+		[Export("textAttributesForNotANumber")]
+		get
+		{
+			return (NSDictionary)(__mt_TextAttributesForNotANumber_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextAttributesForNotANumberHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTextAttributesForNotANumberHandle)))));
+		}
+		[Export("setTextAttributesForNotANumber:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextAttributesForNotANumber_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextAttributesForNotANumber_Handle, value.Handle);
+			}
+			__mt_TextAttributesForNotANumber_var = value;
+		}
+	}
+
 	public virtual string PositiveInfinitySymbol
 	{
 		[Export("positiveInfinitySymbol")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPositiveInfinitySymbolHandle));
 			}
@@ -1796,7 +856,7 @@ public class NSNumberFormatter : NSFormatter
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPositiveInfinitySymbol_Handle, arg);
 			}
@@ -1808,13 +868,95 @@ public class NSNumberFormatter : NSFormatter
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary TextAttributesForPositiveInfinity
+	{
+		[Export("textAttributesForPositiveInfinity")]
+		get
+		{
+			return (NSDictionary)(__mt_TextAttributesForPositiveInfinity_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextAttributesForPositiveInfinityHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTextAttributesForPositiveInfinityHandle)))));
+		}
+		[Export("setTextAttributesForPositiveInfinity:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextAttributesForPositiveInfinity_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextAttributesForPositiveInfinity_Handle, value.Handle);
+			}
+			__mt_TextAttributesForPositiveInfinity_var = value;
+		}
+	}
+
+	public virtual string NegativeInfinitySymbol
+	{
+		[Export("negativeInfinitySymbol")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNegativeInfinitySymbolHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNegativeInfinitySymbolHandle));
+		}
+		[Export("setNegativeInfinitySymbol:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetNegativeInfinitySymbol_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetNegativeInfinitySymbol_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual NSDictionary TextAttributesForNegativeInfinity
+	{
+		[Export("textAttributesForNegativeInfinity")]
+		get
+		{
+			return (NSDictionary)(__mt_TextAttributesForNegativeInfinity_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextAttributesForNegativeInfinityHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTextAttributesForNegativeInfinityHandle)))));
+		}
+		[Export("setTextAttributesForNegativeInfinity:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextAttributesForNegativeInfinity_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextAttributesForNegativeInfinity_Handle, value.Handle);
+			}
+			__mt_TextAttributesForNegativeInfinity_var = value;
+		}
+	}
+
 	public virtual string PositivePrefix
 	{
 		[Export("positivePrefix")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPositivePrefixHandle));
 			}
@@ -1828,7 +970,7 @@ public class NSNumberFormatter : NSFormatter
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPositivePrefix_Handle, arg);
 			}
@@ -1840,13 +982,12 @@ public class NSNumberFormatter : NSFormatter
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string PositiveSuffix
 	{
 		[Export("positiveSuffix")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPositiveSuffixHandle));
 			}
@@ -1860,7 +1001,7 @@ public class NSNumberFormatter : NSFormatter
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPositiveSuffix_Handle, arg);
 			}
@@ -1872,43 +1013,479 @@ public class NSNumberFormatter : NSFormatter
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSNumber RoundingIncrement
+	public virtual string NegativePrefix
 	{
-		[Export("roundingIncrement", ArgumentSemantic.Copy)]
+		[Export("negativePrefix")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selRoundingIncrementHandle));
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNegativePrefixHandle));
 			}
-			return Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRoundingIncrementHandle));
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNegativePrefixHandle));
 		}
-		[Export("setRoundingIncrement:", ArgumentSemantic.Copy)]
+		[Export("setNegativePrefix:")]
 		set
 		{
 			if (value == null)
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (base.IsDirectBinding)
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetRoundingIncrement_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetNegativePrefix_Handle, arg);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetRoundingIncrement_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetNegativePrefix_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual string NegativeSuffix
+	{
+		[Export("negativeSuffix")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNegativeSuffixHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNegativeSuffixHandle));
+		}
+		[Export("setNegativeSuffix:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetNegativeSuffix_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetNegativeSuffix_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual string CurrencyCode
+	{
+		[Export("currencyCode")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrencyCodeHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrencyCodeHandle));
+		}
+		[Export("setCurrencyCode:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCurrencyCode_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCurrencyCode_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual string CurrencySymbol
+	{
+		[Export("currencySymbol")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrencySymbolHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrencySymbolHandle));
+		}
+		[Export("setCurrencySymbol:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCurrencySymbol_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCurrencySymbol_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual string InternationalCurrencySymbol
+	{
+		[Export("internationalCurrencySymbol")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selInternationalCurrencySymbolHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInternationalCurrencySymbolHandle));
+		}
+		[Export("setInternationalCurrencySymbol:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetInternationalCurrencySymbol_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetInternationalCurrencySymbol_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual string PercentSymbol
+	{
+		[Export("percentSymbol")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPercentSymbolHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPercentSymbolHandle));
+		}
+		[Export("setPercentSymbol:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPercentSymbol_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPercentSymbol_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual string PerMillSymbol
+	{
+		[Export("perMillSymbol")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPerMillSymbolHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPerMillSymbolHandle));
+		}
+		[Export("setPerMillSymbol:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPerMillSymbol_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPerMillSymbol_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual string MinusSign
+	{
+		[Export("minusSign")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMinusSignHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMinusSignHandle));
+		}
+		[Export("setMinusSign:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMinusSign_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMinusSign_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual string PlusSign
+	{
+		[Export("plusSign")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPlusSignHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPlusSignHandle));
+		}
+		[Export("setPlusSign:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPlusSign_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPlusSign_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual string ExponentSymbol
+	{
+		[Export("exponentSymbol")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selExponentSymbolHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selExponentSymbolHandle));
+		}
+		[Export("setExponentSymbol:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetExponentSymbol_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetExponentSymbol_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual uint GroupingSize
+	{
+		[Export("groupingSize")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt32_objc_msgSend(base.Handle, selGroupingSizeHandle);
+			}
+			return Messaging.UInt32_objc_msgSendSuper(base.SuperHandle, selGroupingSizeHandle);
+		}
+		[Export("setGroupingSize:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt32(base.Handle, selSetGroupingSize_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt32(base.SuperHandle, selSetGroupingSize_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual uint SecondaryGroupingSize
+	{
+		[Export("secondaryGroupingSize")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt32_objc_msgSend(base.Handle, selSecondaryGroupingSizeHandle);
+			}
+			return Messaging.UInt32_objc_msgSendSuper(base.SuperHandle, selSecondaryGroupingSizeHandle);
+		}
+		[Export("setSecondaryGroupingSize:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt32(base.Handle, selSetSecondaryGroupingSize_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt32(base.SuperHandle, selSetSecondaryGroupingSize_Handle, value);
+			}
+		}
+	}
+
+	public virtual NSNumber Multiplier
+	{
+		[Export("multiplier")]
+		get
+		{
+			return (NSNumber)(__mt_Multiplier_var = ((!IsDirectBinding) ? ((NSNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMultiplierHandle))) : ((NSNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMultiplierHandle)))));
+		}
+		[Export("setMultiplier:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMultiplier_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMultiplier_Handle, value.Handle);
+			}
+			__mt_Multiplier_var = value;
+		}
+	}
+
+	public virtual ulong FormatWidth
+	{
+		[Export("formatWidth")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selFormatWidthHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selFormatWidthHandle);
+		}
+		[Export("setFormatWidth:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetFormatWidth_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetFormatWidth_Handle, value);
+			}
+		}
+	}
+
+	public virtual string PaddingCharacter
+	{
+		[Export("paddingCharacter")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPaddingCharacterHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPaddingCharacterHandle));
+		}
+		[Export("setPaddingCharacter:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPaddingCharacter_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPaddingCharacter_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual NSNumberFormatterPadPosition PaddingPosition
+	{
+		[Export("paddingPosition")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return (NSNumberFormatterPadPosition)Messaging.UInt64_objc_msgSend(base.Handle, selPaddingPositionHandle);
+			}
+			return (NSNumberFormatterPadPosition)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selPaddingPositionHandle);
+		}
+		[Export("setPaddingPosition:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetPaddingPosition_Handle, (ulong)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetPaddingPosition_Handle, (ulong)value);
+			}
+		}
+	}
+
 	public virtual NSNumberFormatterRoundingMode RoundingMode
 	{
 		[Export("roundingMode")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (NSNumberFormatterRoundingMode)Messaging.UInt64_objc_msgSend(base.Handle, selRoundingModeHandle);
 			}
@@ -1917,7 +1494,7 @@ public class NSNumberFormatter : NSFormatter
 		[Export("setRoundingMode:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetRoundingMode_Handle, (ulong)value);
 			}
@@ -1928,247 +1505,246 @@ public class NSNumberFormatter : NSFormatter
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nuint SecondaryGroupingSize
+	public virtual NSNumber RoundingIncrement
 	{
-		[Export("secondaryGroupingSize")]
+		[Export("roundingIncrement")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selSecondaryGroupingSizeHandle);
-			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selSecondaryGroupingSizeHandle);
+			return (NSNumber)(__mt_RoundingIncrement_var = ((!IsDirectBinding) ? ((NSNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRoundingIncrementHandle))) : ((NSNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selRoundingIncrementHandle)))));
 		}
-		[Export("setSecondaryGroupingSize:")]
+		[Export("setRoundingIncrement:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_nuint(base.Handle, selSetSecondaryGroupingSize_Handle, value);
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetRoundingIncrement_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_nuint(base.SuperHandle, selSetSecondaryGroupingSize_Handle, value);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetRoundingIncrement_Handle, value.Handle);
+			}
+			__mt_RoundingIncrement_var = value;
+		}
+	}
+
+	public virtual ulong MinimumIntegerDigits
+	{
+		[Export("minimumIntegerDigits")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selMinimumIntegerDigitsHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selMinimumIntegerDigitsHandle);
+		}
+		[Export("setMinimumIntegerDigits:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetMinimumIntegerDigits_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetMinimumIntegerDigits_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary? TextAttributesForNegativeInfinity
+	public virtual ulong MaximumIntegerDigits
 	{
-		[Export("textAttributesForNegativeInfinity", ArgumentSemantic.Copy)]
+		[Export("maximumIntegerDigits")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selTextAttributesForNegativeInfinityHandle));
+				return Messaging.UInt64_objc_msgSend(base.Handle, selMaximumIntegerDigitsHandle);
 			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextAttributesForNegativeInfinityHandle));
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selMaximumIntegerDigitsHandle);
 		}
-		[Export("setTextAttributesForNegativeInfinity:", ArgumentSemantic.Copy)]
+		[Export("setMaximumIntegerDigits:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextAttributesForNegativeInfinity_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetMaximumIntegerDigits_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextAttributesForNegativeInfinity_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetMaximumIntegerDigits_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary? TextAttributesForNegativeValues
+	public virtual ulong MinimumFractionDigits
 	{
-		[Export("textAttributesForNegativeValues", ArgumentSemantic.Copy)]
+		[Export("minimumFractionDigits")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selTextAttributesForNegativeValuesHandle));
+				return Messaging.UInt64_objc_msgSend(base.Handle, selMinimumFractionDigitsHandle);
 			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextAttributesForNegativeValuesHandle));
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selMinimumFractionDigitsHandle);
 		}
-		[Export("setTextAttributesForNegativeValues:", ArgumentSemantic.Copy)]
+		[Export("setMinimumFractionDigits:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextAttributesForNegativeValues_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetMinimumFractionDigits_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextAttributesForNegativeValues_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetMinimumFractionDigits_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary? TextAttributesForNil
+	public virtual ulong MaximumFractionDigits
 	{
-		[Export("textAttributesForNil", ArgumentSemantic.Copy)]
+		[Export("maximumFractionDigits")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selTextAttributesForNilHandle));
+				return Messaging.UInt64_objc_msgSend(base.Handle, selMaximumFractionDigitsHandle);
 			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextAttributesForNilHandle));
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selMaximumFractionDigitsHandle);
 		}
-		[Export("setTextAttributesForNil:", ArgumentSemantic.Copy)]
+		[Export("setMaximumFractionDigits:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextAttributesForNil_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetMaximumFractionDigits_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextAttributesForNil_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetMaximumFractionDigits_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary? TextAttributesForNotANumber
+	public virtual NSNumber Minimum
 	{
-		[Export("textAttributesForNotANumber", ArgumentSemantic.Copy)]
+		[Export("minimum")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selTextAttributesForNotANumberHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextAttributesForNotANumberHandle));
+			return (NSNumber)(__mt_Minimum_var = ((!IsDirectBinding) ? ((NSNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMinimumHandle))) : ((NSNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMinimumHandle)))));
 		}
-		[Export("setTextAttributesForNotANumber:", ArgumentSemantic.Copy)]
+		[Export("setMinimum:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextAttributesForNotANumber_Handle, value?.Handle ?? IntPtr.Zero);
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMinimum_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextAttributesForNotANumber_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMinimum_Handle, value.Handle);
+			}
+			__mt_Minimum_var = value;
+		}
+	}
+
+	public virtual NSNumber Maximum
+	{
+		[Export("maximum")]
+		get
+		{
+			return (NSNumber)(__mt_Maximum_var = ((!IsDirectBinding) ? ((NSNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMaximumHandle))) : ((NSNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMaximumHandle)))));
+		}
+		[Export("setMaximum:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMaximum_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMaximum_Handle, value.Handle);
+			}
+			__mt_Maximum_var = value;
+		}
+	}
+
+	public virtual string CurrencyGroupingSeparator
+	{
+		[Export("currencyGroupingSeparator")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrencyGroupingSeparatorHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrencyGroupingSeparatorHandle));
+		}
+		[Export("setCurrencyGroupingSeparator:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCurrencyGroupingSeparator_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCurrencyGroupingSeparator_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual bool Lenient
+	{
+		[Export("isLenient")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsLenientHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsLenientHandle);
+		}
+		[Export("setLenient:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetLenient_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetLenient_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary? TextAttributesForPositiveInfinity
-	{
-		[Export("textAttributesForPositiveInfinity", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selTextAttributesForPositiveInfinityHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextAttributesForPositiveInfinityHandle));
-		}
-		[Export("setTextAttributesForPositiveInfinity:", ArgumentSemantic.Copy)]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextAttributesForPositiveInfinity_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextAttributesForPositiveInfinity_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary? TextAttributesForPositiveValues
-	{
-		[Export("textAttributesForPositiveValues", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selTextAttributesForPositiveValuesHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextAttributesForPositiveValuesHandle));
-		}
-		[Export("setTextAttributesForPositiveValues:", ArgumentSemantic.Copy)]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextAttributesForPositiveValues_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextAttributesForPositiveValues_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary? TextAttributesForZero
-	{
-		[Export("textAttributesForZero", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selTextAttributesForZeroHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTextAttributesForZeroHandle));
-		}
-		[Export("setTextAttributesForZero:", ArgumentSemantic.Copy)]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTextAttributesForZero_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTextAttributesForZero_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool UsesGroupingSeparator
-	{
-		[Export("usesGroupingSeparator")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selUsesGroupingSeparatorHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selUsesGroupingSeparatorHandle);
-		}
-		[Export("setUsesGroupingSeparator:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetUsesGroupingSeparator_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetUsesGroupingSeparator_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool UsesSignificantDigits
 	{
 		[Export("usesSignificantDigits")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selUsesSignificantDigitsHandle);
 			}
@@ -2177,7 +1753,7 @@ public class NSNumberFormatter : NSFormatter
 		[Export("setUsesSignificantDigits:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetUsesSignificantDigits_Handle, value);
 			}
@@ -2188,94 +1764,138 @@ public class NSNumberFormatter : NSFormatter
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string? ZeroSymbol
+	public virtual ulong MinimumSignificantDigits
 	{
-		[Export("zeroSymbol")]
+		[Export("minimumSignificantDigits")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selZeroSymbolHandle));
+				return Messaging.UInt64_objc_msgSend(base.Handle, selMinimumSignificantDigitsHandle);
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selZeroSymbolHandle));
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selMinimumSignificantDigitsHandle);
 		}
-		[Export("setZeroSymbol:")]
+		[Export("setMinimumSignificantDigits:")]
 		set
 		{
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetZeroSymbol_Handle, arg);
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetMinimumSignificantDigits_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetZeroSymbol_Handle, arg);
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetMinimumSignificantDigits_Handle, value);
 			}
-			NSString.ReleaseNative(arg);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual ulong MaximumSignificantDigits
+	{
+		[Export("maximumSignificantDigits")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selMaximumSignificantDigitsHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selMaximumSignificantDigitsHandle);
+		}
+		[Export("setMaximumSignificantDigits:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetMaximumSignificantDigits_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetMaximumSignificantDigits_Handle, value);
+			}
+		}
+	}
+
+	public virtual bool PartialStringValidationEnabled
+	{
+		[Export("isPartialStringValidationEnabled")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsPartialStringValidationEnabledHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsPartialStringValidationEnabledHandle);
+		}
+		[Export("setPartialStringValidationEnabled:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetPartialStringValidationEnabled_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetPartialStringValidationEnabled_Handle, value);
+			}
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSNumberFormatter()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSNumberFormatter(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSNumberFormatter(NSObjectFlag t)
+	public NSNumberFormatter(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSNumberFormatter(IntPtr handle)
+	public NSNumberFormatter(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("localizedStringFromNumber:numberStyle:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static string LocalizedStringFromNumbernumberStyle(NSNumber num, NSNumberFormatterStyle nstyle)
+	[Export("stringFromNumber:")]
+	public virtual string StringFromNumber(NSNumber number)
 	{
-		if (num == null)
+		if (number == null)
 		{
-			throw new ArgumentNullException("num");
+			throw new ArgumentNullException("number");
 		}
-		return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64(class_ptr, selLocalizedStringFromNumber_NumberStyle_Handle, num.Handle, (ulong)nstyle));
+		if (IsDirectBinding)
+		{
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selStringFromNumber_Handle, number.Handle));
+		}
+		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selStringFromNumber_Handle, number.Handle));
 	}
 
 	[Export("numberFromString:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSNumber NumberFromString(string text)
 	{
 		if (text == null)
@@ -2283,23 +1903,38 @@ public class NSNumberFormatter : NSFormatter
 			throw new ArgumentNullException("text");
 		}
 		IntPtr arg = NSString.CreateNative(text);
-		NSNumber result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selNumberFromString_Handle, arg)) : Runtime.GetNSObject<NSNumber>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selNumberFromString_Handle, arg)));
+		NSNumber result = ((!IsDirectBinding) ? ((NSNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selNumberFromString_Handle, arg))) : ((NSNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selNumberFromString_Handle, arg))));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
-	[Export("stringFromNumber:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string StringFromNumber(NSNumber number)
+	[Export("localizedStringFromNumber:numberStyle:")]
+	public static string LocalizedStringFromNumbernumberStyle(NSNumber num, NSNumberFormatterStyle nstyle)
 	{
-		if (number == null)
+		if (num == null)
 		{
-			throw new ArgumentNullException("number");
+			throw new ArgumentNullException("num");
 		}
-		if (base.IsDirectBinding)
+		return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64(class_ptr, selLocalizedStringFromNumberNumberStyle_Handle, num.Handle, (ulong)nstyle));
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selStringFromNumber_Handle, number.Handle));
+			__mt_Locale_var = null;
+			__mt_TextAttributesForNegativeValues_var = null;
+			__mt_TextAttributesForPositiveValues_var = null;
+			__mt_TextAttributesForZero_var = null;
+			__mt_TextAttributesForNil_var = null;
+			__mt_TextAttributesForNotANumber_var = null;
+			__mt_TextAttributesForPositiveInfinity_var = null;
+			__mt_TextAttributesForNegativeInfinity_var = null;
+			__mt_Multiplier_var = null;
+			__mt_RoundingIncrement_var = null;
+			__mt_Minimum_var = null;
+			__mt_Maximum_var = null;
 		}
-		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selStringFromNumber_Handle, number.Handle));
 	}
 }

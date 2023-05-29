@@ -3,12 +3,12 @@ using System;
 namespace QTKit;
 
 [Flags]
-public enum QTMovieFileTypeOptions : uint
+public enum QTMovieFileTypeOptions
 {
-	StillImageTypes = 1u,
-	TranslatableTypes = 2u,
-	AggressiveTypes = 4u,
-	DynamicTypes = 8u,
-	CommonTypes = 0u,
-	AllTypes = 0xFFFFu
+	StillImageTypes = 1,
+	TranslatableTypes = 2,
+	AggressiveTypes = 4,
+	DynamicTypes = 8,
+	CommonTypes = 0,
+	AllTypes = 0xFFFF
 }

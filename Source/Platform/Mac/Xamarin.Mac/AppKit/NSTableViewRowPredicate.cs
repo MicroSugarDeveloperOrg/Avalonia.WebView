@@ -1,5 +1,3 @@
-using Xamarin.Mac.System.Mac;
-
 namespace AppKit;
 
-public delegate bool NSTableViewRowPredicate(NSTableView tableView, nint row);
+public delegate bool NSTableViewRowPredicate(NSTableView tableView, long row);

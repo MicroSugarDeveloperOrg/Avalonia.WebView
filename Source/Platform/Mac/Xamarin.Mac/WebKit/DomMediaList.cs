@@ -8,73 +8,36 @@ using ObjCRuntime;
 namespace WebKit;
 
 [Register("DOMMediaList", true)]
-[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
 public class DomMediaList : DomObject, IIndexedContainer<string>, IEnumerable<string>, IEnumerable
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAppendMedium_ = "appendMedium:";
-
-	private static readonly IntPtr selAppendMedium_Handle = Selector.GetHandle("appendMedium:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeleteMedium_ = "deleteMedium:";
-
-	private static readonly IntPtr selDeleteMedium_Handle = Selector.GetHandle("deleteMedium:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selItem_ = "item:";
-
-	private static readonly IntPtr selItem_Handle = Selector.GetHandle("item:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLength = "length";
-
-	private static readonly IntPtr selLengthHandle = Selector.GetHandle("length");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMediaText = "mediaText";
-
 	private static readonly IntPtr selMediaTextHandle = Selector.GetHandle("mediaText");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMediaText_ = "setMediaText:";
 
 	private static readonly IntPtr selSetMediaText_Handle = Selector.GetHandle("setMediaText:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("DOMMediaList");
+	private static readonly IntPtr selLengthHandle = Selector.GetHandle("length");
 
-	public string this[int index] => GetItem(index);
+	private static readonly IntPtr selItem_Handle = Selector.GetHandle("item:");
+
+	private static readonly IntPtr selDeleteMedium_Handle = Selector.GetHandle("deleteMedium:");
+
+	private static readonly IntPtr selAppendMedium_Handle = Selector.GetHandle("appendMedium:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("DOMMediaList");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual int Count
-	{
-		[Export("length")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.int_objc_msgSend(base.Handle, selLengthHandle);
-			}
-			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selLengthHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string MediaText
 	{
-		[Export("mediaText", ArgumentSemantic.Copy)]
+		[Export("mediaText")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMediaTextHandle));
 			}
 			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMediaTextHandle));
 		}
-		[Export("setMediaText:", ArgumentSemantic.Copy)]
+		[Export("setMediaText:")]
 		set
 		{
 			if (value == null)
@@ -82,7 +45,7 @@ public class DomMediaList : DomObject, IIndexedContainer<string>, IEnumerable<st
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMediaText_Handle, arg);
 			}
@@ -94,52 +57,59 @@ public class DomMediaList : DomObject, IIndexedContainer<string>, IEnumerable<st
 		}
 	}
 
-	public IEnumerator<string> GetEnumerator()
+	public virtual int Count
 	{
-		return new IndexedContainerEnumerator<string>(this);
+		[Export("length")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.int_objc_msgSend(base.Handle, selLengthHandle);
+			}
+			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selLengthHandle);
+		}
 	}
 
-	IEnumerator IEnumerable.GetEnumerator()
-	{
-		return ((IEnumerable<string>)this).GetEnumerator();
-	}
+	public string this[int index] => GetItem(index);
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected DomMediaList(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public DomMediaList(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public DomMediaList(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal DomMediaList(IntPtr handle)
+	public DomMediaList(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("appendMedium:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void AppendMedium(string newMedium)
+	[Export("item:")]
+	public virtual string GetItem(int index)
 	{
-		if (newMedium == null)
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("newMedium");
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_int(base.Handle, selItem_Handle, index));
 		}
-		IntPtr arg = NSString.CreateNative(newMedium);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAppendMedium_Handle, arg);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAppendMedium_Handle, arg);
-		}
-		NSString.ReleaseNative(arg);
+		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_int(base.SuperHandle, selItem_Handle, index));
 	}
 
 	[Export("deleteMedium:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void DeleteMedium(string oldMedium)
 	{
 		if (oldMedium == null)
@@ -147,7 +117,7 @@ public class DomMediaList : DomObject, IIndexedContainer<string>, IEnumerable<st
 			throw new ArgumentNullException("oldMedium");
 		}
 		IntPtr arg = NSString.CreateNative(oldMedium);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selDeleteMedium_Handle, arg);
 		}
@@ -158,14 +128,32 @@ public class DomMediaList : DomObject, IIndexedContainer<string>, IEnumerable<st
 		NSString.ReleaseNative(arg);
 	}
 
-	[Export("item:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string GetItem(int index)
+	[Export("appendMedium:")]
+	public virtual void AppendMedium(string newMedium)
 	{
-		if (base.IsDirectBinding)
+		if (newMedium == null)
 		{
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_int(base.Handle, selItem_Handle, index));
+			throw new ArgumentNullException("newMedium");
 		}
-		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_int(base.SuperHandle, selItem_Handle, index));
+		IntPtr arg = NSString.CreateNative(newMedium);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAppendMedium_Handle, arg);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAppendMedium_Handle, arg);
+		}
+		NSString.ReleaseNative(arg);
+	}
+
+	public IEnumerator<string> GetEnumerator()
+	{
+		return new IndexedContainerEnumerator<string>(this);
+	}
+
+	IEnumerator IEnumerable.GetEnumerator()
+	{
+		return ((IEnumerable<string>)this).GetEnumerator();
 	}
 }

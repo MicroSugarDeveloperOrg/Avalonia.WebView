@@ -9,37 +9,32 @@ namespace AppKit;
 [Register("NSEPSImageRep", true)]
 public class NSEPSImageRep : NSImageRep
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEPSRepresentation = "EPSRepresentation";
-
 	private static readonly IntPtr selEPSRepresentationHandle = Selector.GetHandle("EPSRepresentation");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selBoundingBox = "boundingBox";
 
 	private static readonly IntPtr selBoundingBoxHandle = Selector.GetHandle("boundingBox");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selImageRepWithData_ = "imageRepWithData:";
-
 	private static readonly IntPtr selImageRepWithData_Handle = Selector.GetHandle("imageRepWithData:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithData_ = "initWithData:";
 
 	private static readonly IntPtr selInitWithData_Handle = Selector.GetHandle("initWithData:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPrepareGState = "prepareGState";
-
 	private static readonly IntPtr selPrepareGStateHandle = Selector.GetHandle("prepareGState");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSEPSImageRep");
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSEPSImageRep");
+
+	private object __mt_EPSRepresentation_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSData EPSRepresentation
+	{
+		[Export("EPSRepresentation")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSData)(__mt_EPSRepresentation_var = ((!IsDirectBinding) ? ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEPSRepresentationHandle))) : ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selEPSRepresentationHandle)))));
+		}
+	}
+
 	public virtual CGRect BoundingBox
 	{
 		[Export("boundingBox")]
@@ -47,7 +42,7 @@ public class NSEPSImageRep : NSImageRep
 		{
 			NSApplication.EnsureUIThread();
 			CGRect retval;
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selBoundingBoxHandle);
 			}
@@ -59,75 +54,34 @@ public class NSEPSImageRep : NSImageRep
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSData EPSRepresentation
-	{
-		[Export("EPSRepresentation")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSend(base.Handle, selEPSRepresentationHandle));
-			}
-			return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEPSRepresentationHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSEPSImageRep(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSEPSImageRep(NSObjectFlag t)
+	public NSEPSImageRep(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSEPSImageRep(IntPtr handle)
+	public NSEPSImageRep(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("initWithData:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public NSEPSImageRep(NSData epsData)
-		: base(NSObjectFlag.Empty)
-	{
-		NSApplication.EnsureUIThread();
-		if (epsData == null)
-		{
-			throw new ArgumentNullException("epsData");
-		}
-		if (base.IsDirectBinding)
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithData_Handle, epsData.Handle), "initWithData:");
-		}
-		else
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithData_Handle, epsData.Handle), "initWithData:");
-		}
-	}
-
 	[Export("imageRepWithData:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSObject FromData(NSData epsData)
 	{
 		NSApplication.EnsureUIThread();
@@ -138,19 +92,45 @@ public class NSEPSImageRep : NSImageRep
 		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selImageRepWithData_Handle, epsData.Handle));
 	}
 
+	[Export("initWithData:")]
+	public NSEPSImageRep(NSData epsData)
+		: base(NSObjectFlag.Empty)
+	{
+		NSApplication.EnsureUIThread();
+		if (epsData == null)
+		{
+			throw new ArgumentNullException("epsData");
+		}
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithData_Handle, epsData.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithData_Handle, epsData.Handle);
+		}
+	}
+
 	[Export("prepareGState")]
-	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void PrepareGState()
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selPrepareGStateHandle);
 		}
 		else
 		{
 			Messaging.void_objc_msgSendSuper(base.SuperHandle, selPrepareGStateHandle);
+		}
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_EPSRepresentation_var = null;
 		}
 	}
 }

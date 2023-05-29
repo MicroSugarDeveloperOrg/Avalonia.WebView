@@ -1,220 +1,111 @@
+using System;
 using System.ComponentModel;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
 [Register("NSColorSpace", true)]
-public class NSColorSpace : NSObject, INSCoding, INativeObject, IDisposable, INSSecureCoding
+public class NSColorSpace : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCGColorSpace = "CGColorSpace";
-
-	private static readonly IntPtr selCGColorSpaceHandle = Selector.GetHandle("CGColorSpace");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selICCProfileData = "ICCProfileData";
-
 	private static readonly IntPtr selICCProfileDataHandle = Selector.GetHandle("ICCProfileData");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAdobeRGB1998ColorSpace = "adobeRGB1998ColorSpace";
-
-	private static readonly IntPtr selAdobeRGB1998ColorSpaceHandle = Selector.GetHandle("adobeRGB1998ColorSpace");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAvailableColorSpacesWithModel_ = "availableColorSpacesWithModel:";
-
-	private static readonly IntPtr selAvailableColorSpacesWithModel_Handle = Selector.GetHandle("availableColorSpacesWithModel:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selColorSpaceModel = "colorSpaceModel";
-
-	private static readonly IntPtr selColorSpaceModelHandle = Selector.GetHandle("colorSpaceModel");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selColorSyncProfile = "colorSyncProfile";
 
 	private static readonly IntPtr selColorSyncProfileHandle = Selector.GetHandle("colorSyncProfile");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeviceCMYKColorSpace = "deviceCMYKColorSpace";
-
-	private static readonly IntPtr selDeviceCMYKColorSpaceHandle = Selector.GetHandle("deviceCMYKColorSpace");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeviceGrayColorSpace = "deviceGrayColorSpace";
-
-	private static readonly IntPtr selDeviceGrayColorSpaceHandle = Selector.GetHandle("deviceGrayColorSpace");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeviceRGBColorSpace = "deviceRGBColorSpace";
-
-	private static readonly IntPtr selDeviceRGBColorSpaceHandle = Selector.GetHandle("deviceRGBColorSpace");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDisplayP3ColorSpace = "displayP3ColorSpace";
-
-	private static readonly IntPtr selDisplayP3ColorSpaceHandle = Selector.GetHandle("displayP3ColorSpace");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExtendedGenericGamma22GrayColorSpace = "extendedGenericGamma22GrayColorSpace";
-
-	private static readonly IntPtr selExtendedGenericGamma22GrayColorSpaceHandle = Selector.GetHandle("extendedGenericGamma22GrayColorSpace");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExtendedSRGBColorSpace = "extendedSRGBColorSpace";
-
-	private static readonly IntPtr selExtendedSRGBColorSpaceHandle = Selector.GetHandle("extendedSRGBColorSpace");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGenericCMYKColorSpace = "genericCMYKColorSpace";
-
-	private static readonly IntPtr selGenericCMYKColorSpaceHandle = Selector.GetHandle("genericCMYKColorSpace");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGenericGamma22GrayColorSpace = "genericGamma22GrayColorSpace";
-
-	private static readonly IntPtr selGenericGamma22GrayColorSpaceHandle = Selector.GetHandle("genericGamma22GrayColorSpace");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGenericGrayColorSpace = "genericGrayColorSpace";
-
-	private static readonly IntPtr selGenericGrayColorSpaceHandle = Selector.GetHandle("genericGrayColorSpace");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGenericRGBColorSpace = "genericRGBColorSpace";
-
-	private static readonly IntPtr selGenericRGBColorSpaceHandle = Selector.GetHandle("genericRGBColorSpace");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCGColorSpace_ = "initWithCGColorSpace:";
-
-	private static readonly IntPtr selInitWithCGColorSpace_Handle = Selector.GetHandle("initWithCGColorSpace:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
-
-	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithICCProfileData_ = "initWithICCProfileData:";
-
-	private static readonly IntPtr selInitWithICCProfileData_Handle = Selector.GetHandle("initWithICCProfileData:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLocalizedName = "localizedName";
-
-	private static readonly IntPtr selLocalizedNameHandle = Selector.GetHandle("localizedName");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNumberOfColorComponents = "numberOfColorComponents";
+	private static readonly IntPtr selCGColorSpaceHandle = Selector.GetHandle("CGColorSpace");
 
 	private static readonly IntPtr selNumberOfColorComponentsHandle = Selector.GetHandle("numberOfColorComponents");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSRGBColorSpace = "sRGBColorSpace";
+	private static readonly IntPtr selColorSpaceModelHandle = Selector.GetHandle("colorSpaceModel");
+
+	private static readonly IntPtr selLocalizedNameHandle = Selector.GetHandle("localizedName");
+
+	private static readonly IntPtr selGenericRGBColorSpaceHandle = Selector.GetHandle("genericRGBColorSpace");
+
+	private static readonly IntPtr selGenericGrayColorSpaceHandle = Selector.GetHandle("genericGrayColorSpace");
+
+	private static readonly IntPtr selGenericCMYKColorSpaceHandle = Selector.GetHandle("genericCMYKColorSpace");
+
+	private static readonly IntPtr selDeviceRGBColorSpaceHandle = Selector.GetHandle("deviceRGBColorSpace");
+
+	private static readonly IntPtr selDeviceGrayColorSpaceHandle = Selector.GetHandle("deviceGrayColorSpace");
+
+	private static readonly IntPtr selDeviceCMYKColorSpaceHandle = Selector.GetHandle("deviceCMYKColorSpace");
 
 	private static readonly IntPtr selSRGBColorSpaceHandle = Selector.GetHandle("sRGBColorSpace");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSColorSpace");
+	private static readonly IntPtr selGenericGamma22GrayColorSpaceHandle = Selector.GetHandle("genericGamma22GrayColorSpace");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _CalibratedBlack;
+	private static readonly IntPtr selAdobeRGB1998ColorSpaceHandle = Selector.GetHandle("adobeRGB1998ColorSpace");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _CalibratedRGB;
+	private static readonly IntPtr selInitWithICCProfileData_Handle = Selector.GetHandle("initWithICCProfileData:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _CalibratedWhite;
+	private static readonly IntPtr selInitWithCGColorSpace_Handle = Selector.GetHandle("initWithCGColorSpace:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Custom;
+	private static readonly IntPtr selAvailableColorSpacesWithModel_Handle = Selector.GetHandle("availableColorSpacesWithModel:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DeviceBlack;
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSColorSpace");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DeviceCMYK;
+	private object __mt_ICCProfileData_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DeviceRGB;
+	private static object __mt_GenericRGBColorSpace_var_static;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DeviceWhite;
+	private static object __mt_GenericGrayColorSpace_var_static;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Named;
+	private static object __mt_GenericCMYKColorSpace_var_static;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _Pattern;
+	private static object __mt_DeviceRGBColorSpace_var_static;
+
+	private static object __mt_DeviceGrayColorSpace_var_static;
+
+	private static object __mt_DeviceCMYKColorSpace_var_static;
+
+	private static object __mt_SRGBColorSpace_var_static;
+
+	private static object __mt_GenericGamma22GrayColorSpace_var_static;
+
+	private static object __mt_AdobeRGB1998ColorSpace_var_static;
+
+	private static NSString _CalibratedWhite;
+
+	private static NSString _CalibratedBlack;
+
+	private static NSString _CalibratedRGB;
+
+	private static NSString _DeviceWhite;
+
+	private static NSString _DeviceBlack;
+
+	private static NSString _DeviceRGB;
+
+	private static NSString _DeviceCMYK;
+
+	private static NSString _Named;
+
+	private static NSString _Pattern;
+
+	private static NSString _Custom;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSColorSpace AdobeRGB1998ColorSpace
+	public virtual NSData ICCProfileData
 	{
-		[Export("adobeRGB1998ColorSpace")]
+		[Export("ICCProfileData")]
 		get
 		{
-			return Runtime.GetNSObject<NSColorSpace>(Messaging.IntPtr_objc_msgSend(class_ptr, selAdobeRGB1998ColorSpaceHandle));
+			NSApplication.EnsureUIThread();
+			return (NSData)(__mt_ICCProfileData_var = ((!IsDirectBinding) ? ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selICCProfileDataHandle))) : ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selICCProfileDataHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint ColorComponents
-	{
-		[Export("numberOfColorComponents")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selNumberOfColorComponentsHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selNumberOfColorComponentsHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGColorSpace ColorSpace
-	{
-		[Export("CGColorSpace")]
-		get
-		{
-			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCGColorSpaceHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selCGColorSpaceHandle));
-			return (intPtr == IntPtr.Zero) ? null : new CGColorSpace(intPtr);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSColorSpaceModel ColorSpaceModel
-	{
-		[Export("colorSpaceModel")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return (NSColorSpaceModel)Messaging.Int64_objc_msgSend(base.Handle, selColorSpaceModelHandle);
-			}
-			return (NSColorSpaceModel)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selColorSpaceModelHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual IntPtr ColorSyncProfile
 	{
 		[Export("colorSyncProfile")]
 		get
 		{
-			if (base.IsDirectBinding)
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
 			{
 				return Messaging.IntPtr_objc_msgSend(base.Handle, selColorSyncProfileHandle);
 			}
@@ -222,133 +113,55 @@ public class NSColorSpace : NSObject, INSCoding, INativeObject, IDisposable, INS
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSColorSpace DeviceCMYKColorSpace
+	public virtual CGColorSpace ColorSpace
 	{
-		[Export("deviceCMYKColorSpace")]
+		[Export("CGColorSpace")]
 		get
 		{
-			return Runtime.GetNSObject<NSColorSpace>(Messaging.IntPtr_objc_msgSend(class_ptr, selDeviceCMYKColorSpaceHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSColorSpace DeviceGrayColorSpace
-	{
-		[Export("deviceGrayColorSpace")]
-		get
-		{
-			return Runtime.GetNSObject<NSColorSpace>(Messaging.IntPtr_objc_msgSend(class_ptr, selDeviceGrayColorSpaceHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSColorSpace DeviceRGBColorSpace
-	{
-		[Export("deviceRGBColorSpace")]
-		get
-		{
-			return Runtime.GetNSObject<NSColorSpace>(Messaging.IntPtr_objc_msgSend(class_ptr, selDeviceRGBColorSpaceHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	public static NSColorSpace DisplayP3ColorSpace
-	{
-		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-		[Export("displayP3ColorSpace")]
-		get
-		{
-			return Runtime.GetNSObject<NSColorSpace>(Messaging.IntPtr_objc_msgSend(class_ptr, selDisplayP3ColorSpaceHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	public static NSColorSpace ExtendedGenericGamma22GrayColorSpace
-	{
-		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-		[Export("extendedGenericGamma22GrayColorSpace")]
-		get
-		{
-			return Runtime.GetNSObject<NSColorSpace>(Messaging.IntPtr_objc_msgSend(class_ptr, selExtendedGenericGamma22GrayColorSpaceHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	public static NSColorSpace ExtendedSRgbColorSpace
-	{
-		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-		[Export("extendedSRGBColorSpace")]
-		get
-		{
-			return Runtime.GetNSObject<NSColorSpace>(Messaging.IntPtr_objc_msgSend(class_ptr, selExtendedSRGBColorSpaceHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSColorSpace GenericCMYKColorSpace
-	{
-		[Export("genericCMYKColorSpace")]
-		get
-		{
-			return Runtime.GetNSObject<NSColorSpace>(Messaging.IntPtr_objc_msgSend(class_ptr, selGenericCMYKColorSpaceHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSColorSpace GenericGamma22GrayColorSpace
-	{
-		[Export("genericGamma22GrayColorSpace")]
-		get
-		{
-			return Runtime.GetNSObject<NSColorSpace>(Messaging.IntPtr_objc_msgSend(class_ptr, selGenericGamma22GrayColorSpaceHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSColorSpace GenericGrayColorSpace
-	{
-		[Export("genericGrayColorSpace")]
-		get
-		{
-			return Runtime.GetNSObject<NSColorSpace>(Messaging.IntPtr_objc_msgSend(class_ptr, selGenericGrayColorSpaceHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSColorSpace GenericRGBColorSpace
-	{
-		[Export("genericRGBColorSpace")]
-		get
-		{
-			return Runtime.GetNSObject<NSColorSpace>(Messaging.IntPtr_objc_msgSend(class_ptr, selGenericRGBColorSpaceHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSData ICCProfileData
-	{
-		[Export("ICCProfileData")]
-		get
-		{
-			if (base.IsDirectBinding)
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSend(base.Handle, selICCProfileDataHandle));
+				return new CGColorSpace(Messaging.IntPtr_objc_msgSend(base.Handle, selCGColorSpaceHandle));
 			}
-			return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selICCProfileDataHandle));
+			return new CGColorSpace(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCGColorSpaceHandle));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual int ColorComponents
+	{
+		[Export("numberOfColorComponents")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.int_objc_msgSend(base.Handle, selNumberOfColorComponentsHandle);
+			}
+			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selNumberOfColorComponentsHandle);
+		}
+	}
+
+	public virtual NSColorSpaceModel ColorSpaceModel
+	{
+		[Export("colorSpaceModel")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return (NSColorSpaceModel)Messaging.Int64_objc_msgSend(base.Handle, selColorSpaceModelHandle);
+			}
+			return (NSColorSpaceModel)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selColorSpaceModelHandle);
+		}
+	}
+
 	public virtual string LocalizedName
 	{
 		[Export("localizedName")]
 		get
 		{
-			if (base.IsDirectBinding)
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedNameHandle));
 			}
@@ -356,13 +169,106 @@ public class NSColorSpace : NSObject, INSCoding, INativeObject, IDisposable, INS
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public static NSColorSpace GenericRGBColorSpace
+	{
+		[Export("genericRGBColorSpace")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSColorSpace)(__mt_GenericRGBColorSpace_var_static = (NSColorSpace)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selGenericRGBColorSpaceHandle)));
+		}
+	}
+
+	public static NSColorSpace GenericGrayColorSpace
+	{
+		[Export("genericGrayColorSpace")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSColorSpace)(__mt_GenericGrayColorSpace_var_static = (NSColorSpace)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selGenericGrayColorSpaceHandle)));
+		}
+	}
+
+	public static NSColorSpace GenericCMYKColorSpace
+	{
+		[Export("genericCMYKColorSpace")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSColorSpace)(__mt_GenericCMYKColorSpace_var_static = (NSColorSpace)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selGenericCMYKColorSpaceHandle)));
+		}
+	}
+
+	public static NSColorSpace DeviceRGBColorSpace
+	{
+		[Export("deviceRGBColorSpace")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSColorSpace)(__mt_DeviceRGBColorSpace_var_static = (NSColorSpace)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selDeviceRGBColorSpaceHandle)));
+		}
+	}
+
+	public static NSColorSpace DeviceGrayColorSpace
+	{
+		[Export("deviceGrayColorSpace")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSColorSpace)(__mt_DeviceGrayColorSpace_var_static = (NSColorSpace)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selDeviceGrayColorSpaceHandle)));
+		}
+	}
+
+	public static NSColorSpace DeviceCMYKColorSpace
+	{
+		[Export("deviceCMYKColorSpace")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSColorSpace)(__mt_DeviceCMYKColorSpace_var_static = (NSColorSpace)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selDeviceCMYKColorSpaceHandle)));
+		}
+	}
+
 	public static NSColorSpace SRGBColorSpace
 	{
 		[Export("sRGBColorSpace")]
 		get
 		{
-			return Runtime.GetNSObject<NSColorSpace>(Messaging.IntPtr_objc_msgSend(class_ptr, selSRGBColorSpaceHandle));
+			NSApplication.EnsureUIThread();
+			return (NSColorSpace)(__mt_SRGBColorSpace_var_static = (NSColorSpace)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selSRGBColorSpaceHandle)));
+		}
+	}
+
+	public static NSColorSpace GenericGamma22GrayColorSpace
+	{
+		[Export("genericGamma22GrayColorSpace")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSColorSpace)(__mt_GenericGamma22GrayColorSpace_var_static = (NSColorSpace)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selGenericGamma22GrayColorSpaceHandle)));
+		}
+	}
+
+	public static NSColorSpace AdobeRGB1998ColorSpace
+	{
+		[Export("adobeRGB1998ColorSpace")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSColorSpace)(__mt_AdobeRGB1998ColorSpace_var_static = (NSColorSpace)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selAdobeRGB1998ColorSpaceHandle)));
+		}
+	}
+
+	[Field("NSCalibratedWhiteColorSpace", "AppKit")]
+	public static NSString CalibratedWhite
+	{
+		get
+		{
+			if (_CalibratedWhite == null)
+			{
+				_CalibratedWhite = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSCalibratedWhiteColorSpace");
+			}
+			return _CalibratedWhite;
 		}
 	}
 
@@ -392,29 +298,16 @@ public class NSColorSpace : NSObject, INSCoding, INativeObject, IDisposable, INS
 		}
 	}
 
-	[Field("NSCalibratedWhiteColorSpace", "AppKit")]
-	public static NSString CalibratedWhite
+	[Field("NSDeviceWhiteColorSpace", "AppKit")]
+	public static NSString DeviceWhite
 	{
 		get
 		{
-			if (_CalibratedWhite == null)
+			if (_DeviceWhite == null)
 			{
-				_CalibratedWhite = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSCalibratedWhiteColorSpace");
+				_DeviceWhite = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSDeviceWhiteColorSpace");
 			}
-			return _CalibratedWhite;
-		}
-	}
-
-	[Field("NSCustomColorSpace", "AppKit")]
-	public static NSString Custom
-	{
-		get
-		{
-			if (_Custom == null)
-			{
-				_Custom = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSCustomColorSpace");
-			}
-			return _Custom;
+			return _DeviceWhite;
 		}
 	}
 
@@ -431,19 +324,6 @@ public class NSColorSpace : NSObject, INSCoding, INativeObject, IDisposable, INS
 		}
 	}
 
-	[Field("NSDeviceCMYKColorSpace", "AppKit")]
-	public static NSString DeviceCMYK
-	{
-		get
-		{
-			if (_DeviceCMYK == null)
-			{
-				_DeviceCMYK = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSDeviceCMYKColorSpace");
-			}
-			return _DeviceCMYK;
-		}
-	}
-
 	[Field("NSDeviceRGBColorSpace", "AppKit")]
 	public static NSString DeviceRGB
 	{
@@ -457,16 +337,16 @@ public class NSColorSpace : NSObject, INSCoding, INativeObject, IDisposable, INS
 		}
 	}
 
-	[Field("NSDeviceWhiteColorSpace", "AppKit")]
-	public static NSString DeviceWhite
+	[Field("NSDeviceCMYKColorSpace", "AppKit")]
+	public static NSString DeviceCMYK
 	{
 		get
 		{
-			if (_DeviceWhite == null)
+			if (_DeviceCMYK == null)
 			{
-				_DeviceWhite = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSDeviceWhiteColorSpace");
+				_DeviceCMYK = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSDeviceCMYKColorSpace");
 			}
-			return _DeviceWhite;
+			return _DeviceCMYK;
 		}
 	}
 
@@ -496,113 +376,108 @@ public class NSColorSpace : NSObject, INSCoding, INativeObject, IDisposable, INS
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Field("NSCustomColorSpace", "AppKit")]
+	public static NSString Custom
+	{
+		get
+		{
+			if (_Custom == null)
+			{
+				_Custom = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSCustomColorSpace");
+			}
+			return _Custom;
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSColorSpace()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSColorSpace(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSColorSpace(NSObjectFlag t)
+	public NSColorSpace(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSColorSpace(IntPtr handle)
+	public NSColorSpace(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithICCProfileData:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSColorSpace(NSData iccData)
 		: base(NSObjectFlag.Empty)
 	{
+		NSApplication.EnsureUIThread();
 		if (iccData == null)
 		{
 			throw new ArgumentNullException("iccData");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithICCProfileData_Handle, iccData.Handle), "initWithICCProfileData:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithICCProfileData_Handle, iccData.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithICCProfileData_Handle, iccData.Handle), "initWithICCProfileData:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithICCProfileData_Handle, iccData.Handle);
 		}
 	}
 
 	[Export("initWithCGColorSpace:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSColorSpace(CGColorSpace cgColorSpace)
 		: base(NSObjectFlag.Empty)
 	{
-		if (cgColorSpace == null)
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("cgColorSpace");
-		}
-		if (base.IsDirectBinding)
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithCGColorSpace_Handle, cgColorSpace.Handle), "initWithCGColorSpace:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithCGColorSpace_Handle, cgColorSpace.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithCGColorSpace_Handle, cgColorSpace.Handle), "initWithCGColorSpace:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithCGColorSpace_Handle, cgColorSpace.Handle);
 		}
 	}
 
 	[Export("availableColorSpacesWithModel:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSColorSpace[] AvailableColorSpacesWithModel(NSColorSpaceModel model)
 	{
+		NSApplication.EnsureUIThread();
 		return NSArray.ArrayFromHandle<NSColorSpace>(Messaging.IntPtr_objc_msgSend_Int64(class_ptr, selAvailableColorSpacesWithModel_Handle, (long)model));
 	}
 
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
+	protected override void Dispose(bool disposing)
 	{
-		if (encoder == null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			throw new ArgumentNullException("encoder");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
+			__mt_ICCProfileData_var = null;
 		}
 	}
 }

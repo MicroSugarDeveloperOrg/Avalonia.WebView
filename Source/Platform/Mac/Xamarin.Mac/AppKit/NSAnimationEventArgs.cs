@@ -4,9 +4,9 @@ namespace AppKit;
 
 public class NSAnimationEventArgs : EventArgs
 {
-	public float Progress { get; set; }
+	public double Progress { get; set; }
 
-	public NSAnimationEventArgs(float progress)
+	public NSAnimationEventArgs(double progress)
 	{
 		Progress = progress;
 	}

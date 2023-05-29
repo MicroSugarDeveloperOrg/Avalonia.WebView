@@ -5,108 +5,112 @@ using ObjCRuntime;
 
 namespace AppKit;
 
-[Protocol]
-[Register("NSOpenSavePanelDelegate", false)]
+[Register("NSOpenSavePanelDelegate", true)]
 [Model]
-public class NSOpenSavePanelDelegate : NSObject, INSOpenSavePanelDelegate, INativeObject, IDisposable
+public class NSOpenSavePanelDelegate : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSOpenSavePanelDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSOpenSavePanelDelegate(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSOpenSavePanelDelegate(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSOpenSavePanelDelegate(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSOpenSavePanelDelegate(IntPtr handle)
+	public NSOpenSavePanelDelegate(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
-	}
-
-	[Export("panel:compareFilename:with:caseSensitive:")]
-	[Deprecated(PlatformName.MacOSX, 10, 6, PlatformArchitecture.All, "This method does not control sorting order.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSComparisonResult CompareFilenames(NSSavePanel panel, string name1, string name2, bool caseSensitive)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("panel:didChangeToDirectoryURL:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DidChangeToDirectory(NSSavePanel panel, NSUrl newDirectoryUrl)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("panel:directoryDidChange:")]
-	[Deprecated(PlatformName.MacOSX, 10, 6, PlatformArchitecture.All, "Use DidChangeToDirectory instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DirectoryDidChange(NSSavePanel panel, string path)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("panel:isValidFilename:")]
-	[Deprecated(PlatformName.MacOSX, 10, 6, PlatformArchitecture.All, "Use ValidateUrl instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool IsValidFilename(NSSavePanel panel, string fileName)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("panelSelectionDidChange:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SelectionDidChange(NSSavePanel panel)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("panel:shouldEnableURL:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool ShouldEnableUrl(NSSavePanel panel, NSUrl url)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("panel:shouldShowFilename:")]
-	[Deprecated(PlatformName.MacOSX, 10, 6, PlatformArchitecture.All, "Use ShouldEnableUrl instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool ShouldShowFilename(NSSavePanel panel, string filename)
+	[Export("panel:validateURL:error:")]
+	public virtual bool ValidateUrl(NSSavePanel panel, NSUrl url, out NSError outError)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("panel:didChangeToDirectoryURL:")]
+	public virtual void DidChangeToDirectory(NSSavePanel panel, NSUrl newDirectoryUrl)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("panel:userEnteredFilename:confirmed:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string UserEnteredFilename(NSSavePanel panel, string filename, bool confirmed)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("panel:validateURL:error:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool ValidateUrl(NSSavePanel panel, NSUrl url, out NSError? outError)
+	[Export("panel:willExpand:")]
+	public virtual void WillExpand(NSSavePanel panel, bool expanding)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("panel:willExpand:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void WillExpand(NSSavePanel panel, bool expanding)
+	[Export("panelSelectionDidChange:")]
+	public virtual void SelectionDidChange(NSSavePanel panel)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("panel:isValidFilename:")]
+	[Obsolete("On 10.6 and newer use ValidateUrlError", false)]
+	public virtual bool IsValidFilename(NSSavePanel panel, string fileName)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("panel:directoryDidChange:")]
+	[Obsolete("On 10.6 and newer Use DidChangeToDirectoryUrl instead", false)]
+	public virtual void DirectoryDidChange(NSSavePanel panel, string path)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("panel:compareFilename:with:caseSensitive")]
+	[Obsolete("After 10.6, this method is obsolete and does not control sorting order", false)]
+	public virtual NSComparisonResult CompareFilenames(NSSavePanel panel, string name1, string name2, bool caseSensitive)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("panel:shouldShowFilename:")]
+	[Obsolete("On 10.6 and newer use ShouldEnableUrl", false)]
+	public virtual bool ShouldShowFilename(NSSavePanel panel, string filename)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

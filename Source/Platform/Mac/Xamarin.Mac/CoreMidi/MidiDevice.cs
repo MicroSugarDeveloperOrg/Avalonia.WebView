@@ -1,13 +1,12 @@
+using System;
 using System.Runtime.InteropServices;
 using Foundation;
-using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreMidi;
 
 public class MidiDevice : MidiObject
 {
-	public nint EntityCount => MIDIDeviceGetNumberOfEntities(handle);
+	public int EntityCount => MIDIDeviceGetNumberOfEntities(handle);
 
 	public string Image
 	{
@@ -54,56 +53,6 @@ public class MidiDevice : MidiObject
 		set
 		{
 			SetInt(MidiObject.kMIDIPropertyUniqueID, value);
-		}
-	}
-
-	public bool UsesSerial
-	{
-		get
-		{
-			return GetInt(MidiObject.kMIDIDriverPropertyUsesSerial) != 0;
-		}
-		set
-		{
-			SetInt(MidiObject.kMIDIDriverPropertyUsesSerial, value ? 1 : 0);
-		}
-	}
-
-	public string FactoryPatchNameFile
-	{
-		get
-		{
-			return GetString(MidiObject.kMIDIPropertyFactoryPatchNameFile);
-		}
-		set
-		{
-			SetString(MidiObject.kMIDIPropertyFactoryPatchNameFile, value);
-		}
-	}
-
-	public string UserPatchNameFile
-	{
-		get
-		{
-			return GetString(MidiObject.kMIDIPropertyUserPatchNameFile);
-		}
-		set
-		{
-			SetString(MidiObject.kMIDIPropertyUserPatchNameFile, value);
-		}
-	}
-
-	[Mac(10, 15)]
-	[iOS(13, 0)]
-	public string NameConfigurationDictionary
-	{
-		get
-		{
-			return GetString(MidiObject.kMIDIPropertyNameConfigurationDictionary);
-		}
-		set
-		{
-			SetString(MidiObject.kMIDIPropertyNameConfigurationDictionary, value);
 		}
 	}
 
@@ -511,47 +460,27 @@ public class MidiDevice : MidiObject
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern nint MIDIDeviceGetNumberOfEntities(int handle);
+	private static extern int MIDIDeviceGetNumberOfEntities(IntPtr handle);
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIDeviceGetEntity(int handle, nint item);
+	private static extern IntPtr MIDIDeviceGetEntity(IntPtr handle, int item);
 
-	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	[NoiOS]
-	private static extern int MIDIDeviceAddEntity(int device, IntPtr name, bool embedded, nuint numSourceEndpoints, nuint numDestinationEndpoints, int newEntity);
-
-	public MidiEntity GetEntity(nint entityIndex)
+	public MidiEntity GetEntity(int entityIndex)
 	{
-		if (handle == 0)
+		if (handle == IntPtr.Zero)
 		{
 			throw new ObjectDisposedException("handle");
 		}
-		int num = MIDIDeviceGetEntity(handle, entityIndex);
-		if (num == 0)
+		IntPtr intPtr = MIDIDeviceGetEntity(handle, entityIndex);
+		if (intPtr == IntPtr.Zero)
 		{
 			return null;
 		}
-		return new MidiEntity(num);
+		return new MidiEntity(intPtr);
 	}
 
-	[NoiOS]
-	public int Add(string name, bool embedded, nuint numSourceEndpoints, nuint numDestinationEndpoints, MidiEntity newEntity)
-	{
-		if (handle == 0)
-		{
-			throw new ObjectDisposedException("handle");
-		}
-		using NSString nSString = new NSString(name);
-		return MIDIDeviceAddEntity(handle, nSString.Handle, embedded, numSourceEndpoints, numDestinationEndpoints, newEntity.Handle);
-	}
-
-	internal MidiDevice(int handle)
+	internal MidiDevice(IntPtr handle)
 		: base(handle)
-	{
-	}
-
-	internal MidiDevice(int handle, bool owns)
-		: base(handle, owns)
 	{
 	}
 }

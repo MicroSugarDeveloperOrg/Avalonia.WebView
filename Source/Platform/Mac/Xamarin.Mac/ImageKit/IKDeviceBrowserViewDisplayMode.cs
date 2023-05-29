@@ -1,9 +1,6 @@
-using ObjCRuntime;
-
 namespace ImageKit;
 
-[Native]
-public enum IKDeviceBrowserViewDisplayMode : long
+public enum IKDeviceBrowserViewDisplayMode
 {
 	Table,
 	Outline,

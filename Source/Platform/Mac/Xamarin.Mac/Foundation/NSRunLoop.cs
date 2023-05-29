@@ -8,120 +8,100 @@ namespace Foundation;
 [Register("NSRunLoop", true)]
 public class NSRunLoop : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAcceptInputForMode_BeforeDate_ = "acceptInputForMode:beforeDate:";
-
-	private static readonly IntPtr selAcceptInputForMode_BeforeDate_Handle = Selector.GetHandle("acceptInputForMode:beforeDate:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddTimer_ForMode_ = "addTimer:forMode:";
-
-	private static readonly IntPtr selAddTimer_ForMode_Handle = Selector.GetHandle("addTimer:forMode:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCurrentMode = "currentMode";
-
-	private static readonly IntPtr selCurrentModeHandle = Selector.GetHandle("currentMode");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCurrentRunLoop = "currentRunLoop";
-
 	private static readonly IntPtr selCurrentRunLoopHandle = Selector.GetHandle("currentRunLoop");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGetCFRunLoop = "getCFRunLoop";
-
-	private static readonly IntPtr selGetCFRunLoopHandle = Selector.GetHandle("getCFRunLoop");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLimitDateForMode_ = "limitDateForMode:";
-
-	private static readonly IntPtr selLimitDateForMode_Handle = Selector.GetHandle("limitDateForMode:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMainRunLoop = "mainRunLoop";
 
 	private static readonly IntPtr selMainRunLoopHandle = Selector.GetHandle("mainRunLoop");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPerformBlock_ = "performBlock:";
+	private static readonly IntPtr selCurrentModeHandle = Selector.GetHandle("currentMode");
 
-	private static readonly IntPtr selPerformBlock_Handle = Selector.GetHandle("performBlock:");
+	private static readonly IntPtr selGetCFRunLoopHandle = Selector.GetHandle("getCFRunLoop");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPerformInModes_Block_ = "performInModes:block:";
+	private static readonly IntPtr selAddTimerForMode_Handle = Selector.GetHandle("addTimer:forMode:");
 
-	private static readonly IntPtr selPerformInModes_Block_Handle = Selector.GetHandle("performInModes:block:");
+	private static readonly IntPtr selLimitDateForMode_Handle = Selector.GetHandle("limitDateForMode:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRun = "run";
+	private static readonly IntPtr selAcceptInputForModeBeforeDate_Handle = Selector.GetHandle("acceptInputForMode:beforeDate:");
 
 	private static readonly IntPtr selRunHandle = Selector.GetHandle("run");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRunMode_BeforeDate_ = "runMode:beforeDate:";
-
-	private static readonly IntPtr selRunMode_BeforeDate_Handle = Selector.GetHandle("runMode:beforeDate:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRunUntilDate_ = "runUntilDate:";
-
 	private static readonly IntPtr selRunUntilDate_Handle = Selector.GetHandle("runUntilDate:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSRunLoop");
+	private static readonly IntPtr selRunModeBeforeDate_Handle = Selector.GetHandle("runMode:beforeDate:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _NSDefaultRunLoopMode;
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSRunLoop");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _NSRunLoopCommonModes;
+	[ThreadStatic]
+	private static object __mt_Current_var_static;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _NSRunLoopConnectionReplyMode;
+	private static object __mt_Main_var_static;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _NSRunLoopEventTracking;
+	private object __mt_CurrentMode_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _NSRunLoopModalPanelMode;
+	private static NSString _NSDefaultRunLoopMode;
 
-	public override IntPtr ClassHandle => class_ptr;
+	private static NSString _NSRunLoopCommonModes;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSRunLoop Current
+	private static NSString _NSRunLoopConnectionReplyMode;
+
+	private static NSString _NSRunLoopModalPanelMode;
+
+	private static NSString _NSRunLoopEventTracking;
+
+	public NSRunLoopMode CurrentRunLoopMode
 	{
-		[Export("currentRunLoop", ArgumentSemantic.Retain)]
 		get
 		{
-			return Runtime.GetNSObject<NSRunLoop>(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentRunLoopHandle));
+			NSString currentMode = CurrentMode;
+			if (currentMode == NSDefaultRunLoopMode)
+			{
+				return NSRunLoopMode.Default;
+			}
+			if (currentMode == NSRunLoopCommonModes)
+			{
+				return NSRunLoopMode.Common;
+			}
+			if (currentMode == NSRunLoopConnectionReplyMode)
+			{
+				return NSRunLoopMode.ConnectionReply;
+			}
+			if (currentMode == NSRunLoopModalPanelMode)
+			{
+				return NSRunLoopMode.ModalPanel;
+			}
+			if (currentMode == NSRunLoopEventTracking)
+			{
+				return NSRunLoopMode.EventTracking;
+			}
+			return NSRunLoopMode.Other;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public override IntPtr ClassHandle => class_ptr;
+
+	public static NSRunLoop Current
+	{
+		[Export("currentRunLoop")]
+		get
+		{
+			return (NSRunLoop)(__mt_Current_var_static = (NSRunLoop)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentRunLoopHandle)));
+		}
+	}
+
+	public static NSRunLoop Main
+	{
+		[Export("mainRunLoop")]
+		get
+		{
+			return (NSRunLoop)(__mt_Main_var_static = (NSRunLoop)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selMainRunLoopHandle)));
+		}
+	}
+
 	public virtual NSString CurrentMode
 	{
 		[Export("currentMode")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrentModeHandle));
-			}
-			return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrentModeHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public NSRunLoopMode CurrentRunLoopMode => NSRunLoopModeExtensions.GetValue(CurrentMode);
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSRunLoop Main
-	{
-		[Export("mainRunLoop", ArgumentSemantic.Retain)]
-		get
-		{
-			return Runtime.GetNSObject<NSRunLoop>(Messaging.IntPtr_objc_msgSend(class_ptr, selMainRunLoopHandle));
+			return (NSString)(__mt_CurrentMode_var = ((!IsDirectBinding) ? ((NSString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrentModeHandle))) : ((NSString)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrentModeHandle)))));
 		}
 	}
 
@@ -152,16 +132,8 @@ public class NSRunLoop : NSObject
 	}
 
 	[Field("NSConnectionReplyMode", "Foundation")]
-	[Deprecated(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, "Use 'NSXpcConnection' instead.")]
-	[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-	[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-	[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
 	public static NSString NSRunLoopConnectionReplyMode
 	{
-		[Deprecated(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, "Use 'NSXpcConnection' instead.")]
-		[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-		[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-		[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
 		get
 		{
 			if (_NSRunLoopConnectionReplyMode == null)
@@ -172,15 +144,22 @@ public class NSRunLoop : NSObject
 		}
 	}
 
+	[Field("NSModalPanelRunLoopMode", "AppKit")]
+	public static NSString NSRunLoopModalPanelMode
+	{
+		get
+		{
+			if (_NSRunLoopModalPanelMode == null)
+			{
+				_NSRunLoopModalPanelMode = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSModalPanelRunLoopMode");
+			}
+			return _NSRunLoopModalPanelMode;
+		}
+	}
+
 	[Field("NSEventTrackingRunLoopMode", "AppKit")]
-	[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-	[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-	[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
 	public static NSString NSRunLoopEventTracking
 	{
-		[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-		[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-		[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
 		get
 		{
 			if (_NSRunLoopEventTracking == null)
@@ -191,23 +170,62 @@ public class NSRunLoop : NSObject
 		}
 	}
 
-	[Field("NSModalPanelRunLoopMode", "AppKit")]
-	[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-	[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-	[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
-	public static NSString NSRunLoopModalPanelMode
+	private static NSString GetRealMode(string mode)
 	{
-		[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-		[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-		[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
-		get
+		if (mode == NSDefaultRunLoopMode)
 		{
-			if (_NSRunLoopModalPanelMode == null)
-			{
-				_NSRunLoopModalPanelMode = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSModalPanelRunLoopMode");
-			}
-			return _NSRunLoopModalPanelMode;
+			return NSDefaultRunLoopMode;
 		}
+		if (mode == NSRunLoopCommonModes)
+		{
+			return NSRunLoopCommonModes;
+		}
+		return new NSString(mode);
+	}
+
+	private static NSString FromEnum(NSRunLoopMode mode)
+	{
+		return mode switch
+		{
+			NSRunLoopMode.Common => NSRunLoopCommonModes, 
+			NSRunLoopMode.ConnectionReply => NSRunLoopConnectionReplyMode, 
+			NSRunLoopMode.ModalPanel => NSRunLoopModalPanelMode, 
+			NSRunLoopMode.EventTracking => NSRunLoopEventTracking, 
+			_ => NSDefaultRunLoopMode, 
+		};
+	}
+
+	[Advice("Use AddTimer (NSTimer, NSRunLoopMode)")]
+	public void AddTimer(NSTimer timer, string forMode)
+	{
+		AddTimer(timer, GetRealMode(forMode));
+	}
+
+	public void AddTimer(NSTimer timer, NSRunLoopMode forMode)
+	{
+		AddTimer(timer, FromEnum(forMode));
+	}
+
+	[Advice("Use LimitDateForMode (NSRunLoopMode) instead")]
+	public NSDate LimitDateForMode(string mode)
+	{
+		return LimitDateForMode(GetRealMode(mode));
+	}
+
+	public NSDate LimitDateForMode(NSRunLoopMode mode)
+	{
+		return LimitDateForMode(FromEnum(mode));
+	}
+
+	[Advice("Use AcceptInputForMode (NSRunLoopMode, NSDate)")]
+	public void AcceptInputForMode(string mode, NSDate limitDate)
+	{
+		AcceptInputForMode(GetRealMode(mode), limitDate);
+	}
+
+	public void AcceptInputForMode(NSRunLoopMode mode, NSDate limitDate)
+	{
+		AcceptInputForMode(FromEnum(mode), limitDate);
 	}
 
 	public void Stop()
@@ -220,50 +238,49 @@ public class NSRunLoop : NSObject
 		GetCFRunLoop().WakeUp();
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public bool RunUntil(NSRunLoopMode mode, NSDate limitDate)
+	{
+		return RunUntil(FromEnum(mode), limitDate);
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSRunLoop(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSRunLoop(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSRunLoop(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSRunLoop(IntPtr handle)
+	public NSRunLoop(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("acceptInputForMode:beforeDate:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void AcceptInputForMode(NSString mode, NSDate limitDate)
+	[Export("getCFRunLoop")]
+	public virtual CFRunLoop GetCFRunLoop()
 	{
-		if (mode == null)
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("mode");
+			return new CFRunLoop(Messaging.IntPtr_objc_msgSend(base.Handle, selGetCFRunLoopHandle));
 		}
-		if (limitDate == null)
-		{
-			throw new ArgumentNullException("limitDate");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selAcceptInputForMode_BeforeDate_Handle, mode.Handle, limitDate.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selAcceptInputForMode_BeforeDate_Handle, mode.Handle, limitDate.Handle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public void AcceptInputForMode(NSRunLoopMode mode, NSDate limitDate)
-	{
-		AcceptInputForMode(mode.GetConstant(), limitDate);
+		return new CFRunLoop(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selGetCFRunLoopHandle));
 	}
 
 	[Export("addTimer:forMode:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AddTimer(NSTimer timer, NSString forMode)
 	{
 		if (timer == null)
@@ -274,124 +291,55 @@ public class NSRunLoop : NSObject
 		{
 			throw new ArgumentNullException("forMode");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selAddTimer_ForMode_Handle, timer.Handle, forMode.Handle);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selAddTimerForMode_Handle, timer.Handle, forMode.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selAddTimer_ForMode_Handle, timer.Handle, forMode.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selAddTimerForMode_Handle, timer.Handle, forMode.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public void AddTimer(NSTimer timer, NSRunLoopMode forMode)
-	{
-		AddTimer(timer, forMode.GetConstant());
-	}
-
-	[Export("getCFRunLoop")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CFRunLoop GetCFRunLoop()
-	{
-		IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selGetCFRunLoopHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selGetCFRunLoopHandle));
-		return (intPtr == IntPtr.Zero) ? null : new CFRunLoop(intPtr);
-	}
-
 	[Export("limitDateForMode:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDate LimitDateForMode(NSString mode)
 	{
 		if (mode == null)
 		{
 			throw new ArgumentNullException("mode");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selLimitDateForMode_Handle, mode.Handle));
+			return (NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selLimitDateForMode_Handle, mode.Handle));
 		}
-		return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selLimitDateForMode_Handle, mode.Handle));
+		return (NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selLimitDateForMode_Handle, mode.Handle));
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public NSDate LimitDateForMode(NSRunLoopMode mode)
+	[Export("acceptInputForMode:beforeDate:")]
+	public virtual void AcceptInputForMode(NSString mode, NSDate limitDate)
 	{
-		return LimitDateForMode(mode.GetConstant());
-	}
-
-	[Export("performBlock:")]
-	[Introduced(PlatformName.WatchOS, 3, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe virtual void Perform([BlockProxy(typeof(Trampolines.NIDAction))] Action block)
-	{
-		if (block == null)
+		if (mode == null)
 		{
-			throw new ArgumentNullException("block");
+			throw new ArgumentNullException("mode");
 		}
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDAction.Handler, block);
-		if (base.IsDirectBinding)
+		if (limitDate == null)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selPerformBlock_Handle, (IntPtr)ptr);
+			throw new ArgumentNullException("limitDate");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selAcceptInputForModeBeforeDate_Handle, mode.Handle, limitDate.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selPerformBlock_Handle, (IntPtr)ptr);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selAcceptInputForModeBeforeDate_Handle, mode.Handle, limitDate.Handle);
 		}
-		ptr->CleanupBlock();
-	}
-
-	[Export("performInModes:block:")]
-	[Introduced(PlatformName.WatchOS, 3, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe virtual void Perform(NSString[] modes, [BlockProxy(typeof(Trampolines.NIDAction))] Action block)
-	{
-		if (modes == null)
-		{
-			throw new ArgumentNullException("modes");
-		}
-		if (block == null)
-		{
-			throw new ArgumentNullException("block");
-		}
-		NSArray nSArray = NSArray.FromNSObjects(modes);
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDAction.Handler, block);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selPerformInModes_Block_Handle, nSArray.Handle, (IntPtr)ptr);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selPerformInModes_Block_Handle, nSArray.Handle, (IntPtr)ptr);
-		}
-		nSArray.Dispose();
-		ptr->CleanupBlock();
-	}
-
-	[Introduced(PlatformName.WatchOS, 3, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public void Perform(NSRunLoopMode[] modes, [BlockProxy(typeof(Trampolines.NIDAction))] Action block)
-	{
-		Perform(modes.GetConstants(), block);
 	}
 
 	[Export("run")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Run()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selRunHandle);
 		}
@@ -402,14 +350,13 @@ public class NSRunLoop : NSObject
 	}
 
 	[Export("runUntilDate:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void RunUntil(NSDate date)
 	{
 		if (date == null)
 		{
 			throw new ArgumentNullException("date");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRunUntilDate_Handle, date.Handle);
 		}
@@ -420,7 +367,6 @@ public class NSRunLoop : NSObject
 	}
 
 	[Export("runMode:beforeDate:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool RunUntil(NSString runLoopMode, NSDate limitdate)
 	{
 		if (runLoopMode == null)
@@ -431,16 +377,19 @@ public class NSRunLoop : NSObject
 		{
 			throw new ArgumentNullException("limitdate");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selRunMode_BeforeDate_Handle, runLoopMode.Handle, limitdate.Handle);
+			return Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selRunModeBeforeDate_Handle, runLoopMode.Handle, limitdate.Handle);
 		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selRunMode_BeforeDate_Handle, runLoopMode.Handle, limitdate.Handle);
+		return Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selRunModeBeforeDate_Handle, runLoopMode.Handle, limitdate.Handle);
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public bool RunUntil(NSRunLoopMode runLoopMode, NSDate limitDate)
+	protected override void Dispose(bool disposing)
 	{
-		return RunUntil(runLoopMode.GetConstant(), limitDate);
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_CurrentMode_var = null;
+		}
 	}
 }

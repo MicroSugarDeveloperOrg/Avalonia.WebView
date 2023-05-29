@@ -5,16 +5,16 @@ namespace QTKit;
 
 public class QTCaptureFileErrorEventArgs : EventArgs
 {
-	public QTCaptureConnection[] Connections { get; set; }
-
 	public NSUrl OutputFileURL { get; set; }
+
+	public QTCaptureConnection[] Connections { get; set; }
 
 	public NSError Reason { get; set; }
 
 	public QTCaptureFileErrorEventArgs(NSUrl outputFileURL, QTCaptureConnection[] connections, NSError reason)
 	{
-		Connections = connections;
 		OutputFileURL = outputFileURL;
+		Connections = connections;
 		Reason = reason;
 	}
 }

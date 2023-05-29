@@ -8,10 +8,6 @@ public class AVVideoSettingsUncompressed : CVPixelBufferAttributes
 {
 	public AVVideoScalingMode? ScalingMode
 	{
-		get
-		{
-			return ScalingModeFromNSString(GetNSStringValue(AVVideo.ScalingModeKey));
-		}
 		set
 		{
 			NSString nSString = value switch
@@ -41,30 +37,5 @@ public class AVVideoSettingsUncompressed : CVPixelBufferAttributes
 	public AVVideoSettingsUncompressed(NSDictionary dictionary)
 		: base(dictionary)
 	{
-	}
-
-	internal static AVVideoScalingMode? ScalingModeFromNSString(NSString k)
-	{
-		if (k == null)
-		{
-			return null;
-		}
-		if (k == AVVideoScalingModeKey.Fit)
-		{
-			return AVVideoScalingMode.Fit;
-		}
-		if (k == AVVideoScalingModeKey.Resize)
-		{
-			return AVVideoScalingMode.Resize;
-		}
-		if (k == AVVideoScalingModeKey.ResizeAspect)
-		{
-			return AVVideoScalingMode.ResizeAspect;
-		}
-		if (k == AVVideoScalingModeKey.ResizeAspectFill)
-		{
-			return AVVideoScalingMode.ResizeAspectFill;
-		}
-		return null;
 	}
 }

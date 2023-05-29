@@ -2,7 +2,6 @@ namespace Security;
 
 public enum SecProtocol
 {
-	Invalid = -1,
 	Ftp,
 	FtpAccount,
 	Http,

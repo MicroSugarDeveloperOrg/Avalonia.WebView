@@ -1,169 +1,58 @@
-using System;
 using System.Globalization;
-using Foundation;
+using System.Runtime.InteropServices;
 
 namespace CoreGraphics;
 
-[Serializable]
-public struct CGSize : IEquatable<CGSize>
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
+public struct CGSize
 {
 	public static readonly CGSize Empty;
 
-	private nfloat width;
+	public double Width;
 
-	private nfloat height;
-
-	public nfloat Width
-	{
-		get
-		{
-			return width;
-		}
-		set
-		{
-			width = value;
-		}
-	}
-
-	public nfloat Height
-	{
-		get
-		{
-			return height;
-		}
-		set
-		{
-			height = value;
-		}
-	}
-
-	public bool IsEmpty => (double)width == 0.0 && (double)height == 0.0;
-
-	public static bool operator ==(CGSize l, CGSize r)
-	{
-		return l.width == r.width && l.height == r.height;
-	}
-
-	public static bool operator !=(CGSize l, CGSize r)
-	{
-		return l.width != r.width || l.height != r.height;
-	}
-
-	public static CGSize operator +(CGSize l, CGSize r)
-	{
-		return new CGSize(l.width + r.Width, l.height + r.Height);
-	}
-
-	public static CGSize operator -(CGSize l, CGSize r)
-	{
-		return new CGSize(l.width - r.Width, l.height - r.Height);
-	}
-
-	public static explicit operator CGPoint(CGSize size)
-	{
-		return new CGPoint(size.Width, size.Height);
-	}
-
-	public static CGSize Add(CGSize size1, CGSize size2)
-	{
-		return size1 + size2;
-	}
-
-	public static CGSize Subtract(CGSize size1, CGSize size2)
-	{
-		return size1 - size2;
-	}
-
-	public CGSize(nfloat width, nfloat height)
-	{
-		this.width = width;
-		this.height = height;
-	}
+	public double Height;
 
 	public CGSize(double width, double height)
 	{
-		this.width = (nfloat)width;
-		this.height = (nfloat)height;
-	}
-
-	public CGSize(float width, float height)
-	{
-		this.width = width;
-		this.height = height;
-	}
-
-	public CGSize(CGSize size)
-	{
-		width = size.width;
-		height = size.height;
-	}
-
-	public static bool TryParse(NSDictionary dictionaryRepresentation, out CGSize size)
-	{
-		if (dictionaryRepresentation == null)
-		{
-			size = Empty;
-			return false;
-		}
-		return NativeDrawingMethods.CGSizeMakeWithDictionaryRepresentation(dictionaryRepresentation.Handle, out size);
-	}
-
-	public NSDictionary ToDictionary()
-	{
-		return new NSDictionary(NativeDrawingMethods.CGSizeCreateDictionaryRepresentation(this));
-	}
-
-	public CGSize(CGPoint point)
-	{
-		width = point.X;
-		height = point.Y;
-	}
-
-	public override bool Equals(object obj)
-	{
-		if (obj is CGSize)
-		{
-			return this == (CGSize)obj;
-		}
-		return false;
-	}
-
-	public bool Equals(CGSize size)
-	{
-		return this == size;
+		Width = width;
+		Height = height;
 	}
 
 	public override int GetHashCode()
 	{
-		int num = 23;
-		num = num * 31 + width.GetHashCode();
-		return num * 31 + height.GetHashCode();
+		return Width.GetHashCode() ^ Height.GetHashCode();
 	}
 
-	public CGSize ToRoundedCGSize()
+	public static bool operator ==(CGSize left, CGSize right)
 	{
-		return new CGSize((nfloat)Math.Round(width), (nfloat)Math.Round(height));
+		if (left.Width == right.Width)
+		{
+			return left.Height == right.Height;
+		}
+		return false;
 	}
 
-	[Obsolete("Use 'ToRoundedCGSize' instead.")]
-	public CGSize ToSize()
+	public static bool operator !=(CGSize left, CGSize right)
 	{
-		return ToRoundedCGSize();
+		if (left.Width == right.Width)
+		{
+			return left.Height != right.Height;
+		}
+		return true;
 	}
 
-	[Obsolete("Use 'ToCGPoint' instead.")]
-	public CGPoint ToPointF()
+	public static CGSize operator +(CGSize size1, CGSize size2)
 	{
-		return (CGPoint)this;
+		return new CGSize(size1.Width + size2.Width, size1.Height + size2.Height);
 	}
 
-	public CGPoint ToCGPoint()
+	public static CGSize operator -(CGSize size1, CGSize size2)
 	{
-		return (CGPoint)this;
+		return new CGSize(size1.Width - size2.Width, size1.Height - size2.Height);
 	}
 
 	public override string ToString()
 	{
-		return $"{{Width={width.ToString(CultureInfo.CurrentCulture)}, Height={height.ToString(CultureInfo.CurrentCulture)}}}";
+		return string.Format(CultureInfo.CurrentCulture, "{{Width={0},Height={1}}}", Width, Height);
 	}
 }

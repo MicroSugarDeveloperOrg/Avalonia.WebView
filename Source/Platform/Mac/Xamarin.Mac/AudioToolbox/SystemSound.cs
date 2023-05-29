@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
@@ -18,8 +17,6 @@ public class SystemSound : INativeObject, IDisposable
 	private GCHandle gc_handle;
 
 	private static readonly Action<SystemSoundId, IntPtr> SoundCompletionCallback = SoundCompletionShared;
-
-	private static readonly Action<IntPtr> static_action = TrampolineAction;
 
 	public IntPtr Handle
 	{
@@ -84,11 +81,6 @@ public class SystemSound : INativeObject, IDisposable
 		this.ownsHandle = ownsHandle;
 	}
 
-	public SystemSound(uint soundId)
-		: this(soundId, ownsHandle: false)
-	{
-	}
-
 	~SystemSound()
 	{
 		Dispose(disposing: false);
@@ -102,7 +94,7 @@ public class SystemSound : INativeObject, IDisposable
 		}
 	}
 
-	public void Dispose()
+	void IDisposable.Dispose()
 	{
 		Dispose(disposing: true);
 		GC.SuppressFinalize(this);
@@ -161,81 +153,6 @@ public class SystemSound : INativeObject, IDisposable
 		AudioServicesPlaySystemSound(soundId);
 	}
 
-	[MonoPInvokeCallback(typeof(Action<IntPtr>))]
-	private unsafe static void TrampolineAction(IntPtr blockPtr)
-	{
-		BlockLiteral* ptr = (BlockLiteral*)(void*)blockPtr;
-		((Action)ptr->Target)?.Invoke();
-	}
-
-	[iOS(9, 0)]
-	[Mac(10, 11)]
-	[BindingImpl(BindingImplOptions.Optimizable)]
-	public unsafe void PlayAlertSound(Action onCompletion)
-	{
-		if (onCompletion == null)
-		{
-			throw new ArgumentNullException("onCompletion");
-		}
-		AssertNotDisposed();
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(static_action, onCompletion);
-		AudioServicesPlayAlertSoundWithCompletion(soundId, ptr);
-		ptr->CleanupBlock();
-	}
-
-	[iOS(9, 0)]
-	[Mac(10, 11)]
-	public Task PlayAlertSoundAsync()
-	{
-		TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-		PlayAlertSound(delegate
-		{
-			tcs.SetResult(result: true);
-		});
-		return tcs.Task;
-	}
-
-	[iOS(9, 0)]
-	[Mac(10, 11)]
-	[BindingImpl(BindingImplOptions.Optimizable)]
-	public unsafe void PlaySystemSound(Action onCompletion)
-	{
-		if (onCompletion == null)
-		{
-			throw new ArgumentNullException("onCompletion");
-		}
-		AssertNotDisposed();
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(static_action, onCompletion);
-		AudioServicesPlaySystemSoundWithCompletion(soundId, ptr);
-		ptr->CleanupBlock();
-	}
-
-	[iOS(9, 0)]
-	[Mac(10, 11)]
-	public Task PlaySystemSoundAsync()
-	{
-		TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-		PlaySystemSound(delegate
-		{
-			tcs.SetResult(result: true);
-		});
-		return tcs.Task;
-	}
-
-	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
-	[iOS(9, 0)]
-	[Mac(10, 11)]
-	private unsafe static extern void AudioServicesPlayAlertSoundWithCompletion(uint inSystemSoundID, BlockLiteral* inCompletionBlock);
-
-	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
-	[iOS(9, 0)]
-	[Mac(10, 11)]
-	private unsafe static extern void AudioServicesPlaySystemSoundWithCompletion(uint inSystemSoundID, BlockLiteral* inCompletionBlock);
-
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
 	private static extern AudioServicesError AudioServicesCreateSystemSoundID(IntPtr fileUrl, out uint soundId);
 
@@ -274,8 +191,7 @@ public class SystemSound : INativeObject, IDisposable
 	[MonoPInvokeCallback(typeof(Action<SystemSoundId, IntPtr>))]
 	private static void SoundCompletionShared(SystemSoundId id, IntPtr clientData)
 	{
-		SystemSound systemSound = (SystemSound)GCHandle.FromIntPtr(clientData).Target;
-		systemSound.completionRoutine();
+		((SystemSound)GCHandle.FromIntPtr(clientData).Target).completionRoutine();
 	}
 
 	public AudioServicesError AddSystemSoundCompletion(Action routine, CFRunLoop runLoop = null)

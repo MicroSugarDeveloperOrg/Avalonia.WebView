@@ -1,15 +1,12 @@
-using ObjCRuntime;
-
 namespace AppKit;
 
-[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'Metal' Framework instead.")]
-public enum NSGLTextureCubeMap : uint
+public enum NSGLTextureCubeMap
 {
-	None = 0u,
-	PositiveX = 34069u,
-	PositiveY = 34071u,
-	PositiveZ = 34073u,
-	NegativeX = 34070u,
-	NegativeY = 34071u,
-	NegativeZ = 34074u
+	None = 0,
+	PositiveX = 34069,
+	PositiveY = 34071,
+	PositiveZ = 34073,
+	NegativeX = 34070,
+	NegativeY = 34071,
+	NegativeZ = 34074
 }

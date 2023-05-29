@@ -5,11 +5,12 @@ using ObjCRuntime;
 
 namespace CoreText;
 
+[Since(3, 2)]
 public class CTTypesetterOptions
 {
 	public NSDictionary Dictionary { get; private set; }
 
-	[Deprecated(PlatformName.iOS, 6, 0, PlatformArchitecture.None, null)]
+	[Obsolete("Deprecated in iOS 6.0")]
 	public bool DisableBidiProcessing
 	{
 		get
@@ -32,23 +33,6 @@ public class CTTypesetterOptions
 		set
 		{
 			Adapter.SetValue(Dictionary, CTTypesetterOptionKey.ForceEmbeddingLevel, value);
-		}
-	}
-
-	[Watch(5, 0)]
-	[TV(12, 0)]
-	[Mac(10, 14)]
-	[iOS(12, 0)]
-	public bool AllowUnboundedLayout
-	{
-		get
-		{
-			return CFDictionary.GetBooleanValue(Dictionary.Handle, CTTypesetterOptionKey.AllowUnboundedLayout.Handle);
-		}
-		set
-		{
-			Adapter.AssertWritable(Dictionary);
-			CFMutableDictionary.SetValue(Dictionary.Handle, CTTypesetterOptionKey.AllowUnboundedLayout.Handle, value);
 		}
 	}
 

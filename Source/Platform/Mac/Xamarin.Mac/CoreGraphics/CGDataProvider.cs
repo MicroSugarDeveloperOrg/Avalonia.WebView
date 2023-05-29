@@ -1,35 +1,35 @@
+using System;
 using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreGraphics;
 
 public class CGDataProvider : INativeObject, IDisposable
 {
-	private delegate void CGDataProviderReleaseDataCallback(IntPtr info, IntPtr data, nint size);
+	internal IntPtr handle;
 
-	private IntPtr handle;
+	private IntPtr buffer;
 
-	private static CGDataProviderReleaseDataCallback release_gchandle_callback = ReleaseGCHandle;
-
-	private static CGDataProviderReleaseDataCallback release_buffer_callback = ReleaseBuffer;
-
-	private static CGDataProviderReleaseDataCallback release_func_callback = ReleaseFunc;
+	private byte[] reference;
 
 	public IntPtr Handle => handle;
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGDataProviderCopyData(IntPtr provider);
+	private static extern IntPtr CGDataProviderCopyData(IntPtr handle);
 
 	public NSData CopyData()
 	{
-		return Runtime.GetNSObject<NSData>(CGDataProviderCopyData(handle), owns: true);
+		IntPtr intPtr = CGDataProviderCopyData(handle);
+		NSData result = new NSData(intPtr);
+		CGDataProviderRelease(intPtr);
+		return result;
 	}
 
 	public CGDataProvider(IntPtr handle)
 		: this(handle, owns: false)
 	{
+		this.handle = handle;
 	}
 
 	[Preserve(Conditional = true)]
@@ -54,18 +54,24 @@ public class CGDataProvider : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGDataProviderRelease(IntPtr provider);
+	private static extern void CGDataProviderRelease(IntPtr handle);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGDataProviderRetain(IntPtr provider);
+	private static extern void CGDataProviderRetain(IntPtr handle);
 
 	protected virtual void Dispose(bool disposing)
 	{
 		if (handle != IntPtr.Zero)
 		{
+			if (buffer != IntPtr.Zero)
+			{
+				Marshal.FreeHGlobal(buffer);
+			}
+			buffer = IntPtr.Zero;
 			CGDataProviderRelease(handle);
 			handle = IntPtr.Zero;
 		}
+		reference = null;
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -99,87 +105,23 @@ public class CGDataProvider : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGDataProviderCreateWithURL(IntPtr url);
-
-	public CGDataProvider(NSUrl url)
-	{
-		if (url == null)
-		{
-			throw new ArgumentNullException("url");
-		}
-		handle = CGDataProviderCreateWithURL(url.Handle);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGDataProviderCreateWithCFData(IntPtr data);
-
-	public CGDataProvider(NSData data)
-	{
-		if (data == null)
-		{
-			throw new ArgumentNullException("data");
-		}
-		handle = CGDataProviderCreateWithCFData(data.Handle);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGDataProviderCreateWithData(IntPtr info, IntPtr data, nint size, CGDataProviderReleaseDataCallback releaseData);
-
-	[MonoPInvokeCallback(typeof(CGDataProviderReleaseDataCallback))]
-	private static void ReleaseGCHandle(IntPtr info, IntPtr data, nint size)
-	{
-		GCHandle.FromIntPtr(info).Free();
-	}
-
-	[MonoPInvokeCallback(typeof(CGDataProviderReleaseDataCallback))]
-	private static void ReleaseBuffer(IntPtr info, IntPtr data, nint size)
-	{
-		if (data != IntPtr.Zero)
-		{
-			Marshal.FreeHGlobal(data);
-		}
-	}
-
-	[MonoPInvokeCallback(typeof(CGDataProviderReleaseDataCallback))]
-	private static void ReleaseFunc(IntPtr info, IntPtr data, nint size)
-	{
-		GCHandle gCHandle = GCHandle.FromIntPtr(info);
-		Action<IntPtr> action = (Action<IntPtr>)gCHandle.Target;
-		try
-		{
-			action(data);
-		}
-		finally
-		{
-			gCHandle.Free();
-		}
-	}
+	private static extern IntPtr CGDataProviderCreateWithData(IntPtr info, IntPtr data, IntPtr size, IntPtr releaseData);
 
 	public CGDataProvider(IntPtr memoryBlock, int size)
-		: this(memoryBlock, size, ownBuffer: false)
 	{
+		handle = CGDataProviderCreateWithData(IntPtr.Zero, memoryBlock, new IntPtr(size), IntPtr.Zero);
 	}
 
 	public CGDataProvider(IntPtr memoryBlock, int size, bool ownBuffer)
 	{
-		if (!ownBuffer)
+		handle = CGDataProviderCreateWithData(IntPtr.Zero, memoryBlock, new IntPtr(size), IntPtr.Zero);
+		if (ownBuffer)
 		{
-			memoryBlock = Runtime.CloneMemory(memoryBlock, size);
+			buffer = memoryBlock;
 		}
-		handle = CGDataProviderCreateWithData(IntPtr.Zero, memoryBlock, size, release_buffer_callback);
 	}
 
-	public CGDataProvider(IntPtr memoryBlock, int size, Action<IntPtr> releaseMemoryBlockCallback)
-	{
-		if (releaseMemoryBlockCallback == null)
-		{
-			throw new ArgumentNullException("releaseMemoryBlockCallback");
-		}
-		GCHandle value = GCHandle.Alloc(releaseMemoryBlockCallback);
-		handle = CGDataProviderCreateWithData(GCHandle.ToIntPtr(value), memoryBlock, size, release_func_callback);
-	}
-
-	public CGDataProvider(byte[] buffer, int offset, int count)
+	public unsafe CGDataProvider(byte[] buffer, int offset, int count)
 	{
 		if (buffer == null)
 		{
@@ -193,13 +135,10 @@ public class CGDataProvider : INativeObject, IDisposable
 		{
 			throw new ArgumentException("offset");
 		}
-		GCHandle value = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-		IntPtr data = value.AddrOfPinnedObject() + offset;
-		handle = CGDataProviderCreateWithData(GCHandle.ToIntPtr(value), data, count, release_gchandle_callback);
-	}
-
-	public CGDataProvider(byte[] buffer)
-		: this(buffer, 0, buffer.Length)
-	{
+		reference = buffer;
+		fixed (byte* ptr = &buffer[offset])
+		{
+			handle = CGDataProviderCreateWithData(IntPtr.Zero, (IntPtr)ptr, new IntPtr(count), IntPtr.Zero);
+		}
 	}
 }

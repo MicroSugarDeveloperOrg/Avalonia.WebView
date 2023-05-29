@@ -1,8 +1,8 @@
-using System.Collections;
+using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using CoreFoundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AudioToolbox;
 
@@ -16,7 +16,7 @@ public abstract class AudioQueue : IDisposable
 
 	protected internal GCHandle gch;
 
-	private Hashtable listeners;
+	private Dictionary<AudioQueueProperty, List<AudioQueuePropertyChanged>> listeners;
 
 	public IntPtr Handle => handle;
 
@@ -27,7 +27,7 @@ public abstract class AudioQueue : IDisposable
 			AudioTimeStamp time = default(AudioTimeStamp);
 			if (AudioQueueDeviceGetCurrentTime(handle, ref time) != 0)
 			{
-				time.Flags = AudioTimeStamp.AtsFlags.NothingValid;
+				time.Flags = (AudioTimeStamp.AtsFlags)0;
 			}
 			return time;
 		}
@@ -125,10 +125,13 @@ public abstract class AudioQueue : IDisposable
 			IntPtr property = GetProperty(AudioQueueProperty.MagicCookie, out size);
 			if (property == IntPtr.Zero)
 			{
-				return Array.Empty<byte>();
+				return new byte[0];
 			}
 			byte[] array = new byte[size];
-			Marshal.Copy(property, array, 0, size);
+			for (int i = 0; i < array.Length; i++)
+			{
+				array[i] = Marshal.ReadByte(property, i);
+			}
 			Marshal.FreeHGlobal(property);
 			return array;
 		}
@@ -191,16 +194,13 @@ public abstract class AudioQueue : IDisposable
 
 	public int DecodeBufferSizeFrames => GetInt(AudioQueueProperty.DecodeBufferSizeFrames);
 
-	[Obsolete("Use 'AudioStreamDescription' instead.")]
-	public AudioStreamBasicDescription AudioStreamPacketDescription => AudioStreamDescription;
-
-	public AudioStreamBasicDescription AudioStreamDescription => GetProperty<AudioStreamBasicDescription>(AudioConverterPropertyID.CurrentInputStreamDescription);
+	public AudioStreamBasicDescription AudioStreamPacketDescription => GetProperty<AudioStreamBasicDescription>(AudioQueueProperty.StreamDescription);
 
 	public unsafe AudioQueueLevelMeterState[] CurrentLevelMeter
 	{
 		get
 		{
-			int num = DeviceChannels * sizeof(AudioQueueLevelMeterState);
+			_ = DeviceChannels;
 			int size;
 			IntPtr property = GetProperty(AudioQueueProperty.CurrentLevelMeter, out size);
 			if (property == IntPtr.Zero)
@@ -221,7 +221,7 @@ public abstract class AudioQueue : IDisposable
 	{
 		get
 		{
-			int num = DeviceChannels * sizeof(AudioQueueLevelMeterState);
+			_ = DeviceChannels;
 			int size;
 			IntPtr property = GetProperty(AudioQueueProperty.CurrentLevelMeterDB, out size);
 			if (property == IntPtr.Zero)
@@ -244,15 +244,9 @@ public abstract class AudioQueue : IDisposable
 	{
 	}
 
-	~AudioQueue()
-	{
-		Dispose(disposing: false, immediate: true);
-	}
-
 	public void Dispose()
 	{
 		Dispose(disposing: true, immediate: true);
-		GC.SuppressFinalize(this);
 	}
 
 	public void QueueDispose()
@@ -263,12 +257,7 @@ public abstract class AudioQueue : IDisposable
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
 	private static extern int AudioQueueDispose(IntPtr AQ, bool immediate);
 
-	protected virtual void Dispose(bool disposing)
-	{
-		Dispose(disposing, immediate: true);
-	}
-
-	private void Dispose(bool disposing, bool immediate)
+	public virtual void Dispose(bool disposing, bool immediate)
 	{
 		if (handle != IntPtr.Zero)
 		{
@@ -380,12 +369,14 @@ public abstract class AudioQueue : IDisposable
 		AudioQueueFreeBuffer(handle, audioQueueBuffer);
 	}
 
-	public unsafe static void FillAudioData(IntPtr audioQueueBuffer, int offset, IntPtr source, int sourceOffset, nint size)
+	[DllImport("/usr/lib/libSystem.dylib")]
+	internal unsafe static extern void memcpy(byte* target, byte* source, int n);
+
+	public unsafe static void FillAudioData(IntPtr audioQueueBuffer, int offset, IntPtr source, int sourceOffset, int size)
 	{
-		IntPtr intPtr = Marshal.ReadIntPtr(audioQueueBuffer, IntPtr.Size);
-		byte* ptr = (byte*)(void*)intPtr;
+		byte* ptr = (byte*)(void*)Marshal.ReadIntPtr(audioQueueBuffer, 4);
 		byte* ptr2 = (byte*)(void*)source;
-		Runtime.memcpy(ptr + offset, ptr2 + sourceOffset, size);
+		memcpy(ptr + offset, ptr2 + sourceOffset, size);
 	}
 
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
@@ -409,15 +400,6 @@ public abstract class AudioQueue : IDisposable
 			throw new ArgumentNullException("audioQueueBuffer");
 		}
 		return AudioQueueEnqueueBuffer(handle, audioQueueBuffer, (desc != null) ? desc.Length : 0, desc);
-	}
-
-	public unsafe AudioQueueStatus EnqueueBuffer(IntPtr audioQueueBuffer, AudioStreamPacketDescription[] desc)
-	{
-		if (audioQueueBuffer == IntPtr.Zero)
-		{
-			throw new ArgumentNullException("audioQueueBuffer");
-		}
-		return AudioQueueEnqueueBuffer(handle, (AudioQueueBuffer*)(void*)audioQueueBuffer, (desc != null) ? desc.Length : 0, desc);
 	}
 
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
@@ -536,12 +518,11 @@ public abstract class AudioQueue : IDisposable
 		AudioQueue audioQueue = GCHandle.FromIntPtr(userData).Target as AudioQueue;
 		lock (audioQueue.listeners)
 		{
-			ArrayList arrayList = (ArrayList)audioQueue.listeners[id];
-			if (arrayList == null)
+			if (!audioQueue.listeners.TryGetValue(id, out var value))
 			{
 				return;
 			}
-			foreach (AudioQueuePropertyChanged item in arrayList)
+			foreach (AudioQueuePropertyChanged item in value)
 			{
 				item(id);
 			}
@@ -556,24 +537,23 @@ public abstract class AudioQueue : IDisposable
 		}
 		if (listeners == null)
 		{
-			listeners = new Hashtable();
+			listeners = new Dictionary<AudioQueueProperty, List<AudioQueuePropertyChanged>>();
 		}
 		AudioQueueStatus audioQueueStatus = AudioQueueStatus.Ok;
 		lock (listeners)
 		{
-			ArrayList arrayList = (ArrayList)listeners[property];
-			if (arrayList == null)
+			if (!listeners.TryGetValue(property, out var value))
 			{
 				audioQueueStatus = AudioQueueAddPropertyListener(handle, property, property_changed, GCHandle.ToIntPtr(gch));
 				if (audioQueueStatus != 0)
 				{
 					return audioQueueStatus;
 				}
-				arrayList = (ArrayList)(listeners[property] = new ArrayList());
+				value = (listeners[property] = new List<AudioQueuePropertyChanged>());
 			}
-			arrayList.Add(callback);
+			value.Add(callback);
+			return audioQueueStatus;
 		}
-		return audioQueueStatus;
 	}
 
 	public void RemoveListener(AudioQueueProperty property, AudioQueuePropertyChanged callback)
@@ -588,11 +568,10 @@ public abstract class AudioQueue : IDisposable
 		}
 		lock (listeners)
 		{
-			ArrayList arrayList = (ArrayList)listeners[property];
-			if (arrayList != null)
+			if (listeners.TryGetValue(property, out var value))
 			{
-				arrayList.Remove(callback);
-				if (arrayList.Count == 0)
+				value.Remove(callback);
+				if (value.Count == 0)
 				{
 					AudioQueueRemovePropertyListener(handle, property, property_changed, GCHandle.ToIntPtr(gch));
 				}
@@ -607,35 +586,27 @@ public abstract class AudioQueue : IDisposable
 	private static extern int AudioQueueRemovePropertyListener(IntPtr AQ, AudioQueueProperty id, AudioQueuePropertyListenerProc proc, IntPtr data);
 
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
-	private static extern AudioQueueStatus AudioQueueGetProperty(IntPtr AQ, uint id, IntPtr outdata, ref int dataSize);
+	private static extern AudioQueueStatus AudioQueueGetProperty(IntPtr AQ, AudioQueueProperty id, IntPtr outdata, ref int dataSize);
 
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
-	private static extern AudioQueueStatus AudioQueueGetPropertySize(IntPtr AQ, uint id, out int size);
+	private static extern AudioQueueStatus AudioQueueGetPropertySize(IntPtr AQ, AudioQueueProperty id, out int size);
 
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
 	private static extern AudioQueueStatus AudioQueueSetProperty(IntPtr AQ, AudioQueueProperty id, IntPtr data, int size);
 
 	public bool GetProperty(AudioQueueProperty property, ref int dataSize, IntPtr outdata)
 	{
-		if (outdata == IntPtr.Zero)
-		{
-			throw new ArgumentNullException("outdata");
-		}
-		return AudioQueueGetProperty(handle, (uint)property, outdata, ref dataSize) == AudioQueueStatus.Ok;
+		return AudioQueueGetProperty(handle, property, outdata, ref dataSize) == AudioQueueStatus.Ok;
 	}
 
 	public bool SetProperty(AudioQueueProperty property, int dataSize, IntPtr propertyData)
 	{
-		if (propertyData == IntPtr.Zero)
-		{
-			throw new ArgumentNullException("propertyData");
-		}
 		return AudioQueueSetProperty(handle, property, propertyData, dataSize) == AudioQueueStatus.Ok;
 	}
 
 	public IntPtr GetProperty(AudioQueueProperty property, out int size)
 	{
-		AudioQueueStatus audioQueueStatus = AudioQueueGetPropertySize(handle, (uint)property, out size);
+		AudioQueueStatus audioQueueStatus = AudioQueueGetPropertySize(handle, property, out size);
 		if (audioQueueStatus != 0)
 		{
 			throw new AudioQueueException(audioQueueStatus);
@@ -645,7 +616,7 @@ public abstract class AudioQueue : IDisposable
 		{
 			return IntPtr.Zero;
 		}
-		if (AudioQueueGetProperty(handle, (uint)property, intPtr, ref size) == AudioQueueStatus.Ok)
+		if (AudioQueueGetProperty(handle, property, intPtr, ref size) == AudioQueueStatus.Ok)
 		{
 			return intPtr;
 		}
@@ -655,7 +626,7 @@ public abstract class AudioQueue : IDisposable
 
 	public T GetProperty<T>(AudioQueueProperty property) where T : struct
 	{
-		AudioQueueStatus audioQueueStatus = AudioQueueGetPropertySize(handle, (uint)property, out var size);
+		AudioQueueStatus audioQueueStatus = AudioQueueGetPropertySize(handle, property, out var size);
 		if (audioQueueStatus != 0)
 		{
 			throw new AudioQueueException(audioQueueStatus);
@@ -667,34 +638,7 @@ public abstract class AudioQueue : IDisposable
 		}
 		try
 		{
-			audioQueueStatus = AudioQueueGetProperty(handle, (uint)property, intPtr, ref size);
-			if (audioQueueStatus == AudioQueueStatus.Ok)
-			{
-				return (T)Marshal.PtrToStructure(intPtr, typeof(T));
-			}
-			throw new AudioQueueException(audioQueueStatus);
-		}
-		finally
-		{
-			Marshal.FreeHGlobal(intPtr);
-		}
-	}
-
-	private T GetProperty<T>(AudioConverterPropertyID property) where T : struct
-	{
-		AudioQueueStatus audioQueueStatus = AudioQueueGetPropertySize(handle, (uint)property, out var size);
-		if (audioQueueStatus != 0)
-		{
-			throw new AudioQueueException(audioQueueStatus);
-		}
-		IntPtr intPtr = Marshal.AllocHGlobal(size);
-		if (intPtr == IntPtr.Zero)
-		{
-			return default(T);
-		}
-		try
-		{
-			audioQueueStatus = AudioQueueGetProperty(handle, (uint)property, intPtr, ref size);
+			audioQueueStatus = AudioQueueGetProperty(handle, property, intPtr, ref size);
 			if (audioQueueStatus == AudioQueueStatus.Ok)
 			{
 				return (T)Marshal.PtrToStructure(intPtr, typeof(T));
@@ -711,7 +655,7 @@ public abstract class AudioQueue : IDisposable
 	{
 		int result = 0;
 		int dataSize = 4;
-		AudioQueueStatus audioQueueStatus = AudioQueueGetProperty(handle, (uint)property, (IntPtr)(&result), ref dataSize);
+		AudioQueueStatus audioQueueStatus = AudioQueueGetProperty(handle, property, (IntPtr)(&result), ref dataSize);
 		if (audioQueueStatus == AudioQueueStatus.Ok)
 		{
 			return result;
@@ -734,7 +678,7 @@ public abstract class AudioQueue : IDisposable
 	{
 		double result = 0.0;
 		int dataSize = 8;
-		AudioQueueStatus audioQueueStatus = AudioQueueGetProperty(handle, (uint)property, (IntPtr)(&result), ref dataSize);
+		AudioQueueStatus audioQueueStatus = AudioQueueGetProperty(handle, property, (IntPtr)(&result), ref dataSize);
 		if (audioQueueStatus == AudioQueueStatus.Ok)
 		{
 			return result;
@@ -745,6 +689,14 @@ public abstract class AudioQueue : IDisposable
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
 	private static extern AudioQueueStatus AudioQueueProcessingTapNew(IntPtr inAQ, AudioQueueProcessingTapCallbackShared inCallback, IntPtr inClientData, AudioQueueProcessingTapFlags inFlags, out uint outMaxFrames, out AudioStreamBasicDescription outProcessingFormat, out IntPtr outAQTap);
 
+	[Obsolete("Use CreateProcessingTap (AudioQueueProcessingTapDelegate, AudioQueueProcessingTapFlags, out AudioQueueStatus) instead", true)]
+	[Since(6, 0)]
+	public AudioQueueProcessingTap CreateProcessingTap(AudioQueueProcessingTapCallback processingCallback, AudioQueueProcessingTapFlags flags, out AudioQueueStatus status)
+	{
+		throw new NotSupportedException();
+	}
+
+	[Since(6, 0)]
 	public AudioQueueProcessingTap CreateProcessingTap(AudioQueueProcessingTapDelegate processingCallback, AudioQueueProcessingTapFlags flags, out AudioQueueStatus status)
 	{
 		AudioQueueProcessingTap audioQueueProcessingTap = new AudioQueueProcessingTap(processingCallback);

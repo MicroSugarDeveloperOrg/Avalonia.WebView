@@ -6,52 +6,51 @@ using ObjCRuntime;
 namespace WebKit;
 
 [Register("DOMCSSRule", true)]
-[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
 public class DomCssRule : DomObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCssText = "cssText";
+	private static readonly IntPtr selTypeHandle = Selector.GetHandle("type");
 
 	private static readonly IntPtr selCssTextHandle = Selector.GetHandle("cssText");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selParentRule = "parentRule";
-
-	private static readonly IntPtr selParentRuleHandle = Selector.GetHandle("parentRule");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selParentStyleSheet = "parentStyleSheet";
+	private static readonly IntPtr selSetCssText_Handle = Selector.GetHandle("setCssText:");
 
 	private static readonly IntPtr selParentStyleSheetHandle = Selector.GetHandle("parentStyleSheet");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetCssText_ = "setCssText:";
+	private static readonly IntPtr selParentRuleHandle = Selector.GetHandle("parentRule");
 
-	private static readonly IntPtr selSetCssText_Handle = Selector.GetHandle("setCssText:");
+	private static readonly IntPtr class_ptr = Class.GetHandle("DOMCSSRule");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selType = "type";
+	private object __mt_ParentStyleSheet_var;
 
-	private static readonly IntPtr selTypeHandle = Selector.GetHandle("type");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("DOMCSSRule");
+	private object __mt_ParentRule_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string CssText
+	public virtual DomCssRuleType Type
 	{
-		[Export("cssText", ArgumentSemantic.Copy)]
+		[Export("type")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
+			{
+				return (DomCssRuleType)Messaging.UInt16_objc_msgSend(base.Handle, selTypeHandle);
+			}
+			return (DomCssRuleType)Messaging.UInt16_objc_msgSendSuper(base.SuperHandle, selTypeHandle);
+		}
+	}
+
+	public virtual string CssText
+	{
+		[Export("cssText")]
+		get
+		{
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCssTextHandle));
 			}
 			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCssTextHandle));
 		}
-		[Export("setCssText:", ArgumentSemantic.Copy)]
+		[Export("setCssText:")]
 		set
 		{
 			if (value == null)
@@ -59,7 +58,7 @@ public class DomCssRule : DomObject
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCssText_Handle, arg);
 			}
@@ -71,59 +70,58 @@ public class DomCssRule : DomObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual DomCssRule ParentRule
-	{
-		[Export("parentRule", ArgumentSemantic.Retain)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<DomCssRule>(Messaging.IntPtr_objc_msgSend(base.Handle, selParentRuleHandle));
-			}
-			return Runtime.GetNSObject<DomCssRule>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selParentRuleHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomCssStyleSheet ParentStyleSheet
 	{
-		[Export("parentStyleSheet", ArgumentSemantic.Retain)]
+		[Export("parentStyleSheet")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<DomCssStyleSheet>(Messaging.IntPtr_objc_msgSend(base.Handle, selParentStyleSheetHandle));
-			}
-			return Runtime.GetNSObject<DomCssStyleSheet>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selParentStyleSheetHandle));
+			return (DomCssStyleSheet)(__mt_ParentStyleSheet_var = ((!IsDirectBinding) ? ((DomCssStyleSheet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selParentStyleSheetHandle))) : ((DomCssStyleSheet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selParentStyleSheetHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual DomCssRuleType Type
+	public virtual DomCssRule ParentRule
 	{
-		[Export("type")]
+		[Export("parentRule")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return (DomCssRuleType)Messaging.UInt16_objc_msgSend(base.Handle, selTypeHandle);
-			}
-			return (DomCssRuleType)Messaging.UInt16_objc_msgSendSuper(base.SuperHandle, selTypeHandle);
+			return (DomCssRule)(__mt_ParentRule_var = ((!IsDirectBinding) ? ((DomCssRule)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selParentRuleHandle))) : ((DomCssRule)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selParentRuleHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected DomCssRule(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public DomCssRule(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public DomCssRule(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal DomCssRule(IntPtr handle)
+	public DomCssRule(IntPtr handle)
 		: base(handle)
 	{
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_ParentStyleSheet_var = null;
+			__mt_ParentRule_var = null;
+		}
 	}
 }

@@ -1,274 +1,108 @@
+using System;
 using System.ComponentModel;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
-using CloudKit;
-using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
 [Register("NSApplication", true)]
-public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisposable, INSAccessibilityElementProtocol, INSAppearanceCustomization, INSMenuItemValidation, INSUserInterfaceValidations
+public class NSApplication : NSResponder
 {
 	[Register]
-	internal class _NSApplicationDelegate : NSObject, INSApplicationDelegate, INativeObject, IDisposable
+	private sealed class _NSApplicationDelegate : NSApplicationDelegate
 	{
-		internal NSApplicationMenu? applicationDockMenu;
+		internal NSApplicationTermination applicationShouldTerminate;
 
-		internal NSApplicationPredicate? applicationOpenUntitledFile;
+		internal NSApplicationFile openFile;
 
-		internal NSApplicationReopen? applicationShouldHandleReopen;
+		internal EventHandler<NSApplicationFilesEventArgs> openFiles;
 
-		internal NSApplicationPredicate? applicationShouldOpenUntitledFile;
+		internal NSApplicationFile openTempFile;
 
-		internal NSApplicationTermination? applicationShouldTerminate;
+		internal NSApplicationPredicate applicationShouldOpenUntitledFile;
 
-		internal NSApplicationPredicate? applicationShouldTerminateAfterLastWindowClosed;
+		internal NSApplicationPredicate applicationOpenUntitledFile;
 
-		internal NSApplicationContinueUserActivity? continueUserActivity;
+		internal NSApplicationFileCommand openFileWithoutUI;
 
-		internal EventHandler<NSCoderEventArgs>? decodedRestorableState;
+		internal NSApplicationFile printFile;
 
-		internal EventHandler? didBecomeActive;
+		internal NSApplicationPrint printFiles;
 
-		internal EventHandler? didFinishLaunching;
+		internal NSApplicationPredicate applicationShouldTerminateAfterLastWindowClosed;
 
-		internal EventHandler? didHide;
+		internal NSApplicationReopen applicationShouldHandleReopen;
 
-		internal EventHandler? didResignActive;
+		internal NSApplicationMenu applicationDockMenu;
 
-		internal EventHandler? didUnhide;
+		internal NSApplicationError willPresentError;
 
-		internal EventHandler? didUpdate;
+		internal EventHandler willFinishLaunching;
 
-		internal EventHandler<NSApplicationFailedEventArgs>? failedToContinueUserActivity;
+		internal EventHandler didFinishLaunching;
 
-		internal EventHandler<NSErrorEventArgs>? failedToRegisterForRemoteNotifications;
+		internal EventHandler willHide;
 
-		internal NSApplicationHandlesKey? handlesKey;
+		internal EventHandler didHide;
 
-		internal NSApplicationFile? openFile;
+		internal EventHandler willUnhide;
 
-		internal NSApplicationFileCommand? openFileWithoutUI;
+		internal EventHandler didUnhide;
 
-		internal EventHandler<NSApplicationFilesEventArgs>? openFiles;
+		internal EventHandler willBecomeActive;
 
-		internal NSApplicationFile? openTempFile;
+		internal EventHandler didBecomeActive;
 
-		internal EventHandler<NSApplicationOpenUrlsEventArgs>? openUrls;
+		internal EventHandler willResignActive;
 
-		internal EventHandler? orderFrontStandardAboutPanel;
+		internal EventHandler didResignActive;
 
-		internal EventHandler? orderFrontStandardAboutPanelWithOptions;
+		internal EventHandler willUpdate;
 
-		internal NSApplicationFile? printFile;
+		internal EventHandler didUpdate;
 
-		internal NSApplicationPrint? printFiles;
+		internal EventHandler willTerminate;
 
-		internal NSPasteboardPredicate? readSelectionFromPasteboard;
+		internal EventHandler screenParametersChanged;
 
-		internal EventHandler<NSDictionaryEventArgs>? receivedRemoteNotification;
+		internal EventHandler<NSApplicationRegisterEventArgs> registerServicesMenu;
 
-		internal EventHandler<NSApplicationRegisterEventArgs>? registerServicesMenu;
+		internal NSApplicationSelection writeSelectionToPasteboard;
 
-		internal EventHandler<NSDataEventArgs>? registeredForRemoteNotifications;
+		internal NSPasteboardPredicate readSelectionFromPasteboard;
 
-		internal EventHandler? screenParametersChanged;
+		internal EventHandler orderFrontStandardAboutPanel;
 
-		internal EventHandler<NSApplicationUpdatedUserActivityEventArgs>? updatedUserActivity;
+		internal EventHandler orderFrontStandardAboutPanelWithOptions;
 
-		internal EventHandler<NSApplicationUserAcceptedCloudKitShareEventArgs>? userDidAcceptCloudKitShare;
+		internal EventHandler<NSDataEventArgs> registeredForRemoteNotifications;
 
-		internal EventHandler? willBecomeActive;
+		internal EventHandler<NSErrorEventArgs> failedToRegisterForRemoteNotifications;
 
-		internal NSApplicationUserActivityType? willContinueUserActivity;
+		internal EventHandler<NSDictionaryEventArgs> receivedRemoteNotification;
 
-		internal EventHandler<NSCoderEventArgs>? willEncodeRestorableState;
+		internal EventHandler<NSCoderEventArgs> willEncodeRestorableState;
 
-		internal EventHandler? willFinishLaunching;
-
-		internal EventHandler? willHide;
-
-		internal NSApplicationError? willPresentError;
-
-		internal EventHandler? willResignActive;
-
-		internal EventHandler? willTerminate;
-
-		internal EventHandler? willUnhide;
-
-		internal EventHandler? willUpdate;
-
-		internal NSApplicationSelection? writeSelectionToPasteboard;
-
-		private static IntPtr selHandlesKeyHandle = Selector.GetHandle("application:delegateHandlesKey:");
-
-		private static IntPtr selRespondsToSelector = Selector.GetHandle("respondsToSelector:");
-
-		public _NSApplicationDelegate()
-		{
-			base.IsDirectBinding = false;
-		}
+		internal EventHandler<NSCoderEventArgs> decodedRestorableState;
 
 		[Preserve(Conditional = true)]
-		[Export("applicationDockMenu:")]
-		public NSMenu ApplicationDockMenu(NSApplication sender)
-		{
-			return applicationDockMenu?.Invoke(sender);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("applicationOpenUntitledFile:")]
-		public bool ApplicationOpenUntitledFile(NSApplication sender)
-		{
-			return applicationOpenUntitledFile?.Invoke(sender) ?? false;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("applicationShouldHandleReopen:hasVisibleWindows:")]
-		public bool ApplicationShouldHandleReopen(NSApplication sender, bool hasVisibleWindows)
-		{
-			return applicationShouldHandleReopen?.Invoke(sender, hasVisibleWindows) ?? false;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("applicationShouldOpenUntitledFile:")]
-		public bool ApplicationShouldOpenUntitledFile(NSApplication sender)
-		{
-			return applicationShouldOpenUntitledFile?.Invoke(sender) ?? false;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("applicationShouldTerminate:")]
-		public NSApplicationTerminateReply ApplicationShouldTerminate(NSApplication sender)
+		public override NSApplicationTerminateReply ApplicationShouldTerminate(NSApplication sender)
 		{
 			return applicationShouldTerminate?.Invoke(sender) ?? NSApplicationTerminateReply.Now;
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("applicationShouldTerminateAfterLastWindowClosed:")]
-		public bool ApplicationShouldTerminateAfterLastWindowClosed(NSApplication sender)
-		{
-			return applicationShouldTerminateAfterLastWindowClosed?.Invoke(sender) ?? false;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("application:continueUserActivity:restorationHandler:")]
-		public bool ContinueUserActivity(NSApplication application, NSUserActivity userActivity, ContinueUserActivityRestorationHandler restorationHandler)
-		{
-			return continueUserActivity?.Invoke(application, userActivity, restorationHandler) ?? false;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("application:didDecodeRestorableState:")]
-		public void DecodedRestorableState(NSApplication app, NSCoder state)
-		{
-			EventHandler<NSCoderEventArgs> eventHandler = decodedRestorableState;
-			if (eventHandler != null)
-			{
-				NSCoderEventArgs e = new NSCoderEventArgs(state);
-				eventHandler(app, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("applicationDidBecomeActive:")]
-		public void DidBecomeActive(NSNotification notification)
-		{
-			didBecomeActive?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("applicationDidFinishLaunching:")]
-		public void DidFinishLaunching(NSNotification notification)
-		{
-			didFinishLaunching?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("applicationDidHide:")]
-		public void DidHide(NSNotification notification)
-		{
-			didHide?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("applicationDidResignActive:")]
-		public void DidResignActive(NSNotification notification)
-		{
-			didResignActive?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("applicationDidUnhide:")]
-		public void DidUnhide(NSNotification notification)
-		{
-			didUnhide?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("applicationDidUpdate:")]
-		public void DidUpdate(NSNotification notification)
-		{
-			didUpdate?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("application:didFailToContinueUserActivityWithType:error:")]
-		public void FailedToContinueUserActivity(NSApplication application, string userActivityType, NSError error)
-		{
-			EventHandler<NSApplicationFailedEventArgs> eventHandler = failedToContinueUserActivity;
-			if (eventHandler != null)
-			{
-				NSApplicationFailedEventArgs e = new NSApplicationFailedEventArgs(userActivityType, error);
-				eventHandler(application, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("application:didFailToRegisterForRemoteNotificationsWithError:")]
-		public void FailedToRegisterForRemoteNotifications(NSApplication application, NSError error)
-		{
-			EventHandler<NSErrorEventArgs> eventHandler = failedToRegisterForRemoteNotifications;
-			if (eventHandler != null)
-			{
-				NSErrorEventArgs e = new NSErrorEventArgs(error);
-				eventHandler(application, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("application:delegateHandlesKey:")]
-		public bool HandlesKey(NSApplication sender, string key)
-		{
-			NSApplicationHandlesKey nSApplicationHandlesKey = handlesKey;
-			if (nSApplicationHandlesKey != null)
-			{
-				return nSApplicationHandlesKey(sender, key);
-			}
-			throw new You_Should_Not_Call_base_In_This_Method();
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("application:openFile:")]
-		public bool OpenFile(NSApplication sender, string filename)
+		public override bool OpenFile(NSApplication sender, string filename)
 		{
 			return openFile?.Invoke(sender, filename) ?? false;
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("application:openFileWithoutUI:")]
-		public bool OpenFileWithoutUI(NSObject sender, string filename)
-		{
-			return openFileWithoutUI?.Invoke(sender, filename) ?? false;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("application:openFiles:")]
-		public void OpenFiles(NSApplication sender, string[] filenames)
+		public override void OpenFiles(NSApplication sender, string[] filenames)
 		{
 			EventHandler<NSApplicationFilesEventArgs> eventHandler = openFiles;
 			if (eventHandler != null)
@@ -279,74 +113,151 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("application:openTempFile:")]
-		public bool OpenTempFile(NSApplication sender, string filename)
+		public override bool OpenTempFile(NSApplication sender, string filename)
 		{
 			return openTempFile?.Invoke(sender, filename) ?? false;
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("application:openURLs:")]
-		public void OpenUrls(NSApplication application, NSUrl[] urls)
+		public override bool ApplicationShouldOpenUntitledFile(NSApplication sender)
 		{
-			EventHandler<NSApplicationOpenUrlsEventArgs> eventHandler = openUrls;
-			if (eventHandler != null)
-			{
-				NSApplicationOpenUrlsEventArgs e = new NSApplicationOpenUrlsEventArgs(urls);
-				eventHandler(application, e);
-			}
+			return applicationShouldOpenUntitledFile?.Invoke(sender) ?? false;
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("orderFrontStandardAboutPanel:")]
-		public void OrderFrontStandardAboutPanel(NSObject sender)
+		public override bool ApplicationOpenUntitledFile(NSApplication sender)
 		{
-			orderFrontStandardAboutPanel?.Invoke(sender, EventArgs.Empty);
+			return applicationOpenUntitledFile?.Invoke(sender) ?? false;
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("orderFrontStandardAboutPanelWithOptions:")]
-		public void OrderFrontStandardAboutPanelWithOptions(NSDictionary optionsDictionary)
+		public override bool OpenFileWithoutUI(NSObject sender, string filename)
 		{
-			orderFrontStandardAboutPanelWithOptions?.Invoke(optionsDictionary, EventArgs.Empty);
+			return openFileWithoutUI?.Invoke(sender, filename) ?? false;
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("application:printFile:")]
-		public bool PrintFile(NSApplication sender, string filename)
+		public override bool PrintFile(NSApplication sender, string filename)
 		{
 			return printFile?.Invoke(sender, filename) ?? false;
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("application:printFiles:withSettings:showPrintPanels:")]
-		public NSApplicationPrintReply PrintFiles(NSApplication application, string[] fileNames, NSDictionary printSettings, bool showPrintPanels)
+		public override NSApplicationPrintReply PrintFiles(NSApplication application, string[] fileNames, NSDictionary printSettings, bool showPrintPanels)
 		{
 			return printFiles?.Invoke(application, fileNames, printSettings, showPrintPanels) ?? NSApplicationPrintReply.Failure;
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("readSelectionFromPasteboard:")]
-		public bool ReadSelectionFromPasteboard(NSPasteboard pboard)
+		public override bool ApplicationShouldTerminateAfterLastWindowClosed(NSApplication sender)
 		{
-			return readSelectionFromPasteboard?.Invoke(pboard) ?? false;
+			return applicationShouldTerminateAfterLastWindowClosed?.Invoke(sender) ?? false;
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("application:didReceiveRemoteNotification:")]
-		public void ReceivedRemoteNotification(NSApplication application, NSDictionary userInfo)
+		public override bool ApplicationShouldHandleReopen(NSApplication sender, bool hasVisibleWindows)
 		{
-			EventHandler<NSDictionaryEventArgs> eventHandler = receivedRemoteNotification;
-			if (eventHandler != null)
-			{
-				NSDictionaryEventArgs e = new NSDictionaryEventArgs(userInfo);
-				eventHandler(application, e);
-			}
+			return applicationShouldHandleReopen?.Invoke(sender, hasVisibleWindows) ?? false;
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("registerServicesMenuSendTypes:returnTypes:")]
-		public void RegisterServicesMenu(string[] sendTypes, string[] returnTypes)
+		public override NSMenu ApplicationDockMenu(NSApplication sender)
+		{
+			return applicationDockMenu?.Invoke(sender);
+		}
+
+		[Preserve(Conditional = true)]
+		public override NSError WillPresentError(NSApplication application, NSError error)
+		{
+			return willPresentError?.Invoke(application, error);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void WillFinishLaunching(NSNotification notification)
+		{
+			willFinishLaunching?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void DidFinishLaunching(NSNotification notification)
+		{
+			didFinishLaunching?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void WillHide(NSNotification notification)
+		{
+			willHide?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void DidHide(NSNotification notification)
+		{
+			didHide?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void WillUnhide(NSNotification notification)
+		{
+			willUnhide?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void DidUnhide(NSNotification notification)
+		{
+			didUnhide?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void WillBecomeActive(NSNotification notification)
+		{
+			willBecomeActive?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void DidBecomeActive(NSNotification notification)
+		{
+			didBecomeActive?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void WillResignActive(NSNotification notification)
+		{
+			willResignActive?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void DidResignActive(NSNotification notification)
+		{
+			didResignActive?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void WillUpdate(NSNotification notification)
+		{
+			willUpdate?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void DidUpdate(NSNotification notification)
+		{
+			didUpdate?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void WillTerminate(NSNotification notification)
+		{
+			willTerminate?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void ScreenParametersChanged(NSNotification notification)
+		{
+			screenParametersChanged?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void RegisterServicesMenu(string[] sendTypes, string[] returnTypes)
 		{
 			EventHandler<NSApplicationRegisterEventArgs> eventHandler = registerServicesMenu;
 			if (eventHandler != null)
@@ -357,8 +268,31 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("application:didRegisterForRemoteNotificationsWithDeviceToken:")]
-		public void RegisteredForRemoteNotifications(NSApplication application, NSData deviceToken)
+		public override bool WriteSelectionToPasteboard(NSPasteboard board, string[] types)
+		{
+			return writeSelectionToPasteboard?.Invoke(board, types) ?? false;
+		}
+
+		[Preserve(Conditional = true)]
+		public override bool ReadSelectionFromPasteboard(NSPasteboard pboard)
+		{
+			return readSelectionFromPasteboard?.Invoke(pboard) ?? false;
+		}
+
+		[Preserve(Conditional = true)]
+		public override void OrderFrontStandardAboutPanel(NSObject sender)
+		{
+			orderFrontStandardAboutPanel?.Invoke(sender, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void OrderFrontStandardAboutPanelWithOptions(NSDictionary optionsDictionary)
+		{
+			orderFrontStandardAboutPanelWithOptions?.Invoke(optionsDictionary, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void RegisteredForRemoteNotifications(NSApplication application, NSData deviceToken)
 		{
 			EventHandler<NSDataEventArgs> eventHandler = registeredForRemoteNotifications;
 			if (eventHandler != null)
@@ -369,53 +303,29 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("applicationDidChangeScreenParameters:")]
-		public void ScreenParametersChanged(NSNotification notification)
+		public override void FailedToRegisterForRemoteNotifications(NSApplication application, NSError error)
 		{
-			screenParametersChanged?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("application:didUpdateUserActivity:")]
-		public void UpdatedUserActivity(NSApplication application, NSUserActivity userActivity)
-		{
-			EventHandler<NSApplicationUpdatedUserActivityEventArgs> eventHandler = updatedUserActivity;
+			EventHandler<NSErrorEventArgs> eventHandler = failedToRegisterForRemoteNotifications;
 			if (eventHandler != null)
 			{
-				NSApplicationUpdatedUserActivityEventArgs e = new NSApplicationUpdatedUserActivityEventArgs(userActivity);
+				NSErrorEventArgs e = new NSErrorEventArgs(error);
 				eventHandler(application, e);
 			}
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("application:userDidAcceptCloudKitShareWithMetadata:")]
-		public void UserDidAcceptCloudKitShare(NSApplication application, CKShareMetadata metadata)
+		public override void ReceivedRemoteNotification(NSApplication application, NSDictionary userInfo)
 		{
-			EventHandler<NSApplicationUserAcceptedCloudKitShareEventArgs> eventHandler = userDidAcceptCloudKitShare;
+			EventHandler<NSDictionaryEventArgs> eventHandler = receivedRemoteNotification;
 			if (eventHandler != null)
 			{
-				NSApplicationUserAcceptedCloudKitShareEventArgs e = new NSApplicationUserAcceptedCloudKitShareEventArgs(metadata);
+				NSDictionaryEventArgs e = new NSDictionaryEventArgs(userInfo);
 				eventHandler(application, e);
 			}
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("applicationWillBecomeActive:")]
-		public void WillBecomeActive(NSNotification notification)
-		{
-			willBecomeActive?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("application:willContinueUserActivityWithType:")]
-		public bool WillContinueUserActivity(NSApplication application, string userActivityType)
-		{
-			return willContinueUserActivity?.Invoke(application, userActivityType) ?? false;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("application:willEncodeRestorableState:")]
-		public void WillEncodeRestorableState(NSApplication app, NSCoder encoder)
+		public override void WillEncodeRestorableState(NSApplication app, NSCoder encoder)
 		{
 			EventHandler<NSCoderEventArgs> eventHandler = willEncodeRestorableState;
 			if (eventHandler != null)
@@ -426,2990 +336,385 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 
 		[Preserve(Conditional = true)]
-		[Export("applicationWillFinishLaunching:")]
-		public void WillFinishLaunching(NSNotification notification)
+		public override void DecodedRestorableState(NSApplication app, NSCoder state)
 		{
-			willFinishLaunching?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("applicationWillHide:")]
-		public void WillHide(NSNotification notification)
-		{
-			willHide?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("application:willPresentError:")]
-		public NSError WillPresentError(NSApplication application, NSError error)
-		{
-			return willPresentError?.Invoke(application, error);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("applicationWillResignActive:")]
-		public void WillResignActive(NSNotification notification)
-		{
-			willResignActive?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("applicationWillTerminate:")]
-		public void WillTerminate(NSNotification notification)
-		{
-			willTerminate?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("applicationWillUnhide:")]
-		public void WillUnhide(NSNotification notification)
-		{
-			willUnhide?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("applicationWillUpdate:")]
-		public void WillUpdate(NSNotification notification)
-		{
-			willUpdate?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("writeSelectionToPasteboard:types:")]
-		public bool WriteSelectionToPasteboard(NSPasteboard board, string[] types)
-		{
-			return writeSelectionToPasteboard?.Invoke(board, types) ?? false;
-		}
-
-		[Preserve(Conditional = true)]
-		public override bool RespondsToSelector(Selector? sel)
-		{
-			if (sel == null)
+			EventHandler<NSCoderEventArgs> eventHandler = decodedRestorableState;
+			if (eventHandler != null)
 			{
-				return false;
+				NSCoderEventArgs e = new NSCoderEventArgs(state);
+				eventHandler(app, e);
 			}
-			IntPtr arg = ((sel == null) ? IntPtr.Zero : sel.Handle);
-			if (arg.Equals(selHandlesKeyHandle))
-			{
-				return handlesKey != null;
-			}
-			return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selRespondsToSelector, arg);
 		}
 	}
 
 	public static class Notifications
 	{
-		public static NSObject ObserveAnnouncementRequested(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(AnnouncementRequestedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveAnnouncementRequested(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(AnnouncementRequestedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveApplicationActivated(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ApplicationActivatedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveApplicationActivated(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ApplicationActivatedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveApplicationDeactivated(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ApplicationDeactivatedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveApplicationDeactivated(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ApplicationDeactivatedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveApplicationHidden(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ApplicationHiddenNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveApplicationHidden(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ApplicationHiddenNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveApplicationShown(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ApplicationShownNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveApplicationShown(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ApplicationShownNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveCreated(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(CreatedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveCreated(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(CreatedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
 		public static NSObject ObserveDidBecomeActive(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
 			return NSNotificationCenter.DefaultCenter.AddObserver(DidBecomeActiveNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
-		}
-
-		public static NSObject ObserveDidBecomeActive(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DidBecomeActiveNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDidChangeScreenParameters(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DidChangeScreenParametersNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDidChangeScreenParameters(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DidChangeScreenParametersNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDidFinishLaunching(EventHandler<NSApplicationDidFinishLaunchingEventArgs> handler)
-		{
-			EventHandler<NSApplicationDidFinishLaunchingEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DidFinishLaunchingNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSApplicationDidFinishLaunchingEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDidFinishLaunching(NSObject objectToObserve, EventHandler<NSApplicationDidFinishLaunchingEventArgs> handler)
-		{
-			EventHandler<NSApplicationDidFinishLaunchingEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DidFinishLaunchingNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSApplicationDidFinishLaunchingEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDidFinishRestoringWindows(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DidFinishRestoringWindowsNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDidFinishRestoringWindows(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DidFinishRestoringWindowsNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
 		}
 
 		public static NSObject ObserveDidHide(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
 			return NSNotificationCenter.DefaultCenter.AddObserver(DidHideNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
 		}
 
-		public static NSObject ObserveDidHide(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
+		public static NSObject ObserveDidFinishLaunching(EventHandler<NSApplicationDidFinishLaunchingEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DidHideNotification, delegate(NSNotification notification)
+			return NSNotificationCenter.DefaultCenter.AddObserver(DidFinishLaunchingNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
+				handler(null, new NSApplicationDidFinishLaunchingEventArgs(notification));
+			});
 		}
 
 		public static NSObject ObserveDidResignActive(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
 			return NSNotificationCenter.DefaultCenter.AddObserver(DidResignActiveNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
-		}
-
-		public static NSObject ObserveDidResignActive(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DidResignActiveNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
 		}
 
 		public static NSObject ObserveDidUnhide(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
 			return NSNotificationCenter.DefaultCenter.AddObserver(DidUnhideNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
-		}
-
-		public static NSObject ObserveDidUnhide(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DidUnhideNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
 		}
 
 		public static NSObject ObserveDidUpdate(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
 			return NSNotificationCenter.DefaultCenter.AddObserver(DidUpdateNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
-		}
-
-		public static NSObject ObserveDidUpdate(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DidUpdateNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDrawerCreated(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DrawerCreatedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDrawerCreated(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DrawerCreatedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveFocusedWindowChanged(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(FocusedWindowChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveFocusedWindowChanged(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(FocusedWindowChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveHelpTagCreated(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(HelpTagCreatedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveHelpTagCreated(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(HelpTagCreatedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveLayoutChanged(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(LayoutChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveLayoutChanged(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(LayoutChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveMainWindowChanged(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(MainWindowChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveMainWindowChanged(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(MainWindowChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveMoved(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(MovedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveMoved(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(MovedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveResized(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ResizedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveResized(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ResizedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveRowCollapsed(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(RowCollapsedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveRowCollapsed(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(RowCollapsedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveRowCountChanged(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(RowCountChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveRowCountChanged(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(RowCountChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveRowExpanded(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(RowExpandedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveRowExpanded(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(RowExpandedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveSelectedCellsChanged(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectedCellsChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveSelectedCellsChanged(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectedCellsChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveSelectedChildrenChanged(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectedChildrenChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveSelectedChildrenChanged(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectedChildrenChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveSelectedChildrenMoved(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectedChildrenMovedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveSelectedChildrenMoved(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectedChildrenMovedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveSelectedColumnsChanged(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectedColumnsChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveSelectedColumnsChanged(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectedColumnsChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveSelectedRowsChanged(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectedRowsChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveSelectedRowsChanged(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectedRowsChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveSelectedTextChanged(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectedTextChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveSelectedTextChanged(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectedTextChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveSheetCreated(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SheetCreatedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveSheetCreated(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SheetCreatedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveTitleChanged(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(TitleChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveTitleChanged(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(TitleChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveUIElementDestroyed(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(UIElementDestroyedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveUIElementDestroyed(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(UIElementDestroyedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveUIElementFocusedChanged(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(UIElementFocusedChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveUIElementFocusedChanged(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(UIElementFocusedChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveUnitsChanged(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(UnitsChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveUnitsChanged(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(UnitsChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveValueChanged(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ValueChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveValueChanged(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ValueChangedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
 		}
 
 		public static NSObject ObserveWillBecomeActive(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
 			return NSNotificationCenter.DefaultCenter.AddObserver(WillBecomeActiveNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
-		}
-
-		public static NSObject ObserveWillBecomeActive(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WillBecomeActiveNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveWillFinishLaunching(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WillFinishLaunchingNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveWillFinishLaunching(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WillFinishLaunchingNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
 		}
 
 		public static NSObject ObserveWillHide(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
 			return NSNotificationCenter.DefaultCenter.AddObserver(WillHideNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
 		}
 
-		public static NSObject ObserveWillHide(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
+		public static NSObject ObserveWillFinishLaunching(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WillHideNotification, delegate(NSNotification notification)
+			return NSNotificationCenter.DefaultCenter.AddObserver(WillFinishLaunchingNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
+				handler(null, new NSNotificationEventArgs(notification));
+			});
 		}
 
 		public static NSObject ObserveWillResignActive(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
 			return NSNotificationCenter.DefaultCenter.AddObserver(WillResignActiveNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
-		}
-
-		public static NSObject ObserveWillResignActive(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WillResignActiveNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveWillTerminate(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WillTerminateNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveWillTerminate(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WillTerminateNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
 		}
 
 		public static NSObject ObserveWillUnhide(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
 			return NSNotificationCenter.DefaultCenter.AddObserver(WillUnhideNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
-		}
-
-		public static NSObject ObserveWillUnhide(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WillUnhideNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
 		}
 
 		public static NSObject ObserveWillUpdate(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
 			return NSNotificationCenter.DefaultCenter.AddObserver(WillUpdateNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
 		}
 
-		public static NSObject ObserveWillUpdate(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
+		public static NSObject ObserveWillTerminate(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WillUpdateNotification, delegate(NSNotification notification)
+			return NSNotificationCenter.DefaultCenter.AddObserver(WillTerminateNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveWindowCreated(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WindowCreatedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
 		}
 
-		public static NSObject ObserveWindowCreated(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
+		public static NSObject ObserveDidChangeScreenParameters(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WindowCreatedNotification, delegate(NSNotification notification)
+			return NSNotificationCenter.DefaultCenter.AddObserver(DidChangeScreenParametersNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveWindowDeminiaturized(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WindowDeminiaturizedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
 		}
 
-		public static NSObject ObserveWindowDeminiaturized(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
+		public static NSObject ObserveDidFinishRestoringWindows(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WindowDeminiaturizedNotification, delegate(NSNotification notification)
+			return NSNotificationCenter.DefaultCenter.AddObserver(DidFinishRestoringWindowsNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveWindowMiniaturized(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WindowMiniaturizedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
-		}
-
-		public static NSObject ObserveWindowMiniaturized(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WindowMiniaturizedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveWindowMoved(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WindowMovedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveWindowMoved(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WindowMovedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveWindowResized(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WindowResizedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveWindowResized(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(WindowResizedNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
 		}
 	}
 
-	public static bool CheckForIllegalCrossThreadCalls = true;
-
-	public static bool CheckForEventAndDelegateMismatches = true;
-
-	public static bool IgnoreMissingAssembliesDuringRegistration = false;
+	public static bool CheckForIllegalCrossThreadCalls;
 
 	private static Thread mainThread;
 
 	private static bool initialized;
 
-	internal static bool is_autoloaded = false;
+	private static readonly IntPtr selSharedApplicationHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAbortModal = "abortModal";
+	private static readonly IntPtr selDelegateHandle;
 
-	private static readonly IntPtr selAbortModalHandle = Selector.GetHandle("abortModal");
+	private static readonly IntPtr selSetDelegate_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityActivationPoint = "accessibilityActivationPoint";
+	private static readonly IntPtr selContextHandle;
 
-	private static readonly IntPtr selAccessibilityActivationPointHandle = Selector.GetHandle("accessibilityActivationPoint");
+	private static readonly IntPtr selMainWindowHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityAllowedValues = "accessibilityAllowedValues";
+	private static readonly IntPtr selKeyWindowHandle;
 
-	private static readonly IntPtr selAccessibilityAllowedValuesHandle = Selector.GetHandle("accessibilityAllowedValues");
+	private static readonly IntPtr selIsActiveHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityApplicationFocusedUIElement = "accessibilityApplicationFocusedUIElement";
+	private static readonly IntPtr selIsHiddenHandle;
 
-	private static readonly IntPtr selAccessibilityApplicationFocusedUIElementHandle = Selector.GetHandle("accessibilityApplicationFocusedUIElement");
+	private static readonly IntPtr selIsRunningHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityAttributedStringForRange_ = "accessibilityAttributedStringForRange:";
+	private static readonly IntPtr selModalWindowHandle;
 
-	private static readonly IntPtr selAccessibilityAttributedStringForRange_Handle = Selector.GetHandle("accessibilityAttributedStringForRange:");
+	private static readonly IntPtr selCurrentEventHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityCancelButton = "accessibilityCancelButton";
+	private static readonly IntPtr selWindowsHandle;
 
-	private static readonly IntPtr selAccessibilityCancelButtonHandle = Selector.GetHandle("accessibilityCancelButton");
+	private static readonly IntPtr selMainMenuHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityCellForColumn_Row_ = "accessibilityCellForColumn:row:";
+	private static readonly IntPtr selSetMainMenu_Handle;
 
-	private static readonly IntPtr selAccessibilityCellForColumn_Row_Handle = Selector.GetHandle("accessibilityCellForColumn:row:");
+	private static readonly IntPtr selHelpMenuHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityChildren = "accessibilityChildren";
+	private static readonly IntPtr selSetHelpMenu_Handle;
 
-	private static readonly IntPtr selAccessibilityChildrenHandle = Selector.GetHandle("accessibilityChildren");
+	private static readonly IntPtr selApplicationIconImageHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityChildrenInNavigationOrder = "accessibilityChildrenInNavigationOrder";
+	private static readonly IntPtr selSetApplicationIconImage_Handle;
 
-	private static readonly IntPtr selAccessibilityChildrenInNavigationOrderHandle = Selector.GetHandle("accessibilityChildrenInNavigationOrder");
+	private static readonly IntPtr selDockTileHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityClearButton = "accessibilityClearButton";
+	private static readonly IntPtr selPresentationOptionsHandle;
 
-	private static readonly IntPtr selAccessibilityClearButtonHandle = Selector.GetHandle("accessibilityClearButton");
+	private static readonly IntPtr selSetPresentationOptions_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityCloseButton = "accessibilityCloseButton";
+	private static readonly IntPtr selCurrentSystemPresentationOptionsHandle;
 
-	private static readonly IntPtr selAccessibilityCloseButtonHandle = Selector.GetHandle("accessibilityCloseButton");
+	private static readonly IntPtr selWindowsMenuHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityColumnCount = "accessibilityColumnCount";
+	private static readonly IntPtr selSetWindowsMenu_Handle;
 
-	private static readonly IntPtr selAccessibilityColumnCountHandle = Selector.GetHandle("accessibilityColumnCount");
+	private static readonly IntPtr selIsFullKeyboardAccessEnabledHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityColumnHeaderUIElements = "accessibilityColumnHeaderUIElements";
+	private static readonly IntPtr selServicesProviderHandle;
 
-	private static readonly IntPtr selAccessibilityColumnHeaderUIElementsHandle = Selector.GetHandle("accessibilityColumnHeaderUIElements");
+	private static readonly IntPtr selSetServicesProvider_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityColumnIndexRange = "accessibilityColumnIndexRange";
+	private static readonly IntPtr selUserInterfaceLayoutDirectionHandle;
 
-	private static readonly IntPtr selAccessibilityColumnIndexRangeHandle = Selector.GetHandle("accessibilityColumnIndexRange");
+	private static readonly IntPtr selServicesMenuHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityColumnTitles = "accessibilityColumnTitles";
+	private static readonly IntPtr selSetServicesMenu_Handle;
 
-	private static readonly IntPtr selAccessibilityColumnTitlesHandle = Selector.GetHandle("accessibilityColumnTitles");
+	private static readonly IntPtr selHide_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityColumns = "accessibilityColumns";
+	private static readonly IntPtr selUnhide_Handle;
 
-	private static readonly IntPtr selAccessibilityColumnsHandle = Selector.GetHandle("accessibilityColumns");
+	private static readonly IntPtr selUnhideWithoutActivationHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityContents = "accessibilityContents";
+	private static readonly IntPtr selWindowWithWindowNumber_Handle;
 
-	private static readonly IntPtr selAccessibilityContentsHandle = Selector.GetHandle("accessibilityContents");
+	private static readonly IntPtr selDeactivateHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityCriticalValue = "accessibilityCriticalValue";
+	private static readonly IntPtr selActivateIgnoringOtherApps_Handle;
 
-	private static readonly IntPtr selAccessibilityCriticalValueHandle = Selector.GetHandle("accessibilityCriticalValue");
+	private static readonly IntPtr selHideOtherApplications_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityCustomActions = "accessibilityCustomActions";
+	private static readonly IntPtr selUnhideAllApplications_Handle;
 
-	private static readonly IntPtr selAccessibilityCustomActionsHandle = Selector.GetHandle("accessibilityCustomActions");
+	private static readonly IntPtr selFinishLaunchingHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityCustomRotors = "accessibilityCustomRotors";
+	private static readonly IntPtr selRunHandle;
 
-	private static readonly IntPtr selAccessibilityCustomRotorsHandle = Selector.GetHandle("accessibilityCustomRotors");
+	private static readonly IntPtr selRunModalForWindow_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityDecrementButton = "accessibilityDecrementButton";
+	private static readonly IntPtr selStop_Handle;
 
-	private static readonly IntPtr selAccessibilityDecrementButtonHandle = Selector.GetHandle("accessibilityDecrementButton");
+	private static readonly IntPtr selStopModalHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityDefaultButton = "accessibilityDefaultButton";
+	private static readonly IntPtr selStopModalWithCode_Handle;
 
-	private static readonly IntPtr selAccessibilityDefaultButtonHandle = Selector.GetHandle("accessibilityDefaultButton");
+	private static readonly IntPtr selAbortModalHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityDisclosedByRow = "accessibilityDisclosedByRow";
+	private static readonly IntPtr selBeginModalSessionForWindow_Handle;
 
-	private static readonly IntPtr selAccessibilityDisclosedByRowHandle = Selector.GetHandle("accessibilityDisclosedByRow");
+	private static readonly IntPtr selRunModalSession_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityDisclosedRows = "accessibilityDisclosedRows";
+	private static readonly IntPtr selEndModalSession_Handle;
 
-	private static readonly IntPtr selAccessibilityDisclosedRowsHandle = Selector.GetHandle("accessibilityDisclosedRows");
+	private static readonly IntPtr selTerminate_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityDisclosureLevel = "accessibilityDisclosureLevel";
+	private static readonly IntPtr selRequestUserAttention_Handle;
 
-	private static readonly IntPtr selAccessibilityDisclosureLevelHandle = Selector.GetHandle("accessibilityDisclosureLevel");
+	private static readonly IntPtr selCancelUserAttentionRequest_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityDocument = "accessibilityDocument";
+	private static readonly IntPtr selBeginSheetModalForWindowModalDelegateDidEndSelectorContextInfo_Handle;
 
-	private static readonly IntPtr selAccessibilityDocumentHandle = Selector.GetHandle("accessibilityDocument");
+	private static readonly IntPtr selEndSheet_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityExtrasMenuBar = "accessibilityExtrasMenuBar";
+	private static readonly IntPtr selEndSheetReturnCode_Handle;
 
-	private static readonly IntPtr selAccessibilityExtrasMenuBarHandle = Selector.GetHandle("accessibilityExtrasMenuBar");
+	private static readonly IntPtr selNextEventMatchingMaskUntilDateInModeDequeue_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityFilename = "accessibilityFilename";
+	private static readonly IntPtr selDiscardEventsMatchingMaskBeforeEvent_Handle;
 
-	private static readonly IntPtr selAccessibilityFilenameHandle = Selector.GetHandle("accessibilityFilename");
+	private static readonly IntPtr selPostEventAtStart_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityFocusedWindow = "accessibilityFocusedWindow";
+	private static readonly IntPtr selSendEvent_Handle;
 
-	private static readonly IntPtr selAccessibilityFocusedWindowHandle = Selector.GetHandle("accessibilityFocusedWindow");
+	private static readonly IntPtr selPreventWindowOrderingHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityFrame = "accessibilityFrame";
+	private static readonly IntPtr selMakeWindowsPerformInOrder_Handle;
 
-	private static readonly IntPtr selAccessibilityFrameHandle = Selector.GetHandle("accessibilityFrame");
+	private static readonly IntPtr selSetWindowsNeedUpdate_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityFrameForRange_ = "accessibilityFrameForRange:";
+	private static readonly IntPtr selUpdateWindowsHandle;
 
-	private static readonly IntPtr selAccessibilityFrameForRange_Handle = Selector.GetHandle("accessibilityFrameForRange:");
+	private static readonly IntPtr selActivationPolicyHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityFullScreenButton = "accessibilityFullScreenButton";
+	private static readonly IntPtr selSetActivationPolicy_Handle;
 
-	private static readonly IntPtr selAccessibilityFullScreenButtonHandle = Selector.GetHandle("accessibilityFullScreenButton");
+	private static readonly IntPtr selSendActionToFrom_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityGrowArea = "accessibilityGrowArea";
+	private static readonly IntPtr selTargetForAction_Handle;
 
-	private static readonly IntPtr selAccessibilityGrowAreaHandle = Selector.GetHandle("accessibilityGrowArea");
+	private static readonly IntPtr selTargetForActionToFrom_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityHandles = "accessibilityHandles";
+	private static readonly IntPtr selTryToPerformWith_Handle;
 
-	private static readonly IntPtr selAccessibilityHandlesHandle = Selector.GetHandle("accessibilityHandles");
+	private static readonly IntPtr selValidRequestorForSendTypeReturnType_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityHeader = "accessibilityHeader";
+	private static readonly IntPtr selReportException_Handle;
 
-	private static readonly IntPtr selAccessibilityHeaderHandle = Selector.GetHandle("accessibilityHeader");
+	private static readonly IntPtr selDetachDrawingThreadToTargetWithObject_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityHelp = "accessibilityHelp";
+	private static readonly IntPtr selReplyToApplicationShouldTerminate_Handle;
 
-	private static readonly IntPtr selAccessibilityHelpHandle = Selector.GetHandle("accessibilityHelp");
+	private static readonly IntPtr selReplyToOpenOrPrint_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityHorizontalScrollBar = "accessibilityHorizontalScrollBar";
+	private static readonly IntPtr selOrderFrontCharacterPalette_Handle;
 
-	private static readonly IntPtr selAccessibilityHorizontalScrollBarHandle = Selector.GetHandle("accessibilityHorizontalScrollBar");
+	private static readonly IntPtr selArrangeInFront_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityHorizontalUnitDescription = "accessibilityHorizontalUnitDescription";
+	private static readonly IntPtr selRemoveWindowsItem_Handle;
 
-	private static readonly IntPtr selAccessibilityHorizontalUnitDescriptionHandle = Selector.GetHandle("accessibilityHorizontalUnitDescription");
+	private static readonly IntPtr selAddWindowsItemTitleFilename_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityHorizontalUnits = "accessibilityHorizontalUnits";
+	private static readonly IntPtr selChangeWindowsItemTitleFilename_Handle;
 
-	private static readonly IntPtr selAccessibilityHorizontalUnitsHandle = Selector.GetHandle("accessibilityHorizontalUnits");
+	private static readonly IntPtr selUpdateWindowsItem_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityIdentifier = "accessibilityIdentifier";
+	private static readonly IntPtr selMiniaturizeAll_Handle;
 
-	private static readonly IntPtr selAccessibilityIdentifierHandle = Selector.GetHandle("accessibilityIdentifier");
+	private static readonly IntPtr selOrderFrontColorPanel_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityIncrementButton = "accessibilityIncrementButton";
+	private static readonly IntPtr selDisableRelaunchOnLoginHandle;
 
-	private static readonly IntPtr selAccessibilityIncrementButtonHandle = Selector.GetHandle("accessibilityIncrementButton");
+	private static readonly IntPtr selEnableRelaunchOnLoginHandle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityIndex = "accessibilityIndex";
+	private static readonly IntPtr selEnabledRemoteNotificationTypesHandle;
 
-	private static readonly IntPtr selAccessibilityIndexHandle = Selector.GetHandle("accessibilityIndex");
+	private static readonly IntPtr selRegisterForRemoteNotificationTypes_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityInsertionPointLineNumber = "accessibilityInsertionPointLineNumber";
+	private static readonly IntPtr selUnregisterForRemoteNotificationsHandle;
 
-	private static readonly IntPtr selAccessibilityInsertionPointLineNumberHandle = Selector.GetHandle("accessibilityInsertionPointLineNumber");
+	private static readonly IntPtr selRestoreWindowWithIdentifierStateCompletionHandler_Handle;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityLabel = "accessibilityLabel";
+	private static readonly IntPtr class_ptr;
 
-	private static readonly IntPtr selAccessibilityLabelHandle = Selector.GetHandle("accessibilityLabel");
+	private static object __mt_SharedApplication_var_static;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityLabelUIElements = "accessibilityLabelUIElements";
+	private object __mt_WeakDelegate_var;
 
-	private static readonly IntPtr selAccessibilityLabelUIElementsHandle = Selector.GetHandle("accessibilityLabelUIElements");
+	private object __mt_Context_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityLabelValue = "accessibilityLabelValue";
+	private object __mt_MainWindow_var;
 
-	private static readonly IntPtr selAccessibilityLabelValueHandle = Selector.GetHandle("accessibilityLabelValue");
+	private object __mt_KeyWindow_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityLayoutPointForScreenPoint_ = "accessibilityLayoutPointForScreenPoint:";
+	private object __mt_ModalWindow_var;
 
-	private static readonly IntPtr selAccessibilityLayoutPointForScreenPoint_Handle = Selector.GetHandle("accessibilityLayoutPointForScreenPoint:");
+	private object __mt_CurrentEvent_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityLayoutSizeForScreenSize_ = "accessibilityLayoutSizeForScreenSize:";
+	private object __mt_Windows_var;
 
-	private static readonly IntPtr selAccessibilityLayoutSizeForScreenSize_Handle = Selector.GetHandle("accessibilityLayoutSizeForScreenSize:");
+	private object __mt_MainMenu_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityLineForIndex_ = "accessibilityLineForIndex:";
+	private object __mt_HelpMenu_var;
 
-	private static readonly IntPtr selAccessibilityLineForIndex_Handle = Selector.GetHandle("accessibilityLineForIndex:");
+	private object __mt_ApplicationIconImage_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityLinkedUIElements = "accessibilityLinkedUIElements";
+	private object __mt_DockTile_var;
 
-	private static readonly IntPtr selAccessibilityLinkedUIElementsHandle = Selector.GetHandle("accessibilityLinkedUIElements");
+	private object __mt_WindowsMenu_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityMainWindow = "accessibilityMainWindow";
+	private object __mt_ServicesProvider_var;
 
-	private static readonly IntPtr selAccessibilityMainWindowHandle = Selector.GetHandle("accessibilityMainWindow");
+	private object __mt_ServicesMenu_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityMarkerGroupUIElement = "accessibilityMarkerGroupUIElement";
+	private static NSString _DidBecomeActiveNotification;
 
-	private static readonly IntPtr selAccessibilityMarkerGroupUIElementHandle = Selector.GetHandle("accessibilityMarkerGroupUIElement");
+	private static NSString _DidHideNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityMarkerTypeDescription = "accessibilityMarkerTypeDescription";
+	private static NSString _DidFinishLaunchingNotification;
 
-	private static readonly IntPtr selAccessibilityMarkerTypeDescriptionHandle = Selector.GetHandle("accessibilityMarkerTypeDescription");
+	private static NSString _DidResignActiveNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityMarkerUIElements = "accessibilityMarkerUIElements";
+	private static NSString _DidUnhideNotification;
 
-	private static readonly IntPtr selAccessibilityMarkerUIElementsHandle = Selector.GetHandle("accessibilityMarkerUIElements");
+	private static NSString _DidUpdateNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityMarkerValues = "accessibilityMarkerValues";
+	private static NSString _WillBecomeActiveNotification;
 
-	private static readonly IntPtr selAccessibilityMarkerValuesHandle = Selector.GetHandle("accessibilityMarkerValues");
+	private static NSString _WillHideNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityMaxValue = "accessibilityMaxValue";
+	private static NSString _WillFinishLaunchingNotification;
 
-	private static readonly IntPtr selAccessibilityMaxValueHandle = Selector.GetHandle("accessibilityMaxValue");
+	private static NSString _WillResignActiveNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityMenuBar = "accessibilityMenuBar";
+	private static NSString _WillUnhideNotification;
 
-	private static readonly IntPtr selAccessibilityMenuBarHandle = Selector.GetHandle("accessibilityMenuBar");
+	private static NSString _WillUpdateNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityMinValue = "accessibilityMinValue";
+	private static NSString _WillTerminateNotification;
 
-	private static readonly IntPtr selAccessibilityMinValueHandle = Selector.GetHandle("accessibilityMinValue");
+	private static NSString _DidChangeScreenParametersNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityMinimizeButton = "accessibilityMinimizeButton";
+	private static NSString _LaunchIsDefaultLaunchKey;
 
-	private static readonly IntPtr selAccessibilityMinimizeButtonHandle = Selector.GetHandle("accessibilityMinimizeButton");
+	private static NSString _LaunchRemoteNotificationKey;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityNextContents = "accessibilityNextContents";
-
-	private static readonly IntPtr selAccessibilityNextContentsHandle = Selector.GetHandle("accessibilityNextContents");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityNumberOfCharacters = "accessibilityNumberOfCharacters";
-
-	private static readonly IntPtr selAccessibilityNumberOfCharactersHandle = Selector.GetHandle("accessibilityNumberOfCharacters");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityOrientation = "accessibilityOrientation";
-
-	private static readonly IntPtr selAccessibilityOrientationHandle = Selector.GetHandle("accessibilityOrientation");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityOverflowButton = "accessibilityOverflowButton";
-
-	private static readonly IntPtr selAccessibilityOverflowButtonHandle = Selector.GetHandle("accessibilityOverflowButton");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityParent = "accessibilityParent";
-
-	private static readonly IntPtr selAccessibilityParentHandle = Selector.GetHandle("accessibilityParent");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityPerformCancel = "accessibilityPerformCancel";
-
-	private static readonly IntPtr selAccessibilityPerformCancelHandle = Selector.GetHandle("accessibilityPerformCancel");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityPerformConfirm = "accessibilityPerformConfirm";
-
-	private static readonly IntPtr selAccessibilityPerformConfirmHandle = Selector.GetHandle("accessibilityPerformConfirm");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityPerformDecrement = "accessibilityPerformDecrement";
-
-	private static readonly IntPtr selAccessibilityPerformDecrementHandle = Selector.GetHandle("accessibilityPerformDecrement");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityPerformDelete = "accessibilityPerformDelete";
-
-	private static readonly IntPtr selAccessibilityPerformDeleteHandle = Selector.GetHandle("accessibilityPerformDelete");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityPerformIncrement = "accessibilityPerformIncrement";
-
-	private static readonly IntPtr selAccessibilityPerformIncrementHandle = Selector.GetHandle("accessibilityPerformIncrement");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityPerformPick = "accessibilityPerformPick";
-
-	private static readonly IntPtr selAccessibilityPerformPickHandle = Selector.GetHandle("accessibilityPerformPick");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityPerformPress = "accessibilityPerformPress";
-
-	private static readonly IntPtr selAccessibilityPerformPressHandle = Selector.GetHandle("accessibilityPerformPress");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityPerformRaise = "accessibilityPerformRaise";
-
-	private static readonly IntPtr selAccessibilityPerformRaiseHandle = Selector.GetHandle("accessibilityPerformRaise");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityPerformShowAlternateUI = "accessibilityPerformShowAlternateUI";
-
-	private static readonly IntPtr selAccessibilityPerformShowAlternateUIHandle = Selector.GetHandle("accessibilityPerformShowAlternateUI");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityPerformShowDefaultUI = "accessibilityPerformShowDefaultUI";
-
-	private static readonly IntPtr selAccessibilityPerformShowDefaultUIHandle = Selector.GetHandle("accessibilityPerformShowDefaultUI");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityPerformShowMenu = "accessibilityPerformShowMenu";
-
-	private static readonly IntPtr selAccessibilityPerformShowMenuHandle = Selector.GetHandle("accessibilityPerformShowMenu");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityPlaceholderValue = "accessibilityPlaceholderValue";
-
-	private static readonly IntPtr selAccessibilityPlaceholderValueHandle = Selector.GetHandle("accessibilityPlaceholderValue");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityPreviousContents = "accessibilityPreviousContents";
-
-	private static readonly IntPtr selAccessibilityPreviousContentsHandle = Selector.GetHandle("accessibilityPreviousContents");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityProxy = "accessibilityProxy";
-
-	private static readonly IntPtr selAccessibilityProxyHandle = Selector.GetHandle("accessibilityProxy");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityRTFForRange_ = "accessibilityRTFForRange:";
-
-	private static readonly IntPtr selAccessibilityRTFForRange_Handle = Selector.GetHandle("accessibilityRTFForRange:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityRangeForIndex_ = "accessibilityRangeForIndex:";
-
-	private static readonly IntPtr selAccessibilityRangeForIndex_Handle = Selector.GetHandle("accessibilityRangeForIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityRangeForLine_ = "accessibilityRangeForLine:";
-
-	private static readonly IntPtr selAccessibilityRangeForLine_Handle = Selector.GetHandle("accessibilityRangeForLine:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityRangeForPosition_ = "accessibilityRangeForPosition:";
-
-	private static readonly IntPtr selAccessibilityRangeForPosition_Handle = Selector.GetHandle("accessibilityRangeForPosition:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityRole = "accessibilityRole";
-
-	private static readonly IntPtr selAccessibilityRoleHandle = Selector.GetHandle("accessibilityRole");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityRoleDescription = "accessibilityRoleDescription";
-
-	private static readonly IntPtr selAccessibilityRoleDescriptionHandle = Selector.GetHandle("accessibilityRoleDescription");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityRowCount = "accessibilityRowCount";
-
-	private static readonly IntPtr selAccessibilityRowCountHandle = Selector.GetHandle("accessibilityRowCount");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityRowHeaderUIElements = "accessibilityRowHeaderUIElements";
-
-	private static readonly IntPtr selAccessibilityRowHeaderUIElementsHandle = Selector.GetHandle("accessibilityRowHeaderUIElements");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityRowIndexRange = "accessibilityRowIndexRange";
-
-	private static readonly IntPtr selAccessibilityRowIndexRangeHandle = Selector.GetHandle("accessibilityRowIndexRange");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityRows = "accessibilityRows";
-
-	private static readonly IntPtr selAccessibilityRowsHandle = Selector.GetHandle("accessibilityRows");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityRulerMarkerType = "accessibilityRulerMarkerType";
-
-	private static readonly IntPtr selAccessibilityRulerMarkerTypeHandle = Selector.GetHandle("accessibilityRulerMarkerType");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityScreenPointForLayoutPoint_ = "accessibilityScreenPointForLayoutPoint:";
-
-	private static readonly IntPtr selAccessibilityScreenPointForLayoutPoint_Handle = Selector.GetHandle("accessibilityScreenPointForLayoutPoint:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityScreenSizeForLayoutSize_ = "accessibilityScreenSizeForLayoutSize:";
-
-	private static readonly IntPtr selAccessibilityScreenSizeForLayoutSize_Handle = Selector.GetHandle("accessibilityScreenSizeForLayoutSize:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySearchButton = "accessibilitySearchButton";
-
-	private static readonly IntPtr selAccessibilitySearchButtonHandle = Selector.GetHandle("accessibilitySearchButton");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySearchMenu = "accessibilitySearchMenu";
-
-	private static readonly IntPtr selAccessibilitySearchMenuHandle = Selector.GetHandle("accessibilitySearchMenu");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySelectedCells = "accessibilitySelectedCells";
-
-	private static readonly IntPtr selAccessibilitySelectedCellsHandle = Selector.GetHandle("accessibilitySelectedCells");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySelectedChildren = "accessibilitySelectedChildren";
-
-	private static readonly IntPtr selAccessibilitySelectedChildrenHandle = Selector.GetHandle("accessibilitySelectedChildren");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySelectedColumns = "accessibilitySelectedColumns";
-
-	private static readonly IntPtr selAccessibilitySelectedColumnsHandle = Selector.GetHandle("accessibilitySelectedColumns");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySelectedRows = "accessibilitySelectedRows";
-
-	private static readonly IntPtr selAccessibilitySelectedRowsHandle = Selector.GetHandle("accessibilitySelectedRows");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySelectedText = "accessibilitySelectedText";
-
-	private static readonly IntPtr selAccessibilitySelectedTextHandle = Selector.GetHandle("accessibilitySelectedText");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySelectedTextRange = "accessibilitySelectedTextRange";
-
-	private static readonly IntPtr selAccessibilitySelectedTextRangeHandle = Selector.GetHandle("accessibilitySelectedTextRange");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySelectedTextRanges = "accessibilitySelectedTextRanges";
-
-	private static readonly IntPtr selAccessibilitySelectedTextRangesHandle = Selector.GetHandle("accessibilitySelectedTextRanges");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityServesAsTitleForUIElements = "accessibilityServesAsTitleForUIElements";
-
-	private static readonly IntPtr selAccessibilityServesAsTitleForUIElementsHandle = Selector.GetHandle("accessibilityServesAsTitleForUIElements");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySharedCharacterRange = "accessibilitySharedCharacterRange";
-
-	private static readonly IntPtr selAccessibilitySharedCharacterRangeHandle = Selector.GetHandle("accessibilitySharedCharacterRange");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySharedFocusElements = "accessibilitySharedFocusElements";
-
-	private static readonly IntPtr selAccessibilitySharedFocusElementsHandle = Selector.GetHandle("accessibilitySharedFocusElements");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySharedTextUIElements = "accessibilitySharedTextUIElements";
-
-	private static readonly IntPtr selAccessibilitySharedTextUIElementsHandle = Selector.GetHandle("accessibilitySharedTextUIElements");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityShownMenu = "accessibilityShownMenu";
-
-	private static readonly IntPtr selAccessibilityShownMenuHandle = Selector.GetHandle("accessibilityShownMenu");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySortDirection = "accessibilitySortDirection";
-
-	private static readonly IntPtr selAccessibilitySortDirectionHandle = Selector.GetHandle("accessibilitySortDirection");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySplitters = "accessibilitySplitters";
-
-	private static readonly IntPtr selAccessibilitySplittersHandle = Selector.GetHandle("accessibilitySplitters");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityStringForRange_ = "accessibilityStringForRange:";
-
-	private static readonly IntPtr selAccessibilityStringForRange_Handle = Selector.GetHandle("accessibilityStringForRange:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityStyleRangeForIndex_ = "accessibilityStyleRangeForIndex:";
-
-	private static readonly IntPtr selAccessibilityStyleRangeForIndex_Handle = Selector.GetHandle("accessibilityStyleRangeForIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySubrole = "accessibilitySubrole";
-
-	private static readonly IntPtr selAccessibilitySubroleHandle = Selector.GetHandle("accessibilitySubrole");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityTabs = "accessibilityTabs";
-
-	private static readonly IntPtr selAccessibilityTabsHandle = Selector.GetHandle("accessibilityTabs");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityTitle = "accessibilityTitle";
-
-	private static readonly IntPtr selAccessibilityTitleHandle = Selector.GetHandle("accessibilityTitle");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityTitleUIElement = "accessibilityTitleUIElement";
-
-	private static readonly IntPtr selAccessibilityTitleUIElementHandle = Selector.GetHandle("accessibilityTitleUIElement");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityToolbarButton = "accessibilityToolbarButton";
-
-	private static readonly IntPtr selAccessibilityToolbarButtonHandle = Selector.GetHandle("accessibilityToolbarButton");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityTopLevelUIElement = "accessibilityTopLevelUIElement";
-
-	private static readonly IntPtr selAccessibilityTopLevelUIElementHandle = Selector.GetHandle("accessibilityTopLevelUIElement");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityURL = "accessibilityURL";
-
-	private static readonly IntPtr selAccessibilityURLHandle = Selector.GetHandle("accessibilityURL");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityUnitDescription = "accessibilityUnitDescription";
-
-	private static readonly IntPtr selAccessibilityUnitDescriptionHandle = Selector.GetHandle("accessibilityUnitDescription");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityUnits = "accessibilityUnits";
-
-	private static readonly IntPtr selAccessibilityUnitsHandle = Selector.GetHandle("accessibilityUnits");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityValue = "accessibilityValue";
-
-	private static readonly IntPtr selAccessibilityValueHandle = Selector.GetHandle("accessibilityValue");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityValueDescription = "accessibilityValueDescription";
-
-	private static readonly IntPtr selAccessibilityValueDescriptionHandle = Selector.GetHandle("accessibilityValueDescription");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityVerticalScrollBar = "accessibilityVerticalScrollBar";
-
-	private static readonly IntPtr selAccessibilityVerticalScrollBarHandle = Selector.GetHandle("accessibilityVerticalScrollBar");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityVerticalUnitDescription = "accessibilityVerticalUnitDescription";
-
-	private static readonly IntPtr selAccessibilityVerticalUnitDescriptionHandle = Selector.GetHandle("accessibilityVerticalUnitDescription");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityVerticalUnits = "accessibilityVerticalUnits";
-
-	private static readonly IntPtr selAccessibilityVerticalUnitsHandle = Selector.GetHandle("accessibilityVerticalUnits");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityVisibleCells = "accessibilityVisibleCells";
-
-	private static readonly IntPtr selAccessibilityVisibleCellsHandle = Selector.GetHandle("accessibilityVisibleCells");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityVisibleCharacterRange = "accessibilityVisibleCharacterRange";
-
-	private static readonly IntPtr selAccessibilityVisibleCharacterRangeHandle = Selector.GetHandle("accessibilityVisibleCharacterRange");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityVisibleChildren = "accessibilityVisibleChildren";
-
-	private static readonly IntPtr selAccessibilityVisibleChildrenHandle = Selector.GetHandle("accessibilityVisibleChildren");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityVisibleColumns = "accessibilityVisibleColumns";
-
-	private static readonly IntPtr selAccessibilityVisibleColumnsHandle = Selector.GetHandle("accessibilityVisibleColumns");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityVisibleRows = "accessibilityVisibleRows";
-
-	private static readonly IntPtr selAccessibilityVisibleRowsHandle = Selector.GetHandle("accessibilityVisibleRows");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityWarningValue = "accessibilityWarningValue";
-
-	private static readonly IntPtr selAccessibilityWarningValueHandle = Selector.GetHandle("accessibilityWarningValue");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityWindow = "accessibilityWindow";
-
-	private static readonly IntPtr selAccessibilityWindowHandle = Selector.GetHandle("accessibilityWindow");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityWindows = "accessibilityWindows";
-
-	private static readonly IntPtr selAccessibilityWindowsHandle = Selector.GetHandle("accessibilityWindows");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityZoomButton = "accessibilityZoomButton";
-
-	private static readonly IntPtr selAccessibilityZoomButtonHandle = Selector.GetHandle("accessibilityZoomButton");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selActivateIgnoringOtherApps_ = "activateIgnoringOtherApps:";
-
-	private static readonly IntPtr selActivateIgnoringOtherApps_Handle = Selector.GetHandle("activateIgnoringOtherApps:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selActivationPolicy = "activationPolicy";
-
-	private static readonly IntPtr selActivationPolicyHandle = Selector.GetHandle("activationPolicy");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddWindowsItem_Title_Filename_ = "addWindowsItem:title:filename:";
-
-	private static readonly IntPtr selAddWindowsItem_Title_Filename_Handle = Selector.GetHandle("addWindowsItem:title:filename:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAppearance = "appearance";
-
-	private static readonly IntPtr selAppearanceHandle = Selector.GetHandle("appearance");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selApplicationIconImage = "applicationIconImage";
-
-	private static readonly IntPtr selApplicationIconImageHandle = Selector.GetHandle("applicationIconImage");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selArrangeInFront_ = "arrangeInFront:";
-
-	private static readonly IntPtr selArrangeInFront_Handle = Selector.GetHandle("arrangeInFront:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selBeginModalSessionForWindow_ = "beginModalSessionForWindow:";
-
-	private static readonly IntPtr selBeginModalSessionForWindow_Handle = Selector.GetHandle("beginModalSessionForWindow:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selBeginSheet_ModalForWindow_ModalDelegate_DidEndSelector_ContextInfo_ = "beginSheet:modalForWindow:modalDelegate:didEndSelector:contextInfo:";
-
-	private static readonly IntPtr selBeginSheet_ModalForWindow_ModalDelegate_DidEndSelector_ContextInfo_Handle = Selector.GetHandle("beginSheet:modalForWindow:modalDelegate:didEndSelector:contextInfo:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCancelUserAttentionRequest_ = "cancelUserAttentionRequest:";
-
-	private static readonly IntPtr selCancelUserAttentionRequest_Handle = Selector.GetHandle("cancelUserAttentionRequest:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selChangeWindowsItem_Title_Filename_ = "changeWindowsItem:title:filename:";
-
-	private static readonly IntPtr selChangeWindowsItem_Title_Filename_Handle = Selector.GetHandle("changeWindowsItem:title:filename:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCompleteStateRestoration = "completeStateRestoration";
-
-	private static readonly IntPtr selCompleteStateRestorationHandle = Selector.GetHandle("completeStateRestoration");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selContext = "context";
-
-	private static readonly IntPtr selContextHandle = Selector.GetHandle("context");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCurrentEvent = "currentEvent";
-
-	private static readonly IntPtr selCurrentEventHandle = Selector.GetHandle("currentEvent");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCurrentSystemPresentationOptions = "currentSystemPresentationOptions";
-
-	private static readonly IntPtr selCurrentSystemPresentationOptionsHandle = Selector.GetHandle("currentSystemPresentationOptions");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeactivate = "deactivate";
-
-	private static readonly IntPtr selDeactivateHandle = Selector.GetHandle("deactivate");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDelegate = "delegate";
-
-	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDetachDrawingThread_ToTarget_WithObject_ = "detachDrawingThread:toTarget:withObject:";
-
-	private static readonly IntPtr selDetachDrawingThread_ToTarget_WithObject_Handle = Selector.GetHandle("detachDrawingThread:toTarget:withObject:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDisableRelaunchOnLogin = "disableRelaunchOnLogin";
-
-	private static readonly IntPtr selDisableRelaunchOnLoginHandle = Selector.GetHandle("disableRelaunchOnLogin");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDiscardEventsMatchingMask_BeforeEvent_ = "discardEventsMatchingMask:beforeEvent:";
-
-	private static readonly IntPtr selDiscardEventsMatchingMask_BeforeEvent_Handle = Selector.GetHandle("discardEventsMatchingMask:beforeEvent:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDockTile = "dockTile";
-
-	private static readonly IntPtr selDockTileHandle = Selector.GetHandle("dockTile");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEffectiveAppearance = "effectiveAppearance";
-
-	private static readonly IntPtr selEffectiveAppearanceHandle = Selector.GetHandle("effectiveAppearance");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEnableRelaunchOnLogin = "enableRelaunchOnLogin";
-
-	private static readonly IntPtr selEnableRelaunchOnLoginHandle = Selector.GetHandle("enableRelaunchOnLogin");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEnabledRemoteNotificationTypes = "enabledRemoteNotificationTypes";
-
-	private static readonly IntPtr selEnabledRemoteNotificationTypesHandle = Selector.GetHandle("enabledRemoteNotificationTypes");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEndModalSession_ = "endModalSession:";
-
-	private static readonly IntPtr selEndModalSession_Handle = Selector.GetHandle("endModalSession:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEndSheet_ = "endSheet:";
-
-	private static readonly IntPtr selEndSheet_Handle = Selector.GetHandle("endSheet:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEndSheet_ReturnCode_ = "endSheet:returnCode:";
-
-	private static readonly IntPtr selEndSheet_ReturnCode_Handle = Selector.GetHandle("endSheet:returnCode:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEnumerateWindowsWithOptions_UsingBlock_ = "enumerateWindowsWithOptions:usingBlock:";
-
-	private static readonly IntPtr selEnumerateWindowsWithOptions_UsingBlock_Handle = Selector.GetHandle("enumerateWindowsWithOptions:usingBlock:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExtendStateRestoration = "extendStateRestoration";
-
-	private static readonly IntPtr selExtendStateRestorationHandle = Selector.GetHandle("extendStateRestoration");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFinishLaunching = "finishLaunching";
-
-	private static readonly IntPtr selFinishLaunchingHandle = Selector.GetHandle("finishLaunching");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHelpMenu = "helpMenu";
-
-	private static readonly IntPtr selHelpMenuHandle = Selector.GetHandle("helpMenu");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHide_ = "hide:";
-
-	private static readonly IntPtr selHide_Handle = Selector.GetHandle("hide:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHideOtherApplications_ = "hideOtherApplications:";
-
-	private static readonly IntPtr selHideOtherApplications_Handle = Selector.GetHandle("hideOtherApplications:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityAlternateUIVisible = "isAccessibilityAlternateUIVisible";
-
-	private static readonly IntPtr selIsAccessibilityAlternateUIVisibleHandle = Selector.GetHandle("isAccessibilityAlternateUIVisible");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityDisclosed = "isAccessibilityDisclosed";
-
-	private static readonly IntPtr selIsAccessibilityDisclosedHandle = Selector.GetHandle("isAccessibilityDisclosed");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityEdited = "isAccessibilityEdited";
-
-	private static readonly IntPtr selIsAccessibilityEditedHandle = Selector.GetHandle("isAccessibilityEdited");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityElement = "isAccessibilityElement";
-
-	private static readonly IntPtr selIsAccessibilityElementHandle = Selector.GetHandle("isAccessibilityElement");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityEnabled = "isAccessibilityEnabled";
-
-	private static readonly IntPtr selIsAccessibilityEnabledHandle = Selector.GetHandle("isAccessibilityEnabled");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityExpanded = "isAccessibilityExpanded";
-
-	private static readonly IntPtr selIsAccessibilityExpandedHandle = Selector.GetHandle("isAccessibilityExpanded");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityFocused = "isAccessibilityFocused";
-
-	private static readonly IntPtr selIsAccessibilityFocusedHandle = Selector.GetHandle("isAccessibilityFocused");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityFrontmost = "isAccessibilityFrontmost";
-
-	private static readonly IntPtr selIsAccessibilityFrontmostHandle = Selector.GetHandle("isAccessibilityFrontmost");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityHidden = "isAccessibilityHidden";
-
-	private static readonly IntPtr selIsAccessibilityHiddenHandle = Selector.GetHandle("isAccessibilityHidden");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityMain = "isAccessibilityMain";
-
-	private static readonly IntPtr selIsAccessibilityMainHandle = Selector.GetHandle("isAccessibilityMain");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityMinimized = "isAccessibilityMinimized";
-
-	private static readonly IntPtr selIsAccessibilityMinimizedHandle = Selector.GetHandle("isAccessibilityMinimized");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityModal = "isAccessibilityModal";
-
-	private static readonly IntPtr selIsAccessibilityModalHandle = Selector.GetHandle("isAccessibilityModal");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityOrderedByRow = "isAccessibilityOrderedByRow";
-
-	private static readonly IntPtr selIsAccessibilityOrderedByRowHandle = Selector.GetHandle("isAccessibilityOrderedByRow");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityProtectedContent = "isAccessibilityProtectedContent";
-
-	private static readonly IntPtr selIsAccessibilityProtectedContentHandle = Selector.GetHandle("isAccessibilityProtectedContent");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityRequired = "isAccessibilityRequired";
-
-	private static readonly IntPtr selIsAccessibilityRequiredHandle = Selector.GetHandle("isAccessibilityRequired");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilitySelected = "isAccessibilitySelected";
-
-	private static readonly IntPtr selIsAccessibilitySelectedHandle = Selector.GetHandle("isAccessibilitySelected");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilitySelectorAllowed_ = "isAccessibilitySelectorAllowed:";
-
-	private static readonly IntPtr selIsAccessibilitySelectorAllowed_Handle = Selector.GetHandle("isAccessibilitySelectorAllowed:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsActive = "isActive";
-
-	private static readonly IntPtr selIsActiveHandle = Selector.GetHandle("isActive");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsFullKeyboardAccessEnabled = "isFullKeyboardAccessEnabled";
-
-	private static readonly IntPtr selIsFullKeyboardAccessEnabledHandle = Selector.GetHandle("isFullKeyboardAccessEnabled");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsHidden = "isHidden";
-
-	private static readonly IntPtr selIsHiddenHandle = Selector.GetHandle("isHidden");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsRegisteredForRemoteNotifications = "isRegisteredForRemoteNotifications";
-
-	private static readonly IntPtr selIsRegisteredForRemoteNotificationsHandle = Selector.GetHandle("isRegisteredForRemoteNotifications");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsRunning = "isRunning";
-
-	private static readonly IntPtr selIsRunningHandle = Selector.GetHandle("isRunning");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selKeyWindow = "keyWindow";
-
-	private static readonly IntPtr selKeyWindowHandle = Selector.GetHandle("keyWindow");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMainMenu = "mainMenu";
-
-	private static readonly IntPtr selMainMenuHandle = Selector.GetHandle("mainMenu");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMainWindow = "mainWindow";
-
-	private static readonly IntPtr selMainWindowHandle = Selector.GetHandle("mainWindow");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMakeWindowsPerform_InOrder_ = "makeWindowsPerform:inOrder:";
-
-	private static readonly IntPtr selMakeWindowsPerform_InOrder_Handle = Selector.GetHandle("makeWindowsPerform:inOrder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMiniaturizeAll_ = "miniaturizeAll:";
-
-	private static readonly IntPtr selMiniaturizeAll_Handle = Selector.GetHandle("miniaturizeAll:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selModalWindow = "modalWindow";
-
-	private static readonly IntPtr selModalWindowHandle = Selector.GetHandle("modalWindow");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNextEventMatchingMask_UntilDate_InMode_Dequeue_ = "nextEventMatchingMask:untilDate:inMode:dequeue:";
-
-	private static readonly IntPtr selNextEventMatchingMask_UntilDate_InMode_Dequeue_Handle = Selector.GetHandle("nextEventMatchingMask:untilDate:inMode:dequeue:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOcclusionState = "occlusionState";
-
-	private static readonly IntPtr selOcclusionStateHandle = Selector.GetHandle("occlusionState");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOrderFrontCharacterPalette_ = "orderFrontCharacterPalette:";
-
-	private static readonly IntPtr selOrderFrontCharacterPalette_Handle = Selector.GetHandle("orderFrontCharacterPalette:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOrderFrontColorPanel_ = "orderFrontColorPanel:";
-
-	private static readonly IntPtr selOrderFrontColorPanel_Handle = Selector.GetHandle("orderFrontColorPanel:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOrderFrontStandardAboutPanel_ = "orderFrontStandardAboutPanel:";
-
-	private static readonly IntPtr selOrderFrontStandardAboutPanel_Handle = Selector.GetHandle("orderFrontStandardAboutPanel:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOrderFrontStandardAboutPanelWithOptions_ = "orderFrontStandardAboutPanelWithOptions:";
-
-	private static readonly IntPtr selOrderFrontStandardAboutPanelWithOptions_Handle = Selector.GetHandle("orderFrontStandardAboutPanelWithOptions:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPostEvent_AtStart_ = "postEvent:atStart:";
-
-	private static readonly IntPtr selPostEvent_AtStart_Handle = Selector.GetHandle("postEvent:atStart:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPresentationOptions = "presentationOptions";
-
-	private static readonly IntPtr selPresentationOptionsHandle = Selector.GetHandle("presentationOptions");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPreventWindowOrdering = "preventWindowOrdering";
-
-	private static readonly IntPtr selPreventWindowOrderingHandle = Selector.GetHandle("preventWindowOrdering");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRegisterForRemoteNotificationTypes_ = "registerForRemoteNotificationTypes:";
-
-	private static readonly IntPtr selRegisterForRemoteNotificationTypes_Handle = Selector.GetHandle("registerForRemoteNotificationTypes:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRegisterForRemoteNotifications = "registerForRemoteNotifications";
-
-	private static readonly IntPtr selRegisterForRemoteNotificationsHandle = Selector.GetHandle("registerForRemoteNotifications");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRegisterServicesMenuSendTypes_ReturnTypes_ = "registerServicesMenuSendTypes:returnTypes:";
-
-	private static readonly IntPtr selRegisterServicesMenuSendTypes_ReturnTypes_Handle = Selector.GetHandle("registerServicesMenuSendTypes:returnTypes:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveWindowsItem_ = "removeWindowsItem:";
-
-	private static readonly IntPtr selRemoveWindowsItem_Handle = Selector.GetHandle("removeWindowsItem:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selReplyToApplicationShouldTerminate_ = "replyToApplicationShouldTerminate:";
-
-	private static readonly IntPtr selReplyToApplicationShouldTerminate_Handle = Selector.GetHandle("replyToApplicationShouldTerminate:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selReplyToOpenOrPrint_ = "replyToOpenOrPrint:";
-
-	private static readonly IntPtr selReplyToOpenOrPrint_Handle = Selector.GetHandle("replyToOpenOrPrint:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selReportException_ = "reportException:";
-
-	private static readonly IntPtr selReportException_Handle = Selector.GetHandle("reportException:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRequestUserAttention_ = "requestUserAttention:";
-
-	private static readonly IntPtr selRequestUserAttention_Handle = Selector.GetHandle("requestUserAttention:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRestoreWindowWithIdentifier_State_CompletionHandler_ = "restoreWindowWithIdentifier:state:completionHandler:";
-
-	private static readonly IntPtr selRestoreWindowWithIdentifier_State_CompletionHandler_Handle = Selector.GetHandle("restoreWindowWithIdentifier:state:completionHandler:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRun = "run";
-
-	private static readonly IntPtr selRunHandle = Selector.GetHandle("run");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRunModalForWindow_ = "runModalForWindow:";
-
-	private static readonly IntPtr selRunModalForWindow_Handle = Selector.GetHandle("runModalForWindow:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRunModalSession_ = "runModalSession:";
-
-	private static readonly IntPtr selRunModalSession_Handle = Selector.GetHandle("runModalSession:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSendAction_To_From_ = "sendAction:to:from:";
-
-	private static readonly IntPtr selSendAction_To_From_Handle = Selector.GetHandle("sendAction:to:from:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSendEvent_ = "sendEvent:";
-
-	private static readonly IntPtr selSendEvent_Handle = Selector.GetHandle("sendEvent:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selServicesMenu = "servicesMenu";
-
-	private static readonly IntPtr selServicesMenuHandle = Selector.GetHandle("servicesMenu");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selServicesProvider = "servicesProvider";
-
-	private static readonly IntPtr selServicesProviderHandle = Selector.GetHandle("servicesProvider");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityActivationPoint_ = "setAccessibilityActivationPoint:";
-
-	private static readonly IntPtr selSetAccessibilityActivationPoint_Handle = Selector.GetHandle("setAccessibilityActivationPoint:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityAllowedValues_ = "setAccessibilityAllowedValues:";
-
-	private static readonly IntPtr selSetAccessibilityAllowedValues_Handle = Selector.GetHandle("setAccessibilityAllowedValues:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityAlternateUIVisible_ = "setAccessibilityAlternateUIVisible:";
-
-	private static readonly IntPtr selSetAccessibilityAlternateUIVisible_Handle = Selector.GetHandle("setAccessibilityAlternateUIVisible:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityApplicationFocusedUIElement_ = "setAccessibilityApplicationFocusedUIElement:";
-
-	private static readonly IntPtr selSetAccessibilityApplicationFocusedUIElement_Handle = Selector.GetHandle("setAccessibilityApplicationFocusedUIElement:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityCancelButton_ = "setAccessibilityCancelButton:";
-
-	private static readonly IntPtr selSetAccessibilityCancelButton_Handle = Selector.GetHandle("setAccessibilityCancelButton:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityChildren_ = "setAccessibilityChildren:";
-
-	private static readonly IntPtr selSetAccessibilityChildren_Handle = Selector.GetHandle("setAccessibilityChildren:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityChildrenInNavigationOrder_ = "setAccessibilityChildrenInNavigationOrder:";
-
-	private static readonly IntPtr selSetAccessibilityChildrenInNavigationOrder_Handle = Selector.GetHandle("setAccessibilityChildrenInNavigationOrder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityClearButton_ = "setAccessibilityClearButton:";
-
-	private static readonly IntPtr selSetAccessibilityClearButton_Handle = Selector.GetHandle("setAccessibilityClearButton:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityCloseButton_ = "setAccessibilityCloseButton:";
-
-	private static readonly IntPtr selSetAccessibilityCloseButton_Handle = Selector.GetHandle("setAccessibilityCloseButton:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityColumnCount_ = "setAccessibilityColumnCount:";
-
-	private static readonly IntPtr selSetAccessibilityColumnCount_Handle = Selector.GetHandle("setAccessibilityColumnCount:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityColumnHeaderUIElements_ = "setAccessibilityColumnHeaderUIElements:";
-
-	private static readonly IntPtr selSetAccessibilityColumnHeaderUIElements_Handle = Selector.GetHandle("setAccessibilityColumnHeaderUIElements:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityColumnIndexRange_ = "setAccessibilityColumnIndexRange:";
-
-	private static readonly IntPtr selSetAccessibilityColumnIndexRange_Handle = Selector.GetHandle("setAccessibilityColumnIndexRange:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityColumnTitles_ = "setAccessibilityColumnTitles:";
-
-	private static readonly IntPtr selSetAccessibilityColumnTitles_Handle = Selector.GetHandle("setAccessibilityColumnTitles:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityColumns_ = "setAccessibilityColumns:";
-
-	private static readonly IntPtr selSetAccessibilityColumns_Handle = Selector.GetHandle("setAccessibilityColumns:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityContents_ = "setAccessibilityContents:";
-
-	private static readonly IntPtr selSetAccessibilityContents_Handle = Selector.GetHandle("setAccessibilityContents:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityCriticalValue_ = "setAccessibilityCriticalValue:";
-
-	private static readonly IntPtr selSetAccessibilityCriticalValue_Handle = Selector.GetHandle("setAccessibilityCriticalValue:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityCustomActions_ = "setAccessibilityCustomActions:";
-
-	private static readonly IntPtr selSetAccessibilityCustomActions_Handle = Selector.GetHandle("setAccessibilityCustomActions:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityCustomRotors_ = "setAccessibilityCustomRotors:";
-
-	private static readonly IntPtr selSetAccessibilityCustomRotors_Handle = Selector.GetHandle("setAccessibilityCustomRotors:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityDecrementButton_ = "setAccessibilityDecrementButton:";
-
-	private static readonly IntPtr selSetAccessibilityDecrementButton_Handle = Selector.GetHandle("setAccessibilityDecrementButton:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityDefaultButton_ = "setAccessibilityDefaultButton:";
-
-	private static readonly IntPtr selSetAccessibilityDefaultButton_Handle = Selector.GetHandle("setAccessibilityDefaultButton:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityDisclosed_ = "setAccessibilityDisclosed:";
-
-	private static readonly IntPtr selSetAccessibilityDisclosed_Handle = Selector.GetHandle("setAccessibilityDisclosed:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityDisclosedByRow_ = "setAccessibilityDisclosedByRow:";
-
-	private static readonly IntPtr selSetAccessibilityDisclosedByRow_Handle = Selector.GetHandle("setAccessibilityDisclosedByRow:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityDisclosedRows_ = "setAccessibilityDisclosedRows:";
-
-	private static readonly IntPtr selSetAccessibilityDisclosedRows_Handle = Selector.GetHandle("setAccessibilityDisclosedRows:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityDisclosureLevel_ = "setAccessibilityDisclosureLevel:";
-
-	private static readonly IntPtr selSetAccessibilityDisclosureLevel_Handle = Selector.GetHandle("setAccessibilityDisclosureLevel:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityDocument_ = "setAccessibilityDocument:";
-
-	private static readonly IntPtr selSetAccessibilityDocument_Handle = Selector.GetHandle("setAccessibilityDocument:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityEdited_ = "setAccessibilityEdited:";
-
-	private static readonly IntPtr selSetAccessibilityEdited_Handle = Selector.GetHandle("setAccessibilityEdited:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityElement_ = "setAccessibilityElement:";
-
-	private static readonly IntPtr selSetAccessibilityElement_Handle = Selector.GetHandle("setAccessibilityElement:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityEnabled_ = "setAccessibilityEnabled:";
-
-	private static readonly IntPtr selSetAccessibilityEnabled_Handle = Selector.GetHandle("setAccessibilityEnabled:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityExpanded_ = "setAccessibilityExpanded:";
-
-	private static readonly IntPtr selSetAccessibilityExpanded_Handle = Selector.GetHandle("setAccessibilityExpanded:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityExtrasMenuBar_ = "setAccessibilityExtrasMenuBar:";
-
-	private static readonly IntPtr selSetAccessibilityExtrasMenuBar_Handle = Selector.GetHandle("setAccessibilityExtrasMenuBar:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityFilename_ = "setAccessibilityFilename:";
-
-	private static readonly IntPtr selSetAccessibilityFilename_Handle = Selector.GetHandle("setAccessibilityFilename:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityFocused_ = "setAccessibilityFocused:";
-
-	private static readonly IntPtr selSetAccessibilityFocused_Handle = Selector.GetHandle("setAccessibilityFocused:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityFocusedWindow_ = "setAccessibilityFocusedWindow:";
-
-	private static readonly IntPtr selSetAccessibilityFocusedWindow_Handle = Selector.GetHandle("setAccessibilityFocusedWindow:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityFrame_ = "setAccessibilityFrame:";
-
-	private static readonly IntPtr selSetAccessibilityFrame_Handle = Selector.GetHandle("setAccessibilityFrame:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityFrontmost_ = "setAccessibilityFrontmost:";
-
-	private static readonly IntPtr selSetAccessibilityFrontmost_Handle = Selector.GetHandle("setAccessibilityFrontmost:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityFullScreenButton_ = "setAccessibilityFullScreenButton:";
-
-	private static readonly IntPtr selSetAccessibilityFullScreenButton_Handle = Selector.GetHandle("setAccessibilityFullScreenButton:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityGrowArea_ = "setAccessibilityGrowArea:";
-
-	private static readonly IntPtr selSetAccessibilityGrowArea_Handle = Selector.GetHandle("setAccessibilityGrowArea:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityHandles_ = "setAccessibilityHandles:";
-
-	private static readonly IntPtr selSetAccessibilityHandles_Handle = Selector.GetHandle("setAccessibilityHandles:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityHeader_ = "setAccessibilityHeader:";
-
-	private static readonly IntPtr selSetAccessibilityHeader_Handle = Selector.GetHandle("setAccessibilityHeader:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityHelp_ = "setAccessibilityHelp:";
-
-	private static readonly IntPtr selSetAccessibilityHelp_Handle = Selector.GetHandle("setAccessibilityHelp:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityHidden_ = "setAccessibilityHidden:";
-
-	private static readonly IntPtr selSetAccessibilityHidden_Handle = Selector.GetHandle("setAccessibilityHidden:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityHorizontalScrollBar_ = "setAccessibilityHorizontalScrollBar:";
-
-	private static readonly IntPtr selSetAccessibilityHorizontalScrollBar_Handle = Selector.GetHandle("setAccessibilityHorizontalScrollBar:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityHorizontalUnitDescription_ = "setAccessibilityHorizontalUnitDescription:";
-
-	private static readonly IntPtr selSetAccessibilityHorizontalUnitDescription_Handle = Selector.GetHandle("setAccessibilityHorizontalUnitDescription:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityHorizontalUnits_ = "setAccessibilityHorizontalUnits:";
-
-	private static readonly IntPtr selSetAccessibilityHorizontalUnits_Handle = Selector.GetHandle("setAccessibilityHorizontalUnits:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityIdentifier_ = "setAccessibilityIdentifier:";
-
-	private static readonly IntPtr selSetAccessibilityIdentifier_Handle = Selector.GetHandle("setAccessibilityIdentifier:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityIncrementButton_ = "setAccessibilityIncrementButton:";
-
-	private static readonly IntPtr selSetAccessibilityIncrementButton_Handle = Selector.GetHandle("setAccessibilityIncrementButton:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityIndex_ = "setAccessibilityIndex:";
-
-	private static readonly IntPtr selSetAccessibilityIndex_Handle = Selector.GetHandle("setAccessibilityIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityInsertionPointLineNumber_ = "setAccessibilityInsertionPointLineNumber:";
-
-	private static readonly IntPtr selSetAccessibilityInsertionPointLineNumber_Handle = Selector.GetHandle("setAccessibilityInsertionPointLineNumber:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityLabel_ = "setAccessibilityLabel:";
-
-	private static readonly IntPtr selSetAccessibilityLabel_Handle = Selector.GetHandle("setAccessibilityLabel:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityLabelUIElements_ = "setAccessibilityLabelUIElements:";
-
-	private static readonly IntPtr selSetAccessibilityLabelUIElements_Handle = Selector.GetHandle("setAccessibilityLabelUIElements:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityLabelValue_ = "setAccessibilityLabelValue:";
-
-	private static readonly IntPtr selSetAccessibilityLabelValue_Handle = Selector.GetHandle("setAccessibilityLabelValue:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityLinkedUIElements_ = "setAccessibilityLinkedUIElements:";
-
-	private static readonly IntPtr selSetAccessibilityLinkedUIElements_Handle = Selector.GetHandle("setAccessibilityLinkedUIElements:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityMain_ = "setAccessibilityMain:";
-
-	private static readonly IntPtr selSetAccessibilityMain_Handle = Selector.GetHandle("setAccessibilityMain:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityMainWindow_ = "setAccessibilityMainWindow:";
-
-	private static readonly IntPtr selSetAccessibilityMainWindow_Handle = Selector.GetHandle("setAccessibilityMainWindow:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityMarkerGroupUIElement_ = "setAccessibilityMarkerGroupUIElement:";
-
-	private static readonly IntPtr selSetAccessibilityMarkerGroupUIElement_Handle = Selector.GetHandle("setAccessibilityMarkerGroupUIElement:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityMarkerTypeDescription_ = "setAccessibilityMarkerTypeDescription:";
-
-	private static readonly IntPtr selSetAccessibilityMarkerTypeDescription_Handle = Selector.GetHandle("setAccessibilityMarkerTypeDescription:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityMarkerUIElements_ = "setAccessibilityMarkerUIElements:";
-
-	private static readonly IntPtr selSetAccessibilityMarkerUIElements_Handle = Selector.GetHandle("setAccessibilityMarkerUIElements:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityMarkerValues_ = "setAccessibilityMarkerValues:";
-
-	private static readonly IntPtr selSetAccessibilityMarkerValues_Handle = Selector.GetHandle("setAccessibilityMarkerValues:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityMaxValue_ = "setAccessibilityMaxValue:";
-
-	private static readonly IntPtr selSetAccessibilityMaxValue_Handle = Selector.GetHandle("setAccessibilityMaxValue:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityMenuBar_ = "setAccessibilityMenuBar:";
-
-	private static readonly IntPtr selSetAccessibilityMenuBar_Handle = Selector.GetHandle("setAccessibilityMenuBar:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityMinValue_ = "setAccessibilityMinValue:";
-
-	private static readonly IntPtr selSetAccessibilityMinValue_Handle = Selector.GetHandle("setAccessibilityMinValue:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityMinimizeButton_ = "setAccessibilityMinimizeButton:";
-
-	private static readonly IntPtr selSetAccessibilityMinimizeButton_Handle = Selector.GetHandle("setAccessibilityMinimizeButton:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityMinimized_ = "setAccessibilityMinimized:";
-
-	private static readonly IntPtr selSetAccessibilityMinimized_Handle = Selector.GetHandle("setAccessibilityMinimized:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityModal_ = "setAccessibilityModal:";
-
-	private static readonly IntPtr selSetAccessibilityModal_Handle = Selector.GetHandle("setAccessibilityModal:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityNextContents_ = "setAccessibilityNextContents:";
-
-	private static readonly IntPtr selSetAccessibilityNextContents_Handle = Selector.GetHandle("setAccessibilityNextContents:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityNumberOfCharacters_ = "setAccessibilityNumberOfCharacters:";
-
-	private static readonly IntPtr selSetAccessibilityNumberOfCharacters_Handle = Selector.GetHandle("setAccessibilityNumberOfCharacters:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityOrderedByRow_ = "setAccessibilityOrderedByRow:";
-
-	private static readonly IntPtr selSetAccessibilityOrderedByRow_Handle = Selector.GetHandle("setAccessibilityOrderedByRow:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityOrientation_ = "setAccessibilityOrientation:";
-
-	private static readonly IntPtr selSetAccessibilityOrientation_Handle = Selector.GetHandle("setAccessibilityOrientation:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityOverflowButton_ = "setAccessibilityOverflowButton:";
-
-	private static readonly IntPtr selSetAccessibilityOverflowButton_Handle = Selector.GetHandle("setAccessibilityOverflowButton:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityParent_ = "setAccessibilityParent:";
-
-	private static readonly IntPtr selSetAccessibilityParent_Handle = Selector.GetHandle("setAccessibilityParent:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityPlaceholderValue_ = "setAccessibilityPlaceholderValue:";
-
-	private static readonly IntPtr selSetAccessibilityPlaceholderValue_Handle = Selector.GetHandle("setAccessibilityPlaceholderValue:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityPreviousContents_ = "setAccessibilityPreviousContents:";
-
-	private static readonly IntPtr selSetAccessibilityPreviousContents_Handle = Selector.GetHandle("setAccessibilityPreviousContents:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityProtectedContent_ = "setAccessibilityProtectedContent:";
-
-	private static readonly IntPtr selSetAccessibilityProtectedContent_Handle = Selector.GetHandle("setAccessibilityProtectedContent:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityProxy_ = "setAccessibilityProxy:";
-
-	private static readonly IntPtr selSetAccessibilityProxy_Handle = Selector.GetHandle("setAccessibilityProxy:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityRequired_ = "setAccessibilityRequired:";
-
-	private static readonly IntPtr selSetAccessibilityRequired_Handle = Selector.GetHandle("setAccessibilityRequired:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityRole_ = "setAccessibilityRole:";
-
-	private static readonly IntPtr selSetAccessibilityRole_Handle = Selector.GetHandle("setAccessibilityRole:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityRoleDescription_ = "setAccessibilityRoleDescription:";
-
-	private static readonly IntPtr selSetAccessibilityRoleDescription_Handle = Selector.GetHandle("setAccessibilityRoleDescription:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityRowCount_ = "setAccessibilityRowCount:";
-
-	private static readonly IntPtr selSetAccessibilityRowCount_Handle = Selector.GetHandle("setAccessibilityRowCount:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityRowHeaderUIElements_ = "setAccessibilityRowHeaderUIElements:";
-
-	private static readonly IntPtr selSetAccessibilityRowHeaderUIElements_Handle = Selector.GetHandle("setAccessibilityRowHeaderUIElements:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityRowIndexRange_ = "setAccessibilityRowIndexRange:";
-
-	private static readonly IntPtr selSetAccessibilityRowIndexRange_Handle = Selector.GetHandle("setAccessibilityRowIndexRange:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityRows_ = "setAccessibilityRows:";
-
-	private static readonly IntPtr selSetAccessibilityRows_Handle = Selector.GetHandle("setAccessibilityRows:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityRulerMarkerType_ = "setAccessibilityRulerMarkerType:";
-
-	private static readonly IntPtr selSetAccessibilityRulerMarkerType_Handle = Selector.GetHandle("setAccessibilityRulerMarkerType:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySearchButton_ = "setAccessibilitySearchButton:";
-
-	private static readonly IntPtr selSetAccessibilitySearchButton_Handle = Selector.GetHandle("setAccessibilitySearchButton:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySearchMenu_ = "setAccessibilitySearchMenu:";
-
-	private static readonly IntPtr selSetAccessibilitySearchMenu_Handle = Selector.GetHandle("setAccessibilitySearchMenu:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySelected_ = "setAccessibilitySelected:";
-
-	private static readonly IntPtr selSetAccessibilitySelected_Handle = Selector.GetHandle("setAccessibilitySelected:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySelectedCells_ = "setAccessibilitySelectedCells:";
-
-	private static readonly IntPtr selSetAccessibilitySelectedCells_Handle = Selector.GetHandle("setAccessibilitySelectedCells:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySelectedChildren_ = "setAccessibilitySelectedChildren:";
-
-	private static readonly IntPtr selSetAccessibilitySelectedChildren_Handle = Selector.GetHandle("setAccessibilitySelectedChildren:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySelectedColumns_ = "setAccessibilitySelectedColumns:";
-
-	private static readonly IntPtr selSetAccessibilitySelectedColumns_Handle = Selector.GetHandle("setAccessibilitySelectedColumns:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySelectedRows_ = "setAccessibilitySelectedRows:";
-
-	private static readonly IntPtr selSetAccessibilitySelectedRows_Handle = Selector.GetHandle("setAccessibilitySelectedRows:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySelectedText_ = "setAccessibilitySelectedText:";
-
-	private static readonly IntPtr selSetAccessibilitySelectedText_Handle = Selector.GetHandle("setAccessibilitySelectedText:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySelectedTextRange_ = "setAccessibilitySelectedTextRange:";
-
-	private static readonly IntPtr selSetAccessibilitySelectedTextRange_Handle = Selector.GetHandle("setAccessibilitySelectedTextRange:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySelectedTextRanges_ = "setAccessibilitySelectedTextRanges:";
-
-	private static readonly IntPtr selSetAccessibilitySelectedTextRanges_Handle = Selector.GetHandle("setAccessibilitySelectedTextRanges:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityServesAsTitleForUIElements_ = "setAccessibilityServesAsTitleForUIElements:";
-
-	private static readonly IntPtr selSetAccessibilityServesAsTitleForUIElements_Handle = Selector.GetHandle("setAccessibilityServesAsTitleForUIElements:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySharedCharacterRange_ = "setAccessibilitySharedCharacterRange:";
-
-	private static readonly IntPtr selSetAccessibilitySharedCharacterRange_Handle = Selector.GetHandle("setAccessibilitySharedCharacterRange:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySharedFocusElements_ = "setAccessibilitySharedFocusElements:";
-
-	private static readonly IntPtr selSetAccessibilitySharedFocusElements_Handle = Selector.GetHandle("setAccessibilitySharedFocusElements:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySharedTextUIElements_ = "setAccessibilitySharedTextUIElements:";
-
-	private static readonly IntPtr selSetAccessibilitySharedTextUIElements_Handle = Selector.GetHandle("setAccessibilitySharedTextUIElements:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityShownMenu_ = "setAccessibilityShownMenu:";
-
-	private static readonly IntPtr selSetAccessibilityShownMenu_Handle = Selector.GetHandle("setAccessibilityShownMenu:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySortDirection_ = "setAccessibilitySortDirection:";
-
-	private static readonly IntPtr selSetAccessibilitySortDirection_Handle = Selector.GetHandle("setAccessibilitySortDirection:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySplitters_ = "setAccessibilitySplitters:";
-
-	private static readonly IntPtr selSetAccessibilitySplitters_Handle = Selector.GetHandle("setAccessibilitySplitters:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySubrole_ = "setAccessibilitySubrole:";
-
-	private static readonly IntPtr selSetAccessibilitySubrole_Handle = Selector.GetHandle("setAccessibilitySubrole:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityTabs_ = "setAccessibilityTabs:";
-
-	private static readonly IntPtr selSetAccessibilityTabs_Handle = Selector.GetHandle("setAccessibilityTabs:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityTitle_ = "setAccessibilityTitle:";
-
-	private static readonly IntPtr selSetAccessibilityTitle_Handle = Selector.GetHandle("setAccessibilityTitle:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityTitleUIElement_ = "setAccessibilityTitleUIElement:";
-
-	private static readonly IntPtr selSetAccessibilityTitleUIElement_Handle = Selector.GetHandle("setAccessibilityTitleUIElement:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityToolbarButton_ = "setAccessibilityToolbarButton:";
-
-	private static readonly IntPtr selSetAccessibilityToolbarButton_Handle = Selector.GetHandle("setAccessibilityToolbarButton:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityTopLevelUIElement_ = "setAccessibilityTopLevelUIElement:";
-
-	private static readonly IntPtr selSetAccessibilityTopLevelUIElement_Handle = Selector.GetHandle("setAccessibilityTopLevelUIElement:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityURL_ = "setAccessibilityURL:";
-
-	private static readonly IntPtr selSetAccessibilityURL_Handle = Selector.GetHandle("setAccessibilityURL:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityUnitDescription_ = "setAccessibilityUnitDescription:";
-
-	private static readonly IntPtr selSetAccessibilityUnitDescription_Handle = Selector.GetHandle("setAccessibilityUnitDescription:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityUnits_ = "setAccessibilityUnits:";
-
-	private static readonly IntPtr selSetAccessibilityUnits_Handle = Selector.GetHandle("setAccessibilityUnits:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityValue_ = "setAccessibilityValue:";
-
-	private static readonly IntPtr selSetAccessibilityValue_Handle = Selector.GetHandle("setAccessibilityValue:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityValueDescription_ = "setAccessibilityValueDescription:";
-
-	private static readonly IntPtr selSetAccessibilityValueDescription_Handle = Selector.GetHandle("setAccessibilityValueDescription:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityVerticalScrollBar_ = "setAccessibilityVerticalScrollBar:";
-
-	private static readonly IntPtr selSetAccessibilityVerticalScrollBar_Handle = Selector.GetHandle("setAccessibilityVerticalScrollBar:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityVerticalUnitDescription_ = "setAccessibilityVerticalUnitDescription:";
-
-	private static readonly IntPtr selSetAccessibilityVerticalUnitDescription_Handle = Selector.GetHandle("setAccessibilityVerticalUnitDescription:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityVerticalUnits_ = "setAccessibilityVerticalUnits:";
-
-	private static readonly IntPtr selSetAccessibilityVerticalUnits_Handle = Selector.GetHandle("setAccessibilityVerticalUnits:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityVisibleCells_ = "setAccessibilityVisibleCells:";
-
-	private static readonly IntPtr selSetAccessibilityVisibleCells_Handle = Selector.GetHandle("setAccessibilityVisibleCells:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityVisibleCharacterRange_ = "setAccessibilityVisibleCharacterRange:";
-
-	private static readonly IntPtr selSetAccessibilityVisibleCharacterRange_Handle = Selector.GetHandle("setAccessibilityVisibleCharacterRange:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityVisibleChildren_ = "setAccessibilityVisibleChildren:";
-
-	private static readonly IntPtr selSetAccessibilityVisibleChildren_Handle = Selector.GetHandle("setAccessibilityVisibleChildren:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityVisibleColumns_ = "setAccessibilityVisibleColumns:";
-
-	private static readonly IntPtr selSetAccessibilityVisibleColumns_Handle = Selector.GetHandle("setAccessibilityVisibleColumns:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityVisibleRows_ = "setAccessibilityVisibleRows:";
-
-	private static readonly IntPtr selSetAccessibilityVisibleRows_Handle = Selector.GetHandle("setAccessibilityVisibleRows:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityWarningValue_ = "setAccessibilityWarningValue:";
-
-	private static readonly IntPtr selSetAccessibilityWarningValue_Handle = Selector.GetHandle("setAccessibilityWarningValue:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityWindow_ = "setAccessibilityWindow:";
-
-	private static readonly IntPtr selSetAccessibilityWindow_Handle = Selector.GetHandle("setAccessibilityWindow:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityWindows_ = "setAccessibilityWindows:";
-
-	private static readonly IntPtr selSetAccessibilityWindows_Handle = Selector.GetHandle("setAccessibilityWindows:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilityZoomButton_ = "setAccessibilityZoomButton:";
-
-	private static readonly IntPtr selSetAccessibilityZoomButton_Handle = Selector.GetHandle("setAccessibilityZoomButton:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetActivationPolicy_ = "setActivationPolicy:";
-
-	private static readonly IntPtr selSetActivationPolicy_Handle = Selector.GetHandle("setActivationPolicy:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAppearance_ = "setAppearance:";
-
-	private static readonly IntPtr selSetAppearance_Handle = Selector.GetHandle("setAppearance:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetApplicationIconImage_ = "setApplicationIconImage:";
-
-	private static readonly IntPtr selSetApplicationIconImage_Handle = Selector.GetHandle("setApplicationIconImage:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDelegate_ = "setDelegate:";
-
-	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetHelpMenu_ = "setHelpMenu:";
-
-	private static readonly IntPtr selSetHelpMenu_Handle = Selector.GetHandle("setHelpMenu:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMainMenu_ = "setMainMenu:";
-
-	private static readonly IntPtr selSetMainMenu_Handle = Selector.GetHandle("setMainMenu:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPresentationOptions_ = "setPresentationOptions:";
-
-	private static readonly IntPtr selSetPresentationOptions_Handle = Selector.GetHandle("setPresentationOptions:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetServicesMenu_ = "setServicesMenu:";
-
-	private static readonly IntPtr selSetServicesMenu_Handle = Selector.GetHandle("setServicesMenu:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetServicesProvider_ = "setServicesProvider:";
-
-	private static readonly IntPtr selSetServicesProvider_Handle = Selector.GetHandle("setServicesProvider:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetWindowsMenu_ = "setWindowsMenu:";
-
-	private static readonly IntPtr selSetWindowsMenu_Handle = Selector.GetHandle("setWindowsMenu:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetWindowsNeedUpdate_ = "setWindowsNeedUpdate:";
-
-	private static readonly IntPtr selSetWindowsNeedUpdate_Handle = Selector.GetHandle("setWindowsNeedUpdate:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSharedApplication = "sharedApplication";
-
-	private static readonly IntPtr selSharedApplicationHandle = Selector.GetHandle("sharedApplication");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStop_ = "stop:";
-
-	private static readonly IntPtr selStop_Handle = Selector.GetHandle("stop:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStopModal = "stopModal";
-
-	private static readonly IntPtr selStopModalHandle = Selector.GetHandle("stopModal");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStopModalWithCode_ = "stopModalWithCode:";
-
-	private static readonly IntPtr selStopModalWithCode_Handle = Selector.GetHandle("stopModalWithCode:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTargetForAction_ = "targetForAction:";
-
-	private static readonly IntPtr selTargetForAction_Handle = Selector.GetHandle("targetForAction:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTargetForAction_To_From_ = "targetForAction:to:from:";
-
-	private static readonly IntPtr selTargetForAction_To_From_Handle = Selector.GetHandle("targetForAction:to:from:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTerminate_ = "terminate:";
-
-	private static readonly IntPtr selTerminate_Handle = Selector.GetHandle("terminate:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTryToPerform_With_ = "tryToPerform:with:";
-
-	private static readonly IntPtr selTryToPerform_With_Handle = Selector.GetHandle("tryToPerform:with:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUnhide_ = "unhide:";
-
-	private static readonly IntPtr selUnhide_Handle = Selector.GetHandle("unhide:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUnhideAllApplications_ = "unhideAllApplications:";
-
-	private static readonly IntPtr selUnhideAllApplications_Handle = Selector.GetHandle("unhideAllApplications:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUnhideWithoutActivation = "unhideWithoutActivation";
-
-	private static readonly IntPtr selUnhideWithoutActivationHandle = Selector.GetHandle("unhideWithoutActivation");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUnregisterForRemoteNotifications = "unregisterForRemoteNotifications";
-
-	private static readonly IntPtr selUnregisterForRemoteNotificationsHandle = Selector.GetHandle("unregisterForRemoteNotifications");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUpdateWindows = "updateWindows";
-
-	private static readonly IntPtr selUpdateWindowsHandle = Selector.GetHandle("updateWindows");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUpdateWindowsItem_ = "updateWindowsItem:";
-
-	private static readonly IntPtr selUpdateWindowsItem_Handle = Selector.GetHandle("updateWindowsItem:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUserInterfaceLayoutDirection = "userInterfaceLayoutDirection";
-
-	private static readonly IntPtr selUserInterfaceLayoutDirectionHandle = Selector.GetHandle("userInterfaceLayoutDirection");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selValidRequestorForSendType_ReturnType_ = "validRequestorForSendType:returnType:";
-
-	private static readonly IntPtr selValidRequestorForSendType_ReturnType_Handle = Selector.GetHandle("validRequestorForSendType:returnType:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selValidateMenuItem_ = "validateMenuItem:";
-
-	private static readonly IntPtr selValidateMenuItem_Handle = Selector.GetHandle("validateMenuItem:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selValidateUserInterfaceItem_ = "validateUserInterfaceItem:";
-
-	private static readonly IntPtr selValidateUserInterfaceItem_Handle = Selector.GetHandle("validateUserInterfaceItem:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selWindowWithWindowNumber_ = "windowWithWindowNumber:";
-
-	private static readonly IntPtr selWindowWithWindowNumber_Handle = Selector.GetHandle("windowWithWindowNumber:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selWindows = "windows";
-
-	private static readonly IntPtr selWindowsHandle = Selector.GetHandle("windows");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selWindowsMenu = "windowsMenu";
-
-	private static readonly IntPtr selWindowsMenuHandle = Selector.GetHandle("windowsMenu");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSApplication");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_AccessibilityDisclosedByRow_var;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_AccessibilityExtrasMenuBar_var;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_AccessibilityMenuBar_var;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_AccessibilityParent_var;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_AccessibilityTitleUIElement_var;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_AccessibilityTopLevelUIElement_var;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_AccessibilityWindow_var;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_WeakDelegate_var;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _AnnouncementRequestedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ApplicationActivatedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ApplicationDeactivatedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ApplicationHiddenNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ApplicationShownNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _CreatedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidBecomeActiveNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidChangeScreenParametersNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidFinishLaunchingNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidFinishRestoringWindowsNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidHideNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidResignActiveNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidUnhideNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidUpdateNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DrawerCreatedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _FocusedWindowChangedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _HelpTagCreatedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _LaunchIsDefaultLaunchKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _LaunchRemoteNotificationKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _LaunchUserNotificationKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _LayoutChangedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _MainWindowChangedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _MovedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ResizedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _RowCollapsedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _RowCountChangedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _RowExpandedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _SelectedCellsChangedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _SelectedChildrenChangedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _SelectedChildrenMovedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _SelectedColumnsChangedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _SelectedRowsChangedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _SelectedTextChangedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _SheetCreatedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _TitleChangedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _UIElementDestroyedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _UIElementFocusedChangedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _UnitsChangedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ValueChangedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WillBecomeActiveNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WillFinishLaunchingNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WillHideNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WillResignActiveNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WillTerminateNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WillUnhideNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WillUpdateNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WindowCreatedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WindowDeminiaturizedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WindowMiniaturizedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WindowMovedNotification;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WindowResizedNotification;
+	private static NSString _DidFinishRestoringWindowsNotification;
 
 	public NSApplicationActivationPolicy ActivationPolicy
 	{
@@ -3425,3908 +730,89 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual CGPoint AccessibilityActivationPoint
+	[ThreadSafe]
+	public static NSApplication SharedApplication
 	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityActivationPoint", ArgumentSemantic.Assign)]
+		[Export("sharedApplication")]
 		get
 		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.CGPoint_objc_msgSend(base.Handle, selAccessibilityActivationPointHandle);
-			}
-			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selAccessibilityActivationPointHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityActivationPoint:", ArgumentSemantic.Assign)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_CGPoint(base.Handle, selSetAccessibilityActivationPoint_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_CGPoint(base.SuperHandle, selSetAccessibilityActivationPoint_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSNumber[]? AccessibilityAllowedValues
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityAllowedValues", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityAllowedValuesHandle));
-			}
-			return NSArray.ArrayFromHandle<NSNumber>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityAllowedValuesHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityAllowedValues:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityAllowedValues_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityAllowedValues_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityAlternateUIVisible
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("isAccessibilityAlternateUIVisible")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityAlternateUIVisibleHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityAlternateUIVisibleHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityAlternateUIVisible:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilityAlternateUIVisible_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilityAlternateUIVisible_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityApplicationFocusedUIElement
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityApplicationFocusedUIElement", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityApplicationFocusedUIElementHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityApplicationFocusedUIElementHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityApplicationFocusedUIElement:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityApplicationFocusedUIElement_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityApplicationFocusedUIElement_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityCancelButton
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityCancelButton", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityCancelButtonHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityCancelButtonHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityCancelButton:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityCancelButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityCancelButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityChildren
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityChildren", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityChildrenHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityChildrenHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityChildren:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityChildren_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityChildren_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-	public virtual NSAccessibilityElement[]? AccessibilityChildrenInNavigationOrder
-	{
-		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-		[Export("accessibilityChildrenInNavigationOrder", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSAccessibilityElement>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityChildrenInNavigationOrderHandle));
-			}
-			return NSArray.ArrayFromHandle<NSAccessibilityElement>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityChildrenInNavigationOrderHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityChildrenInNavigationOrder:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityChildrenInNavigationOrder_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityChildrenInNavigationOrder_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityClearButton
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityClearButton", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityClearButtonHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityClearButtonHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityClearButton:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityClearButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityClearButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityCloseButton
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityCloseButton", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityCloseButtonHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityCloseButtonHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityCloseButton:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityCloseButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityCloseButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual nint AccessibilityColumnCount
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityColumnCount")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selAccessibilityColumnCountHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selAccessibilityColumnCountHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityColumnCount:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetAccessibilityColumnCount_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetAccessibilityColumnCount_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityColumnHeaderUIElements
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityColumnHeaderUIElements", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityColumnHeaderUIElementsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityColumnHeaderUIElementsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityColumnHeaderUIElements:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityColumnHeaderUIElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityColumnHeaderUIElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSRange AccessibilityColumnIndexRange
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityColumnIndexRange", ArgumentSemantic.Assign)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.NSRange_objc_msgSend(base.Handle, selAccessibilityColumnIndexRangeHandle);
-			}
-			return Messaging.NSRange_objc_msgSendSuper(base.SuperHandle, selAccessibilityColumnIndexRangeHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityColumnIndexRange:", ArgumentSemantic.Assign)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_NSRange(base.Handle, selSetAccessibilityColumnIndexRange_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_NSRange(base.SuperHandle, selSetAccessibilityColumnIndexRange_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityColumnTitles
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityColumnTitles", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityColumnTitlesHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityColumnTitlesHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityColumnTitles:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityColumnTitles_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityColumnTitles_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityColumns
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityColumns", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityColumnsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityColumnsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityColumns:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityColumns_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityColumns_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityContents
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityContents", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityContentsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityContentsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityContents:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityContents_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityContents_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityCriticalValue
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityCriticalValue", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityCriticalValueHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityCriticalValueHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityCriticalValue:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityCriticalValue_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityCriticalValue_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-	public virtual NSAccessibilityCustomAction[]? AccessibilityCustomActions
-	{
-		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-		[Export("accessibilityCustomActions", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSAccessibilityCustomAction>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityCustomActionsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSAccessibilityCustomAction>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityCustomActionsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityCustomActions:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityCustomActions_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityCustomActions_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-	public virtual NSAccessibilityCustomRotor[] AccessibilityCustomRotors
-	{
-		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-		[Export("accessibilityCustomRotors", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSAccessibilityCustomRotor>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityCustomRotorsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSAccessibilityCustomRotor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityCustomRotorsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityCustomRotors:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityCustomRotors_Handle, nSArray.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityCustomRotors_Handle, nSArray.Handle);
-			}
-			nSArray.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityDecrementButton
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityDecrementButton", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityDecrementButtonHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityDecrementButtonHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityDecrementButton:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityDecrementButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityDecrementButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityDefaultButton
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityDefaultButton", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityDefaultButtonHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityDefaultButtonHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityDefaultButton:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityDefaultButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityDefaultButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityDisclosed
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("isAccessibilityDisclosed")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityDisclosedHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityDisclosedHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityDisclosed:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilityDisclosed_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilityDisclosed_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityDisclosedByRow
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityDisclosedByRow", ArgumentSemantic.Weak)]
-		get
-		{
-			EnsureUIThread();
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityDisclosedByRowHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityDisclosedByRowHandle)));
-			MarkDirty();
-			__mt_AccessibilityDisclosedByRow_var = nSObject;
-			return nSObject;
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityDisclosedByRow:", ArgumentSemantic.Weak)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityDisclosedByRow_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityDisclosedByRow_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			MarkDirty();
-			__mt_AccessibilityDisclosedByRow_var = value;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityDisclosedRows
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityDisclosedRows", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityDisclosedRowsHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityDisclosedRowsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityDisclosedRows:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityDisclosedRows_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityDisclosedRows_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual nint AccessibilityDisclosureLevel
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityDisclosureLevel")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selAccessibilityDisclosureLevelHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selAccessibilityDisclosureLevelHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityDisclosureLevel:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetAccessibilityDisclosureLevel_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetAccessibilityDisclosureLevel_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilityDocument
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityDocument")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityDocumentHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityDocumentHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityDocument:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityDocument_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityDocument_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityEdited
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("isAccessibilityEdited")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityEditedHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityEditedHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityEdited:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilityEdited_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilityEdited_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityElement
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("isAccessibilityElement")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityElementHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityElementHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityElement:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilityElement_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilityElement_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityEnabled
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("isAccessibilityEnabled")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityEnabledHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityEnabledHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityEnabled:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilityEnabled_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilityEnabled_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityExpanded
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("isAccessibilityExpanded")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityExpandedHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityExpandedHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityExpanded:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilityExpanded_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilityExpanded_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityExtrasMenuBar
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityExtrasMenuBar", ArgumentSemantic.Weak)]
-		get
-		{
-			EnsureUIThread();
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityExtrasMenuBarHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityExtrasMenuBarHandle)));
-			MarkDirty();
-			__mt_AccessibilityExtrasMenuBar_var = nSObject;
-			return nSObject;
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityExtrasMenuBar:", ArgumentSemantic.Weak)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityExtrasMenuBar_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityExtrasMenuBar_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			MarkDirty();
-			__mt_AccessibilityExtrasMenuBar_var = value;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilityFilename
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityFilename")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityFilenameHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityFilenameHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityFilename:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityFilename_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityFilename_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityFocused
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("isAccessibilityFocused")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityFocusedHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityFocusedHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityFocused:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilityFocused_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilityFocused_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityFocusedWindow
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityFocusedWindow", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityFocusedWindowHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityFocusedWindowHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityFocusedWindow:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityFocusedWindow_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityFocusedWindow_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual CGRect AccessibilityFrame
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityFrame", ArgumentSemantic.Assign)]
-		get
-		{
-			EnsureUIThread();
-			CGRect retval;
-			if (base.IsDirectBinding)
-			{
-				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selAccessibilityFrameHandle);
-			}
-			else
-			{
-				Messaging.CGRect_objc_msgSendSuper_stret(out retval, base.SuperHandle, selAccessibilityFrameHandle);
-			}
-			return retval;
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityFrame:", ArgumentSemantic.Assign)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_CGRect(base.Handle, selSetAccessibilityFrame_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selSetAccessibilityFrame_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityFrontmost
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("isAccessibilityFrontmost")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityFrontmostHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityFrontmostHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityFrontmost:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilityFrontmost_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilityFrontmost_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityFullScreenButton
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityFullScreenButton", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityFullScreenButtonHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityFullScreenButtonHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityFullScreenButton:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityFullScreenButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityFullScreenButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityGrowArea
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityGrowArea", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityGrowAreaHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityGrowAreaHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityGrowArea:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityGrowArea_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityGrowArea_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityHandles
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityHandles", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityHandlesHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityHandlesHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityHandles:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityHandles_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityHandles_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityHeader
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityHeader", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityHeaderHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityHeaderHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityHeader:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityHeader_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityHeader_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilityHelp
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityHelp")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityHelpHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityHelpHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityHelp:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityHelp_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityHelp_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityHidden
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("isAccessibilityHidden")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityHiddenHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityHiddenHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityHidden:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilityHidden_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilityHidden_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityHorizontalScrollBar
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityHorizontalScrollBar", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityHorizontalScrollBarHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityHorizontalScrollBarHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityHorizontalScrollBar:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityHorizontalScrollBar_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityHorizontalScrollBar_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilityHorizontalUnitDescription
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityHorizontalUnitDescription")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityHorizontalUnitDescriptionHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityHorizontalUnitDescriptionHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityHorizontalUnitDescription:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityHorizontalUnitDescription_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityHorizontalUnitDescription_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSAccessibilityUnits AccessibilityHorizontalUnits
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityHorizontalUnits", ArgumentSemantic.Assign)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSAccessibilityUnits)Messaging.Int64_objc_msgSend(base.Handle, selAccessibilityHorizontalUnitsHandle);
-			}
-			return (NSAccessibilityUnits)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selAccessibilityHorizontalUnitsHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityHorizontalUnits:", ArgumentSemantic.Assign)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetAccessibilityHorizontalUnits_Handle, (long)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetAccessibilityHorizontalUnits_Handle, (long)value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilityIdentifier
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityIdentifier")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityIdentifierHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityIdentifierHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityIdentifier:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityIdentifier_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityIdentifier_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityIncrementButton
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityIncrementButton", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityIncrementButtonHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityIncrementButtonHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityIncrementButton:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityIncrementButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityIncrementButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual nint AccessibilityIndex
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityIndex")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selAccessibilityIndexHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selAccessibilityIndexHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityIndex:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetAccessibilityIndex_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetAccessibilityIndex_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual nint AccessibilityInsertionPointLineNumber
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityInsertionPointLineNumber")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selAccessibilityInsertionPointLineNumberHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selAccessibilityInsertionPointLineNumberHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityInsertionPointLineNumber:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetAccessibilityInsertionPointLineNumber_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetAccessibilityInsertionPointLineNumber_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilityLabel
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityLabel")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityLabelHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityLabelHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityLabel:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityLabel_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityLabel_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityLabelUIElements
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityLabelUIElements", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityLabelUIElementsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityLabelUIElementsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityLabelUIElements:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityLabelUIElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityLabelUIElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual float AccessibilityLabelValue
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityLabelValue")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.float_objc_msgSend(base.Handle, selAccessibilityLabelValueHandle);
-			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selAccessibilityLabelValueHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityLabelValue:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_float(base.Handle, selSetAccessibilityLabelValue_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetAccessibilityLabelValue_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityLinkedUIElements
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityLinkedUIElements", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityLinkedUIElementsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityLinkedUIElementsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityLinkedUIElements:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityLinkedUIElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityLinkedUIElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityMain
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("isAccessibilityMain")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityMainHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityMainHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityMain:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilityMain_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilityMain_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityMainWindow
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityMainWindow", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityMainWindowHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityMainWindowHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityMainWindow:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityMainWindow_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityMainWindow_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityMarkerGroupUIElement
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityMarkerGroupUIElement", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityMarkerGroupUIElementHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityMarkerGroupUIElementHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityMarkerGroupUIElement:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityMarkerGroupUIElement_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityMarkerGroupUIElement_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilityMarkerTypeDescription
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityMarkerTypeDescription")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityMarkerTypeDescriptionHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityMarkerTypeDescriptionHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityMarkerTypeDescription:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityMarkerTypeDescription_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityMarkerTypeDescription_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityMarkerUIElements
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityMarkerUIElements", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityMarkerUIElementsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityMarkerUIElementsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityMarkerUIElements:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityMarkerUIElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityMarkerUIElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityMarkerValues
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityMarkerValues", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityMarkerValuesHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityMarkerValuesHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityMarkerValues:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityMarkerValues_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityMarkerValues_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityMaxValue
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityMaxValue", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityMaxValueHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityMaxValueHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityMaxValue:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityMaxValue_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityMaxValue_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityMenuBar
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityMenuBar", ArgumentSemantic.Weak)]
-		get
-		{
-			EnsureUIThread();
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityMenuBarHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityMenuBarHandle)));
-			MarkDirty();
-			__mt_AccessibilityMenuBar_var = nSObject;
-			return nSObject;
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityMenuBar:", ArgumentSemantic.Weak)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityMenuBar_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityMenuBar_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			MarkDirty();
-			__mt_AccessibilityMenuBar_var = value;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityMinValue
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityMinValue", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityMinValueHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityMinValueHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityMinValue:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityMinValue_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityMinValue_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityMinimizeButton
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityMinimizeButton", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityMinimizeButtonHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityMinimizeButtonHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityMinimizeButton:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityMinimizeButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityMinimizeButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityMinimized
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("isAccessibilityMinimized")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityMinimizedHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityMinimizedHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityMinimized:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilityMinimized_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilityMinimized_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityModal
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("isAccessibilityModal")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityModalHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityModalHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityModal:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilityModal_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilityModal_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityNextContents
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityNextContents", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityNextContentsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityNextContentsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityNextContents:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityNextContents_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityNextContents_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual nint AccessibilityNumberOfCharacters
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityNumberOfCharacters")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selAccessibilityNumberOfCharactersHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selAccessibilityNumberOfCharactersHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityNumberOfCharacters:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetAccessibilityNumberOfCharacters_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetAccessibilityNumberOfCharacters_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityOrderedByRow
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("isAccessibilityOrderedByRow")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityOrderedByRowHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityOrderedByRowHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityOrderedByRow:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilityOrderedByRow_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilityOrderedByRow_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSAccessibilityOrientation AccessibilityOrientation
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityOrientation", ArgumentSemantic.Assign)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSAccessibilityOrientation)Messaging.Int64_objc_msgSend(base.Handle, selAccessibilityOrientationHandle);
-			}
-			return (NSAccessibilityOrientation)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selAccessibilityOrientationHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityOrientation:", ArgumentSemantic.Assign)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetAccessibilityOrientation_Handle, (long)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetAccessibilityOrientation_Handle, (long)value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityOverflowButton
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityOverflowButton", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityOverflowButtonHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityOverflowButtonHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityOverflowButton:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityOverflowButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityOverflowButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityParent
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityParent", ArgumentSemantic.Weak)]
-		get
-		{
-			EnsureUIThread();
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityParentHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityParentHandle)));
-			MarkDirty();
-			__mt_AccessibilityParent_var = nSObject;
-			return nSObject;
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityParent:", ArgumentSemantic.Weak)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityParent_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityParent_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			MarkDirty();
-			__mt_AccessibilityParent_var = value;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilityPlaceholderValue
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityPlaceholderValue")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityPlaceholderValueHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityPlaceholderValueHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityPlaceholderValue:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityPlaceholderValue_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityPlaceholderValue_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityPreviousContents
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityPreviousContents", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityPreviousContentsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityPreviousContentsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityPreviousContents:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityPreviousContents_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityPreviousContents_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityProtectedContent
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("isAccessibilityProtectedContent")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityProtectedContentHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityProtectedContentHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityProtectedContent:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilityProtectedContent_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilityProtectedContent_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityProxy
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityProxy", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityProxyHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityProxyHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityProxy:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityProxy_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityProxy_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityRequired
-	{
-		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-		[Export("isAccessibilityRequired")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityRequiredHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityRequiredHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityRequired:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilityRequired_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilityRequired_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilityRole
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityRole")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityRoleHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityRoleHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityRole:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityRole_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityRole_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilityRoleDescription
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityRoleDescription")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityRoleDescriptionHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityRoleDescriptionHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityRoleDescription:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityRoleDescription_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityRoleDescription_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual nint AccessibilityRowCount
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityRowCount")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selAccessibilityRowCountHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selAccessibilityRowCountHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityRowCount:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetAccessibilityRowCount_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetAccessibilityRowCount_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityRowHeaderUIElements
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityRowHeaderUIElements", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityRowHeaderUIElementsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityRowHeaderUIElementsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityRowHeaderUIElements:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityRowHeaderUIElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityRowHeaderUIElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSRange AccessibilityRowIndexRange
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityRowIndexRange", ArgumentSemantic.Assign)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.NSRange_objc_msgSend(base.Handle, selAccessibilityRowIndexRangeHandle);
-			}
-			return Messaging.NSRange_objc_msgSendSuper(base.SuperHandle, selAccessibilityRowIndexRangeHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityRowIndexRange:", ArgumentSemantic.Assign)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_NSRange(base.Handle, selSetAccessibilityRowIndexRange_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_NSRange(base.SuperHandle, selSetAccessibilityRowIndexRange_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityRows
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityRows", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityRowsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityRowsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityRows:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityRows_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityRows_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSAccessibilityRulerMarkerType AccessibilityRulerMarkerType
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityRulerMarkerType", ArgumentSemantic.Assign)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSAccessibilityRulerMarkerType)Messaging.Int64_objc_msgSend(base.Handle, selAccessibilityRulerMarkerTypeHandle);
-			}
-			return (NSAccessibilityRulerMarkerType)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selAccessibilityRulerMarkerTypeHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityRulerMarkerType:", ArgumentSemantic.Assign)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetAccessibilityRulerMarkerType_Handle, (long)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetAccessibilityRulerMarkerType_Handle, (long)value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilitySearchButton
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilitySearchButton", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilitySearchButtonHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilitySearchButtonHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySearchButton:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilitySearchButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilitySearchButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilitySearchMenu
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilitySearchMenu", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilitySearchMenuHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilitySearchMenuHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySearchMenu:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilitySearchMenu_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilitySearchMenu_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilitySelected
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("isAccessibilitySelected")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilitySelectedHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilitySelectedHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySelected:")]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAccessibilitySelected_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAccessibilitySelected_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilitySelectedCells
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilitySelectedCells", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilitySelectedCellsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilitySelectedCellsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySelectedCells:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilitySelectedCells_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilitySelectedCells_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilitySelectedChildren
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilitySelectedChildren", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilitySelectedChildrenHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilitySelectedChildrenHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySelectedChildren:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilitySelectedChildren_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilitySelectedChildren_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilitySelectedColumns
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilitySelectedColumns", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilitySelectedColumnsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilitySelectedColumnsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySelectedColumns:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilitySelectedColumns_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilitySelectedColumns_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilitySelectedRows
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilitySelectedRows", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilitySelectedRowsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilitySelectedRowsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySelectedRows:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilitySelectedRows_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilitySelectedRows_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilitySelectedText
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilitySelectedText")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilitySelectedTextHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilitySelectedTextHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySelectedText:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilitySelectedText_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilitySelectedText_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSRange AccessibilitySelectedTextRange
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilitySelectedTextRange", ArgumentSemantic.Assign)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.NSRange_objc_msgSend(base.Handle, selAccessibilitySelectedTextRangeHandle);
-			}
-			return Messaging.NSRange_objc_msgSendSuper(base.SuperHandle, selAccessibilitySelectedTextRangeHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySelectedTextRange:", ArgumentSemantic.Assign)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_NSRange(base.Handle, selSetAccessibilitySelectedTextRange_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_NSRange(base.SuperHandle, selSetAccessibilitySelectedTextRange_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSValue[]? AccessibilitySelectedTextRanges
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilitySelectedTextRanges", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSValue>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilitySelectedTextRangesHandle));
-			}
-			return NSArray.ArrayFromHandle<NSValue>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilitySelectedTextRangesHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySelectedTextRanges:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilitySelectedTextRanges_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilitySelectedTextRanges_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityServesAsTitleForUIElements
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityServesAsTitleForUIElements", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityServesAsTitleForUIElementsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityServesAsTitleForUIElementsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityServesAsTitleForUIElements:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityServesAsTitleForUIElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityServesAsTitleForUIElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSRange AccessibilitySharedCharacterRange
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilitySharedCharacterRange", ArgumentSemantic.Assign)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.NSRange_objc_msgSend(base.Handle, selAccessibilitySharedCharacterRangeHandle);
-			}
-			return Messaging.NSRange_objc_msgSendSuper(base.SuperHandle, selAccessibilitySharedCharacterRangeHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySharedCharacterRange:", ArgumentSemantic.Assign)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_NSRange(base.Handle, selSetAccessibilitySharedCharacterRange_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_NSRange(base.SuperHandle, selSetAccessibilitySharedCharacterRange_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilitySharedFocusElements
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilitySharedFocusElements", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilitySharedFocusElementsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilitySharedFocusElementsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySharedFocusElements:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilitySharedFocusElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilitySharedFocusElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilitySharedTextUIElements
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilitySharedTextUIElements", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilitySharedTextUIElementsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilitySharedTextUIElementsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySharedTextUIElements:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilitySharedTextUIElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilitySharedTextUIElements_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityShownMenu
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityShownMenu", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityShownMenuHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityShownMenuHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityShownMenu:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityShownMenu_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityShownMenu_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSAccessibilitySortDirection AccessibilitySortDirection
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilitySortDirection", ArgumentSemantic.Assign)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSAccessibilitySortDirection)Messaging.Int64_objc_msgSend(base.Handle, selAccessibilitySortDirectionHandle);
-			}
-			return (NSAccessibilitySortDirection)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selAccessibilitySortDirectionHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySortDirection:", ArgumentSemantic.Assign)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetAccessibilitySortDirection_Handle, (long)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetAccessibilitySortDirection_Handle, (long)value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilitySplitters
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilitySplitters", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilitySplittersHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilitySplittersHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySplitters:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilitySplitters_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilitySplitters_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilitySubrole
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilitySubrole")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilitySubroleHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilitySubroleHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilitySubrole:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilitySubrole_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilitySubrole_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityTabs
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityTabs", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityTabsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityTabsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityTabs:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityTabs_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityTabs_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilityTitle
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityTitle")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityTitleHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityTitleHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityTitle:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityTitle_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityTitle_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityTitleUIElement
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityTitleUIElement", ArgumentSemantic.Weak)]
-		get
-		{
-			EnsureUIThread();
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityTitleUIElementHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityTitleUIElementHandle)));
-			MarkDirty();
-			__mt_AccessibilityTitleUIElement_var = nSObject;
-			return nSObject;
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityTitleUIElement:", ArgumentSemantic.Weak)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityTitleUIElement_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityTitleUIElement_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			MarkDirty();
-			__mt_AccessibilityTitleUIElement_var = value;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityToolbarButton
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityToolbarButton", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityToolbarButtonHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityToolbarButtonHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityToolbarButton:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityToolbarButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityToolbarButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityTopLevelUIElement
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityTopLevelUIElement", ArgumentSemantic.Weak)]
-		get
-		{
-			EnsureUIThread();
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityTopLevelUIElementHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityTopLevelUIElementHandle)));
-			MarkDirty();
-			__mt_AccessibilityTopLevelUIElement_var = nSObject;
-			return nSObject;
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityTopLevelUIElement:", ArgumentSemantic.Weak)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityTopLevelUIElement_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityTopLevelUIElement_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			MarkDirty();
-			__mt_AccessibilityTopLevelUIElement_var = value;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilityUnitDescription
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityUnitDescription")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityUnitDescriptionHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityUnitDescriptionHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityUnitDescription:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityUnitDescription_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityUnitDescription_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSAccessibilityUnits AccessibilityUnits
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityUnits", ArgumentSemantic.Assign)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSAccessibilityUnits)Messaging.Int64_objc_msgSend(base.Handle, selAccessibilityUnitsHandle);
-			}
-			return (NSAccessibilityUnits)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selAccessibilityUnitsHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityUnits:", ArgumentSemantic.Assign)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetAccessibilityUnits_Handle, (long)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetAccessibilityUnits_Handle, (long)value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSUrl? AccessibilityUrl
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityURL", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityURLHandle));
-			}
-			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityURLHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityURL:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityURL_Handle, (value == null) ? IntPtr.Zero : value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityURL_Handle, (value == null) ? IntPtr.Zero : value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityValue
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityValue", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityValueHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityValueHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityValue:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityValue_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityValue_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilityValueDescription
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityValueDescription")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityValueDescriptionHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityValueDescriptionHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityValueDescription:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityValueDescription_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityValueDescription_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityVerticalScrollBar
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityVerticalScrollBar", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityVerticalScrollBarHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityVerticalScrollBarHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityVerticalScrollBar:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityVerticalScrollBar_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityVerticalScrollBar_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual string? AccessibilityVerticalUnitDescription
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityVerticalUnitDescription")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityVerticalUnitDescriptionHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityVerticalUnitDescriptionHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityVerticalUnitDescription:")]
-		set
-		{
-			EnsureUIThread();
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityVerticalUnitDescription_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityVerticalUnitDescription_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSAccessibilityUnits AccessibilityVerticalUnits
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityVerticalUnits", ArgumentSemantic.Assign)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSAccessibilityUnits)Messaging.Int64_objc_msgSend(base.Handle, selAccessibilityVerticalUnitsHandle);
-			}
-			return (NSAccessibilityUnits)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selAccessibilityVerticalUnitsHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityVerticalUnits:", ArgumentSemantic.Assign)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetAccessibilityVerticalUnits_Handle, (long)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetAccessibilityVerticalUnits_Handle, (long)value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityVisibleCells
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityVisibleCells", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityVisibleCellsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityVisibleCellsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityVisibleCells:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityVisibleCells_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityVisibleCells_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSRange AccessibilityVisibleCharacterRange
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityVisibleCharacterRange", ArgumentSemantic.Assign)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.NSRange_objc_msgSend(base.Handle, selAccessibilityVisibleCharacterRangeHandle);
-			}
-			return Messaging.NSRange_objc_msgSendSuper(base.SuperHandle, selAccessibilityVisibleCharacterRangeHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityVisibleCharacterRange:", ArgumentSemantic.Assign)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_NSRange(base.Handle, selSetAccessibilityVisibleCharacterRange_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_NSRange(base.SuperHandle, selSetAccessibilityVisibleCharacterRange_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityVisibleChildren
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityVisibleChildren", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityVisibleChildrenHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityVisibleChildrenHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityVisibleChildren:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityVisibleChildren_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityVisibleChildren_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityVisibleColumns
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityVisibleColumns", ArgumentSemantic.Copy)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityVisibleColumnsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityVisibleColumnsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityVisibleColumns:", ArgumentSemantic.Copy)]
-		set
-		{
-			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityVisibleColumns_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityVisibleColumns_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
+			return (NSApplication)(__mt_SharedApplication_var_static = (NSApplication)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selSharedApplicationHandle)));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityVisibleRows
+	public virtual NSObject WeakDelegate
 	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityVisibleRows", ArgumentSemantic.Copy)]
+		[Export("delegate", ArgumentSemantic.Assign)]
 		get
 		{
 			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityVisibleRowsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityVisibleRowsHandle));
+			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
 		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityVisibleRows:", ArgumentSemantic.Copy)]
+		[Export("setDelegate:", ArgumentSemantic.Assign)]
 		set
 		{
 			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityVisibleRows_Handle, nSArray?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityVisibleRows_Handle, nSArray?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
-			nSArray?.Dispose();
+			__mt_WeakDelegate_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityWarningValue
+	public NSApplicationDelegate Delegate
 	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityWarningValue", ArgumentSemantic.Retain)]
 		get
 		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityWarningValueHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityWarningValueHandle));
+			return WeakDelegate as NSApplicationDelegate;
 		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityWarningValue:", ArgumentSemantic.Retain)]
 		set
 		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityWarningValue_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityWarningValue_Handle, value?.Handle ?? IntPtr.Zero);
-			}
+			WeakDelegate = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityWindow
+	public virtual NSGraphicsContext Context
 	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityWindow", ArgumentSemantic.Weak)]
+		[Export("context")]
 		get
-		{
-			EnsureUIThread();
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityWindowHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityWindowHandle)));
-			MarkDirty();
-			__mt_AccessibilityWindow_var = nSObject;
-			return nSObject;
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityWindow:", ArgumentSemantic.Weak)]
-		set
 		{
 			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityWindow_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityWindow_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			MarkDirty();
-			__mt_AccessibilityWindow_var = value;
+			return (NSGraphicsContext)(__mt_Context_var = ((!IsDirectBinding) ? ((NSGraphicsContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContextHandle))) : ((NSGraphicsContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selContextHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject[]? AccessibilityWindows
+	public virtual NSWindow MainWindow
 	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityWindows", ArgumentSemantic.Copy)]
+		[Export("mainWindow")]
 		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityWindowsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityWindowsHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityWindows:", ArgumentSemantic.Copy)]
-		set
 		{
 			EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityWindows_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityWindows_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
+			return (NSWindow)(__mt_MainWindow_var = ((!IsDirectBinding) ? ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainWindowHandle))) : ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMainWindowHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSObject? AccessibilityZoomButton
+	public virtual NSWindow KeyWindow
 	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("accessibilityZoomButton", ArgumentSemantic.Retain)]
+		[Export("keyWindow")]
 		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityZoomButtonHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityZoomButtonHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setAccessibilityZoomButton:", ArgumentSemantic.Retain)]
-		set
 		{
 			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilityZoomButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilityZoomButton_Handle, value?.Handle ?? IntPtr.Zero);
-			}
+			return (NSWindow)(__mt_KeyWindow_var = ((!IsDirectBinding) ? ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selKeyWindowHandle))) : ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selKeyWindowHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Active
 	{
 		[Export("isActive")]
 		get
 		{
 			EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsActiveHandle);
 			}
@@ -7334,233 +820,13 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-	public virtual NSAppearance? Appearance
-	{
-		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-		[Export("appearance", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSAppearance>(Messaging.IntPtr_objc_msgSend(base.Handle, selAppearanceHandle));
-			}
-			return Runtime.GetNSObject<NSAppearance>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAppearanceHandle));
-		}
-		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-		[Export("setAppearance:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAppearance_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAppearance_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSImage ApplicationIconImage
-	{
-		[Export("applicationIconImage", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSend(base.Handle, selApplicationIconImageHandle));
-			}
-			return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selApplicationIconImageHandle));
-		}
-		[Export("setApplicationIconImage:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetApplicationIconImage_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetApplicationIconImage_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, "This method always returns null. If you need access to the current drawing context, use NSGraphicsContext.CurrentContext inside of a draw operation.")]
-	public virtual NSGraphicsContext Context
-	{
-		[Deprecated(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, "This method always returns null. If you need access to the current drawing context, use NSGraphicsContext.CurrentContext inside of a draw operation.")]
-		[Export("context")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSGraphicsContext>(Messaging.IntPtr_objc_msgSend(base.Handle, selContextHandle));
-			}
-			return Runtime.GetNSObject<NSGraphicsContext>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContextHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSEvent CurrentEvent
-	{
-		[Export("currentEvent")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSEvent>(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrentEventHandle));
-			}
-			return Runtime.GetNSObject<NSEvent>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrentEventHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSApplicationPresentationOptions CurrentSystemPresentationOptions
-	{
-		[Export("currentSystemPresentationOptions")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSApplicationPresentationOptions)Messaging.UInt64_objc_msgSend(base.Handle, selCurrentSystemPresentationOptionsHandle);
-			}
-			return (NSApplicationPresentationOptions)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selCurrentSystemPresentationOptionsHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Advice("Use of DangerousWindows can prevent windows from leaving memory.")]
-	public virtual NSArray<NSWindow> DangerousWindows
-	{
-		[Export("windows")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSArray<NSWindow>>(Messaging.IntPtr_objc_msgSend(base.Handle, selWindowsHandle));
-			}
-			return Runtime.GetNSObject<NSArray<NSWindow>>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selWindowsHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public INSApplicationDelegate Delegate
-	{
-		get
-		{
-			return WeakDelegate as INSApplicationDelegate;
-		}
-		set
-		{
-			NSObject nSObject = value as NSObject;
-			if (value != null && nSObject == null)
-			{
-				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
-			}
-			WeakDelegate = nSObject;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDockTile DockTile
-	{
-		[Export("dockTile")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDockTile>(Messaging.IntPtr_objc_msgSend(base.Handle, selDockTileHandle));
-			}
-			return Runtime.GetNSObject<NSDockTile>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDockTileHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-	public virtual NSAppearance EffectiveAppearance
-	{
-		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-		[Export("effectiveAppearance", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSAppearance>(Messaging.IntPtr_objc_msgSend(base.Handle, selEffectiveAppearanceHandle));
-			}
-			return Runtime.GetNSObject<NSAppearance>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEffectiveAppearanceHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool FullKeyboardAccessEnabled
-	{
-		[Export("isFullKeyboardAccessEnabled")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsFullKeyboardAccessEnabledHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsFullKeyboardAccessEnabledHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSMenu? HelpMenu
-	{
-		[Export("helpMenu", ArgumentSemantic.Retain)]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSMenu>(Messaging.IntPtr_objc_msgSend(base.Handle, selHelpMenuHandle));
-			}
-			return Runtime.GetNSObject<NSMenu>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selHelpMenuHandle));
-		}
-		[Export("setHelpMenu:", ArgumentSemantic.Retain)]
-		set
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetHelpMenu_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetHelpMenu_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Hidden
 	{
 		[Export("isHidden")]
 		get
 		{
 			EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsHiddenHandle);
 			}
@@ -7568,52 +834,59 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 14, PlatformArchitecture.All, null)]
-	public virtual bool IsRegisteredForRemoteNotifications
+	public virtual bool Running
 	{
-		[Introduced(PlatformName.MacOSX, 10, 14, PlatformArchitecture.All, null)]
-		[Export("isRegisteredForRemoteNotifications")]
+		[Export("isRunning")]
 		get
 		{
 			EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsRegisteredForRemoteNotificationsHandle);
+				return Messaging.bool_objc_msgSend(base.Handle, selIsRunningHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsRegisteredForRemoteNotificationsHandle);
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsRunningHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSWindow KeyWindow
+	public virtual NSWindow ModalWindow
 	{
-		[Export("keyWindow")]
+		[Export("modalWindow")]
 		get
 		{
 			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSend(base.Handle, selKeyWindowHandle));
-			}
-			return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selKeyWindowHandle));
+			return (NSWindow)(__mt_ModalWindow_var = ((!IsDirectBinding) ? ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selModalWindowHandle))) : ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selModalWindowHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSEvent CurrentEvent
+	{
+		[Export("currentEvent")]
+		get
+		{
+			EnsureUIThread();
+			return (NSEvent)(__mt_CurrentEvent_var = ((!IsDirectBinding) ? ((NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrentEventHandle))) : ((NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrentEventHandle)))));
+		}
+	}
+
+	public virtual NSWindow[] Windows
+	{
+		[Export("windows")]
+		get
+		{
+			EnsureUIThread();
+			return (NSWindow[])(__mt_Windows_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSWindow>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selWindowsHandle)) : NSArray.ArrayFromHandle<NSWindow>(Messaging.IntPtr_objc_msgSend(base.Handle, selWindowsHandle))));
+		}
+	}
+
 	public virtual NSMenu MainMenu
 	{
-		[Export("mainMenu", ArgumentSemantic.Retain)]
+		[Export("mainMenu")]
 		get
 		{
 			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSMenu>(Messaging.IntPtr_objc_msgSend(base.Handle, selMainMenuHandle));
-			}
-			return Runtime.GetNSObject<NSMenu>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainMenuHandle));
+			return (NSMenu)(__mt_MainMenu_var = ((!IsDirectBinding) ? ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainMenuHandle))) : ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMainMenuHandle)))));
 		}
-		[Export("setMainMenu:", ArgumentSemantic.Retain)]
+		[Export("setMainMenu:")]
 		set
 		{
 			EnsureUIThread();
@@ -7621,7 +894,7 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMainMenu_Handle, value.Handle);
 			}
@@ -7629,64 +902,79 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMainMenu_Handle, value.Handle);
 			}
+			__mt_MainMenu_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSWindow MainWindow
+	public virtual NSMenu HelpMenu
 	{
-		[Export("mainWindow")]
+		[Export("helpMenu")]
 		get
 		{
 			EnsureUIThread();
-			if (base.IsDirectBinding)
+			return (NSMenu)(__mt_HelpMenu_var = ((!IsDirectBinding) ? ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selHelpMenuHandle))) : ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selHelpMenuHandle)))));
+		}
+		[Export("setHelpMenu:")]
+		set
+		{
+			EnsureUIThread();
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSend(base.Handle, selMainWindowHandle));
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetHelpMenu_Handle, value?.Handle ?? IntPtr.Zero);
 			}
-			return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainWindowHandle));
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetHelpMenu_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			__mt_HelpMenu_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSWindow ModalWindow
+	public virtual NSImage ApplicationIconImage
 	{
-		[Export("modalWindow")]
+		[Export("applicationIconImage")]
 		get
 		{
 			EnsureUIThread();
-			if (base.IsDirectBinding)
+			return (NSImage)(__mt_ApplicationIconImage_var = ((!IsDirectBinding) ? ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selApplicationIconImageHandle))) : ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selApplicationIconImageHandle)))));
+		}
+		[Export("setApplicationIconImage:")]
+		set
+		{
+			EnsureUIThread();
+			if (value == null)
 			{
-				return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSend(base.Handle, selModalWindowHandle));
+				throw new ArgumentNullException("value");
 			}
-			return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selModalWindowHandle));
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetApplicationIconImage_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetApplicationIconImage_Handle, value.Handle);
+			}
+			__mt_ApplicationIconImage_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-	public virtual NSApplicationOcclusionState OcclusionState
+	public virtual NSDockTile DockTile
 	{
-		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-		[Export("occlusionState")]
+		[Export("dockTile")]
 		get
 		{
 			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSApplicationOcclusionState)Messaging.UInt64_objc_msgSend(base.Handle, selOcclusionStateHandle);
-			}
-			return (NSApplicationOcclusionState)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selOcclusionStateHandle);
+			return (NSDockTile)(__mt_DockTile_var = ((!IsDirectBinding) ? ((NSDockTile)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDockTileHandle))) : ((NSDockTile)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDockTileHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSApplicationPresentationOptions PresentationOptions
 	{
 		[Export("presentationOptions")]
 		get
 		{
 			EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (NSApplicationPresentationOptions)Messaging.UInt64_objc_msgSend(base.Handle, selPresentationOptionsHandle);
 			}
@@ -7696,7 +984,7 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		set
 		{
 			EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetPresentationOptions_Handle, (ulong)value);
 			}
@@ -7707,158 +995,27 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool Running
+	public virtual NSApplicationPresentationOptions CurrentSystemPresentationOptions
 	{
-		[Export("isRunning")]
+		[Export("currentSystemPresentationOptions")]
 		get
 		{
 			EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsRunningHandle);
+				return (NSApplicationPresentationOptions)Messaging.UInt64_objc_msgSend(base.Handle, selCurrentSystemPresentationOptionsHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsRunningHandle);
+			return (NSApplicationPresentationOptions)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selCurrentSystemPresentationOptionsHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSMenu ServicesMenu
-	{
-		[Export("servicesMenu")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSMenu>(Messaging.IntPtr_objc_msgSend(base.Handle, selServicesMenuHandle));
-			}
-			return Runtime.GetNSObject<NSMenu>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selServicesMenuHandle));
-		}
-		[Export("setServicesMenu:")]
-		set
-		{
-			EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetServicesMenu_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetServicesMenu_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject ServicesProvider
-	{
-		[Export("servicesProvider")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selServicesProviderHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selServicesProviderHandle));
-		}
-		[Export("setServicesProvider:")]
-		set
-		{
-			EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetServicesProvider_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetServicesProvider_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[ThreadSafe]
-	public static NSApplication SharedApplication
-	{
-		[Export("sharedApplication")]
-		get
-		{
-			return Runtime.GetNSObject<NSApplication>(Messaging.IntPtr_objc_msgSend(class_ptr, selSharedApplicationHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSApplicationLayoutDirection UserInterfaceLayoutDirection
-	{
-		[Export("userInterfaceLayoutDirection")]
-		get
-		{
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSApplicationLayoutDirection)Messaging.Int64_objc_msgSend(base.Handle, selUserInterfaceLayoutDirectionHandle);
-			}
-			return (NSApplicationLayoutDirection)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selUserInterfaceLayoutDirectionHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject? WeakDelegate
-	{
-		[Export("delegate", ArgumentSemantic.Assign)]
-		get
-		{
-			EnsureUIThread();
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
-			MarkDirty();
-			__mt_WeakDelegate_var = nSObject;
-			return nSObject;
-		}
-		[Export("setDelegate:", ArgumentSemantic.Assign)]
-		set
-		{
-			EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakDelegate_var, value, GetInternalEventDelegateType);
-			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			MarkDirty();
-			__mt_WeakDelegate_var = value;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Obsolete("Remove usage or use 'DangerousWindows' instead.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	public virtual NSWindow[] Windows => NSArray.FromArray<NSWindow>(DangerousWindows);
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSMenu WindowsMenu
 	{
 		[Export("windowsMenu")]
 		get
 		{
 			EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSMenu>(Messaging.IntPtr_objc_msgSend(base.Handle, selWindowsMenuHandle));
-			}
-			return Runtime.GetNSObject<NSMenu>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selWindowsMenuHandle));
+			return (NSMenu)(__mt_WindowsMenu_var = ((!IsDirectBinding) ? ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selWindowsMenuHandle))) : ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selWindowsMenuHandle)))));
 		}
 		[Export("setWindowsMenu:")]
 		set
@@ -7868,7 +1025,7 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetWindowsMenu_Handle, value.Handle);
 			}
@@ -7876,95 +1033,95 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetWindowsMenu_Handle, value.Handle);
 			}
+			__mt_WindowsMenu_var = value;
 		}
 	}
 
-	[Field("NSAccessibilityAnnouncementRequestedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveAnnouncementRequested helper method instead.")]
-	public static NSString AnnouncementRequestedNotification
+	public virtual bool FullKeyboardAccessEnabled
 	{
+		[Export("isFullKeyboardAccessEnabled")]
 		get
 		{
-			if (_AnnouncementRequestedNotification == null)
+			EnsureUIThread();
+			if (IsDirectBinding)
 			{
-				_AnnouncementRequestedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityAnnouncementRequestedNotification");
+				return Messaging.bool_objc_msgSend(base.Handle, selIsFullKeyboardAccessEnabledHandle);
 			}
-			return _AnnouncementRequestedNotification;
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsFullKeyboardAccessEnabledHandle);
 		}
 	}
 
-	[Field("NSAccessibilityApplicationActivatedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveApplicationActivated helper method instead.")]
-	public static NSString ApplicationActivatedNotification
+	public virtual NSObject ServicesProvider
 	{
+		[Export("servicesProvider")]
 		get
 		{
-			if (_ApplicationActivatedNotification == null)
+			EnsureUIThread();
+			return (NSObject)(__mt_ServicesProvider_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selServicesProviderHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selServicesProviderHandle))));
+		}
+		[Export("setServicesProvider:")]
+		set
+		{
+			EnsureUIThread();
+			if (value == null)
 			{
-				_ApplicationActivatedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityApplicationActivatedNotification");
+				throw new ArgumentNullException("value");
 			}
-			return _ApplicationActivatedNotification;
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetServicesProvider_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetServicesProvider_Handle, value.Handle);
+			}
+			__mt_ServicesProvider_var = value;
 		}
 	}
 
-	[Field("NSAccessibilityApplicationDeactivatedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveApplicationDeactivated helper method instead.")]
-	public static NSString ApplicationDeactivatedNotification
+	public virtual NSApplicationLayoutDirection UserInterfaceLayoutDirection
 	{
+		[Export("userInterfaceLayoutDirection")]
 		get
 		{
-			if (_ApplicationDeactivatedNotification == null)
+			EnsureUIThread();
+			if (IsDirectBinding)
 			{
-				_ApplicationDeactivatedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityApplicationDeactivatedNotification");
+				return (NSApplicationLayoutDirection)Messaging.Int64_objc_msgSend(base.Handle, selUserInterfaceLayoutDirectionHandle);
 			}
-			return _ApplicationDeactivatedNotification;
+			return (NSApplicationLayoutDirection)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selUserInterfaceLayoutDirectionHandle);
 		}
 	}
 
-	[Field("NSAccessibilityApplicationHiddenNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveApplicationHidden helper method instead.")]
-	public static NSString ApplicationHiddenNotification
+	public virtual NSMenu ServicesMenu
 	{
+		[Export("servicesMenu")]
 		get
 		{
-			if (_ApplicationHiddenNotification == null)
-			{
-				_ApplicationHiddenNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityApplicationHiddenNotification");
-			}
-			return _ApplicationHiddenNotification;
+			EnsureUIThread();
+			return (NSMenu)(__mt_ServicesMenu_var = ((!IsDirectBinding) ? ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selServicesMenuHandle))) : ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selServicesMenuHandle)))));
 		}
-	}
-
-	[Field("NSAccessibilityApplicationShownNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveApplicationShown helper method instead.")]
-	public static NSString ApplicationShownNotification
-	{
-		get
+		[Export("setServicesMenu:")]
+		set
 		{
-			if (_ApplicationShownNotification == null)
+			EnsureUIThread();
+			if (value == null)
 			{
-				_ApplicationShownNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityApplicationShownNotification");
+				throw new ArgumentNullException("value");
 			}
-			return _ApplicationShownNotification;
-		}
-	}
-
-	[Field("NSAccessibilityCreatedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveCreated helper method instead.")]
-	public static NSString CreatedNotification
-	{
-		get
-		{
-			if (_CreatedNotification == null)
+			if (IsDirectBinding)
 			{
-				_CreatedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityCreatedNotification");
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetServicesMenu_Handle, value.Handle);
 			}
-			return _CreatedNotification;
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetServicesMenu_Handle, value.Handle);
+			}
+			__mt_ServicesMenu_var = value;
 		}
 	}
 
 	[Field("NSApplicationDidBecomeActiveNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveDidBecomeActive helper method instead.")]
 	public static NSString DidBecomeActiveNotification
 	{
 		get
@@ -7977,50 +1134,7 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	[Field("NSApplicationDidChangeScreenParametersNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveDidChangeScreenParameters helper method instead.")]
-	public static NSString DidChangeScreenParametersNotification
-	{
-		get
-		{
-			if (_DidChangeScreenParametersNotification == null)
-			{
-				_DidChangeScreenParametersNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationDidChangeScreenParametersNotification");
-			}
-			return _DidChangeScreenParametersNotification;
-		}
-	}
-
-	[Field("NSApplicationDidFinishLaunchingNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveDidFinishLaunching helper method instead.")]
-	public static NSString DidFinishLaunchingNotification
-	{
-		get
-		{
-			if (_DidFinishLaunchingNotification == null)
-			{
-				_DidFinishLaunchingNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationDidFinishLaunchingNotification");
-			}
-			return _DidFinishLaunchingNotification;
-		}
-	}
-
-	[Field("NSApplicationDidFinishRestoringWindowsNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveDidFinishRestoringWindows helper method instead.")]
-	public static NSString DidFinishRestoringWindowsNotification
-	{
-		get
-		{
-			if (_DidFinishRestoringWindowsNotification == null)
-			{
-				_DidFinishRestoringWindowsNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationDidFinishRestoringWindowsNotification");
-			}
-			return _DidFinishRestoringWindowsNotification;
-		}
-	}
-
 	[Field("NSApplicationDidHideNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveDidHide helper method instead.")]
 	public static NSString DidHideNotification
 	{
 		get
@@ -8033,8 +1147,20 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
+	[Field("NSApplicationDidFinishLaunchingNotification", "AppKit")]
+	public static NSString DidFinishLaunchingNotification
+	{
+		get
+		{
+			if (_DidFinishLaunchingNotification == null)
+			{
+				_DidFinishLaunchingNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationDidFinishLaunchingNotification");
+			}
+			return _DidFinishLaunchingNotification;
+		}
+	}
+
 	[Field("NSApplicationDidResignActiveNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveDidResignActive helper method instead.")]
 	public static NSString DidResignActiveNotification
 	{
 		get
@@ -8048,7 +1174,6 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 	}
 
 	[Field("NSApplicationDidUnhideNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveDidUnhide helper method instead.")]
 	public static NSString DidUnhideNotification
 	{
 		get
@@ -8062,7 +1187,6 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 	}
 
 	[Field("NSApplicationDidUpdateNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveDidUpdate helper method instead.")]
 	public static NSString DidUpdateNotification
 	{
 		get
@@ -8075,45 +1199,107 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	[Field("NSAccessibilityDrawerCreatedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveDrawerCreated helper method instead.")]
-	public static NSString DrawerCreatedNotification
+	[Field("NSApplicationWillBecomeActiveNotification", "AppKit")]
+	public static NSString WillBecomeActiveNotification
 	{
 		get
 		{
-			if (_DrawerCreatedNotification == null)
+			if (_WillBecomeActiveNotification == null)
 			{
-				_DrawerCreatedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityDrawerCreatedNotification");
+				_WillBecomeActiveNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationWillBecomeActiveNotification");
 			}
-			return _DrawerCreatedNotification;
+			return _WillBecomeActiveNotification;
 		}
 	}
 
-	[Field("NSAccessibilityFocusedWindowChangedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveFocusedWindowChanged helper method instead.")]
-	public static NSString FocusedWindowChangedNotification
+	[Field("NSApplicationWillHideNotification", "AppKit")]
+	public static NSString WillHideNotification
 	{
 		get
 		{
-			if (_FocusedWindowChangedNotification == null)
+			if (_WillHideNotification == null)
 			{
-				_FocusedWindowChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityFocusedWindowChangedNotification");
+				_WillHideNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationWillHideNotification");
 			}
-			return _FocusedWindowChangedNotification;
+			return _WillHideNotification;
 		}
 	}
 
-	[Field("NSAccessibilityHelpTagCreatedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveHelpTagCreated helper method instead.")]
-	public static NSString HelpTagCreatedNotification
+	[Field("NSApplicationWillFinishLaunchingNotification", "AppKit")]
+	public static NSString WillFinishLaunchingNotification
 	{
 		get
 		{
-			if (_HelpTagCreatedNotification == null)
+			if (_WillFinishLaunchingNotification == null)
 			{
-				_HelpTagCreatedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityHelpTagCreatedNotification");
+				_WillFinishLaunchingNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationWillFinishLaunchingNotification");
 			}
-			return _HelpTagCreatedNotification;
+			return _WillFinishLaunchingNotification;
+		}
+	}
+
+	[Field("NSApplicationWillResignActiveNotification", "AppKit")]
+	public static NSString WillResignActiveNotification
+	{
+		get
+		{
+			if (_WillResignActiveNotification == null)
+			{
+				_WillResignActiveNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationWillResignActiveNotification");
+			}
+			return _WillResignActiveNotification;
+		}
+	}
+
+	[Field("NSApplicationWillUnhideNotification", "AppKit")]
+	public static NSString WillUnhideNotification
+	{
+		get
+		{
+			if (_WillUnhideNotification == null)
+			{
+				_WillUnhideNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationWillUnhideNotification");
+			}
+			return _WillUnhideNotification;
+		}
+	}
+
+	[Field("NSApplicationWillUpdateNotification", "AppKit")]
+	public static NSString WillUpdateNotification
+	{
+		get
+		{
+			if (_WillUpdateNotification == null)
+			{
+				_WillUpdateNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationWillUpdateNotification");
+			}
+			return _WillUpdateNotification;
+		}
+	}
+
+	[Field("NSApplicationWillTerminateNotification", "AppKit")]
+	public static NSString WillTerminateNotification
+	{
+		get
+		{
+			if (_WillTerminateNotification == null)
+			{
+				_WillTerminateNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationWillTerminateNotification");
+			}
+			return _WillTerminateNotification;
+		}
+	}
+
+	[Field("NSApplicationDidChangeScreenParametersNotification", "AppKit")]
+	public static NSString DidChangeScreenParametersNotification
+	{
+		get
+		{
+			if (_DidChangeScreenParametersNotification == null)
+			{
+				_DidChangeScreenParametersNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationDidChangeScreenParametersNotification");
+			}
+			return _DidChangeScreenParametersNotification;
 		}
 	}
 
@@ -8143,506 +1329,20 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	[Field("NSApplicationLaunchUserNotificationKey", "AppKit")]
-	public static NSString LaunchUserNotificationKey
+	[Field("NSApplicationDidFinishRestoringWindowsNotification", "AppKit")]
+	public static NSString DidFinishRestoringWindowsNotification
 	{
 		get
 		{
-			if (_LaunchUserNotificationKey == null)
+			if (_DidFinishRestoringWindowsNotification == null)
 			{
-				_LaunchUserNotificationKey = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationLaunchUserNotificationKey");
+				_DidFinishRestoringWindowsNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationDidFinishRestoringWindowsNotification");
 			}
-			return _LaunchUserNotificationKey;
+			return _DidFinishRestoringWindowsNotification;
 		}
 	}
 
-	[Field("NSAccessibilityLayoutChangedNotification", "AppKit")]
-	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-	[Advice("Use NSApplication.Notifications.ObserveLayoutChanged helper method instead.")]
-	public static NSString LayoutChangedNotification
-	{
-		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-		get
-		{
-			if (_LayoutChangedNotification == null)
-			{
-				_LayoutChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityLayoutChangedNotification");
-			}
-			return _LayoutChangedNotification;
-		}
-	}
-
-	[Field("NSAccessibilityMainWindowChangedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveMainWindowChanged helper method instead.")]
-	public static NSString MainWindowChangedNotification
-	{
-		get
-		{
-			if (_MainWindowChangedNotification == null)
-			{
-				_MainWindowChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityMainWindowChangedNotification");
-			}
-			return _MainWindowChangedNotification;
-		}
-	}
-
-	[Field("NSAccessibilityMovedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveMoved helper method instead.")]
-	public static NSString MovedNotification
-	{
-		get
-		{
-			if (_MovedNotification == null)
-			{
-				_MovedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityMovedNotification");
-			}
-			return _MovedNotification;
-		}
-	}
-
-	[Field("NSAccessibilityResizedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveResized helper method instead.")]
-	public static NSString ResizedNotification
-	{
-		get
-		{
-			if (_ResizedNotification == null)
-			{
-				_ResizedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityResizedNotification");
-			}
-			return _ResizedNotification;
-		}
-	}
-
-	[Field("NSAccessibilityRowCollapsedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveRowCollapsed helper method instead.")]
-	public static NSString RowCollapsedNotification
-	{
-		get
-		{
-			if (_RowCollapsedNotification == null)
-			{
-				_RowCollapsedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityRowCollapsedNotification");
-			}
-			return _RowCollapsedNotification;
-		}
-	}
-
-	[Field("NSAccessibilityRowCountChangedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveRowCountChanged helper method instead.")]
-	public static NSString RowCountChangedNotification
-	{
-		get
-		{
-			if (_RowCountChangedNotification == null)
-			{
-				_RowCountChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityRowCountChangedNotification");
-			}
-			return _RowCountChangedNotification;
-		}
-	}
-
-	[Field("NSAccessibilityRowExpandedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveRowExpanded helper method instead.")]
-	public static NSString RowExpandedNotification
-	{
-		get
-		{
-			if (_RowExpandedNotification == null)
-			{
-				_RowExpandedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityRowExpandedNotification");
-			}
-			return _RowExpandedNotification;
-		}
-	}
-
-	[Field("NSAccessibilitySelectedCellsChangedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveSelectedCellsChanged helper method instead.")]
-	public static NSString SelectedCellsChangedNotification
-	{
-		get
-		{
-			if (_SelectedCellsChangedNotification == null)
-			{
-				_SelectedCellsChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilitySelectedCellsChangedNotification");
-			}
-			return _SelectedCellsChangedNotification;
-		}
-	}
-
-	[Field("NSAccessibilitySelectedChildrenChangedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveSelectedChildrenChanged helper method instead.")]
-	public static NSString SelectedChildrenChangedNotification
-	{
-		get
-		{
-			if (_SelectedChildrenChangedNotification == null)
-			{
-				_SelectedChildrenChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilitySelectedChildrenChangedNotification");
-			}
-			return _SelectedChildrenChangedNotification;
-		}
-	}
-
-	[Field("NSAccessibilitySelectedChildrenMovedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveSelectedChildrenMoved helper method instead.")]
-	public static NSString SelectedChildrenMovedNotification
-	{
-		get
-		{
-			if (_SelectedChildrenMovedNotification == null)
-			{
-				_SelectedChildrenMovedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilitySelectedChildrenMovedNotification");
-			}
-			return _SelectedChildrenMovedNotification;
-		}
-	}
-
-	[Field("NSAccessibilitySelectedColumnsChangedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveSelectedColumnsChanged helper method instead.")]
-	public static NSString SelectedColumnsChangedNotification
-	{
-		get
-		{
-			if (_SelectedColumnsChangedNotification == null)
-			{
-				_SelectedColumnsChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilitySelectedColumnsChangedNotification");
-			}
-			return _SelectedColumnsChangedNotification;
-		}
-	}
-
-	[Field("NSAccessibilitySelectedRowsChangedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveSelectedRowsChanged helper method instead.")]
-	public static NSString SelectedRowsChangedNotification
-	{
-		get
-		{
-			if (_SelectedRowsChangedNotification == null)
-			{
-				_SelectedRowsChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilitySelectedRowsChangedNotification");
-			}
-			return _SelectedRowsChangedNotification;
-		}
-	}
-
-	[Field("NSAccessibilitySelectedTextChangedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveSelectedTextChanged helper method instead.")]
-	public static NSString SelectedTextChangedNotification
-	{
-		get
-		{
-			if (_SelectedTextChangedNotification == null)
-			{
-				_SelectedTextChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilitySelectedTextChangedNotification");
-			}
-			return _SelectedTextChangedNotification;
-		}
-	}
-
-	[Field("NSAccessibilitySheetCreatedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveSheetCreated helper method instead.")]
-	public static NSString SheetCreatedNotification
-	{
-		get
-		{
-			if (_SheetCreatedNotification == null)
-			{
-				_SheetCreatedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilitySheetCreatedNotification");
-			}
-			return _SheetCreatedNotification;
-		}
-	}
-
-	[Field("NSAccessibilityTitleChangedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveTitleChanged helper method instead.")]
-	public static NSString TitleChangedNotification
-	{
-		get
-		{
-			if (_TitleChangedNotification == null)
-			{
-				_TitleChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityTitleChangedNotification");
-			}
-			return _TitleChangedNotification;
-		}
-	}
-
-	[Field("NSAccessibilityUIElementDestroyedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveUIElementDestroyed helper method instead.")]
-	public static NSString UIElementDestroyedNotification
-	{
-		get
-		{
-			if (_UIElementDestroyedNotification == null)
-			{
-				_UIElementDestroyedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityUIElementDestroyedNotification");
-			}
-			return _UIElementDestroyedNotification;
-		}
-	}
-
-	[Field("NSAccessibilityFocusedUIElementChangedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveUIElementFocusedChanged helper method instead.")]
-	public static NSString UIElementFocusedChangedNotification
-	{
-		get
-		{
-			if (_UIElementFocusedChangedNotification == null)
-			{
-				_UIElementFocusedChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityFocusedUIElementChangedNotification");
-			}
-			return _UIElementFocusedChangedNotification;
-		}
-	}
-
-	[Field("NSAccessibilityUnitsChangedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveUnitsChanged helper method instead.")]
-	public static NSString UnitsChangedNotification
-	{
-		get
-		{
-			if (_UnitsChangedNotification == null)
-			{
-				_UnitsChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityUnitsChangedNotification");
-			}
-			return _UnitsChangedNotification;
-		}
-	}
-
-	[Field("NSAccessibilityValueChangedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveValueChanged helper method instead.")]
-	public static NSString ValueChangedNotification
-	{
-		get
-		{
-			if (_ValueChangedNotification == null)
-			{
-				_ValueChangedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityValueChangedNotification");
-			}
-			return _ValueChangedNotification;
-		}
-	}
-
-	[Field("NSApplicationWillBecomeActiveNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveWillBecomeActive helper method instead.")]
-	public static NSString WillBecomeActiveNotification
-	{
-		get
-		{
-			if (_WillBecomeActiveNotification == null)
-			{
-				_WillBecomeActiveNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationWillBecomeActiveNotification");
-			}
-			return _WillBecomeActiveNotification;
-		}
-	}
-
-	[Field("NSApplicationWillFinishLaunchingNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveWillFinishLaunching helper method instead.")]
-	public static NSString WillFinishLaunchingNotification
-	{
-		get
-		{
-			if (_WillFinishLaunchingNotification == null)
-			{
-				_WillFinishLaunchingNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationWillFinishLaunchingNotification");
-			}
-			return _WillFinishLaunchingNotification;
-		}
-	}
-
-	[Field("NSApplicationWillHideNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveWillHide helper method instead.")]
-	public static NSString WillHideNotification
-	{
-		get
-		{
-			if (_WillHideNotification == null)
-			{
-				_WillHideNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationWillHideNotification");
-			}
-			return _WillHideNotification;
-		}
-	}
-
-	[Field("NSApplicationWillResignActiveNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveWillResignActive helper method instead.")]
-	public static NSString WillResignActiveNotification
-	{
-		get
-		{
-			if (_WillResignActiveNotification == null)
-			{
-				_WillResignActiveNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationWillResignActiveNotification");
-			}
-			return _WillResignActiveNotification;
-		}
-	}
-
-	[Field("NSApplicationWillTerminateNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveWillTerminate helper method instead.")]
-	public static NSString WillTerminateNotification
-	{
-		get
-		{
-			if (_WillTerminateNotification == null)
-			{
-				_WillTerminateNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationWillTerminateNotification");
-			}
-			return _WillTerminateNotification;
-		}
-	}
-
-	[Field("NSApplicationWillUnhideNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveWillUnhide helper method instead.")]
-	public static NSString WillUnhideNotification
-	{
-		get
-		{
-			if (_WillUnhideNotification == null)
-			{
-				_WillUnhideNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationWillUnhideNotification");
-			}
-			return _WillUnhideNotification;
-		}
-	}
-
-	[Field("NSApplicationWillUpdateNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveWillUpdate helper method instead.")]
-	public static NSString WillUpdateNotification
-	{
-		get
-		{
-			if (_WillUpdateNotification == null)
-			{
-				_WillUpdateNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSApplicationWillUpdateNotification");
-			}
-			return _WillUpdateNotification;
-		}
-	}
-
-	[Field("NSAccessibilityWindowCreatedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveWindowCreated helper method instead.")]
-	public static NSString WindowCreatedNotification
-	{
-		get
-		{
-			if (_WindowCreatedNotification == null)
-			{
-				_WindowCreatedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityWindowCreatedNotification");
-			}
-			return _WindowCreatedNotification;
-		}
-	}
-
-	[Field("NSAccessibilityWindowDeminiaturizedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveWindowDeminiaturized helper method instead.")]
-	public static NSString WindowDeminiaturizedNotification
-	{
-		get
-		{
-			if (_WindowDeminiaturizedNotification == null)
-			{
-				_WindowDeminiaturizedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityWindowDeminiaturizedNotification");
-			}
-			return _WindowDeminiaturizedNotification;
-		}
-	}
-
-	[Field("NSAccessibilityWindowMiniaturizedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveWindowMiniaturized helper method instead.")]
-	public static NSString WindowMiniaturizedNotification
-	{
-		get
-		{
-			if (_WindowMiniaturizedNotification == null)
-			{
-				_WindowMiniaturizedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityWindowMiniaturizedNotification");
-			}
-			return _WindowMiniaturizedNotification;
-		}
-	}
-
-	[Field("NSAccessibilityWindowMovedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveWindowMoved helper method instead.")]
-	public static NSString WindowMovedNotification
-	{
-		get
-		{
-			if (_WindowMovedNotification == null)
-			{
-				_WindowMovedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityWindowMovedNotification");
-			}
-			return _WindowMovedNotification;
-		}
-	}
-
-	[Field("NSAccessibilityWindowResizedNotification", "AppKit")]
-	[Advice("Use NSApplication.Notifications.ObserveWindowResized helper method instead.")]
-	public static NSString WindowResizedNotification
-	{
-		get
-		{
-			if (_WindowResizedNotification == null)
-			{
-				_WindowResizedNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSAccessibilityWindowResizedNotification");
-			}
-			return _WindowResizedNotification;
-		}
-	}
-
-	internal virtual Type GetInternalEventDelegateType => typeof(_NSApplicationDelegate);
-
-	public NSApplicationMenu? ApplicationDockMenu
-	{
-		get
-		{
-			return EnsureNSApplicationDelegate().applicationDockMenu;
-		}
-		set
-		{
-			EnsureNSApplicationDelegate().applicationDockMenu = value;
-		}
-	}
-
-	public NSApplicationPredicate? ApplicationOpenUntitledFile
-	{
-		get
-		{
-			return EnsureNSApplicationDelegate().applicationOpenUntitledFile;
-		}
-		set
-		{
-			EnsureNSApplicationDelegate().applicationOpenUntitledFile = value;
-		}
-	}
-
-	public NSApplicationReopen? ApplicationShouldHandleReopen
-	{
-		get
-		{
-			return EnsureNSApplicationDelegate().applicationShouldHandleReopen;
-		}
-		set
-		{
-			EnsureNSApplicationDelegate().applicationShouldHandleReopen = value;
-		}
-	}
-
-	public NSApplicationPredicate? ApplicationShouldOpenUntitledFile
-	{
-		get
-		{
-			return EnsureNSApplicationDelegate().applicationShouldOpenUntitledFile;
-		}
-		set
-		{
-			EnsureNSApplicationDelegate().applicationShouldOpenUntitledFile = value;
-		}
-	}
-
-	public NSApplicationTermination? ApplicationShouldTerminate
+	public NSApplicationTermination ApplicationShouldTerminate
 	{
 		get
 		{
@@ -8654,43 +1354,7 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	public NSApplicationPredicate? ApplicationShouldTerminateAfterLastWindowClosed
-	{
-		get
-		{
-			return EnsureNSApplicationDelegate().applicationShouldTerminateAfterLastWindowClosed;
-		}
-		set
-		{
-			EnsureNSApplicationDelegate().applicationShouldTerminateAfterLastWindowClosed = value;
-		}
-	}
-
-	public NSApplicationContinueUserActivity? ContinueUserActivity
-	{
-		get
-		{
-			return EnsureNSApplicationDelegate().continueUserActivity;
-		}
-		set
-		{
-			EnsureNSApplicationDelegate().continueUserActivity = value;
-		}
-	}
-
-	public NSApplicationHandlesKey? HandlesKey
-	{
-		get
-		{
-			return EnsureNSApplicationDelegate().handlesKey;
-		}
-		set
-		{
-			EnsureNSApplicationDelegate().handlesKey = value;
-		}
-	}
-
-	public NSApplicationFile? OpenFile
+	public NSApplicationFile OpenFile
 	{
 		get
 		{
@@ -8702,19 +1366,7 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	public NSApplicationFileCommand? OpenFileWithoutUI
-	{
-		get
-		{
-			return EnsureNSApplicationDelegate().openFileWithoutUI;
-		}
-		set
-		{
-			EnsureNSApplicationDelegate().openFileWithoutUI = value;
-		}
-	}
-
-	public NSApplicationFile? OpenTempFile
+	public NSApplicationFile OpenTempFile
 	{
 		get
 		{
@@ -8726,7 +1378,43 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	public NSApplicationFile? PrintFile
+	public NSApplicationPredicate ApplicationShouldOpenUntitledFile
+	{
+		get
+		{
+			return EnsureNSApplicationDelegate().applicationShouldOpenUntitledFile;
+		}
+		set
+		{
+			EnsureNSApplicationDelegate().applicationShouldOpenUntitledFile = value;
+		}
+	}
+
+	public NSApplicationPredicate ApplicationOpenUntitledFile
+	{
+		get
+		{
+			return EnsureNSApplicationDelegate().applicationOpenUntitledFile;
+		}
+		set
+		{
+			EnsureNSApplicationDelegate().applicationOpenUntitledFile = value;
+		}
+	}
+
+	public NSApplicationFileCommand OpenFileWithoutUI
+	{
+		get
+		{
+			return EnsureNSApplicationDelegate().openFileWithoutUI;
+		}
+		set
+		{
+			EnsureNSApplicationDelegate().openFileWithoutUI = value;
+		}
+	}
+
+	public NSApplicationFile PrintFile
 	{
 		get
 		{
@@ -8738,7 +1426,7 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	public NSApplicationPrint? PrintFiles
+	public NSApplicationPrint PrintFiles
 	{
 		get
 		{
@@ -8750,31 +1438,43 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	public NSPasteboardPredicate? ReadSelectionFromPasteboard
+	public NSApplicationPredicate ApplicationShouldTerminateAfterLastWindowClosed
 	{
 		get
 		{
-			return EnsureNSApplicationDelegate().readSelectionFromPasteboard;
+			return EnsureNSApplicationDelegate().applicationShouldTerminateAfterLastWindowClosed;
 		}
 		set
 		{
-			EnsureNSApplicationDelegate().readSelectionFromPasteboard = value;
+			EnsureNSApplicationDelegate().applicationShouldTerminateAfterLastWindowClosed = value;
 		}
 	}
 
-	public NSApplicationUserActivityType? WillContinueUserActivity
+	public NSApplicationReopen ApplicationShouldHandleReopen
 	{
 		get
 		{
-			return EnsureNSApplicationDelegate().willContinueUserActivity;
+			return EnsureNSApplicationDelegate().applicationShouldHandleReopen;
 		}
 		set
 		{
-			EnsureNSApplicationDelegate().willContinueUserActivity = value;
+			EnsureNSApplicationDelegate().applicationShouldHandleReopen = value;
 		}
 	}
 
-	public new NSApplicationError? WillPresentError
+	public NSApplicationMenu ApplicationDockMenu
+	{
+		get
+		{
+			return EnsureNSApplicationDelegate().applicationDockMenu;
+		}
+		set
+		{
+			EnsureNSApplicationDelegate().applicationDockMenu = value;
+		}
+	}
+
+	public NSApplicationError WillPresentError
 	{
 		get
 		{
@@ -8786,7 +1486,7 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	public NSApplicationSelection? WriteSelectionToPasteboard
+	public NSApplicationSelection WriteSelectionToPasteboard
 	{
 		get
 		{
@@ -8798,129 +1498,15 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	public event EventHandler<NSCoderEventArgs> DecodedRestorableState
+	public NSPasteboardPredicate ReadSelectionFromPasteboard
 	{
-		add
+		get
 		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.decodedRestorableState = (EventHandler<NSCoderEventArgs>)System.Delegate.Combine(nSApplicationDelegate.decodedRestorableState, value);
+			return EnsureNSApplicationDelegate().readSelectionFromPasteboard;
 		}
-		remove
+		set
 		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.decodedRestorableState = (EventHandler<NSCoderEventArgs>)System.Delegate.Remove(nSApplicationDelegate.decodedRestorableState, value);
-		}
-	}
-
-	public event EventHandler DidBecomeActive
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.didBecomeActive = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.didBecomeActive, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.didBecomeActive = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.didBecomeActive, value);
-		}
-	}
-
-	public event EventHandler DidFinishLaunching
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.didFinishLaunching = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.didFinishLaunching, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.didFinishLaunching = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.didFinishLaunching, value);
-		}
-	}
-
-	public event EventHandler DidHide
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.didHide = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.didHide, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.didHide = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.didHide, value);
-		}
-	}
-
-	public event EventHandler DidResignActive
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.didResignActive = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.didResignActive, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.didResignActive = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.didResignActive, value);
-		}
-	}
-
-	public event EventHandler DidUnhide
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.didUnhide = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.didUnhide, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.didUnhide = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.didUnhide, value);
-		}
-	}
-
-	public event EventHandler DidUpdate
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.didUpdate = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.didUpdate, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.didUpdate = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.didUpdate, value);
-		}
-	}
-
-	public event EventHandler<NSApplicationFailedEventArgs> FailedToContinueUserActivity
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.failedToContinueUserActivity = (EventHandler<NSApplicationFailedEventArgs>)System.Delegate.Combine(nSApplicationDelegate.failedToContinueUserActivity, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.failedToContinueUserActivity = (EventHandler<NSApplicationFailedEventArgs>)System.Delegate.Remove(nSApplicationDelegate.failedToContinueUserActivity, value);
-		}
-	}
-
-	public event EventHandler<NSErrorEventArgs> FailedToRegisterForRemoteNotifications
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.failedToRegisterForRemoteNotifications = (EventHandler<NSErrorEventArgs>)System.Delegate.Combine(nSApplicationDelegate.failedToRegisterForRemoteNotifications, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.failedToRegisterForRemoteNotifications = (EventHandler<NSErrorEventArgs>)System.Delegate.Remove(nSApplicationDelegate.failedToRegisterForRemoteNotifications, value);
+			EnsureNSApplicationDelegate().readSelectionFromPasteboard = value;
 		}
 	}
 
@@ -8938,163 +1524,6 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	public event EventHandler<NSApplicationOpenUrlsEventArgs> OpenUrls
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.openUrls = (EventHandler<NSApplicationOpenUrlsEventArgs>)System.Delegate.Combine(nSApplicationDelegate.openUrls, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.openUrls = (EventHandler<NSApplicationOpenUrlsEventArgs>)System.Delegate.Remove(nSApplicationDelegate.openUrls, value);
-		}
-	}
-
-	[Obsolete("Use the 'OrderFrontStandardAboutPanel2' on NSApplication.", false)]
-	public event EventHandler OrderFrontStandardAboutPanel
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.orderFrontStandardAboutPanel = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.orderFrontStandardAboutPanel, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.orderFrontStandardAboutPanel = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.orderFrontStandardAboutPanel, value);
-		}
-	}
-
-	[Obsolete("Use the 'OrderFrontStandardAboutPanelWithOptions2' on NSApplication.", false)]
-	public event EventHandler OrderFrontStandardAboutPanelWithOptions
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.orderFrontStandardAboutPanelWithOptions = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.orderFrontStandardAboutPanelWithOptions, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.orderFrontStandardAboutPanelWithOptions = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.orderFrontStandardAboutPanelWithOptions, value);
-		}
-	}
-
-	public event EventHandler<NSDictionaryEventArgs> ReceivedRemoteNotification
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.receivedRemoteNotification = (EventHandler<NSDictionaryEventArgs>)System.Delegate.Combine(nSApplicationDelegate.receivedRemoteNotification, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.receivedRemoteNotification = (EventHandler<NSDictionaryEventArgs>)System.Delegate.Remove(nSApplicationDelegate.receivedRemoteNotification, value);
-		}
-	}
-
-	[Obsolete("Use the 'RegisterServicesMenu2' on NSApplication.", false)]
-	public event EventHandler<NSApplicationRegisterEventArgs> RegisterServicesMenu
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.registerServicesMenu = (EventHandler<NSApplicationRegisterEventArgs>)System.Delegate.Combine(nSApplicationDelegate.registerServicesMenu, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.registerServicesMenu = (EventHandler<NSApplicationRegisterEventArgs>)System.Delegate.Remove(nSApplicationDelegate.registerServicesMenu, value);
-		}
-	}
-
-	public event EventHandler<NSDataEventArgs> RegisteredForRemoteNotifications
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.registeredForRemoteNotifications = (EventHandler<NSDataEventArgs>)System.Delegate.Combine(nSApplicationDelegate.registeredForRemoteNotifications, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.registeredForRemoteNotifications = (EventHandler<NSDataEventArgs>)System.Delegate.Remove(nSApplicationDelegate.registeredForRemoteNotifications, value);
-		}
-	}
-
-	public event EventHandler ScreenParametersChanged
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.screenParametersChanged = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.screenParametersChanged, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.screenParametersChanged = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.screenParametersChanged, value);
-		}
-	}
-
-	public event EventHandler<NSApplicationUpdatedUserActivityEventArgs> UpdatedUserActivity
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.updatedUserActivity = (EventHandler<NSApplicationUpdatedUserActivityEventArgs>)System.Delegate.Combine(nSApplicationDelegate.updatedUserActivity, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.updatedUserActivity = (EventHandler<NSApplicationUpdatedUserActivityEventArgs>)System.Delegate.Remove(nSApplicationDelegate.updatedUserActivity, value);
-		}
-	}
-
-	public event EventHandler<NSApplicationUserAcceptedCloudKitShareEventArgs> UserDidAcceptCloudKitShare
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.userDidAcceptCloudKitShare = (EventHandler<NSApplicationUserAcceptedCloudKitShareEventArgs>)System.Delegate.Combine(nSApplicationDelegate.userDidAcceptCloudKitShare, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.userDidAcceptCloudKitShare = (EventHandler<NSApplicationUserAcceptedCloudKitShareEventArgs>)System.Delegate.Remove(nSApplicationDelegate.userDidAcceptCloudKitShare, value);
-		}
-	}
-
-	public event EventHandler WillBecomeActive
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.willBecomeActive = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.willBecomeActive, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.willBecomeActive = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.willBecomeActive, value);
-		}
-	}
-
-	public event EventHandler<NSCoderEventArgs> WillEncodeRestorableState
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.willEncodeRestorableState = (EventHandler<NSCoderEventArgs>)System.Delegate.Combine(nSApplicationDelegate.willEncodeRestorableState, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.willEncodeRestorableState = (EventHandler<NSCoderEventArgs>)System.Delegate.Remove(nSApplicationDelegate.willEncodeRestorableState, value);
-		}
-	}
-
 	public event EventHandler WillFinishLaunching
 	{
 		add
@@ -9106,6 +1535,20 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		{
 			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
 			nSApplicationDelegate.willFinishLaunching = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.willFinishLaunching, value);
+		}
+	}
+
+	public event EventHandler DidFinishLaunching
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.didFinishLaunching = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.didFinishLaunching, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.didFinishLaunching = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.didFinishLaunching, value);
 		}
 	}
 
@@ -9123,31 +1566,17 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	public event EventHandler WillResignActive
+	public event EventHandler DidHide
 	{
 		add
 		{
 			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.willResignActive = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.willResignActive, value);
+			nSApplicationDelegate.didHide = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.didHide, value);
 		}
 		remove
 		{
 			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.willResignActive = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.willResignActive, value);
-		}
-	}
-
-	public event EventHandler WillTerminate
-	{
-		add
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.willTerminate = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.willTerminate, value);
-		}
-		remove
-		{
-			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
-			nSApplicationDelegate.willTerminate = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.willTerminate, value);
+			nSApplicationDelegate.didHide = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.didHide, value);
 		}
 	}
 
@@ -9165,6 +1594,76 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
+	public event EventHandler DidUnhide
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.didUnhide = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.didUnhide, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.didUnhide = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.didUnhide, value);
+		}
+	}
+
+	public event EventHandler WillBecomeActive
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.willBecomeActive = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.willBecomeActive, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.willBecomeActive = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.willBecomeActive, value);
+		}
+	}
+
+	public event EventHandler DidBecomeActive
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.didBecomeActive = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.didBecomeActive, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.didBecomeActive = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.didBecomeActive, value);
+		}
+	}
+
+	public event EventHandler WillResignActive
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.willResignActive = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.willResignActive, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.willResignActive = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.willResignActive, value);
+		}
+	}
+
+	public event EventHandler DidResignActive
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.didResignActive = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.didResignActive, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.didResignActive = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.didResignActive, value);
+		}
+	}
+
 	public event EventHandler WillUpdate
 	{
 		add
@@ -9179,74 +1678,303 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
+	public event EventHandler DidUpdate
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.didUpdate = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.didUpdate, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.didUpdate = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.didUpdate, value);
+		}
+	}
+
+	public event EventHandler WillTerminate
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.willTerminate = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.willTerminate, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.willTerminate = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.willTerminate, value);
+		}
+	}
+
+	public event EventHandler ScreenParametersChanged
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.screenParametersChanged = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.screenParametersChanged, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.screenParametersChanged = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.screenParametersChanged, value);
+		}
+	}
+
+	public event EventHandler<NSApplicationRegisterEventArgs> RegisterServicesMenu
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.registerServicesMenu = (EventHandler<NSApplicationRegisterEventArgs>)System.Delegate.Combine(nSApplicationDelegate.registerServicesMenu, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.registerServicesMenu = (EventHandler<NSApplicationRegisterEventArgs>)System.Delegate.Remove(nSApplicationDelegate.registerServicesMenu, value);
+		}
+	}
+
+	public event EventHandler OrderFrontStandardAboutPanel
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.orderFrontStandardAboutPanel = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.orderFrontStandardAboutPanel, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.orderFrontStandardAboutPanel = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.orderFrontStandardAboutPanel, value);
+		}
+	}
+
+	public event EventHandler OrderFrontStandardAboutPanelWithOptions
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.orderFrontStandardAboutPanelWithOptions = (EventHandler)System.Delegate.Combine(nSApplicationDelegate.orderFrontStandardAboutPanelWithOptions, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.orderFrontStandardAboutPanelWithOptions = (EventHandler)System.Delegate.Remove(nSApplicationDelegate.orderFrontStandardAboutPanelWithOptions, value);
+		}
+	}
+
+	public event EventHandler<NSDataEventArgs> RegisteredForRemoteNotifications
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.registeredForRemoteNotifications = (EventHandler<NSDataEventArgs>)System.Delegate.Combine(nSApplicationDelegate.registeredForRemoteNotifications, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.registeredForRemoteNotifications = (EventHandler<NSDataEventArgs>)System.Delegate.Remove(nSApplicationDelegate.registeredForRemoteNotifications, value);
+		}
+	}
+
+	public event EventHandler<NSErrorEventArgs> FailedToRegisterForRemoteNotifications
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.failedToRegisterForRemoteNotifications = (EventHandler<NSErrorEventArgs>)System.Delegate.Combine(nSApplicationDelegate.failedToRegisterForRemoteNotifications, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.failedToRegisterForRemoteNotifications = (EventHandler<NSErrorEventArgs>)System.Delegate.Remove(nSApplicationDelegate.failedToRegisterForRemoteNotifications, value);
+		}
+	}
+
+	public event EventHandler<NSDictionaryEventArgs> ReceivedRemoteNotification
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.receivedRemoteNotification = (EventHandler<NSDictionaryEventArgs>)System.Delegate.Combine(nSApplicationDelegate.receivedRemoteNotification, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.receivedRemoteNotification = (EventHandler<NSDictionaryEventArgs>)System.Delegate.Remove(nSApplicationDelegate.receivedRemoteNotification, value);
+		}
+	}
+
+	public event EventHandler<NSCoderEventArgs> WillEncodeRestorableState
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.willEncodeRestorableState = (EventHandler<NSCoderEventArgs>)System.Delegate.Combine(nSApplicationDelegate.willEncodeRestorableState, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.willEncodeRestorableState = (EventHandler<NSCoderEventArgs>)System.Delegate.Remove(nSApplicationDelegate.willEncodeRestorableState, value);
+		}
+	}
+
+	public event EventHandler<NSCoderEventArgs> DecodedRestorableState
+	{
+		add
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.decodedRestorableState = (EventHandler<NSCoderEventArgs>)System.Delegate.Combine(nSApplicationDelegate.decodedRestorableState, value);
+		}
+		remove
+		{
+			_NSApplicationDelegate nSApplicationDelegate = EnsureNSApplicationDelegate();
+			nSApplicationDelegate.decodedRestorableState = (EventHandler<NSCoderEventArgs>)System.Delegate.Remove(nSApplicationDelegate.decodedRestorableState, value);
+		}
+	}
+
 	public void BeginSheet(NSWindow sheet, NSWindow docWindow)
 	{
 		BeginSheet(sheet, docWindow, null, null, IntPtr.Zero);
 	}
 
-	public void BeginSheet(NSWindow sheet, NSWindow docWindow, Action onEnded)
+	public void BeginSheet(NSWindow sheet, NSWindow docWindow, NSAction onEnded)
 	{
-		NSAsyncActionDispatcher modalDelegate = new NSAsyncActionDispatcher(onEnded);
-		BeginSheet(sheet, docWindow, modalDelegate, NSDispatcher.Selector, IntPtr.Zero);
+		NSObject modalDelegate = OneShotTracker.Create(onEnded);
+		BeginSheet(sheet, docWindow, modalDelegate, NSActionDispatcher.Selector, IntPtr.Zero);
+	}
+
+	static NSApplication()
+	{
+		CheckForIllegalCrossThreadCalls = true;
+		selSharedApplicationHandle = Selector.GetHandle("sharedApplication");
+		selDelegateHandle = Selector.GetHandle("delegate");
+		selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
+		selContextHandle = Selector.GetHandle("context");
+		selMainWindowHandle = Selector.GetHandle("mainWindow");
+		selKeyWindowHandle = Selector.GetHandle("keyWindow");
+		selIsActiveHandle = Selector.GetHandle("isActive");
+		selIsHiddenHandle = Selector.GetHandle("isHidden");
+		selIsRunningHandle = Selector.GetHandle("isRunning");
+		selModalWindowHandle = Selector.GetHandle("modalWindow");
+		selCurrentEventHandle = Selector.GetHandle("currentEvent");
+		selWindowsHandle = Selector.GetHandle("windows");
+		selMainMenuHandle = Selector.GetHandle("mainMenu");
+		selSetMainMenu_Handle = Selector.GetHandle("setMainMenu:");
+		selHelpMenuHandle = Selector.GetHandle("helpMenu");
+		selSetHelpMenu_Handle = Selector.GetHandle("setHelpMenu:");
+		selApplicationIconImageHandle = Selector.GetHandle("applicationIconImage");
+		selSetApplicationIconImage_Handle = Selector.GetHandle("setApplicationIconImage:");
+		selDockTileHandle = Selector.GetHandle("dockTile");
+		selPresentationOptionsHandle = Selector.GetHandle("presentationOptions");
+		selSetPresentationOptions_Handle = Selector.GetHandle("setPresentationOptions:");
+		selCurrentSystemPresentationOptionsHandle = Selector.GetHandle("currentSystemPresentationOptions");
+		selWindowsMenuHandle = Selector.GetHandle("windowsMenu");
+		selSetWindowsMenu_Handle = Selector.GetHandle("setWindowsMenu:");
+		selIsFullKeyboardAccessEnabledHandle = Selector.GetHandle("isFullKeyboardAccessEnabled");
+		selServicesProviderHandle = Selector.GetHandle("servicesProvider");
+		selSetServicesProvider_Handle = Selector.GetHandle("setServicesProvider:");
+		selUserInterfaceLayoutDirectionHandle = Selector.GetHandle("userInterfaceLayoutDirection");
+		selServicesMenuHandle = Selector.GetHandle("servicesMenu");
+		selSetServicesMenu_Handle = Selector.GetHandle("setServicesMenu:");
+		selHide_Handle = Selector.GetHandle("hide:");
+		selUnhide_Handle = Selector.GetHandle("unhide:");
+		selUnhideWithoutActivationHandle = Selector.GetHandle("unhideWithoutActivation");
+		selWindowWithWindowNumber_Handle = Selector.GetHandle("windowWithWindowNumber:");
+		selDeactivateHandle = Selector.GetHandle("deactivate");
+		selActivateIgnoringOtherApps_Handle = Selector.GetHandle("activateIgnoringOtherApps:");
+		selHideOtherApplications_Handle = Selector.GetHandle("hideOtherApplications:");
+		selUnhideAllApplications_Handle = Selector.GetHandle("unhideAllApplications:");
+		selFinishLaunchingHandle = Selector.GetHandle("finishLaunching");
+		selRunHandle = Selector.GetHandle("run");
+		selRunModalForWindow_Handle = Selector.GetHandle("runModalForWindow:");
+		selStop_Handle = Selector.GetHandle("stop:");
+		selStopModalHandle = Selector.GetHandle("stopModal");
+		selStopModalWithCode_Handle = Selector.GetHandle("stopModalWithCode:");
+		selAbortModalHandle = Selector.GetHandle("abortModal");
+		selBeginModalSessionForWindow_Handle = Selector.GetHandle("beginModalSessionForWindow:");
+		selRunModalSession_Handle = Selector.GetHandle("runModalSession:");
+		selEndModalSession_Handle = Selector.GetHandle("endModalSession:");
+		selTerminate_Handle = Selector.GetHandle("terminate:");
+		selRequestUserAttention_Handle = Selector.GetHandle("requestUserAttention:");
+		selCancelUserAttentionRequest_Handle = Selector.GetHandle("cancelUserAttentionRequest:");
+		selBeginSheetModalForWindowModalDelegateDidEndSelectorContextInfo_Handle = Selector.GetHandle("beginSheet:modalForWindow:modalDelegate:didEndSelector:contextInfo:");
+		selEndSheet_Handle = Selector.GetHandle("endSheet:");
+		selEndSheetReturnCode_Handle = Selector.GetHandle("endSheet:returnCode:");
+		selNextEventMatchingMaskUntilDateInModeDequeue_Handle = Selector.GetHandle("nextEventMatchingMask:untilDate:inMode:dequeue:");
+		selDiscardEventsMatchingMaskBeforeEvent_Handle = Selector.GetHandle("discardEventsMatchingMask:beforeEvent:");
+		selPostEventAtStart_Handle = Selector.GetHandle("postEvent:atStart:");
+		selSendEvent_Handle = Selector.GetHandle("sendEvent:");
+		selPreventWindowOrderingHandle = Selector.GetHandle("preventWindowOrdering");
+		selMakeWindowsPerformInOrder_Handle = Selector.GetHandle("makeWindowsPerform:inOrder:");
+		selSetWindowsNeedUpdate_Handle = Selector.GetHandle("setWindowsNeedUpdate:");
+		selUpdateWindowsHandle = Selector.GetHandle("updateWindows");
+		selActivationPolicyHandle = Selector.GetHandle("activationPolicy");
+		selSetActivationPolicy_Handle = Selector.GetHandle("setActivationPolicy:");
+		selSendActionToFrom_Handle = Selector.GetHandle("sendAction:to:from:");
+		selTargetForAction_Handle = Selector.GetHandle("targetForAction:");
+		selTargetForActionToFrom_Handle = Selector.GetHandle("targetForAction:to:from:");
+		selTryToPerformWith_Handle = Selector.GetHandle("tryToPerform:with:");
+		selValidRequestorForSendTypeReturnType_Handle = Selector.GetHandle("validRequestorForSendType:returnType:");
+		selReportException_Handle = Selector.GetHandle("reportException:");
+		selDetachDrawingThreadToTargetWithObject_Handle = Selector.GetHandle("detachDrawingThread:toTarget:withObject:");
+		selReplyToApplicationShouldTerminate_Handle = Selector.GetHandle("replyToApplicationShouldTerminate:");
+		selReplyToOpenOrPrint_Handle = Selector.GetHandle("replyToOpenOrPrint:");
+		selOrderFrontCharacterPalette_Handle = Selector.GetHandle("orderFrontCharacterPalette:");
+		selArrangeInFront_Handle = Selector.GetHandle("arrangeInFront:");
+		selRemoveWindowsItem_Handle = Selector.GetHandle("removeWindowsItem:");
+		selAddWindowsItemTitleFilename_Handle = Selector.GetHandle("addWindowsItem:title:filename:");
+		selChangeWindowsItemTitleFilename_Handle = Selector.GetHandle("changeWindowsItem:title:filename:");
+		selUpdateWindowsItem_Handle = Selector.GetHandle("updateWindowsItem:");
+		selMiniaturizeAll_Handle = Selector.GetHandle("miniaturizeAll:");
+		selOrderFrontColorPanel_Handle = Selector.GetHandle("orderFrontColorPanel:");
+		selDisableRelaunchOnLoginHandle = Selector.GetHandle("disableRelaunchOnLogin");
+		selEnableRelaunchOnLoginHandle = Selector.GetHandle("enableRelaunchOnLogin");
+		selEnabledRemoteNotificationTypesHandle = Selector.GetHandle("enabledRemoteNotificationTypes");
+		selRegisterForRemoteNotificationTypes_Handle = Selector.GetHandle("registerForRemoteNotificationTypes:");
+		selUnregisterForRemoteNotificationsHandle = Selector.GetHandle("unregisterForRemoteNotifications");
+		selRestoreWindowWithIdentifierStateCompletionHandler_Handle = Selector.GetHandle("restoreWindowWithIdentifier:state:completionHandler:");
+		class_ptr = Class.GetHandle("NSApplication");
+		RuntimeHelpers.RunClassConstructor(typeof(NSObject).TypeHandle);
+		class_ptr = Class.GetHandle("NSApplication");
 	}
 
 	[DllImport("/System/Library/Frameworks/AppKit.framework/AppKit")]
-	private static extern int NSApplicationMain(int argc, string[] argv);
+	private static extern void NSApplicationMain(int argc, string[] argv);
 
-    [Preserve]
-    public static void Init()
+	public static void Init()
 	{
 		if (initialized)
 		{
-			throw new InvalidOperationException("Init has already been invoked; it can only be invoked once");
+			throw new InvalidOperationException("Init has already be be invoked; it can only be invoke once");
 		}
-
-        initialized = true;
-        Runtime.EnsureInitialized(is_autoloaded);
-        
-        if (!is_autoloaded)
-        {
-            Runtime.Initialize(); 
-
-            Assembly assembly1 = typeof(NSApplication).Assembly;
-			Runtime.RegisterAssemblyEx(assembly1);
-            AssemblyName name = assembly1.GetName();
-            foreach (Assembly assembly2 in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (AssemblyName referencedAssembly in assembly2.GetReferencedAssemblies())
-                {
-                    if (AssemblyName.ReferenceMatchesDefinition(referencedAssembly, name))
-                    {
-                        Runtime.RegisterAssemblyEx(assembly2);
-                        break;
-                    }
-                }
-            }
-        }
-
-        Runtime.RegisterAssemblies();
-
-        if (SynchronizationContext.Current == null)
+		initialized = true;
+		Assembly assembly = typeof(NSApplication).Assembly;
+		Runtime.RegisterAssembly(assembly);
+		AssemblyName name = assembly.GetName();
+		Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+		foreach (Assembly assembly2 in assemblies)
+		{
+			AssemblyName[] referencedAssemblies = assembly2.GetReferencedAssemblies();
+			for (int j = 0; j < referencedAssemblies.Length; j++)
+			{
+				if (AssemblyName.ReferenceMatchesDefinition(referencedAssemblies[j], name))
+				{
+					Runtime.RegisterAssembly(assembly2);
+					break;
+				}
+			}
+		}
+		if (SynchronizationContext.Current == null)
 		{
 			SynchronizationContext.SetSynchronizationContext(new AppKitSynchronizationContext());
 		}
 		mainThread = Thread.CurrentThread;
-		Environment.SetEnvironmentVariable("MONO_CFG_DIR", "");
-		if (class_ptr == IntPtr.Zero)
-		{
-			ResetHandle();
-		}
-	}
-
-	private static void ResetHandle()
-	{
-		typeof(NSApplication).GetField("class_ptr", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, ObjCRuntime.Class.GetHandle("NSApplication"));
 	}
 
 	public static void InitDrawingBridge()
 	{
 		FieldInfo field = Type.GetType("System.Drawing.GDIPlus, System.Drawing").GetField("UseCocoaDrawable", BindingFlags.Static | BindingFlags.Public);
-		FieldInfo field2 = Type.GetType("System.Drawing.GDIPlus, System.Drawing").GetField("UseCarbonDrawable", BindingFlags.Static | BindingFlags.Public);
+		FieldInfo? field2 = Type.GetType("System.Drawing.GDIPlus, System.Drawing").GetField("UseCarbonDrawable", BindingFlags.Static | BindingFlags.Public);
 		field.SetValue(null, true);
 		field2.SetValue(null, false);
 	}
@@ -9269,239 +1997,123 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	public static void EnsureEventAndDelegateAreNotMismatched(object del, Type expectedType)
+	public NSEvent NextEvent(NSEventMask mask, NSDate expiration, string mode, bool deqFlag)
 	{
-		if (CheckForEventAndDelegateMismatches && !expectedType.IsAssignableFrom(del.GetType()))
-		{
-			throw new InvalidOperationException($"Event registration is overwriting existing delegate. Either just use events or your own delegate: {del.GetType()} {expectedType}");
-		}
-	}
-
-	public static void EnsureDelegateAssignIsNotOverwritingInternalDelegate(object currentDelegateValue, object newDelegateValue, Type internalDelegateType)
-	{
-		if (CheckForEventAndDelegateMismatches && currentDelegateValue != null && newDelegateValue != null && currentDelegateValue.GetType().IsAssignableFrom(internalDelegateType) && !newDelegateValue.GetType().IsAssignableFrom(internalDelegateType))
-		{
-			throw new InvalidOperationException($"Event registration is overwriting existing delegate. Either just use events or your own delegate: {newDelegateValue.GetType()} {internalDelegateType}");
-		}
+		return NextEvent((uint)mask, expiration, mode, deqFlag);
 	}
 
 	public void DiscardEvents(NSEventMask mask, NSEvent lastEvent)
 	{
-		DiscardEvents((nuint)(ulong)mask, lastEvent);
+		DiscardEvents((uint)mask, lastEvent);
 	}
 
-	[Obsolete("This method does nothing.")]
-	public static void RestoreWindow(string identifier, NSCoder state, NSWindowCompletionHandler onCompletion)
-	{
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSApplication(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSApplication(NSObjectFlag t)
+	public NSApplication(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSApplication(IntPtr handle)
+	public NSApplication(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("abortModal")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void AbortModal()
+	[Export("hide:")]
+	public virtual void Hide(NSObject sender)
 	{
-		if (base.IsDirectBinding)
+		EnsureUIThread();
+		if (sender == null)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selAbortModalHandle);
+			throw new ArgumentNullException("sender");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selHide_Handle, sender.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selAbortModalHandle);
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selHide_Handle, sender.Handle);
 		}
 	}
 
-	[Export("accessibilityPerformCancel")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AccessibilityPerformCancel()
+	[Export("unhide:")]
+	public virtual void Unhide(NSObject sender)
 	{
 		EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (sender == null)
 		{
-			return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityPerformCancelHandle);
+			throw new ArgumentNullException("sender");
 		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityPerformCancelHandle);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selUnhide_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selUnhide_Handle, sender.Handle);
+		}
 	}
 
-	[Export("accessibilityPerformConfirm")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AccessibilityPerformConfirm()
+	[Export("unhideWithoutActivation")]
+	public virtual void UnhideWithoutActivation()
 	{
 		EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityPerformConfirmHandle);
+			Messaging.void_objc_msgSend(base.Handle, selUnhideWithoutActivationHandle);
 		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityPerformConfirmHandle);
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selUnhideWithoutActivationHandle);
+		}
 	}
 
-	[Export("accessibilityPerformDecrement")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AccessibilityPerformDecrement()
+	[Export("windowWithWindowNumber:")]
+	public virtual NSWindow WindowWithWindowNumber(long windowNum)
 	{
 		EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityPerformDecrementHandle);
+			return (NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_Int64(base.Handle, selWindowWithWindowNumber_Handle, windowNum));
 		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityPerformDecrementHandle);
+		return (NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_Int64(base.SuperHandle, selWindowWithWindowNumber_Handle, windowNum));
 	}
 
-	[Export("accessibilityPerformDelete")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AccessibilityPerformDelete()
+	[Export("deactivate")]
+	public virtual void Deactivate()
 	{
 		EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityPerformDeleteHandle);
+			Messaging.void_objc_msgSend(base.Handle, selDeactivateHandle);
 		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityPerformDeleteHandle);
-	}
-
-	[Export("accessibilityPerformIncrement")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AccessibilityPerformIncrement()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
+		else
 		{
-			return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityPerformIncrementHandle);
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDeactivateHandle);
 		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityPerformIncrementHandle);
-	}
-
-	[Export("accessibilityPerformPick")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AccessibilityPerformPick()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityPerformPickHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityPerformPickHandle);
-	}
-
-	[Export("accessibilityPerformPress")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AccessibilityPerformPress()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityPerformPressHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityPerformPressHandle);
-	}
-
-	[Export("accessibilityPerformRaise")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AccessibilityPerformRaise()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityPerformRaiseHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityPerformRaiseHandle);
-	}
-
-	[Export("accessibilityPerformShowAlternateUI")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AccessibilityPerformShowAlternateUI()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityPerformShowAlternateUIHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityPerformShowAlternateUIHandle);
-	}
-
-	[Export("accessibilityPerformShowDefaultUI")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AccessibilityPerformShowDefaultUI()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityPerformShowDefaultUIHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityPerformShowDefaultUIHandle);
-	}
-
-	[Export("accessibilityPerformShowMenu")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AccessibilityPerformShowMenu()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityPerformShowMenuHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityPerformShowMenuHandle);
 	}
 
 	[Export("activateIgnoringOtherApps:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ActivateIgnoringOtherApps(bool flag)
 	{
 		EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_bool(base.Handle, selActivateIgnoringOtherApps_Handle, flag);
 		}
@@ -9511,52 +2123,146 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	[Export("addWindowsItem:title:filename:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void AddWindowsItem(NSWindow win, string title, bool isFilename)
-	{
-		EnsureUIThread();
-		if (win == null)
-		{
-			throw new ArgumentNullException("win");
-		}
-		if (title == null)
-		{
-			throw new ArgumentNullException("title");
-		}
-		IntPtr arg = NSString.CreateNative(title);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_bool(base.Handle, selAddWindowsItem_Title_Filename_Handle, win.Handle, arg, isFilename);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_bool(base.SuperHandle, selAddWindowsItem_Title_Filename_Handle, win.Handle, arg, isFilename);
-		}
-		NSString.ReleaseNative(arg);
-	}
-
-	[Export("arrangeInFront:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ArrangeInFront(NSObject sender)
+	[Export("hideOtherApplications:")]
+	public virtual void HideOtherApplications(NSObject sender)
 	{
 		EnsureUIThread();
 		if (sender == null)
 		{
 			throw new ArgumentNullException("sender");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selArrangeInFront_Handle, sender.Handle);
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selHideOtherApplications_Handle, sender.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selArrangeInFront_Handle, sender.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selHideOtherApplications_Handle, sender.Handle);
+		}
+	}
+
+	[Export("unhideAllApplications:")]
+	public virtual void UnhideAllApplications(NSObject sender)
+	{
+		EnsureUIThread();
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selUnhideAllApplications_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selUnhideAllApplications_Handle, sender.Handle);
+		}
+	}
+
+	[Export("finishLaunching")]
+	public virtual void FinishLaunching()
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selFinishLaunchingHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selFinishLaunchingHandle);
+		}
+	}
+
+	[Export("run")]
+	public virtual void Run()
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selRunHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRunHandle);
+		}
+	}
+
+	[Export("runModalForWindow:")]
+	public virtual long RunModalForWindow(NSWindow theWindow)
+	{
+		EnsureUIThread();
+		if (theWindow == null)
+		{
+			throw new ArgumentNullException("theWindow");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.Int64_objc_msgSend_IntPtr(base.Handle, selRunModalForWindow_Handle, theWindow.Handle);
+		}
+		return Messaging.Int64_objc_msgSendSuper_IntPtr(base.SuperHandle, selRunModalForWindow_Handle, theWindow.Handle);
+	}
+
+	[Export("stop:")]
+	public virtual void Stop(NSObject sender)
+	{
+		EnsureUIThread();
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selStop_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selStop_Handle, sender.Handle);
+		}
+	}
+
+	[Export("stopModal")]
+	public virtual void StopModal()
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selStopModalHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selStopModalHandle);
+		}
+	}
+
+	[Export("stopModalWithCode:")]
+	public virtual void StopModalWithCode(long returnCode)
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_Int64(base.Handle, selStopModalWithCode_Handle, returnCode);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selStopModalWithCode_Handle, returnCode);
+		}
+	}
+
+	[Export("abortModal")]
+	[ThreadSafe]
+	public virtual void AbortModal()
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selAbortModalHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selAbortModalHandle);
 		}
 	}
 
 	[Export("beginModalSessionForWindow:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual IntPtr BeginModalSession(NSWindow theWindow)
 	{
 		EnsureUIThread();
@@ -9564,17 +2270,83 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		{
 			throw new ArgumentNullException("theWindow");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selBeginModalSessionForWindow_Handle, theWindow.Handle);
 		}
 		return Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selBeginModalSessionForWindow_Handle, theWindow.Handle);
 	}
 
+	[Export("runModalSession:")]
+	public virtual long RunModalSession(IntPtr session)
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return Messaging.Int64_objc_msgSend_IntPtr(base.Handle, selRunModalSession_Handle, session);
+		}
+		return Messaging.Int64_objc_msgSendSuper_IntPtr(base.SuperHandle, selRunModalSession_Handle, session);
+	}
+
+	[Export("endModalSession:")]
+	public virtual void EndModalSession(IntPtr session)
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEndModalSession_Handle, session);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEndModalSession_Handle, session);
+		}
+	}
+
+	[Export("terminate:")]
+	public virtual void Terminate(NSObject sender)
+	{
+		EnsureUIThread();
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selTerminate_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selTerminate_Handle, sender.Handle);
+		}
+	}
+
+	[Export("requestUserAttention:")]
+	public virtual long RequestUserAttention(NSRequestUserAttentionType requestType)
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return Messaging.Int64_objc_msgSend_UInt64(base.Handle, selRequestUserAttention_Handle, (ulong)requestType);
+		}
+		return Messaging.Int64_objc_msgSendSuper_UInt64(base.SuperHandle, selRequestUserAttention_Handle, (ulong)requestType);
+	}
+
+	[Export("cancelUserAttentionRequest:")]
+	public virtual void CancelUserAttentionRequest(long request)
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_Int64(base.Handle, selCancelUserAttentionRequest_Handle, request);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selCancelUserAttentionRequest_Handle, request);
+		}
+	}
+
 	[Export("beginSheet:modalForWindow:modalDelegate:didEndSelector:contextInfo:")]
-	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, "Use NSWindow.BeginSheet instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void BeginSheet(NSWindow sheet, NSWindow docWindow, NSObject? modalDelegate, Selector? didEndSelector, IntPtr contextInfo)
+	public virtual void BeginSheet(NSWindow sheet, NSWindow docWindow, NSObject modalDelegate, Selector didEndSelector, IntPtr contextInfo)
 	{
 		EnsureUIThread();
 		if (sheet == null)
@@ -9585,88 +2357,341 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		{
 			throw new ArgumentNullException("docWindow");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selBeginSheet_ModalForWindow_ModalDelegate_DidEndSelector_ContextInfo_Handle, sheet.Handle, docWindow.Handle, modalDelegate?.Handle ?? IntPtr.Zero, (didEndSelector == null) ? IntPtr.Zero : didEndSelector.Handle, contextInfo);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selBeginSheetModalForWindowModalDelegateDidEndSelectorContextInfo_Handle, sheet.Handle, docWindow.Handle, modalDelegate?.Handle ?? IntPtr.Zero, (didEndSelector == null) ? IntPtr.Zero : didEndSelector.Handle, contextInfo);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selBeginSheet_ModalForWindow_ModalDelegate_DidEndSelector_ContextInfo_Handle, sheet.Handle, docWindow.Handle, modalDelegate?.Handle ?? IntPtr.Zero, (didEndSelector == null) ? IntPtr.Zero : didEndSelector.Handle, contextInfo);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selBeginSheetModalForWindowModalDelegateDidEndSelectorContextInfo_Handle, sheet.Handle, docWindow.Handle, modalDelegate?.Handle ?? IntPtr.Zero, (didEndSelector == null) ? IntPtr.Zero : didEndSelector.Handle, contextInfo);
 		}
 	}
 
-	[Export("cancelUserAttentionRequest:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void CancelUserAttentionRequest(nint request)
+	[Export("endSheet:")]
+	public virtual void EndSheet(NSWindow sheet)
 	{
 		EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (sheet == null)
 		{
-			Messaging.void_objc_msgSend_nint(base.Handle, selCancelUserAttentionRequest_Handle, request);
+			throw new ArgumentNullException("sheet");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEndSheet_Handle, sheet.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selCancelUserAttentionRequest_Handle, request);
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEndSheet_Handle, sheet.Handle);
 		}
 	}
 
-	[Export("changeWindowsItem:title:filename:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ChangeWindowsItem(NSWindow win, string title, bool isFilename)
+	[Export("endSheet:returnCode:")]
+	public virtual void EndSheet(NSWindow sheet, long returnCode)
 	{
 		EnsureUIThread();
-		if (win == null)
+		if (sheet == null)
 		{
-			throw new ArgumentNullException("win");
+			throw new ArgumentNullException("sheet");
 		}
-		if (title == null)
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("title");
-		}
-		IntPtr arg = NSString.CreateNative(title);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_bool(base.Handle, selChangeWindowsItem_Title_Filename_Handle, win.Handle, arg, isFilename);
+			Messaging.void_objc_msgSend_IntPtr_Int64(base.Handle, selEndSheetReturnCode_Handle, sheet.Handle, returnCode);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_bool(base.SuperHandle, selChangeWindowsItem_Title_Filename_Handle, win.Handle, arg, isFilename);
+			Messaging.void_objc_msgSendSuper_IntPtr_Int64(base.SuperHandle, selEndSheetReturnCode_Handle, sheet.Handle, returnCode);
 		}
+	}
+
+	[Export("nextEventMatchingMask:untilDate:inMode:dequeue:")]
+	protected virtual NSEvent NextEvent(ulong mask, NSDate expiration, string mode, bool deqFlag)
+	{
+		EnsureUIThread();
+		if (expiration == null)
+		{
+			throw new ArgumentNullException("expiration");
+		}
+		if (mode == null)
+		{
+			throw new ArgumentNullException("mode");
+		}
+		IntPtr arg = NSString.CreateNative(mode);
+		NSEvent result = ((!IsDirectBinding) ? ((NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_UInt64_IntPtr_IntPtr_bool(base.SuperHandle, selNextEventMatchingMaskUntilDateInModeDequeue_Handle, mask, expiration.Handle, arg, deqFlag))) : ((NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64_IntPtr_IntPtr_bool(base.Handle, selNextEventMatchingMaskUntilDateInModeDequeue_Handle, mask, expiration.Handle, arg, deqFlag))));
 		NSString.ReleaseNative(arg);
+		return result;
 	}
 
-	[Export("completeStateRestoration")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void CompleteStateRestoration()
+	[Export("discardEventsMatchingMask:beforeEvent:")]
+	protected virtual void DiscardEvents(ulong mask, NSEvent lastEvent)
 	{
 		EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (lastEvent == null)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selCompleteStateRestorationHandle);
+			throw new ArgumentNullException("lastEvent");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_UInt64_IntPtr(base.Handle, selDiscardEventsMatchingMaskBeforeEvent_Handle, mask, lastEvent.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selCompleteStateRestorationHandle);
+			Messaging.void_objc_msgSendSuper_UInt64_IntPtr(base.SuperHandle, selDiscardEventsMatchingMaskBeforeEvent_Handle, mask, lastEvent.Handle);
 		}
 	}
 
-	[Export("deactivate")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void Deactivate()
+	[Export("postEvent:atStart:")]
+	[ThreadSafe]
+	public virtual void PostEvent(NSEvent theEvent, bool atStart)
 	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (theEvent == null)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selDeactivateHandle);
+			throw new ArgumentNullException("theEvent");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selPostEventAtStart_Handle, theEvent.Handle, atStart);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDeactivateHandle);
+			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selPostEventAtStart_Handle, theEvent.Handle, atStart);
+		}
+	}
+
+	[Export("sendEvent:")]
+	public virtual void SendEvent(NSEvent theEvent)
+	{
+		EnsureUIThread();
+		if (theEvent == null)
+		{
+			throw new ArgumentNullException("theEvent");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSendEvent_Handle, theEvent.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSendEvent_Handle, theEvent.Handle);
+		}
+	}
+
+	[Export("preventWindowOrdering")]
+	public virtual void PreventWindowOrdering()
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selPreventWindowOrderingHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selPreventWindowOrderingHandle);
+		}
+	}
+
+	[Export("makeWindowsPerform:inOrder:")]
+	public virtual NSWindow MakeWindowsPerform(Selector aSelector, bool inOrder)
+	{
+		EnsureUIThread();
+		if (aSelector == null)
+		{
+			throw new ArgumentNullException("aSelector");
+		}
+		if (IsDirectBinding)
+		{
+			return (NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_bool(base.Handle, selMakeWindowsPerformInOrder_Handle, aSelector.Handle, inOrder));
+		}
+		return (NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selMakeWindowsPerformInOrder_Handle, aSelector.Handle, inOrder));
+	}
+
+	[Export("setWindowsNeedUpdate:")]
+	public virtual void SetWindowsNeedUpdate(bool needUpdate)
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_bool(base.Handle, selSetWindowsNeedUpdate_Handle, needUpdate);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetWindowsNeedUpdate_Handle, needUpdate);
+		}
+	}
+
+	[Export("updateWindows")]
+	public virtual void UpdateWindows()
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selUpdateWindowsHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selUpdateWindowsHandle);
+		}
+	}
+
+	[Export("setMainMenu:")]
+	[Obsolete("Use MainMenu property", false)]
+	public virtual void SetMainMenu(NSMenu aMenu)
+	{
+		EnsureUIThread();
+		if (aMenu == null)
+		{
+			throw new ArgumentNullException("aMenu");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMainMenu_Handle, aMenu.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMainMenu_Handle, aMenu.Handle);
+		}
+	}
+
+	[Export("activationPolicy")]
+	protected virtual NSApplicationActivationPolicy GetActivationPolicy()
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return (NSApplicationActivationPolicy)Messaging.Int64_objc_msgSend(base.Handle, selActivationPolicyHandle);
+		}
+		return (NSApplicationActivationPolicy)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selActivationPolicyHandle);
+	}
+
+	[Export("setActivationPolicy:")]
+	protected virtual bool SetActivationPolicy(NSApplicationActivationPolicy activationPolicy)
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_Int64(base.Handle, selSetActivationPolicy_Handle, (long)activationPolicy);
+		}
+		return Messaging.bool_objc_msgSendSuper_Int64(base.SuperHandle, selSetActivationPolicy_Handle, (long)activationPolicy);
+	}
+
+	[Export("sendAction:to:from:")]
+	public virtual bool SendAction(Selector theAction, NSObject theTarget, NSObject sender)
+	{
+		EnsureUIThread();
+		if (theAction == null)
+		{
+			throw new ArgumentNullException("theAction");
+		}
+		if (theTarget == null)
+		{
+			throw new ArgumentNullException("theTarget");
+		}
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selSendActionToFrom_Handle, theAction.Handle, theTarget.Handle, sender.Handle);
+		}
+		return Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selSendActionToFrom_Handle, theAction.Handle, theTarget.Handle, sender.Handle);
+	}
+
+	[Export("targetForAction:")]
+	public virtual NSObject TargetForAction(Selector theAction)
+	{
+		EnsureUIThread();
+		if (theAction == null)
+		{
+			throw new ArgumentNullException("theAction");
+		}
+		if (IsDirectBinding)
+		{
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selTargetForAction_Handle, theAction.Handle));
+		}
+		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selTargetForAction_Handle, theAction.Handle));
+	}
+
+	[Export("targetForAction:to:from:")]
+	public virtual NSObject TargetForAction(Selector theAction, NSObject theTarget, NSObject sender)
+	{
+		EnsureUIThread();
+		if (theAction == null)
+		{
+			throw new ArgumentNullException("theAction");
+		}
+		if (theTarget == null)
+		{
+			throw new ArgumentNullException("theTarget");
+		}
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (IsDirectBinding)
+		{
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selTargetForActionToFrom_Handle, theAction.Handle, theTarget.Handle, sender.Handle));
+		}
+		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selTargetForActionToFrom_Handle, theAction.Handle, theTarget.Handle, sender.Handle));
+	}
+
+	[Export("tryToPerform:with:")]
+	public virtual bool TryToPerform(Selector anAction, NSObject target)
+	{
+		EnsureUIThread();
+		if (anAction == null)
+		{
+			throw new ArgumentNullException("anAction");
+		}
+		if (target == null)
+		{
+			throw new ArgumentNullException("target");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selTryToPerformWith_Handle, anAction.Handle, target.Handle);
+		}
+		return Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selTryToPerformWith_Handle, anAction.Handle, target.Handle);
+	}
+
+	[Export("validRequestorForSendType:returnType:")]
+	public virtual NSObject ValidRequestor(string sendType, string returnType)
+	{
+		EnsureUIThread();
+		if (sendType == null)
+		{
+			throw new ArgumentNullException("sendType");
+		}
+		if (returnType == null)
+		{
+			throw new ArgumentNullException("returnType");
+		}
+		IntPtr arg = NSString.CreateNative(sendType);
+		IntPtr arg2 = NSString.CreateNative(returnType);
+		NSObject result = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selValidRequestorForSendTypeReturnType_Handle, arg, arg2)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selValidRequestorForSendTypeReturnType_Handle, arg, arg2)));
+		NSString.ReleaseNative(arg);
+		NSString.ReleaseNative(arg2);
+		return result;
+	}
+
+	[Export("reportException:")]
+	public virtual void ReportException(NSException theException)
+	{
+		EnsureUIThread();
+		if (theException == null)
+		{
+			throw new ArgumentNullException("theException");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selReportException_Handle, theException.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selReportException_Handle, theException.Handle);
 		}
 	}
 
 	[Export("detachDrawingThread:toTarget:withObject:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static void DetachDrawingThread(Selector selector, NSObject target, NSObject argument)
 	{
 		EnsureUIThread();
@@ -9682,715 +2707,14 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		{
 			throw new ArgumentNullException("argument");
 		}
-		Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selDetachDrawingThread_ToTarget_WithObject_Handle, selector.Handle, target.Handle, argument.Handle);
-	}
-
-	[Export("disableRelaunchOnLogin")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DisableRelaunchOnLogin()
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selDisableRelaunchOnLoginHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDisableRelaunchOnLoginHandle);
-		}
-	}
-
-	[Export("discardEventsMatchingMask:beforeEvent:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	protected virtual void DiscardEvents(nuint mask, NSEvent lastEvent)
-	{
-		EnsureUIThread();
-		if (lastEvent == null)
-		{
-			throw new ArgumentNullException("lastEvent");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nuint_IntPtr(base.Handle, selDiscardEventsMatchingMask_BeforeEvent_Handle, mask, lastEvent.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nuint_IntPtr(base.SuperHandle, selDiscardEventsMatchingMask_BeforeEvent_Handle, mask, lastEvent.Handle);
-		}
-	}
-
-	[Export("enableRelaunchOnLogin")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EnableRelaunchOnLogin()
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selEnableRelaunchOnLoginHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selEnableRelaunchOnLoginHandle);
-		}
-	}
-
-	[Export("enabledRemoteNotificationTypes")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSRemoteNotificationType EnabledRemoteNotificationTypes()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return (NSRemoteNotificationType)Messaging.UInt64_objc_msgSend(base.Handle, selEnabledRemoteNotificationTypesHandle);
-		}
-		return (NSRemoteNotificationType)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selEnabledRemoteNotificationTypesHandle);
-	}
-
-	[Export("endModalSession:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EndModalSession(IntPtr session)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEndModalSession_Handle, session);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEndModalSession_Handle, session);
-		}
-	}
-
-	[Export("endSheet:")]
-	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, "Use NSWindow.EndSheet instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EndSheet(NSWindow sheet)
-	{
-		EnsureUIThread();
-		if (sheet == null)
-		{
-			throw new ArgumentNullException("sheet");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEndSheet_Handle, sheet.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEndSheet_Handle, sheet.Handle);
-		}
-	}
-
-	[Export("endSheet:returnCode:")]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EndSheet(NSWindow sheet, nint returnCode)
-	{
-		EnsureUIThread();
-		if (sheet == null)
-		{
-			throw new ArgumentNullException("sheet");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_nint(base.Handle, selEndSheet_ReturnCode_Handle, sheet.Handle, returnCode);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_nint(base.SuperHandle, selEndSheet_ReturnCode_Handle, sheet.Handle, returnCode);
-		}
-	}
-
-	[Export("enumerateWindowsWithOptions:usingBlock:")]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe virtual void EnumerateWindows(NSWindowListOptions options, [BlockProxy(typeof(Trampolines.NIDNSApplicationEnumerateWindowsHandler))] NSApplicationEnumerateWindowsHandler block)
-	{
-		EnsureUIThread();
-		if (block == null)
-		{
-			throw new ArgumentNullException("block");
-		}
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDNSApplicationEnumerateWindowsHandler.Handler, block);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_Int64_IntPtr(base.Handle, selEnumerateWindowsWithOptions_UsingBlock_Handle, (long)options, (IntPtr)ptr);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_Int64_IntPtr(base.SuperHandle, selEnumerateWindowsWithOptions_UsingBlock_Handle, (long)options, (IntPtr)ptr);
-		}
-		ptr->CleanupBlock();
-	}
-
-	[Export("extendStateRestoration")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ExtendStateRestoration()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selExtendStateRestorationHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selExtendStateRestorationHandle);
-		}
-	}
-
-	[Export("finishLaunching")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void FinishLaunching()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selFinishLaunchingHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selFinishLaunchingHandle);
-		}
-	}
-
-	[Export("accessibilityAttributedStringForRange:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSAttributedString? GetAccessibilityAttributedString(NSRange range)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSAttributedString>(Messaging.IntPtr_objc_msgSend_NSRange(base.Handle, selAccessibilityAttributedStringForRange_Handle, range));
-		}
-		return Runtime.GetNSObject<NSAttributedString>(Messaging.IntPtr_objc_msgSendSuper_NSRange(base.SuperHandle, selAccessibilityAttributedStringForRange_Handle, range));
-	}
-
-	[Export("accessibilityCellForColumn:row:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject? GetAccessibilityCellForColumn(nint column, nint row)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_nint_nint(base.Handle, selAccessibilityCellForColumn_Row_Handle, column, row));
-		}
-		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_nint_nint(base.SuperHandle, selAccessibilityCellForColumn_Row_Handle, column, row));
-	}
-
-	[Export("accessibilityFrameForRange:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGRect GetAccessibilityFrame(NSRange range)
-	{
-		EnsureUIThread();
-		CGRect retval;
-		if (base.IsDirectBinding)
-		{
-			Messaging.CGRect_objc_msgSend_stret_NSRange(out retval, base.Handle, selAccessibilityFrameForRange_Handle, range);
-		}
-		else
-		{
-			Messaging.CGRect_objc_msgSendSuper_stret_NSRange(out retval, base.SuperHandle, selAccessibilityFrameForRange_Handle, range);
-		}
-		return retval;
-	}
-
-	[Export("accessibilityLayoutPointForScreenPoint:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGPoint GetAccessibilityLayoutForScreen(CGPoint point)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.CGPoint_objc_msgSend_CGPoint(base.Handle, selAccessibilityLayoutPointForScreenPoint_Handle, point);
-		}
-		return Messaging.CGPoint_objc_msgSendSuper_CGPoint(base.SuperHandle, selAccessibilityLayoutPointForScreenPoint_Handle, point);
-	}
-
-	[Export("accessibilityLayoutSizeForScreenSize:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGSize GetAccessibilityLayoutForScreen(CGSize size)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.CGSize_objc_msgSend_CGSize(base.Handle, selAccessibilityLayoutSizeForScreenSize_Handle, size);
-		}
-		return Messaging.CGSize_objc_msgSendSuper_CGSize(base.SuperHandle, selAccessibilityLayoutSizeForScreenSize_Handle, size);
-	}
-
-	[Export("accessibilityLineForIndex:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint GetAccessibilityLine(nint index)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.nint_objc_msgSend_nint(base.Handle, selAccessibilityLineForIndex_Handle, index);
-		}
-		return Messaging.nint_objc_msgSendSuper_nint(base.SuperHandle, selAccessibilityLineForIndex_Handle, index);
-	}
-
-	[Export("accessibilityRangeForPosition:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSRange GetAccessibilityRange(CGPoint point)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.NSRange_objc_msgSend_CGPoint(base.Handle, selAccessibilityRangeForPosition_Handle, point);
-		}
-		return Messaging.NSRange_objc_msgSendSuper_CGPoint(base.SuperHandle, selAccessibilityRangeForPosition_Handle, point);
-	}
-
-	[Export("accessibilityRangeForIndex:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSRange GetAccessibilityRange(nint index)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.NSRange_objc_msgSend_nint(base.Handle, selAccessibilityRangeForIndex_Handle, index);
-		}
-		return Messaging.NSRange_objc_msgSendSuper_nint(base.SuperHandle, selAccessibilityRangeForIndex_Handle, index);
-	}
-
-	[Export("accessibilityRangeForLine:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSRange GetAccessibilityRangeForLine(nint line)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.NSRange_objc_msgSend_nint(base.Handle, selAccessibilityRangeForLine_Handle, line);
-		}
-		return Messaging.NSRange_objc_msgSendSuper_nint(base.SuperHandle, selAccessibilityRangeForLine_Handle, line);
-	}
-
-	[Export("accessibilityRTFForRange:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSData? GetAccessibilityRtf(NSRange range)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSend_NSRange(base.Handle, selAccessibilityRTFForRange_Handle, range));
-		}
-		return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSendSuper_NSRange(base.SuperHandle, selAccessibilityRTFForRange_Handle, range));
-	}
-
-	[Export("accessibilityScreenPointForLayoutPoint:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGPoint GetAccessibilityScreenForLayout(CGPoint point)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.CGPoint_objc_msgSend_CGPoint(base.Handle, selAccessibilityScreenPointForLayoutPoint_Handle, point);
-		}
-		return Messaging.CGPoint_objc_msgSendSuper_CGPoint(base.SuperHandle, selAccessibilityScreenPointForLayoutPoint_Handle, point);
-	}
-
-	[Export("accessibilityScreenSizeForLayoutSize:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGSize GetAccessibilityScreenForLayout(CGSize size)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.CGSize_objc_msgSend_CGSize(base.Handle, selAccessibilityScreenSizeForLayoutSize_Handle, size);
-		}
-		return Messaging.CGSize_objc_msgSendSuper_CGSize(base.SuperHandle, selAccessibilityScreenSizeForLayoutSize_Handle, size);
-	}
-
-	[Export("accessibilityStringForRange:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string? GetAccessibilityString(NSRange range)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_NSRange(base.Handle, selAccessibilityStringForRange_Handle, range));
-		}
-		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_NSRange(base.SuperHandle, selAccessibilityStringForRange_Handle, range));
-	}
-
-	[Export("accessibilityStyleRangeForIndex:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSRange GetAccessibilityStyleRange(nint index)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.NSRange_objc_msgSend_nint(base.Handle, selAccessibilityStyleRangeForIndex_Handle, index);
-		}
-		return Messaging.NSRange_objc_msgSendSuper_nint(base.SuperHandle, selAccessibilityStyleRangeForIndex_Handle, index);
-	}
-
-	[Export("activationPolicy")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	protected virtual NSApplicationActivationPolicy GetActivationPolicy()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return (NSApplicationActivationPolicy)Messaging.Int64_objc_msgSend(base.Handle, selActivationPolicyHandle);
-		}
-		return (NSApplicationActivationPolicy)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selActivationPolicyHandle);
-	}
-
-	[Export("hide:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void Hide(NSObject sender)
-	{
-		EnsureUIThread();
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selHide_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selHide_Handle, sender.Handle);
-		}
-	}
-
-	[Export("hideOtherApplications:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void HideOtherApplications(NSObject sender)
-	{
-		EnsureUIThread();
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selHideOtherApplications_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selHideOtherApplications_Handle, sender.Handle);
-		}
-	}
-
-	[Export("isAccessibilitySelectorAllowed:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool IsAccessibilitySelectorAllowed(Selector selector)
-	{
-		EnsureUIThread();
-		if (selector == null)
-		{
-			throw new ArgumentNullException("selector");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIsAccessibilitySelectorAllowed_Handle, selector.Handle);
-		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selIsAccessibilitySelectorAllowed_Handle, selector.Handle);
-	}
-
-	[Export("makeWindowsPerform:inOrder:")]
-	[Deprecated(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, "Use EnumerateWindows instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSWindow MakeWindowsPerform(Selector aSelector, bool inOrder)
-	{
-		EnsureUIThread();
-		if (aSelector == null)
-		{
-			throw new ArgumentNullException("aSelector");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSend_IntPtr_bool(base.Handle, selMakeWindowsPerform_InOrder_Handle, aSelector.Handle, inOrder));
-		}
-		return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selMakeWindowsPerform_InOrder_Handle, aSelector.Handle, inOrder));
-	}
-
-	[Export("miniaturizeAll:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void MiniaturizeAll(NSObject sender)
-	{
-		EnsureUIThread();
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMiniaturizeAll_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMiniaturizeAll_Handle, sender.Handle);
-		}
-	}
-
-	[Export("nextEventMatchingMask:untilDate:inMode:dequeue:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	protected virtual NSEvent NextEvent(NSEventMask mask, NSDate? expiration, NSString runLoopMode, bool deqFlag)
-	{
-		EnsureUIThread();
-		if (runLoopMode == null)
-		{
-			throw new ArgumentNullException("runLoopMode");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSEvent>(Messaging.IntPtr_objc_msgSend_UInt64_IntPtr_IntPtr_bool(base.Handle, selNextEventMatchingMask_UntilDate_InMode_Dequeue_Handle, (ulong)mask, expiration?.Handle ?? IntPtr.Zero, runLoopMode.Handle, deqFlag));
-		}
-		return Runtime.GetNSObject<NSEvent>(Messaging.IntPtr_objc_msgSendSuper_UInt64_IntPtr_IntPtr_bool(base.SuperHandle, selNextEventMatchingMask_UntilDate_InMode_Dequeue_Handle, (ulong)mask, expiration?.Handle ?? IntPtr.Zero, runLoopMode.Handle, deqFlag));
-	}
-
-	[Obsolete("Use the 'NextEvent (NSEventMask, NSDate, [NSRunLoopMode|NSString], bool)' overloads instead.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	protected virtual NSEvent NextEvent(nuint mask, NSDate expiration, string mode, bool deqFlag)
-	{
-		return NextEvent((NSEventMask)(ulong)mask, expiration, (NSString)mode, deqFlag);
-	}
-
-	[Obsolete("Use the 'NextEvent (NSEventMask, NSDate, [NSRunLoopMode|NSString], bool)' overloads instead.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public NSEvent NextEvent(NSEventMask mask, NSDate expiration, string mode, bool deqFlag)
-	{
-		return NextEvent(mask, expiration, (NSString)mode, deqFlag);
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public NSEvent NextEvent(NSEventMask mask, NSDate expiration, NSRunLoopMode runLoopMode, bool deqFlag)
-	{
-		return NextEvent(mask, expiration, runLoopMode.GetConstant(), deqFlag);
-	}
-
-	[Export("orderFrontCharacterPalette:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void OrderFrontCharacterPalette(NSObject sender)
-	{
-		EnsureUIThread();
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selOrderFrontCharacterPalette_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selOrderFrontCharacterPalette_Handle, sender.Handle);
-		}
-	}
-
-	[Export("orderFrontColorPanel:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void OrderFrontColorPanel(NSObject sender)
-	{
-		EnsureUIThread();
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selOrderFrontColorPanel_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selOrderFrontColorPanel_Handle, sender.Handle);
-		}
-	}
-
-	[Export("orderFrontStandardAboutPanel:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void OrderFrontStandardAboutPanel2(NSObject sender)
-	{
-		EnsureUIThread();
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selOrderFrontStandardAboutPanel_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selOrderFrontStandardAboutPanel_Handle, sender.Handle);
-		}
-	}
-
-	[Export("orderFrontStandardAboutPanelWithOptions:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void OrderFrontStandardAboutPanelWithOptions2(NSDictionary optionsDictionary)
-	{
-		EnsureUIThread();
-		if (optionsDictionary == null)
-		{
-			throw new ArgumentNullException("optionsDictionary");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selOrderFrontStandardAboutPanelWithOptions_Handle, optionsDictionary.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selOrderFrontStandardAboutPanelWithOptions_Handle, optionsDictionary.Handle);
-		}
-	}
-
-	[Export("postEvent:atStart:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void PostEvent(NSEvent theEvent, bool atStart)
-	{
-		if (theEvent == null)
-		{
-			throw new ArgumentNullException("theEvent");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selPostEvent_AtStart_Handle, theEvent.Handle, atStart);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selPostEvent_AtStart_Handle, theEvent.Handle, atStart);
-		}
-	}
-
-	[Export("preventWindowOrdering")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void PreventWindowOrdering()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selPreventWindowOrderingHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selPreventWindowOrderingHandle);
-		}
-	}
-
-	[Export("registerForRemoteNotificationTypes:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RegisterForRemoteNotificationTypes(NSRemoteNotificationType types)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_UInt64(base.Handle, selRegisterForRemoteNotificationTypes_Handle, (ulong)types);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selRegisterForRemoteNotificationTypes_Handle, (ulong)types);
-		}
-	}
-
-	[Export("registerForRemoteNotifications")]
-	[Introduced(PlatformName.MacOSX, 10, 14, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RegisterForRemoteNotifications()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selRegisterForRemoteNotificationsHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRegisterForRemoteNotificationsHandle);
-		}
-	}
-
-	[Export("registerServicesMenuSendTypes:returnTypes:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RegisterServicesMenu2(string[] sendTypes, string[] returnTypes)
-	{
-		EnsureUIThread();
-		if (sendTypes == null)
-		{
-			throw new ArgumentNullException("sendTypes");
-		}
-		if (returnTypes == null)
-		{
-			throw new ArgumentNullException("returnTypes");
-		}
-		NSArray nSArray = NSArray.FromStrings(sendTypes);
-		NSArray nSArray2 = NSArray.FromStrings(returnTypes);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selRegisterServicesMenuSendTypes_ReturnTypes_Handle, nSArray.Handle, nSArray2.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selRegisterServicesMenuSendTypes_ReturnTypes_Handle, nSArray.Handle, nSArray2.Handle);
-		}
-		nSArray.Dispose();
-		nSArray2.Dispose();
-	}
-
-	[Export("removeWindowsItem:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RemoveWindowsItem(NSWindow win)
-	{
-		EnsureUIThread();
-		if (win == null)
-		{
-			throw new ArgumentNullException("win");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveWindowsItem_Handle, win.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveWindowsItem_Handle, win.Handle);
-		}
+		Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selDetachDrawingThreadToTargetWithObject_Handle, selector.Handle, target.Handle, argument.Handle);
 	}
 
 	[Export("replyToApplicationShouldTerminate:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ReplyToApplicationShouldTerminate(bool shouldTerminate)
 	{
 		EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_bool(base.Handle, selReplyToApplicationShouldTerminate_Handle, shouldTerminate);
 		}
@@ -10401,11 +2725,10 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 	}
 
 	[Export("replyToOpenOrPrint:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ReplyToOpenOrPrint(NSApplicationDelegateReply reply)
 	{
 		EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_UInt64(base.Handle, selReplyToOpenOrPrint_Handle, (ulong)reply);
 		}
@@ -10415,40 +2738,231 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		}
 	}
 
-	[Export("reportException:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ReportException(NSException theException)
+	[Export("orderFrontCharacterPalette:")]
+	public virtual void OrderFrontCharacterPalette(NSObject sender)
 	{
 		EnsureUIThread();
-		if (theException == null)
+		if (sender == null)
 		{
-			throw new ArgumentNullException("theException");
+			throw new ArgumentNullException("sender");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selReportException_Handle, theException.Handle);
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selOrderFrontCharacterPalette_Handle, sender.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selReportException_Handle, theException.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selOrderFrontCharacterPalette_Handle, sender.Handle);
 		}
 	}
 
-	[Export("requestUserAttention:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint RequestUserAttention(NSRequestUserAttentionType requestType)
+	[Export("arrangeInFront:")]
+	public virtual void ArrangeInFront(NSObject sender)
 	{
 		EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (sender == null)
 		{
-			return Messaging.nint_objc_msgSend_UInt64(base.Handle, selRequestUserAttention_Handle, (ulong)requestType);
+			throw new ArgumentNullException("sender");
 		}
-		return Messaging.nint_objc_msgSendSuper_UInt64(base.SuperHandle, selRequestUserAttention_Handle, (ulong)requestType);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selArrangeInFront_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selArrangeInFront_Handle, sender.Handle);
+		}
+	}
+
+	[Export("removeWindowsItem:")]
+	public virtual void RemoveWindowsItem(NSWindow win)
+	{
+		EnsureUIThread();
+		if (win == null)
+		{
+			throw new ArgumentNullException("win");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveWindowsItem_Handle, win.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveWindowsItem_Handle, win.Handle);
+		}
+	}
+
+	[Export("addWindowsItem:title:filename:")]
+	public virtual void AddWindowsItem(NSWindow win, string title, bool isFilename)
+	{
+		EnsureUIThread();
+		if (win == null)
+		{
+			throw new ArgumentNullException("win");
+		}
+		if (title == null)
+		{
+			throw new ArgumentNullException("title");
+		}
+		IntPtr arg = NSString.CreateNative(title);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr_bool(base.Handle, selAddWindowsItemTitleFilename_Handle, win.Handle, arg, isFilename);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_bool(base.SuperHandle, selAddWindowsItemTitleFilename_Handle, win.Handle, arg, isFilename);
+		}
+		NSString.ReleaseNative(arg);
+	}
+
+	[Export("changeWindowsItem:title:filename:")]
+	public virtual void ChangeWindowsItem(NSWindow win, string title, bool isFilename)
+	{
+		EnsureUIThread();
+		if (win == null)
+		{
+			throw new ArgumentNullException("win");
+		}
+		if (title == null)
+		{
+			throw new ArgumentNullException("title");
+		}
+		IntPtr arg = NSString.CreateNative(title);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr_bool(base.Handle, selChangeWindowsItemTitleFilename_Handle, win.Handle, arg, isFilename);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_bool(base.SuperHandle, selChangeWindowsItemTitleFilename_Handle, win.Handle, arg, isFilename);
+		}
+		NSString.ReleaseNative(arg);
+	}
+
+	[Export("updateWindowsItem:")]
+	public virtual void UpdateWindowsItem(NSWindow win)
+	{
+		EnsureUIThread();
+		if (win == null)
+		{
+			throw new ArgumentNullException("win");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selUpdateWindowsItem_Handle, win.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selUpdateWindowsItem_Handle, win.Handle);
+		}
+	}
+
+	[Export("miniaturizeAll:")]
+	public virtual void MiniaturizeAll(NSObject sender)
+	{
+		EnsureUIThread();
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMiniaturizeAll_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMiniaturizeAll_Handle, sender.Handle);
+		}
+	}
+
+	[Export("orderFrontColorPanel:")]
+	public virtual void OrderFrontColorPanel(NSObject sender)
+	{
+		EnsureUIThread();
+		if (sender == null)
+		{
+			throw new ArgumentNullException("sender");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selOrderFrontColorPanel_Handle, sender.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selOrderFrontColorPanel_Handle, sender.Handle);
+		}
+	}
+
+	[Export("disableRelaunchOnLogin")]
+	[ThreadSafe]
+	public virtual void DisableRelaunchOnLogin()
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selDisableRelaunchOnLoginHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDisableRelaunchOnLoginHandle);
+		}
+	}
+
+	[Export("enableRelaunchOnLogin")]
+	[ThreadSafe]
+	public virtual void EnableRelaunchOnLogin()
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selEnableRelaunchOnLoginHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selEnableRelaunchOnLoginHandle);
+		}
+	}
+
+	[Export("enabledRemoteNotificationTypes")]
+	public virtual NSRemoteNotificationType EnabledRemoteNotificationTypes()
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return (NSRemoteNotificationType)Messaging.UInt64_objc_msgSend(base.Handle, selEnabledRemoteNotificationTypesHandle);
+		}
+		return (NSRemoteNotificationType)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selEnabledRemoteNotificationTypesHandle);
+	}
+
+	[Export("registerForRemoteNotificationTypes:")]
+	public virtual void RegisterForRemoteNotificationTypes(NSRemoteNotificationType types)
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_UInt64(base.Handle, selRegisterForRemoteNotificationTypes_Handle, (ulong)types);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selRegisterForRemoteNotificationTypes_Handle, (ulong)types);
+		}
+	}
+
+	[Export("unregisterForRemoteNotifications")]
+	public virtual void UnregisterForRemoteNotifications()
+	{
+		EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selUnregisterForRemoteNotificationsHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selUnregisterForRemoteNotificationsHandle);
+		}
 	}
 
 	[Export("restoreWindowWithIdentifier:state:completionHandler:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe virtual bool RestoreWindowWithIdentifier(string identifier, NSCoder state, [BlockProxy(typeof(Trampolines.NIDNSWindowCompletionHandler))] NSWindowCompletionHandler onCompletion)
+	public unsafe static void RestoreWindow(string identifier, NSCoder state, NSWindowCompletionHandler onCompletion)
 	{
 		EnsureUIThread();
 		if (identifier == null)
@@ -10466,432 +2980,41 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
 		IntPtr arg = NSString.CreateNative(identifier);
 		BlockLiteral blockLiteral = default(BlockLiteral);
 		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDNSWindowCompletionHandler.Handler, onCompletion);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selRestoreWindowWithIdentifier_State_CompletionHandler_Handle, arg, state.Handle, (IntPtr)ptr) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selRestoreWindowWithIdentifier_State_CompletionHandler_Handle, arg, state.Handle, (IntPtr)ptr));
+		blockLiteral.SetupBlock(Trampolines.SDNSWindowCompletionHandler.Handler, onCompletion);
+		Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selRestoreWindowWithIdentifierStateCompletionHandler_Handle, arg, state.Handle, (IntPtr)ptr);
 		NSString.ReleaseNative(arg);
 		ptr->CleanupBlock();
-		return result;
 	}
 
-	[Export("run")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void Run()
+	private _NSApplicationDelegate EnsureNSApplicationDelegate()
 	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
+		NSObject nSObject = WeakDelegate;
+		if (nSObject == null || !(nSObject is _NSApplicationDelegate))
 		{
-			Messaging.void_objc_msgSend(base.Handle, selRunHandle);
+			nSObject = (WeakDelegate = new _NSApplicationDelegate());
 		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRunHandle);
-		}
+		return (_NSApplicationDelegate)nSObject;
 	}
 
-	[Export("runModalForWindow:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint RunModalForWindow(NSWindow theWindow)
-	{
-		EnsureUIThread();
-		if (theWindow == null)
-		{
-			throw new ArgumentNullException("theWindow");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.nint_objc_msgSend_IntPtr(base.Handle, selRunModalForWindow_Handle, theWindow.Handle);
-		}
-		return Messaging.nint_objc_msgSendSuper_IntPtr(base.SuperHandle, selRunModalForWindow_Handle, theWindow.Handle);
-	}
-
-	[Export("runModalSession:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint RunModalSession(IntPtr session)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.nint_objc_msgSend_IntPtr(base.Handle, selRunModalSession_Handle, session);
-		}
-		return Messaging.nint_objc_msgSendSuper_IntPtr(base.SuperHandle, selRunModalSession_Handle, session);
-	}
-
-	[Export("sendAction:to:from:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool SendAction(Selector theAction, NSObject? theTarget, NSObject? sender)
-	{
-		EnsureUIThread();
-		if (theAction == null)
-		{
-			throw new ArgumentNullException("theAction");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selSendAction_To_From_Handle, theAction.Handle, theTarget?.Handle ?? IntPtr.Zero, sender?.Handle ?? IntPtr.Zero);
-		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selSendAction_To_From_Handle, theAction.Handle, theTarget?.Handle ?? IntPtr.Zero, sender?.Handle ?? IntPtr.Zero);
-	}
-
-	[Export("sendEvent:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SendEvent(NSEvent theEvent)
-	{
-		EnsureUIThread();
-		if (theEvent == null)
-		{
-			throw new ArgumentNullException("theEvent");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSendEvent_Handle, theEvent.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSendEvent_Handle, theEvent.Handle);
-		}
-	}
-
-	[Export("setActivationPolicy:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	protected virtual bool SetActivationPolicy(NSApplicationActivationPolicy activationPolicy)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_Int64(base.Handle, selSetActivationPolicy_Handle, (long)activationPolicy);
-		}
-		return Messaging.bool_objc_msgSendSuper_Int64(base.SuperHandle, selSetActivationPolicy_Handle, (long)activationPolicy);
-	}
-
-	[Export("setWindowsNeedUpdate:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SetWindowsNeedUpdate(bool needUpdate)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_bool(base.Handle, selSetWindowsNeedUpdate_Handle, needUpdate);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetWindowsNeedUpdate_Handle, needUpdate);
-		}
-	}
-
-	[Export("stop:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void Stop(NSObject sender)
-	{
-		EnsureUIThread();
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selStop_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selStop_Handle, sender.Handle);
-		}
-	}
-
-	[Export("stopModal")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void StopModal()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selStopModalHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selStopModalHandle);
-		}
-	}
-
-	[Export("stopModalWithCode:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void StopModalWithCode(nint returnCode)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint(base.Handle, selStopModalWithCode_Handle, returnCode);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selStopModalWithCode_Handle, returnCode);
-		}
-	}
-
-	[Export("targetForAction:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject TargetForAction(Selector theAction)
-	{
-		EnsureUIThread();
-		if (theAction == null)
-		{
-			throw new ArgumentNullException("theAction");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selTargetForAction_Handle, theAction.Handle));
-		}
-		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selTargetForAction_Handle, theAction.Handle));
-	}
-
-	[Export("targetForAction:to:from:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject TargetForAction(Selector theAction, NSObject? theTarget, NSObject? sender)
-	{
-		EnsureUIThread();
-		if (theAction == null)
-		{
-			throw new ArgumentNullException("theAction");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selTargetForAction_To_From_Handle, theAction.Handle, theTarget?.Handle ?? IntPtr.Zero, sender?.Handle ?? IntPtr.Zero));
-		}
-		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selTargetForAction_To_From_Handle, theAction.Handle, theTarget?.Handle ?? IntPtr.Zero, sender?.Handle ?? IntPtr.Zero));
-	}
-
-	[Export("terminate:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void Terminate(NSObject? sender)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selTerminate_Handle, sender?.Handle ?? IntPtr.Zero);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selTerminate_Handle, sender?.Handle ?? IntPtr.Zero);
-		}
-	}
-
-	[Export("tryToPerform:with:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool TryToPerform(Selector anAction, NSObject? target)
-	{
-		EnsureUIThread();
-		if (anAction == null)
-		{
-			throw new ArgumentNullException("anAction");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selTryToPerform_With_Handle, anAction.Handle, target?.Handle ?? IntPtr.Zero);
-		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selTryToPerform_With_Handle, anAction.Handle, target?.Handle ?? IntPtr.Zero);
-	}
-
-	[Export("unhide:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void Unhide(NSObject sender)
-	{
-		EnsureUIThread();
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selUnhide_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selUnhide_Handle, sender.Handle);
-		}
-	}
-
-	[Export("unhideAllApplications:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void UnhideAllApplications(NSObject sender)
-	{
-		EnsureUIThread();
-		if (sender == null)
-		{
-			throw new ArgumentNullException("sender");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selUnhideAllApplications_Handle, sender.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selUnhideAllApplications_Handle, sender.Handle);
-		}
-	}
-
-	[Export("unhideWithoutActivation")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void UnhideWithoutActivation()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selUnhideWithoutActivationHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selUnhideWithoutActivationHandle);
-		}
-	}
-
-	[Export("unregisterForRemoteNotifications")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void UnregisterForRemoteNotifications()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selUnregisterForRemoteNotificationsHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selUnregisterForRemoteNotificationsHandle);
-		}
-	}
-
-	[Export("updateWindows")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void UpdateWindows()
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selUpdateWindowsHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selUpdateWindowsHandle);
-		}
-	}
-
-	[Export("updateWindowsItem:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void UpdateWindowsItem(NSWindow win)
-	{
-		EnsureUIThread();
-		if (win == null)
-		{
-			throw new ArgumentNullException("win");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selUpdateWindowsItem_Handle, win.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selUpdateWindowsItem_Handle, win.Handle);
-		}
-	}
-
-	[Export("validRequestorForSendType:returnType:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject? ValidRequestor(string sendType, string returnType)
-	{
-		EnsureUIThread();
-		if (sendType == null)
-		{
-			throw new ArgumentNullException("sendType");
-		}
-		if (returnType == null)
-		{
-			throw new ArgumentNullException("returnType");
-		}
-		IntPtr arg = NSString.CreateNative(sendType);
-		IntPtr arg2 = NSString.CreateNative(returnType);
-		NSObject result = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selValidRequestorForSendType_ReturnType_Handle, arg, arg2)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selValidRequestorForSendType_ReturnType_Handle, arg, arg2)));
-		NSString.ReleaseNative(arg);
-		NSString.ReleaseNative(arg2);
-		return result;
-	}
-
-	[Export("validateMenuItem:")]
-	[Introduced(PlatformName.MacOSX, 10, 14, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool ValidateMenuItem(NSMenuItem menuItem)
-	{
-		EnsureUIThread();
-		if (menuItem == null)
-		{
-			throw new ArgumentNullException("menuItem");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selValidateMenuItem_Handle, menuItem.Handle);
-		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selValidateMenuItem_Handle, menuItem.Handle);
-	}
-
-	[Export("validateUserInterfaceItem:")]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool ValidateUserInterfaceItem(INSValidatedUserInterfaceItem item)
-	{
-		EnsureUIThread();
-		if (item == null)
-		{
-			throw new ArgumentNullException("item");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selValidateUserInterfaceItem_Handle, item.Handle);
-		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selValidateUserInterfaceItem_Handle, item.Handle);
-	}
-
-	[Export("windowWithWindowNumber:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSWindow WindowWithWindowNumber(nint windowNum)
-	{
-		EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSend_nint(base.Handle, selWindowWithWindowNumber_Handle, windowNum));
-		}
-		return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSendSuper_nint(base.SuperHandle, selWindowWithWindowNumber_Handle, windowNum));
-	}
-
-	internal virtual _NSApplicationDelegate CreateInternalEventDelegateType()
-	{
-		return new _NSApplicationDelegate();
-	}
-
-	internal _NSApplicationDelegate EnsureNSApplicationDelegate()
-	{
-		if (WeakDelegate != null)
-		{
-			EnsureEventAndDelegateAreNotMismatched(WeakDelegate, GetInternalEventDelegateType);
-		}
-		_NSApplicationDelegate nSApplicationDelegate = Delegate as _NSApplicationDelegate;
-		if (nSApplicationDelegate == null)
-		{
-			nSApplicationDelegate = (_NSApplicationDelegate)(Delegate = CreateInternalEventDelegateType());
-		}
-		return nSApplicationDelegate;
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
-			__mt_AccessibilityDisclosedByRow_var = null;
-			__mt_AccessibilityExtrasMenuBar_var = null;
-			__mt_AccessibilityMenuBar_var = null;
-			__mt_AccessibilityParent_var = null;
-			__mt_AccessibilityTitleUIElement_var = null;
-			__mt_AccessibilityTopLevelUIElement_var = null;
-			__mt_AccessibilityWindow_var = null;
 			__mt_WeakDelegate_var = null;
+			__mt_Context_var = null;
+			__mt_MainWindow_var = null;
+			__mt_KeyWindow_var = null;
+			__mt_ModalWindow_var = null;
+			__mt_CurrentEvent_var = null;
+			__mt_Windows_var = null;
+			__mt_MainMenu_var = null;
+			__mt_HelpMenu_var = null;
+			__mt_ApplicationIconImage_var = null;
+			__mt_DockTile_var = null;
+			__mt_WindowsMenu_var = null;
+			__mt_ServicesProvider_var = null;
+			__mt_ServicesMenu_var = null;
 		}
 	}
 }

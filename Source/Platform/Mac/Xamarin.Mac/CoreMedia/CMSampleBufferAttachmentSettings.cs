@@ -1,21 +1,114 @@
+using System;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreMedia;
 
-[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
 public class CMSampleBufferAttachmentSettings : DictionaryContainer
 {
+	private static class Selectors
+	{
+		public static readonly NSString NotSync;
+
+		public static readonly NSString PartialSync;
+
+		public static readonly NSString HasRedundantCoding;
+
+		public static readonly NSString IsDependedOnByOthers;
+
+		public static readonly NSString DependsOnOthers;
+
+		public static readonly NSString EarlierDisplayTimesAllowed;
+
+		public static readonly NSString DisplayImmediately;
+
+		public static readonly NSString DoNotDisplay;
+
+		public static readonly NSString ResetDecoderBeforeDecoding;
+
+		public static readonly NSString DrainAfterDecoding;
+
+		public static readonly NSString PostNotificationWhenConsumed;
+
+		public static readonly NSString ResumeOutput;
+
+		public static readonly NSString TransitionID;
+
+		public static readonly NSString TrimDurationAtStart;
+
+		public static readonly NSString TrimDurationAtEnd;
+
+		public static readonly NSString SpeedMultiplier;
+
+		public static readonly NSString Reverse;
+
+		public static readonly NSString FillDiscontinuitiesWithSilence;
+
+		public static readonly NSString EmptyMedia;
+
+		public static readonly NSString PermanentEmptyMedia;
+
+		public static readonly NSString DisplayEmptyMediaImmediately;
+
+		public static readonly NSString EndsPreviousSampleDuration;
+
+		public static readonly NSString SampleReferenceURL;
+
+		public static readonly NSString SampleReferenceByteOffset;
+
+		public static readonly NSString GradualDecoderRefresh;
+
+		static Selectors()
+		{
+			IntPtr intPtr = Dlfcn.dlopen("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia", 0);
+			if (intPtr == IntPtr.Zero)
+			{
+				return;
+			}
+			try
+			{
+				NotSync = Dlfcn.GetStringConstant(intPtr, "kCMSampleAttachmentKey_NotSync");
+				PartialSync = Dlfcn.GetStringConstant(intPtr, "kCMSampleAttachmentKey_PartialSync");
+				HasRedundantCoding = Dlfcn.GetStringConstant(intPtr, "kCMSampleAttachmentKey_HasRedundantCoding");
+				IsDependedOnByOthers = Dlfcn.GetStringConstant(intPtr, "kCMSampleAttachmentKey_IsDependedOnByOthers");
+				DependsOnOthers = Dlfcn.GetStringConstant(intPtr, "kCMSampleAttachmentKey_DependsOnOthers");
+				EarlierDisplayTimesAllowed = Dlfcn.GetStringConstant(intPtr, "kCMSampleAttachmentKey_EarlierDisplayTimesAllowed");
+				DisplayImmediately = Dlfcn.GetStringConstant(intPtr, "kCMSampleAttachmentKey_DisplayImmediately");
+				DoNotDisplay = Dlfcn.GetStringConstant(intPtr, "kCMSampleAttachmentKey_DoNotDisplay");
+				ResetDecoderBeforeDecoding = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_ResetDecoderBeforeDecoding");
+				DrainAfterDecoding = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_DrainAfterDecoding");
+				PostNotificationWhenConsumed = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_PostNotificationWhenConsumed");
+				ResumeOutput = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_ResumeOutput");
+				TransitionID = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_TransitionID");
+				TrimDurationAtStart = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_TrimDurationAtStart");
+				TrimDurationAtEnd = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_TrimDurationAtEnd");
+				SpeedMultiplier = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_SpeedMultiplier");
+				Reverse = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_Reverse");
+				FillDiscontinuitiesWithSilence = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_FillDiscontinuitiesWithSilence");
+				EmptyMedia = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_EmptyMedia");
+				PermanentEmptyMedia = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_PermanentEmptyMedia");
+				DisplayEmptyMediaImmediately = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_DisplayEmptyMediaImmediately");
+				EndsPreviousSampleDuration = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_EndsPreviousSampleDuration");
+				SampleReferenceURL = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_SampleReferenceURL");
+				SampleReferenceByteOffset = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_SampleReferenceByteOffset");
+				GradualDecoderRefresh = Dlfcn.GetStringConstant(intPtr, "kCMSampleBufferAttachmentKey_GradualDecoderRefresh");
+			}
+			finally
+			{
+				Dlfcn.dlclose(intPtr);
+			}
+		}
+	}
+
 	public bool? NotSync
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.NotSync);
+			return GetBoolValue(Selectors.NotSync);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.NotSync, value);
+			SetBooleanValue(Selectors.NotSync, value);
 		}
 	}
 
@@ -23,11 +116,11 @@ public class CMSampleBufferAttachmentSettings : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.PartialSync);
+			return GetBoolValue(Selectors.PartialSync);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.PartialSync, value);
+			SetBooleanValue(Selectors.PartialSync, value);
 		}
 	}
 
@@ -35,11 +128,11 @@ public class CMSampleBufferAttachmentSettings : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.HasRedundantCoding);
+			return GetBoolValue(Selectors.HasRedundantCoding);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.HasRedundantCoding, value);
+			SetBooleanValue(Selectors.HasRedundantCoding, value);
 		}
 	}
 
@@ -47,11 +140,11 @@ public class CMSampleBufferAttachmentSettings : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.IsDependedOnByOthers);
+			return GetBoolValue(Selectors.IsDependedOnByOthers);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.IsDependedOnByOthers, value);
+			SetBooleanValue(Selectors.IsDependedOnByOthers, value);
 		}
 	}
 
@@ -59,11 +152,11 @@ public class CMSampleBufferAttachmentSettings : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.DependsOnOthers);
+			return GetBoolValue(Selectors.DependsOnOthers);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.DependsOnOthers, value);
+			SetBooleanValue(Selectors.DependsOnOthers, value);
 		}
 	}
 
@@ -71,11 +164,11 @@ public class CMSampleBufferAttachmentSettings : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.EarlierDisplayTimesAllowed);
+			return GetBoolValue(Selectors.EarlierDisplayTimesAllowed);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.EarlierDisplayTimesAllowed, value);
+			SetBooleanValue(Selectors.EarlierDisplayTimesAllowed, value);
 		}
 	}
 
@@ -83,11 +176,11 @@ public class CMSampleBufferAttachmentSettings : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.DisplayImmediately);
+			return GetBoolValue(Selectors.DisplayImmediately);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.DisplayImmediately, value);
+			SetBooleanValue(Selectors.DisplayImmediately, value);
 		}
 	}
 
@@ -95,11 +188,11 @@ public class CMSampleBufferAttachmentSettings : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.DoNotDisplay);
+			return GetBoolValue(Selectors.DoNotDisplay);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.DoNotDisplay, value);
+			SetBooleanValue(Selectors.DoNotDisplay, value);
 		}
 	}
 
@@ -107,11 +200,11 @@ public class CMSampleBufferAttachmentSettings : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.ResetDecoderBeforeDecoding);
+			return GetBoolValue(Selectors.ResetDecoderBeforeDecoding);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.ResetDecoderBeforeDecoding, value);
+			SetBooleanValue(Selectors.ResetDecoderBeforeDecoding, value);
 		}
 	}
 
@@ -119,11 +212,11 @@ public class CMSampleBufferAttachmentSettings : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.DrainAfterDecoding);
+			return GetBoolValue(Selectors.DrainAfterDecoding);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.DrainAfterDecoding, value);
+			SetBooleanValue(Selectors.DrainAfterDecoding, value);
 		}
 	}
 
@@ -131,11 +224,11 @@ public class CMSampleBufferAttachmentSettings : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.Reverse);
+			return GetBoolValue(Selectors.Reverse);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.Reverse, value);
+			SetBooleanValue(Selectors.Reverse, value);
 		}
 	}
 
@@ -143,11 +236,11 @@ public class CMSampleBufferAttachmentSettings : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.FillDiscontinuitiesWithSilence);
+			return GetBoolValue(Selectors.FillDiscontinuitiesWithSilence);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.FillDiscontinuitiesWithSilence, value);
+			SetBooleanValue(Selectors.FillDiscontinuitiesWithSilence, value);
 		}
 	}
 
@@ -155,11 +248,11 @@ public class CMSampleBufferAttachmentSettings : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.EmptyMedia);
+			return GetBoolValue(Selectors.EmptyMedia);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.EmptyMedia, value);
+			SetBooleanValue(Selectors.EmptyMedia, value);
 		}
 	}
 
@@ -167,11 +260,11 @@ public class CMSampleBufferAttachmentSettings : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.PermanentEmptyMedia);
+			return GetBoolValue(Selectors.PermanentEmptyMedia);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.PermanentEmptyMedia, value);
+			SetBooleanValue(Selectors.PermanentEmptyMedia, value);
 		}
 	}
 
@@ -179,11 +272,11 @@ public class CMSampleBufferAttachmentSettings : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.DisplayEmptyMediaImmediately);
+			return GetBoolValue(Selectors.DisplayEmptyMediaImmediately);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.DisplayEmptyMediaImmediately, value);
+			SetBooleanValue(Selectors.DisplayEmptyMediaImmediately, value);
 		}
 	}
 
@@ -191,240 +284,15 @@ public class CMSampleBufferAttachmentSettings : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMSampleAttachmentKey.EndsPreviousSampleDuration);
+			return GetBoolValue(Selectors.EndsPreviousSampleDuration);
 		}
 		set
 		{
-			SetBooleanValue(CMSampleAttachmentKey.EndsPreviousSampleDuration, value);
-		}
-	}
-
-	public NSDictionary? PostNotificationWhenConsumed
-	{
-		get
-		{
-			return GetNSDictionary(CMSampleAttachmentKey.PostNotificationWhenConsumedKey);
-		}
-		set
-		{
-			SetNativeValue(CMSampleAttachmentKey.PostNotificationWhenConsumedKey, value);
-		}
-	}
-
-	public bool? ResumeOutput
-	{
-		get
-		{
-			return GetBoolValue(CMSampleAttachmentKey.ResumeOutputKey);
-		}
-		set
-		{
-			SetBooleanValue(CMSampleAttachmentKey.ResumeOutputKey, value);
-		}
-	}
-
-	public int? TransitionId
-	{
-		get
-		{
-			return GetInt32Value(CMSampleAttachmentKey.TransitionIdKey);
-		}
-		set
-		{
-			SetNumberValue(CMSampleAttachmentKey.TransitionIdKey, value);
-		}
-	}
-
-	public NSDictionary? TrimDurationAtStart
-	{
-		get
-		{
-			return GetNSDictionary(CMSampleAttachmentKey.TrimDurationAtStartKey);
-		}
-		set
-		{
-			SetNativeValue(CMSampleAttachmentKey.TrimDurationAtStartKey, value);
-		}
-	}
-
-	public NSDictionary? TrimDurationAtEnd
-	{
-		get
-		{
-			return GetNSDictionary(CMSampleAttachmentKey.TrimDurationAtEndKey);
-		}
-		set
-		{
-			SetNativeValue(CMSampleAttachmentKey.TrimDurationAtEndKey, value);
-		}
-	}
-
-	public float? SpeedMultiplier
-	{
-		get
-		{
-			return GetFloatValue(CMSampleAttachmentKey.SpeedMultiplierKey);
-		}
-		set
-		{
-			SetNumberValue(CMSampleAttachmentKey.SpeedMultiplierKey, value);
-		}
-	}
-
-	public NSUrl? SampleReferenceUrl
-	{
-		get
-		{
-			return base.Dictionary[CMSampleAttachmentKey.SampleReferenceUrlKey] as NSUrl;
-		}
-		set
-		{
-			SetNativeValue(CMSampleAttachmentKey.SampleReferenceUrlKey, value);
-		}
-	}
-
-	public int? SampleReferenceByteOffset
-	{
-		get
-		{
-			return GetInt32Value(CMSampleAttachmentKey.SampleReferenceByteOffsetKey);
-		}
-		set
-		{
-			SetNumberValue(CMSampleAttachmentKey.SampleReferenceByteOffsetKey, value);
-		}
-	}
-
-	public NSNumber? GradualDecoderRefresh
-	{
-		get
-		{
-			return base.Dictionary[CMSampleAttachmentKey.GradualDecoderRefreshKey] as NSNumber;
-		}
-		set
-		{
-			SetNativeValue(CMSampleAttachmentKey.GradualDecoderRefreshKey, value);
-		}
-	}
-
-	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
-	public CMHevcTemporalLevelInfoSettings? HevcTemporalLevelInfo
-	{
-		get
-		{
-			return GetStrongDictionary<CMHevcTemporalLevelInfoSettings>(CMSampleAttachmentKey.HevcTemporalLevelInfoKey);
-		}
-		set
-		{
-			SetNativeValue(CMSampleAttachmentKey.HevcTemporalLevelInfoKey, value.GetDictionary());
-		}
-	}
-
-	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
-	public bool? HevcTemporalSubLayerAccess
-	{
-		get
-		{
-			return GetBoolValue(CMSampleAttachmentKey.HevcTemporalSubLayerAccessKey);
-		}
-		set
-		{
-			SetBooleanValue(CMSampleAttachmentKey.HevcTemporalSubLayerAccessKey, value);
-		}
-	}
-
-	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
-	public bool? HevcStepwiseTemporalSubLayerAccess
-	{
-		get
-		{
-			return GetBoolValue(CMSampleAttachmentKey.HevcStepwiseTemporalSubLayerAccessKey);
-		}
-		set
-		{
-			SetBooleanValue(CMSampleAttachmentKey.HevcStepwiseTemporalSubLayerAccessKey, value);
-		}
-	}
-
-	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
-	public int? HevcSyncSampleNalUnitType
-	{
-		get
-		{
-			return GetInt32Value(CMSampleAttachmentKey.HevcSyncSampleNalUnitTypeKey);
-		}
-		set
-		{
-			SetNumberValue(CMSampleAttachmentKey.HevcSyncSampleNalUnitTypeKey, value);
-		}
-	}
-
-	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
-	public NSData? CameraIntrinsicMatrix
-	{
-		get
-		{
-			return base.Dictionary[CMSampleAttachmentKey.CameraIntrinsicMatrixKey] as NSData;
-		}
-		set
-		{
-			SetNativeValue(CMSampleAttachmentKey.CameraIntrinsicMatrixKey, value);
-		}
-	}
-
-	[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-	public nint? AudioIndependentSampleDecoderRefreshCount
-	{
-		get
-		{
-			return GetNIntValue(CMSampleAttachmentKey.AudioIndependentSampleDecoderRefreshCountKey);
-		}
-		set
-		{
-			SetNumberValue(CMSampleAttachmentKey.AudioIndependentSampleDecoderRefreshCountKey, value);
-		}
-	}
-
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-	public bool? ForceKeyFrame
-	{
-		get
-		{
-			return GetBoolValue(CMSampleAttachmentKey.ForceKeyFrameKey);
-		}
-		set
-		{
-			SetBooleanValue(CMSampleAttachmentKey.ForceKeyFrameKey, value);
+			SetBooleanValue(Selectors.EndsPreviousSampleDuration, value);
 		}
 	}
 
 	internal CMSampleBufferAttachmentSettings(NSMutableDictionary dictionary)
-		: base(dictionary)
-	{
-	}
-
-	[Preserve(Conditional = true)]
-	public CMSampleBufferAttachmentSettings()
-		: base(new NSMutableDictionary())
-	{
-	}
-
-	[Preserve(Conditional = true)]
-	public CMSampleBufferAttachmentSettings(NSDictionary dictionary)
 		: base(dictionary)
 	{
 	}

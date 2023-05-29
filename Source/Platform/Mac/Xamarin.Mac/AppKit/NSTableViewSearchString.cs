@@ -1,5 +1,3 @@
-using Xamarin.Mac.System.Mac;
-
 namespace AppKit;
 
-public delegate nint NSTableViewSearchString(NSTableView tableView, nint startRow, nint endRow, string searchString);
+public delegate long NSTableViewSearchString(NSTableView tableView, long startRow, long endRow, string searchString);

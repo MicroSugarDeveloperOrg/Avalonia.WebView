@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using AppKit;
 using CoreGraphics;
 using Foundation;
@@ -10,187 +11,135 @@ namespace QTKit;
 [Register("QTTrack", true)]
 public class QTTrack : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddImage_ForDuration_WithAttributes_ = "addImage:forDuration:withAttributes:";
-
-	private static readonly IntPtr selAddImage_ForDuration_WithAttributes_Handle = Selector.GetHandle("addImage:forDuration:withAttributes:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selApertureModeDimensionsForMode_ = "apertureModeDimensionsForMode:";
-
-	private static readonly IntPtr selApertureModeDimensionsForMode_Handle = Selector.GetHandle("apertureModeDimensionsForMode:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAttributeForKey_ = "attributeForKey:";
-
-	private static readonly IntPtr selAttributeForKey_Handle = Selector.GetHandle("attributeForKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeleteSegment_ = "deleteSegment:";
-
-	private static readonly IntPtr selDeleteSegment_Handle = Selector.GetHandle("deleteSegment:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGenerateApertureModeDimensions = "generateApertureModeDimensions";
-
-	private static readonly IntPtr selGenerateApertureModeDimensionsHandle = Selector.GetHandle("generateApertureModeDimensions");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithQuickTimeTrack_Error_ = "initWithQuickTimeTrack:error:";
-
-	private static readonly IntPtr selInitWithQuickTimeTrack_Error_Handle = Selector.GetHandle("initWithQuickTimeTrack:error:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInsertEmptySegmentAt_ = "insertEmptySegmentAt:";
-
-	private static readonly IntPtr selInsertEmptySegmentAt_Handle = Selector.GetHandle("insertEmptySegmentAt:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInsertSegmentOfTrack_FromRange_ScaledToRange_ = "insertSegmentOfTrack:fromRange:scaledToRange:";
-
-	private static readonly IntPtr selInsertSegmentOfTrack_FromRange_ScaledToRange_Handle = Selector.GetHandle("insertSegmentOfTrack:fromRange:scaledToRange:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInsertSegmentOfTrack_TimeRange_AtTime_ = "insertSegmentOfTrack:timeRange:atTime:";
-
-	private static readonly IntPtr selInsertSegmentOfTrack_TimeRange_AtTime_Handle = Selector.GetHandle("insertSegmentOfTrack:timeRange:atTime:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsEnabled = "isEnabled";
-
-	private static readonly IntPtr selIsEnabledHandle = Selector.GetHandle("isEnabled");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMedia = "media";
+	private static readonly IntPtr selMovieHandle = Selector.GetHandle("movie");
 
 	private static readonly IntPtr selMediaHandle = Selector.GetHandle("media");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMovie = "movie";
-
-	private static readonly IntPtr selMovieHandle = Selector.GetHandle("movie");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selQuickTimeTrack = "quickTimeTrack";
-
 	private static readonly IntPtr selQuickTimeTrackHandle = Selector.GetHandle("quickTimeTrack");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveApertureModeDimensions = "removeApertureModeDimensions";
-
-	private static readonly IntPtr selRemoveApertureModeDimensionsHandle = Selector.GetHandle("removeApertureModeDimensions");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selScaleSegment_NewDuration_ = "scaleSegment:newDuration:";
-
-	private static readonly IntPtr selScaleSegment_NewDuration_Handle = Selector.GetHandle("scaleSegment:newDuration:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetApertureModeDimensions_ForMode_ = "setApertureModeDimensions:forMode:";
-
-	private static readonly IntPtr selSetApertureModeDimensions_ForMode_Handle = Selector.GetHandle("setApertureModeDimensions:forMode:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAttribute_ForKey_ = "setAttribute:forKey:";
-
-	private static readonly IntPtr selSetAttribute_ForKey_Handle = Selector.GetHandle("setAttribute:forKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetEnabled_ = "setEnabled:";
+	private static readonly IntPtr selIsEnabledHandle = Selector.GetHandle("isEnabled");
 
 	private static readonly IntPtr selSetEnabled_Handle = Selector.GetHandle("setEnabled:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetTrackAttributes_ = "setTrackAttributes:";
-
-	private static readonly IntPtr selSetTrackAttributes_Handle = Selector.GetHandle("setTrackAttributes:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetVolume_ = "setVolume:";
+	private static readonly IntPtr selVolumeHandle = Selector.GetHandle("volume");
 
 	private static readonly IntPtr selSetVolume_Handle = Selector.GetHandle("setVolume:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTrackAttributes = "trackAttributes";
-
 	private static readonly IntPtr selTrackAttributesHandle = Selector.GetHandle("trackAttributes");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTrackWithQuickTimeTrack_Error_ = "trackWithQuickTimeTrack:error:";
+	private static readonly IntPtr selSetTrackAttributes_Handle = Selector.GetHandle("setTrackAttributes:");
 
-	private static readonly IntPtr selTrackWithQuickTimeTrack_Error_Handle = Selector.GetHandle("trackWithQuickTimeTrack:error:");
+	private static readonly IntPtr selTrackWithQuickTimeTrackError_Handle = Selector.GetHandle("trackWithQuickTimeTrack:error:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selVolume = "volume";
+	private static readonly IntPtr selInitWithQuickTimeTrackError_Handle = Selector.GetHandle("initWithQuickTimeTrack:error:");
 
-	private static readonly IntPtr selVolumeHandle = Selector.GetHandle("volume");
+	private static readonly IntPtr selAttributeForKey_Handle = Selector.GetHandle("attributeForKey:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("QTTrack");
+	private static readonly IntPtr selSetAttributeForKey_Handle = Selector.GetHandle("setAttribute:forKey:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _BoundsAttribute;
+	private static readonly IntPtr selInsertSegmentOfTrackTimeRangeAtTime_Handle = Selector.GetHandle("insertSegmentOfTrack:timeRange:atTime:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _CreationTimeAttribute;
+	private static readonly IntPtr selInsertSegmentOfTrackFromRangeScaledToRange_Handle = Selector.GetHandle("insertSegmentOfTrack:fromRange:scaledToRange:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DimensionsAttribute;
+	private static readonly IntPtr selInsertEmptySegmentAt_Handle = Selector.GetHandle("insertEmptySegmentAt:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DisplayNameAttribute;
+	private static readonly IntPtr selDeleteSegment_Handle = Selector.GetHandle("deleteSegment:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _EnabledAttribute;
+	private static readonly IntPtr selScaleSegmentNewDuration_Handle = Selector.GetHandle("scaleSegment:newDuration:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _FormatSummaryAttribute;
+	private static readonly IntPtr selAddImageForDurationWithAttributes_Handle = Selector.GetHandle("addImage:forDuration:withAttributes:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _HasApertureModeDimensionsAttribute;
+	private static readonly IntPtr selApertureModeDimensionsForMode_Handle = Selector.GetHandle("apertureModeDimensionsForMode:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _IDAttribute;
+	private static readonly IntPtr selSetApertureModeDimensionsForMode_Handle = Selector.GetHandle("setApertureModeDimensions:forMode:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _IsChapterTrackAttribute;
+	private static readonly IntPtr selGenerateApertureModeDimensionsHandle = Selector.GetHandle("generateApertureModeDimensions");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _LayerAttribute;
+	private static readonly IntPtr selRemoveApertureModeDimensionsHandle = Selector.GetHandle("removeApertureModeDimensions");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _MediaTypeAttribute;
+	private static readonly IntPtr class_ptr = Class.GetHandle("QTTrack");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ModificationTimeAttribute;
+	private object __mt_Movie_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _RangeAttribute;
+	private object __mt_Media_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _TimeScaleAttribute;
+	private object __mt_TrackAttributes_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _UsageInMovieAttribute;
+	private static NSString _BoundsAttribute;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _UsageInPosterAttribute;
+	private static NSString _CreationTimeAttribute;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _UsageInPreviewAttribute;
+	private static NSString _DimensionsAttribute;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _VolumeAttribute;
+	private static NSString _DisplayNameAttribute;
+
+	private static NSString _EnabledAttribute;
+
+	private static NSString _FormatSummaryAttribute;
+
+	private static NSString _IsChapterTrackAttribute;
+
+	private static NSString _HasApertureModeDimensionsAttribute;
+
+	private static NSString _IDAttribute;
+
+	private static NSString _LayerAttribute;
+
+	private static NSString _MediaTypeAttribute;
+
+	private static NSString _ModificationTimeAttribute;
+
+	private static NSString _RangeAttribute;
+
+	private static NSString _TimeScaleAttribute;
+
+	private static NSString _UsageInMovieAttribute;
+
+	private static NSString _UsageInPosterAttribute;
+
+	private static NSString _UsageInPreviewAttribute;
+
+	private static NSString _VolumeAttribute;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual QTMovie Movie
+	{
+		[Export("movie")]
+		get
+		{
+			return (QTMovie)(__mt_Movie_var = ((!IsDirectBinding) ? ((QTMovie)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMovieHandle))) : ((QTMovie)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMovieHandle)))));
+		}
+	}
+
+	public virtual QTMedia Media
+	{
+		[Export("media")]
+		get
+		{
+			return (QTMedia)(__mt_Media_var = ((!IsDirectBinding) ? ((QTMedia)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMediaHandle))) : ((QTMedia)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMediaHandle)))));
+		}
+	}
+
+	public virtual IntPtr QuickTimeTrack
+	{
+		[Export("quickTimeTrack")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.IntPtr_objc_msgSend(base.Handle, selQuickTimeTrackHandle);
+			}
+			return Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selQuickTimeTrackHandle);
+		}
+	}
+
 	public virtual bool Enabled
 	{
 		[Export("isEnabled")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsEnabledHandle);
 			}
@@ -199,7 +148,7 @@ public class QTTrack : NSObject
 		[Export("setEnabled:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetEnabled_Handle, value);
 			}
@@ -210,89 +159,12 @@ public class QTTrack : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual QTMedia Media
-	{
-		[Export("media")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<QTMedia>(Messaging.IntPtr_objc_msgSend(base.Handle, selMediaHandle));
-			}
-			return Runtime.GetNSObject<QTMedia>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMediaHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual QTMovie Movie
-	{
-		[Export("movie")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<QTMovie>(Messaging.IntPtr_objc_msgSend(base.Handle, selMovieHandle));
-			}
-			return Runtime.GetNSObject<QTMovie>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMovieHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 3, 0, PlatformArchitecture.Arch32, null)]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, null)]
-	public virtual IntPtr QuickTimeTrack
-	{
-		[Introduced(PlatformName.MacOSX, 10, 3, 0, PlatformArchitecture.Arch32, null)]
-		[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, null)]
-		[Export("quickTimeTrack")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.IntPtr_objc_msgSend(base.Handle, selQuickTimeTrackHandle);
-			}
-			return Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selQuickTimeTrackHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary TrackAttributes
-	{
-		[Export("trackAttributes")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selTrackAttributesHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTrackAttributesHandle));
-		}
-		[Export("setTrackAttributes:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTrackAttributes_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTrackAttributes_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual float Volume
 	{
 		[Export("volume")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.float_objc_msgSend(base.Handle, selVolumeHandle);
 			}
@@ -301,7 +173,7 @@ public class QTTrack : NSObject
 		[Export("setVolume:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_float(base.Handle, selSetVolume_Handle, value);
 			}
@@ -309,6 +181,32 @@ public class QTTrack : NSObject
 			{
 				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetVolume_Handle, value);
 			}
+		}
+	}
+
+	public virtual NSDictionary TrackAttributes
+	{
+		[Export("trackAttributes")]
+		get
+		{
+			return (NSDictionary)(__mt_TrackAttributes_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTrackAttributesHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTrackAttributesHandle)))));
+		}
+		[Export("setTrackAttributes:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTrackAttributes_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTrackAttributes_Handle, value.Handle);
+			}
+			__mt_TrackAttributes_var = value;
 		}
 	}
 
@@ -390,6 +288,19 @@ public class QTTrack : NSObject
 		}
 	}
 
+	[Field("QTTrackIsChapterTrackAttribute", "QTKit")]
+	public static NSString IsChapterTrackAttribute
+	{
+		get
+		{
+			if (_IsChapterTrackAttribute == null)
+			{
+				_IsChapterTrackAttribute = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTTrackIsChapterTrackAttribute");
+			}
+			return _IsChapterTrackAttribute;
+		}
+	}
+
 	[Field("QTTrackHasApertureModeDimensionsAttribute", "QTKit")]
 	public static NSString HasApertureModeDimensionsAttribute
 	{
@@ -413,19 +324,6 @@ public class QTTrack : NSObject
 				_IDAttribute = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTTrackIDAttribute");
 			}
 			return _IDAttribute;
-		}
-	}
-
-	[Field("QTTrackIsChapterTrackAttribute", "QTKit")]
-	public static NSString IsChapterTrackAttribute
-	{
-		get
-		{
-			if (_IsChapterTrackAttribute == null)
-			{
-				_IsChapterTrackAttribute = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTTrackIsChapterTrackAttribute");
-			}
-			return _IsChapterTrackAttribute;
 		}
 	}
 
@@ -555,133 +453,80 @@ public class QTTrack : NSObject
 		AddImage(image, forDuration, attributes.ToDictionary());
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public QTTrack()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected QTTrack(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public QTTrack(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public QTTrack(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal QTTrack(IntPtr handle)
+	public QTTrack(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("initWithQuickTimeTrack:error:")]
-	[Introduced(PlatformName.MacOSX, 10, 3, 0, PlatformArchitecture.Arch32, null)]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public QTTrack(IntPtr quicktimeTrack, out NSError error)
-		: base(NSObjectFlag.Empty)
-	{
-		IntPtr arg = IntPtr.Zero;
-		if (base.IsDirectBinding)
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_ref_IntPtr(base.Handle, selInitWithQuickTimeTrack_Error_Handle, quicktimeTrack, ref arg), "initWithQuickTimeTrack:error:");
-		}
-		else
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_ref_IntPtr(base.SuperHandle, selInitWithQuickTimeTrack_Error_Handle, quicktimeTrack, ref arg), "initWithQuickTimeTrack:error:");
-		}
-		error = Runtime.GetNSObject<NSError>(arg);
-	}
-
-	[Export("addImage:forDuration:withAttributes:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void AddImage(NSImage image, QTTime forDuration, NSDictionary attributes)
-	{
-		if (image == null)
-		{
-			throw new ArgumentNullException("image");
-		}
-		if (attributes == null)
-		{
-			throw new ArgumentNullException("attributes");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_QTTime_IntPtr(base.Handle, selAddImage_ForDuration_WithAttributes_Handle, image.Handle, forDuration, attributes.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_QTTime_IntPtr(base.SuperHandle, selAddImage_ForDuration_WithAttributes_Handle, image.Handle, forDuration, attributes.Handle);
-		}
-	}
-
-	[Export("apertureModeDimensionsForMode:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGSize ApertureModeDimensionsForMode(string mode)
-	{
-		if (mode == null)
-		{
-			throw new ArgumentNullException("mode");
-		}
-		IntPtr arg = NSString.CreateNative(mode);
-		CGSize result = ((!base.IsDirectBinding) ? Messaging.CGSize_objc_msgSendSuper_IntPtr(base.SuperHandle, selApertureModeDimensionsForMode_Handle, arg) : Messaging.CGSize_objc_msgSend_IntPtr(base.Handle, selApertureModeDimensionsForMode_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("deleteSegment:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DeleteSegment(QTTimeRange segment)
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_QTTimeRange(base.Handle, selDeleteSegment_Handle, segment);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_QTTimeRange(base.SuperHandle, selDeleteSegment_Handle, segment);
-		}
-	}
-
 	[Export("trackWithQuickTimeTrack:error:")]
-	[Introduced(PlatformName.MacOSX, 10, 3, 0, PlatformArchitecture.Arch32, null)]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSObject FromQuickTimeTrack(IntPtr quicktimeTrack, out NSError error)
 	{
-		IntPtr arg = IntPtr.Zero;
-		NSObject nSObject = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_ref_IntPtr(class_ptr, selTrackWithQuickTimeTrack_Error_Handle, quicktimeTrack, ref arg));
-		error = Runtime.GetNSObject<NSError>(arg);
+		IntPtr intPtr = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr, 0);
+		NSObject nSObject = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selTrackWithQuickTimeTrackError_Handle, quicktimeTrack, intPtr));
+		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
+		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
+		Marshal.FreeHGlobal(intPtr);
 		return nSObject;
 	}
 
-	[Export("generateApertureModeDimensions")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void GenerateApertureModeDimensions()
+	[Export("initWithQuickTimeTrack:error:")]
+	public QTTrack(IntPtr quicktimeTrack, out NSError error)
+		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		IntPtr intPtr = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr, 0);
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selGenerateApertureModeDimensionsHandle);
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithQuickTimeTrackError_Handle, quicktimeTrack, intPtr);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selGenerateApertureModeDimensionsHandle);
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithQuickTimeTrackError_Handle, quicktimeTrack, intPtr);
 		}
+		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
+		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
+		Marshal.FreeHGlobal(intPtr);
 	}
 
 	[Export("attributeForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSObject GetAttribute(string attributeKey)
 	{
 		if (attributeKey == null)
@@ -689,111 +534,12 @@ public class QTTrack : NSObject
 			throw new ArgumentNullException("attributeKey");
 		}
 		IntPtr arg = NSString.CreateNative(attributeKey);
-		NSObject result = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAttributeForKey_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAttributeForKey_Handle, arg)));
+		NSObject result = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAttributeForKey_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAttributeForKey_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
-	[Export("insertEmptySegmentAt:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void InsertEmptySegment(QTTimeRange range)
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_QTTimeRange(base.Handle, selInsertEmptySegmentAt_Handle, range);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_QTTimeRange(base.SuperHandle, selInsertEmptySegmentAt_Handle, range);
-		}
-	}
-
-	[Export("insertSegmentOfTrack:timeRange:atTime:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void InsertSegmentOfTrack(QTTrack track, QTTimeRange timeRange, QTTime atTime)
-	{
-		if (track == null)
-		{
-			throw new ArgumentNullException("track");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_QTTimeRange_QTTime(base.Handle, selInsertSegmentOfTrack_TimeRange_AtTime_Handle, track.Handle, timeRange, atTime);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_QTTimeRange_QTTime(base.SuperHandle, selInsertSegmentOfTrack_TimeRange_AtTime_Handle, track.Handle, timeRange, atTime);
-		}
-	}
-
-	[Export("insertSegmentOfTrack:fromRange:scaledToRange:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void InsertSegmentOfTrack(QTTrack track, QTTimeRange fromRange, QTTimeRange scaledToRange)
-	{
-		if (track == null)
-		{
-			throw new ArgumentNullException("track");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_QTTimeRange_QTTimeRange(base.Handle, selInsertSegmentOfTrack_FromRange_ScaledToRange_Handle, track.Handle, fromRange, scaledToRange);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_QTTimeRange_QTTimeRange(base.SuperHandle, selInsertSegmentOfTrack_FromRange_ScaledToRange_Handle, track.Handle, fromRange, scaledToRange);
-		}
-	}
-
-	[Export("removeApertureModeDimensions")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RemoveApertureModeDimensions()
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selRemoveApertureModeDimensionsHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRemoveApertureModeDimensionsHandle);
-		}
-	}
-
-	[Export("scaleSegment:newDuration:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ScaleSegmentnewDuration(QTTimeRange segment, QTTime newDuration)
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_QTTimeRange_QTTime(base.Handle, selScaleSegment_NewDuration_Handle, segment, newDuration);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_QTTimeRange_QTTime(base.SuperHandle, selScaleSegment_NewDuration_Handle, segment, newDuration);
-		}
-	}
-
-	[Export("setApertureModeDimensions:forMode:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SetApertureModeDimensionsforMode(CGSize dimensions, string mode)
-	{
-		if (mode == null)
-		{
-			throw new ArgumentNullException("mode");
-		}
-		IntPtr arg = NSString.CreateNative(mode);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGSize_IntPtr(base.Handle, selSetApertureModeDimensions_ForMode_Handle, dimensions, arg);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGSize_IntPtr(base.SuperHandle, selSetApertureModeDimensions_ForMode_Handle, dimensions, arg);
-		}
-		NSString.ReleaseNative(arg);
-	}
-
 	[Export("setAttribute:forKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SetAttribute(NSObject value, string attributeKey)
 	{
 		if (value == null)
@@ -805,14 +551,177 @@ public class QTTrack : NSObject
 			throw new ArgumentNullException("attributeKey");
 		}
 		IntPtr arg = NSString.CreateNative(attributeKey);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetAttribute_ForKey_Handle, value.Handle, arg);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetAttributeForKey_Handle, value.Handle, arg);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetAttribute_ForKey_Handle, value.Handle, arg);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetAttributeForKey_Handle, value.Handle, arg);
 		}
 		NSString.ReleaseNative(arg);
+	}
+
+	[Export("insertSegmentOfTrack:timeRange:atTime:")]
+	public virtual void InsertSegmentOfTrack(QTTrack track, QTTimeRange timeRange, QTTime atTime)
+	{
+		if (track == null)
+		{
+			throw new ArgumentNullException("track");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_QTTimeRange_QTTime(base.Handle, selInsertSegmentOfTrackTimeRangeAtTime_Handle, track.Handle, timeRange, atTime);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_QTTimeRange_QTTime(base.SuperHandle, selInsertSegmentOfTrackTimeRangeAtTime_Handle, track.Handle, timeRange, atTime);
+		}
+	}
+
+	[Export("insertSegmentOfTrack:fromRange:scaledToRange:")]
+	public virtual void InsertSegmentOfTrack(QTTrack track, QTTimeRange fromRange, QTTimeRange scaledToRange)
+	{
+		if (track == null)
+		{
+			throw new ArgumentNullException("track");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_QTTimeRange_QTTimeRange(base.Handle, selInsertSegmentOfTrackFromRangeScaledToRange_Handle, track.Handle, fromRange, scaledToRange);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_QTTimeRange_QTTimeRange(base.SuperHandle, selInsertSegmentOfTrackFromRangeScaledToRange_Handle, track.Handle, fromRange, scaledToRange);
+		}
+	}
+
+	[Export("insertEmptySegmentAt:")]
+	public virtual void InsertEmptySegment(QTTimeRange range)
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_QTTimeRange(base.Handle, selInsertEmptySegmentAt_Handle, range);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_QTTimeRange(base.SuperHandle, selInsertEmptySegmentAt_Handle, range);
+		}
+	}
+
+	[Export("deleteSegment:")]
+	public virtual void DeleteSegment(QTTimeRange segment)
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_QTTimeRange(base.Handle, selDeleteSegment_Handle, segment);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_QTTimeRange(base.SuperHandle, selDeleteSegment_Handle, segment);
+		}
+	}
+
+	[Export("scaleSegment:newDuration:")]
+	public virtual void ScaleSegmentnewDuration(QTTimeRange segment, QTTime newDuration)
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_QTTimeRange_QTTime(base.Handle, selScaleSegmentNewDuration_Handle, segment, newDuration);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_QTTimeRange_QTTime(base.SuperHandle, selScaleSegmentNewDuration_Handle, segment, newDuration);
+		}
+	}
+
+	[Export("addImage:forDuration:withAttributes:")]
+	public virtual void AddImage(NSImage image, QTTime forDuration, NSDictionary attributes)
+	{
+		if (image == null)
+		{
+			throw new ArgumentNullException("image");
+		}
+		if (attributes == null)
+		{
+			throw new ArgumentNullException("attributes");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_QTTime_IntPtr(base.Handle, selAddImageForDurationWithAttributes_Handle, image.Handle, forDuration, attributes.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_QTTime_IntPtr(base.SuperHandle, selAddImageForDurationWithAttributes_Handle, image.Handle, forDuration, attributes.Handle);
+		}
+	}
+
+	[Export("apertureModeDimensionsForMode:")]
+	public virtual CGSize ApertureModeDimensionsForMode(string mode)
+	{
+		if (mode == null)
+		{
+			throw new ArgumentNullException("mode");
+		}
+		IntPtr arg = NSString.CreateNative(mode);
+		CGSize result = ((!IsDirectBinding) ? Messaging.CGSize_objc_msgSendSuper_IntPtr(base.SuperHandle, selApertureModeDimensionsForMode_Handle, arg) : Messaging.CGSize_objc_msgSend_IntPtr(base.Handle, selApertureModeDimensionsForMode_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("setApertureModeDimensions:forMode:")]
+	public virtual void SetApertureModeDimensionsforMode(CGSize dimensions, string mode)
+	{
+		if (mode == null)
+		{
+			throw new ArgumentNullException("mode");
+		}
+		IntPtr arg = NSString.CreateNative(mode);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGSize_IntPtr(base.Handle, selSetApertureModeDimensionsForMode_Handle, dimensions, arg);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGSize_IntPtr(base.SuperHandle, selSetApertureModeDimensionsForMode_Handle, dimensions, arg);
+		}
+		NSString.ReleaseNative(arg);
+	}
+
+	[Export("generateApertureModeDimensions")]
+	public virtual void GenerateApertureModeDimensions()
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selGenerateApertureModeDimensionsHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selGenerateApertureModeDimensionsHandle);
+		}
+	}
+
+	[Export("removeApertureModeDimensions")]
+	public virtual void RemoveApertureModeDimensions()
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selRemoveApertureModeDimensionsHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRemoveApertureModeDimensionsHandle);
+		}
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_Movie_var = null;
+			__mt_Media_var = null;
+			__mt_TrackAttributes_var = null;
+		}
 	}
 }

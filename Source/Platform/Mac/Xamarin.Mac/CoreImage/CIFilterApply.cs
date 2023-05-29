@@ -5,28 +5,24 @@ namespace CoreImage;
 
 public static class CIFilterApply
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _OptionColorSpace;
+	private static NSString _OptionExtent;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _OptionDefinition;
+	private static NSString _OptionDefinition;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _OptionExtent;
+	private static NSString _OptionUserInfo;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _OptionUserInfo;
+	private static NSString _OptionColorSpace;
 
-	[Field("kCIApplyOptionColorSpace", "Quartz")]
-	public static NSString OptionColorSpace
+	[Field("kCIApplyOptionExtent", "Quartz")]
+	public static NSString OptionExtent
 	{
 		get
 		{
-			if (_OptionColorSpace == null)
+			if (_OptionExtent == null)
 			{
-				_OptionColorSpace = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIApplyOptionColorSpace");
+				_OptionExtent = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIApplyOptionExtent");
 			}
-			return _OptionColorSpace;
+			return _OptionExtent;
 		}
 	}
 
@@ -43,19 +39,6 @@ public static class CIFilterApply
 		}
 	}
 
-	[Field("kCIApplyOptionExtent", "Quartz")]
-	public static NSString OptionExtent
-	{
-		get
-		{
-			if (_OptionExtent == null)
-			{
-				_OptionExtent = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIApplyOptionExtent");
-			}
-			return _OptionExtent;
-		}
-	}
-
 	[Field("kCIApplyOptionUserInfo", "Quartz")]
 	public static NSString OptionUserInfo
 	{
@@ -66,6 +49,19 @@ public static class CIFilterApply
 				_OptionUserInfo = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIApplyOptionUserInfo");
 			}
 			return _OptionUserInfo;
+		}
+	}
+
+	[Field("kCIApplyOptionColorSpace", "Quartz")]
+	public static NSString OptionColorSpace
+	{
+		get
+		{
+			if (_OptionColorSpace == null)
+			{
+				_OptionColorSpace = Dlfcn.GetStringConstant(Libraries.Quartz.Handle, "kCIApplyOptionColorSpace");
+			}
+			return _OptionColorSpace;
 		}
 	}
 }

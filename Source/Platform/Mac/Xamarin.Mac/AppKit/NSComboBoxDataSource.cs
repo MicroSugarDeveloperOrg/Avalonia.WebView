@@ -1,66 +1,76 @@
+using System;
 using System.ComponentModel;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
-[Protocol]
-[Register("NSComboBoxDataSource", false)]
+[Register("NSComboBoxDataSource", true)]
 [Model]
-public class NSComboBoxDataSource : NSObject, INSComboBoxDataSource, INativeObject, IDisposable
+public class NSComboBoxDataSource : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSComboBoxDataSource()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSComboBoxDataSource(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSComboBoxDataSource(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSComboBoxDataSource(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSComboBoxDataSource(IntPtr handle)
+	public NSComboBoxDataSource(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
+	}
+
+	[Export("comboBox:objectValueForItemAtIndex:")]
+	public virtual NSObject ObjectValueForItem(NSComboBox comboBox, long index)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("numberOfItemsInComboBox:")]
+	public virtual long ItemCount(NSComboBox comboBox)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("comboBox:completedString:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string CompletedString(NSComboBox comboBox, string uncompletedString)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("comboBox:indexOfItemWithStringValue:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint IndexOfItem(NSComboBox comboBox, string value)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("numberOfItemsInComboBox:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint ItemCount(NSComboBox comboBox)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("comboBox:objectValueForItemAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject ObjectValueForItem(NSComboBox comboBox, nint index)
+	public virtual long IndexOfItem(NSComboBox comboBox, string value)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

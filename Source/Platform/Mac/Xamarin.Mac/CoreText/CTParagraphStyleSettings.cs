@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
-using Xamarin.Mac.System.Mac;
+using ObjCRuntime;
 
 namespace CoreText;
 
+[Since(3, 2)]
 public class CTParagraphStyleSettings
 {
 	public IEnumerable<CTTextTab> TabStops { get; set; }
@@ -13,33 +15,31 @@ public class CTParagraphStyleSettings
 
 	public CTWritingDirection? BaseWritingDirection { get; set; }
 
-	public CTLineBoundsOptions? LineBoundsOptions { get; set; }
+	public float? FirstLineHeadIndent { get; set; }
 
-	public nfloat? FirstLineHeadIndent { get; set; }
+	public float? HeadIndent { get; set; }
 
-	public nfloat? HeadIndent { get; set; }
+	public float? TailIndent { get; set; }
 
-	public nfloat? TailIndent { get; set; }
+	public float? DefaultTabInterval { get; set; }
 
-	public nfloat? DefaultTabInterval { get; set; }
+	public float? LineHeightMultiple { get; set; }
 
-	public nfloat? LineHeightMultiple { get; set; }
+	public float? MaximumLineHeight { get; set; }
 
-	public nfloat? MaximumLineHeight { get; set; }
+	public float? MinimumLineHeight { get; set; }
 
-	public nfloat? MinimumLineHeight { get; set; }
+	public float? LineSpacing { get; set; }
 
-	public nfloat? LineSpacing { get; set; }
+	public float? ParagraphSpacing { get; set; }
 
-	public nfloat? ParagraphSpacing { get; set; }
+	public float? ParagraphSpacingBefore { get; set; }
 
-	public nfloat? ParagraphSpacingBefore { get; set; }
+	public float? MaximumLineSpacing { get; set; }
 
-	public nfloat? MaximumLineSpacing { get; set; }
+	public float? MinimumLineSpacing { get; set; }
 
-	public nfloat? MinimumLineSpacing { get; set; }
-
-	public nfloat? LineSpacingAdjustment { get; set; }
+	public float? LineSpacingAdjustment { get; set; }
 
 	internal List<CTParagraphStyleSpecifierValue> GetSpecifiers()
 	{
@@ -59,10 +59,6 @@ public class CTParagraphStyleSettings
 		if (BaseWritingDirection.HasValue)
 		{
 			list.Add(CreateValue(CTParagraphStyleSpecifier.BaseWritingDirection, (byte)BaseWritingDirection.Value));
-		}
-		if (LineBoundsOptions.HasValue)
-		{
-			list.Add(CreateValue(CTParagraphStyleSpecifier.LineBoundsOptions, (nuint)(ulong)LineBoundsOptions.Value));
 		}
 		if (FirstLineHeadIndent.HasValue)
 		{
@@ -134,13 +130,8 @@ public class CTParagraphStyleSettings
 		return new CTParagraphStyleSpecifierByteValue(spec, value);
 	}
 
-	private static CTParagraphStyleSpecifierValue CreateValue(CTParagraphStyleSpecifier spec, nfloat value)
+	private static CTParagraphStyleSpecifierValue CreateValue(CTParagraphStyleSpecifier spec, float value)
 	{
 		return new CTParagraphStyleSpecifierSingleValue(spec, value);
-	}
-
-	private static CTParagraphStyleSpecifierValue CreateValue(CTParagraphStyleSpecifier spec, nuint value)
-	{
-		return new CTParagraphStyleSpecifierNativeIntValue(spec, value);
 	}
 }

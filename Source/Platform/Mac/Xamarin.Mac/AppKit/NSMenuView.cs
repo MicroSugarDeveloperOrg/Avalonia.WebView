@@ -1,402 +1,118 @@
+using System;
 using System.ComponentModel;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
 [Register("NSMenuView", true)]
-[Introduced(PlatformName.MacOSX, 10, 0, 0, PlatformArchitecture.Arch32, null)]
 public class NSMenuView : NSView
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAttachSubmenuForItemAtIndex_ = "attachSubmenuForItemAtIndex:";
-
-	private static readonly IntPtr selAttachSubmenuForItemAtIndex_Handle = Selector.GetHandle("attachSubmenuForItemAtIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAttachedMenu = "attachedMenu";
-
-	private static readonly IntPtr selAttachedMenuHandle = Selector.GetHandle("attachedMenu");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAttachedMenuView = "attachedMenuView";
-
-	private static readonly IntPtr selAttachedMenuViewHandle = Selector.GetHandle("attachedMenuView");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDetachSubmenu = "detachSubmenu";
-
-	private static readonly IntPtr selDetachSubmenuHandle = Selector.GetHandle("detachSubmenu");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFont = "font";
-
-	private static readonly IntPtr selFontHandle = Selector.GetHandle("font");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHighlightedItemIndex = "highlightedItemIndex";
-
-	private static readonly IntPtr selHighlightedItemIndexHandle = Selector.GetHandle("highlightedItemIndex");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHorizontalEdgePadding = "horizontalEdgePadding";
-
-	private static readonly IntPtr selHorizontalEdgePaddingHandle = Selector.GetHandle("horizontalEdgePadding");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selImageAndTitleOffset = "imageAndTitleOffset";
-
-	private static readonly IntPtr selImageAndTitleOffsetHandle = Selector.GetHandle("imageAndTitleOffset");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selImageAndTitleWidth = "imageAndTitleWidth";
-
-	private static readonly IntPtr selImageAndTitleWidthHandle = Selector.GetHandle("imageAndTitleWidth");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIndexOfItemAtPoint_ = "indexOfItemAtPoint:";
-
-	private static readonly IntPtr selIndexOfItemAtPoint_Handle = Selector.GetHandle("indexOfItemAtPoint:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithFrame_ = "initWithFrame:";
-
-	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInnerRect = "innerRect";
+	private static readonly IntPtr selMenuBarHeightHandle = Selector.GetHandle("menuBarHeight");
 
 	private static readonly IntPtr selInnerRectHandle = Selector.GetHandle("innerRect");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAttached = "isAttached";
-
-	private static readonly IntPtr selIsAttachedHandle = Selector.GetHandle("isAttached");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsHorizontal = "isHorizontal";
-
-	private static readonly IntPtr selIsHorizontalHandle = Selector.GetHandle("isHorizontal");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsTornOff = "isTornOff";
-
-	private static readonly IntPtr selIsTornOffHandle = Selector.GetHandle("isTornOff");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selItemAdded_ = "itemAdded:";
-
-	private static readonly IntPtr selItemAdded_Handle = Selector.GetHandle("itemAdded:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selItemChanged_ = "itemChanged:";
-
-	private static readonly IntPtr selItemChanged_Handle = Selector.GetHandle("itemChanged:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selItemRemoved_ = "itemRemoved:";
-
-	private static readonly IntPtr selItemRemoved_Handle = Selector.GetHandle("itemRemoved:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selKeyEquivalentOffset = "keyEquivalentOffset";
-
-	private static readonly IntPtr selKeyEquivalentOffsetHandle = Selector.GetHandle("keyEquivalentOffset");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selKeyEquivalentWidth = "keyEquivalentWidth";
-
-	private static readonly IntPtr selKeyEquivalentWidthHandle = Selector.GetHandle("keyEquivalentWidth");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLocationForSubmenu_ = "locationForSubmenu:";
-
-	private static readonly IntPtr selLocationForSubmenu_Handle = Selector.GetHandle("locationForSubmenu:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMenu = "menu";
-
-	private static readonly IntPtr selMenuHandle = Selector.GetHandle("menu");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMenuBarHeight = "menuBarHeight";
-
-	private static readonly IntPtr selMenuBarHeightHandle = Selector.GetHandle("menuBarHeight");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMenuItemCellForItemAtIndex_ = "menuItemCellForItemAtIndex:";
-
-	private static readonly IntPtr selMenuItemCellForItemAtIndex_Handle = Selector.GetHandle("menuItemCellForItemAtIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNeedsSizing = "needsSizing";
-
-	private static readonly IntPtr selNeedsSizingHandle = Selector.GetHandle("needsSizing");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPerformActionWithHighlightingForItemAtIndex_ = "performActionWithHighlightingForItemAtIndex:";
-
-	private static readonly IntPtr selPerformActionWithHighlightingForItemAtIndex_Handle = Selector.GetHandle("performActionWithHighlightingForItemAtIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRectOfItemAtIndex_ = "rectOfItemAtIndex:";
-
-	private static readonly IntPtr selRectOfItemAtIndex_Handle = Selector.GetHandle("rectOfItemAtIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetFont_ = "setFont:";
-
-	private static readonly IntPtr selSetFont_Handle = Selector.GetHandle("setFont:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetHighlightedItemIndex_ = "setHighlightedItemIndex:";
-
-	private static readonly IntPtr selSetHighlightedItemIndex_Handle = Selector.GetHandle("setHighlightedItemIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetHorizontal_ = "setHorizontal:";
-
-	private static readonly IntPtr selSetHorizontal_Handle = Selector.GetHandle("setHorizontal:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetHorizontalEdgePadding_ = "setHorizontalEdgePadding:";
-
-	private static readonly IntPtr selSetHorizontalEdgePadding_Handle = Selector.GetHandle("setHorizontalEdgePadding:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMenu_ = "setMenu:";
-
-	private static readonly IntPtr selSetMenu_Handle = Selector.GetHandle("setMenu:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMenuItemCell_ForItemAtIndex_ = "setMenuItemCell:forItemAtIndex:";
-
-	private static readonly IntPtr selSetMenuItemCell_ForItemAtIndex_Handle = Selector.GetHandle("setMenuItemCell:forItemAtIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetNeedsDisplayForItemAtIndex_ = "setNeedsDisplayForItemAtIndex:";
-
-	private static readonly IntPtr selSetNeedsDisplayForItemAtIndex_Handle = Selector.GetHandle("setNeedsDisplayForItemAtIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetNeedsSizing_ = "setNeedsSizing:";
-
-	private static readonly IntPtr selSetNeedsSizing_Handle = Selector.GetHandle("setNeedsSizing:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetWindowFrameForAttachingToRect_OnScreen_PreferredEdge_PopUpSelectedItem_ = "setWindowFrameForAttachingToRect:onScreen:preferredEdge:popUpSelectedItem:";
-
-	private static readonly IntPtr selSetWindowFrameForAttachingToRect_OnScreen_PreferredEdge_PopUpSelectedItem_Handle = Selector.GetHandle("setWindowFrameForAttachingToRect:onScreen:preferredEdge:popUpSelectedItem:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSizeToFit = "sizeToFit";
-
-	private static readonly IntPtr selSizeToFitHandle = Selector.GetHandle("sizeToFit");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStateImageOffset = "stateImageOffset";
-
 	private static readonly IntPtr selStateImageOffsetHandle = Selector.GetHandle("stateImageOffset");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStateImageWidth = "stateImageWidth";
 
 	private static readonly IntPtr selStateImageWidthHandle = Selector.GetHandle("stateImageWidth");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTrackWithEvent_ = "trackWithEvent:";
+	private static readonly IntPtr selImageAndTitleOffsetHandle = Selector.GetHandle("imageAndTitleOffset");
 
-	private static readonly IntPtr selTrackWithEvent_Handle = Selector.GetHandle("trackWithEvent:");
+	private static readonly IntPtr selImageAndTitleWidthHandle = Selector.GetHandle("imageAndTitleWidth");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUpdate = "update";
+	private static readonly IntPtr selKeyEquivalentOffsetHandle = Selector.GetHandle("keyEquivalentOffset");
+
+	private static readonly IntPtr selKeyEquivalentWidthHandle = Selector.GetHandle("keyEquivalentWidth");
+
+	private static readonly IntPtr selAttachedMenuViewHandle = Selector.GetHandle("attachedMenuView");
+
+	private static readonly IntPtr selAttachedMenuHandle = Selector.GetHandle("attachedMenu");
+
+	private static readonly IntPtr selIsAttachedHandle = Selector.GetHandle("isAttached");
+
+	private static readonly IntPtr selIsTornOffHandle = Selector.GetHandle("isTornOff");
+
+	private static readonly IntPtr selMenuHandle = Selector.GetHandle("menu");
+
+	private static readonly IntPtr selSetMenu_Handle = Selector.GetHandle("setMenu:");
+
+	private static readonly IntPtr selIsHorizontalHandle = Selector.GetHandle("isHorizontal");
+
+	private static readonly IntPtr selSetHorizontal_Handle = Selector.GetHandle("setHorizontal:");
+
+	private static readonly IntPtr selFontHandle = Selector.GetHandle("font");
+
+	private static readonly IntPtr selSetFont_Handle = Selector.GetHandle("setFont:");
+
+	private static readonly IntPtr selHighlightedItemIndexHandle = Selector.GetHandle("highlightedItemIndex");
+
+	private static readonly IntPtr selSetHighlightedItemIndex_Handle = Selector.GetHandle("setHighlightedItemIndex:");
+
+	private static readonly IntPtr selNeedsSizingHandle = Selector.GetHandle("needsSizing");
+
+	private static readonly IntPtr selSetNeedsSizing_Handle = Selector.GetHandle("setNeedsSizing:");
+
+	private static readonly IntPtr selHorizontalEdgePaddingHandle = Selector.GetHandle("horizontalEdgePadding");
+
+	private static readonly IntPtr selSetHorizontalEdgePadding_Handle = Selector.GetHandle("setHorizontalEdgePadding:");
+
+	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
+
+	private static readonly IntPtr selItemChanged_Handle = Selector.GetHandle("itemChanged:");
+
+	private static readonly IntPtr selItemAdded_Handle = Selector.GetHandle("itemAdded:");
+
+	private static readonly IntPtr selItemRemoved_Handle = Selector.GetHandle("itemRemoved:");
 
 	private static readonly IntPtr selUpdateHandle = Selector.GetHandle("update");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSMenuView");
+	private static readonly IntPtr selRectOfItemAtIndex_Handle = Selector.GetHandle("rectOfItemAtIndex:");
+
+	private static readonly IntPtr selIndexOfItemAtPoint_Handle = Selector.GetHandle("indexOfItemAtPoint:");
+
+	private static readonly IntPtr selSetNeedsDisplayForItemAtIndex_Handle = Selector.GetHandle("setNeedsDisplayForItemAtIndex:");
+
+	private static readonly IntPtr selSetMenuItemCellForItemAtIndex_Handle = Selector.GetHandle("setMenuItemCell:forItemAtIndex:");
+
+	private static readonly IntPtr selMenuItemCellForItemAtIndex_Handle = Selector.GetHandle("menuItemCellForItemAtIndex:");
+
+	private static readonly IntPtr selSizeToFitHandle = Selector.GetHandle("sizeToFit");
+
+	private static readonly IntPtr selLocationForSubmenu_Handle = Selector.GetHandle("locationForSubmenu:");
+
+	private static readonly IntPtr selSetWindowFrameForAttachingToRectOnScreenPreferredEdgePopUpSelectedItem_Handle = Selector.GetHandle("setWindowFrameForAttachingToRect:onScreen:preferredEdge:popUpSelectedItem:");
+
+	private static readonly IntPtr selDetachSubmenuHandle = Selector.GetHandle("detachSubmenu");
+
+	private static readonly IntPtr selAttachSubmenuForItemAtIndex_Handle = Selector.GetHandle("attachSubmenuForItemAtIndex:");
+
+	private static readonly IntPtr selPerformActionWithHighlightingForItemAtIndex_Handle = Selector.GetHandle("performActionWithHighlightingForItemAtIndex:");
+
+	private static readonly IntPtr selTrackWithEvent_Handle = Selector.GetHandle("trackWithEvent:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSMenuView");
+
+	private object __mt_AttachedMenuView_var;
+
+	private object __mt_AttachedMenu_var;
+
+	private object __mt_Menu_var;
+
+	private object __mt_Font_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSMenu AttachedMenu
+	public static double MenuBarHeight
 	{
-		[Export("attachedMenu")]
+		[Export("menuBarHeight")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSMenu>(Messaging.IntPtr_objc_msgSend(base.Handle, selAttachedMenuHandle));
-			}
-			return Runtime.GetNSObject<NSMenu>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAttachedMenuHandle));
+			return Messaging.Double_objc_msgSend(class_ptr, selMenuBarHeightHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSMenuView AttachedMenuView
-	{
-		[Export("attachedMenuView")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSMenuView>(Messaging.IntPtr_objc_msgSend(base.Handle, selAttachedMenuViewHandle));
-			}
-			return Runtime.GetNSObject<NSMenuView>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAttachedMenuViewHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSFont Font
-	{
-		[Export("font")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSFont>(Messaging.IntPtr_objc_msgSend(base.Handle, selFontHandle));
-			}
-			return Runtime.GetNSObject<NSFont>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFontHandle));
-		}
-		[Export("setFont:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFont_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFont_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint HighlightedItemIndex
-	{
-		[Export("highlightedItemIndex")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selHighlightedItemIndexHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selHighlightedItemIndexHandle);
-		}
-		[Export("setHighlightedItemIndex:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetHighlightedItemIndex_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetHighlightedItemIndex_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool Horizontal
-	{
-		[Export("isHorizontal")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsHorizontalHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsHorizontalHandle);
-		}
-		[Export("setHorizontal:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetHorizontal_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetHorizontal_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nfloat HorizontalEdgePadding
-	{
-		[Export("horizontalEdgePadding")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selHorizontalEdgePaddingHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selHorizontalEdgePaddingHandle);
-		}
-		[Export("setHorizontalEdgePadding:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetHorizontalEdgePadding_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetHorizontalEdgePadding_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nfloat ImageAndTitleOffset
-	{
-		[Export("imageAndTitleOffset")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selImageAndTitleOffsetHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selImageAndTitleOffsetHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nfloat ImageAndTitleWidth
-	{
-		[Export("imageAndTitleWidth")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selImageAndTitleWidthHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selImageAndTitleWidthHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGRect InnerRect
 	{
 		[Export("innerRect")]
@@ -404,7 +120,7 @@ public class NSMenuView : NSView
 		{
 			NSApplication.EnsureUIThread();
 			CGRect retval;
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selInnerRectHandle);
 			}
@@ -416,14 +132,117 @@ public class NSMenuView : NSView
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual double StateImageOffset
+	{
+		[Export("stateImageOffset")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selStateImageOffsetHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selStateImageOffsetHandle);
+		}
+	}
+
+	public virtual double StateImageWidth
+	{
+		[Export("stateImageWidth")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selStateImageWidthHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selStateImageWidthHandle);
+		}
+	}
+
+	public virtual double ImageAndTitleOffset
+	{
+		[Export("imageAndTitleOffset")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selImageAndTitleOffsetHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selImageAndTitleOffsetHandle);
+		}
+	}
+
+	public virtual double ImageAndTitleWidth
+	{
+		[Export("imageAndTitleWidth")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selImageAndTitleWidthHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selImageAndTitleWidthHandle);
+		}
+	}
+
+	public virtual double KeyEquivalentOffset
+	{
+		[Export("keyEquivalentOffset")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selKeyEquivalentOffsetHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selKeyEquivalentOffsetHandle);
+		}
+	}
+
+	public virtual double KeyEquivalentWidth
+	{
+		[Export("keyEquivalentWidth")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selKeyEquivalentWidthHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selKeyEquivalentWidthHandle);
+		}
+	}
+
+	public virtual NSMenuView AttachedMenuView
+	{
+		[Export("attachedMenuView")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSMenuView)(__mt_AttachedMenuView_var = ((!IsDirectBinding) ? ((NSMenuView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAttachedMenuViewHandle))) : ((NSMenuView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAttachedMenuViewHandle)))));
+		}
+	}
+
+	public virtual NSMenu AttachedMenu
+	{
+		[Export("attachedMenu")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSMenu)(__mt_AttachedMenu_var = ((!IsDirectBinding) ? ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAttachedMenuHandle))) : ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAttachedMenuHandle)))));
+		}
+	}
+
 	public virtual bool IsAttached
 	{
 		[Export("isAttached")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsAttachedHandle);
 			}
@@ -431,14 +250,13 @@ public class NSMenuView : NSView
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsTornOff
 	{
 		[Export("isTornOff")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsTornOffHandle);
 			}
@@ -446,83 +264,123 @@ public class NSMenuView : NSView
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nfloat KeyEquivalentOffset
-	{
-		[Export("keyEquivalentOffset")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selKeyEquivalentOffsetHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selKeyEquivalentOffsetHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nfloat KeyEquivalentWidth
-	{
-		[Export("keyEquivalentWidth")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selKeyEquivalentWidthHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selKeyEquivalentWidthHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public new virtual NSMenu? Menu
+	public new virtual NSMenu Menu
 	{
 		[Export("menu")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSMenu>(Messaging.IntPtr_objc_msgSend(base.Handle, selMenuHandle));
-			}
-			return Runtime.GetNSObject<NSMenu>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMenuHandle));
+			return (NSMenu)(__mt_Menu_var = ((!IsDirectBinding) ? ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMenuHandle))) : ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMenuHandle)))));
 		}
 		[Export("setMenu:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMenu_Handle, value?.Handle ?? IntPtr.Zero);
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMenu_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMenu_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMenu_Handle, value.Handle);
+			}
+			__mt_Menu_var = value;
+		}
+	}
+
+	public virtual bool Horizontal
+	{
+		[Export("isHorizontal")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsHorizontalHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsHorizontalHandle);
+		}
+		[Export("setHorizontal:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetHorizontal_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetHorizontal_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static nfloat MenuBarHeight
+	public virtual NSFont Font
 	{
-		[Export("menuBarHeight")]
+		[Export("font")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return Messaging.nfloat_objc_msgSend(class_ptr, selMenuBarHeightHandle);
+			return (NSFont)(__mt_Font_var = ((!IsDirectBinding) ? ((NSFont)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFontHandle))) : ((NSFont)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFontHandle)))));
+		}
+		[Export("setFont:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFont_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFont_Handle, value.Handle);
+			}
+			__mt_Font_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual long HighlightedItemIndex
+	{
+		[Export("highlightedItemIndex")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Int64_objc_msgSend(base.Handle, selHighlightedItemIndexHandle);
+			}
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selHighlightedItemIndexHandle);
+		}
+		[Export("setHighlightedItemIndex:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetHighlightedItemIndex_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetHighlightedItemIndex_Handle, value);
+			}
+		}
+	}
+
 	public virtual bool NeedsSizing
 	{
 		[Export("needsSizing")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selNeedsSizingHandle);
 			}
@@ -532,7 +390,7 @@ public class NSMenuView : NSView
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetNeedsSizing_Handle, value);
 			}
@@ -543,176 +401,91 @@ public class NSMenuView : NSView
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nfloat StateImageOffset
+	public virtual double HorizontalEdgePadding
 	{
-		[Export("stateImageOffset")]
+		[Export("horizontalEdgePadding")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selStateImageOffsetHandle);
+				return Messaging.Double_objc_msgSend(base.Handle, selHorizontalEdgePaddingHandle);
 			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selStateImageOffsetHandle);
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selHorizontalEdgePaddingHandle);
 		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nfloat StateImageWidth
-	{
-		[Export("stateImageWidth")]
-		get
+		[Export("setHorizontalEdgePadding:")]
+		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selStateImageWidthHandle);
+				Messaging.void_objc_msgSend_Double(base.Handle, selSetHorizontalEdgePadding_Handle, value);
 			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selStateImageWidthHandle);
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetHorizontalEdgePadding_Handle, value);
+			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSMenuView()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSMenuView(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSMenuView(NSObjectFlag t)
+	public NSMenuView(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSMenuView(IntPtr handle)
+	public NSMenuView(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithFrame:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSMenuView(CGRect frame)
 		: base(NSObjectFlag.Empty)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frame), "initWithFrame:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frame);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frame), "initWithFrame:");
-		}
-	}
-
-	[Export("attachSubmenuForItemAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void AttachSubmenuForItemAtIndex(nint index)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint(base.Handle, selAttachSubmenuForItemAtIndex_Handle, index);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selAttachSubmenuForItemAtIndex_Handle, index);
-		}
-	}
-
-	[Export("detachSubmenu")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DetachSubmenu()
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selDetachSubmenuHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDetachSubmenuHandle);
-		}
-	}
-
-	[Export("menuItemCellForItemAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSMenuItemCell GetMenuItemCell(nint itemAtIndex)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSMenuItemCell>(Messaging.IntPtr_objc_msgSend_nint(base.Handle, selMenuItemCellForItemAtIndex_Handle, itemAtIndex));
-		}
-		return Runtime.GetNSObject<NSMenuItemCell>(Messaging.IntPtr_objc_msgSendSuper_nint(base.SuperHandle, selMenuItemCellForItemAtIndex_Handle, itemAtIndex));
-	}
-
-	[Export("indexOfItemAtPoint:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint IndexOfItemAtPoint(CGPoint point)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.nint_objc_msgSend_CGPoint(base.Handle, selIndexOfItemAtPoint_Handle, point);
-		}
-		return Messaging.nint_objc_msgSendSuper_CGPoint(base.SuperHandle, selIndexOfItemAtPoint_Handle, point);
-	}
-
-	[Export("itemAdded:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ItemAdded(NSNotification notification)
-	{
-		NSApplication.EnsureUIThread();
-		if (notification == null)
-		{
-			throw new ArgumentNullException("notification");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selItemAdded_Handle, notification.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selItemAdded_Handle, notification.Handle);
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frame);
 		}
 	}
 
 	[Export("itemChanged:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ItemChanged(NSNotification notification)
 	{
 		NSApplication.EnsureUIThread();
@@ -720,7 +493,7 @@ public class NSMenuView : NSView
 		{
 			throw new ArgumentNullException("notification");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selItemChanged_Handle, notification.Handle);
 		}
@@ -730,8 +503,25 @@ public class NSMenuView : NSView
 		}
 	}
 
+	[Export("itemAdded:")]
+	public virtual void ItemAdded(NSNotification notification)
+	{
+		NSApplication.EnsureUIThread();
+		if (notification == null)
+		{
+			throw new ArgumentNullException("notification");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selItemAdded_Handle, notification.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selItemAdded_Handle, notification.Handle);
+		}
+	}
+
 	[Export("itemRemoved:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ItemRemoved(NSNotification notification)
 	{
 		NSApplication.EnsureUIThread();
@@ -739,7 +529,7 @@ public class NSMenuView : NSView
 		{
 			throw new ArgumentNullException("notification");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selItemRemoved_Handle, notification.Handle);
 		}
@@ -749,113 +539,95 @@ public class NSMenuView : NSView
 		}
 	}
 
-	[Export("locationForSubmenu:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGPoint LocationForSubmenu(NSMenu aSubmenu)
+	[Export("update")]
+	public virtual void Update()
 	{
 		NSApplication.EnsureUIThread();
-		if (aSubmenu == null)
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("aSubmenu");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.CGPoint_objc_msgSend_IntPtr(base.Handle, selLocationForSubmenu_Handle, aSubmenu.Handle);
-		}
-		return Messaging.CGPoint_objc_msgSendSuper_IntPtr(base.SuperHandle, selLocationForSubmenu_Handle, aSubmenu.Handle);
-	}
-
-	[Export("performActionWithHighlightingForItemAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void PerformActionWithHighlighting(nint forItemAtIndex)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint(base.Handle, selPerformActionWithHighlightingForItemAtIndex_Handle, forItemAtIndex);
+			Messaging.void_objc_msgSend(base.Handle, selUpdateHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selPerformActionWithHighlightingForItemAtIndex_Handle, forItemAtIndex);
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selUpdateHandle);
 		}
 	}
 
 	[Export("rectOfItemAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGRect RectOfItemAtIndex(nint index)
+	public virtual CGRect RectOfItemAtIndex(long index)
 	{
 		NSApplication.EnsureUIThread();
 		CGRect retval;
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.CGRect_objc_msgSend_stret_nint(out retval, base.Handle, selRectOfItemAtIndex_Handle, index);
+			Messaging.CGRect_objc_msgSend_stret_Int64(out retval, base.Handle, selRectOfItemAtIndex_Handle, index);
 		}
 		else
 		{
-			Messaging.CGRect_objc_msgSendSuper_stret_nint(out retval, base.SuperHandle, selRectOfItemAtIndex_Handle, index);
+			Messaging.CGRect_objc_msgSendSuper_stret_Int64(out retval, base.SuperHandle, selRectOfItemAtIndex_Handle, index);
 		}
 		return retval;
 	}
 
+	[Export("indexOfItemAtPoint:")]
+	public virtual long IndexOfItemAtPoint(CGPoint point)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return Messaging.Int64_objc_msgSend_CGPoint(base.Handle, selIndexOfItemAtPoint_Handle, point);
+		}
+		return Messaging.Int64_objc_msgSendSuper_CGPoint(base.SuperHandle, selIndexOfItemAtPoint_Handle, point);
+	}
+
+	[Export("setNeedsDisplayForItemAtIndex:")]
+	public virtual void SetNeedsDisplay(long itemAtIndex)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_Int64(base.Handle, selSetNeedsDisplayForItemAtIndex_Handle, itemAtIndex);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetNeedsDisplayForItemAtIndex_Handle, itemAtIndex);
+		}
+	}
+
 	[Export("setMenuItemCell:forItemAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SetMenuItemCell(NSMenuItemCell cell, nint itemAtIndex)
+	public virtual void SetMenuItemCell(NSMenuItemCell cell, long itemAtIndex)
 	{
 		NSApplication.EnsureUIThread();
 		if (cell == null)
 		{
 			throw new ArgumentNullException("cell");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_nint(base.Handle, selSetMenuItemCell_ForItemAtIndex_Handle, cell.Handle, itemAtIndex);
+			Messaging.void_objc_msgSend_IntPtr_Int64(base.Handle, selSetMenuItemCellForItemAtIndex_Handle, cell.Handle, itemAtIndex);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_nint(base.SuperHandle, selSetMenuItemCell_ForItemAtIndex_Handle, cell.Handle, itemAtIndex);
+			Messaging.void_objc_msgSendSuper_IntPtr_Int64(base.SuperHandle, selSetMenuItemCellForItemAtIndex_Handle, cell.Handle, itemAtIndex);
 		}
 	}
 
-	[Export("setNeedsDisplayForItemAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SetNeedsDisplay(nint itemAtIndex)
+	[Export("menuItemCellForItemAtIndex:")]
+	public virtual NSMenuItemCell GetMenuItemCell(long itemAtIndex)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_nint(base.Handle, selSetNeedsDisplayForItemAtIndex_Handle, itemAtIndex);
+			return (NSMenuItemCell)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_Int64(base.Handle, selMenuItemCellForItemAtIndex_Handle, itemAtIndex));
 		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetNeedsDisplayForItemAtIndex_Handle, itemAtIndex);
-		}
-	}
-
-	[Export("setWindowFrameForAttachingToRect:onScreen:preferredEdge:popUpSelectedItem:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SetWindowFrameForAttachingToRect(CGRect screenRect, NSScreen onScreen, NSRectEdge preferredEdge, nint popupSelectedItem)
-	{
-		NSApplication.EnsureUIThread();
-		if (onScreen == null)
-		{
-			throw new ArgumentNullException("onScreen");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGRect_IntPtr_UInt64_nint(base.Handle, selSetWindowFrameForAttachingToRect_OnScreen_PreferredEdge_PopUpSelectedItem_Handle, screenRect, onScreen.Handle, (ulong)preferredEdge, popupSelectedItem);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGRect_IntPtr_UInt64_nint(base.SuperHandle, selSetWindowFrameForAttachingToRect_OnScreen_PreferredEdge_PopUpSelectedItem_Handle, screenRect, onScreen.Handle, (ulong)preferredEdge, popupSelectedItem);
-		}
+		return (NSMenuItemCell)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_Int64(base.SuperHandle, selMenuItemCellForItemAtIndex_Handle, itemAtIndex));
 	}
 
 	[Export("sizeToFit")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SizeToFit()
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selSizeToFitHandle);
 		}
@@ -865,8 +637,82 @@ public class NSMenuView : NSView
 		}
 	}
 
+	[Export("locationForSubmenu:")]
+	public virtual CGPoint LocationForSubmenu(NSMenu aSubmenu)
+	{
+		NSApplication.EnsureUIThread();
+		if (aSubmenu == null)
+		{
+			throw new ArgumentNullException("aSubmenu");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.CGPoint_objc_msgSend_IntPtr(base.Handle, selLocationForSubmenu_Handle, aSubmenu.Handle);
+		}
+		return Messaging.CGPoint_objc_msgSendSuper_IntPtr(base.SuperHandle, selLocationForSubmenu_Handle, aSubmenu.Handle);
+	}
+
+	[Export("setWindowFrameForAttachingToRect:onScreen:preferredEdge:popUpSelectedItem:")]
+	public virtual void SetWindowFrameForAttachingToRect(CGRect screenRect, NSScreen onScreen, NSRectEdge preferredEdge, long popupSelectedItem)
+	{
+		NSApplication.EnsureUIThread();
+		if (onScreen == null)
+		{
+			throw new ArgumentNullException("onScreen");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGRect_IntPtr_int_Int64(base.Handle, selSetWindowFrameForAttachingToRectOnScreenPreferredEdgePopUpSelectedItem_Handle, screenRect, onScreen.Handle, (int)preferredEdge, popupSelectedItem);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGRect_IntPtr_int_Int64(base.SuperHandle, selSetWindowFrameForAttachingToRectOnScreenPreferredEdgePopUpSelectedItem_Handle, screenRect, onScreen.Handle, (int)preferredEdge, popupSelectedItem);
+		}
+	}
+
+	[Export("detachSubmenu")]
+	public virtual void DetachSubmenu()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selDetachSubmenuHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDetachSubmenuHandle);
+		}
+	}
+
+	[Export("attachSubmenuForItemAtIndex:")]
+	public virtual void AttachSubmenuForItemAtIndex(long index)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_Int64(base.Handle, selAttachSubmenuForItemAtIndex_Handle, index);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selAttachSubmenuForItemAtIndex_Handle, index);
+		}
+	}
+
+	[Export("performActionWithHighlightingForItemAtIndex:")]
+	public virtual void PerformActionWithHighlighting(long forItemAtIndex)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_Int64(base.Handle, selPerformActionWithHighlightingForItemAtIndex_Handle, forItemAtIndex);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selPerformActionWithHighlightingForItemAtIndex_Handle, forItemAtIndex);
+		}
+	}
+
 	[Export("trackWithEvent:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool TrackWithEvent(NSEvent theEvent)
 	{
 		NSApplication.EnsureUIThread();
@@ -874,25 +720,22 @@ public class NSMenuView : NSView
 		{
 			throw new ArgumentNullException("theEvent");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selTrackWithEvent_Handle, theEvent.Handle);
 		}
 		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selTrackWithEvent_Handle, theEvent.Handle);
 	}
 
-	[Export("update")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void Update()
+	protected override void Dispose(bool disposing)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selUpdateHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selUpdateHandle);
+			__mt_AttachedMenuView_var = null;
+			__mt_AttachedMenu_var = null;
+			__mt_Menu_var = null;
+			__mt_Font_var = null;
 		}
 	}
 }

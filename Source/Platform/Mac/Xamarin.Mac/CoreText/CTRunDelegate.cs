@@ -5,11 +5,10 @@ using ObjCRuntime;
 
 namespace CoreText;
 
+[Since(3, 2)]
 public class CTRunDelegate : INativeObject, IDisposable
 {
 	internal IntPtr handle;
-
-	private CTRunDelegateCallbacks callbacks;
 
 	public IntPtr Handle => handle;
 
@@ -57,8 +56,7 @@ public class CTRunDelegate : INativeObject, IDisposable
 		{
 			throw ConstructorError.ArgumentNull(this, "operations");
 		}
-		callbacks = operations.GetCallbacks();
-		handle = CTRunDelegateCreate(callbacks, GCHandle.ToIntPtr(operations.handle));
+		handle = CTRunDelegateCreate(operations.GetCallbacks(), GCHandle.ToIntPtr(operations.handle));
 		if (handle == IntPtr.Zero)
 		{
 			throw ConstructorError.Unknown(this);

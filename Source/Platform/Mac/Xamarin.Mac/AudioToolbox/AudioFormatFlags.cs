@@ -26,7 +26,5 @@ public enum AudioFormatFlags : uint
 	AppleLossless16BitSourceData = 1u,
 	AppleLossless20BitSourceData = 2u,
 	AppleLossless24BitSourceData = 3u,
-	AppleLossless32BitSourceData = 4u,
-	CafIsFloat = 1u,
-	CafIsLittleEndian = 2u
+	AppleLossless32BitSourceData = 4u
 }

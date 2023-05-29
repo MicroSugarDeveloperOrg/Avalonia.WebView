@@ -1,10 +1,9 @@
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
@@ -13,946 +12,378 @@ public class NSWorkspace : NSObject
 {
 	public static class Notifications
 	{
-		public static NSObject ObserveActiveSpaceDidChange(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(ActiveSpaceDidChangeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveActiveSpaceDidChange(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(ActiveSpaceDidChangeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDidActivateApplication(EventHandler<NSWorkspaceApplicationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceApplicationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidActivateApplicationNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceApplicationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDidActivateApplication(NSObject objectToObserve, EventHandler<NSWorkspaceApplicationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceApplicationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidActivateApplicationNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceApplicationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDidChangeFileLabels(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidChangeFileLabelsNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDidChangeFileLabels(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidChangeFileLabelsNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDidDeactivateApplication(EventHandler<NSWorkspaceApplicationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceApplicationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidDeactivateApplicationNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceApplicationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDidDeactivateApplication(NSObject objectToObserve, EventHandler<NSWorkspaceApplicationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceApplicationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidDeactivateApplicationNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceApplicationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDidHideApplication(EventHandler<NSWorkspaceApplicationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceApplicationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidHideApplicationNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceApplicationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDidHideApplication(NSObject objectToObserve, EventHandler<NSWorkspaceApplicationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceApplicationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidHideApplicationNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceApplicationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDidLaunchApplication(EventHandler<NSWorkspaceApplicationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceApplicationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidLaunchApplicationNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceApplicationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDidLaunchApplication(NSObject objectToObserve, EventHandler<NSWorkspaceApplicationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceApplicationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidLaunchApplicationNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceApplicationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDidMount(EventHandler<NSWorkspaceMountEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceMountEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidMountNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceMountEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDidMount(NSObject objectToObserve, EventHandler<NSWorkspaceMountEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceMountEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidMountNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceMountEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDidPerformFileOperation(EventHandler<NSWorkspaceFileOperationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceFileOperationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidPerformFileOperationNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceFileOperationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDidPerformFileOperation(NSObject objectToObserve, EventHandler<NSWorkspaceFileOperationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceFileOperationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidPerformFileOperationNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceFileOperationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDidRenameVolume(EventHandler<NSWorkspaceRenamedEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceRenamedEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidRenameVolumeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceRenamedEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDidRenameVolume(NSObject objectToObserve, EventHandler<NSWorkspaceRenamedEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceRenamedEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidRenameVolumeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceRenamedEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDidTerminateApplication(EventHandler<NSWorkspaceApplicationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceApplicationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidTerminateApplicationNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceApplicationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDidTerminateApplication(NSObject objectToObserve, EventHandler<NSWorkspaceApplicationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceApplicationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidTerminateApplicationNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceApplicationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDidUnhideApplication(EventHandler<NSWorkspaceApplicationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceApplicationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidUnhideApplicationNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceApplicationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDidUnhideApplication(NSObject objectToObserve, EventHandler<NSWorkspaceApplicationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceApplicationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidUnhideApplicationNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceApplicationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDidUnmount(EventHandler<NSWorkspaceMountEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceMountEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidUnmountNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceMountEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDidUnmount(NSObject objectToObserve, EventHandler<NSWorkspaceMountEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceMountEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidUnmountNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceMountEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDidWake(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidWakeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDidWake(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(DidWakeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveDisplayOptionsDidChange(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DisplayOptionsDidChangeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveDisplayOptionsDidChange(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(DisplayOptionsDidChangeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveScreensDidSleep(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(ScreensDidSleepNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveScreensDidSleep(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(ScreensDidSleepNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveScreensDidWake(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(ScreensDidWakeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveScreensDidWake(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(ScreensDidWakeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveSessionDidBecomeActive(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(SessionDidBecomeActiveNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveSessionDidBecomeActive(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(SessionDidBecomeActiveNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveSessionDidResignActive(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(SessionDidResignActiveNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveSessionDidResignActive(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(SessionDidResignActiveNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveWillLaunchApplication(EventHandler<NSWorkspaceApplicationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceApplicationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(WillLaunchApplication, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceApplicationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveWillLaunchApplication(NSObject objectToObserve, EventHandler<NSWorkspaceApplicationEventArgs> handler)
-		{
-			EventHandler<NSWorkspaceApplicationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(WillLaunchApplication, delegate(NSNotification notification)
-			{
-				handler2(null, new NSWorkspaceApplicationEventArgs(notification));
-			}, objectToObserve);
-		}
-
 		public static NSObject ObserveWillPowerOff(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
 			return SharedWorkspace.NotificationCenter.AddObserver(WillPowerOffNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
-		}
-
-		public static NSObject ObserveWillPowerOff(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(WillPowerOffNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
 		}
 
 		public static NSObject ObserveWillSleep(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
 			return SharedWorkspace.NotificationCenter.AddObserver(WillSleepNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
+				handler(null, new NSNotificationEventArgs(notification));
 			});
 		}
 
-		public static NSObject ObserveWillSleep(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
+		public static NSObject ObserveDidWake(EventHandler<NSNotificationEventArgs> handler)
 		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(WillSleepNotification, delegate(NSNotification notification)
+			return SharedWorkspace.NotificationCenter.AddObserver(DidWakeNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
+				handler(null, new NSNotificationEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveScreensDidSleep(EventHandler<NSNotificationEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(ScreensDidSleepNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSNotificationEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveScreensDidWake(EventHandler<NSNotificationEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(ScreensDidWakeNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSNotificationEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveSessionDidBecomeActive(EventHandler<NSNotificationEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(SessionDidBecomeActiveNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSNotificationEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveSessionDidResignActive(EventHandler<NSNotificationEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(SessionDidResignActiveNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSNotificationEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveDidRenameVolume(EventHandler<NSWorkspaceRenamedEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(DidRenameVolumeNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSWorkspaceRenamedEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveDidMount(EventHandler<NSWorkspaceMountEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(DidMountNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSWorkspaceMountEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveDidUnmount(EventHandler<NSWorkspaceMountEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(DidUnmountNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSWorkspaceMountEventArgs(notification));
+			});
 		}
 
 		public static NSObject ObserveWillUnmount(EventHandler<NSWorkspaceMountEventArgs> handler)
 		{
-			EventHandler<NSWorkspaceMountEventArgs> handler2 = handler;
 			return SharedWorkspace.NotificationCenter.AddObserver(WillUnmountNotification, delegate(NSNotification notification)
 			{
-				handler2(null, new NSWorkspaceMountEventArgs(notification));
+				handler(null, new NSWorkspaceMountEventArgs(notification));
 			});
 		}
 
-		public static NSObject ObserveWillUnmount(NSObject objectToObserve, EventHandler<NSWorkspaceMountEventArgs> handler)
+		public static NSObject ObserveWillLaunchApplication(EventHandler<NSWorkspaceApplicationEventArgs> handler)
 		{
-			EventHandler<NSWorkspaceMountEventArgs> handler2 = handler;
-			return SharedWorkspace.NotificationCenter.AddObserver(WillUnmountNotification, delegate(NSNotification notification)
+			return SharedWorkspace.NotificationCenter.AddObserver(WillLaunchApplication, delegate(NSNotification notification)
 			{
-				handler2(null, new NSWorkspaceMountEventArgs(notification));
-			}, objectToObserve);
+				handler(null, new NSWorkspaceApplicationEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveDidLaunchApplication(EventHandler<NSWorkspaceApplicationEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(DidLaunchApplicationNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSWorkspaceApplicationEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveDidTerminateApplication(EventHandler<NSWorkspaceApplicationEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(DidTerminateApplicationNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSWorkspaceApplicationEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveDidHideApplication(EventHandler<NSWorkspaceApplicationEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(DidHideApplicationNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSWorkspaceApplicationEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveDidUnhideApplication(EventHandler<NSWorkspaceApplicationEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(DidUnhideApplicationNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSWorkspaceApplicationEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveDidActivateApplication(EventHandler<NSWorkspaceApplicationEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(DidActivateApplicationNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSWorkspaceApplicationEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveDidDeactivateApplication(EventHandler<NSWorkspaceApplicationEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(DidDeactivateApplicationNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSWorkspaceApplicationEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveDidPerformFileOperation(EventHandler<NSWorkspaceFileOperationEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(DidPerformFileOperationNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSWorkspaceFileOperationEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveDidChangeFileLabels(EventHandler<NSNotificationEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(DidChangeFileLabelsNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSNotificationEventArgs(notification));
+			});
+		}
+
+		public static NSObject ObserveActiveSpaceDidChange(EventHandler<NSNotificationEventArgs> handler)
+		{
+			return SharedWorkspace.NotificationCenter.AddObserver(ActiveSpaceDidChangeNotification, delegate(NSNotification notification)
+			{
+				handler(null, new NSNotificationEventArgs(notification));
+			});
 		}
 	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selURLForApplicationToOpenURL_ = "URLForApplicationToOpenURL:";
-
-	private static readonly IntPtr selURLForApplicationToOpenURL_Handle = Selector.GetHandle("URLForApplicationToOpenURL:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selURLForApplicationWithBundleIdentifier_ = "URLForApplicationWithBundleIdentifier:";
-
-	private static readonly IntPtr selURLForApplicationWithBundleIdentifier_Handle = Selector.GetHandle("URLForApplicationWithBundleIdentifier:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAbsolutePathForAppBundleWithIdentifier_ = "absolutePathForAppBundleWithIdentifier:";
-
-	private static readonly IntPtr selAbsolutePathForAppBundleWithIdentifier_Handle = Selector.GetHandle("absolutePathForAppBundleWithIdentifier:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityDisplayShouldDifferentiateWithoutColor = "accessibilityDisplayShouldDifferentiateWithoutColor";
-
-	private static readonly IntPtr selAccessibilityDisplayShouldDifferentiateWithoutColorHandle = Selector.GetHandle("accessibilityDisplayShouldDifferentiateWithoutColor");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityDisplayShouldIncreaseContrast = "accessibilityDisplayShouldIncreaseContrast";
-
-	private static readonly IntPtr selAccessibilityDisplayShouldIncreaseContrastHandle = Selector.GetHandle("accessibilityDisplayShouldIncreaseContrast");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityDisplayShouldInvertColors = "accessibilityDisplayShouldInvertColors";
-
-	private static readonly IntPtr selAccessibilityDisplayShouldInvertColorsHandle = Selector.GetHandle("accessibilityDisplayShouldInvertColors");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityDisplayShouldReduceMotion = "accessibilityDisplayShouldReduceMotion";
-
-	private static readonly IntPtr selAccessibilityDisplayShouldReduceMotionHandle = Selector.GetHandle("accessibilityDisplayShouldReduceMotion");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityDisplayShouldReduceTransparency = "accessibilityDisplayShouldReduceTransparency";
-
-	private static readonly IntPtr selAccessibilityDisplayShouldReduceTransparencyHandle = Selector.GetHandle("accessibilityDisplayShouldReduceTransparency");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selActivateFileViewerSelectingURLs_ = "activateFileViewerSelectingURLs:";
-
-	private static readonly IntPtr selActivateFileViewerSelectingURLs_Handle = Selector.GetHandle("activateFileViewerSelectingURLs:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selActiveApplication = "activeApplication";
-
-	private static readonly IntPtr selActiveApplicationHandle = Selector.GetHandle("activeApplication");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDesktopImageOptionsForScreen_ = "desktopImageOptionsForScreen:";
-
-	private static readonly IntPtr selDesktopImageOptionsForScreen_Handle = Selector.GetHandle("desktopImageOptionsForScreen:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDesktopImageURLForScreen_ = "desktopImageURLForScreen:";
-
-	private static readonly IntPtr selDesktopImageURLForScreen_Handle = Selector.GetHandle("desktopImageURLForScreen:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDuplicateURLs_CompletionHandler_ = "duplicateURLs:completionHandler:";
-
-	private static readonly IntPtr selDuplicateURLs_CompletionHandler_Handle = Selector.GetHandle("duplicateURLs:completionHandler:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExtendPowerOffBy_ = "extendPowerOffBy:";
-
-	private static readonly IntPtr selExtendPowerOffBy_Handle = Selector.GetHandle("extendPowerOffBy:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFileLabelColors = "fileLabelColors";
-
-	private static readonly IntPtr selFileLabelColorsHandle = Selector.GetHandle("fileLabelColors");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFileLabels = "fileLabels";
-
-	private static readonly IntPtr selFileLabelsHandle = Selector.GetHandle("fileLabels");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFilenameExtension_IsValidForType_ = "filenameExtension:isValidForType:";
-
-	private static readonly IntPtr selFilenameExtension_IsValidForType_Handle = Selector.GetHandle("filenameExtension:isValidForType:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFrontmostApplication = "frontmostApplication";
-
-	private static readonly IntPtr selFrontmostApplicationHandle = Selector.GetHandle("frontmostApplication");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFullPathForApplication_ = "fullPathForApplication:";
-
-	private static readonly IntPtr selFullPathForApplication_Handle = Selector.GetHandle("fullPathForApplication:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGetFileSystemInfoForPath_IsRemovable_IsWritable_IsUnmountable_Description_Type_ = "getFileSystemInfoForPath:isRemovable:isWritable:isUnmountable:description:type:";
-
-	private static readonly IntPtr selGetFileSystemInfoForPath_IsRemovable_IsWritable_IsUnmountable_Description_Type_Handle = Selector.GetHandle("getFileSystemInfoForPath:isRemovable:isWritable:isUnmountable:description:type:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGetInfoForFile_Application_Type_ = "getInfoForFile:application:type:";
-
-	private static readonly IntPtr selGetInfoForFile_Application_Type_Handle = Selector.GetHandle("getInfoForFile:application:type:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHideOtherApplications = "hideOtherApplications";
-
-	private static readonly IntPtr selHideOtherApplicationsHandle = Selector.GetHandle("hideOtherApplications");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIconForFile_ = "iconForFile:";
-
-	private static readonly IntPtr selIconForFile_Handle = Selector.GetHandle("iconForFile:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIconForFileType_ = "iconForFileType:";
-
-	private static readonly IntPtr selIconForFileType_Handle = Selector.GetHandle("iconForFileType:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIconForFiles_ = "iconForFiles:";
-
-	private static readonly IntPtr selIconForFiles_Handle = Selector.GetHandle("iconForFiles:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsFilePackageAtPath_ = "isFilePackageAtPath:";
-
-	private static readonly IntPtr selIsFilePackageAtPath_Handle = Selector.GetHandle("isFilePackageAtPath:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsSwitchControlEnabled = "isSwitchControlEnabled";
-
-	private static readonly IntPtr selIsSwitchControlEnabledHandle = Selector.GetHandle("isSwitchControlEnabled");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsVoiceOverEnabled = "isVoiceOverEnabled";
-
-	private static readonly IntPtr selIsVoiceOverEnabledHandle = Selector.GetHandle("isVoiceOverEnabled");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLaunchAppWithBundleIdentifier_Options_AdditionalEventParamDescriptor_LaunchIdentifier_ = "launchAppWithBundleIdentifier:options:additionalEventParamDescriptor:launchIdentifier:";
-
-	private static readonly IntPtr selLaunchAppWithBundleIdentifier_Options_AdditionalEventParamDescriptor_LaunchIdentifier_Handle = Selector.GetHandle("launchAppWithBundleIdentifier:options:additionalEventParamDescriptor:launchIdentifier:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLaunchApplication_ = "launchApplication:";
-
-	private static readonly IntPtr selLaunchApplication_Handle = Selector.GetHandle("launchApplication:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLaunchApplication_ShowIcon_Autolaunch_ = "launchApplication:showIcon:autolaunch:";
-
-	private static readonly IntPtr selLaunchApplication_ShowIcon_Autolaunch_Handle = Selector.GetHandle("launchApplication:showIcon:autolaunch:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLaunchApplicationAtURL_Options_Configuration_Error_ = "launchApplicationAtURL:options:configuration:error:";
-
-	private static readonly IntPtr selLaunchApplicationAtURL_Options_Configuration_Error_Handle = Selector.GetHandle("launchApplicationAtURL:options:configuration:error:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLaunchedApplications = "launchedApplications";
-
-	private static readonly IntPtr selLaunchedApplicationsHandle = Selector.GetHandle("launchedApplications");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLocalizedDescriptionForType_ = "localizedDescriptionForType:";
-
-	private static readonly IntPtr selLocalizedDescriptionForType_Handle = Selector.GetHandle("localizedDescriptionForType:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMenuBarOwningApplication = "menuBarOwningApplication";
-
-	private static readonly IntPtr selMenuBarOwningApplicationHandle = Selector.GetHandle("menuBarOwningApplication");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMountedLocalVolumePaths = "mountedLocalVolumePaths";
-
-	private static readonly IntPtr selMountedLocalVolumePathsHandle = Selector.GetHandle("mountedLocalVolumePaths");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMountedRemovableMedia = "mountedRemovableMedia";
-
-	private static readonly IntPtr selMountedRemovableMediaHandle = Selector.GetHandle("mountedRemovableMedia");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNoteFileSystemChanged_ = "noteFileSystemChanged:";
-
-	private static readonly IntPtr selNoteFileSystemChanged_Handle = Selector.GetHandle("noteFileSystemChanged:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNotificationCenter = "notificationCenter";
-
-	private static readonly IntPtr selNotificationCenterHandle = Selector.GetHandle("notificationCenter");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOpenApplicationAtURL_Configuration_CompletionHandler_ = "openApplicationAtURL:configuration:completionHandler:";
-
-	private static readonly IntPtr selOpenApplicationAtURL_Configuration_CompletionHandler_Handle = Selector.GetHandle("openApplicationAtURL:configuration:completionHandler:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOpenFile_ = "openFile:";
-
-	private static readonly IntPtr selOpenFile_Handle = Selector.GetHandle("openFile:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOpenFile_FromImage_At_InView_ = "openFile:fromImage:at:inView:";
-
-	private static readonly IntPtr selOpenFile_FromImage_At_InView_Handle = Selector.GetHandle("openFile:fromImage:at:inView:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOpenFile_WithApplication_ = "openFile:withApplication:";
-
-	private static readonly IntPtr selOpenFile_WithApplication_Handle = Selector.GetHandle("openFile:withApplication:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOpenFile_WithApplication_AndDeactivate_ = "openFile:withApplication:andDeactivate:";
-
-	private static readonly IntPtr selOpenFile_WithApplication_AndDeactivate_Handle = Selector.GetHandle("openFile:withApplication:andDeactivate:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOpenURL_ = "openURL:";
-
-	private static readonly IntPtr selOpenURL_Handle = Selector.GetHandle("openURL:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOpenURL_Configuration_CompletionHandler_ = "openURL:configuration:completionHandler:";
-
-	private static readonly IntPtr selOpenURL_Configuration_CompletionHandler_Handle = Selector.GetHandle("openURL:configuration:completionHandler:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOpenURL_Options_Configuration_Error_ = "openURL:options:configuration:error:";
-
-	private static readonly IntPtr selOpenURL_Options_Configuration_Error_Handle = Selector.GetHandle("openURL:options:configuration:error:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOpenURLs_WithAppBundleIdentifier_Options_AdditionalEventParamDescriptor_LaunchIdentifiers_ = "openURLs:withAppBundleIdentifier:options:additionalEventParamDescriptor:launchIdentifiers:";
-
-	private static readonly IntPtr selOpenURLs_WithAppBundleIdentifier_Options_AdditionalEventParamDescriptor_LaunchIdentifiers_Handle = Selector.GetHandle("openURLs:withAppBundleIdentifier:options:additionalEventParamDescriptor:launchIdentifiers:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOpenURLs_WithApplicationAtURL_Configuration_CompletionHandler_ = "openURLs:withApplicationAtURL:configuration:completionHandler:";
-
-	private static readonly IntPtr selOpenURLs_WithApplicationAtURL_Configuration_CompletionHandler_Handle = Selector.GetHandle("openURLs:withApplicationAtURL:configuration:completionHandler:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOpenURLs_WithApplicationAtURL_Options_Configuration_Error_ = "openURLs:withApplicationAtURL:options:configuration:error:";
-
-	private static readonly IntPtr selOpenURLs_WithApplicationAtURL_Options_Configuration_Error_Handle = Selector.GetHandle("openURLs:withApplicationAtURL:options:configuration:error:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPerformFileOperation_Source_Destination_Files_Tag_ = "performFileOperation:source:destination:files:tag:";
-
-	private static readonly IntPtr selPerformFileOperation_Source_Destination_Files_Tag_Handle = Selector.GetHandle("performFileOperation:source:destination:files:tag:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPreferredFilenameExtensionForType_ = "preferredFilenameExtensionForType:";
-
-	private static readonly IntPtr selPreferredFilenameExtensionForType_Handle = Selector.GetHandle("preferredFilenameExtensionForType:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRecycleURLs_CompletionHandler_ = "recycleURLs:completionHandler:";
-
-	private static readonly IntPtr selRecycleURLs_CompletionHandler_Handle = Selector.GetHandle("recycleURLs:completionHandler:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRequestAuthorizationOfType_CompletionHandler_ = "requestAuthorizationOfType:completionHandler:";
-
-	private static readonly IntPtr selRequestAuthorizationOfType_CompletionHandler_Handle = Selector.GetHandle("requestAuthorizationOfType:completionHandler:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRunningApplications = "runningApplications";
-
-	private static readonly IntPtr selRunningApplicationsHandle = Selector.GetHandle("runningApplications");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSelectFile_InFileViewerRootedAtPath_ = "selectFile:inFileViewerRootedAtPath:";
-
-	private static readonly IntPtr selSelectFile_InFileViewerRootedAtPath_Handle = Selector.GetHandle("selectFile:inFileViewerRootedAtPath:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDesktopImageURL_ForScreen_Options_Error_ = "setDesktopImageURL:forScreen:options:error:";
-
-	private static readonly IntPtr selSetDesktopImageURL_ForScreen_Options_Error_Handle = Selector.GetHandle("setDesktopImageURL:forScreen:options:error:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetIcon_ForFile_Options_ = "setIcon:forFile:options:";
-
-	private static readonly IntPtr selSetIcon_ForFile_Options_Handle = Selector.GetHandle("setIcon:forFile:options:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSharedWorkspace = "sharedWorkspace";
 
 	private static readonly IntPtr selSharedWorkspaceHandle = Selector.GetHandle("sharedWorkspace");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selShowSearchResultsForQueryString_ = "showSearchResultsForQueryString:";
+	private static readonly IntPtr selNotificationCenterHandle = Selector.GetHandle("notificationCenter");
+
+	private static readonly IntPtr selFileLabelsHandle = Selector.GetHandle("fileLabels");
+
+	private static readonly IntPtr selFileLabelColorsHandle = Selector.GetHandle("fileLabelColors");
+
+	private static readonly IntPtr selMountedLocalVolumePathsHandle = Selector.GetHandle("mountedLocalVolumePaths");
+
+	private static readonly IntPtr selMountedRemovableMediaHandle = Selector.GetHandle("mountedRemovableMedia");
+
+	private static readonly IntPtr selLaunchedApplicationsHandle = Selector.GetHandle("launchedApplications");
+
+	private static readonly IntPtr selActiveApplicationHandle = Selector.GetHandle("activeApplication");
+
+	private static readonly IntPtr selRunningApplicationsHandle = Selector.GetHandle("runningApplications");
+
+	private static readonly IntPtr selFrontmostApplicationHandle = Selector.GetHandle("frontmostApplication");
+
+	private static readonly IntPtr selMenuBarOwningApplicationHandle = Selector.GetHandle("menuBarOwningApplication");
+
+	private static readonly IntPtr selOpenFile_Handle = Selector.GetHandle("openFile:");
+
+	private static readonly IntPtr selOpenFileWithApplication_Handle = Selector.GetHandle("openFile:withApplication:");
+
+	private static readonly IntPtr selOpenFileWithApplicationAndDeactivate_Handle = Selector.GetHandle("openFile:withApplication:andDeactivate:");
+
+	private static readonly IntPtr selOpenFileFromImageAtInView_Handle = Selector.GetHandle("openFile:fromImage:at:inView:");
+
+	private static readonly IntPtr selOpenURL_Handle = Selector.GetHandle("openURL:");
+
+	private static readonly IntPtr selLaunchApplication_Handle = Selector.GetHandle("launchApplication:");
+
+	private static readonly IntPtr selLaunchApplicationAtURLOptionsConfigurationError_Handle = Selector.GetHandle("launchApplicationAtURL:options:configuration:error:");
+
+	private static readonly IntPtr selLaunchApplicationShowIconAutolaunch_Handle = Selector.GetHandle("launchApplication:showIcon:autolaunch:");
+
+	private static readonly IntPtr selFullPathForApplication_Handle = Selector.GetHandle("fullPathForApplication:");
+
+	private static readonly IntPtr selSelectFileInFileViewerRootedAtPath_Handle = Selector.GetHandle("selectFile:inFileViewerRootedAtPath:");
+
+	private static readonly IntPtr selActivateFileViewerSelectingURLs_Handle = Selector.GetHandle("activateFileViewerSelectingURLs:");
 
 	private static readonly IntPtr selShowSearchResultsForQueryString_Handle = Selector.GetHandle("showSearchResultsForQueryString:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selType_ConformsToType_ = "type:conformsToType:";
+	private static readonly IntPtr selNoteFileSystemChanged_Handle = Selector.GetHandle("noteFileSystemChanged:");
 
-	private static readonly IntPtr selType_ConformsToType_Handle = Selector.GetHandle("type:conformsToType:");
+	private static readonly IntPtr selGetInfoForFileApplicationType_Handle = Selector.GetHandle("getInfoForFile:application:type:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTypeOfFile_Error_ = "typeOfFile:error:";
+	private static readonly IntPtr selIsFilePackageAtPath_Handle = Selector.GetHandle("isFilePackageAtPath:");
 
-	private static readonly IntPtr selTypeOfFile_Error_Handle = Selector.GetHandle("typeOfFile:error:");
+	private static readonly IntPtr selIconForFile_Handle = Selector.GetHandle("iconForFile:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUnmountAndEjectDeviceAtPath_ = "unmountAndEjectDeviceAtPath:";
+	private static readonly IntPtr selIconForFiles_Handle = Selector.GetHandle("iconForFiles:");
+
+	private static readonly IntPtr selIconForFileType_Handle = Selector.GetHandle("iconForFileType:");
+
+	private static readonly IntPtr selSetIconForFileOptions_Handle = Selector.GetHandle("setIcon:forFile:options:");
+
+	private static readonly IntPtr selRecycleURLsCompletionHandler_Handle = Selector.GetHandle("recycleURLs:completionHandler:");
+
+	private static readonly IntPtr selDuplicateURLsCompletionHandler_Handle = Selector.GetHandle("duplicateURLs:completionHandler:");
+
+	private static readonly IntPtr selGetFileSystemInfoForPathIsRemovableIsWritableIsUnmountableDescriptionType_Handle = Selector.GetHandle("getFileSystemInfoForPath:isRemovable:isWritable:isUnmountable:description:type:");
+
+	private static readonly IntPtr selPerformFileOperationSourceDestinationFilesTag_Handle = Selector.GetHandle("performFileOperation:source:destination:files:tag:");
 
 	private static readonly IntPtr selUnmountAndEjectDeviceAtPath_Handle = Selector.GetHandle("unmountAndEjectDeviceAtPath:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUnmountAndEjectDeviceAtURL_Error_ = "unmountAndEjectDeviceAtURL:error:";
+	private static readonly IntPtr selUnmountAndEjectDeviceAtURLError_Handle = Selector.GetHandle("unmountAndEjectDeviceAtURL:error:");
 
-	private static readonly IntPtr selUnmountAndEjectDeviceAtURL_Error_Handle = Selector.GetHandle("unmountAndEjectDeviceAtURL:error:");
+	private static readonly IntPtr selExtendPowerOffBy_Handle = Selector.GetHandle("extendPowerOffBy:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSWorkspace");
+	private static readonly IntPtr selHideOtherApplicationsHandle = Selector.GetHandle("hideOtherApplications");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ActiveSpaceDidChangeNotification;
+	private static readonly IntPtr selURLForApplicationWithBundleIdentifier_Handle = Selector.GetHandle("URLForApplicationWithBundleIdentifier:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidActivateApplicationNotification;
+	private static readonly IntPtr selURLForApplicationToOpenURL_Handle = Selector.GetHandle("URLForApplicationToOpenURL:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidChangeFileLabelsNotification;
+	private static readonly IntPtr selAbsolutePathForAppBundleWithIdentifier_Handle = Selector.GetHandle("absolutePathForAppBundleWithIdentifier:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidDeactivateApplicationNotification;
+	private static readonly IntPtr selLaunchAppWithBundleIdentifierOptionsAdditionalEventParamDescriptorLaunchIdentifier_Handle = Selector.GetHandle("launchAppWithBundleIdentifier:options:additionalEventParamDescriptor:launchIdentifier:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidHideApplicationNotification;
+	private static readonly IntPtr selOpenURLsWithAppBundleIdentifierOptionsAdditionalEventParamDescriptorLaunchIdentifiers_Handle = Selector.GetHandle("openURLs:withAppBundleIdentifier:options:additionalEventParamDescriptor:launchIdentifiers:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidLaunchApplicationNotification;
+	private static readonly IntPtr selTypeOfFileError_Handle = Selector.GetHandle("typeOfFile:error:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidMountNotification;
+	private static readonly IntPtr selLocalizedDescriptionForType_Handle = Selector.GetHandle("localizedDescriptionForType:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidPerformFileOperationNotification;
+	private static readonly IntPtr selPreferredFilenameExtensionForType_Handle = Selector.GetHandle("preferredFilenameExtensionForType:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidRenameVolumeNotification;
+	private static readonly IntPtr selFilenameExtensionIsValidForType_Handle = Selector.GetHandle("filenameExtension:isValidForType:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidTerminateApplicationNotification;
+	private static readonly IntPtr selTypeConformsToType_Handle = Selector.GetHandle("type:conformsToType:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidUnhideApplicationNotification;
+	private static readonly IntPtr selSetDesktopImageURLForScreenOptionsError_Handle = Selector.GetHandle("setDesktopImageURL:forScreen:options:error:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidUnmountNotification;
+	private static readonly IntPtr selDesktopImageURLForScreen_Handle = Selector.GetHandle("desktopImageURLForScreen:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DidWakeNotification;
+	private static readonly IntPtr selDesktopImageOptionsForScreen_Handle = Selector.GetHandle("desktopImageOptionsForScreen:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DisplayOptionsDidChangeNotification;
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSWorkspace");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _LaunchConfigurationAppleEvent;
+	private static object __mt_SharedWorkspace_var_static;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _LaunchConfigurationArchitecture;
+	private object __mt_NotificationCenter_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _LaunchConfigurationArguments;
+	private object __mt_FileLabelColors_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _LaunchConfigurationEnvironment;
+	private object __mt_LaunchedApplications_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _OperationCopy;
+	private object __mt_ActiveApplication_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _OperationDestroy;
+	private object __mt_RunningApplications_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _OperationDuplicate;
+	private object __mt_FrontmostApplication_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _OperationLink;
+	private object __mt_MenuBarOwningApplication_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _OperationMove;
+	private static NSString _WillPowerOffNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _OperationRecycle;
+	private static NSString _WillSleepNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ScreensDidSleepNotification;
+	private static NSString _DidWakeNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ScreensDidWakeNotification;
+	private static NSString _ScreensDidSleepNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _SessionDidBecomeActiveNotification;
+	private static NSString _ScreensDidWakeNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _SessionDidResignActiveNotification;
+	private static NSString _SessionDidBecomeActiveNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WillLaunchApplication;
+	private static NSString _SessionDidResignActiveNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WillPowerOffNotification;
+	private static NSString _DidRenameVolumeNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WillSleepNotification;
+	private static NSString _DidMountNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _WillUnmountNotification;
+	private static NSString _DidUnmountNotification;
+
+	private static NSString _WillUnmountNotification;
+
+	private static NSString _WillLaunchApplication;
+
+	private static NSString _DidLaunchApplicationNotification;
+
+	private static NSString _DidTerminateApplicationNotification;
+
+	private static NSString _DidHideApplicationNotification;
+
+	private static NSString _DidUnhideApplicationNotification;
+
+	private static NSString _DidActivateApplicationNotification;
+
+	private static NSString _DidDeactivateApplicationNotification;
+
+	private static NSString _DidPerformFileOperationNotification;
+
+	private static NSString _DidChangeFileLabelsNotification;
+
+	private static NSString _ActiveSpaceDidChangeNotification;
+
+	private static NSString _OperationRecycle;
+
+	private static NSString _OperationDuplicate;
+
+	private static NSString _OperationMove;
+
+	private static NSString _OperationCopy;
+
+	private static NSString _OperationLink;
+
+	private static NSString _OperationDestroy;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityDisplayShouldDifferentiateWithoutColor
-	{
-		[Export("accessibilityDisplayShouldDifferentiateWithoutColor")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityDisplayShouldDifferentiateWithoutColorHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityDisplayShouldDifferentiateWithoutColorHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityDisplayShouldIncreaseContrast
-	{
-		[Export("accessibilityDisplayShouldIncreaseContrast")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityDisplayShouldIncreaseContrastHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityDisplayShouldIncreaseContrastHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityDisplayShouldInvertColors
-	{
-		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-		[Export("accessibilityDisplayShouldInvertColors")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityDisplayShouldInvertColorsHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityDisplayShouldInvertColorsHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityDisplayShouldReduceMotion
-	{
-		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-		[Export("accessibilityDisplayShouldReduceMotion")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityDisplayShouldReduceMotionHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityDisplayShouldReduceMotionHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool AccessibilityDisplayShouldReduceTransparency
-	{
-		[Export("accessibilityDisplayShouldReduceTransparency")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAccessibilityDisplayShouldReduceTransparencyHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAccessibilityDisplayShouldReduceTransparencyHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, "Use 'NSWorkspace.FrontmostApplication' instead.")]
-	public virtual NSDictionary ActiveApplication
-	{
-		[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, "Use 'NSWorkspace.FrontmostApplication' instead.")]
-		[Export("activeApplication")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selActiveApplicationHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selActiveApplicationHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[ThreadSafe]
-	public virtual NSColor[] FileLabelColors
+	public static NSWorkspace SharedWorkspace
 	{
-		[Export("fileLabelColors")]
+		[Export("sharedWorkspace")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selFileLabelColorsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileLabelColorsHandle));
+			return (NSWorkspace)(__mt_SharedWorkspace_var_static = (NSWorkspace)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selSharedWorkspaceHandle)));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[ThreadSafe]
+	public virtual NSNotificationCenter NotificationCenter
+	{
+		[Export("notificationCenter")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSNotificationCenter)(__mt_NotificationCenter_var = ((!IsDirectBinding) ? ((NSNotificationCenter)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNotificationCenterHandle))) : ((NSNotificationCenter)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selNotificationCenterHandle)))));
+		}
+	}
+
 	public virtual string[] FileLabels
 	{
 		[Export("fileLabels")]
 		get
 		{
-			if (base.IsDirectBinding)
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
 			{
 				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selFileLabelsHandle));
 			}
@@ -960,63 +391,23 @@ public class NSWorkspace : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSRunningApplication FrontmostApplication
+	public virtual NSColor[] FileLabelColors
 	{
-		[Export("frontmostApplication")]
+		[Export("fileLabelColors")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSRunningApplication>(Messaging.IntPtr_objc_msgSend(base.Handle, selFrontmostApplicationHandle));
-			}
-			return Runtime.GetNSObject<NSRunningApplication>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFrontmostApplicationHandle));
+			return (NSColor[])(__mt_FileLabelColors_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileLabelColorsHandle)) : NSArray.ArrayFromHandle<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selFileLabelColorsHandle))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.None, "Use 'NSWorkspace.RunningApplications' instead.")]
-	public virtual NSDictionary[] LaunchedApplications
-	{
-		[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.None, "Use 'NSWorkspace.RunningApplications' instead.")]
-		[Export("launchedApplications")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selLaunchedApplicationsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLaunchedApplicationsHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSRunningApplication MenuBarOwningApplication
-	{
-		[Export("menuBarOwningApplication")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSRunningApplication>(Messaging.IntPtr_objc_msgSend(base.Handle, selMenuBarOwningApplicationHandle));
-			}
-			return Runtime.GetNSObject<NSRunningApplication>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMenuBarOwningApplicationHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
 	public virtual string[] MountedLocalVolumePaths
 	{
-		[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
 		[Export("mountedLocalVolumePaths")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMountedLocalVolumePathsHandle));
 			}
@@ -1024,16 +415,13 @@ public class NSWorkspace : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
 	public virtual string[] MountedRemovableMedia
 	{
-		[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
 		[Export("mountedRemovableMedia")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMountedRemovableMediaHandle));
 			}
@@ -1041,251 +429,83 @@ public class NSWorkspace : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[ThreadSafe]
-	public virtual NSNotificationCenter NotificationCenter
+	public virtual NSDictionary[] LaunchedApplications
 	{
-		[Export("notificationCenter")]
+		[Export("launchedApplications")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSNotificationCenter>(Messaging.IntPtr_objc_msgSend(base.Handle, selNotificationCenterHandle));
-			}
-			return Runtime.GetNSObject<NSNotificationCenter>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selNotificationCenterHandle));
+			NSApplication.EnsureUIThread();
+			return (NSDictionary[])(__mt_LaunchedApplications_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLaunchedApplicationsHandle)) : NSArray.ArrayFromHandle<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selLaunchedApplicationsHandle))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary ActiveApplication
+	{
+		[Export("activeApplication")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSDictionary)(__mt_ActiveApplication_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selActiveApplicationHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selActiveApplicationHandle)))));
+		}
+	}
+
 	[ThreadSafe]
 	public virtual NSRunningApplication[] RunningApplications
 	{
 		[Export("runningApplications")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSRunningApplication>(Messaging.IntPtr_objc_msgSend(base.Handle, selRunningApplicationsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSRunningApplication>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRunningApplicationsHandle));
+			return (NSRunningApplication[])(__mt_RunningApplications_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSRunningApplication>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRunningApplicationsHandle)) : NSArray.ArrayFromHandle<NSRunningApplication>(Messaging.IntPtr_objc_msgSend(base.Handle, selRunningApplicationsHandle))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[ThreadSafe]
-	public static NSWorkspace SharedWorkspace
+	public virtual NSRunningApplication FrontmostApplication
 	{
-		[Export("sharedWorkspace")]
-		get
-		{
-			return Runtime.GetNSObject<NSWorkspace>(Messaging.IntPtr_objc_msgSend(class_ptr, selSharedWorkspaceHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-	public virtual bool SwitchControlEnabled
-	{
-		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-		[Export("isSwitchControlEnabled")]
+		[Export("frontmostApplication")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsSwitchControlEnabledHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsSwitchControlEnabledHandle);
+			return (NSRunningApplication)(__mt_FrontmostApplication_var = ((!IsDirectBinding) ? ((NSRunningApplication)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFrontmostApplicationHandle))) : ((NSRunningApplication)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFrontmostApplicationHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-	public virtual bool VoiceOverEnabled
+	public virtual NSRunningApplication MenuBarOwningApplication
 	{
-		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-		[Export("isVoiceOverEnabled")]
+		[Export("menuBarOwningApplication")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsVoiceOverEnabledHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsVoiceOverEnabledHandle);
+			return (NSRunningApplication)(__mt_MenuBarOwningApplication_var = ((!IsDirectBinding) ? ((NSRunningApplication)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMenuBarOwningApplicationHandle))) : ((NSRunningApplication)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMenuBarOwningApplicationHandle)))));
 		}
 	}
 
-	[Field("NSWorkspaceActiveSpaceDidChangeNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveActiveSpaceDidChange helper method instead.")]
-	public static NSString ActiveSpaceDidChangeNotification
+	[Field("NSWorkspaceWillPowerOffNotification", "AppKit")]
+	public static NSString WillPowerOffNotification
 	{
 		get
 		{
-			if (_ActiveSpaceDidChangeNotification == null)
+			if (_WillPowerOffNotification == null)
 			{
-				_ActiveSpaceDidChangeNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceActiveSpaceDidChangeNotification");
+				_WillPowerOffNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceWillPowerOffNotification");
 			}
-			return _ActiveSpaceDidChangeNotification;
+			return _WillPowerOffNotification;
 		}
 	}
 
-	[Field("NSWorkspaceDidActivateApplicationNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveDidActivateApplication helper method instead.")]
-	public static NSString DidActivateApplicationNotification
+	[Field("NSWorkspaceWillSleepNotification", "AppKit")]
+	public static NSString WillSleepNotification
 	{
 		get
 		{
-			if (_DidActivateApplicationNotification == null)
+			if (_WillSleepNotification == null)
 			{
-				_DidActivateApplicationNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidActivateApplicationNotification");
+				_WillSleepNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceWillSleepNotification");
 			}
-			return _DidActivateApplicationNotification;
-		}
-	}
-
-	[Field("NSWorkspaceDidChangeFileLabelsNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveDidChangeFileLabels helper method instead.")]
-	public static NSString DidChangeFileLabelsNotification
-	{
-		get
-		{
-			if (_DidChangeFileLabelsNotification == null)
-			{
-				_DidChangeFileLabelsNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidChangeFileLabelsNotification");
-			}
-			return _DidChangeFileLabelsNotification;
-		}
-	}
-
-	[Field("NSWorkspaceDidDeactivateApplicationNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveDidDeactivateApplication helper method instead.")]
-	public static NSString DidDeactivateApplicationNotification
-	{
-		get
-		{
-			if (_DidDeactivateApplicationNotification == null)
-			{
-				_DidDeactivateApplicationNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidDeactivateApplicationNotification");
-			}
-			return _DidDeactivateApplicationNotification;
-		}
-	}
-
-	[Field("NSWorkspaceDidHideApplicationNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveDidHideApplication helper method instead.")]
-	public static NSString DidHideApplicationNotification
-	{
-		get
-		{
-			if (_DidHideApplicationNotification == null)
-			{
-				_DidHideApplicationNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidHideApplicationNotification");
-			}
-			return _DidHideApplicationNotification;
-		}
-	}
-
-	[Field("NSWorkspaceDidLaunchApplicationNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveDidLaunchApplication helper method instead.")]
-	public static NSString DidLaunchApplicationNotification
-	{
-		get
-		{
-			if (_DidLaunchApplicationNotification == null)
-			{
-				_DidLaunchApplicationNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidLaunchApplicationNotification");
-			}
-			return _DidLaunchApplicationNotification;
-		}
-	}
-
-	[Field("NSWorkspaceDidMountNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveDidMount helper method instead.")]
-	public static NSString DidMountNotification
-	{
-		get
-		{
-			if (_DidMountNotification == null)
-			{
-				_DidMountNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidMountNotification");
-			}
-			return _DidMountNotification;
-		}
-	}
-
-	[Field("NSWorkspaceDidPerformFileOperationNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveDidPerformFileOperation helper method instead.")]
-	public static NSString DidPerformFileOperationNotification
-	{
-		get
-		{
-			if (_DidPerformFileOperationNotification == null)
-			{
-				_DidPerformFileOperationNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidPerformFileOperationNotification");
-			}
-			return _DidPerformFileOperationNotification;
-		}
-	}
-
-	[Field("NSWorkspaceDidRenameVolumeNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveDidRenameVolume helper method instead.")]
-	public static NSString DidRenameVolumeNotification
-	{
-		get
-		{
-			if (_DidRenameVolumeNotification == null)
-			{
-				_DidRenameVolumeNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidRenameVolumeNotification");
-			}
-			return _DidRenameVolumeNotification;
-		}
-	}
-
-	[Field("NSWorkspaceDidTerminateApplicationNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveDidTerminateApplication helper method instead.")]
-	public static NSString DidTerminateApplicationNotification
-	{
-		get
-		{
-			if (_DidTerminateApplicationNotification == null)
-			{
-				_DidTerminateApplicationNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidTerminateApplicationNotification");
-			}
-			return _DidTerminateApplicationNotification;
-		}
-	}
-
-	[Field("NSWorkspaceDidUnhideApplicationNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveDidUnhideApplication helper method instead.")]
-	public static NSString DidUnhideApplicationNotification
-	{
-		get
-		{
-			if (_DidUnhideApplicationNotification == null)
-			{
-				_DidUnhideApplicationNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidUnhideApplicationNotification");
-			}
-			return _DidUnhideApplicationNotification;
-		}
-	}
-
-	[Field("NSWorkspaceDidUnmountNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveDidUnmount helper method instead.")]
-	public static NSString DidUnmountNotification
-	{
-		get
-		{
-			if (_DidUnmountNotification == null)
-			{
-				_DidUnmountNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidUnmountNotification");
-			}
-			return _DidUnmountNotification;
+			return _WillSleepNotification;
 		}
 	}
 
 	[Field("NSWorkspaceDidWakeNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveDidWake helper method instead.")]
 	public static NSString DidWakeNotification
 	{
 		get
@@ -1298,136 +518,237 @@ public class NSWorkspace : NSObject
 		}
 	}
 
-	[Field("NSWorkspaceAccessibilityDisplayOptionsDidChangeNotification", "AppKit")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Advice("Use NSWorkspace.Notifications.ObserveDisplayOptionsDidChange helper method instead.")]
-	public static NSString DisplayOptionsDidChangeNotification
+	[Field("NSWorkspaceScreensDidSleepNotification", "AppKit")]
+	public static NSString ScreensDidSleepNotification
 	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
 		get
 		{
-			if (_DisplayOptionsDidChangeNotification == null)
+			if (_ScreensDidSleepNotification == null)
 			{
-				_DisplayOptionsDidChangeNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceAccessibilityDisplayOptionsDidChangeNotification");
+				_ScreensDidSleepNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceScreensDidSleepNotification");
 			}
-			return _DisplayOptionsDidChangeNotification;
+			return _ScreensDidSleepNotification;
 		}
 	}
 
-	[Field("NSWorkspaceLaunchConfigurationAppleEvent", "AppKit")]
-	public static NSString LaunchConfigurationAppleEvent
+	[Field("NSWorkspaceScreensDidWakeNotification", "AppKit")]
+	public static NSString ScreensDidWakeNotification
 	{
 		get
 		{
-			if (_LaunchConfigurationAppleEvent == null)
+			if (_ScreensDidWakeNotification == null)
 			{
-				_LaunchConfigurationAppleEvent = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceLaunchConfigurationAppleEvent");
+				_ScreensDidWakeNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceScreensDidWakeNotification");
 			}
-			return _LaunchConfigurationAppleEvent;
+			return _ScreensDidWakeNotification;
 		}
 	}
 
-	[Field("NSWorkspaceLaunchConfigurationArchitecture", "AppKit")]
-	public static NSString LaunchConfigurationArchitecture
+	[Field("NSWorkspaceSessionDidBecomeActiveNotification", "AppKit")]
+	public static NSString SessionDidBecomeActiveNotification
 	{
 		get
 		{
-			if (_LaunchConfigurationArchitecture == null)
+			if (_SessionDidBecomeActiveNotification == null)
 			{
-				_LaunchConfigurationArchitecture = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceLaunchConfigurationArchitecture");
+				_SessionDidBecomeActiveNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceSessionDidBecomeActiveNotification");
 			}
-			return _LaunchConfigurationArchitecture;
+			return _SessionDidBecomeActiveNotification;
 		}
 	}
 
-	[Field("NSWorkspaceLaunchConfigurationArguments", "AppKit")]
-	public static NSString LaunchConfigurationArguments
+	[Field("NSWorkspaceSessionDidResignActiveNotification", "AppKit")]
+	public static NSString SessionDidResignActiveNotification
 	{
 		get
 		{
-			if (_LaunchConfigurationArguments == null)
+			if (_SessionDidResignActiveNotification == null)
 			{
-				_LaunchConfigurationArguments = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceLaunchConfigurationArguments");
+				_SessionDidResignActiveNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceSessionDidResignActiveNotification");
 			}
-			return _LaunchConfigurationArguments;
+			return _SessionDidResignActiveNotification;
 		}
 	}
 
-	[Field("NSWorkspaceLaunchConfigurationEnvironment", "AppKit")]
-	public static NSString LaunchConfigurationEnvironment
+	[Field("NSWorkspaceDidRenameVolumeNotification", "AppKit")]
+	public static NSString DidRenameVolumeNotification
 	{
 		get
 		{
-			if (_LaunchConfigurationEnvironment == null)
+			if (_DidRenameVolumeNotification == null)
 			{
-				_LaunchConfigurationEnvironment = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceLaunchConfigurationEnvironment");
+				_DidRenameVolumeNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidRenameVolumeNotification");
 			}
-			return _LaunchConfigurationEnvironment;
+			return _DidRenameVolumeNotification;
 		}
 	}
 
-	[Field("NSWorkspaceCopyOperation", "AppKit")]
-	public static NSString OperationCopy
+	[Field("NSWorkspaceDidMountNotification", "AppKit")]
+	public static NSString DidMountNotification
 	{
 		get
 		{
-			if (_OperationCopy == null)
+			if (_DidMountNotification == null)
 			{
-				_OperationCopy = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceCopyOperation");
+				_DidMountNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidMountNotification");
 			}
-			return _OperationCopy;
+			return _DidMountNotification;
 		}
 	}
 
-	[Field("NSWorkspaceDestroyOperation", "AppKit")]
-	public static NSString OperationDestroy
+	[Field("NSWorkspaceDidUnmountNotification", "AppKit")]
+	public static NSString DidUnmountNotification
 	{
 		get
 		{
-			if (_OperationDestroy == null)
+			if (_DidUnmountNotification == null)
 			{
-				_OperationDestroy = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDestroyOperation");
+				_DidUnmountNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidUnmountNotification");
 			}
-			return _OperationDestroy;
+			return _DidUnmountNotification;
 		}
 	}
 
-	[Field("NSWorkspaceDuplicateOperation", "AppKit")]
-	public static NSString OperationDuplicate
+	[Field("NSWorkspaceWillUnmountNotification", "AppKit")]
+	public static NSString WillUnmountNotification
 	{
 		get
 		{
-			if (_OperationDuplicate == null)
+			if (_WillUnmountNotification == null)
 			{
-				_OperationDuplicate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDuplicateOperation");
+				_WillUnmountNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceWillUnmountNotification");
 			}
-			return _OperationDuplicate;
+			return _WillUnmountNotification;
 		}
 	}
 
-	[Field("NSWorkspaceLinkOperation", "AppKit")]
-	public static NSString OperationLink
+	[Field("NSWorkspaceWillLaunchApplicationNotification", "AppKit")]
+	public static NSString WillLaunchApplication
 	{
 		get
 		{
-			if (_OperationLink == null)
+			if (_WillLaunchApplication == null)
 			{
-				_OperationLink = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceLinkOperation");
+				_WillLaunchApplication = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceWillLaunchApplicationNotification");
 			}
-			return _OperationLink;
+			return _WillLaunchApplication;
 		}
 	}
 
-	[Field("NSWorkspaceMoveOperation", "AppKit")]
-	public static NSString OperationMove
+	[Field("NSWorkspaceDidLaunchApplicationNotification", "AppKit")]
+	public static NSString DidLaunchApplicationNotification
 	{
 		get
 		{
-			if (_OperationMove == null)
+			if (_DidLaunchApplicationNotification == null)
 			{
-				_OperationMove = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceMoveOperation");
+				_DidLaunchApplicationNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidLaunchApplicationNotification");
 			}
-			return _OperationMove;
+			return _DidLaunchApplicationNotification;
+		}
+	}
+
+	[Field("NSWorkspaceDidTerminateApplicationNotification", "AppKit")]
+	public static NSString DidTerminateApplicationNotification
+	{
+		get
+		{
+			if (_DidTerminateApplicationNotification == null)
+			{
+				_DidTerminateApplicationNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidTerminateApplicationNotification");
+			}
+			return _DidTerminateApplicationNotification;
+		}
+	}
+
+	[Field("NSWorkspaceDidHideApplicationNotification", "AppKit")]
+	public static NSString DidHideApplicationNotification
+	{
+		get
+		{
+			if (_DidHideApplicationNotification == null)
+			{
+				_DidHideApplicationNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidHideApplicationNotification");
+			}
+			return _DidHideApplicationNotification;
+		}
+	}
+
+	[Field("NSWorkspaceDidUnhideApplicationNotification", "AppKit")]
+	public static NSString DidUnhideApplicationNotification
+	{
+		get
+		{
+			if (_DidUnhideApplicationNotification == null)
+			{
+				_DidUnhideApplicationNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidUnhideApplicationNotification");
+			}
+			return _DidUnhideApplicationNotification;
+		}
+	}
+
+	[Field("NSWorkspaceDidActivateApplicationNotification", "AppKit")]
+	public static NSString DidActivateApplicationNotification
+	{
+		get
+		{
+			if (_DidActivateApplicationNotification == null)
+			{
+				_DidActivateApplicationNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidActivateApplicationNotification");
+			}
+			return _DidActivateApplicationNotification;
+		}
+	}
+
+	[Field("NSWorkspaceDidDeactivateApplicationNotification", "AppKit")]
+	public static NSString DidDeactivateApplicationNotification
+	{
+		get
+		{
+			if (_DidDeactivateApplicationNotification == null)
+			{
+				_DidDeactivateApplicationNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidDeactivateApplicationNotification");
+			}
+			return _DidDeactivateApplicationNotification;
+		}
+	}
+
+	[Field("NSWorkspaceDidPerformFileOperationNotification", "AppKit")]
+	public static NSString DidPerformFileOperationNotification
+	{
+		get
+		{
+			if (_DidPerformFileOperationNotification == null)
+			{
+				_DidPerformFileOperationNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidPerformFileOperationNotification");
+			}
+			return _DidPerformFileOperationNotification;
+		}
+	}
+
+	[Field("NSWorkspaceDidChangeFileLabelsNotification", "AppKit")]
+	public static NSString DidChangeFileLabelsNotification
+	{
+		get
+		{
+			if (_DidChangeFileLabelsNotification == null)
+			{
+				_DidChangeFileLabelsNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDidChangeFileLabelsNotification");
+			}
+			return _DidChangeFileLabelsNotification;
+		}
+	}
+
+	[Field("NSWorkspaceActiveSpaceDidChangeNotification", "AppKit")]
+	public static NSString ActiveSpaceDidChangeNotification
+	{
+		get
+		{
+			if (_ActiveSpaceDidChangeNotification == null)
+			{
+				_ActiveSpaceDidChangeNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceActiveSpaceDidChangeNotification");
+			}
+			return _ActiveSpaceDidChangeNotification;
 		}
 	}
 
@@ -1444,674 +765,171 @@ public class NSWorkspace : NSObject
 		}
 	}
 
-	[Field("NSWorkspaceScreensDidSleepNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveScreensDidSleep helper method instead.")]
-	public static NSString ScreensDidSleepNotification
+	[Field("NSWorkspaceDuplicateOperation", "AppKit")]
+	public static NSString OperationDuplicate
 	{
 		get
 		{
-			if (_ScreensDidSleepNotification == null)
+			if (_OperationDuplicate == null)
 			{
-				_ScreensDidSleepNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceScreensDidSleepNotification");
+				_OperationDuplicate = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDuplicateOperation");
 			}
-			return _ScreensDidSleepNotification;
+			return _OperationDuplicate;
 		}
 	}
 
-	[Field("NSWorkspaceScreensDidWakeNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveScreensDidWake helper method instead.")]
-	public static NSString ScreensDidWakeNotification
+	[Field("NSWorkspaceMoveOperation", "AppKit")]
+	public static NSString OperationMove
 	{
 		get
 		{
-			if (_ScreensDidWakeNotification == null)
+			if (_OperationMove == null)
 			{
-				_ScreensDidWakeNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceScreensDidWakeNotification");
+				_OperationMove = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceMoveOperation");
 			}
-			return _ScreensDidWakeNotification;
+			return _OperationMove;
 		}
 	}
 
-	[Field("NSWorkspaceSessionDidBecomeActiveNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveSessionDidBecomeActive helper method instead.")]
-	public static NSString SessionDidBecomeActiveNotification
+	[Field("NSWorkspaceCopyOperation", "AppKit")]
+	public static NSString OperationCopy
 	{
 		get
 		{
-			if (_SessionDidBecomeActiveNotification == null)
+			if (_OperationCopy == null)
 			{
-				_SessionDidBecomeActiveNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceSessionDidBecomeActiveNotification");
+				_OperationCopy = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceCopyOperation");
 			}
-			return _SessionDidBecomeActiveNotification;
+			return _OperationCopy;
 		}
 	}
 
-	[Field("NSWorkspaceSessionDidResignActiveNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveSessionDidResignActive helper method instead.")]
-	public static NSString SessionDidResignActiveNotification
+	[Field("NSWorkspaceLinkOperation", "AppKit")]
+	public static NSString OperationLink
 	{
 		get
 		{
-			if (_SessionDidResignActiveNotification == null)
+			if (_OperationLink == null)
 			{
-				_SessionDidResignActiveNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceSessionDidResignActiveNotification");
+				_OperationLink = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceLinkOperation");
 			}
-			return _SessionDidResignActiveNotification;
+			return _OperationLink;
 		}
 	}
 
-	[Field("NSWorkspaceWillLaunchApplicationNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveWillLaunchApplication helper method instead.")]
-	public static NSString WillLaunchApplication
+	[Field("NSWorkspaceDestroyOperation", "AppKit")]
+	public static NSString OperationDestroy
 	{
 		get
 		{
-			if (_WillLaunchApplication == null)
+			if (_OperationDestroy == null)
 			{
-				_WillLaunchApplication = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceWillLaunchApplicationNotification");
+				_OperationDestroy = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceDestroyOperation");
 			}
-			return _WillLaunchApplication;
+			return _OperationDestroy;
 		}
 	}
 
-	[Field("NSWorkspaceWillPowerOffNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveWillPowerOff helper method instead.")]
-	public static NSString WillPowerOffNotification
-	{
-		get
-		{
-			if (_WillPowerOffNotification == null)
-			{
-				_WillPowerOffNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceWillPowerOffNotification");
-			}
-			return _WillPowerOffNotification;
-		}
-	}
-
-	[Field("NSWorkspaceWillSleepNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveWillSleep helper method instead.")]
-	public static NSString WillSleepNotification
-	{
-		get
-		{
-			if (_WillSleepNotification == null)
-			{
-				_WillSleepNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceWillSleepNotification");
-			}
-			return _WillSleepNotification;
-		}
-	}
-
-	[Field("NSWorkspaceWillUnmountNotification", "AppKit")]
-	[Advice("Use NSWorkspace.Notifications.ObserveWillUnmount helper method instead.")]
-	public static NSString WillUnmountNotification
-	{
-		get
-		{
-			if (_WillUnmountNotification == null)
-			{
-				_WillUnmountNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSWorkspaceWillUnmountNotification");
-			}
-			return _WillUnmountNotification;
-		}
-	}
-
-	public virtual bool OpenUrls(NSUrl[] urls, string bundleIdentifier, NSWorkspaceLaunchOptions options, NSAppleEventDescriptor descriptor, string[] identifiers)
-	{
-		return _OpenUrls(urls, bundleIdentifier, options, descriptor, null);
-	}
-
-	public virtual bool OpenUrls(NSUrl[] urls, string bundleIdentifier, NSWorkspaceLaunchOptions options, NSAppleEventDescriptor descriptor)
-	{
-		return _OpenUrls(urls, bundleIdentifier, options, descriptor, null);
-	}
-
-	public virtual NSImage IconForFileType(string fileType)
-	{
-		IntPtr fileTypeOrTypeCode = NSString.CreateNative(fileType);
-		try
-		{
-			return IconForFileType(fileTypeOrTypeCode);
-		}
-		finally
-		{
-			NSString.ReleaseNative(fileTypeOrTypeCode);
-		}
-	}
-
-	public virtual NSImage IconForFileType(HfsTypeCode typeCode)
-	{
-		IntPtr nSFileType = GetNSFileType((uint)typeCode);
-		return IconForFileType(nSFileType);
-	}
-
-	[DllImport("/System/Library/Frameworks/Foundation.framework/Foundation")]
-	private static extern IntPtr NSFileTypeForHFSTypeCode(uint hfsFileTypeCode);
-
-	[DllImport("/System/Library/Frameworks/Foundation.framework/Foundation")]
-	private static extern int UTGetOSTypeFromString(IntPtr str);
-
-	private static IntPtr GetNSFileType(uint fourCcTypeCode)
-	{
-		return NSFileTypeForHFSTypeCode(fourCcTypeCode);
-	}
-
-	[Obsolete("Use the overload that takes 'ref NSError' instead.")]
-	public virtual NSRunningApplication LaunchApplication(NSUrl url, NSWorkspaceLaunchOptions options, NSDictionary configuration, NSError error)
-	{
-		return LaunchApplication(url, options, configuration, out error);
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSWorkspace()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSWorkspace(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSWorkspace(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSWorkspace(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSWorkspace(IntPtr handle)
+	public NSWorkspace(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("absolutePathForAppBundleWithIdentifier:")]
-	[ThreadSafe]
-	[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, "Use the 'UrlForApplication' method instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string? AbsolutePathForAppBundle(string bundleIdentifier)
-	{
-		if (bundleIdentifier == null)
-		{
-			throw new ArgumentNullException("bundleIdentifier");
-		}
-		IntPtr arg = NSString.CreateNative(bundleIdentifier);
-		string result = ((!base.IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAbsolutePathForAppBundleWithIdentifier_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAbsolutePathForAppBundleWithIdentifier_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("activateFileViewerSelectingURLs:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ActivateFileViewer(NSUrl[] fileUrls)
-	{
-		if (fileUrls == null)
-		{
-			throw new ArgumentNullException("fileUrls");
-		}
-		NSArray nSArray = NSArray.FromNSObjects(fileUrls);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selActivateFileViewerSelectingURLs_Handle, nSArray.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selActivateFileViewerSelectingURLs_Handle, nSArray.Handle);
-		}
-		nSArray.Dispose();
-	}
-
-	[Export("desktopImageOptionsForScreen:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary DesktopImageOptions(NSScreen screen)
-	{
-		NSApplication.EnsureUIThread();
-		if (screen == null)
-		{
-			throw new ArgumentNullException("screen");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDesktopImageOptionsForScreen_Handle, screen.Handle));
-		}
-		return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDesktopImageOptionsForScreen_Handle, screen.Handle));
-	}
-
-	[Export("desktopImageURLForScreen:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSUrl DesktopImageUrl(NSScreen screen)
-	{
-		NSApplication.EnsureUIThread();
-		if (screen == null)
-		{
-			throw new ArgumentNullException("screen");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDesktopImageURLForScreen_Handle, screen.Handle));
-		}
-		return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDesktopImageURLForScreen_Handle, screen.Handle));
-	}
-
-	[Export("duplicateURLs:completionHandler:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe virtual void DuplicateUrls(NSArray urls, [BlockProxy(typeof(Trampolines.NIDNSWorkspaceUrlHandler))] NSWorkspaceUrlHandler completionHandler)
-	{
-		if (urls == null)
-		{
-			throw new ArgumentNullException("urls");
-		}
-		if (completionHandler == null)
-		{
-			throw new ArgumentNullException("completionHandler");
-		}
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDNSWorkspaceUrlHandler.Handler, completionHandler);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selDuplicateURLs_CompletionHandler_Handle, urls.Handle, (IntPtr)ptr);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selDuplicateURLs_CompletionHandler_Handle, urls.Handle, (IntPtr)ptr);
-		}
-		ptr->CleanupBlock();
-	}
-
-	[Export("extendPowerOffBy:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint ExtendPowerOffBy(nint requested)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.nint_objc_msgSend_nint(base.Handle, selExtendPowerOffBy_Handle, requested);
-		}
-		return Messaging.nint_objc_msgSendSuper_nint(base.SuperHandle, selExtendPowerOffBy_Handle, requested);
-	}
-
-	[Export("fullPathForApplication:")]
-	[ThreadSafe]
-	[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, "Use the 'UrlForApplication' method instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string? FullPathForApplication(string appName)
-	{
-		if (appName == null)
-		{
-			throw new ArgumentNullException("appName");
-		}
-		IntPtr arg = NSString.CreateNative(appName);
-		string result = ((!base.IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selFullPathForApplication_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selFullPathForApplication_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("getFileSystemInfoForPath:isRemovable:isWritable:isUnmountable:description:type:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool GetFileSystemInfo(string fullPath, out bool removableFlag, out bool writableFlag, out bool unmountableFlag, out string description, out string fileSystemType)
-	{
-		if (fullPath == null)
-		{
-			throw new ArgumentNullException("fullPath");
-		}
-		IntPtr arg = IntPtr.Zero;
-		IntPtr arg2 = IntPtr.Zero;
-		IntPtr arg3 = NSString.CreateNative(fullPath);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_out_Boolean_out_Boolean_out_Boolean_ref_IntPtr_ref_IntPtr(base.SuperHandle, selGetFileSystemInfoForPath_IsRemovable_IsWritable_IsUnmountable_Description_Type_Handle, arg3, out removableFlag, out writableFlag, out unmountableFlag, ref arg, ref arg2) : Messaging.bool_objc_msgSend_IntPtr_out_Boolean_out_Boolean_out_Boolean_ref_IntPtr_ref_IntPtr(base.Handle, selGetFileSystemInfoForPath_IsRemovable_IsWritable_IsUnmountable_Description_Type_Handle, arg3, out removableFlag, out writableFlag, out unmountableFlag, ref arg, ref arg2));
-		NSString.ReleaseNative(arg3);
-		description = NSString.FromHandle(arg);
-		fileSystemType = NSString.FromHandle(arg2);
-		return result;
-	}
-
-	[Export("getInfoForFile:application:type:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool GetInfo(string fullPath, out string appName, out string fileType)
-	{
-		if (fullPath == null)
-		{
-			throw new ArgumentNullException("fullPath");
-		}
-		IntPtr arg = IntPtr.Zero;
-		IntPtr arg2 = IntPtr.Zero;
-		IntPtr arg3 = NSString.CreateNative(fullPath);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_ref_IntPtr_ref_IntPtr(base.SuperHandle, selGetInfoForFile_Application_Type_Handle, arg3, ref arg, ref arg2) : Messaging.bool_objc_msgSend_IntPtr_ref_IntPtr_ref_IntPtr(base.Handle, selGetInfoForFile_Application_Type_Handle, arg3, ref arg, ref arg2));
-		NSString.ReleaseNative(arg3);
-		appName = NSString.FromHandle(arg);
-		fileType = NSString.FromHandle(arg2);
-		return result;
-	}
-
-	[Export("hideOtherApplications")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void HideOtherApplications()
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selHideOtherApplicationsHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selHideOtherApplicationsHandle);
-		}
-	}
-
-	[Export("iconForFile:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSImage IconForFile(string fullPath)
-	{
-		if (fullPath == null)
-		{
-			throw new ArgumentNullException("fullPath");
-		}
-		IntPtr arg = NSString.CreateNative(fullPath);
-		NSImage result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selIconForFile_Handle, arg)) : Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selIconForFile_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("iconForFileType:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual NSImage IconForFileType(IntPtr fileTypeOrTypeCode)
-	{
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selIconForFileType_Handle, fileTypeOrTypeCode));
-		}
-		return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selIconForFileType_Handle, fileTypeOrTypeCode));
-	}
-
-	[Export("iconForFiles:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSImage IconForFiles(string[] fullPaths)
-	{
-		if (fullPaths == null)
-		{
-			throw new ArgumentNullException("fullPaths");
-		}
-		NSArray nSArray = NSArray.FromStrings(fullPaths);
-		NSImage result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selIconForFiles_Handle, nSArray.Handle)) : Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selIconForFiles_Handle, nSArray.Handle)));
-		nSArray.Dispose();
-		return result;
-	}
-
-	[Export("isFilePackageAtPath:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool IsFilePackage(string fullPath)
-	{
-		if (fullPath == null)
-		{
-			throw new ArgumentNullException("fullPath");
-		}
-		IntPtr arg = NSString.CreateNative(fullPath);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selIsFilePackageAtPath_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIsFilePackageAtPath_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("filenameExtension:isValidForType:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool IsFilenameExtensionValid(string filenameExtension, string typeName)
-	{
-		if (filenameExtension == null)
-		{
-			throw new ArgumentNullException("filenameExtension");
-		}
-		if (typeName == null)
-		{
-			throw new ArgumentNullException("typeName");
-		}
-		IntPtr arg = NSString.CreateNative(filenameExtension);
-		IntPtr arg2 = NSString.CreateNative(typeName);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selFilenameExtension_IsValidForType_Handle, arg, arg2) : Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selFilenameExtension_IsValidForType_Handle, arg, arg2));
-		NSString.ReleaseNative(arg);
-		NSString.ReleaseNative(arg2);
-		return result;
-	}
-
-	[Export("launchAppWithBundleIdentifier:options:additionalEventParamDescriptor:launchIdentifier:")]
-	[ThreadSafe]
-	[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool LaunchApp(string bundleIdentifier, NSWorkspaceLaunchOptions options, NSAppleEventDescriptor descriptor, IntPtr identifier)
-	{
-		if (bundleIdentifier == null)
-		{
-			throw new ArgumentNullException("bundleIdentifier");
-		}
-		if (descriptor == null)
-		{
-			throw new ArgumentNullException("descriptor");
-		}
-		IntPtr arg = NSString.CreateNative(bundleIdentifier);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_UInt64_IntPtr_IntPtr(base.SuperHandle, selLaunchAppWithBundleIdentifier_Options_AdditionalEventParamDescriptor_LaunchIdentifier_Handle, arg, (ulong)options, descriptor.Handle, identifier) : Messaging.bool_objc_msgSend_IntPtr_UInt64_IntPtr_IntPtr(base.Handle, selLaunchAppWithBundleIdentifier_Options_AdditionalEventParamDescriptor_LaunchIdentifier_Handle, arg, (ulong)options, descriptor.Handle, identifier));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("launchApplication:")]
-	[ThreadSafe]
-	[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool LaunchApplication(string appName)
-	{
-		if (appName == null)
-		{
-			throw new ArgumentNullException("appName");
-		}
-		IntPtr arg = NSString.CreateNative(appName);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selLaunchApplication_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selLaunchApplication_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("launchApplicationAtURL:options:configuration:error:")]
-	[ThreadSafe]
-	[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSRunningApplication LaunchApplication(NSUrl url, NSWorkspaceLaunchOptions options, NSDictionary configuration, out NSError error)
-	{
-		if (url == null)
-		{
-			throw new ArgumentNullException("url");
-		}
-		if (configuration == null)
-		{
-			throw new ArgumentNullException("configuration");
-		}
-		IntPtr arg = IntPtr.Zero;
-		NSRunningApplication result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSRunningApplication>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_UInt64_IntPtr_ref_IntPtr(base.SuperHandle, selLaunchApplicationAtURL_Options_Configuration_Error_Handle, url.Handle, (ulong)options, configuration.Handle, ref arg)) : Runtime.GetNSObject<NSRunningApplication>(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64_IntPtr_ref_IntPtr(base.Handle, selLaunchApplicationAtURL_Options_Configuration_Error_Handle, url.Handle, (ulong)options, configuration.Handle, ref arg)));
-		error = Runtime.GetNSObject<NSError>(arg);
-		return result;
-	}
-
-	[Export("launchApplication:showIcon:autolaunch:")]
-	[ThreadSafe]
-	[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool LaunchApplication(string appName, bool showIcon, bool autolaunch)
-	{
-		if (appName == null)
-		{
-			throw new ArgumentNullException("appName");
-		}
-		IntPtr arg = NSString.CreateNative(appName);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_bool_bool(base.SuperHandle, selLaunchApplication_ShowIcon_Autolaunch_Handle, arg, showIcon, autolaunch) : Messaging.bool_objc_msgSend_IntPtr_bool_bool(base.Handle, selLaunchApplication_ShowIcon_Autolaunch_Handle, arg, showIcon, autolaunch));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("localizedDescriptionForType:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string LocalizedDescription(string typeName)
-	{
-		if (typeName == null)
-		{
-			throw new ArgumentNullException("typeName");
-		}
-		IntPtr arg = NSString.CreateNative(typeName);
-		string result = ((!base.IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selLocalizedDescriptionForType_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selLocalizedDescriptionForType_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("noteFileSystemChanged:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void NoteFileSystemChanged(string path)
-	{
-		NSApplication.EnsureUIThread();
-		if (path == null)
-		{
-			throw new ArgumentNullException("path");
-		}
-		IntPtr arg = NSString.CreateNative(path);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selNoteFileSystemChanged_Handle, arg);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selNoteFileSystemChanged_Handle, arg);
-		}
-		NSString.ReleaseNative(arg);
-	}
-
-	[Export("openApplicationAtURL:configuration:completionHandler:")]
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe virtual void OpenApplication(NSUrl applicationUrl, NSWorkspaceOpenConfiguration configuration, [BlockProxy(typeof(Trampolines.NIDActionArity2V10))] Action<NSRunningApplication, NSError>? completionHandler)
-	{
-		NSApplication.EnsureUIThread();
-		if (applicationUrl == null)
-		{
-			throw new ArgumentNullException("applicationUrl");
-		}
-		if (configuration == null)
-		{
-			throw new ArgumentNullException("configuration");
-		}
-		BlockLiteral* ptr;
-		if (completionHandler == null)
-		{
-			ptr = null;
-		}
-		else
-		{
-			BlockLiteral blockLiteral = default(BlockLiteral);
-			ptr = &blockLiteral;
-			blockLiteral.SetupBlockUnsafe(Trampolines.SDActionArity2V10.Handler, completionHandler);
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selOpenApplicationAtURL_Configuration_CompletionHandler_Handle, applicationUrl.Handle, configuration.Handle, (IntPtr)ptr);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selOpenApplicationAtURL_Configuration_CompletionHandler_Handle, applicationUrl.Handle, configuration.Handle, (IntPtr)ptr);
-		}
-		if (ptr != null)
-		{
-			ptr->CleanupBlock();
-		}
-	}
-
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual Task<NSRunningApplication> OpenApplicationAsync(NSUrl applicationUrl, NSWorkspaceOpenConfiguration configuration)
-	{
-		TaskCompletionSource<NSRunningApplication> tcs = new TaskCompletionSource<NSRunningApplication>();
-		OpenApplication(applicationUrl, configuration, delegate(NSRunningApplication arg1_, NSError arg2_)
-		{
-			if (arg2_ != null)
-			{
-				tcs.SetException(new NSErrorException(arg2_));
-			}
-			else
-			{
-				tcs.SetResult(arg1_);
-			}
-		});
-		return tcs.Task;
-	}
-
 	[Export("openFile:")]
-	[ThreadSafe]
-	[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, "Use the 'OpenUrl' method instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool OpenFile(string fullPath)
 	{
+		NSApplication.EnsureUIThread();
 		if (fullPath == null)
 		{
 			throw new ArgumentNullException("fullPath");
 		}
 		IntPtr arg = NSString.CreateNative(fullPath);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selOpenFile_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selOpenFile_Handle, arg));
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selOpenFile_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selOpenFile_Handle, arg));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
 	[Export("openFile:withApplication:")]
-	[ThreadSafe]
-	[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool OpenFile(string fullPath, string? appName)
+	public virtual bool OpenFile(string fullPath, string appName)
 	{
+		NSApplication.EnsureUIThread();
 		if (fullPath == null)
 		{
 			throw new ArgumentNullException("fullPath");
 		}
+		if (appName == null)
+		{
+			throw new ArgumentNullException("appName");
+		}
 		IntPtr arg = NSString.CreateNative(fullPath);
 		IntPtr arg2 = NSString.CreateNative(appName);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selOpenFile_WithApplication_Handle, arg, arg2) : Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selOpenFile_WithApplication_Handle, arg, arg2));
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selOpenFileWithApplication_Handle, arg, arg2) : Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selOpenFileWithApplication_Handle, arg, arg2));
 		NSString.ReleaseNative(arg);
 		NSString.ReleaseNative(arg2);
 		return result;
 	}
 
 	[Export("openFile:withApplication:andDeactivate:")]
-	[ThreadSafe]
-	[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool OpenFile(string fullPath, string? appName, bool deactivate)
+	public virtual bool OpenFile(string fullPath, string appName, bool deactivate)
 	{
+		NSApplication.EnsureUIThread();
 		if (fullPath == null)
 		{
 			throw new ArgumentNullException("fullPath");
 		}
+		if (appName == null)
+		{
+			throw new ArgumentNullException("appName");
+		}
 		IntPtr arg = NSString.CreateNative(fullPath);
 		IntPtr arg2 = NSString.CreateNative(appName);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_bool(base.SuperHandle, selOpenFile_WithApplication_AndDeactivate_Handle, arg, arg2, deactivate) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_bool(base.Handle, selOpenFile_WithApplication_AndDeactivate_Handle, arg, arg2, deactivate));
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_bool(base.SuperHandle, selOpenFileWithApplicationAndDeactivate_Handle, arg, arg2, deactivate) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_bool(base.Handle, selOpenFileWithApplicationAndDeactivate_Handle, arg, arg2, deactivate));
 		NSString.ReleaseNative(arg);
 		NSString.ReleaseNative(arg2);
 		return result;
 	}
 
 	[Export("openFile:fromImage:at:inView:")]
-	[ThreadSafe]
-	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, "Use 'NSWorkspace.OpenUrl' instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool OpenFile(string fullPath, NSImage anImage, CGPoint point, NSView aView)
 	{
+		NSApplication.EnsureUIThread();
 		if (fullPath == null)
 		{
 			throw new ArgumentNullException("fullPath");
@@ -2125,79 +943,42 @@ public class NSWorkspace : NSObject
 			throw new ArgumentNullException("aView");
 		}
 		IntPtr arg = NSString.CreateNative(fullPath);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_CGPoint_IntPtr(base.SuperHandle, selOpenFile_FromImage_At_InView_Handle, arg, anImage.Handle, point, aView.Handle) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_CGPoint_IntPtr(base.Handle, selOpenFile_FromImage_At_InView_Handle, arg, anImage.Handle, point, aView.Handle));
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_CGPoint_IntPtr(base.SuperHandle, selOpenFileFromImageAtInView_Handle, arg, anImage.Handle, point, aView.Handle) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_CGPoint_IntPtr(base.Handle, selOpenFileFromImageAtInView_Handle, arg, anImage.Handle, point, aView.Handle));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
-	[Export("openURL:options:configuration:error:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSRunningApplication? OpenURL(NSUrl url, NSWorkspaceLaunchOptions options, NSDictionary configuration, out NSError error)
-	{
-		NSApplication.EnsureUIThread();
-		if (url == null)
-		{
-			throw new ArgumentNullException("url");
-		}
-		if (configuration == null)
-		{
-			throw new ArgumentNullException("configuration");
-		}
-		IntPtr arg = IntPtr.Zero;
-		NSRunningApplication result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSRunningApplication>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_UInt64_IntPtr_ref_IntPtr(base.SuperHandle, selOpenURL_Options_Configuration_Error_Handle, url.Handle, (ulong)options, configuration.Handle, ref arg)) : Runtime.GetNSObject<NSRunningApplication>(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64_IntPtr_ref_IntPtr(base.Handle, selOpenURL_Options_Configuration_Error_Handle, url.Handle, (ulong)options, configuration.Handle, ref arg)));
-		error = Runtime.GetNSObject<NSError>(arg);
-		return result;
-	}
-
-	[Export("openURLs:withApplicationAtURL:options:configuration:error:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSRunningApplication? OpenURLs(NSUrl[] urls, NSUrl applicationURL, NSWorkspaceLaunchOptions options, NSDictionary configuration, out NSError error)
-	{
-		NSApplication.EnsureUIThread();
-		if (urls == null)
-		{
-			throw new ArgumentNullException("urls");
-		}
-		if (applicationURL == null)
-		{
-			throw new ArgumentNullException("applicationURL");
-		}
-		if (configuration == null)
-		{
-			throw new ArgumentNullException("configuration");
-		}
-		IntPtr arg = IntPtr.Zero;
-		NSArray nSArray = NSArray.FromNSObjects(urls);
-		NSRunningApplication result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSRunningApplication>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_UInt64_IntPtr_ref_IntPtr(base.SuperHandle, selOpenURLs_WithApplicationAtURL_Options_Configuration_Error_Handle, nSArray.Handle, applicationURL.Handle, (ulong)options, configuration.Handle, ref arg)) : Runtime.GetNSObject<NSRunningApplication>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_UInt64_IntPtr_ref_IntPtr(base.Handle, selOpenURLs_WithApplicationAtURL_Options_Configuration_Error_Handle, nSArray.Handle, applicationURL.Handle, (ulong)options, configuration.Handle, ref arg)));
-		nSArray.Dispose();
-		error = Runtime.GetNSObject<NSError>(arg);
-		return result;
-	}
-
 	[Export("openURL:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool OpenUrl(NSUrl url)
 	{
+		NSApplication.EnsureUIThread();
 		if (url == null)
 		{
 			throw new ArgumentNullException("url");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selOpenURL_Handle, url.Handle);
 		}
 		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selOpenURL_Handle, url.Handle);
 	}
 
-	[Export("openURL:configuration:completionHandler:")]
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe virtual void OpenUrl(NSUrl url, NSWorkspaceOpenConfiguration configuration, [BlockProxy(typeof(Trampolines.NIDActionArity2V10))] Action<NSRunningApplication, NSError>? completionHandler)
+	[Export("launchApplication:")]
+	public virtual bool LaunchApplication(string appName)
+	{
+		NSApplication.EnsureUIThread();
+		if (appName == null)
+		{
+			throw new ArgumentNullException("appName");
+		}
+		IntPtr arg = NSString.CreateNative(appName);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selLaunchApplication_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selLaunchApplication_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("launchApplicationAtURL:options:configuration:error:")]
+	public virtual NSRunningApplication LaunchApplication(NSUrl url, NSWorkspaceLaunchOptions options, NSDictionary configuration, out NSError error)
 	{
 		NSApplication.EnsureUIThread();
 		if (url == null)
@@ -2208,120 +989,295 @@ public class NSWorkspace : NSObject
 		{
 			throw new ArgumentNullException("configuration");
 		}
-		BlockLiteral* ptr;
-		if (completionHandler == null)
-		{
-			ptr = null;
-		}
-		else
-		{
-			BlockLiteral blockLiteral = default(BlockLiteral);
-			ptr = &blockLiteral;
-			blockLiteral.SetupBlockUnsafe(Trampolines.SDActionArity2V10.Handler, completionHandler);
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selOpenURL_Configuration_CompletionHandler_Handle, url.Handle, configuration.Handle, (IntPtr)ptr);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selOpenURL_Configuration_CompletionHandler_Handle, url.Handle, configuration.Handle, (IntPtr)ptr);
-		}
-		if (ptr != null)
-		{
-			ptr->CleanupBlock();
-		}
+		IntPtr intPtr = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr, 0);
+		NSRunningApplication result = ((!IsDirectBinding) ? ((NSRunningApplication)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_UInt64_IntPtr_IntPtr(base.SuperHandle, selLaunchApplicationAtURLOptionsConfigurationError_Handle, url.Handle, (ulong)options, configuration.Handle, intPtr))) : ((NSRunningApplication)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64_IntPtr_IntPtr(base.Handle, selLaunchApplicationAtURLOptionsConfigurationError_Handle, url.Handle, (ulong)options, configuration.Handle, intPtr))));
+		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
+		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
+		Marshal.FreeHGlobal(intPtr);
+		return result;
 	}
 
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual Task<NSRunningApplication> OpenUrlAsync(NSUrl url, NSWorkspaceOpenConfiguration configuration)
+	[Export("launchApplication:showIcon:autolaunch:")]
+	public virtual bool LaunchApplication(string appName, bool showIcon, bool autolaunch)
 	{
-		TaskCompletionSource<NSRunningApplication> tcs = new TaskCompletionSource<NSRunningApplication>();
-		OpenUrl(url, configuration, delegate(NSRunningApplication arg1_, NSError arg2_)
+		NSApplication.EnsureUIThread();
+		if (appName == null)
 		{
-			if (arg2_ != null)
-			{
-				tcs.SetException(new NSErrorException(arg2_));
-			}
-			else
-			{
-				tcs.SetResult(arg1_);
-			}
-		});
-		return tcs.Task;
+			throw new ArgumentNullException("appName");
+		}
+		IntPtr arg = NSString.CreateNative(appName);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_bool_bool(base.SuperHandle, selLaunchApplicationShowIconAutolaunch_Handle, arg, showIcon, autolaunch) : Messaging.bool_objc_msgSend_IntPtr_bool_bool(base.Handle, selLaunchApplicationShowIconAutolaunch_Handle, arg, showIcon, autolaunch));
+		NSString.ReleaseNative(arg);
+		return result;
 	}
 
-	[Export("openURLs:withApplicationAtURL:configuration:completionHandler:")]
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe virtual void OpenUrls(NSUrl[] urls, NSUrl applicationUrl, NSWorkspaceOpenConfiguration configuration, [BlockProxy(typeof(Trampolines.NIDActionArity2V10))] Action<NSRunningApplication, NSError>? completionHandler)
+	[Export("fullPathForApplication:")]
+	public virtual string FullPathForApplication(string appName)
+	{
+		NSApplication.EnsureUIThread();
+		if (appName == null)
+		{
+			throw new ArgumentNullException("appName");
+		}
+		IntPtr arg = NSString.CreateNative(appName);
+		string result = ((!IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selFullPathForApplication_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selFullPathForApplication_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("selectFile:inFileViewerRootedAtPath:")]
+	public virtual bool SelectFile(string fullPath, string rootFullPath)
+	{
+		NSApplication.EnsureUIThread();
+		if (fullPath == null)
+		{
+			throw new ArgumentNullException("fullPath");
+		}
+		if (rootFullPath == null)
+		{
+			throw new ArgumentNullException("rootFullPath");
+		}
+		IntPtr arg = NSString.CreateNative(fullPath);
+		IntPtr arg2 = NSString.CreateNative(rootFullPath);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSelectFileInFileViewerRootedAtPath_Handle, arg, arg2) : Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selSelectFileInFileViewerRootedAtPath_Handle, arg, arg2));
+		NSString.ReleaseNative(arg);
+		NSString.ReleaseNative(arg2);
+		return result;
+	}
+
+	[Export("activateFileViewerSelectingURLs:")]
+	public virtual void ActivateFileViewer(NSUrl[] fileUrls)
+	{
+		NSApplication.EnsureUIThread();
+		if (fileUrls == null)
+		{
+			throw new ArgumentNullException("fileUrls");
+		}
+		NSArray nSArray = NSArray.FromNSObjects(fileUrls);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selActivateFileViewerSelectingURLs_Handle, nSArray.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selActivateFileViewerSelectingURLs_Handle, nSArray.Handle);
+		}
+		nSArray.Dispose();
+	}
+
+	[Export("showSearchResultsForQueryString:")]
+	public virtual bool ShowSearchResults(string queryString)
+	{
+		NSApplication.EnsureUIThread();
+		if (queryString == null)
+		{
+			throw new ArgumentNullException("queryString");
+		}
+		IntPtr arg = NSString.CreateNative(queryString);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selShowSearchResultsForQueryString_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selShowSearchResultsForQueryString_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("noteFileSystemChanged:")]
+	public virtual void NoteFileSystemChanged(string path)
+	{
+		NSApplication.EnsureUIThread();
+		if (path == null)
+		{
+			throw new ArgumentNullException("path");
+		}
+		IntPtr arg = NSString.CreateNative(path);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selNoteFileSystemChanged_Handle, arg);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selNoteFileSystemChanged_Handle, arg);
+		}
+		NSString.ReleaseNative(arg);
+	}
+
+	[Export("getInfoForFile:application:type:")]
+	public virtual bool GetInfo(string fullPath, out string appName, out string fileType)
+	{
+		NSApplication.EnsureUIThread();
+		if (fullPath == null)
+		{
+			throw new ArgumentNullException("fullPath");
+		}
+		IntPtr intPtr = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr, 0);
+		IntPtr intPtr2 = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr2, 0);
+		IntPtr arg = NSString.CreateNative(fullPath);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selGetInfoForFileApplicationType_Handle, arg, intPtr, intPtr2) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selGetInfoForFileApplicationType_Handle, arg, intPtr, intPtr2));
+		NSString.ReleaseNative(arg);
+		IntPtr intPtr3 = Marshal.ReadIntPtr(intPtr);
+		appName = ((intPtr3 != IntPtr.Zero) ? NSString.FromHandle(intPtr3) : null);
+		Marshal.FreeHGlobal(intPtr);
+		IntPtr intPtr4 = Marshal.ReadIntPtr(intPtr2);
+		fileType = ((intPtr4 != IntPtr.Zero) ? NSString.FromHandle(intPtr4) : null);
+		Marshal.FreeHGlobal(intPtr2);
+		return result;
+	}
+
+	[Export("isFilePackageAtPath:")]
+	public virtual bool IsFilePackage(string fullPath)
+	{
+		NSApplication.EnsureUIThread();
+		if (fullPath == null)
+		{
+			throw new ArgumentNullException("fullPath");
+		}
+		IntPtr arg = NSString.CreateNative(fullPath);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selIsFilePackageAtPath_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIsFilePackageAtPath_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("iconForFile:")]
+	public virtual NSImage IconForFile(string fullPath)
+	{
+		NSApplication.EnsureUIThread();
+		if (fullPath == null)
+		{
+			throw new ArgumentNullException("fullPath");
+		}
+		IntPtr arg = NSString.CreateNative(fullPath);
+		NSImage result = ((!IsDirectBinding) ? ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selIconForFile_Handle, arg))) : ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selIconForFile_Handle, arg))));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("iconForFiles:")]
+	public virtual NSImage IconForFiles(string[] fullPaths)
+	{
+		NSApplication.EnsureUIThread();
+		if (fullPaths == null)
+		{
+			throw new ArgumentNullException("fullPaths");
+		}
+		NSArray nSArray = NSArray.FromStrings(fullPaths);
+		NSImage result = ((!IsDirectBinding) ? ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selIconForFiles_Handle, nSArray.Handle))) : ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selIconForFiles_Handle, nSArray.Handle))));
+		nSArray.Dispose();
+		return result;
+	}
+
+	[Export("iconForFileType:")]
+	public virtual NSImage IconForFileType(string fileType)
+	{
+		NSApplication.EnsureUIThread();
+		if (fileType == null)
+		{
+			throw new ArgumentNullException("fileType");
+		}
+		IntPtr arg = NSString.CreateNative(fileType);
+		NSImage result = ((!IsDirectBinding) ? ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selIconForFileType_Handle, arg))) : ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selIconForFileType_Handle, arg))));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("setIcon:forFile:options:")]
+	public virtual bool SetIconforFile(NSImage image, string fullPath, NSWorkspaceIconCreationOptions options)
+	{
+		NSApplication.EnsureUIThread();
+		if (image == null)
+		{
+			throw new ArgumentNullException("image");
+		}
+		if (fullPath == null)
+		{
+			throw new ArgumentNullException("fullPath");
+		}
+		IntPtr arg = NSString.CreateNative(fullPath);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_UInt64(base.SuperHandle, selSetIconForFileOptions_Handle, image.Handle, arg, (ulong)options) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_UInt64(base.Handle, selSetIconForFileOptions_Handle, image.Handle, arg, (ulong)options));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("recycleURLs:completionHandler:")]
+	public unsafe virtual void RecycleUrls(NSArray urls, NSWorkspaceUrlHandler completionHandler)
 	{
 		NSApplication.EnsureUIThread();
 		if (urls == null)
 		{
 			throw new ArgumentNullException("urls");
 		}
-		if (applicationUrl == null)
-		{
-			throw new ArgumentNullException("applicationUrl");
-		}
-		if (configuration == null)
-		{
-			throw new ArgumentNullException("configuration");
-		}
-		NSArray nSArray = NSArray.FromNSObjects(urls);
-		BlockLiteral* ptr;
 		if (completionHandler == null)
 		{
-			ptr = null;
+			throw new ArgumentNullException("completionHandler");
+		}
+		BlockLiteral blockLiteral = default(BlockLiteral);
+		BlockLiteral* ptr = &blockLiteral;
+		blockLiteral.SetupBlock(Trampolines.SDNSWorkspaceUrlHandler.Handler, completionHandler);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selRecycleURLsCompletionHandler_Handle, urls.Handle, (IntPtr)ptr);
 		}
 		else
 		{
-			BlockLiteral blockLiteral = default(BlockLiteral);
-			ptr = &blockLiteral;
-			blockLiteral.SetupBlockUnsafe(Trampolines.SDActionArity2V10.Handler, completionHandler);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selRecycleURLsCompletionHandler_Handle, urls.Handle, (IntPtr)ptr);
 		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selOpenURLs_WithApplicationAtURL_Configuration_CompletionHandler_Handle, nSArray.Handle, applicationUrl.Handle, configuration.Handle, (IntPtr)ptr);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selOpenURLs_WithApplicationAtURL_Configuration_CompletionHandler_Handle, nSArray.Handle, applicationUrl.Handle, configuration.Handle, (IntPtr)ptr);
-		}
-		nSArray.Dispose();
-		if (ptr != null)
-		{
-			ptr->CleanupBlock();
-		}
+		ptr->CleanupBlock();
 	}
 
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual Task<NSRunningApplication> OpenUrlsAsync(NSUrl[] urls, NSUrl applicationUrl, NSWorkspaceOpenConfiguration configuration)
+	[Export("duplicateURLs:completionHandler:")]
+	public unsafe virtual void DuplicateUrls(NSArray urls, NSWorkspaceUrlHandler completionHandler)
 	{
-		TaskCompletionSource<NSRunningApplication> tcs = new TaskCompletionSource<NSRunningApplication>();
-		OpenUrls(urls, applicationUrl, configuration, delegate(NSRunningApplication arg1_, NSError arg2_)
+		NSApplication.EnsureUIThread();
+		if (urls == null)
 		{
-			if (arg2_ != null)
-			{
-				tcs.SetException(new NSErrorException(arg2_));
-			}
-			else
-			{
-				tcs.SetResult(arg1_);
-			}
-		});
-		return tcs.Task;
+			throw new ArgumentNullException("urls");
+		}
+		if (completionHandler == null)
+		{
+			throw new ArgumentNullException("completionHandler");
+		}
+		BlockLiteral blockLiteral = default(BlockLiteral);
+		BlockLiteral* ptr = &blockLiteral;
+		blockLiteral.SetupBlock(Trampolines.SDNSWorkspaceUrlHandler.Handler, completionHandler);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selDuplicateURLsCompletionHandler_Handle, urls.Handle, (IntPtr)ptr);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selDuplicateURLsCompletionHandler_Handle, urls.Handle, (IntPtr)ptr);
+		}
+		ptr->CleanupBlock();
+	}
+
+	[Export("getFileSystemInfoForPath:isRemovable:isWritable:isUnmountable:description:type:")]
+	public virtual bool GetFileSystemInfo(string fullPath, out bool removableFlag, out bool writableFlag, out bool unmountableFlag, out string description, out string fileSystemType)
+	{
+		NSApplication.EnsureUIThread();
+		if (fullPath == null)
+		{
+			throw new ArgumentNullException("fullPath");
+		}
+		IntPtr intPtr = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr, 0);
+		IntPtr intPtr2 = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr2, 0);
+		IntPtr arg = NSString.CreateNative(fullPath);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_out_Boolean_out_Boolean_out_Boolean_IntPtr_IntPtr(base.SuperHandle, selGetFileSystemInfoForPathIsRemovableIsWritableIsUnmountableDescriptionType_Handle, arg, out removableFlag, out writableFlag, out unmountableFlag, intPtr, intPtr2) : Messaging.bool_objc_msgSend_IntPtr_out_Boolean_out_Boolean_out_Boolean_IntPtr_IntPtr(base.Handle, selGetFileSystemInfoForPathIsRemovableIsWritableIsUnmountableDescriptionType_Handle, arg, out removableFlag, out writableFlag, out unmountableFlag, intPtr, intPtr2));
+		NSString.ReleaseNative(arg);
+		IntPtr intPtr3 = Marshal.ReadIntPtr(intPtr);
+		description = ((intPtr3 != IntPtr.Zero) ? NSString.FromHandle(intPtr3) : null);
+		Marshal.FreeHGlobal(intPtr);
+		IntPtr intPtr4 = Marshal.ReadIntPtr(intPtr2);
+		fileSystemType = ((intPtr4 != IntPtr.Zero) ? NSString.FromHandle(intPtr4) : null);
+		Marshal.FreeHGlobal(intPtr2);
+		return result;
 	}
 
 	[Export("performFileOperation:source:destination:files:tag:")]
-	[ThreadSafe]
-	[Deprecated(PlatformName.MacOSX, 10, 11, PlatformArchitecture.None, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool PerformFileOperation(NSString workspaceOperation, string source, string destination, string[] files, out nint tag)
+	public virtual bool PerformFileOperation(NSString workspaceOperation, string source, string destination, string[] files, out long tag)
 	{
+		NSApplication.EnsureUIThread();
 		if (workspaceOperation == null)
 		{
 			throw new ArgumentNullException("workspaceOperation");
@@ -2341,102 +1297,248 @@ public class NSWorkspace : NSObject
 		IntPtr arg = NSString.CreateNative(source);
 		IntPtr arg2 = NSString.CreateNative(destination);
 		NSArray nSArray = NSArray.FromStrings(files);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr_out_nint(base.SuperHandle, selPerformFileOperation_Source_Destination_Files_Tag_Handle, workspaceOperation.Handle, arg, arg2, nSArray.Handle, out tag) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr_out_nint(base.Handle, selPerformFileOperation_Source_Destination_Files_Tag_Handle, workspaceOperation.Handle, arg, arg2, nSArray.Handle, out tag));
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr_out_Int64(base.SuperHandle, selPerformFileOperationSourceDestinationFilesTag_Handle, workspaceOperation.Handle, arg, arg2, nSArray.Handle, out tag) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr_out_Int64(base.Handle, selPerformFileOperationSourceDestinationFilesTag_Handle, workspaceOperation.Handle, arg, arg2, nSArray.Handle, out tag));
 		NSString.ReleaseNative(arg);
 		NSString.ReleaseNative(arg2);
 		nSArray.Dispose();
 		return result;
 	}
 
-	[Export("preferredFilenameExtensionForType:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string PreferredFilenameExtension(string typeName)
+	[Export("unmountAndEjectDeviceAtPath:")]
+	public virtual bool UnmountAndEjectDevice(string path)
 	{
+		NSApplication.EnsureUIThread();
+		if (path == null)
+		{
+			throw new ArgumentNullException("path");
+		}
+		IntPtr arg = NSString.CreateNative(path);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selUnmountAndEjectDeviceAtPath_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selUnmountAndEjectDeviceAtPath_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("unmountAndEjectDeviceAtURL:error:")]
+	public virtual bool UnmountAndEjectDevice(NSUrl url, out NSError error)
+	{
+		NSApplication.EnsureUIThread();
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		IntPtr intPtr = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr, 0);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selUnmountAndEjectDeviceAtURLError_Handle, url.Handle, intPtr) : Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selUnmountAndEjectDeviceAtURLError_Handle, url.Handle, intPtr));
+		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
+		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
+		Marshal.FreeHGlobal(intPtr);
+		return result;
+	}
+
+	[Export("extendPowerOffBy:")]
+	public virtual long ExtendPowerOffBy(long requested)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return Messaging.Int64_objc_msgSend_Int64(base.Handle, selExtendPowerOffBy_Handle, requested);
+		}
+		return Messaging.Int64_objc_msgSendSuper_Int64(base.SuperHandle, selExtendPowerOffBy_Handle, requested);
+	}
+
+	[Export("hideOtherApplications")]
+	public virtual void HideOtherApplications()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selHideOtherApplicationsHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selHideOtherApplicationsHandle);
+		}
+	}
+
+	[Export("URLForApplicationWithBundleIdentifier:")]
+	public virtual NSUrl UrlForApplication(string bundleIdentifier)
+	{
+		NSApplication.EnsureUIThread();
+		if (bundleIdentifier == null)
+		{
+			throw new ArgumentNullException("bundleIdentifier");
+		}
+		IntPtr arg = NSString.CreateNative(bundleIdentifier);
+		NSUrl result = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selURLForApplicationWithBundleIdentifier_Handle, arg))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selURLForApplicationWithBundleIdentifier_Handle, arg))));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("URLForApplicationToOpenURL:")]
+	public virtual NSUrl UrlForApplication(NSUrl url)
+	{
+		NSApplication.EnsureUIThread();
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		if (IsDirectBinding)
+		{
+			return (NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selURLForApplicationToOpenURL_Handle, url.Handle));
+		}
+		return (NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selURLForApplicationToOpenURL_Handle, url.Handle));
+	}
+
+	[Export("absolutePathForAppBundleWithIdentifier:")]
+	public virtual string AbsolutePathForAppBundle(string bundleIdentifier)
+	{
+		NSApplication.EnsureUIThread();
+		if (bundleIdentifier == null)
+		{
+			throw new ArgumentNullException("bundleIdentifier");
+		}
+		IntPtr arg = NSString.CreateNative(bundleIdentifier);
+		string result = ((!IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAbsolutePathForAppBundleWithIdentifier_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAbsolutePathForAppBundleWithIdentifier_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("launchAppWithBundleIdentifier:options:additionalEventParamDescriptor:launchIdentifier:")]
+	public virtual bool LaunchApp(string bundleIdentifier, NSWorkspaceLaunchOptions options, NSAppleEventDescriptor descriptor, IntPtr identifier)
+	{
+		NSApplication.EnsureUIThread();
+		if (bundleIdentifier == null)
+		{
+			throw new ArgumentNullException("bundleIdentifier");
+		}
+		if (descriptor == null)
+		{
+			throw new ArgumentNullException("descriptor");
+		}
+		IntPtr arg = NSString.CreateNative(bundleIdentifier);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_UInt64_IntPtr_IntPtr(base.SuperHandle, selLaunchAppWithBundleIdentifierOptionsAdditionalEventParamDescriptorLaunchIdentifier_Handle, arg, (ulong)options, descriptor.Handle, identifier) : Messaging.bool_objc_msgSend_IntPtr_UInt64_IntPtr_IntPtr(base.Handle, selLaunchAppWithBundleIdentifierOptionsAdditionalEventParamDescriptorLaunchIdentifier_Handle, arg, (ulong)options, descriptor.Handle, identifier));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("openURLs:withAppBundleIdentifier:options:additionalEventParamDescriptor:launchIdentifiers:")]
+	public virtual bool OpenUrls(NSUrl[] urls, string bundleIdentifier, NSWorkspaceLaunchOptions options, NSAppleEventDescriptor descriptor, string[] identifiers)
+	{
+		NSApplication.EnsureUIThread();
+		if (urls == null)
+		{
+			throw new ArgumentNullException("urls");
+		}
+		if (bundleIdentifier == null)
+		{
+			throw new ArgumentNullException("bundleIdentifier");
+		}
+		if (descriptor == null)
+		{
+			throw new ArgumentNullException("descriptor");
+		}
+		if (identifiers == null)
+		{
+			throw new ArgumentNullException("identifiers");
+		}
+		NSArray nSArray = NSArray.FromNSObjects(urls);
+		IntPtr arg = NSString.CreateNative(bundleIdentifier);
+		NSArray nSArray2 = NSArray.FromStrings(identifiers);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_UInt64_IntPtr_IntPtr(base.SuperHandle, selOpenURLsWithAppBundleIdentifierOptionsAdditionalEventParamDescriptorLaunchIdentifiers_Handle, nSArray.Handle, arg, (ulong)options, descriptor.Handle, nSArray2.Handle) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_UInt64_IntPtr_IntPtr(base.Handle, selOpenURLsWithAppBundleIdentifierOptionsAdditionalEventParamDescriptorLaunchIdentifiers_Handle, nSArray.Handle, arg, (ulong)options, descriptor.Handle, nSArray2.Handle));
+		nSArray.Dispose();
+		NSString.ReleaseNative(arg);
+		nSArray2.Dispose();
+		return result;
+	}
+
+	[Export("typeOfFile:error:")]
+	public virtual string TypeOfFile(string absoluteFilePath, out NSError outError)
+	{
+		NSApplication.EnsureUIThread();
+		if (absoluteFilePath == null)
+		{
+			throw new ArgumentNullException("absoluteFilePath");
+		}
+		IntPtr intPtr = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr, 0);
+		IntPtr arg = NSString.CreateNative(absoluteFilePath);
+		string result = ((!IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selTypeOfFileError_Handle, arg, intPtr)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selTypeOfFileError_Handle, arg, intPtr)));
+		NSString.ReleaseNative(arg);
+		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
+		outError = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
+		Marshal.FreeHGlobal(intPtr);
+		return result;
+	}
+
+	[Export("localizedDescriptionForType:")]
+	public virtual string LocalizedDescription(string typeName)
+	{
+		NSApplication.EnsureUIThread();
 		if (typeName == null)
 		{
 			throw new ArgumentNullException("typeName");
 		}
 		IntPtr arg = NSString.CreateNative(typeName);
-		string result = ((!base.IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selPreferredFilenameExtensionForType_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selPreferredFilenameExtensionForType_Handle, arg)));
+		string result = ((!IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selLocalizedDescriptionForType_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selLocalizedDescriptionForType_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
-	[Export("recycleURLs:completionHandler:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe virtual void RecycleUrls(NSArray urls, [BlockProxy(typeof(Trampolines.NIDNSWorkspaceUrlHandler))] NSWorkspaceUrlHandler completionHandler)
-	{
-		if (urls == null)
-		{
-			throw new ArgumentNullException("urls");
-		}
-		if (completionHandler == null)
-		{
-			throw new ArgumentNullException("completionHandler");
-		}
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDNSWorkspaceUrlHandler.Handler, completionHandler);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selRecycleURLs_CompletionHandler_Handle, urls.Handle, (IntPtr)ptr);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selRecycleURLs_CompletionHandler_Handle, urls.Handle, (IntPtr)ptr);
-		}
-		ptr->CleanupBlock();
-	}
-
-	[Export("requestAuthorizationOfType:completionHandler:")]
-	[Introduced(PlatformName.MacOSX, 10, 14, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe virtual void RequestAuthorization(NSWorkspaceAuthorizationType type, [BlockProxy(typeof(Trampolines.NIDActionArity2V11))] Action<NSWorkspaceAuthorization, NSError> completionHandler)
+	[Export("preferredFilenameExtensionForType:")]
+	public virtual string PreferredFilenameExtension(string typeName)
 	{
 		NSApplication.EnsureUIThread();
-		if (completionHandler == null)
+		if (typeName == null)
 		{
-			throw new ArgumentNullException("completionHandler");
+			throw new ArgumentNullException("typeName");
 		}
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDActionArity2V11.Handler, completionHandler);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_Int64_IntPtr(base.Handle, selRequestAuthorizationOfType_CompletionHandler_Handle, (long)type, (IntPtr)ptr);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_Int64_IntPtr(base.SuperHandle, selRequestAuthorizationOfType_CompletionHandler_Handle, (long)type, (IntPtr)ptr);
-		}
-		ptr->CleanupBlock();
+		IntPtr arg = NSString.CreateNative(typeName);
+		string result = ((!IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selPreferredFilenameExtensionForType_Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selPreferredFilenameExtensionForType_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
 	}
 
-	[Export("selectFile:inFileViewerRootedAtPath:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool SelectFile(string fullPath, string rootFullPath)
+	[Export("filenameExtension:isValidForType:")]
+	public virtual bool IsFilenameExtensionValid(string filenameExtension, string typeName)
 	{
-		if (fullPath == null)
+		NSApplication.EnsureUIThread();
+		if (filenameExtension == null)
 		{
-			throw new ArgumentNullException("fullPath");
+			throw new ArgumentNullException("filenameExtension");
 		}
-		if (rootFullPath == null)
+		if (typeName == null)
 		{
-			throw new ArgumentNullException("rootFullPath");
+			throw new ArgumentNullException("typeName");
 		}
-		IntPtr arg = NSString.CreateNative(fullPath);
-		IntPtr arg2 = NSString.CreateNative(rootFullPath);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSelectFile_InFileViewerRootedAtPath_Handle, arg, arg2) : Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selSelectFile_InFileViewerRootedAtPath_Handle, arg, arg2));
+		IntPtr arg = NSString.CreateNative(filenameExtension);
+		IntPtr arg2 = NSString.CreateNative(typeName);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selFilenameExtensionIsValidForType_Handle, arg, arg2) : Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selFilenameExtensionIsValidForType_Handle, arg, arg2));
+		NSString.ReleaseNative(arg);
+		NSString.ReleaseNative(arg2);
+		return result;
+	}
+
+	[Export("type:conformsToType:")]
+	public virtual bool TypeConformsTo(string firstTypeName, string secondTypeName)
+	{
+		NSApplication.EnsureUIThread();
+		if (firstTypeName == null)
+		{
+			throw new ArgumentNullException("firstTypeName");
+		}
+		if (secondTypeName == null)
+		{
+			throw new ArgumentNullException("secondTypeName");
+		}
+		IntPtr arg = NSString.CreateNative(firstTypeName);
+		IntPtr arg2 = NSString.CreateNative(secondTypeName);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selTypeConformsToType_Handle, arg, arg2) : Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selTypeConformsToType_Handle, arg, arg2));
 		NSString.ReleaseNative(arg);
 		NSString.ReleaseNative(arg2);
 		return result;
 	}
 
 	[Export("setDesktopImageURL:forScreen:options:error:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool SetDesktopImageUrl(NSUrl url, NSScreen screen, NSDictionary options, NSError error)
 	{
 		NSApplication.EnsureUIThread();
@@ -2456,170 +1558,55 @@ public class NSWorkspace : NSObject
 		{
 			throw new ArgumentNullException("error");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selSetDesktopImageURL_ForScreen_Options_Error_Handle, url.Handle, screen.Handle, options.Handle, error.Handle);
+			return Messaging.bool_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selSetDesktopImageURLForScreenOptionsError_Handle, url.Handle, screen.Handle, options.Handle, error.Handle);
 		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selSetDesktopImageURL_ForScreen_Options_Error_Handle, url.Handle, screen.Handle, options.Handle, error.Handle);
+		return Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selSetDesktopImageURLForScreenOptionsError_Handle, url.Handle, screen.Handle, options.Handle, error.Handle);
 	}
 
-	[Export("setIcon:forFile:options:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool SetIconforFile(NSImage image, string fullPath, NSWorkspaceIconCreationOptions options)
+	[Export("desktopImageURLForScreen:")]
+	public virtual NSUrl DesktopImageUrl(NSScreen screen)
 	{
-		if (image == null)
+		NSApplication.EnsureUIThread();
+		if (screen == null)
 		{
-			throw new ArgumentNullException("image");
+			throw new ArgumentNullException("screen");
 		}
-		if (fullPath == null)
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("fullPath");
+			return (NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDesktopImageURLForScreen_Handle, screen.Handle));
 		}
-		IntPtr arg = NSString.CreateNative(fullPath);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_UInt64(base.SuperHandle, selSetIcon_ForFile_Options_Handle, image.Handle, arg, (ulong)options) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_UInt64(base.Handle, selSetIcon_ForFile_Options_Handle, image.Handle, arg, (ulong)options));
-		NSString.ReleaseNative(arg);
-		return result;
+		return (NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDesktopImageURLForScreen_Handle, screen.Handle));
 	}
 
-	[Export("showSearchResultsForQueryString:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool ShowSearchResults(string queryString)
+	[Export("desktopImageOptionsForScreen:")]
+	public virtual NSDictionary DesktopImageOptions(NSScreen screen)
 	{
-		if (queryString == null)
+		NSApplication.EnsureUIThread();
+		if (screen == null)
 		{
-			throw new ArgumentNullException("queryString");
+			throw new ArgumentNullException("screen");
 		}
-		IntPtr arg = NSString.CreateNative(queryString);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selShowSearchResultsForQueryString_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selShowSearchResultsForQueryString_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
+		if (IsDirectBinding)
+		{
+			return (NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selDesktopImageOptionsForScreen_Handle, screen.Handle));
+		}
+		return (NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selDesktopImageOptionsForScreen_Handle, screen.Handle));
 	}
 
-	[Export("type:conformsToType:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool TypeConformsTo(string firstTypeName, string secondTypeName)
+	protected override void Dispose(bool disposing)
 	{
-		if (firstTypeName == null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			throw new ArgumentNullException("firstTypeName");
+			__mt_NotificationCenter_var = null;
+			__mt_FileLabelColors_var = null;
+			__mt_LaunchedApplications_var = null;
+			__mt_ActiveApplication_var = null;
+			__mt_RunningApplications_var = null;
+			__mt_FrontmostApplication_var = null;
+			__mt_MenuBarOwningApplication_var = null;
 		}
-		if (secondTypeName == null)
-		{
-			throw new ArgumentNullException("secondTypeName");
-		}
-		IntPtr arg = NSString.CreateNative(firstTypeName);
-		IntPtr arg2 = NSString.CreateNative(secondTypeName);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selType_ConformsToType_Handle, arg, arg2) : Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selType_ConformsToType_Handle, arg, arg2));
-		NSString.ReleaseNative(arg);
-		NSString.ReleaseNative(arg2);
-		return result;
-	}
-
-	[Export("typeOfFile:error:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string TypeOfFile(string absoluteFilePath, out NSError outError)
-	{
-		if (absoluteFilePath == null)
-		{
-			throw new ArgumentNullException("absoluteFilePath");
-		}
-		IntPtr arg = IntPtr.Zero;
-		IntPtr arg2 = NSString.CreateNative(absoluteFilePath);
-		string result = ((!base.IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_ref_IntPtr(base.SuperHandle, selTypeOfFile_Error_Handle, arg2, ref arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr_ref_IntPtr(base.Handle, selTypeOfFile_Error_Handle, arg2, ref arg)));
-		NSString.ReleaseNative(arg2);
-		outError = Runtime.GetNSObject<NSError>(arg);
-		return result;
-	}
-
-	[Export("unmountAndEjectDeviceAtPath:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool UnmountAndEjectDevice(string path)
-	{
-		if (path == null)
-		{
-			throw new ArgumentNullException("path");
-		}
-		IntPtr arg = NSString.CreateNative(path);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selUnmountAndEjectDeviceAtPath_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selUnmountAndEjectDeviceAtPath_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("unmountAndEjectDeviceAtURL:error:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool UnmountAndEjectDevice(NSUrl url, out NSError error)
-	{
-		if (url == null)
-		{
-			throw new ArgumentNullException("url");
-		}
-		IntPtr arg = IntPtr.Zero;
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_ref_IntPtr(base.SuperHandle, selUnmountAndEjectDeviceAtURL_Error_Handle, url.Handle, ref arg) : Messaging.bool_objc_msgSend_IntPtr_ref_IntPtr(base.Handle, selUnmountAndEjectDeviceAtURL_Error_Handle, url.Handle, ref arg));
-		error = Runtime.GetNSObject<NSError>(arg);
-		return result;
-	}
-
-	[Export("URLForApplicationWithBundleIdentifier:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSUrl UrlForApplication(string bundleIdentifier)
-	{
-		if (bundleIdentifier == null)
-		{
-			throw new ArgumentNullException("bundleIdentifier");
-		}
-		IntPtr arg = NSString.CreateNative(bundleIdentifier);
-		NSUrl result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selURLForApplicationWithBundleIdentifier_Handle, arg)) : Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selURLForApplicationWithBundleIdentifier_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("URLForApplicationToOpenURL:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSUrl UrlForApplication(NSUrl url)
-	{
-		if (url == null)
-		{
-			throw new ArgumentNullException("url");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selURLForApplicationToOpenURL_Handle, url.Handle));
-		}
-		return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selURLForApplicationToOpenURL_Handle, url.Handle));
-	}
-
-	[Export("openURLs:withAppBundleIdentifier:options:additionalEventParamDescriptor:launchIdentifiers:")]
-	[ThreadSafe]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual bool _OpenUrls(NSUrl[] urls, string bundleIdentifier, NSWorkspaceLaunchOptions options, NSAppleEventDescriptor descriptor, string[]? identifiers)
-	{
-		if (urls == null)
-		{
-			throw new ArgumentNullException("urls");
-		}
-		if (bundleIdentifier == null)
-		{
-			throw new ArgumentNullException("bundleIdentifier");
-		}
-		if (descriptor == null)
-		{
-			throw new ArgumentNullException("descriptor");
-		}
-		NSArray nSArray = NSArray.FromNSObjects(urls);
-		IntPtr arg = NSString.CreateNative(bundleIdentifier);
-		NSArray nSArray2 = ((identifiers == null) ? null : NSArray.FromStrings(identifiers));
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_UInt64_IntPtr_IntPtr(base.SuperHandle, selOpenURLs_WithAppBundleIdentifier_Options_AdditionalEventParamDescriptor_LaunchIdentifiers_Handle, nSArray.Handle, arg, (ulong)options, descriptor.Handle, nSArray2?.Handle ?? IntPtr.Zero) : Messaging.bool_objc_msgSend_IntPtr_IntPtr_UInt64_IntPtr_IntPtr(base.Handle, selOpenURLs_WithAppBundleIdentifier_Options_AdditionalEventParamDescriptor_LaunchIdentifiers_Handle, nSArray.Handle, arg, (ulong)options, descriptor.Handle, nSArray2?.Handle ?? IntPtr.Zero));
-		nSArray.Dispose();
-		NSString.ReleaseNative(arg);
-		nSArray2?.Dispose();
-		return result;
 	}
 }

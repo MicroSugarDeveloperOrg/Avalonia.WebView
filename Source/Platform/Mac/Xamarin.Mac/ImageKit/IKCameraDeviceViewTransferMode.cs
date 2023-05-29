@@ -1,9 +1,6 @@
-using ObjCRuntime;
-
 namespace ImageKit;
 
-[Native]
-public enum IKCameraDeviceViewTransferMode : long
+public enum IKCameraDeviceViewTransferMode
 {
 	File,
 	Memory

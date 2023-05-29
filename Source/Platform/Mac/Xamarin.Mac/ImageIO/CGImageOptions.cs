@@ -7,37 +7,28 @@ namespace ImageIO;
 
 public class CGImageOptions
 {
+	private static IntPtr kTypeIdentifierHint;
+
+	private static IntPtr kShouldCache;
+
+	private static IntPtr kShouldAllowFloat;
+
 	public string BestGuessTypeIdentifier { get; set; }
 
 	public bool ShouldCache { get; set; }
 
-	[iOS(7, 0)]
-	[Mac(10, 9)]
-	public bool ShouldCacheImmediately { get; set; }
-
 	public bool ShouldAllowFloat { get; set; }
 
-	[Field("kCGImageSourceShouldAllowFloat", "ImageIO")]
-	internal static IntPtr kShouldAllowFloat => Dlfcn.GetIntPtr(Libraries.ImageIO.Handle, "kCGImageSourceShouldAllowFloat");
-
-	[Field("kCGImageSourceShouldCache", "ImageIO")]
-	internal static IntPtr kShouldCache => Dlfcn.GetIntPtr(Libraries.ImageIO.Handle, "kCGImageSourceShouldCache");
-
-	[Field("kCGImageSourceShouldCacheImmediately", "ImageIO")]
-	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-	internal static IntPtr kShouldCacheImmediately
+	private static void Init()
 	{
-		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-		get
+		if (!(kTypeIdentifierHint != IntPtr.Zero))
 		{
-			return Dlfcn.GetIntPtr(Libraries.ImageIO.Handle, "kCGImageSourceShouldCacheImmediately");
+			IntPtr handle = Libraries.ImageIO.Handle;
+			kTypeIdentifierHint = Dlfcn.GetIntPtr(handle, "kCGImageSourceTypeIdentifierHint");
+			kShouldCache = Dlfcn.GetIntPtr(handle, "kCGImageSourceShouldCache");
+			kShouldAllowFloat = Dlfcn.GetIntPtr(handle, "kCGImageSourceShouldAllowFloat");
 		}
 	}
-
-	[Field("kCGImageSourceTypeIdentifierHint", "ImageIO")]
-	internal static IntPtr kTypeIdentifierHint => Dlfcn.GetIntPtr(Libraries.ImageIO.Handle, "kCGImageSourceTypeIdentifierHint");
 
 	public CGImageOptions()
 	{
@@ -46,6 +37,7 @@ public class CGImageOptions
 
 	internal virtual NSMutableDictionary ToDictionary()
 	{
+		Init();
 		NSMutableDictionary nSMutableDictionary = new NSMutableDictionary();
 		if (BestGuessTypeIdentifier != null)
 		{
@@ -53,15 +45,11 @@ public class CGImageOptions
 		}
 		if (!ShouldCache)
 		{
-			nSMutableDictionary.LowlevelSetObject(CFBoolean.FalseHandle, kShouldCache);
+			nSMutableDictionary.LowlevelSetObject(CFBoolean.False.Handle, kShouldCache);
 		}
 		if (ShouldAllowFloat)
 		{
-			nSMutableDictionary.LowlevelSetObject(CFBoolean.TrueHandle, kShouldAllowFloat);
-		}
-		if (kShouldCacheImmediately != IntPtr.Zero && ShouldCacheImmediately)
-		{
-			nSMutableDictionary.LowlevelSetObject(CFBoolean.TrueHandle, kShouldCacheImmediately);
+			nSMutableDictionary.LowlevelSetObject(CFBoolean.True.Handle, kShouldAllowFloat);
 		}
 		return nSMutableDictionary;
 	}

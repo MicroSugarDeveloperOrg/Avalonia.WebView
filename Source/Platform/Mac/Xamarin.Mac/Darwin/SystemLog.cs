@@ -118,7 +118,7 @@ public class SystemLog : IDisposable, INativeObject
 	public int Log(Message msg, string text, params object[] args)
 	{
 		string text2 = ((text == null) ? "" : string.Format(text, args));
-		if (text2.IndexOf('%') != -1)
+		if (text2.IndexOf("%") != -1)
 		{
 			text2 = text2.Replace("%", "%%");
 		}

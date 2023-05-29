@@ -3,10 +3,10 @@ using System;
 namespace CoreGraphics;
 
 [Flags]
-public enum CGWindowImageOption : uint
+public enum CGWindowImageOption
 {
-	Default = 0u,
-	BoundsIgnoreFraming = 1u,
-	ShouldBeOpaque = 2u,
-	OnlyShadows = 4u
+	Default = 0,
+	BoundsIgnoreFraming = 1,
+	ShouldBeOpaque = 2,
+	OnlyShadows = 4
 }

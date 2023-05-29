@@ -1,11 +1,7 @@
-using ObjCRuntime;
-
 namespace ImageKit;
 
-[Native]
-public enum IKCameraDeviceViewDisplayMode : long
+public enum IKCameraDeviceViewDisplayMode
 {
-	None = -1L,
 	Table,
 	Icon
 }

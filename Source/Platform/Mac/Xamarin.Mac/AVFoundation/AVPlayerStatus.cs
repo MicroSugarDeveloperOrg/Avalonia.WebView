@@ -2,9 +2,8 @@ using ObjCRuntime;
 
 namespace AVFoundation;
 
-[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-[Native]
-public enum AVPlayerStatus : long
+[Since(4, 0)]
+public enum AVPlayerStatus
 {
 	Unknown,
 	ReadyToPlay,

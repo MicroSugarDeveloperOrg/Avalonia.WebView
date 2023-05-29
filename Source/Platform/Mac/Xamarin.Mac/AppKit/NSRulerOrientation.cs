@@ -1,9 +1,6 @@
-using ObjCRuntime;
-
 namespace AppKit;
 
-[Native]
-public enum NSRulerOrientation : ulong
+public enum NSRulerOrientation
 {
 	Horizontal,
 	Vertical

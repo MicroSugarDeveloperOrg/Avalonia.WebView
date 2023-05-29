@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
 using CoreFoundation;
-using ObjCRuntime;
 
 namespace AudioToolbox;
 
@@ -9,7 +8,7 @@ public class OutputAudioQueue : AudioQueue
 {
 	private static readonly AudioQueueOutputCallback dOutputCallback = output_callback;
 
-	public event EventHandler<BufferCompletedEventArgs> BufferCompleted;
+	public event EventHandler<OutputCompletedEventArgs> OutputCompleted;
 
 	[DllImport("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox")]
 	private static extern int AudioQueueNewOutput(ref AudioStreamBasicDescription format, AudioQueueOutputCallback callback, IntPtr userData, IntPtr cfrunLoop_callbackRunloop, IntPtr cfstr_runMode, uint flags, out IntPtr audioQueue);
@@ -17,13 +16,12 @@ public class OutputAudioQueue : AudioQueue
 	[MonoPInvokeCallback(typeof(AudioQueueOutputCallback))]
 	private static void output_callback(IntPtr userData, IntPtr AQ, IntPtr audioQueueBuffer)
 	{
-		OutputAudioQueue outputAudioQueue = GCHandle.FromIntPtr(userData).Target as OutputAudioQueue;
-		outputAudioQueue.OnBufferCompleted(audioQueueBuffer);
+		(GCHandle.FromIntPtr(userData).Target as OutputAudioQueue).OnOutputCompleted(audioQueueBuffer);
 	}
 
-	protected virtual void OnBufferCompleted(IntPtr audioQueueBuffer)
+	protected virtual void OnOutputCompleted(IntPtr audioQueueBuffer)
 	{
-		this.BufferCompleted?.Invoke(this, new BufferCompletedEventArgs(audioQueueBuffer));
+		this.OutputCompleted?.Invoke(this, new OutputCompletedEventArgs(audioQueueBuffer));
 	}
 
 	public OutputAudioQueue(AudioStreamBasicDescription desc)

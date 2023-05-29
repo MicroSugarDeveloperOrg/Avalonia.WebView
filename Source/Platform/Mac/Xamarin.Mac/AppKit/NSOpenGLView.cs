@@ -7,94 +7,59 @@ using ObjCRuntime;
 namespace AppKit;
 
 [Register("NSOpenGLView", true)]
-[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'Metal' Framework instead.")]
 public class NSOpenGLView : NSView
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selClearGLContext = "clearGLContext";
-
-	private static readonly IntPtr selClearGLContextHandle = Selector.GetHandle("clearGLContext");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDefaultPixelFormat = "defaultPixelFormat";
-
 	private static readonly IntPtr selDefaultPixelFormatHandle = Selector.GetHandle("defaultPixelFormat");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithFrame_ = "initWithFrame:";
-
-	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithFrame_PixelFormat_ = "initWithFrame:pixelFormat:";
-
-	private static readonly IntPtr selInitWithFrame_PixelFormat_Handle = Selector.GetHandle("initWithFrame:pixelFormat:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOpenGLContext = "openGLContext";
 
 	private static readonly IntPtr selOpenGLContextHandle = Selector.GetHandle("openGLContext");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPixelFormat = "pixelFormat";
+	private static readonly IntPtr selSetOpenGLContext_Handle = Selector.GetHandle("setOpenGLContext:");
 
 	private static readonly IntPtr selPixelFormatHandle = Selector.GetHandle("pixelFormat");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPrepareOpenGL = "prepareOpenGL";
-
-	private static readonly IntPtr selPrepareOpenGLHandle = Selector.GetHandle("prepareOpenGL");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selReshape = "reshape";
-
-	private static readonly IntPtr selReshapeHandle = Selector.GetHandle("reshape");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetOpenGLContext_ = "setOpenGLContext:";
-
-	private static readonly IntPtr selSetOpenGLContext_Handle = Selector.GetHandle("setOpenGLContext:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPixelFormat_ = "setPixelFormat:";
-
 	private static readonly IntPtr selSetPixelFormat_Handle = Selector.GetHandle("setPixelFormat:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUpdate = "update";
+	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
+
+	private static readonly IntPtr selInitWithFramePixelFormat_Handle = Selector.GetHandle("initWithFrame:pixelFormat:");
+
+	private static readonly IntPtr selClearGLContextHandle = Selector.GetHandle("clearGLContext");
 
 	private static readonly IntPtr selUpdateHandle = Selector.GetHandle("update");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSOpenGLView");
+	private static readonly IntPtr selReshapeHandle = Selector.GetHandle("reshape");
+
+	private static readonly IntPtr selPrepareOpenGLHandle = Selector.GetHandle("prepareOpenGL");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSOpenGLView");
+
+	private static object __mt_DefaultPixelFormat_var_static;
+
+	private object __mt_OpenGLContext_var;
+
+	private object __mt_PixelFormat_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSOpenGLPixelFormat DefaultPixelFormat
 	{
 		[Export("defaultPixelFormat")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return Runtime.GetNSObject<NSOpenGLPixelFormat>(Messaging.IntPtr_objc_msgSend(class_ptr, selDefaultPixelFormatHandle));
+			return (NSOpenGLPixelFormat)(__mt_DefaultPixelFormat_var_static = (NSOpenGLPixelFormat)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selDefaultPixelFormatHandle)));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSOpenGLContext OpenGLContext
 	{
-		[Export("openGLContext", ArgumentSemantic.Retain)]
+		[Export("openGLContext")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSOpenGLContext>(Messaging.IntPtr_objc_msgSend(base.Handle, selOpenGLContextHandle));
-			}
-			return Runtime.GetNSObject<NSOpenGLContext>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOpenGLContextHandle));
+			return (NSOpenGLContext)(__mt_OpenGLContext_var = ((!IsDirectBinding) ? ((NSOpenGLContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOpenGLContextHandle))) : ((NSOpenGLContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selOpenGLContextHandle)))));
 		}
-		[Export("setOpenGLContext:", ArgumentSemantic.Retain)]
+		[Export("setOpenGLContext:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -102,7 +67,7 @@ public class NSOpenGLView : NSView
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetOpenGLContext_Handle, value.Handle);
 			}
@@ -110,23 +75,19 @@ public class NSOpenGLView : NSView
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetOpenGLContext_Handle, value.Handle);
 			}
+			__mt_OpenGLContext_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSOpenGLPixelFormat PixelFormat
 	{
-		[Export("pixelFormat", ArgumentSemantic.Retain)]
+		[Export("pixelFormat")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSOpenGLPixelFormat>(Messaging.IntPtr_objc_msgSend(base.Handle, selPixelFormatHandle));
-			}
-			return Runtime.GetNSObject<NSOpenGLPixelFormat>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPixelFormatHandle));
+			return (NSOpenGLPixelFormat)(__mt_PixelFormat_var = ((!IsDirectBinding) ? ((NSOpenGLPixelFormat)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPixelFormatHandle))) : ((NSOpenGLPixelFormat)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPixelFormatHandle)))));
 		}
-		[Export("setPixelFormat:", ArgumentSemantic.Retain)]
+		[Export("setPixelFormat:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -134,7 +95,7 @@ public class NSOpenGLView : NSView
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPixelFormat_Handle, value.Handle);
 			}
@@ -142,76 +103,68 @@ public class NSOpenGLView : NSView
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPixelFormat_Handle, value.Handle);
 			}
+			__mt_PixelFormat_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSOpenGLView()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSOpenGLView(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSOpenGLView(NSObjectFlag t)
+	public NSOpenGLView(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSOpenGLView(IntPtr handle)
+	public NSOpenGLView(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithFrame:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSOpenGLView(CGRect frameRect)
 		: base(NSObjectFlag.Empty)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect);
 		}
 	}
 
 	[Export("initWithFrame:pixelFormat:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSOpenGLView(CGRect frameRect, NSOpenGLPixelFormat format)
 		: base(NSObjectFlag.Empty)
 	{
@@ -220,22 +173,21 @@ public class NSOpenGLView : NSView
 		{
 			throw new ArgumentNullException("format");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect_IntPtr(base.Handle, selInitWithFrame_PixelFormat_Handle, frameRect, format.Handle), "initWithFrame:pixelFormat:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_CGRect_IntPtr(base.Handle, selInitWithFramePixelFormat_Handle, frameRect, format.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect_IntPtr(base.SuperHandle, selInitWithFrame_PixelFormat_Handle, frameRect, format.Handle), "initWithFrame:pixelFormat:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CGRect_IntPtr(base.SuperHandle, selInitWithFramePixelFormat_Handle, frameRect, format.Handle);
 		}
 	}
 
 	[Export("clearGLContext")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ClearGLContext()
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selClearGLContextHandle);
 		}
@@ -245,31 +197,25 @@ public class NSOpenGLView : NSView
 		}
 	}
 
-	[Export("prepareOpenGL")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Advice("Overriding this method requires a call to the overriden method.")]
-	[RequiresSuper]
-	public virtual void PrepareOpenGL()
+	[Export("update")]
+	public virtual void Update()
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selPrepareOpenGLHandle);
+			Messaging.void_objc_msgSend(base.Handle, selUpdateHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selPrepareOpenGLHandle);
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selUpdateHandle);
 		}
 	}
 
 	[Export("reshape")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Advice("Overriding this method requires a call to the overriden method.")]
-	[RequiresSuper]
 	public virtual void Reshape()
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selReshapeHandle);
 		}
@@ -279,20 +225,27 @@ public class NSOpenGLView : NSView
 		}
 	}
 
-	[Export("update")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Advice("Overriding this method requires a call to the overriden method.")]
-	[RequiresSuper]
-	public virtual void Update()
+	[Export("prepareOpenGL")]
+	public virtual void PrepareOpenGL()
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selUpdateHandle);
+			Messaging.void_objc_msgSend(base.Handle, selPrepareOpenGLHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selUpdateHandle);
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selPrepareOpenGLHandle);
+		}
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_OpenGLContext_var = null;
+			__mt_PixelFormat_var = null;
 		}
 	}
 }

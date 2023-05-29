@@ -1,86 +1,90 @@
+using System;
 using System.ComponentModel;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
 [Register("NSGlyphGenerator", true)]
 public class NSGlyphGenerator : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGenerateGlyphsForGlyphStorage_DesiredNumberOfCharacters_GlyphIndex_CharacterIndex_ = "generateGlyphsForGlyphStorage:desiredNumberOfCharacters:glyphIndex:characterIndex:";
-
-	private static readonly IntPtr selGenerateGlyphsForGlyphStorage_DesiredNumberOfCharacters_GlyphIndex_CharacterIndex_Handle = Selector.GetHandle("generateGlyphsForGlyphStorage:desiredNumberOfCharacters:glyphIndex:characterIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSharedGlyphGenerator = "sharedGlyphGenerator";
-
 	private static readonly IntPtr selSharedGlyphGeneratorHandle = Selector.GetHandle("sharedGlyphGenerator");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSGlyphGenerator");
+	private static readonly IntPtr selGenerateGlyphsForGlyphStorageDesiredNumberOfCharactersGlyphIndexCharacterIndex_Handle = Selector.GetHandle("generateGlyphsForGlyphStorage:desiredNumberOfCharacters:glyphIndex:characterIndex:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSGlyphGenerator");
+
+	private static object __mt_SharedGlyphGenerator_var_static;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSGlyphGenerator SharedGlyphGenerator
 	{
 		[Export("sharedGlyphGenerator")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return Runtime.GetNSObject<NSGlyphGenerator>(Messaging.IntPtr_objc_msgSend(class_ptr, selSharedGlyphGeneratorHandle));
+			return (NSGlyphGenerator)(__mt_SharedGlyphGenerator_var_static = (NSGlyphGenerator)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selSharedGlyphGeneratorHandle)));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSGlyphGenerator()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSGlyphGenerator(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSGlyphGenerator(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSGlyphGenerator(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSGlyphGenerator(IntPtr handle)
+	public NSGlyphGenerator(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("generateGlyphsForGlyphStorage:desiredNumberOfCharacters:glyphIndex:characterIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void GenerateGlyphs(NSObject nsGlyphStorageOrNSLayoutManager, nuint nchars, ref nuint glyphIndex, ref nuint charIndex)
+	public virtual void GenerateGlyphs(NSObject nsGlyphStorageOrNSLayoutManager, ulong nchars, ref ulong glyphIndex, ref ulong charIndex)
 	{
 		NSApplication.EnsureUIThread();
 		if (nsGlyphStorageOrNSLayoutManager == null)
 		{
 			throw new ArgumentNullException("nsGlyphStorageOrNSLayoutManager");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_nuint_ref_nuint_ref_nuint(base.Handle, selGenerateGlyphsForGlyphStorage_DesiredNumberOfCharacters_GlyphIndex_CharacterIndex_Handle, nsGlyphStorageOrNSLayoutManager.Handle, nchars, ref glyphIndex, ref charIndex);
+			Messaging.void_objc_msgSend_IntPtr_UInt64_out_UInt64_out_UInt64(base.Handle, selGenerateGlyphsForGlyphStorageDesiredNumberOfCharactersGlyphIndexCharacterIndex_Handle, nsGlyphStorageOrNSLayoutManager.Handle, nchars, out glyphIndex, out charIndex);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_nuint_ref_nuint_ref_nuint(base.SuperHandle, selGenerateGlyphsForGlyphStorage_DesiredNumberOfCharacters_GlyphIndex_CharacterIndex_Handle, nsGlyphStorageOrNSLayoutManager.Handle, nchars, ref glyphIndex, ref charIndex);
+			Messaging.void_objc_msgSendSuper_IntPtr_UInt64_out_UInt64_out_UInt64(base.SuperHandle, selGenerateGlyphsForGlyphStorageDesiredNumberOfCharactersGlyphIndexCharacterIndex_Handle, nsGlyphStorageOrNSLayoutManager.Handle, nchars, out glyphIndex, out charIndex);
 		}
 	}
 }

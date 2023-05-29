@@ -1,11 +1,9 @@
 using System;
-using ObjCRuntime;
 
 namespace AVFoundation;
 
 [Flags]
-[Native]
-public enum AVAudioSessionInterruptionOptions : ulong
+public enum AVAudioSessionInterruptionOptions
 {
-	ShouldResume = 1uL
+	ShouldResume = 1
 }

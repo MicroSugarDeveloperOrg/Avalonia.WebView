@@ -1,149 +1,346 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using ObjCRuntime;
 
 namespace Foundation;
 
 [Register("NSDirectoryEnumerator", true)]
-public class NSDirectoryEnumerator : NSEnumerator, IEnumerator<NSString>, IDisposable, IEnumerator, IEnumerator<string>
+public class NSDirectoryEnumerator : NSEnumerator
 {
-	private NSObject current;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDirectoryAttributes = "directoryAttributes";
+	private static readonly IntPtr selFileAttributesHandle = Selector.GetHandle("fileAttributes");
 
 	private static readonly IntPtr selDirectoryAttributesHandle = Selector.GetHandle("directoryAttributes");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFileAttributes = "fileAttributes";
-
-	private static readonly IntPtr selFileAttributesHandle = Selector.GetHandle("fileAttributes");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsEnumeratingDirectoryPostOrder = "isEnumeratingDirectoryPostOrder";
-
-	private static readonly IntPtr selIsEnumeratingDirectoryPostOrderHandle = Selector.GetHandle("isEnumeratingDirectoryPostOrder");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSkipDescendents = "skipDescendents";
-
 	private static readonly IntPtr selSkipDescendentsHandle = Selector.GetHandle("skipDescendents");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSDirectoryEnumerator");
+	private static readonly IntPtr selFileModificationDateHandle = Selector.GetHandle("fileModificationDate");
 
-	string IEnumerator<string>.Current => current.ToString();
+	private static readonly IntPtr selFileTypeHandle = Selector.GetHandle("fileType");
 
-	NSString IEnumerator<NSString>.Current => current as NSString;
+	private static readonly IntPtr selFilePosixPermissionsHandle = Selector.GetHandle("filePosixPermissions");
 
-	object IEnumerator.Current => current;
+	private static readonly IntPtr selFileOwnerAccountNameHandle = Selector.GetHandle("fileOwnerAccountName");
+
+	private static readonly IntPtr selFileGroupOwnerAccountNameHandle = Selector.GetHandle("fileGroupOwnerAccountName");
+
+	private static readonly IntPtr selFileSystemNumberHandle = Selector.GetHandle("fileSystemNumber");
+
+	private static readonly IntPtr selFileSystemFileNumberHandle = Selector.GetHandle("fileSystemFileNumber");
+
+	private static readonly IntPtr selFileExtensionHiddenHandle = Selector.GetHandle("fileExtensionHidden");
+
+	private static readonly IntPtr selFileHFSCreatorCodeHandle = Selector.GetHandle("fileHFSCreatorCode");
+
+	private static readonly IntPtr selFileHFSTypeCodeHandle = Selector.GetHandle("fileHFSTypeCode");
+
+	private static readonly IntPtr selFileIsImmutableHandle = Selector.GetHandle("fileIsImmutable");
+
+	private static readonly IntPtr selFileIsAppendOnlyHandle = Selector.GetHandle("fileIsAppendOnly");
+
+	private static readonly IntPtr selFileCreationDateHandle = Selector.GetHandle("fileCreationDate");
+
+	private static readonly IntPtr selFileOwnerAccountIDHandle = Selector.GetHandle("fileOwnerAccountID");
+
+	private static readonly IntPtr selFileGroupOwnerAccountIDHandle = Selector.GetHandle("fileGroupOwnerAccountID");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSDirectoryEnumerator");
+
+	private object __mt_FileAttributes_var;
+
+	private object __mt_DirectoryAttributes_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary DirectoryAttributes
-	{
-		[Export("directoryAttributes")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selDirectoryAttributesHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDirectoryAttributesHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDictionary FileAttributes
 	{
 		[Export("fileAttributes")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selFileAttributesHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileAttributesHandle));
+			return (NSDictionary)(__mt_FileAttributes_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileAttributesHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFileAttributesHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
-	public virtual bool IsEnumeratingDirectoryPostOrder
+	public virtual NSDictionary DirectoryAttributes
 	{
-		[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
-		[Export("isEnumeratingDirectoryPostOrder")]
+		[Export("directoryAttributes")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsEnumeratingDirectoryPostOrderHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsEnumeratingDirectoryPostOrderHandle);
+			return (NSDictionary)(__mt_DirectoryAttributes_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDirectoryAttributesHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDirectoryAttributesHandle)))));
 		}
 	}
 
-	bool IEnumerator.MoveNext()
-	{
-		current = NextObject();
-		return current != null;
-	}
-
-	void IEnumerator.Reset()
-	{
-		throw new InvalidOperationException();
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSDirectoryEnumerator()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSDirectoryEnumerator(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSDirectoryEnumerator(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSDirectoryEnumerator(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSDirectoryEnumerator(IntPtr handle)
+	public NSDirectoryEnumerator(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("skipDescendents")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SkipDescendents()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selSkipDescendentsHandle);
 		}
 		else
 		{
 			Messaging.void_objc_msgSendSuper(base.SuperHandle, selSkipDescendentsHandle);
+		}
+	}
+
+	[Export("fileModificationDate")]
+	public virtual NSDate FileModificationDate(NSDictionary fileAttributes)
+	{
+		if (fileAttributes == null)
+		{
+			throw new ArgumentNullException("fileAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			return (NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(fileAttributes.Handle, selFileModificationDateHandle));
+		}
+		return (NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileModificationDateHandle));
+	}
+
+	[Export("fileType")]
+	public virtual string FileType(NSDictionary fileAttributes)
+	{
+		if (fileAttributes == null)
+		{
+			throw new ArgumentNullException("fileAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(fileAttributes.Handle, selFileTypeHandle));
+		}
+		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileTypeHandle));
+	}
+
+	[Export("filePosixPermissions")]
+	public virtual uint FilePosixPermissions(NSDictionary fileAttributes)
+	{
+		if (fileAttributes == null)
+		{
+			throw new ArgumentNullException("fileAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.UInt32_objc_msgSend(fileAttributes.Handle, selFilePosixPermissionsHandle);
+		}
+		return Messaging.UInt32_objc_msgSendSuper(base.SuperHandle, selFilePosixPermissionsHandle);
+	}
+
+	[Export("fileOwnerAccountName")]
+	public virtual string FileOwnerAccountName(NSDictionary fileAttributes)
+	{
+		if (fileAttributes == null)
+		{
+			throw new ArgumentNullException("fileAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(fileAttributes.Handle, selFileOwnerAccountNameHandle));
+		}
+		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileOwnerAccountNameHandle));
+	}
+
+	[Export("fileGroupOwnerAccountName")]
+	public virtual string FileGroupOwnerAccountName(NSDictionary fileAttributes)
+	{
+		if (fileAttributes == null)
+		{
+			throw new ArgumentNullException("fileAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(fileAttributes.Handle, selFileGroupOwnerAccountNameHandle));
+		}
+		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileGroupOwnerAccountNameHandle));
+	}
+
+	[Export("fileSystemNumber")]
+	public virtual long FileSystemNumber(NSDictionary fileAttributes)
+	{
+		if (fileAttributes == null)
+		{
+			throw new ArgumentNullException("fileAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.Int64_objc_msgSend(fileAttributes.Handle, selFileSystemNumberHandle);
+		}
+		return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selFileSystemNumberHandle);
+	}
+
+	[Export("fileSystemFileNumber")]
+	public virtual ulong FileSystemFileNumber(NSDictionary fileAttributes)
+	{
+		if (fileAttributes == null)
+		{
+			throw new ArgumentNullException("fileAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.UInt64_objc_msgSend(fileAttributes.Handle, selFileSystemFileNumberHandle);
+		}
+		return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selFileSystemFileNumberHandle);
+	}
+
+	[Export("fileExtensionHidden")]
+	public virtual bool FileExtensionHidden(NSDictionary fileAttributes)
+	{
+		if (fileAttributes == null)
+		{
+			throw new ArgumentNullException("fileAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(fileAttributes.Handle, selFileExtensionHiddenHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selFileExtensionHiddenHandle);
+	}
+
+	[Export("fileHFSCreatorCode")]
+	public virtual uint FileHfsCreatorCode(NSDictionary fileAttributes)
+	{
+		if (fileAttributes == null)
+		{
+			throw new ArgumentNullException("fileAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.UInt32_objc_msgSend(fileAttributes.Handle, selFileHFSCreatorCodeHandle);
+		}
+		return Messaging.UInt32_objc_msgSendSuper(base.SuperHandle, selFileHFSCreatorCodeHandle);
+	}
+
+	[Export("fileHFSTypeCode")]
+	public virtual uint FileHfsTypeCode(NSDictionary fileAttributes)
+	{
+		if (fileAttributes == null)
+		{
+			throw new ArgumentNullException("fileAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.UInt32_objc_msgSend(fileAttributes.Handle, selFileHFSTypeCodeHandle);
+		}
+		return Messaging.UInt32_objc_msgSendSuper(base.SuperHandle, selFileHFSTypeCodeHandle);
+	}
+
+	[Export("fileIsImmutable")]
+	public virtual bool FileIsImmutable(NSDictionary fileAttributes)
+	{
+		if (fileAttributes == null)
+		{
+			throw new ArgumentNullException("fileAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(fileAttributes.Handle, selFileIsImmutableHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selFileIsImmutableHandle);
+	}
+
+	[Export("fileIsAppendOnly")]
+	public virtual bool FileIsAppendOnly(NSDictionary fileAttributes)
+	{
+		if (fileAttributes == null)
+		{
+			throw new ArgumentNullException("fileAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(fileAttributes.Handle, selFileIsAppendOnlyHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selFileIsAppendOnlyHandle);
+	}
+
+	[Export("fileCreationDate")]
+	public virtual NSDate FileCreationDate(NSDictionary fileAttributes)
+	{
+		if (fileAttributes == null)
+		{
+			throw new ArgumentNullException("fileAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			return (NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(fileAttributes.Handle, selFileCreationDateHandle));
+		}
+		return (NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileCreationDateHandle));
+	}
+
+	[Export("fileOwnerAccountID")]
+	public virtual NSNumber FileOwnerAccountID(NSDictionary fileAttributes)
+	{
+		if (fileAttributes == null)
+		{
+			throw new ArgumentNullException("fileAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			return (NSNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(fileAttributes.Handle, selFileOwnerAccountIDHandle));
+		}
+		return (NSNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileOwnerAccountIDHandle));
+	}
+
+	[Export("fileGroupOwnerAccountID")]
+	public virtual NSNumber FileGroupOwnerAccountID(NSDictionary fileAttributes)
+	{
+		if (fileAttributes == null)
+		{
+			throw new ArgumentNullException("fileAttributes");
+		}
+		if (IsDirectBinding)
+		{
+			return (NSNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(fileAttributes.Handle, selFileGroupOwnerAccountIDHandle));
+		}
+		return (NSNumber)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileGroupOwnerAccountIDHandle));
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_FileAttributes_var = null;
+			__mt_DirectoryAttributes_var = null;
 		}
 	}
 }

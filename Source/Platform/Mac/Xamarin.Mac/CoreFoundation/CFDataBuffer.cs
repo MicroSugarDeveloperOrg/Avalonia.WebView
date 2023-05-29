@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 
 namespace CoreFoundation;
 
@@ -8,25 +9,28 @@ internal class CFDataBuffer : IDisposable
 
 	private CFData data;
 
+	private bool owns;
+
 	public IntPtr Handle => data.Handle;
 
 	public byte[] Data => buffer;
 
 	public byte this[int idx] => buffer[idx];
 
-	public unsafe CFDataBuffer(byte[] buffer)
+	public CFDataBuffer(byte[] buffer)
 	{
 		this.buffer = buffer;
-		fixed (byte* ptr = buffer)
-		{
-			data = CFData.FromData((IntPtr)ptr, buffer.Length);
-		}
+		GCHandle gCHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+		data = CFData.FromData(gCHandle.AddrOfPinnedObject(), buffer.Length);
+		gCHandle.Free();
+		owns = true;
 	}
 
 	public CFDataBuffer(IntPtr ptr)
 	{
 		data = new CFData(ptr, owns: false);
 		buffer = data.GetBuffer();
+		owns = false;
 	}
 
 	~CFDataBuffer()

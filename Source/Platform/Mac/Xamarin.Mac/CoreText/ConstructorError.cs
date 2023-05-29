@@ -13,7 +13,6 @@ internal static class ConstructorError
 	public static Exception Unknown(object self)
 	{
 		GC.SuppressFinalize(self);
-		string message = $"Unable to create {self.GetType().Name} instance.";
-		return new ArgumentException(message);
+		return new ArgumentException($"Unable to create {self.GetType().Name} instance.");
 	}
 }

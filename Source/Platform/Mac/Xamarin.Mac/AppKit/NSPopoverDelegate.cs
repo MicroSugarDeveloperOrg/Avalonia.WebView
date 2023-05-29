@@ -5,84 +5,84 @@ using ObjCRuntime;
 
 namespace AppKit;
 
-[Protocol]
-[Register("NSPopoverDelegate", false)]
+[Register("NSPopoverDelegate", true)]
 [Model]
-public class NSPopoverDelegate : NSObject, INSPopoverDelegate, INativeObject, IDisposable
+public class NSPopoverDelegate : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSPopoverDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSPopoverDelegate(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSPopoverDelegate(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSPopoverDelegate(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSPopoverDelegate(IntPtr handle)
+	public NSPopoverDelegate(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
-	}
-
-	[Export("popoverDidClose:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DidClose(NSNotification notification)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("popoverDidDetach:")]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DidDetach(NSPopover popover)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("popoverDidShow:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DidShow(NSNotification notification)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("detachableWindowForPopover:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSWindow GetDetachableWindowForPopover(NSPopover popover)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("popoverShouldClose:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool ShouldClose(NSPopover popover)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
-	[Export("popoverWillClose:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void WillClose(NSNotification notification)
+	[Export("detachableWindowForPopover:")]
+	public virtual NSWindow GetDetachableWindowForPopover(NSPopover popover)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("popoverWillShow:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void WillShow(NSNotification notification)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("popoverDidShow:")]
+	public virtual void DidShow(NSNotification notification)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("popoverWillClose:")]
+	public virtual void WillClose(NSNotification notification)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("popoverDidClose:")]
+	public virtual void DidClose(NSNotification notification)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

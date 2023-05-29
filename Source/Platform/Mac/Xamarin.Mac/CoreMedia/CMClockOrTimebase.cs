@@ -5,7 +5,6 @@ using ObjCRuntime;
 
 namespace CoreMedia;
 
-[Watch(6, 0)]
 public class CMClockOrTimebase : IDisposable, INativeObject
 {
 	internal IntPtr handle;
@@ -19,17 +18,17 @@ public class CMClockOrTimebase : IDisposable, INativeObject
 	}
 
 	public CMClockOrTimebase(IntPtr handle)
-		: this(handle, owns: false)
 	{
+		this.handle = handle;
 	}
 
 	internal CMClockOrTimebase(IntPtr handle, bool owns)
 	{
-		this.handle = handle;
 		if (!owns)
 		{
-			CFObject.CFRetain(handle);
+			CFObject.CFRetain(Handle);
 		}
+		this.handle = handle;
 	}
 
 	~CMClockOrTimebase()
@@ -52,10 +51,10 @@ public class CMClockOrTimebase : IDisposable, INativeObject
 		}
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern CMTime CMSyncGetTime(IntPtr clockOrTimebase);
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern double CMSyncGetRelativeRate(IntPtr ofClockOrTimebase, IntPtr relativeToClockOrTimebase);
 
 	public static double GetRelativeRate(CMClockOrTimebase clockOrTimebaseA, CMClockOrTimebase clockOrTimebaseB)
@@ -71,7 +70,7 @@ public class CMClockOrTimebase : IDisposable, INativeObject
 		return CMSyncGetRelativeRate(clockOrTimebaseA.Handle, clockOrTimebaseB.Handle);
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern CMSyncError CMSyncGetRelativeRateAndAnchorTime(IntPtr ofClockOrTimebase, IntPtr relativeToClockOrTimebase, out double outRelativeRate, out CMTime outOfClockOrTimebaseAnchorTime, out CMTime outRelativeToClockOrTimebaseAnchorTime);
 
 	public static CMSyncError GetRelativeRateAndAnchorTime(CMClockOrTimebase clockOrTimebaseA, CMClockOrTimebase clockOrTimebaseB, out double relativeRate, out CMTime timeA, out CMTime timeB)
@@ -87,7 +86,7 @@ public class CMClockOrTimebase : IDisposable, INativeObject
 		return CMSyncGetRelativeRateAndAnchorTime(clockOrTimebaseA.Handle, clockOrTimebaseB.handle, out relativeRate, out timeA, out timeB);
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern CMTime CMSyncConvertTime(CMTime time, IntPtr fromClockOrTimebase, IntPtr toClockOrTimebase);
 
 	public static CMTime ConvertTime(CMTime time, CMClockOrTimebase from, CMClockOrTimebase to)
@@ -103,7 +102,7 @@ public class CMClockOrTimebase : IDisposable, INativeObject
 		return CMSyncConvertTime(time, from.Handle, to.Handle);
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern bool CMSyncMightDrift(IntPtr clockOrTimebase1, IntPtr clockOrTimebase2);
 
 	public static bool MightDrift(CMClockOrTimebase clockOrTimebaseA, CMClockOrTimebase clockOrTimebaseB)

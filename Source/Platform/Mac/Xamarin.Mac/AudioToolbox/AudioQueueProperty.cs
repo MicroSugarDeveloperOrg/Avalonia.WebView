@@ -15,7 +15,7 @@ public enum AudioQueueProperty : uint
 	CurrentLevelMeterDB = 1634823524u,
 	DecodeBufferSizeFrames = 1684234854u,
 	ConverterError = 1902343781u,
-	EnableTimePitch = 1902081136u,
-	TimePitchAlgorithm = 1903456353u,
-	TimePitchBypass = 1903456354u
+	EnableTimePitch = 1633645680u,
+	TimePitchAlgorithm = 1635020897u,
+	TimePitchBypass = 1635020898u
 }

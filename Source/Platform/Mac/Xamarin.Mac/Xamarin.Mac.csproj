@@ -1,18 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<Nullable>annotations</Nullable>
 		<RootNamespace></RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Memory" />
-		<PackageReference Include="System.Reflection.Emit" />
-		<PackageReference Include="System.Reflection.Emit.ILGeneration" />
-		<PackageReference Include="System.Reflection.Emit.Lightweight" />
-		<PackageReference Include="System.Threading.Tasks.Extensions" />
+	  <PackageReference Include="System.Reflection.Emit" />
+	  <PackageReference Include="System.Reflection.Emit.Lightweight" />
 	</ItemGroup>
- 
+
 </Project>

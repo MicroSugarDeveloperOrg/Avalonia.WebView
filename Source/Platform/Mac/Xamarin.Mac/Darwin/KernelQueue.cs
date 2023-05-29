@@ -1,7 +1,6 @@
+using System;
 using System.Runtime.InteropServices;
-using CoreFoundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace Darwin;
 
@@ -13,6 +12,9 @@ public class KernelQueue : IDisposable, INativeObject
 
 	[DllImport("/usr/lib/libSystem.dylib")]
 	private static extern int kqueue();
+
+	[DllImport("/usr/lib/libSystem.dylib")]
+	private static extern int close(int fd);
 
 	public KernelQueue()
 	{
@@ -34,7 +36,7 @@ public class KernelQueue : IDisposable, INativeObject
 	{
 		if (handle != -1)
 		{
-			DispatchSource.VnodeMonitor.close(handle);
+			close(handle);
 			handle = -1;
 		}
 	}
@@ -45,81 +47,7 @@ public class KernelQueue : IDisposable, INativeObject
 	[DllImport("/usr/lib/libSystem.dylib")]
 	private unsafe static extern int kevent(int kq, KernelEvent* changeList, int nChanges, KernelEvent* eventList, int nEvents, ref TimeSpec timeout);
 
-	public int KEvent(KernelEvent[] changeList, KernelEvent[] eventList, TimeSpan? timeout = null)
-	{
-		if (changeList == null)
-		{
-			throw new ArgumentNullException("changeList");
-		}
-		if (eventList == null)
-		{
-			throw new ArgumentNullException("eventList");
-		}
-		if (changeList.Length < 1)
-		{
-			throw new ArgumentOutOfRangeException("eventList must contain at least one element", "eventList");
-		}
-		if (eventList.Length < 1)
-		{
-			throw new ArgumentOutOfRangeException("changeList must contain at least one element", "changeList");
-		}
-		return KEvent(changeList, changeList.Length, eventList, eventList.Length, ToTimespec(timeout));
-	}
-
-	public unsafe int KEvent(KernelEvent[] changeList, int nChanges, KernelEvent[] eventList, int nEvents, TimeSpec? timeout = null)
-	{
-		if (changeList == null)
-		{
-			throw new ArgumentNullException("changeList");
-		}
-		if (eventList == null)
-		{
-			throw new ArgumentNullException("eventList");
-		}
-		if (changeList.Length < 1)
-		{
-			throw new ArgumentOutOfRangeException("eventList must contain at least one element", "eventList");
-		}
-		if (eventList.Length < 1)
-		{
-			throw new ArgumentOutOfRangeException("changeList must contain at least one element", "changeList");
-		}
-		if (changeList.Length < nChanges)
-		{
-			throw new ArgumentOutOfRangeException("nChanges is larger than the number of elements in changeList", "nChanges");
-		}
-		if (eventList.Length < nEvents)
-		{
-			throw new ArgumentOutOfRangeException("nEvents is larger than the number of elements in eventList", "nEvents");
-		}
-		fixed (KernelEvent* changeList2 = &changeList[0])
-		{
-			fixed (KernelEvent* eventList2 = &eventList[0])
-			{
-				if (!timeout.HasValue)
-				{
-					return kevent(handle, changeList2, nChanges, eventList2, nEvents, IntPtr.Zero);
-				}
-				TimeSpec timeout2 = timeout.Value;
-				return kevent(handle, changeList2, nChanges, eventList2, nEvents, ref timeout2);
-			}
-		}
-	}
-
-	private static TimeSpec? ToTimespec(TimeSpan? ts)
-	{
-		if (!ts.HasValue)
-		{
-			return null;
-		}
-		TimeSpec value = default(TimeSpec);
-		value.Seconds = (nint)ts.Value.TotalSeconds;
-		value.NanoSeconds = (nint)((long)ts.Value.Milliseconds * 1000000L);
-		return value;
-	}
-
-	[Obsolete("Use any of the overloads that return an int to get how many events were returned from kevent.")]
-	public unsafe bool KEvent(KernelEvent[] changeList, int nChanges, KernelEvent[] eventList, int nEvents, ref TimeSpec timeOut)
+	public unsafe int KEvent(KernelEvent[] changeList, int nChanges, KernelEvent[] eventList, int nEvents, ref TimeSpec timeOut)
 	{
 		if (changeList != null && changeList.Length < nChanges)
 		{
@@ -133,13 +61,12 @@ public class KernelQueue : IDisposable, INativeObject
 		{
 			fixed (KernelEvent* eventList2 = &eventList[0])
 			{
-				return kevent(handle, changeList2, nChanges, eventList2, nEvents, ref timeOut) != -1;
+				return kevent(handle, changeList2, nChanges, eventList2, nEvents, ref timeOut);
 			}
 		}
 	}
 
-	[Obsolete("Use any of the overloads that return an int to get how many events were returned from kevent.")]
-	public unsafe bool KEvent(KernelEvent[] changeList, int nChanges, KernelEvent[] eventList, int nEvents)
+	public unsafe int KEvent(KernelEvent[] changeList, int nChanges, KernelEvent[] eventList, int nEvents)
 	{
 		if (changeList != null && changeList.Length < nChanges)
 		{
@@ -153,31 +80,29 @@ public class KernelQueue : IDisposable, INativeObject
 		{
 			fixed (KernelEvent* eventList2 = &eventList[0])
 			{
-				return kevent(handle, changeList2, nChanges, eventList2, nEvents, IntPtr.Zero) != -1;
+				return kevent(handle, changeList2, nChanges, eventList2, nEvents, IntPtr.Zero);
 			}
 		}
 	}
 
-	[Obsolete("Use any of the overloads that return an int to get how many events were returned from kevent.")]
-	public unsafe bool KEvent(KernelEvent[] changeList, KernelEvent[] eventList, ref TimeSpec timeOut)
+	public unsafe int KEvent(KernelEvent[] changeList, KernelEvent[] eventList, ref TimeSpec timeOut)
 	{
 		fixed (KernelEvent* changeList2 = &changeList[0])
 		{
 			fixed (KernelEvent* eventList2 = &eventList[0])
 			{
-				return kevent(handle, changeList2, (changeList != null) ? changeList.Length : 0, eventList2, (eventList != null) ? eventList.Length : 0, ref timeOut) != -1;
+				return kevent(handle, changeList2, (changeList != null) ? changeList.Length : 0, eventList2, (eventList != null) ? eventList.Length : 0, ref timeOut);
 			}
 		}
 	}
 
-	[Obsolete("Use any of the overloads that return an int to get how many events were returned from kevent.")]
-	public unsafe bool KEvent(KernelEvent[] changeList, KernelEvent[] eventList)
+	public unsafe int KEvent(KernelEvent[] changeList, KernelEvent[] eventList)
 	{
 		fixed (KernelEvent* changeList2 = &changeList[0])
 		{
 			fixed (KernelEvent* eventList2 = &eventList[0])
 			{
-				return kevent(handle, changeList2, (changeList != null) ? changeList.Length : 0, eventList2, (eventList != null) ? eventList.Length : 0, IntPtr.Zero) != -1;
+				return kevent(handle, changeList2, (changeList != null) ? changeList.Length : 0, eventList2, (eventList != null) ? eventList.Length : 0, IntPtr.Zero);
 			}
 		}
 	}

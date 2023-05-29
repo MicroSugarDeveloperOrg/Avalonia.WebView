@@ -4,53 +4,66 @@ using ObjCRuntime;
 
 namespace Foundation;
 
-[Protocol]
-[Register("NSUserNotificationCenterDelegate", false)]
+[Register("NSUserNotificationCenterDelegate", true)]
 [Model]
-public class NSUserNotificationCenterDelegate : NSObject, INSUserNotificationCenterDelegate, INativeObject, IDisposable
+[MountainLion]
+public class NSUserNotificationCenterDelegate : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSUserNotificationCenterDelegate()
 		: base(NSObjectFlag.Empty)
 	{
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSUserNotificationCenterDelegate(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSUserNotificationCenterDelegate(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSUserNotificationCenterDelegate(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSUserNotificationCenterDelegate(IntPtr handle)
+	public NSUserNotificationCenterDelegate(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
-	}
-
-	[Export("userNotificationCenter:didActivateNotification:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DidActivateNotification(NSUserNotificationCenter center, NSUserNotification notification)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("userNotificationCenter:didDeliverNotification:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void DidDeliverNotification(NSUserNotificationCenter center, NSUserNotification notification)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
+	[Export("userNotificationCenter:didActivateNotification:")]
+	public virtual void DidActivateNotification(NSUserNotificationCenter center, NSUserNotification notification)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
 	[Export("userNotificationCenter:shouldPresentNotification:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool ShouldPresentNotification(NSUserNotificationCenter center, NSUserNotification notification)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();

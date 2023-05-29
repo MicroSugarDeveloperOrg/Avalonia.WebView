@@ -1,73 +1,66 @@
+using System;
 using System.ComponentModel;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
 [Register("NSActionCell", true)]
 public class NSActionCell : NSCell
 {
-	private NSObject target;
-
-	private Selector action;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAction = "action";
-
-	private static readonly IntPtr selActionHandle = Selector.GetHandle("action");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitImageCell_ = "initImageCell:";
-
-	private static readonly IntPtr selInitImageCell_Handle = Selector.GetHandle("initImageCell:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitTextCell_ = "initTextCell:";
-
-	private static readonly IntPtr selInitTextCell_Handle = Selector.GetHandle("initTextCell:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAction_ = "setAction:";
-
-	private static readonly IntPtr selSetAction_Handle = Selector.GetHandle("setAction:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetTag_ = "setTag:";
-
-	private static readonly IntPtr selSetTag_Handle = Selector.GetHandle("setTag:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetTarget_ = "setTarget:";
+	private static readonly IntPtr selTargetHandle = Selector.GetHandle("target");
 
 	private static readonly IntPtr selSetTarget_Handle = Selector.GetHandle("setTarget:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTag = "tag";
+	private static readonly IntPtr selActionHandle = Selector.GetHandle("action");
+
+	private static readonly IntPtr selSetAction_Handle = Selector.GetHandle("setAction:");
 
 	private static readonly IntPtr selTagHandle = Selector.GetHandle("tag");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTarget = "target";
+	private static readonly IntPtr selSetTag_Handle = Selector.GetHandle("setTag:");
 
-	private static readonly IntPtr selTargetHandle = Selector.GetHandle("target");
+	private static readonly IntPtr selInitTextCell_Handle = Selector.GetHandle("initTextCell:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSActionCell");
+	private static readonly IntPtr selInitImageCell_Handle = Selector.GetHandle("initImageCell:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_Target_var;
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSActionCell");
+
+	private object __mt_Target_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public new virtual Selector? Action
+	public new virtual NSObject Target
+	{
+		[Export("target")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSObject)(__mt_Target_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTargetHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTargetHandle))));
+		}
+		[Export("setTarget:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTarget_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTarget_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			__mt_Target_var = value;
+		}
+	}
+
+	public new virtual Selector Action
 	{
 		[Export("action")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Selector.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selActionHandle));
 			}
@@ -77,7 +70,7 @@ public class NSActionCell : NSCell
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAction_Handle, (value == null) ? IntPtr.Zero : value.Handle);
 			}
@@ -88,60 +81,30 @@ public class NSActionCell : NSCell
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public new virtual nint Tag
+	public new virtual long Tag
 	{
 		[Export("tag")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nint_objc_msgSend(base.Handle, selTagHandle);
+				return Messaging.Int64_objc_msgSend(base.Handle, selTagHandle);
 			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selTagHandle);
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selTagHandle);
 		}
 		[Export("setTag:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetTag_Handle, value);
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetTag_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetTag_Handle, value);
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetTag_Handle, value);
 			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public new virtual NSObject? Target
-	{
-		[Export("target", ArgumentSemantic.Weak)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTargetHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTargetHandle)));
-			MarkDirty();
-			__mt_Target_var = nSObject;
-			return nSObject;
-		}
-		[Export("setTarget:", ArgumentSemantic.Weak)]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTarget_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTarget_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			MarkDirty();
-			__mt_Target_var = value;
 		}
 	}
 
@@ -149,72 +112,58 @@ public class NSActionCell : NSCell
 	{
 		add
 		{
-			target = ActionDispatcher.SetupAction(Target, value);
-			action = ActionDispatcher.Action;
-			MarkDirty();
-			Target = target;
-			Action = action;
+			Target = ActionDispatcher.SetupAction(Target, value);
+			Action = ActionDispatcher.Action;
 		}
 		remove
 		{
 			ActionDispatcher.RemoveAction(Target, value);
-			target = null;
-			action = null;
-			MarkDirty();
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSActionCell()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSActionCell(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSActionCell(NSObjectFlag t)
+	public NSActionCell(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSActionCell(IntPtr handle)
+	public NSActionCell(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initTextCell:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSActionCell(string aString)
 		: base(NSObjectFlag.Empty)
 	{
@@ -224,19 +173,18 @@ public class NSActionCell : NSCell
 			throw new ArgumentNullException("aString");
 		}
 		IntPtr arg = NSString.CreateNative(aString);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitTextCell_Handle, arg), "initTextCell:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitTextCell_Handle, arg);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitTextCell_Handle, arg), "initTextCell:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitTextCell_Handle, arg);
 		}
 		NSString.ReleaseNative(arg);
 	}
 
 	[Export("initImageCell:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSActionCell(NSImage image)
 		: base(NSObjectFlag.Empty)
 	{
@@ -245,17 +193,16 @@ public class NSActionCell : NSCell
 		{
 			throw new ArgumentNullException("image");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitImageCell_Handle, image.Handle), "initImageCell:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitImageCell_Handle, image.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitImageCell_Handle, image.Handle), "initImageCell:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitImageCell_Handle, image.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);

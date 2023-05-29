@@ -9,42 +9,26 @@ namespace QTKit;
 [Register("QTCaptureLayer", true)]
 public class QTCaptureLayer : CALayer
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithSession_ = "initWithSession:";
-
-	private static readonly IntPtr selInitWithSession_Handle = Selector.GetHandle("initWithSession:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLayerWithSession_ = "layerWithSession:";
-
-	private static readonly IntPtr selLayerWithSession_Handle = Selector.GetHandle("layerWithSession:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSession = "session";
-
 	private static readonly IntPtr selSessionHandle = Selector.GetHandle("session");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetSession_ = "setSession:";
 
 	private static readonly IntPtr selSetSession_Handle = Selector.GetHandle("setSession:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("QTCaptureLayer");
+	private static readonly IntPtr selLayerWithSession_Handle = Selector.GetHandle("layerWithSession:");
+
+	private static readonly IntPtr selInitWithSession_Handle = Selector.GetHandle("initWithSession:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("QTCaptureLayer");
+
+	private object __mt_Session_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual QTCaptureSession Session
 	{
 		[Export("session")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<QTCaptureSession>(Messaging.IntPtr_objc_msgSend(base.Handle, selSessionHandle));
-			}
-			return Runtime.GetNSObject<QTCaptureSession>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSessionHandle));
+			return (QTCaptureSession)(__mt_Session_var = ((!IsDirectBinding) ? ((QTCaptureSession)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSessionHandle))) : ((QTCaptureSession)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSessionHandle)))));
 		}
 		[Export("setSession:")]
 		set
@@ -53,7 +37,7 @@ public class QTCaptureLayer : CALayer
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSession_Handle, value.Handle);
 			}
@@ -61,77 +45,53 @@ public class QTCaptureLayer : CALayer
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSession_Handle, value.Handle);
 			}
+			__mt_Session_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public QTCaptureLayer()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public QTCaptureLayer(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected QTCaptureLayer(NSObjectFlag t)
+	public QTCaptureLayer(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal QTCaptureLayer(IntPtr handle)
+	public QTCaptureLayer(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("initWithSession:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public QTCaptureLayer(QTCaptureSession session)
-		: base(NSObjectFlag.Empty)
-	{
-		if (session == null)
-		{
-			throw new ArgumentNullException("session");
-		}
-		if (base.IsDirectBinding)
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithSession_Handle, session.Handle), "initWithSession:");
-		}
-		else
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithSession_Handle, session.Handle), "initWithSession:");
-		}
-	}
-
 	[Export("layerWithSession:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSObject FromSession(QTCaptureSession session)
 	{
 		if (session == null)
@@ -139,5 +99,32 @@ public class QTCaptureLayer : CALayer
 			throw new ArgumentNullException("session");
 		}
 		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selLayerWithSession_Handle, session.Handle));
+	}
+
+	[Export("initWithSession:")]
+	public QTCaptureLayer(QTCaptureSession session)
+		: base(NSObjectFlag.Empty)
+	{
+		if (session == null)
+		{
+			throw new ArgumentNullException("session");
+		}
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithSession_Handle, session.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithSession_Handle, session.Handle);
+		}
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_Session_var = null;
+		}
 	}
 }

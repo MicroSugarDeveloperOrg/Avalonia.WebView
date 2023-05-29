@@ -4,71 +4,61 @@ using ObjCRuntime;
 
 namespace Foundation;
 
-[Register("NSEnumerator", SkipRegistration = true)]
-public sealed class NSEnumerator<TKey> : NSEnumerator where TKey : class, INativeObject
-{
-	public NSEnumerator()
-	{
-	}
-
-	internal NSEnumerator(IntPtr handle)
-		: base(handle)
-	{
-	}
-
-	public new TKey NextObject()
-	{
-		return (TKey)(object)base.NextObject();
-	}
-}
 [Register("NSEnumerator", true)]
 public class NSEnumerator : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNextObject = "nextObject";
-
 	private static readonly IntPtr selNextObjectHandle = Selector.GetHandle("nextObject");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSEnumerator");
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSEnumerator");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSEnumerator()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSEnumerator(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSEnumerator(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSEnumerator(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSEnumerator(IntPtr handle)
+	public NSEnumerator(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("nextObject")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSObject NextObject()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selNextObjectHandle));
 		}

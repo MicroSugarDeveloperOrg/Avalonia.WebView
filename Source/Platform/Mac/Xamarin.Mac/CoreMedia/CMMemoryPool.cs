@@ -6,18 +6,29 @@ using ObjCRuntime;
 
 namespace CoreMedia;
 
-[Watch(6, 0)]
-[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
+[Since(6, 0)]
 public class CMMemoryPool : IDisposable, INativeObject
 {
 	private IntPtr handle;
 
+	private static readonly IntPtr AgeOutPeriodSelector;
+
 	public IntPtr Handle => handle;
 
-	[Field("kCMMemoryPoolOption_AgeOutPeriod", "CoreMedia")]
-	internal static IntPtr AgeOutPeriodSelector => Dlfcn.GetIntPtr(Libraries.CoreMedia.Handle, "kCMMemoryPoolOption_AgeOutPeriod");
+	static CMMemoryPool()
+	{
+		IntPtr intPtr = Dlfcn.dlopen("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia", 0);
+		try
+		{
+			AgeOutPeriodSelector = Dlfcn.GetIntPtr(intPtr, "kCMMemoryPoolOption_AgeOutPeriod");
+		}
+		finally
+		{
+			Dlfcn.dlclose(intPtr);
+		}
+	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern IntPtr CMMemoryPoolCreate(IntPtr options);
 
 	public CMMemoryPool()
@@ -27,9 +38,9 @@ public class CMMemoryPool : IDisposable, INativeObject
 
 	public CMMemoryPool(TimeSpan ageOutPeriod)
 	{
-		using NSNumber second = new NSNumber(ageOutPeriod.TotalSeconds);
-		using NSDictionary nSDictionary = new NSDictionary(AgeOutPeriodSelector, second);
-		handle = CMMemoryPoolCreate(nSDictionary.Handle);
+		using NSMutableDictionary nSMutableDictionary = new NSMutableDictionary();
+		nSMutableDictionary.LowlevelSetObject(AgeOutPeriodSelector, new NSNumber(ageOutPeriod.TotalSeconds).Handle);
+		handle = CMMemoryPoolCreate(nSMutableDictionary.Handle);
 	}
 
 	~CMMemoryPool()
@@ -52,7 +63,7 @@ public class CMMemoryPool : IDisposable, INativeObject
 		}
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern IntPtr CMMemoryPoolGetAllocator(IntPtr pool);
 
 	public CFAllocator GetAllocator()
@@ -60,7 +71,7 @@ public class CMMemoryPool : IDisposable, INativeObject
 		return new CFAllocator(CMMemoryPoolGetAllocator(Handle), owns: false);
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern void CMMemoryPoolFlush(IntPtr pool);
 
 	public void Flush()
@@ -68,7 +79,7 @@ public class CMMemoryPool : IDisposable, INativeObject
 		CMMemoryPoolFlush(Handle);
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreMedia.framework/CoreMedia")]
+	[DllImport("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia")]
 	private static extern void CMMemoryPoolInvalidate(IntPtr pool);
 
 	public void Invalidate()

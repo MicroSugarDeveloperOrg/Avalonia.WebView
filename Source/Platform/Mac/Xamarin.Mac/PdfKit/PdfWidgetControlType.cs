@@ -1,12 +1,8 @@
-using ObjCRuntime;
-
 namespace PdfKit;
 
-[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
-[Native]
-public enum PdfWidgetControlType : long
+public enum PdfWidgetControlType
 {
-	Unknown = -1L,
+	Unknown = -1,
 	PushButton,
 	RadioButton,
 	CheckBox

@@ -6,238 +6,54 @@ using ObjCRuntime;
 namespace CoreWlan;
 
 [Register("CW8021XProfile", true)]
-[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-[Obsoleted(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-public class CW8021XProfile : NSObject, INSCoding, INativeObject, IDisposable, INSCopying
+public class CW8021XProfile : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAllUser8021XProfiles = "allUser8021XProfiles";
-
-	private static readonly IntPtr selAllUser8021XProfilesHandle = Selector.GetHandle("allUser8021XProfiles");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAlwaysPromptForPassword = "alwaysPromptForPassword";
-
-	private static readonly IntPtr selAlwaysPromptForPasswordHandle = Selector.GetHandle("alwaysPromptForPassword");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCopyWithZone_ = "copyWithZone:";
-
-	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
-
-	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsEqualToProfile_ = "isEqualToProfile:";
-
-	private static readonly IntPtr selIsEqualToProfile_Handle = Selector.GetHandle("isEqualToProfile:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPassword = "password";
-
-	private static readonly IntPtr selPasswordHandle = Selector.GetHandle("password");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selProfile = "profile";
-
-	private static readonly IntPtr selProfileHandle = Selector.GetHandle("profile");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAlwaysPromptForPassword_ = "setAlwaysPromptForPassword:";
-
-	private static readonly IntPtr selSetAlwaysPromptForPassword_Handle = Selector.GetHandle("setAlwaysPromptForPassword:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPassword_ = "setPassword:";
-
-	private static readonly IntPtr selSetPassword_Handle = Selector.GetHandle("setPassword:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetSsid_ = "setSsid:";
-
-	private static readonly IntPtr selSetSsid_Handle = Selector.GetHandle("setSsid:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetUserDefinedName_ = "setUserDefinedName:";
+	private static readonly IntPtr selUserDefinedNameHandle = Selector.GetHandle("userDefinedName");
 
 	private static readonly IntPtr selSetUserDefinedName_Handle = Selector.GetHandle("setUserDefinedName:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetUsername_ = "setUsername:";
-
-	private static readonly IntPtr selSetUsername_Handle = Selector.GetHandle("setUsername:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSsid = "ssid";
-
 	private static readonly IntPtr selSsidHandle = Selector.GetHandle("ssid");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUserDefinedName = "userDefinedName";
-
-	private static readonly IntPtr selUserDefinedNameHandle = Selector.GetHandle("userDefinedName");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUsername = "username";
+	private static readonly IntPtr selSetSsid_Handle = Selector.GetHandle("setSsid:");
 
 	private static readonly IntPtr selUsernameHandle = Selector.GetHandle("username");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("CW8021XProfile");
+	private static readonly IntPtr selSetUsername_Handle = Selector.GetHandle("setUsername:");
+
+	private static readonly IntPtr selPasswordHandle = Selector.GetHandle("password");
+
+	private static readonly IntPtr selSetPassword_Handle = Selector.GetHandle("setPassword:");
+
+	private static readonly IntPtr selAlwaysPromptForPasswordHandle = Selector.GetHandle("alwaysPromptForPassword");
+
+	private static readonly IntPtr selSetAlwaysPromptForPassword_Handle = Selector.GetHandle("setAlwaysPromptForPassword:");
+
+	private static readonly IntPtr selProfileHandle = Selector.GetHandle("profile");
+
+	private static readonly IntPtr selAllUser8021XProfilesHandle = Selector.GetHandle("allUser8021XProfiles");
+
+	private static readonly IntPtr selIsEqualToProfile_Handle = Selector.GetHandle("isEqualToProfile:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("CW8021XProfile");
+
+	private static object __mt_Profile_var_static;
+
+	private static object __mt_AllUser8021XProfiles_var_static;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-	[Obsoleted(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public static CW8021XProfile[] AllUser8021XProfiles
-	{
-		[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-		[Obsoleted(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("allUser8021XProfiles")]
-		get
-		{
-			return NSArray.ArrayFromHandle<CW8021XProfile>(Messaging.IntPtr_objc_msgSend(class_ptr, selAllUser8021XProfilesHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-	public virtual bool AlwaysPromptForPassword
-	{
-		[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-		[Export("alwaysPromptForPassword")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAlwaysPromptForPasswordHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAlwaysPromptForPasswordHandle);
-		}
-		[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-		[Export("setAlwaysPromptForPassword:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAlwaysPromptForPassword_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAlwaysPromptForPassword_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-	public virtual string Password
-	{
-		[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-		[Export("password", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPasswordHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPasswordHandle));
-		}
-		[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-		[Export("setPassword:", ArgumentSemantic.Copy)]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPassword_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPassword_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-	[Obsoleted(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public static CW8021XProfile Profile
-	{
-		[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-		[Obsoleted(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("profile")]
-		get
-		{
-			return Runtime.GetNSObject<CW8021XProfile>(Messaging.IntPtr_objc_msgSend(class_ptr, selProfileHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-	public virtual string Ssid
-	{
-		[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-		[Export("ssid", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSsidHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSsidHandle));
-		}
-		[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-		[Export("setSsid:", ArgumentSemantic.Copy)]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSsid_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSsid_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
 	public virtual string UserDefinedName
 	{
-		[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-		[Export("userDefinedName", ArgumentSemantic.Copy)]
+		[Export("userDefinedName")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selUserDefinedNameHandle));
 			}
 			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUserDefinedNameHandle));
 		}
-		[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-		[Export("setUserDefinedName:", ArgumentSemantic.Copy)]
+		[Export("setUserDefinedName:")]
 		set
 		{
 			if (value == null)
@@ -245,7 +61,7 @@ public class CW8021XProfile : NSObject, INSCoding, INativeObject, IDisposable, I
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetUserDefinedName_Handle, arg);
 			}
@@ -257,22 +73,18 @@ public class CW8021XProfile : NSObject, INSCoding, INativeObject, IDisposable, I
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-	public virtual string Username
+	public virtual string Ssid
 	{
-		[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-		[Export("username", ArgumentSemantic.Copy)]
+		[Export("ssid")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selUsernameHandle));
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSsidHandle));
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUsernameHandle));
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSsidHandle));
 		}
-		[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-		[Export("setUsername:", ArgumentSemantic.Copy)]
+		[Export("setSsid:")]
 		set
 		{
 			if (value == null)
@@ -280,7 +92,38 @@ public class CW8021XProfile : NSObject, INSCoding, INativeObject, IDisposable, I
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSsid_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSsid_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual string Username
+	{
+		[Export("username")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selUsernameHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUsernameHandle));
+		}
+		[Export("setUsername:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetUsername_Handle, arg);
 			}
@@ -292,95 +135,130 @@ public class CW8021XProfile : NSObject, INSCoding, INativeObject, IDisposable, I
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string Password
+	{
+		[Export("password")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPasswordHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPasswordHandle));
+		}
+		[Export("setPassword:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPassword_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPassword_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual bool AlwaysPromptForPassword
+	{
+		[Export("alwaysPromptForPassword")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selAlwaysPromptForPasswordHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAlwaysPromptForPasswordHandle);
+		}
+		[Export("setAlwaysPromptForPassword:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetAlwaysPromptForPassword_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAlwaysPromptForPassword_Handle, value);
+			}
+		}
+	}
+
+	public static CW8021XProfile Profile
+	{
+		[Export("profile")]
+		get
+		{
+			return (CW8021XProfile)(__mt_Profile_var_static = (CW8021XProfile)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selProfileHandle)));
+		}
+	}
+
+	public static CW8021XProfile[] AllUser8021XProfiles
+	{
+		[Export("allUser8021XProfiles")]
+		get
+		{
+			return (CW8021XProfile[])(__mt_AllUser8021XProfiles_var_static = NSArray.ArrayFromHandle<CW8021XProfile>(Messaging.IntPtr_objc_msgSend(class_ptr, selAllUser8021XProfilesHandle)));
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public CW8021XProfile()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public CW8021XProfile(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected CW8021XProfile(NSObjectFlag t)
+	public CW8021XProfile(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal CW8021XProfile(IntPtr handle)
+	public CW8021XProfile(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("copyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject Copy(NSZone? zone)
-	{
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
-		{
-			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
-		}
-		return nSObject;
-	}
-
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
-	{
-		if (encoder == null)
-		{
-			throw new ArgumentNullException("encoder");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-	}
-
 	[Export("isEqualToProfile:")]
-	[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.All, null)]
-	[Obsoleted(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsEqualToProfile(CW8021XProfile profile)
 	{
 		if (profile == null)
 		{
 			throw new ArgumentNullException("profile");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIsEqualToProfile_Handle, profile.Handle);
 		}

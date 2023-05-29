@@ -1,10 +1,7 @@
-using ObjCRuntime;
-
 namespace QTKit;
 
-[Native]
-public enum QTCaptureDestination : ulong
+public enum QTCaptureDestination
 {
-	NewFile = 1uL,
+	NewFile = 1,
 	OldFile
 }

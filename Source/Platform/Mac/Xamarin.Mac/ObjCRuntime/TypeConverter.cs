@@ -1,19 +1,13 @@
-using System.Collections.Generic;
+using System;
 using System.Reflection;
 using System.Text;
-using Xamarin.Mac.System.Mac;
 
 namespace ObjCRuntime;
 
 public static class TypeConverter
 {
-	[BindingImpl(BindingImplOptions.Optimizable)]
 	public static Type ToManaged(string type)
 	{
-		if (!Runtime.DynamicRegistrationSupported)
-		{
-			throw ErrorHelper.CreateError(8026, "TypeConverter.ToManaged is not supported when the dynamic registrar has been linked away.");
-		}
 		switch (type[0])
 		{
 		case '@':
@@ -65,10 +59,9 @@ public static class TypeConverter
 		case '{':
 		{
 			string text = type.Substring(1, type.IndexOf('=') - 1);
-			IEnumerable<Assembly> assemblies = Runtime.GetAssemblies();
-			foreach (Assembly item in assemblies)
+			foreach (Assembly assembly in Runtime.GetAssemblies())
 			{
-				Type[] types = item.GetTypes();
+				Type[] types = assembly.GetTypes();
 				foreach (Type type2 in types)
 				{
 					if (type2.IsValueType && !type2.IsEnum && type2.Name == text)
@@ -104,7 +97,7 @@ public static class TypeConverter
 		}
 		if (type == typeof(byte))
 		{
-			return "C";
+			return "c";
 		}
 		if (type == typeof(sbyte))
 		{
@@ -148,7 +141,7 @@ public static class TypeConverter
 		}
 		if (type == typeof(bool))
 		{
-			return "c";
+			return "B";
 		}
 		if (type == typeof(void))
 		{
@@ -165,18 +158,6 @@ public static class TypeConverter
 		if (type == typeof(Class))
 		{
 			return "#";
-		}
-		if (type == typeof(nfloat))
-		{
-			return (IntPtr.Size == 8) ? "d" : "f";
-		}
-		if (type == typeof(nint))
-		{
-			return (IntPtr.Size == 8) ? "q" : "i";
-		}
-		if (type == typeof(nuint))
-		{
-			return (IntPtr.Size == 8) ? "Q" : "I";
 		}
 		if (typeof(INativeObject).IsAssignableFrom(type))
 		{

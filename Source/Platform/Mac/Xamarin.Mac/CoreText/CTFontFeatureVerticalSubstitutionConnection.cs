@@ -10,7 +10,7 @@ public class CTFontFeatureVerticalSubstitutionConnection : CTFontFeatureSelector
 		SubstituteVerticalFormsOff
 	}
 
-	public Selector Feature => (Selector)base.FeatureWeak;
+	public Selector Feature => Feature;
 
 	public CTFontFeatureVerticalSubstitutionConnection(NSDictionary dictionary)
 		: base(dictionary)

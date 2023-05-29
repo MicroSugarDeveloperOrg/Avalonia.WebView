@@ -1,9 +1,6 @@
-using ObjCRuntime;
-
 namespace AppKit;
 
-[Native]
-public enum NSWindingRule : ulong
+public enum NSWindingRule
 {
 	NonZero,
 	EvenOdd

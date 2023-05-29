@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace CoreMedia;
 
-[Watch(6, 0)]
 public enum CMTimeCodeFormatType : uint
 {
 	TimeCode32 = 1953325924u,

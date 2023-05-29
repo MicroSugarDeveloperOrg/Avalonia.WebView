@@ -10,110 +10,58 @@ namespace ImageKit;
 public class IKSaveOptions : NSObject
 {
 	[Register]
-	internal class _IKSaveOptionsDelegate : NSObject, IIKSaveOptionsDelegate, INativeObject, IDisposable
+	private sealed class _IKSaveOptionsDelegate : IKSaveOptionsDelegate
 	{
-		internal SaveOptionsShouldShowUTType? shouldShowType;
-
-		public _IKSaveOptionsDelegate()
-		{
-			base.IsDirectBinding = false;
-		}
+		internal SaveOptionsShouldShowUTType shouldShowType;
 
 		[Preserve(Conditional = true)]
-		[Export("saveOptions:shouldShowUTType:")]
-		public bool ShouldShowType(IKSaveOptions saveOptions, string imageUTType)
+		public override bool ShouldShowType(IKSaveOptions saveOptions, string imageUTType)
 		{
 			return shouldShowType?.Invoke(saveOptions, imageUTType) ?? false;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddSaveOptionsAccessoryViewToSavePanel_ = "addSaveOptionsAccessoryViewToSavePanel:";
-
-	private static readonly IntPtr selAddSaveOptionsAccessoryViewToSavePanel_Handle = Selector.GetHandle("addSaveOptionsAccessoryViewToSavePanel:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddSaveOptionsToView_ = "addSaveOptionsToView:";
-
-	private static readonly IntPtr selAddSaveOptionsToView_Handle = Selector.GetHandle("addSaveOptionsToView:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDelegate = "delegate";
-
-	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selImageProperties = "imageProperties";
-
 	private static readonly IntPtr selImagePropertiesHandle = Selector.GetHandle("imageProperties");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selImageUTType = "imageUTType";
 
 	private static readonly IntPtr selImageUTTypeHandle = Selector.GetHandle("imageUTType");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithImageProperties_ImageUTType_ = "initWithImageProperties:imageUTType:";
+	private static readonly IntPtr selUserSelectionHandle = Selector.GetHandle("userSelection");
 
-	private static readonly IntPtr selInitWithImageProperties_ImageUTType_Handle = Selector.GetHandle("initWithImageProperties:imageUTType:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDelegate_ = "setDelegate:";
+	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
 
 	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUserSelection = "userSelection";
+	private static readonly IntPtr selInitWithImagePropertiesImageUTType_Handle = Selector.GetHandle("initWithImageProperties:imageUTType:");
 
-	private static readonly IntPtr selUserSelectionHandle = Selector.GetHandle("userSelection");
+	private static readonly IntPtr selAddSaveOptionsAccessoryViewToSavePanel_Handle = Selector.GetHandle("addSaveOptionsAccessoryViewToSavePanel:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("IKSaveOptions");
+	private static readonly IntPtr selAddSaveOptionsToView_Handle = Selector.GetHandle("addSaveOptionsToView:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_WeakDelegate_var;
+	private static readonly IntPtr class_ptr = Class.GetHandle("IKSaveOptions");
+
+	private object __mt_ImageProperties_var;
+
+	private object __mt_UserSelection_var;
+
+	private object __mt_WeakDelegate_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public IIKSaveOptionsDelegate Delegate
-	{
-		get
-		{
-			return WeakDelegate as IIKSaveOptionsDelegate;
-		}
-		set
-		{
-			NSObject nSObject = value as NSObject;
-			if (value != null && nSObject == null)
-			{
-				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
-			}
-			WeakDelegate = nSObject;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDictionary ImageProperties
 	{
 		[Export("imageProperties")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selImagePropertiesHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selImagePropertiesHandle));
+			return (NSDictionary)(__mt_ImageProperties_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selImagePropertiesHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selImagePropertiesHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string ImageUTType
 	{
 		[Export("imageUTType")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selImageUTTypeHandle));
 			}
@@ -121,36 +69,26 @@ public class IKSaveOptions : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDictionary UserSelection
 	{
 		[Export("userSelection")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selUserSelectionHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUserSelectionHandle));
+			return (NSDictionary)(__mt_UserSelection_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUserSelectionHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selUserSelectionHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject? WeakDelegate
+	public virtual NSObject WeakDelegate
 	{
 		[Export("delegate", ArgumentSemantic.Assign)]
 		get
 		{
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
-			MarkDirty();
-			__mt_WeakDelegate_var = nSObject;
-			return nSObject;
+			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
 		}
 		[Export("setDelegate:", ArgumentSemantic.Assign)]
 		set
 		{
-			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakDelegate_var, value, GetInternalEventDelegateType);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
@@ -158,14 +96,23 @@ public class IKSaveOptions : NSObject
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
-			MarkDirty();
 			__mt_WeakDelegate_var = value;
 		}
 	}
 
-	internal virtual Type GetInternalEventDelegateType => typeof(_IKSaveOptionsDelegate);
+	public IKSaveOptionsDelegate Delegate
+	{
+		get
+		{
+			return WeakDelegate as IKSaveOptionsDelegate;
+		}
+		set
+		{
+			WeakDelegate = value;
+		}
+	}
 
-	public SaveOptionsShouldShowUTType? ShouldShowType
+	public SaveOptionsShouldShowUTType ShouldShowType
 	{
 		get
 		{
@@ -177,38 +124,49 @@ public class IKSaveOptions : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public IKSaveOptions()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected IKSaveOptions(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public IKSaveOptions(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public IKSaveOptions(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal IKSaveOptions(IntPtr handle)
+	public IKSaveOptions(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithImageProperties:imageUTType:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public IKSaveOptions(NSDictionary imageProperties, string imageUTType)
 		: base(NSObjectFlag.Empty)
 	{
@@ -221,26 +179,25 @@ public class IKSaveOptions : NSObject
 			throw new ArgumentNullException("imageUTType");
 		}
 		IntPtr arg = NSString.CreateNative(imageUTType);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithImageProperties_ImageUTType_Handle, imageProperties.Handle, arg), "initWithImageProperties:imageUTType:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithImagePropertiesImageUTType_Handle, imageProperties.Handle, arg);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithImageProperties_ImageUTType_Handle, imageProperties.Handle, arg), "initWithImageProperties:imageUTType:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithImagePropertiesImageUTType_Handle, imageProperties.Handle, arg);
 		}
 		NSString.ReleaseNative(arg);
 	}
 
 	[Export("addSaveOptionsAccessoryViewToSavePanel:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AddSaveOptionsToPanel(NSSavePanel savePanel)
 	{
 		if (savePanel == null)
 		{
 			throw new ArgumentNullException("savePanel");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddSaveOptionsAccessoryViewToSavePanel_Handle, savePanel.Handle);
 		}
@@ -251,14 +208,13 @@ public class IKSaveOptions : NSObject
 	}
 
 	[Export("addSaveOptionsToView:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AddSaveOptionsToView(NSView view)
 	{
 		if (view == null)
 		{
 			throw new ArgumentNullException("view");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddSaveOptionsToView_Handle, view.Handle);
 		}
@@ -268,31 +224,23 @@ public class IKSaveOptions : NSObject
 		}
 	}
 
-	internal virtual _IKSaveOptionsDelegate CreateInternalEventDelegateType()
+	private _IKSaveOptionsDelegate EnsureIKSaveOptionsDelegate()
 	{
-		return new _IKSaveOptionsDelegate();
+		NSObject nSObject = WeakDelegate;
+		if (nSObject == null || !(nSObject is _IKSaveOptionsDelegate))
+		{
+			nSObject = (WeakDelegate = new _IKSaveOptionsDelegate());
+		}
+		return (_IKSaveOptionsDelegate)nSObject;
 	}
 
-	internal _IKSaveOptionsDelegate EnsureIKSaveOptionsDelegate()
-	{
-		if (WeakDelegate != null)
-		{
-			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakDelegate, GetInternalEventDelegateType);
-		}
-		_IKSaveOptionsDelegate iKSaveOptionsDelegate = Delegate as _IKSaveOptionsDelegate;
-		if (iKSaveOptionsDelegate == null)
-		{
-			iKSaveOptionsDelegate = (_IKSaveOptionsDelegate)(Delegate = CreateInternalEventDelegateType());
-		}
-		return iKSaveOptionsDelegate;
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
+			__mt_ImageProperties_var = null;
+			__mt_UserSelection_var = null;
 			__mt_WeakDelegate_var = null;
 		}
 	}

@@ -1,9 +1,6 @@
-using ObjCRuntime;
-
 namespace CoreFoundation;
 
-[Native]
-public enum CFStreamStatus : long
+public enum CFStreamStatus
 {
 	NotOpen,
 	Opening,

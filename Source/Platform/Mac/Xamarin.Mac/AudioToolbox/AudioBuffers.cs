@@ -1,10 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
-using ObjCRuntime;
 
 namespace AudioToolbox;
 
-public class AudioBuffers : IDisposable, INativeObject
+public class AudioBuffers : IDisposable
 {
 	private IntPtr address;
 
@@ -21,8 +20,7 @@ public class AudioBuffers : IDisposable, INativeObject
 				throw new ArgumentOutOfRangeException("index");
 			}
 			byte* ptr = (byte*)(void*)address;
-			byte* ptr2 = ptr + IntPtr.Size + index * sizeof(AudioBuffer);
-			return *(AudioBuffer*)ptr2;
+			return *(AudioBuffer*)(ptr + 4 + index * sizeof(AudioBuffer));
 		}
 		set
 		{
@@ -31,12 +29,10 @@ public class AudioBuffers : IDisposable, INativeObject
 				throw new ArgumentOutOfRangeException("index");
 			}
 			byte* ptr = (byte*)(void*)address;
-			AudioBuffer* ptr2 = (AudioBuffer*)(ptr + IntPtr.Size + index * sizeof(AudioBuffer));
+			AudioBuffer* ptr2 = (AudioBuffer*)(ptr + 4 + index * sizeof(AudioBuffer));
 			*ptr2 = value;
 		}
 	}
-
-	public IntPtr Handle => address;
 
 	public AudioBuffers(IntPtr address)
 		: this(address, owns: false)
@@ -59,11 +55,11 @@ public class AudioBuffers : IDisposable, INativeObject
 		{
 			throw new ArgumentOutOfRangeException("count");
 		}
-		int cb = IntPtr.Size + count * sizeof(AudioBuffer);
+		int cb = 4 + count * sizeof(AudioBuffer);
 		address = Marshal.AllocHGlobal(cb);
 		owns = true;
 		Marshal.WriteInt32(address, 0, count);
-		AudioBuffer* ptr = (AudioBuffer*)((byte*)(void*)address + IntPtr.Size);
+		AudioBuffer* ptr = (AudioBuffer*)((byte*)(void*)address + 4);
 		for (int i = 0; i < count; i++)
 		{
 			ptr->NumberChannels = 0;
@@ -76,6 +72,7 @@ public class AudioBuffers : IDisposable, INativeObject
 	~AudioBuffers()
 	{
 		Dispose(disposing: false);
+		GC.SuppressFinalize(this);
 	}
 
 	public static explicit operator IntPtr(AudioBuffers audioBuffers)
@@ -90,7 +87,7 @@ public class AudioBuffers : IDisposable, INativeObject
 			throw new ArgumentOutOfRangeException("index");
 		}
 		byte* ptr = (byte*)(void*)address;
-		IntPtr* ptr2 = (IntPtr*)(ptr + IntPtr.Size + index * sizeof(AudioBuffer) + 4 + 4);
+		IntPtr* ptr2 = (IntPtr*)(ptr + 4 + index * sizeof(AudioBuffer) + 4 + 4);
 		*ptr2 = data;
 	}
 
@@ -101,7 +98,7 @@ public class AudioBuffers : IDisposable, INativeObject
 			throw new ArgumentOutOfRangeException("index");
 		}
 		byte* ptr = (byte*)(void*)address;
-		int* ptr2 = (int*)(ptr + IntPtr.Size + index * sizeof(AudioBuffer) + 4);
+		int* ptr2 = (int*)(ptr + 4 + index * sizeof(AudioBuffer) + 4);
 		*ptr2 = dataByteSize;
 		ptr2++;
 		IntPtr* ptr3 = (IntPtr*)ptr2;
@@ -111,7 +108,6 @@ public class AudioBuffers : IDisposable, INativeObject
 	public void Dispose()
 	{
 		Dispose(disposing: true);
-		GC.SuppressFinalize(this);
 	}
 
 	protected virtual void Dispose(bool disposing)

@@ -1,15 +1,15 @@
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
 [DebuggerTypeProxy(typeof(NSEventDebuggerProxy))]
 [Register("NSEvent", true)]
-public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopying
+public class NSEvent : NSObject
 {
 	private class NSEventDebuggerProxy
 	{
@@ -31,7 +31,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 
 		public NSWindow Window => target.Window;
 
-		public nint WindowNumber => target.WindowNumber;
+		public long WindowNumber => target.WindowNumber;
 
 		public IntPtr CGEvent => target.CGEvent;
 
@@ -71,7 +71,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nint AbsoluteX
+		public long AbsoluteX
 		{
 			get
 			{
@@ -80,7 +80,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nint AbsoluteY
+		public long AbsoluteY
 		{
 			get
 			{
@@ -89,7 +89,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nint AbsoluteZ
+		public long AbsoluteZ
 		{
 			get
 			{
@@ -98,7 +98,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nuint ButtonMask
+		public ulong ButtonMask
 		{
 			get
 			{
@@ -107,7 +107,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public float Rotation
+		public double Rotation
 		{
 			get
 			{
@@ -116,7 +116,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public float TangentialPressure
+		public double TangentialPressure
 		{
 			get
 			{
@@ -143,7 +143,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nint ButtonNumber
+		public long ButtonNumber
 		{
 			get
 			{
@@ -152,7 +152,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nint ClickCount
+		public long ClickCount
 		{
 			get
 			{
@@ -161,7 +161,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public float Pressure
+		public double Pressure
 		{
 			get
 			{
@@ -170,7 +170,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		internal nint EventNumber
+		internal long EventNumber
 		{
 			get
 			{
@@ -179,7 +179,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		internal nint TrackingNumber
+		internal long TrackingNumber
 		{
 			get
 			{
@@ -215,7 +215,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nint Data1
+		public long Data1
 		{
 			get
 			{
@@ -224,7 +224,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nint Data2
+		public long Data2
 		{
 			get
 			{
@@ -233,7 +233,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public float DeltaX
+		public double DeltaX
 		{
 			get
 			{
@@ -242,7 +242,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public float DeltaY
+		public double DeltaY
 		{
 			get
 			{
@@ -251,7 +251,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public float DeltaZ
+		public double DeltaZ
 		{
 			get
 			{
@@ -260,7 +260,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nuint CapabilityMask
+		public ulong CapabilityMask
 		{
 			get
 			{
@@ -269,7 +269,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nuint DeviceID
+		public ulong DeviceID
 		{
 			get
 			{
@@ -287,7 +287,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nuint PointingDeviceSerialNumber
+		public ulong PointingDeviceSerialNumber
 		{
 			get
 			{
@@ -296,7 +296,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nuint PointingDeviceID
+		public ulong PointingDeviceID
 		{
 			get
 			{
@@ -314,7 +314,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nuint SystemTabletID
+		public ulong SystemTabletID
 		{
 			get
 			{
@@ -323,7 +323,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nuint TabletID
+		public ulong TabletID
 		{
 			get
 			{
@@ -341,7 +341,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nuint VendorID
+		public ulong VendorID
 		{
 			get
 			{
@@ -350,7 +350,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nuint VendorPointingDeviceType
+		public ulong VendorPointingDeviceType
 		{
 			get
 			{
@@ -359,7 +359,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		internal nfloat Magnification
+		internal double Magnification
 		{
 			get
 			{
@@ -377,7 +377,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nfloat ScrollingDeltaX
+		public double ScrollingDeltaX
 		{
 			get
 			{
@@ -386,7 +386,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 			}
 		}
 
-		public nfloat ScrollingDeltaY
+		public double ScrollingDeltaY
 		{
 			get
 			{
@@ -430,8 +430,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		private bool IsKeyEvent()
 		{
 			NSEventType type = target.Type;
-			NSEventType nSEventType = type;
-			if (nSEventType - 10 <= NSEventType.LeftMouseDown)
+			if (type - 10 <= NSEventType.LeftMouseDown)
 			{
 				return true;
 			}
@@ -450,8 +449,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		private bool IsMouseEvent()
 		{
 			NSEventType type = target.Type;
-			NSEventType nSEventType = type;
-			if (nSEventType - 1 <= NSEventType.MouseEntered || nSEventType - 25 <= NSEventType.LeftMouseUp)
+			if (type - 1 <= NSEventType.MouseEntered || type - 25 <= NSEventType.LeftMouseUp)
 			{
 				return true;
 			}
@@ -502,8 +500,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		private bool IsCustomEvent()
 		{
 			NSEventType type = target.Type;
-			NSEventType nSEventType = type;
-			if (nSEventType - 13 <= NSEventType.RightMouseDown)
+			if (type - 13 <= NSEventType.RightMouseDown)
 			{
 				return true;
 			}
@@ -522,8 +519,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		private bool IsScrollWheelEvent()
 		{
 			NSEventType type = target.Type;
-			NSEventType nSEventType = type;
-			if (nSEventType == NSEventType.ScrollWheel)
+			if (type == NSEventType.ScrollWheel)
 			{
 				return true;
 			}
@@ -590,572 +586,359 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCGEvent = "CGEvent";
-
-	private static readonly IntPtr selCGEventHandle = Selector.GetHandle("CGEvent");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAbsoluteX = "absoluteX";
-
-	private static readonly IntPtr selAbsoluteXHandle = Selector.GetHandle("absoluteX");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAbsoluteY = "absoluteY";
-
-	private static readonly IntPtr selAbsoluteYHandle = Selector.GetHandle("absoluteY");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAbsoluteZ = "absoluteZ";
-
-	private static readonly IntPtr selAbsoluteZHandle = Selector.GetHandle("absoluteZ");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddGlobalMonitorForEventsMatchingMask_Handler_ = "addGlobalMonitorForEventsMatchingMask:handler:";
-
-	private static readonly IntPtr selAddGlobalMonitorForEventsMatchingMask_Handler_Handle = Selector.GetHandle("addGlobalMonitorForEventsMatchingMask:handler:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddLocalMonitorForEventsMatchingMask_Handler_ = "addLocalMonitorForEventsMatchingMask:handler:";
-
-	private static readonly IntPtr selAddLocalMonitorForEventsMatchingMask_Handler_Handle = Selector.GetHandle("addLocalMonitorForEventsMatchingMask:handler:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAllTouches = "allTouches";
-
-	private static readonly IntPtr selAllTouchesHandle = Selector.GetHandle("allTouches");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAssociatedEventsMask = "associatedEventsMask";
-
-	private static readonly IntPtr selAssociatedEventsMaskHandle = Selector.GetHandle("associatedEventsMask");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selButtonMask = "buttonMask";
-
-	private static readonly IntPtr selButtonMaskHandle = Selector.GetHandle("buttonMask");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selButtonNumber = "buttonNumber";
-
-	private static readonly IntPtr selButtonNumberHandle = Selector.GetHandle("buttonNumber");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCapabilityMask = "capabilityMask";
-
-	private static readonly IntPtr selCapabilityMaskHandle = Selector.GetHandle("capabilityMask");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCharacters = "characters";
-
-	private static readonly IntPtr selCharactersHandle = Selector.GetHandle("characters");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCharactersByApplyingModifiers_ = "charactersByApplyingModifiers:";
-
-	private static readonly IntPtr selCharactersByApplyingModifiers_Handle = Selector.GetHandle("charactersByApplyingModifiers:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCharactersIgnoringModifiers = "charactersIgnoringModifiers";
-
-	private static readonly IntPtr selCharactersIgnoringModifiersHandle = Selector.GetHandle("charactersIgnoringModifiers");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selClickCount = "clickCount";
-
-	private static readonly IntPtr selClickCountHandle = Selector.GetHandle("clickCount");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCoalescedTouchesForTouch_ = "coalescedTouchesForTouch:";
-
-	private static readonly IntPtr selCoalescedTouchesForTouch_Handle = Selector.GetHandle("coalescedTouchesForTouch:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selContext = "context";
-
-	private static readonly IntPtr selContextHandle = Selector.GetHandle("context");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCopyWithZone_ = "copyWithZone:";
-
-	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selData1 = "data1";
-
-	private static readonly IntPtr selData1Handle = Selector.GetHandle("data1");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selData2 = "data2";
-
-	private static readonly IntPtr selData2Handle = Selector.GetHandle("data2");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeltaX = "deltaX";
-
-	private static readonly IntPtr selDeltaXHandle = Selector.GetHandle("deltaX");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeltaY = "deltaY";
-
-	private static readonly IntPtr selDeltaYHandle = Selector.GetHandle("deltaY");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeltaZ = "deltaZ";
-
-	private static readonly IntPtr selDeltaZHandle = Selector.GetHandle("deltaZ");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeviceID = "deviceID";
-
-	private static readonly IntPtr selDeviceIDHandle = Selector.GetHandle("deviceID");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDoubleClickInterval = "doubleClickInterval";
-
-	private static readonly IntPtr selDoubleClickIntervalHandle = Selector.GetHandle("doubleClickInterval");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEnterExitEventWithType_Location_ModifierFlags_Timestamp_WindowNumber_Context_EventNumber_TrackingNumber_UserData_ = "enterExitEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:trackingNumber:userData:";
-
-	private static readonly IntPtr selEnterExitEventWithType_Location_ModifierFlags_Timestamp_WindowNumber_Context_EventNumber_TrackingNumber_UserData_Handle = Selector.GetHandle("enterExitEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:trackingNumber:userData:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEventNumber = "eventNumber";
-
-	private static readonly IntPtr selEventNumberHandle = Selector.GetHandle("eventNumber");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEventRef = "eventRef";
-
-	private static readonly IntPtr selEventRefHandle = Selector.GetHandle("eventRef");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEventWithCGEvent_ = "eventWithCGEvent:";
-
-	private static readonly IntPtr selEventWithCGEvent_Handle = Selector.GetHandle("eventWithCGEvent:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEventWithEventRef_ = "eventWithEventRef:";
-
-	private static readonly IntPtr selEventWithEventRef_Handle = Selector.GetHandle("eventWithEventRef:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHasPreciseScrollingDeltas = "hasPreciseScrollingDeltas";
-
-	private static readonly IntPtr selHasPreciseScrollingDeltasHandle = Selector.GetHandle("hasPreciseScrollingDeltas");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
-
-	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsARepeat = "isARepeat";
-
-	private static readonly IntPtr selIsARepeatHandle = Selector.GetHandle("isARepeat");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsDirectionInvertedFromDevice = "isDirectionInvertedFromDevice";
-
-	private static readonly IntPtr selIsDirectionInvertedFromDeviceHandle = Selector.GetHandle("isDirectionInvertedFromDevice");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsEnteringProximity = "isEnteringProximity";
-
-	private static readonly IntPtr selIsEnteringProximityHandle = Selector.GetHandle("isEnteringProximity");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsMouseCoalescingEnabled = "isMouseCoalescingEnabled";
-
-	private static readonly IntPtr selIsMouseCoalescingEnabledHandle = Selector.GetHandle("isMouseCoalescingEnabled");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsSwipeTrackingFromScrollEventsEnabled = "isSwipeTrackingFromScrollEventsEnabled";
-
-	private static readonly IntPtr selIsSwipeTrackingFromScrollEventsEnabledHandle = Selector.GetHandle("isSwipeTrackingFromScrollEventsEnabled");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selKeyCode = "keyCode";
-
-	private static readonly IntPtr selKeyCodeHandle = Selector.GetHandle("keyCode");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selKeyEventWithType_Location_ModifierFlags_Timestamp_WindowNumber_Context_Characters_CharactersIgnoringModifiers_IsARepeat_KeyCode_ = "keyEventWithType:location:modifierFlags:timestamp:windowNumber:context:characters:charactersIgnoringModifiers:isARepeat:keyCode:";
-
-	private static readonly IntPtr selKeyEventWithType_Location_ModifierFlags_Timestamp_WindowNumber_Context_Characters_CharactersIgnoringModifiers_IsARepeat_KeyCode_Handle = Selector.GetHandle("keyEventWithType:location:modifierFlags:timestamp:windowNumber:context:characters:charactersIgnoringModifiers:isARepeat:keyCode:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selKeyRepeatDelay = "keyRepeatDelay";
-
-	private static readonly IntPtr selKeyRepeatDelayHandle = Selector.GetHandle("keyRepeatDelay");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selKeyRepeatInterval = "keyRepeatInterval";
-
-	private static readonly IntPtr selKeyRepeatIntervalHandle = Selector.GetHandle("keyRepeatInterval");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLocationInWindow = "locationInWindow";
-
-	private static readonly IntPtr selLocationInWindowHandle = Selector.GetHandle("locationInWindow");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMagnification = "magnification";
-
-	private static readonly IntPtr selMagnificationHandle = Selector.GetHandle("magnification");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selModifierFlags = "modifierFlags";
+	private static readonly IntPtr selTypeHandle = Selector.GetHandle("type");
 
 	private static readonly IntPtr selModifierFlagsHandle = Selector.GetHandle("modifierFlags");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMomentumPhase = "momentumPhase";
-
-	private static readonly IntPtr selMomentumPhaseHandle = Selector.GetHandle("momentumPhase");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMouseEventWithType_Location_ModifierFlags_Timestamp_WindowNumber_Context_EventNumber_ClickCount_Pressure_ = "mouseEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:clickCount:pressure:";
-
-	private static readonly IntPtr selMouseEventWithType_Location_ModifierFlags_Timestamp_WindowNumber_Context_EventNumber_ClickCount_Pressure_Handle = Selector.GetHandle("mouseEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:clickCount:pressure:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMouseLocation = "mouseLocation";
-
-	private static readonly IntPtr selMouseLocationHandle = Selector.GetHandle("mouseLocation");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOtherEventWithType_Location_ModifierFlags_Timestamp_WindowNumber_Context_Subtype_Data1_Data2_ = "otherEventWithType:location:modifierFlags:timestamp:windowNumber:context:subtype:data1:data2:";
-
-	private static readonly IntPtr selOtherEventWithType_Location_ModifierFlags_Timestamp_WindowNumber_Context_Subtype_Data1_Data2_Handle = Selector.GetHandle("otherEventWithType:location:modifierFlags:timestamp:windowNumber:context:subtype:data1:data2:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPhase = "phase";
-
-	private static readonly IntPtr selPhaseHandle = Selector.GetHandle("phase");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPointingDeviceID = "pointingDeviceID";
-
-	private static readonly IntPtr selPointingDeviceIDHandle = Selector.GetHandle("pointingDeviceID");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPointingDeviceSerialNumber = "pointingDeviceSerialNumber";
-
-	private static readonly IntPtr selPointingDeviceSerialNumberHandle = Selector.GetHandle("pointingDeviceSerialNumber");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPointingDeviceType = "pointingDeviceType";
-
-	private static readonly IntPtr selPointingDeviceTypeHandle = Selector.GetHandle("pointingDeviceType");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPressedMouseButtons = "pressedMouseButtons";
-
-	private static readonly IntPtr selPressedMouseButtonsHandle = Selector.GetHandle("pressedMouseButtons");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPressure = "pressure";
-
-	private static readonly IntPtr selPressureHandle = Selector.GetHandle("pressure");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveMonitor_ = "removeMonitor:";
-
-	private static readonly IntPtr selRemoveMonitor_Handle = Selector.GetHandle("removeMonitor:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRotation = "rotation";
-
-	private static readonly IntPtr selRotationHandle = Selector.GetHandle("rotation");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selScrollingDeltaX = "scrollingDeltaX";
-
-	private static readonly IntPtr selScrollingDeltaXHandle = Selector.GetHandle("scrollingDeltaX");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selScrollingDeltaY = "scrollingDeltaY";
-
-	private static readonly IntPtr selScrollingDeltaYHandle = Selector.GetHandle("scrollingDeltaY");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMouseCoalescingEnabled_ = "setMouseCoalescingEnabled:";
-
-	private static readonly IntPtr selSetMouseCoalescingEnabled_Handle = Selector.GetHandle("setMouseCoalescingEnabled:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStage = "stage";
-
-	private static readonly IntPtr selStageHandle = Selector.GetHandle("stage");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStageTransition = "stageTransition";
-
-	private static readonly IntPtr selStageTransitionHandle = Selector.GetHandle("stageTransition");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStartPeriodicEventsAfterDelay_WithPeriod_ = "startPeriodicEventsAfterDelay:withPeriod:";
-
-	private static readonly IntPtr selStartPeriodicEventsAfterDelay_WithPeriod_Handle = Selector.GetHandle("startPeriodicEventsAfterDelay:withPeriod:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStopPeriodicEvents = "stopPeriodicEvents";
-
-	private static readonly IntPtr selStopPeriodicEventsHandle = Selector.GetHandle("stopPeriodicEvents");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSubtype = "subtype";
-
-	private static readonly IntPtr selSubtypeHandle = Selector.GetHandle("subtype");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSystemTabletID = "systemTabletID";
-
-	private static readonly IntPtr selSystemTabletIDHandle = Selector.GetHandle("systemTabletID");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTabletID = "tabletID";
-
-	private static readonly IntPtr selTabletIDHandle = Selector.GetHandle("tabletID");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTangentialPressure = "tangentialPressure";
-
-	private static readonly IntPtr selTangentialPressureHandle = Selector.GetHandle("tangentialPressure");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTilt = "tilt";
-
-	private static readonly IntPtr selTiltHandle = Selector.GetHandle("tilt");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTimestamp = "timestamp";
-
 	private static readonly IntPtr selTimestampHandle = Selector.GetHandle("timestamp");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTouchesForView_ = "touchesForView:";
-
-	private static readonly IntPtr selTouchesForView_Handle = Selector.GetHandle("touchesForView:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTouchesMatchingPhase_InView_ = "touchesMatchingPhase:inView:";
-
-	private static readonly IntPtr selTouchesMatchingPhase_InView_Handle = Selector.GetHandle("touchesMatchingPhase:inView:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTrackSwipeEventWithOptions_DampenAmountThresholdMin_Max_UsingHandler_ = "trackSwipeEventWithOptions:dampenAmountThresholdMin:max:usingHandler:";
-
-	private static readonly IntPtr selTrackSwipeEventWithOptions_DampenAmountThresholdMin_Max_UsingHandler_Handle = Selector.GetHandle("trackSwipeEventWithOptions:dampenAmountThresholdMin:max:usingHandler:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTrackingArea = "trackingArea";
-
-	private static readonly IntPtr selTrackingAreaHandle = Selector.GetHandle("trackingArea");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTrackingNumber = "trackingNumber";
-
-	private static readonly IntPtr selTrackingNumberHandle = Selector.GetHandle("trackingNumber");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selType = "type";
-
-	private static readonly IntPtr selTypeHandle = Selector.GetHandle("type");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUniqueID = "uniqueID";
-
-	private static readonly IntPtr selUniqueIDHandle = Selector.GetHandle("uniqueID");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUserData = "userData";
-
-	private static readonly IntPtr selUserDataHandle = Selector.GetHandle("userData");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selVendorDefined = "vendorDefined";
-
-	private static readonly IntPtr selVendorDefinedHandle = Selector.GetHandle("vendorDefined");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selVendorID = "vendorID";
-
-	private static readonly IntPtr selVendorIDHandle = Selector.GetHandle("vendorID");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selVendorPointingDeviceType = "vendorPointingDeviceType";
-
-	private static readonly IntPtr selVendorPointingDeviceTypeHandle = Selector.GetHandle("vendorPointingDeviceType");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selWindow = "window";
 
 	private static readonly IntPtr selWindowHandle = Selector.GetHandle("window");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selWindowNumber = "windowNumber";
-
 	private static readonly IntPtr selWindowNumberHandle = Selector.GetHandle("windowNumber");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSEvent");
+	private static readonly IntPtr selContextHandle = Selector.GetHandle("context");
+
+	private static readonly IntPtr selClickCountHandle = Selector.GetHandle("clickCount");
+
+	private static readonly IntPtr selButtonNumberHandle = Selector.GetHandle("buttonNumber");
+
+	private static readonly IntPtr selEventNumberHandle = Selector.GetHandle("eventNumber");
+
+	private static readonly IntPtr selPressureHandle = Selector.GetHandle("pressure");
+
+	private static readonly IntPtr selLocationInWindowHandle = Selector.GetHandle("locationInWindow");
+
+	private static readonly IntPtr selDeltaXHandle = Selector.GetHandle("deltaX");
+
+	private static readonly IntPtr selDeltaYHandle = Selector.GetHandle("deltaY");
+
+	private static readonly IntPtr selDeltaZHandle = Selector.GetHandle("deltaZ");
+
+	private static readonly IntPtr selCharactersHandle = Selector.GetHandle("characters");
+
+	private static readonly IntPtr selCharactersIgnoringModifiersHandle = Selector.GetHandle("charactersIgnoringModifiers");
+
+	private static readonly IntPtr selIsARepeatHandle = Selector.GetHandle("isARepeat");
+
+	private static readonly IntPtr selKeyCodeHandle = Selector.GetHandle("keyCode");
+
+	private static readonly IntPtr selTrackingNumberHandle = Selector.GetHandle("trackingNumber");
+
+	private static readonly IntPtr selUserDataHandle = Selector.GetHandle("userData");
+
+	private static readonly IntPtr selTrackingAreaHandle = Selector.GetHandle("trackingArea");
+
+	private static readonly IntPtr selSubtypeHandle = Selector.GetHandle("subtype");
+
+	private static readonly IntPtr selData1Handle = Selector.GetHandle("data1");
+
+	private static readonly IntPtr selData2Handle = Selector.GetHandle("data2");
+
+	private static readonly IntPtr selCGEventHandle = Selector.GetHandle("CGEvent");
+
+	private static readonly IntPtr selMagnificationHandle = Selector.GetHandle("magnification");
+
+	private static readonly IntPtr selDeviceIDHandle = Selector.GetHandle("deviceID");
+
+	private static readonly IntPtr selRotationHandle = Selector.GetHandle("rotation");
+
+	private static readonly IntPtr selAbsoluteXHandle = Selector.GetHandle("absoluteX");
+
+	private static readonly IntPtr selAbsoluteYHandle = Selector.GetHandle("absoluteY");
+
+	private static readonly IntPtr selAbsoluteZHandle = Selector.GetHandle("absoluteZ");
+
+	private static readonly IntPtr selButtonMaskHandle = Selector.GetHandle("buttonMask");
+
+	private static readonly IntPtr selTiltHandle = Selector.GetHandle("tilt");
+
+	private static readonly IntPtr selTangentialPressureHandle = Selector.GetHandle("tangentialPressure");
+
+	private static readonly IntPtr selVendorDefinedHandle = Selector.GetHandle("vendorDefined");
+
+	private static readonly IntPtr selVendorIDHandle = Selector.GetHandle("vendorID");
+
+	private static readonly IntPtr selTabletIDHandle = Selector.GetHandle("tabletID");
+
+	private static readonly IntPtr selSystemTabletIDHandle = Selector.GetHandle("systemTabletID");
+
+	private static readonly IntPtr selVendorPointingDeviceTypeHandle = Selector.GetHandle("vendorPointingDeviceType");
+
+	private static readonly IntPtr selPointingDeviceSerialNumberHandle = Selector.GetHandle("pointingDeviceSerialNumber");
+
+	private static readonly IntPtr selUniqueIDHandle = Selector.GetHandle("uniqueID");
+
+	private static readonly IntPtr selCapabilityMaskHandle = Selector.GetHandle("capabilityMask");
+
+	private static readonly IntPtr selPointingDeviceTypeHandle = Selector.GetHandle("pointingDeviceType");
+
+	private static readonly IntPtr selIsEnteringProximityHandle = Selector.GetHandle("isEnteringProximity");
+
+	private static readonly IntPtr selMouseLocationHandle = Selector.GetHandle("mouseLocation");
+
+	private static readonly IntPtr selPressedMouseButtonsHandle = Selector.GetHandle("pressedMouseButtons");
+
+	private static readonly IntPtr selDoubleClickIntervalHandle = Selector.GetHandle("doubleClickInterval");
+
+	private static readonly IntPtr selKeyRepeatDelayHandle = Selector.GetHandle("keyRepeatDelay");
+
+	private static readonly IntPtr selKeyRepeatIntervalHandle = Selector.GetHandle("keyRepeatInterval");
+
+	private static readonly IntPtr selIsMouseCoalescingEnabledHandle = Selector.GetHandle("isMouseCoalescingEnabled");
+
+	private static readonly IntPtr selSetMouseCoalescingEnabled_Handle = Selector.GetHandle("setMouseCoalescingEnabled:");
+
+	private static readonly IntPtr selHasPreciseScrollingDeltasHandle = Selector.GetHandle("hasPreciseScrollingDeltas");
+
+	private static readonly IntPtr selScrollingDeltaXHandle = Selector.GetHandle("scrollingDeltaX");
+
+	private static readonly IntPtr selScrollingDeltaYHandle = Selector.GetHandle("scrollingDeltaY");
+
+	private static readonly IntPtr selMomentumPhaseHandle = Selector.GetHandle("momentumPhase");
+
+	private static readonly IntPtr selIsDirectionInvertedFromDeviceHandle = Selector.GetHandle("isDirectionInvertedFromDevice");
+
+	private static readonly IntPtr selPhaseHandle = Selector.GetHandle("phase");
+
+	private static readonly IntPtr selIsSwipeTrackingFromScrollEventsEnabledHandle = Selector.GetHandle("isSwipeTrackingFromScrollEventsEnabled");
+
+	private static readonly IntPtr selEventWithEventRef_Handle = Selector.GetHandle("eventWithEventRef:");
+
+	private static readonly IntPtr selEventWithCGEvent_Handle = Selector.GetHandle("eventWithCGEvent:");
+
+	private static readonly IntPtr selPointingDeviceIDHandle = Selector.GetHandle("pointingDeviceID");
+
+	private static readonly IntPtr selTouchesMatchingPhaseInView_Handle = Selector.GetHandle("touchesMatchingPhase:inView:");
+
+	private static readonly IntPtr selStartPeriodicEventsAfterDelayWithPeriod_Handle = Selector.GetHandle("startPeriodicEventsAfterDelay:withPeriod:");
+
+	private static readonly IntPtr selStopPeriodicEventsHandle = Selector.GetHandle("stopPeriodicEvents");
+
+	private static readonly IntPtr selMouseEventWithTypeLocationModifierFlagsTimestampWindowNumberContextEventNumberClickCountPressure_Handle = Selector.GetHandle("mouseEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:clickCount:pressure:");
+
+	private static readonly IntPtr selKeyEventWithTypeLocationModifierFlagsTimestampWindowNumberContextCharactersCharactersIgnoringModifiersIsARepeatKeyCode_Handle = Selector.GetHandle("keyEventWithType:location:modifierFlags:timestamp:windowNumber:context:characters:charactersIgnoringModifiers:isARepeat:keyCode:");
+
+	private static readonly IntPtr selEnterExitEventWithTypeLocationModifierFlagsTimestampWindowNumberContextEventNumberTrackingNumberUserData_Handle = Selector.GetHandle("enterExitEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:trackingNumber:userData:");
+
+	private static readonly IntPtr selOtherEventWithTypeLocationModifierFlagsTimestampWindowNumberContextSubtypeData1Data2_Handle = Selector.GetHandle("otherEventWithType:location:modifierFlags:timestamp:windowNumber:context:subtype:data1:data2:");
+
+	private static readonly IntPtr selAddGlobalMonitorForEventsMatchingMaskHandler_Handle = Selector.GetHandle("addGlobalMonitorForEventsMatchingMask:handler:");
+
+	private static readonly IntPtr selAddLocalMonitorForEventsMatchingMaskHandler_Handle = Selector.GetHandle("addLocalMonitorForEventsMatchingMask:handler:");
+
+	private static readonly IntPtr selRemoveMonitor_Handle = Selector.GetHandle("removeMonitor:");
+
+	private static readonly IntPtr selTrackSwipeEventWithOptionsDampenAmountThresholdMinMaxUsingHandler_Handle = Selector.GetHandle("trackSwipeEventWithOptions:dampenAmountThresholdMin:max:usingHandler:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSEvent");
+
+	private object __mt_Window_var;
+
+	private object __mt_Context_var;
+
+	private object __mt_TrackingArea_var;
+
+	private object __mt_VendorDefined_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSEventType Type
+	{
+		[Export("type")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return (NSEventType)Messaging.UInt64_objc_msgSend(base.Handle, selTypeHandle);
+			}
+			return (NSEventType)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selTypeHandle);
+		}
+	}
+
+	public virtual NSEventModifierMask ModifierFlags
+	{
+		[Export("modifierFlags")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return (NSEventModifierMask)Messaging.UInt64_objc_msgSend(base.Handle, selModifierFlagsHandle);
+			}
+			return (NSEventModifierMask)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selModifierFlagsHandle);
+		}
+	}
+
+	public virtual double Timestamp
+	{
+		[Export("timestamp")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selTimestampHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selTimestampHandle);
+		}
+	}
+
+	public virtual NSWindow Window
+	{
+		[Export("window")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSWindow)(__mt_Window_var = ((!IsDirectBinding) ? ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selWindowHandle))) : ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selWindowHandle)))));
+		}
+	}
+
+	public virtual long WindowNumber
+	{
+		[Export("windowNumber")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Int64_objc_msgSend(base.Handle, selWindowNumberHandle);
+			}
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selWindowNumberHandle);
+		}
+	}
+
 	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nint AbsoluteX
+	public virtual NSGraphicsContext Context
 	{
-		[Export("absoluteX")]
+		[Export("context")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selAbsoluteXHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selAbsoluteXHandle);
+			return (NSGraphicsContext)(__mt_Context_var = ((!IsDirectBinding) ? ((NSGraphicsContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContextHandle))) : ((NSGraphicsContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selContextHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nint AbsoluteY
+	public virtual long ClickCount
 	{
-		[Export("absoluteY")]
+		[Export("clickCount")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nint_objc_msgSend(base.Handle, selAbsoluteYHandle);
+				return Messaging.Int64_objc_msgSend(base.Handle, selClickCountHandle);
 			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selAbsoluteYHandle);
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selClickCountHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nint AbsoluteZ
-	{
-		[Export("absoluteZ")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selAbsoluteZHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selAbsoluteZHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	public virtual NSSet<NSTouch> AllTouches
-	{
-		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-		[Export("allTouches")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSSet<NSTouch>>(Messaging.IntPtr_objc_msgSend(base.Handle, selAllTouchesHandle));
-			}
-			return Runtime.GetNSObject<NSSet<NSTouch>>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAllTouchesHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, 3, PlatformArchitecture.All, null)]
-	public virtual NSEventMask AssociatedEventsMask
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, 3, PlatformArchitecture.All, null)]
-		[Export("associatedEventsMask")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSEventMask)Messaging.UInt64_objc_msgSend(base.Handle, selAssociatedEventsMaskHandle);
-			}
-			return (NSEventMask)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selAssociatedEventsMaskHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nuint ButtonMask
-	{
-		[Export("buttonMask")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selButtonMaskHandle);
-			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selButtonMaskHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nint ButtonNumber
+	public virtual long ButtonNumber
 	{
 		[Export("buttonNumber")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nint_objc_msgSend(base.Handle, selButtonNumberHandle);
+				return Messaging.Int64_objc_msgSend(base.Handle, selButtonNumberHandle);
 			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selButtonNumberHandle);
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selButtonNumberHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual IntPtr CGEvent
-	{
-		[Export("CGEvent")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.IntPtr_objc_msgSend(base.Handle, selCGEventHandle);
-			}
-			return Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCGEventHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nuint CapabilityMask
+	public virtual long EventNumber
 	{
-		[Export("capabilityMask")]
+		[Export("eventNumber")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selCapabilityMaskHandle);
+				return Messaging.Int64_objc_msgSend(base.Handle, selEventNumberHandle);
 			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selCapabilityMaskHandle);
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selEventNumberHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual double Pressure
+	{
+		[Export("pressure")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selPressureHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selPressureHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual CGPoint LocationInWindow
+	{
+		[Export("locationInWindow")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.CGPoint_objc_msgSend(base.Handle, selLocationInWindowHandle);
+			}
+			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selLocationInWindowHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual double DeltaX
+	{
+		[Export("deltaX")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selDeltaXHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selDeltaXHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual double DeltaY
+	{
+		[Export("deltaY")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selDeltaYHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selDeltaYHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual double DeltaZ
+	{
+		[Export("deltaZ")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selDeltaZHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selDeltaZHandle);
+		}
+	}
+
 	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 	public virtual string Characters
 	{
@@ -1163,7 +946,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCharactersHandle));
 			}
@@ -1171,7 +954,6 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 	public virtual string CharactersIgnoringModifiers
 	{
@@ -1179,7 +961,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCharactersIgnoringModifiersHandle));
 			}
@@ -1187,52 +969,417 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nint ClickCount
+	public virtual bool IsARepeat
 	{
-		[Export("clickCount")]
+		[Export("isARepeat")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nint_objc_msgSend(base.Handle, selClickCountHandle);
+				return Messaging.bool_objc_msgSend(base.Handle, selIsARepeatHandle);
 			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selClickCountHandle);
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsARepeatHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	[Deprecated(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, "This method always returns null. If you need access to the current drawing context, use NSGraphicsContext.CurrentContext inside of a draw operation.")]
-	public virtual NSGraphicsContext Context
+	public virtual ushort KeyCode
 	{
-		[Deprecated(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, "This method always returns null. If you need access to the current drawing context, use NSGraphicsContext.CurrentContext inside of a draw operation.")]
-		[Export("context")]
+		[Export("keyCode")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSGraphicsContext>(Messaging.IntPtr_objc_msgSend(base.Handle, selContextHandle));
+				return Messaging.UInt16_objc_msgSend(base.Handle, selKeyCodeHandle);
 			}
-			return Runtime.GetNSObject<NSGraphicsContext>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContextHandle));
+			return Messaging.UInt16_objc_msgSendSuper(base.SuperHandle, selKeyCodeHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSEventModifierMask CurrentModifierFlags
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual long TrackingNumber
 	{
-		[Export("modifierFlags")]
+		[Export("trackingNumber")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return (NSEventModifierMask)Messaging.UInt64_objc_msgSend(class_ptr, selModifierFlagsHandle);
+			if (IsDirectBinding)
+			{
+				return Messaging.Int64_objc_msgSend(base.Handle, selTrackingNumberHandle);
+			}
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selTrackingNumberHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual IntPtr UserData
+	{
+		[Export("userData")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.IntPtr_objc_msgSend(base.Handle, selUserDataHandle);
+			}
+			return Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUserDataHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual NSTrackingArea TrackingArea
+	{
+		[Export("trackingArea")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSTrackingArea)(__mt_TrackingArea_var = ((!IsDirectBinding) ? ((NSTrackingArea)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTrackingAreaHandle))) : ((NSTrackingArea)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTrackingAreaHandle)))));
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual short Subtype
+	{
+		[Export("subtype")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.short_objc_msgSend(base.Handle, selSubtypeHandle);
+			}
+			return Messaging.short_objc_msgSendSuper(base.SuperHandle, selSubtypeHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual long Data1
+	{
+		[Export("data1")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Int64_objc_msgSend(base.Handle, selData1Handle);
+			}
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selData1Handle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual long Data2
+	{
+		[Export("data2")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Int64_objc_msgSend(base.Handle, selData2Handle);
+			}
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selData2Handle);
+		}
+	}
+
+	public virtual IntPtr CGEvent
+	{
+		[Export("CGEvent")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.IntPtr_objc_msgSend(base.Handle, selCGEventHandle);
+			}
+			return Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCGEventHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual double Magnification
+	{
+		[Export("magnification")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selMagnificationHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selMagnificationHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual ulong DeviceID
+	{
+		[Export("deviceID")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selDeviceIDHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selDeviceIDHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual double Rotation
+	{
+		[Export("rotation")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selRotationHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selRotationHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual long AbsoluteX
+	{
+		[Export("absoluteX")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Int64_objc_msgSend(base.Handle, selAbsoluteXHandle);
+			}
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selAbsoluteXHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual long AbsoluteY
+	{
+		[Export("absoluteY")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Int64_objc_msgSend(base.Handle, selAbsoluteYHandle);
+			}
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selAbsoluteYHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual long AbsoluteZ
+	{
+		[Export("absoluteZ")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Int64_objc_msgSend(base.Handle, selAbsoluteZHandle);
+			}
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selAbsoluteZHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual ulong ButtonMask
+	{
+		[Export("buttonMask")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selButtonMaskHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selButtonMaskHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual CGPoint Tilt
+	{
+		[Export("tilt")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.CGPoint_objc_msgSend(base.Handle, selTiltHandle);
+			}
+			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selTiltHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual double TangentialPressure
+	{
+		[Export("tangentialPressure")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selTangentialPressureHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selTangentialPressureHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual NSObject VendorDefined
+	{
+		[Export("vendorDefined")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSObject)(__mt_VendorDefined_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selVendorDefinedHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selVendorDefinedHandle))));
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual ulong VendorID
+	{
+		[Export("vendorID")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selVendorIDHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selVendorIDHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual ulong TabletID
+	{
+		[Export("tabletID")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selTabletIDHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selTabletIDHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual ulong SystemTabletID
+	{
+		[Export("systemTabletID")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selSystemTabletIDHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selSystemTabletIDHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual ulong VendorPointingDeviceType
+	{
+		[Export("vendorPointingDeviceType")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selVendorPointingDeviceTypeHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selVendorPointingDeviceTypeHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual ulong PointingDeviceSerialNumber
+	{
+		[Export("pointingDeviceSerialNumber")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selPointingDeviceSerialNumberHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selPointingDeviceSerialNumberHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual long UniqueID
+	{
+		[Export("uniqueID")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Int64_objc_msgSend(base.Handle, selUniqueIDHandle);
+			}
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selUniqueIDHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual ulong CapabilityMask
+	{
+		[Export("capabilityMask")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selCapabilityMaskHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selCapabilityMaskHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual NSPointingDeviceType PointingDeviceType
+	{
+		[Export("pointingDeviceType")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return (NSPointingDeviceType)Messaging.UInt64_objc_msgSend(base.Handle, selPointingDeviceTypeHandle);
+			}
+			return (NSPointingDeviceType)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selPointingDeviceTypeHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual bool IsEnteringProximity
+	{
+		[Export("isEnteringProximity")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsEnteringProximityHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsEnteringProximityHandle);
+		}
+	}
+
 	public static CGPoint CurrentMouseLocation
 	{
 		[Export("mouseLocation")]
@@ -1243,114 +1390,26 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static nuint CurrentPressedMouseButtons
+	public static NSEventModifierMask CurrentModifierFlags
+	{
+		[Export("modifierFlags")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSEventModifierMask)Messaging.UInt64_objc_msgSend(class_ptr, selModifierFlagsHandle);
+		}
+	}
+
+	public static ulong CurrentPressedMouseButtons
 	{
 		[Export("pressedMouseButtons")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			return Messaging.nuint_objc_msgSend(class_ptr, selPressedMouseButtonsHandle);
+			return Messaging.UInt64_objc_msgSend(class_ptr, selPressedMouseButtonsHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nint Data1
-	{
-		[Export("data1")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selData1Handle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selData1Handle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nint Data2
-	{
-		[Export("data2")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selData2Handle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selData2Handle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nfloat DeltaX
-	{
-		[Export("deltaX")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selDeltaXHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selDeltaXHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nfloat DeltaY
-	{
-		[Export("deltaY")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selDeltaYHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selDeltaYHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nfloat DeltaZ
-	{
-		[Export("deltaZ")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selDeltaZHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selDeltaZHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nuint DeviceID
-	{
-		[Export("deviceID")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selDeviceIDHandle);
-			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selDeviceIDHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static double DoubleClickInterval
 	{
 		[Export("doubleClickInterval")]
@@ -1361,129 +1420,6 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nint EventNumber
-	{
-		[Export("eventNumber")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selEventNumberHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selEventNumberHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual IntPtr EventRef
-	{
-		[Export("eventRef")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.IntPtr_objc_msgSend(base.Handle, selEventRefHandle);
-			}
-			return Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEventRefHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual bool HasPreciseScrollingDeltas
-	{
-		[Export("hasPreciseScrollingDeltas")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selHasPreciseScrollingDeltasHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selHasPreciseScrollingDeltasHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual bool IsARepeat
-	{
-		[Export("isARepeat")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsARepeatHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsARepeatHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual bool IsDirectionInvertedFromDevice
-	{
-		[Export("isDirectionInvertedFromDevice")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsDirectionInvertedFromDeviceHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsDirectionInvertedFromDeviceHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual bool IsEnteringProximity
-	{
-		[Export("isEnteringProximity")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsEnteringProximityHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsEnteringProximityHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static bool IsSwipeTrackingFromScrollEventsEnabled
-	{
-		[Export("isSwipeTrackingFromScrollEventsEnabled")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			return Messaging.bool_objc_msgSend(class_ptr, selIsSwipeTrackingFromScrollEventsEnabledHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual ushort KeyCode
-	{
-		[Export("keyCode")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.UInt16_objc_msgSend(base.Handle, selKeyCodeHandle);
-			}
-			return Messaging.UInt16_objc_msgSendSuper(base.SuperHandle, selKeyCodeHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static double KeyRepeatDelay
 	{
 		[Export("keyRepeatDelay")]
@@ -1494,7 +1430,6 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static double KeyRepeatInterval
 	{
 		[Export("keyRepeatInterval")]
@@ -1505,70 +1440,6 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual CGPoint LocationInWindow
-	{
-		[Export("locationInWindow")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.CGPoint_objc_msgSend(base.Handle, selLocationInWindowHandle);
-			}
-			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selLocationInWindowHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nfloat Magnification
-	{
-		[Export("magnification")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selMagnificationHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selMagnificationHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSEventModifierMask ModifierFlags
-	{
-		[Export("modifierFlags")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSEventModifierMask)Messaging.UInt64_objc_msgSend(base.Handle, selModifierFlagsHandle);
-			}
-			return (NSEventModifierMask)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selModifierFlagsHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual NSEventPhase MomentumPhase
-	{
-		[Export("momentumPhase")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSEventPhase)Messaging.UInt64_objc_msgSend(base.Handle, selMomentumPhaseHandle);
-			}
-			return (NSEventPhase)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selMomentumPhaseHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static bool MouseCoalescingEnabled
 	{
 		[Export("isMouseCoalescingEnabled")]
@@ -1585,7 +1456,81 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual bool HasPreciseScrollingDeltas
+	{
+		[Export("hasPreciseScrollingDeltas")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selHasPreciseScrollingDeltasHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selHasPreciseScrollingDeltasHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual double ScrollingDeltaX
+	{
+		[Export("scrollingDeltaX")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selScrollingDeltaXHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selScrollingDeltaXHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual double ScrollingDeltaY
+	{
+		[Export("scrollingDeltaY")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selScrollingDeltaYHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selScrollingDeltaYHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual NSEventPhase MomentumPhase
+	{
+		[Export("momentumPhase")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return (NSEventPhase)Messaging.UInt64_objc_msgSend(base.Handle, selMomentumPhaseHandle);
+			}
+			return (NSEventPhase)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selMomentumPhaseHandle);
+		}
+	}
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public virtual bool IsDirectionInvertedFromDevice
+	{
+		[Export("isDirectionInvertedFromDevice")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsDirectionInvertedFromDeviceHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsDirectionInvertedFromDeviceHandle);
+		}
+	}
+
 	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 	public virtual NSEventPhase Phase
 	{
@@ -1593,7 +1538,7 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (NSEventPhase)Messaging.UInt64_objc_msgSend(base.Handle, selPhaseHandle);
 			}
@@ -1601,578 +1546,121 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nuint PointingDeviceSerialNumber
+	public static bool IsSwipeTrackingFromScrollEventsEnabled
 	{
-		[Export("pointingDeviceSerialNumber")]
+		[Export("isSwipeTrackingFromScrollEventsEnabled")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selPointingDeviceSerialNumberHandle);
-			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selPointingDeviceSerialNumberHandle);
+			return Messaging.bool_objc_msgSend(class_ptr, selIsSwipeTrackingFromScrollEventsEnabledHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual NSPointingDeviceType PointingDeviceType
-	{
-		[Export("pointingDeviceType")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSPointingDeviceType)Messaging.UInt64_objc_msgSend(base.Handle, selPointingDeviceTypeHandle);
-			}
-			return (NSPointingDeviceType)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selPointingDeviceTypeHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual float Pressure
-	{
-		[Export("pressure")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.float_objc_msgSend(base.Handle, selPressureHandle);
-			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selPressureHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual float Rotation
-	{
-		[Export("rotation")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.float_objc_msgSend(base.Handle, selRotationHandle);
-			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selRotationHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nfloat ScrollingDeltaX
-	{
-		[Export("scrollingDeltaX")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selScrollingDeltaXHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selScrollingDeltaXHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nfloat ScrollingDeltaY
-	{
-		[Export("scrollingDeltaY")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selScrollingDeltaYHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selScrollingDeltaYHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, 3, PlatformArchitecture.All, null)]
-	public virtual nint Stage
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, 3, PlatformArchitecture.All, null)]
-		[Export("stage")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selStageHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selStageHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, 3, PlatformArchitecture.All, null)]
-	public virtual nfloat StageTransition
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, 3, PlatformArchitecture.All, null)]
-		[Export("stageTransition")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selStageTransitionHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selStageTransitionHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual short Subtype
-	{
-		[Export("subtype")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.short_objc_msgSend(base.Handle, selSubtypeHandle);
-			}
-			return Messaging.short_objc_msgSendSuper(base.SuperHandle, selSubtypeHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nuint SystemTabletID
-	{
-		[Export("systemTabletID")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selSystemTabletIDHandle);
-			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selSystemTabletIDHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nuint TabletID
-	{
-		[Export("tabletID")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selTabletIDHandle);
-			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selTabletIDHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual float TangentialPressure
-	{
-		[Export("tangentialPressure")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.float_objc_msgSend(base.Handle, selTangentialPressureHandle);
-			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selTangentialPressureHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual CGPoint Tilt
-	{
-		[Export("tilt")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.CGPoint_objc_msgSend(base.Handle, selTiltHandle);
-			}
-			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selTiltHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual double Timestamp
-	{
-		[Export("timestamp")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.Double_objc_msgSend(base.Handle, selTimestampHandle);
-			}
-			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selTimestampHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual NSTrackingArea TrackingArea
-	{
-		[Export("trackingArea")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSTrackingArea>(Messaging.IntPtr_objc_msgSend(base.Handle, selTrackingAreaHandle));
-			}
-			return Runtime.GetNSObject<NSTrackingArea>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTrackingAreaHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nint TrackingNumber
-	{
-		[Export("trackingNumber")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selTrackingNumberHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selTrackingNumberHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSEventType Type
-	{
-		[Export("type")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSEventType)Messaging.UInt64_objc_msgSend(base.Handle, selTypeHandle);
-			}
-			return (NSEventType)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selTypeHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual long UniqueID
-	{
-		[Export("uniqueID")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.Int64_objc_msgSend(base.Handle, selUniqueIDHandle);
-			}
-			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selUniqueIDHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual IntPtr UserData
-	{
-		[Export("userData")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.IntPtr_objc_msgSend(base.Handle, selUserDataHandle);
-			}
-			return Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUserDataHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual NSObject VendorDefined
-	{
-		[Export("vendorDefined")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selVendorDefinedHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selVendorDefinedHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nuint VendorID
-	{
-		[Export("vendorID")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selVendorIDHandle);
-			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selVendorIDHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public virtual nuint VendorPointingDeviceType
-	{
-		[Export("vendorPointingDeviceType")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selVendorPointingDeviceTypeHandle);
-			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selVendorPointingDeviceTypeHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSWindow Window
-	{
-		[Export("window")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSend(base.Handle, selWindowHandle));
-			}
-			return Runtime.GetNSObject<NSWindow>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selWindowHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint WindowNumber
-	{
-		[Export("windowNumber")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selWindowNumberHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selWindowNumberHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSEvent()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSEvent(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSEvent(NSObjectFlag t)
+	public NSEvent(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSEvent(IntPtr handle)
+	public NSEvent(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("addGlobalMonitorForEventsMatchingMask:handler:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe static NSObject AddGlobalMonitorForEventsMatchingMask(NSEventMask mask, [BlockProxy(typeof(Trampolines.NIDGlobalEventHandler))] GlobalEventHandler handler)
-	{
-		NSApplication.EnsureUIThread();
-		if (handler == null)
-		{
-			throw new ArgumentNullException("handler");
-		}
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDGlobalEventHandler.Handler, handler);
-		NSObject nSObject = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64_IntPtr(class_ptr, selAddGlobalMonitorForEventsMatchingMask_Handler_Handle, (ulong)mask, (IntPtr)ptr));
-		ptr->CleanupBlock();
-		return nSObject;
-	}
-
-	[Export("addLocalMonitorForEventsMatchingMask:handler:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe static NSObject AddLocalMonitorForEventsMatchingMask(NSEventMask mask, [BlockProxy(typeof(Trampolines.NIDLocalEventHandler))] LocalEventHandler handler)
-	{
-		NSApplication.EnsureUIThread();
-		if (handler == null)
-		{
-			throw new ArgumentNullException("handler");
-		}
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDLocalEventHandler.Handler, handler);
-		NSObject nSObject = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64_IntPtr(class_ptr, selAddLocalMonitorForEventsMatchingMask_Handler_Handle, (ulong)mask, (IntPtr)ptr));
-		ptr->CleanupBlock();
-		return nSObject;
-	}
-
-	[Export("copyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject Copy(NSZone? zone)
-	{
-		NSApplication.EnsureUIThread();
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
-		{
-			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
-		}
-		return nSObject;
-	}
-
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
-	{
-		NSApplication.EnsureUIThread();
-		if (encoder == null)
-		{
-			throw new ArgumentNullException("encoder");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-	}
-
-	[Export("enterExitEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:trackingNumber:userData:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSEvent EnterExitEvent(NSEventType type, CGPoint location, NSEventModifierMask flags, double time, nint wNum, NSGraphicsContext? context, nint eNum, nint tNum, IntPtr data)
-	{
-		NSApplication.EnsureUIThread();
-		return Runtime.GetNSObject<NSEvent>(Messaging.IntPtr_objc_msgSend_UInt64_CGPoint_UInt64_Double_nint_IntPtr_nint_nint_IntPtr(class_ptr, selEnterExitEventWithType_Location_ModifierFlags_Timestamp_WindowNumber_Context_EventNumber_TrackingNumber_UserData_Handle, (ulong)type, location, (ulong)flags, time, wNum, context?.Handle ?? IntPtr.Zero, eNum, tNum, data));
-	}
-
-	[Export("eventWithCGEvent:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSEvent EventWithCGEvent(IntPtr cgEventPtr)
-	{
-		NSApplication.EnsureUIThread();
-		return Runtime.GetNSObject<NSEvent>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selEventWithCGEvent_Handle, cgEventPtr));
-	}
-
 	[Export("eventWithEventRef:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSEvent EventWithEventRef(IntPtr cgEventRef)
 	{
 		NSApplication.EnsureUIThread();
-		return Runtime.GetNSObject<NSEvent>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selEventWithEventRef_Handle, cgEventRef));
+		return (NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selEventWithEventRef_Handle, cgEventRef));
 	}
 
-	[Export("charactersByApplyingModifiers:")]
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string? GetCharacters(NSEventModifierFlags modifiers)
+	[Export("eventWithCGEvent:")]
+	public static NSEvent EventWithCGEvent(IntPtr cgEventPtr)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_UInt64(base.Handle, selCharactersByApplyingModifiers_Handle, (ulong)modifiers));
-		}
-		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_UInt64(base.SuperHandle, selCharactersByApplyingModifiers_Handle, (ulong)modifiers));
+		return (NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selEventWithCGEvent_Handle, cgEventPtr));
 	}
 
-	[Export("coalescedTouchesForTouch:")]
-	[Introduced(PlatformName.MacOSX, 10, 12, 2, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSTouch[] GetCoalescedTouches(NSTouch touch)
+	[Export("pointingDeviceID")]
+	public virtual ulong PointingDeviceID()
 	{
 		NSApplication.EnsureUIThread();
-		if (touch == null)
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("touch");
+			return Messaging.UInt64_objc_msgSend(base.Handle, selPointingDeviceIDHandle);
 		}
-		if (base.IsDirectBinding)
-		{
-			return NSArray.ArrayFromHandle<NSTouch>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCoalescedTouchesForTouch_Handle, touch.Handle));
-		}
-		return NSArray.ArrayFromHandle<NSTouch>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCoalescedTouchesForTouch_Handle, touch.Handle));
+		return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selPointingDeviceIDHandle);
 	}
 
-	[Export("touchesForView:")]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSSet<NSTouch> GetTouches(NSView view)
+	[Export("touchesMatchingPhase:inView:")]
+	public virtual NSSet TouchesMatchingPhase(NSTouchPhase phase, NSView view)
 	{
 		NSApplication.EnsureUIThread();
 		if (view == null)
 		{
 			throw new ArgumentNullException("view");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return Runtime.GetNSObject<NSSet<NSTouch>>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selTouchesForView_Handle, view.Handle));
+			return (NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64_IntPtr(base.Handle, selTouchesMatchingPhaseInView_Handle, (ulong)phase, view.Handle));
 		}
-		return Runtime.GetNSObject<NSSet<NSTouch>>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selTouchesForView_Handle, view.Handle));
+		return (NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_UInt64_IntPtr(base.SuperHandle, selTouchesMatchingPhaseInView_Handle, (ulong)phase, view.Handle));
+	}
+
+	[Export("startPeriodicEventsAfterDelay:withPeriod:")]
+	public static void StartPeriodicEventsAfterDelay(double delay, double period)
+	{
+		NSApplication.EnsureUIThread();
+		Messaging.void_objc_msgSend_Double_Double(class_ptr, selStartPeriodicEventsAfterDelayWithPeriod_Handle, delay, period);
+	}
+
+	[Export("stopPeriodicEvents")]
+	public static void StopPeriodicEvents()
+	{
+		NSApplication.EnsureUIThread();
+		Messaging.void_objc_msgSend(class_ptr, selStopPeriodicEventsHandle);
+	}
+
+	[Export("mouseEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:clickCount:pressure:")]
+	public static NSEvent MouseEvent(NSEventType type, CGPoint location, NSEventModifierMask flags, double time, long wNum, NSGraphicsContext context, long eNum, long cNum, double pressure)
+	{
+		NSApplication.EnsureUIThread();
+		return (NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64_CGPoint_UInt64_Double_Int64_IntPtr_Int64_Int64_Double(class_ptr, selMouseEventWithTypeLocationModifierFlagsTimestampWindowNumberContextEventNumberClickCountPressure_Handle, (ulong)type, location, (ulong)flags, time, wNum, context?.Handle ?? IntPtr.Zero, eNum, cNum, pressure));
 	}
 
 	[Export("keyEventWithType:location:modifierFlags:timestamp:windowNumber:context:characters:charactersIgnoringModifiers:isARepeat:keyCode:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSEvent KeyEvent(NSEventType type, CGPoint location, NSEventModifierMask flags, double time, nint wNum, NSGraphicsContext? context, string keys, string ukeys, bool isARepeat, ushort code)
+	public static NSEvent KeyEvent(NSEventType type, CGPoint location, NSEventModifierMask flags, double time, long wNum, NSGraphicsContext context, string keys, string ukeys, bool isARepeat, ushort code)
 	{
 		NSApplication.EnsureUIThread();
 		if (keys == null)
@@ -2185,42 +1673,59 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 		IntPtr arg = NSString.CreateNative(keys);
 		IntPtr arg2 = NSString.CreateNative(ukeys);
-		NSEvent nSObject = Runtime.GetNSObject<NSEvent>(Messaging.IntPtr_objc_msgSend_UInt64_CGPoint_UInt64_Double_nint_IntPtr_IntPtr_IntPtr_bool_UInt16(class_ptr, selKeyEventWithType_Location_ModifierFlags_Timestamp_WindowNumber_Context_Characters_CharactersIgnoringModifiers_IsARepeat_KeyCode_Handle, (ulong)type, location, (ulong)flags, time, wNum, context?.Handle ?? IntPtr.Zero, arg, arg2, isARepeat, code));
+		NSEvent result = (NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64_CGPoint_UInt64_Double_Int64_IntPtr_IntPtr_IntPtr_bool_UInt16(class_ptr, selKeyEventWithTypeLocationModifierFlagsTimestampWindowNumberContextCharactersCharactersIgnoringModifiersIsARepeatKeyCode_Handle, (ulong)type, location, (ulong)flags, time, wNum, context?.Handle ?? IntPtr.Zero, arg, arg2, isARepeat, code));
 		NSString.ReleaseNative(arg);
 		NSString.ReleaseNative(arg2);
-		return nSObject;
+		return result;
 	}
 
-	[Export("mouseEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:clickCount:pressure:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSEvent MouseEvent(NSEventType type, CGPoint location, NSEventModifierMask flags, double time, nint wNum, NSGraphicsContext? context, nint eNum, nint cNum, float pressure)
+	[Export("enterExitEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:trackingNumber:userData:")]
+	public static NSEvent EnterExitEvent(NSEventType type, CGPoint location, NSEventModifierMask flags, double time, long wNum, NSGraphicsContext context, long eNum, long tNum, IntPtr data)
 	{
 		NSApplication.EnsureUIThread();
-		return Runtime.GetNSObject<NSEvent>(Messaging.IntPtr_objc_msgSend_UInt64_CGPoint_UInt64_Double_nint_IntPtr_nint_nint_float(class_ptr, selMouseEventWithType_Location_ModifierFlags_Timestamp_WindowNumber_Context_EventNumber_ClickCount_Pressure_Handle, (ulong)type, location, (ulong)flags, time, wNum, context?.Handle ?? IntPtr.Zero, eNum, cNum, pressure));
+		return (NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64_CGPoint_UInt64_Double_Int64_IntPtr_Int64_Int64_IntPtr(class_ptr, selEnterExitEventWithTypeLocationModifierFlagsTimestampWindowNumberContextEventNumberTrackingNumberUserData_Handle, (ulong)type, location, (ulong)flags, time, wNum, context?.Handle ?? IntPtr.Zero, eNum, tNum, data));
 	}
 
 	[Export("otherEventWithType:location:modifierFlags:timestamp:windowNumber:context:subtype:data1:data2:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSEvent OtherEvent(NSEventType type, CGPoint location, NSEventModifierMask flags, double time, nint wNum, NSGraphicsContext? context, short subtype, nint d1, nint d2)
+	public static NSEvent OtherEvent(NSEventType type, CGPoint location, NSEventModifierMask flags, double time, long wNum, NSGraphicsContext context, short subtype, long d1, long d2)
 	{
 		NSApplication.EnsureUIThread();
-		return Runtime.GetNSObject<NSEvent>(Messaging.IntPtr_objc_msgSend_UInt64_CGPoint_UInt64_Double_nint_IntPtr_short_nint_nint(class_ptr, selOtherEventWithType_Location_ModifierFlags_Timestamp_WindowNumber_Context_Subtype_Data1_Data2_Handle, (ulong)type, location, (ulong)flags, time, wNum, context?.Handle ?? IntPtr.Zero, subtype, d1, d2));
+		return (NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64_CGPoint_UInt64_Double_Int64_IntPtr_short_Int64_Int64(class_ptr, selOtherEventWithTypeLocationModifierFlagsTimestampWindowNumberContextSubtypeData1Data2_Handle, (ulong)type, location, (ulong)flags, time, wNum, context?.Handle ?? IntPtr.Zero, subtype, d1, d2));
 	}
 
-	[Export("pointingDeviceID")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nuint PointingDeviceID()
+	[Export("addGlobalMonitorForEventsMatchingMask:handler:")]
+	public unsafe static NSObject AddGlobalMonitorForEventsMatchingMask(NSEventMask mask, GlobalEventHandler handler)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (handler == null)
 		{
-			return Messaging.nuint_objc_msgSend(base.Handle, selPointingDeviceIDHandle);
+			throw new ArgumentNullException("handler");
 		}
-		return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selPointingDeviceIDHandle);
+		BlockLiteral blockLiteral = default(BlockLiteral);
+		BlockLiteral* ptr = &blockLiteral;
+		blockLiteral.SetupBlock(Trampolines.SDGlobalEventHandler.Handler, handler);
+		NSObject nSObject = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64_IntPtr(class_ptr, selAddGlobalMonitorForEventsMatchingMaskHandler_Handle, (ulong)mask, (IntPtr)ptr));
+		ptr->CleanupBlock();
+		return nSObject;
+	}
+
+	[Export("addLocalMonitorForEventsMatchingMask:handler:")]
+	public unsafe static NSObject AddLocalMonitorForEventsMatchingMask(NSEventMask mask, LocalEventHandler handler)
+	{
+		NSApplication.EnsureUIThread();
+		if (handler == null)
+		{
+			throw new ArgumentNullException("handler");
+		}
+		BlockLiteral blockLiteral = default(BlockLiteral);
+		BlockLiteral* ptr = &blockLiteral;
+		blockLiteral.SetupBlock(Trampolines.SDLocalEventHandler.Handler, handler);
+		NSObject nSObject = Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64_IntPtr(class_ptr, selAddLocalMonitorForEventsMatchingMaskHandler_Handle, (ulong)mask, (IntPtr)ptr));
+		ptr->CleanupBlock();
+		return nSObject;
 	}
 
 	[Export("removeMonitor:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static void RemoveMonitor(NSObject eventMonitor)
 	{
 		NSApplication.EnsureUIThread();
@@ -2231,41 +1736,8 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		Messaging.void_objc_msgSend_IntPtr(class_ptr, selRemoveMonitor_Handle, eventMonitor.Handle);
 	}
 
-	[Export("startPeriodicEventsAfterDelay:withPeriod:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static void StartPeriodicEventsAfterDelay(double delay, double period)
-	{
-		NSApplication.EnsureUIThread();
-		Messaging.void_objc_msgSend_Double_Double(class_ptr, selStartPeriodicEventsAfterDelay_WithPeriod_Handle, delay, period);
-	}
-
-	[Export("stopPeriodicEvents")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static void StopPeriodicEvents()
-	{
-		NSApplication.EnsureUIThread();
-		Messaging.void_objc_msgSend(class_ptr, selStopPeriodicEventsHandle);
-	}
-
-	[Export("touchesMatchingPhase:inView:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSSet TouchesMatchingPhase(NSTouchPhase phase, NSView view)
-	{
-		NSApplication.EnsureUIThread();
-		if (view == null)
-		{
-			throw new ArgumentNullException("view");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSSet>(Messaging.IntPtr_objc_msgSend_UInt64_IntPtr(base.Handle, selTouchesMatchingPhase_InView_Handle, (ulong)phase, view.Handle));
-		}
-		return Runtime.GetNSObject<NSSet>(Messaging.IntPtr_objc_msgSendSuper_UInt64_IntPtr(base.SuperHandle, selTouchesMatchingPhase_InView_Handle, (ulong)phase, view.Handle));
-	}
-
 	[Export("trackSwipeEventWithOptions:dampenAmountThresholdMin:max:usingHandler:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe virtual void TrackSwipeEvent(NSEventSwipeTrackingOptions options, nfloat minDampenThreshold, nfloat maxDampenThreshold, [BlockProxy(typeof(Trampolines.NIDNSEventTrackHandler))] NSEventTrackHandler trackingHandler)
+	public unsafe virtual void TrackSwipeEvent(NSEventSwipeTrackingOptions options, double minDampenThreshold, double maxDampenThreshold, NSEventTrackHandler trackingHandler)
 	{
 		NSApplication.EnsureUIThread();
 		if (trackingHandler == null)
@@ -2274,15 +1746,27 @@ public class NSEvent : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 		BlockLiteral blockLiteral = default(BlockLiteral);
 		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDNSEventTrackHandler.Handler, trackingHandler);
-		if (base.IsDirectBinding)
+		blockLiteral.SetupBlock(Trampolines.SDNSEventTrackHandler.Handler, trackingHandler);
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_UInt64_nfloat_nfloat_IntPtr(base.Handle, selTrackSwipeEventWithOptions_DampenAmountThresholdMin_Max_UsingHandler_Handle, (ulong)options, minDampenThreshold, maxDampenThreshold, (IntPtr)ptr);
+			Messaging.void_objc_msgSend_UInt64_Double_Double_IntPtr(base.Handle, selTrackSwipeEventWithOptionsDampenAmountThresholdMinMaxUsingHandler_Handle, (ulong)options, minDampenThreshold, maxDampenThreshold, (IntPtr)ptr);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_UInt64_nfloat_nfloat_IntPtr(base.SuperHandle, selTrackSwipeEventWithOptions_DampenAmountThresholdMin_Max_UsingHandler_Handle, (ulong)options, minDampenThreshold, maxDampenThreshold, (IntPtr)ptr);
+			Messaging.void_objc_msgSendSuper_UInt64_Double_Double_IntPtr(base.SuperHandle, selTrackSwipeEventWithOptionsDampenAmountThresholdMinMaxUsingHandler_Handle, (ulong)options, minDampenThreshold, maxDampenThreshold, (IntPtr)ptr);
 		}
 		ptr->CleanupBlock();
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_Window_var = null;
+			__mt_Context_var = null;
+			__mt_TrackingArea_var = null;
+			__mt_VendorDefined_var = null;
+		}
 	}
 }

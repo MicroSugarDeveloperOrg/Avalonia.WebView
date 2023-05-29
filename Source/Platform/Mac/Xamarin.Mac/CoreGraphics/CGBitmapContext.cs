@@ -1,37 +1,28 @@
+using System;
 using System.Runtime.InteropServices;
 using Foundation;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreGraphics;
 
 public class CGBitmapContext : CGContext
 {
-	private GCHandle buffer;
-
 	public IntPtr Data => CGBitmapContextGetData(base.Handle);
 
-	public nint Width => CGBitmapContextGetWidth(base.Handle);
+	public int Width => (int)(uint)CGBitmapContextGetWidth(base.Handle);
 
-	public nint Height => CGBitmapContextGetHeight(base.Handle);
+	public int Height => (int)(uint)CGBitmapContextGetHeight(base.Handle);
 
-	public nint BitsPerComponent => CGBitmapContextGetBitsPerComponent(base.Handle);
+	public int BitsPerComponent => (int)(uint)CGBitmapContextGetBitsPerComponent(base.Handle);
 
-	public nint BitsPerPixel => CGBitmapContextGetBitsPerPixel(base.Handle);
+	public int BitsPerPixel => (int)(uint)CGBitmapContextGetBitsPerPixel(base.Handle);
 
-	public nint BytesPerRow => CGBitmapContextGetBytesPerRow(base.Handle);
+	public int BytesPerRow => (int)(uint)CGBitmapContextGetBytesPerRow(base.Handle);
 
-	public CGColorSpace ColorSpace
-	{
-		get
-		{
-			IntPtr intPtr = CGBitmapContextGetColorSpace(base.Handle);
-			return (intPtr == IntPtr.Zero) ? null : new CGColorSpace(intPtr, owns: false);
-		}
-	}
+	public CGColorSpace ColorSpace => new CGColorSpace(CGBitmapContextGetColorSpace(base.Handle), owns: true);
 
 	public CGImageAlphaInfo AlphaInfo => CGBitmapContextGetAlphaInfo(base.Handle);
 
-	public CGBitmapFlags BitmapInfo => (CGBitmapFlags)CGBitmapContextGetBitmapInfo(base.Handle);
+	public uint BitmapInfo => CGBitmapContextGetBitmapInfo(base.Handle);
 
 	[Preserve(Conditional = true)]
 	internal CGBitmapContext(IntPtr handle, bool owns)
@@ -40,86 +31,63 @@ public class CGBitmapContext : CGContext
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGBitmapContextCreate(IntPtr data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, IntPtr colorSpace, uint bitmapInfo);
+	private static extern IntPtr CGBitmapContextCreate(IntPtr data, UIntPtr width, UIntPtr height, UIntPtr bitsPerComponent, UIntPtr bytesPerRow, IntPtr colorSpace, uint bitmapInfo);
 
-	private static IntPtr GetHandle(CGColorSpace colorSpace)
-	{
-		return colorSpace?.Handle ?? IntPtr.Zero;
-	}
-
-	public CGBitmapContext(IntPtr data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace colorSpace, CGImageAlphaInfo bitmapInfo)
-		: base(CGBitmapContextCreate(data, width, height, bitsPerComponent, bytesPerRow, GetHandle(colorSpace), (uint)bitmapInfo), owns: true)
+	public CGBitmapContext(IntPtr data, int width, int height, int bitsPerComponent, int bytesPerRow, CGColorSpace colorSpace, CGImageAlphaInfo bitmapInfo)
+		: base(CGBitmapContextCreate(data, (UIntPtr)(ulong)width, (UIntPtr)(ulong)height, (UIntPtr)(ulong)bitsPerComponent, (UIntPtr)(ulong)bytesPerRow, colorSpace.handle, (uint)bitmapInfo), owns: true)
 	{
 	}
 
-	public CGBitmapContext(IntPtr data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace colorSpace, CGBitmapFlags bitmapInfo)
-		: base(CGBitmapContextCreate(data, width, height, bitsPerComponent, bytesPerRow, GetHandle(colorSpace), (uint)bitmapInfo), owns: true)
+	public CGBitmapContext(IntPtr data, int width, int height, int bitsPerComponent, int bytesPerRow, CGColorSpace colorSpace, CGBitmapFlags bitmapInfo)
+		: base(CGBitmapContextCreate(data, (UIntPtr)(ulong)width, (UIntPtr)(ulong)height, (UIntPtr)(ulong)bitsPerComponent, (UIntPtr)(ulong)bytesPerRow, colorSpace.handle, (uint)bitmapInfo), owns: true)
 	{
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGBitmapContextCreate(byte[] data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, IntPtr colorSpace, uint bitmapInfo);
+	private static extern IntPtr CGBitmapContextCreate(byte[] data, UIntPtr width, UIntPtr height, UIntPtr bitsPerComponent, UIntPtr bytesPerRow, IntPtr colorSpace, uint bitmapInfo);
 
-	public CGBitmapContext(byte[] data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace colorSpace, CGImageAlphaInfo bitmapInfo)
+	public CGBitmapContext(byte[] data, int width, int height, int bitsPerComponent, int bytesPerRow, CGColorSpace colorSpace, CGImageAlphaInfo bitmapInfo)
+		: base(CGBitmapContextCreate(data, (UIntPtr)(ulong)width, (UIntPtr)(ulong)height, (UIntPtr)(ulong)bitsPerComponent, (UIntPtr)(ulong)bytesPerRow, colorSpace.handle, (uint)bitmapInfo), owns: true)
 	{
-		if (data != null)
-		{
-			buffer = GCHandle.Alloc(data, GCHandleType.Pinned);
-		}
-		base.Handle = CGBitmapContextCreate(data, width, height, bitsPerComponent, bytesPerRow, GetHandle(colorSpace), (uint)bitmapInfo);
 	}
 
-	public CGBitmapContext(byte[] data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace colorSpace, CGBitmapFlags bitmapInfo)
+	public CGBitmapContext(byte[] data, int width, int height, int bitsPerComponent, int bytesPerRow, CGColorSpace colorSpace, CGBitmapFlags bitmapInfo)
+		: base(CGBitmapContextCreate(data, (UIntPtr)(ulong)width, (UIntPtr)(ulong)height, (UIntPtr)(ulong)bitsPerComponent, (UIntPtr)(ulong)bytesPerRow, colorSpace.handle, (uint)bitmapInfo), owns: true)
 	{
-		if (data != null)
-		{
-			buffer = GCHandle.Alloc(data, GCHandleType.Pinned);
-		}
-		base.Handle = CGBitmapContextCreate(data, width, height, bitsPerComponent, bytesPerRow, GetHandle(colorSpace), (uint)bitmapInfo);
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		if (buffer.IsAllocated)
-		{
-			buffer.Free();
-		}
-		base.Dispose(disposing);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGBitmapContextGetData(IntPtr context);
+	private static extern IntPtr CGBitmapContextGetData(IntPtr cgContextRef);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern nint CGBitmapContextGetWidth(IntPtr context);
+	private static extern UIntPtr CGBitmapContextGetWidth(IntPtr cgContextRef);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern nint CGBitmapContextGetHeight(IntPtr context);
+	private static extern UIntPtr CGBitmapContextGetHeight(IntPtr cgContextRef);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern nint CGBitmapContextGetBitsPerComponent(IntPtr context);
+	private static extern UIntPtr CGBitmapContextGetBitsPerComponent(IntPtr cgContextRef);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern nint CGBitmapContextGetBitsPerPixel(IntPtr context);
+	private static extern UIntPtr CGBitmapContextGetBitsPerPixel(IntPtr cgContextRef);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern nint CGBitmapContextGetBytesPerRow(IntPtr context);
+	private static extern UIntPtr CGBitmapContextGetBytesPerRow(IntPtr cgContextRef);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGBitmapContextGetColorSpace(IntPtr context);
+	private static extern IntPtr CGBitmapContextGetColorSpace(IntPtr cgContextRef);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern CGImageAlphaInfo CGBitmapContextGetAlphaInfo(IntPtr context);
+	private static extern CGImageAlphaInfo CGBitmapContextGetAlphaInfo(IntPtr cgContextRef);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern uint CGBitmapContextGetBitmapInfo(IntPtr context);
+	private static extern uint CGBitmapContextGetBitmapInfo(IntPtr cgContextRef);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGBitmapContextCreateImage(IntPtr context);
+	private static extern IntPtr CGBitmapContextCreateImage(IntPtr c);
 
 	public CGImage ToImage()
 	{
-		IntPtr intPtr = CGBitmapContextCreateImage(base.Handle);
-		return (intPtr == IntPtr.Zero) ? null : new CGImage(intPtr, owns: true);
+		return new CGImage(CGBitmapContextCreateImage(base.Handle), owns: true);
 	}
 }

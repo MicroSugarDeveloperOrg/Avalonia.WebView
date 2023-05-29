@@ -1,195 +1,64 @@
+using System;
 using System.ComponentModel;
-using FileProvider;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 
 [Register("NSError", true)]
-public class NSError : NSObject, INSCoding, INativeObject, IDisposable, INSCopying, INSSecureCoding
+public class NSError : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCode = "code";
+	private static readonly IntPtr selDomainHandle = Selector.GetHandle("domain");
 
 	private static readonly IntPtr selCodeHandle = Selector.GetHandle("code");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCopyWithZone_ = "copyWithZone:";
-
-	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDomain = "domain";
-
-	private static readonly IntPtr selDomainHandle = Selector.GetHandle("domain");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selErrorWithDomain_Code_UserInfo_ = "errorWithDomain:code:userInfo:";
-
-	private static readonly IntPtr selErrorWithDomain_Code_UserInfo_Handle = Selector.GetHandle("errorWithDomain:code:userInfo:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFileProviderErrorForCollisionWithItem_ = "fileProviderErrorForCollisionWithItem:";
-
-	private static readonly IntPtr selFileProviderErrorForCollisionWithItem_Handle = Selector.GetHandle("fileProviderErrorForCollisionWithItem:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFileProviderErrorForNonExistentItemWithIdentifier_ = "fileProviderErrorForNonExistentItemWithIdentifier:";
-
-	private static readonly IntPtr selFileProviderErrorForNonExistentItemWithIdentifier_Handle = Selector.GetHandle("fileProviderErrorForNonExistentItemWithIdentifier:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFileProviderErrorForOutOfDateItem_ = "fileProviderErrorForOutOfDateItem:";
-
-	private static readonly IntPtr selFileProviderErrorForOutOfDateItem_Handle = Selector.GetHandle("fileProviderErrorForOutOfDateItem:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHelpAnchor = "helpAnchor";
-
-	private static readonly IntPtr selHelpAnchorHandle = Selector.GetHandle("helpAnchor");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
-
-	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithDomain_Code_UserInfo_ = "initWithDomain:code:userInfo:";
-
-	private static readonly IntPtr selInitWithDomain_Code_UserInfo_Handle = Selector.GetHandle("initWithDomain:code:userInfo:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLocalizedDescription = "localizedDescription";
+	private static readonly IntPtr selUserInfoHandle = Selector.GetHandle("userInfo");
 
 	private static readonly IntPtr selLocalizedDescriptionHandle = Selector.GetHandle("localizedDescription");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLocalizedFailureReason = "localizedFailureReason";
+	private static readonly IntPtr selErrorWithDomainCodeUserInfo_Handle = Selector.GetHandle("errorWithDomain:code:userInfo:");
 
-	private static readonly IntPtr selLocalizedFailureReasonHandle = Selector.GetHandle("localizedFailureReason");
+	private static readonly IntPtr selInitWithDomainCodeUserInfo_Handle = Selector.GetHandle("initWithDomain:code:userInfo:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLocalizedRecoveryOptions = "localizedRecoveryOptions";
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSError");
 
-	private static readonly IntPtr selLocalizedRecoveryOptionsHandle = Selector.GetHandle("localizedRecoveryOptions");
+	private object __mt_UserInfo_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLocalizedRecoverySuggestion = "localizedRecoverySuggestion";
+	private static NSString _CocoaErrorDomain;
 
-	private static readonly IntPtr selLocalizedRecoverySuggestionHandle = Selector.GetHandle("localizedRecoverySuggestion");
+	private static NSString _PosixErrorDomain;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetUserInfoValueProviderForDomain_Provider_ = "setUserInfoValueProviderForDomain:provider:";
+	private static NSString _OsStatusErrorDomain;
 
-	private static readonly IntPtr selSetUserInfoValueProviderForDomain_Provider_Handle = Selector.GetHandle("setUserInfoValueProviderForDomain:provider:");
+	private static NSString _MachErrorDomain;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUserInfo = "userInfo";
+	private static NSString _UnderlyingErrorKey;
 
-	private static readonly IntPtr selUserInfoHandle = Selector.GetHandle("userInfo");
+	private static NSString _LocalizedDescriptionKey;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUserInfoValueProviderForDomain_ = "userInfoValueProviderForDomain:";
+	private static NSString _LocalizedFailureReasonErrorKey;
 
-	private static readonly IntPtr selUserInfoValueProviderForDomain_Handle = Selector.GetHandle("userInfoValueProviderForDomain:");
+	private static NSString _LocalizedRecoverySuggestionErrorKey;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSError");
+	private static NSString _LocalizedRecoveryOptionsErrorKey;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _CFNetworkErrorDomain;
+	private static NSString _RecoveryAttempterErrorKey;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _CocoaErrorDomain;
+	private static NSString _HelpAnchorErrorKey;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _CoreLocationErrorDomain;
+	private static NSString _StringEncodingErrorKey;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _DebugDescriptionErrorKey;
+	private static NSString _UrlErrorKey;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _FilePathErrorKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _HelpAnchorErrorKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _LocalizedDescriptionKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _LocalizedFailureErrorKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _LocalizedFailureReasonErrorKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _LocalizedRecoveryOptionsErrorKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _LocalizedRecoverySuggestionErrorKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _MachErrorDomain;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _NSNetServicesErrorDomain;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _NSStreamSOCKSErrorDomain;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _NSStreamSocketSSLErrorDomain;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _NSUrlErrorDomain;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _OsStatusErrorDomain;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _PosixErrorDomain;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _RecoveryAttempterErrorKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _StringEncodingErrorKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _UnderlyingErrorKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _UrlErrorKey;
+	private static NSString _FilePathErrorKey;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint Code
-	{
-		[Export("code")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selCodeHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selCodeHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string Domain
 	{
 		[Export("domain")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDomainHandle));
 			}
@@ -197,100 +66,38 @@ public class NSError : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string HelpAnchor
+	public virtual long Code
 	{
-		[Export("helpAnchor")]
+		[Export("code")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selHelpAnchorHandle));
+				return Messaging.Int64_objc_msgSend(base.Handle, selCodeHandle);
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selHelpAnchorHandle));
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selCodeHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string LocalizedDescription
-	{
-		[Export("localizedDescription")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedDescriptionHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizedDescriptionHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string LocalizedFailureReason
-	{
-		[Export("localizedFailureReason")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedFailureReasonHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizedFailureReasonHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string[] LocalizedRecoveryOptions
-	{
-		[Export("localizedRecoveryOptions")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedRecoveryOptionsHandle));
-			}
-			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizedRecoveryOptionsHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string LocalizedRecoverySuggestion
-	{
-		[Export("localizedRecoverySuggestion")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedRecoverySuggestionHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizedRecoverySuggestionHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDictionary UserInfo
 	{
 		[Export("userInfo")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selUserInfoHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUserInfoHandle));
+			return (NSDictionary)(__mt_UserInfo_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUserInfoHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selUserInfoHandle)))));
 		}
 	}
 
-	[Field("kCFErrorDomainCFNetwork", "CFNetwork")]
-	public static NSString CFNetworkErrorDomain
+	public virtual string LocalizedDescription
 	{
+		[Export("localizedDescription")]
 		get
 		{
-			if (_CFNetworkErrorDomain == null)
+			if (IsDirectBinding)
 			{
-				_CFNetworkErrorDomain = Dlfcn.GetStringConstant(Libraries.CFNetwork.Handle, "kCFErrorDomainCFNetwork");
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selLocalizedDescriptionHandle));
 			}
-			return _CFNetworkErrorDomain;
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLocalizedDescriptionHandle));
 		}
 	}
 
@@ -307,197 +114,16 @@ public class NSError : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 	}
 
-	[Field("kCLErrorDomain", "CoreLocation")]
-	public static NSString CoreLocationErrorDomain
+	[Field("NSPOSIXErrorDomain", "Foundation")]
+	public static NSString PosixErrorDomain
 	{
 		get
 		{
-			if (_CoreLocationErrorDomain == null)
+			if (_PosixErrorDomain == null)
 			{
-				_CoreLocationErrorDomain = Dlfcn.GetStringConstant(Libraries.CoreLocation.Handle, "kCLErrorDomain");
+				_PosixErrorDomain = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSPOSIXErrorDomain");
 			}
-			return _CoreLocationErrorDomain;
-		}
-	}
-
-	[Field("NSDebugDescriptionErrorKey", "Foundation")]
-	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	public static NSString DebugDescriptionErrorKey
-	{
-		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-		get
-		{
-			if (_DebugDescriptionErrorKey == null)
-			{
-				_DebugDescriptionErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSDebugDescriptionErrorKey");
-			}
-			return _DebugDescriptionErrorKey;
-		}
-	}
-
-	[Field("NSFilePathErrorKey", "Foundation")]
-	public static NSString FilePathErrorKey
-	{
-		get
-		{
-			if (_FilePathErrorKey == null)
-			{
-				_FilePathErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSFilePathErrorKey");
-			}
-			return _FilePathErrorKey;
-		}
-	}
-
-	[Field("NSHelpAnchorErrorKey", "Foundation")]
-	public static NSString HelpAnchorErrorKey
-	{
-		get
-		{
-			if (_HelpAnchorErrorKey == null)
-			{
-				_HelpAnchorErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSHelpAnchorErrorKey");
-			}
-			return _HelpAnchorErrorKey;
-		}
-	}
-
-	[Field("NSLocalizedDescriptionKey", "Foundation")]
-	public static NSString LocalizedDescriptionKey
-	{
-		get
-		{
-			if (_LocalizedDescriptionKey == null)
-			{
-				_LocalizedDescriptionKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSLocalizedDescriptionKey");
-			}
-			return _LocalizedDescriptionKey;
-		}
-	}
-
-	[Field("NSLocalizedFailureErrorKey", "Foundation")]
-	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.WatchOS, 4, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
-	public static NSString LocalizedFailureErrorKey
-	{
-		[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.WatchOS, 4, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.TvOS, 11, 0, PlatformArchitecture.All, null)]
-		get
-		{
-			if (_LocalizedFailureErrorKey == null)
-			{
-				_LocalizedFailureErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSLocalizedFailureErrorKey");
-			}
-			return _LocalizedFailureErrorKey;
-		}
-	}
-
-	[Field("NSLocalizedFailureReasonErrorKey", "Foundation")]
-	public static NSString LocalizedFailureReasonErrorKey
-	{
-		get
-		{
-			if (_LocalizedFailureReasonErrorKey == null)
-			{
-				_LocalizedFailureReasonErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSLocalizedFailureReasonErrorKey");
-			}
-			return _LocalizedFailureReasonErrorKey;
-		}
-	}
-
-	[Field("NSLocalizedRecoveryOptionsErrorKey", "Foundation")]
-	public static NSString LocalizedRecoveryOptionsErrorKey
-	{
-		get
-		{
-			if (_LocalizedRecoveryOptionsErrorKey == null)
-			{
-				_LocalizedRecoveryOptionsErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSLocalizedRecoveryOptionsErrorKey");
-			}
-			return _LocalizedRecoveryOptionsErrorKey;
-		}
-	}
-
-	[Field("NSLocalizedRecoverySuggestionErrorKey", "Foundation")]
-	public static NSString LocalizedRecoverySuggestionErrorKey
-	{
-		get
-		{
-			if (_LocalizedRecoverySuggestionErrorKey == null)
-			{
-				_LocalizedRecoverySuggestionErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSLocalizedRecoverySuggestionErrorKey");
-			}
-			return _LocalizedRecoverySuggestionErrorKey;
-		}
-	}
-
-	[Field("NSMachErrorDomain", "Foundation")]
-	public static NSString MachErrorDomain
-	{
-		get
-		{
-			if (_MachErrorDomain == null)
-			{
-				_MachErrorDomain = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSMachErrorDomain");
-			}
-			return _MachErrorDomain;
-		}
-	}
-
-	[Field("NSNetServicesErrorDomain", "Foundation")]
-	public static NSString NSNetServicesErrorDomain
-	{
-		get
-		{
-			if (_NSNetServicesErrorDomain == null)
-			{
-				_NSNetServicesErrorDomain = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSNetServicesErrorDomain");
-			}
-			return _NSNetServicesErrorDomain;
-		}
-	}
-
-	[Field("NSStreamSOCKSErrorDomain", "Foundation")]
-	public static NSString NSStreamSOCKSErrorDomain
-	{
-		get
-		{
-			if (_NSStreamSOCKSErrorDomain == null)
-			{
-				_NSStreamSOCKSErrorDomain = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSStreamSOCKSErrorDomain");
-			}
-			return _NSStreamSOCKSErrorDomain;
-		}
-	}
-
-	[Field("NSStreamSocketSSLErrorDomain", "Foundation")]
-	public static NSString NSStreamSocketSSLErrorDomain
-	{
-		get
-		{
-			if (_NSStreamSocketSSLErrorDomain == null)
-			{
-				_NSStreamSocketSSLErrorDomain = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSStreamSocketSSLErrorDomain");
-			}
-			return _NSStreamSocketSSLErrorDomain;
-		}
-	}
-
-	[Field("NSURLErrorDomain", "Foundation")]
-	public static NSString NSUrlErrorDomain
-	{
-		get
-		{
-			if (_NSUrlErrorDomain == null)
-			{
-				_NSUrlErrorDomain = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSURLErrorDomain");
-			}
-			return _NSUrlErrorDomain;
+			return _PosixErrorDomain;
 		}
 	}
 
@@ -514,42 +140,16 @@ public class NSError : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 	}
 
-	[Field("NSPOSIXErrorDomain", "Foundation")]
-	public static NSString PosixErrorDomain
+	[Field("NSMachErrorDomain", "Foundation")]
+	public static NSString MachErrorDomain
 	{
 		get
 		{
-			if (_PosixErrorDomain == null)
+			if (_MachErrorDomain == null)
 			{
-				_PosixErrorDomain = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSPOSIXErrorDomain");
+				_MachErrorDomain = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSMachErrorDomain");
 			}
-			return _PosixErrorDomain;
-		}
-	}
-
-	[Field("NSRecoveryAttempterErrorKey", "Foundation")]
-	public static NSString RecoveryAttempterErrorKey
-	{
-		get
-		{
-			if (_RecoveryAttempterErrorKey == null)
-			{
-				_RecoveryAttempterErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSRecoveryAttempterErrorKey");
-			}
-			return _RecoveryAttempterErrorKey;
-		}
-	}
-
-	[Field("NSStringEncodingErrorKey", "Foundation")]
-	public static NSString StringEncodingErrorKey
-	{
-		get
-		{
-			if (_StringEncodingErrorKey == null)
-			{
-				_StringEncodingErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSStringEncodingErrorKey");
-			}
-			return _StringEncodingErrorKey;
+			return _MachErrorDomain;
 		}
 	}
 
@@ -566,6 +166,97 @@ public class NSError : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 	}
 
+	[Field("NSLocalizedDescriptionKey", "Foundation")]
+	public static NSString LocalizedDescriptionKey
+	{
+		get
+		{
+			if (_LocalizedDescriptionKey == null)
+			{
+				_LocalizedDescriptionKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSLocalizedDescriptionKey");
+			}
+			return _LocalizedDescriptionKey;
+		}
+	}
+
+	[Field("NSLocalizedFailureReasonErrorKey", "Foundation")]
+	public static NSString LocalizedFailureReasonErrorKey
+	{
+		get
+		{
+			if (_LocalizedFailureReasonErrorKey == null)
+			{
+				_LocalizedFailureReasonErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSLocalizedFailureReasonErrorKey");
+			}
+			return _LocalizedFailureReasonErrorKey;
+		}
+	}
+
+	[Field("NSLocalizedRecoverySuggestionErrorKey", "Foundation")]
+	public static NSString LocalizedRecoverySuggestionErrorKey
+	{
+		get
+		{
+			if (_LocalizedRecoverySuggestionErrorKey == null)
+			{
+				_LocalizedRecoverySuggestionErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSLocalizedRecoverySuggestionErrorKey");
+			}
+			return _LocalizedRecoverySuggestionErrorKey;
+		}
+	}
+
+	[Field("NSLocalizedRecoveryOptionsErrorKey", "Foundation")]
+	public static NSString LocalizedRecoveryOptionsErrorKey
+	{
+		get
+		{
+			if (_LocalizedRecoveryOptionsErrorKey == null)
+			{
+				_LocalizedRecoveryOptionsErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSLocalizedRecoveryOptionsErrorKey");
+			}
+			return _LocalizedRecoveryOptionsErrorKey;
+		}
+	}
+
+	[Field("NSRecoveryAttempterErrorKey", "Foundation")]
+	public static NSString RecoveryAttempterErrorKey
+	{
+		get
+		{
+			if (_RecoveryAttempterErrorKey == null)
+			{
+				_RecoveryAttempterErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSRecoveryAttempterErrorKey");
+			}
+			return _RecoveryAttempterErrorKey;
+		}
+	}
+
+	[Field("NSHelpAnchorErrorKey", "Foundation")]
+	public static NSString HelpAnchorErrorKey
+	{
+		get
+		{
+			if (_HelpAnchorErrorKey == null)
+			{
+				_HelpAnchorErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSHelpAnchorErrorKey");
+			}
+			return _HelpAnchorErrorKey;
+		}
+	}
+
+	[Field("NSStringEncodingErrorKey", "Foundation")]
+	public static NSString StringEncodingErrorKey
+	{
+		get
+		{
+			if (_StringEncodingErrorKey == null)
+			{
+				_StringEncodingErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSStringEncodingErrorKey");
+			}
+			return _StringEncodingErrorKey;
+		}
+	}
+
 	[Field("NSURLErrorKey", "Foundation")]
 	public static NSString UrlErrorKey
 	{
@@ -579,18 +270,31 @@ public class NSError : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		}
 	}
 
+	[Field("NSFilePathErrorKey", "Foundation")]
+	public static NSString FilePathErrorKey
+	{
+		get
+		{
+			if (_FilePathErrorKey == null)
+			{
+				_FilePathErrorKey = Dlfcn.GetStringConstant(Libraries.Foundation.Handle, "NSFilePathErrorKey");
+			}
+			return _FilePathErrorKey;
+		}
+	}
+
 	[Advice("Always specify a domain and error code when creating an NSError instance")]
 	public NSError()
-		: this(new NSString("Invalid .ctor used"), 0, null)
+		: this(new NSString("Invalid .ctor used"), 0L, null)
 	{
 	}
 
-	public static NSError FromDomain(NSString domain, nint code)
+	public static NSError FromDomain(NSString domain, int code)
 	{
 		return FromDomain(domain, code, null);
 	}
 
-	public NSError(NSString domain, nint code)
+	public NSError(NSString domain, int code)
 		: this(domain, code, null)
 	{
 	}
@@ -600,185 +304,67 @@ public class NSError : NSObject, INSCoding, INativeObject, IDisposable, INSCopyi
 		return LocalizedDescription;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSError(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSError(NSObjectFlag t)
+	public NSError(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSError(IntPtr handle)
+	public NSError(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("errorWithDomain:code:userInfo:")]
+	public static NSError FromDomain(NSString domain, long code, NSDictionary userInfo)
+	{
+		if (domain == null)
+		{
+			throw new ArgumentNullException("domain");
+		}
+		return (NSError)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_Int64_IntPtr(class_ptr, selErrorWithDomainCodeUserInfo_Handle, domain.Handle, code, userInfo?.Handle ?? IntPtr.Zero));
+	}
+
 	[Export("initWithDomain:code:userInfo:")]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public NSError(NSString domain, nint code, NSDictionary? userInfo)
+	public NSError(NSString domain, long code, NSDictionary userInfo)
 		: base(NSObjectFlag.Empty)
 	{
 		if (domain == null)
 		{
 			throw new ArgumentNullException("domain");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_nint_IntPtr(base.Handle, selInitWithDomain_Code_UserInfo_Handle, domain.Handle, code, userInfo?.Handle ?? IntPtr.Zero), "initWithDomain:code:userInfo:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_Int64_IntPtr(base.Handle, selInitWithDomainCodeUserInfo_Handle, domain.Handle, code, userInfo?.Handle ?? IntPtr.Zero);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_nint_IntPtr(base.SuperHandle, selInitWithDomain_Code_UserInfo_Handle, domain.Handle, code, userInfo?.Handle ?? IntPtr.Zero), "initWithDomain:code:userInfo:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_Int64_IntPtr(base.SuperHandle, selInitWithDomainCodeUserInfo_Handle, domain.Handle, code, userInfo?.Handle ?? IntPtr.Zero);
 		}
 	}
 
-	[Export("copyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject Copy(NSZone? zone)
+	protected override void Dispose(bool disposing)
 	{
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
-		}
-		return nSObject;
-	}
-
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
-	{
-		if (encoder == null)
-		{
-			throw new ArgumentNullException("encoder");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-	}
-
-	[Export("errorWithDomain:code:userInfo:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSError FromDomain(NSString domain, nint code, NSDictionary? userInfo)
-	{
-		if (domain == null)
-		{
-			throw new ArgumentNullException("domain");
-		}
-		return Runtime.GetNSObject<NSError>(Messaging.IntPtr_objc_msgSend_IntPtr_nint_IntPtr(class_ptr, selErrorWithDomain_Code_UserInfo_Handle, domain.Handle, code, userInfo?.Handle ?? IntPtr.Zero));
-	}
-
-	[Export("fileProviderErrorForCollisionWithItem:")]
-	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSError GetFileProviderError(INSFileProviderItem existingItem)
-	{
-		if (existingItem == null)
-		{
-			throw new ArgumentNullException("existingItem");
-		}
-		return Runtime.GetNSObject<NSError>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selFileProviderErrorForCollisionWithItem_Handle, existingItem.Handle));
-	}
-
-	[Export("fileProviderErrorForNonExistentItemWithIdentifier:")]
-	[Introduced(PlatformName.iOS, 11, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSError GetFileProviderError(string nonExistentItemIdentifier)
-	{
-		if (nonExistentItemIdentifier == null)
-		{
-			throw new ArgumentNullException("nonExistentItemIdentifier");
-		}
-		IntPtr arg = NSString.CreateNative(nonExistentItemIdentifier);
-		NSError nSObject = Runtime.GetNSObject<NSError>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selFileProviderErrorForNonExistentItemWithIdentifier_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return nSObject;
-	}
-
-	[Export("fileProviderErrorForOutOfDateItem:")]
-	[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSError GetFileProviderErrorForOutOfDateItem(INSFileProviderItem updatedVersion)
-	{
-		if (updatedVersion == null)
-		{
-			throw new ArgumentNullException("updatedVersion");
-		}
-		return Runtime.GetNSObject<NSError>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selFileProviderErrorForOutOfDateItem_Handle, updatedVersion.Handle));
-	}
-
-	[Export("userInfoValueProviderForDomain:")]
-	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: DelegateProxy(typeof(Trampolines.SDNSErrorUserInfoValueProvider))]
-	public static NSErrorUserInfoValueProvider? GetUserInfoValueProvider(string errorDomain)
-	{
-		if (errorDomain == null)
-		{
-			throw new ArgumentNullException("errorDomain");
-		}
-		IntPtr arg = NSString.CreateNative(errorDomain);
-		IntPtr block = Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selUserInfoValueProviderForDomain_Handle, arg);
-		NSString.ReleaseNative(arg);
-		return Trampolines.NIDNSErrorUserInfoValueProvider.Create(block);
-	}
-
-	[Export("setUserInfoValueProviderForDomain:provider:")]
-	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe static void SetUserInfoValueProvider(string errorDomain, [BlockProxy(typeof(Trampolines.NIDNSErrorUserInfoValueProvider))] NSErrorUserInfoValueProvider? provider)
-	{
-		if (errorDomain == null)
-		{
-			throw new ArgumentNullException("errorDomain");
-		}
-		IntPtr arg = NSString.CreateNative(errorDomain);
-		BlockLiteral* ptr;
-		if (provider == null)
-		{
-			ptr = null;
-		}
-		else
-		{
-			BlockLiteral blockLiteral = default(BlockLiteral);
-			ptr = &blockLiteral;
-			blockLiteral.SetupBlockUnsafe(Trampolines.SDNSErrorUserInfoValueProvider.Handler, provider);
-		}
-		Messaging.void_objc_msgSend_IntPtr_IntPtr(class_ptr, selSetUserInfoValueProviderForDomain_Provider_Handle, arg, (IntPtr)ptr);
-		NSString.ReleaseNative(arg);
-		if (ptr != null)
-		{
-			ptr->CleanupBlock();
+			__mt_UserInfo_var = null;
 		}
 	}
 }

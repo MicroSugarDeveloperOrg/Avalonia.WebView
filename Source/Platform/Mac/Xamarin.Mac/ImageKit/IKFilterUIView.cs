@@ -11,128 +11,83 @@ namespace ImageKit;
 [Register("IKFilterUIView", true)]
 public class IKFilterUIView : NSView
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFilter = "filter";
-
 	private static readonly IntPtr selFilterHandle = Selector.GetHandle("filter");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithFrame_ = "initWithFrame:";
-
-	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithFrame_Filter_ = "initWithFrame:filter:";
-
-	private static readonly IntPtr selInitWithFrame_Filter_Handle = Selector.GetHandle("initWithFrame:filter:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selObjectController = "objectController";
 
 	private static readonly IntPtr selObjectControllerHandle = Selector.GetHandle("objectController");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selViewWithFrame_Filter_ = "viewWithFrame:filter:";
+	private static readonly IntPtr selInitWithFrameFilter_Handle = Selector.GetHandle("initWithFrame:filter:");
 
-	private static readonly IntPtr selViewWithFrame_Filter_Handle = Selector.GetHandle("viewWithFrame:filter:");
+	private static readonly IntPtr selViewForUIConfigurationExcludedKeys_Handle = Selector.GetHandle("viewForUIConfiguration:excludedKeys:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("IKFilterUIView");
+	private static readonly IntPtr class_ptr = Class.GetHandle("IKFilterUIView");
+
+	private object __mt_Filter_var;
+
+	private object __mt_ObjectController_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CIFilter Filter
 	{
 		[Export("filter")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<CIFilter>(Messaging.IntPtr_objc_msgSend(base.Handle, selFilterHandle));
-			}
-			return Runtime.GetNSObject<CIFilter>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFilterHandle));
+			return (CIFilter)(__mt_Filter_var = ((!IsDirectBinding) ? ((CIFilter)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFilterHandle))) : ((CIFilter)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFilterHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSObjectController ObjectController
 	{
 		[Export("objectController")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSObjectController>(Messaging.IntPtr_objc_msgSend(base.Handle, selObjectControllerHandle));
-			}
-			return Runtime.GetNSObject<NSObjectController>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selObjectControllerHandle));
+			return (NSObjectController)(__mt_ObjectController_var = ((!IsDirectBinding) ? ((NSObjectController)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selObjectControllerHandle))) : ((NSObjectController)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selObjectControllerHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public IKFilterUIView()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public IKFilterUIView(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected IKFilterUIView(NSObjectFlag t)
+	public IKFilterUIView(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal IKFilterUIView(IntPtr handle)
+	public IKFilterUIView(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("initWithFrame:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public IKFilterUIView(CGRect frameRect)
-		: base(NSObjectFlag.Empty)
-	{
-		if (base.IsDirectBinding)
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
-		}
-		else
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
-		}
-	}
-
 	[Export("initWithFrame:filter:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public IKFilterUIView(CGRect frame, CIFilter filter)
 		: base(NSObjectFlag.Empty)
 	{
@@ -140,24 +95,41 @@ public class IKFilterUIView : NSView
 		{
 			throw new ArgumentNullException("filter");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect_IntPtr(base.Handle, selInitWithFrame_Filter_Handle, frame, filter.Handle), "initWithFrame:filter:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_CGRect_IntPtr(base.Handle, selInitWithFrameFilter_Handle, frame, filter.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect_IntPtr(base.SuperHandle, selInitWithFrame_Filter_Handle, frame, filter.Handle), "initWithFrame:filter:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CGRect_IntPtr(base.SuperHandle, selInitWithFrameFilter_Handle, frame, filter.Handle);
 		}
 	}
 
-	[Export("viewWithFrame:filter:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static IKFilterUIView Create(CGRect frame, CIFilter filter)
+	[Export("viewForUIConfiguration:excludedKeys:")]
+	public virtual IKFilterUIView GetFilterUIView(CIFilter filter, NSDictionary configurationOptions, NSArray excludedKeys)
 	{
 		if (filter == null)
 		{
 			throw new ArgumentNullException("filter");
 		}
-		return Runtime.GetNSObject<IKFilterUIView>(Messaging.IntPtr_objc_msgSend_CGRect_IntPtr(class_ptr, selViewWithFrame_Filter_Handle, frame, filter.Handle));
+		if (configurationOptions == null)
+		{
+			throw new ArgumentNullException("configurationOptions");
+		}
+		if (IsDirectBinding)
+		{
+			return (IKFilterUIView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(filter.Handle, selViewForUIConfigurationExcludedKeys_Handle, configurationOptions.Handle, excludedKeys?.Handle ?? IntPtr.Zero));
+		}
+		return (IKFilterUIView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selViewForUIConfigurationExcludedKeys_Handle, configurationOptions.Handle, excludedKeys?.Handle ?? IntPtr.Zero));
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_Filter_var = null;
+			__mt_ObjectController_var = null;
+		}
 	}
 }

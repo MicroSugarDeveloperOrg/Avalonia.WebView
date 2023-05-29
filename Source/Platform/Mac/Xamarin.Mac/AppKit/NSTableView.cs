@@ -1,344 +1,81 @@
+using System;
 using System.ComponentModel;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
 [Register("NSTableView", true)]
-public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeObject, IDisposable, INSAccessibilityGroup, INSAccessibilityTable, INSDraggingSource, INSUserInterfaceValidations
+public class NSTableView : NSControl
 {
 	[Register]
-	internal class _NSTableViewDelegate : NSObject, INSTableViewDelegate, INativeObject, IDisposable
+	private sealed class _NSTableViewDelegate : NSTableViewDelegate
 	{
-		internal EventHandler? columnDidMove;
+		internal EventHandler<NSTableViewCellEventArgs> willDisplayCell;
 
-		internal EventHandler? columnDidResize;
+		internal NSTableViewColumnRowPredicate shouldEditTableColumn;
 
-		internal NSTableViewRowGetter? coreGetRowView;
+		internal NSTableViewPredicate selectionShouldChange;
 
-		internal EventHandler<NSTableViewRowEventArgs>? didAddRowView;
+		internal NSTableViewRowPredicate shouldSelectRow;
 
-		internal EventHandler<NSTableViewTableEventArgs>? didClickTableColumn;
+		internal NSTableViewIndexFilter getSelectionIndexes;
 
-		internal EventHandler<NSTableViewTableEventArgs>? didDragTableColumn;
+		internal NSTableViewColumnPredicate shouldSelectTableColumn;
 
-		internal EventHandler<NSTableViewRowEventArgs>? didRemoveRowView;
+		internal EventHandler<NSTableViewTableEventArgs> mouseDownInHeaderOfTableColumn;
 
-		internal NSTableViewCellGetter? getDataCell;
+		internal EventHandler<NSTableViewTableEventArgs> didClickTableColumn;
 
-		internal NSTableViewSearchString? getNextTypeSelectMatch;
+		internal EventHandler<NSTableViewTableEventArgs> didDragTableColumn;
 
-		internal NSTableViewRowHeight? getRowHeight;
+		internal NSTableViewRowHeight getRowHeight;
 
-		internal NSTableViewColumnRowString? getSelectString;
+		internal NSTableViewColumnRowString getSelectString;
 
-		internal NSTableViewIndexFilter? getSelectionIndexes;
+		internal NSTableViewSearchString getNextTypeSelectMatch;
 
-		internal NSTableViewColumnWidth? getSizeToFitColumnWidth;
+		internal NSTableViewEventString shouldTypeSelect;
 
-		internal NSTableViewToolTip? getToolTip;
+		internal NSTableViewColumnRowPredicate shouldShowCellExpansion;
 
-		internal NSTableViewViewGetter? getViewForItem;
+		internal NSTableViewCell shouldTrackCell;
 
-		internal NSTableViewRowPredicate? isGroupRow;
+		internal NSTableViewCellGetter getDataCell;
 
-		internal EventHandler<NSTableViewTableEventArgs>? mouseDownInHeaderOfTableColumn;
+		internal NSTableViewRowPredicate isGroupRow;
 
-		internal NSTableViewRowActionsGetter? rowActions;
+		internal NSTableViewColumnWidth getSizeToFitColumnWidth;
 
-		internal EventHandler? selectionDidChange;
+		internal NSTableReorder shouldReorder;
 
-		internal EventHandler? selectionIsChanging;
+		internal EventHandler selectionDidChange;
 
-		internal NSTableViewPredicate? selectionShouldChange;
+		internal EventHandler columnDidMove;
 
-		internal NSTableViewColumnRowPredicate? shouldEditTableColumn;
+		internal EventHandler columnDidResize;
 
-		internal NSTableReorder? shouldReorder;
+		internal EventHandler selectionIsChanging;
 
-		internal NSTableViewRowPredicate? shouldSelectRow;
+		internal NSTableViewViewGetter getViewForItem;
 
-		internal NSTableViewColumnPredicate? shouldSelectTableColumn;
+		internal NSTableViewRowGetter coreGetRowView;
 
-		internal NSTableViewColumnRowPredicate? shouldShowCellExpansion;
+		internal EventHandler<NSTableViewRowEventArgs> didAddRowView;
 
-		internal NSTableViewCell? shouldTrackCell;
-
-		internal NSTableViewEventString? shouldTypeSelect;
-
-		internal EventHandler<NSTableViewCellEventArgs>? willDisplayCell;
-
-		private static IntPtr selGetDataCellHandle = Selector.GetHandle("tableView:dataCellForTableColumn:row:");
+		internal EventHandler<NSTableViewRowEventArgs> didRemoveRowView;
 
 		private static IntPtr selGetRowHeightHandle = Selector.GetHandle("tableView:heightOfRow:");
 
-		private static IntPtr selGetViewForItemHandle = Selector.GetHandle("tableView:viewForTableColumn:row:");
+		private static IntPtr selGetDataCellHandle = Selector.GetHandle("tableView:dataCellForTableColumn:row:");
 
-		private static IntPtr selRowActionsHandle = Selector.GetHandle("tableView:rowActionsForRow:edge:");
+		private static IntPtr selGetViewForItemHandle = Selector.GetHandle("tableView:viewForTableColumn:row:");
 
 		private static IntPtr selRespondsToSelector = Selector.GetHandle("respondsToSelector:");
 
-		public _NSTableViewDelegate()
-		{
-			base.IsDirectBinding = false;
-		}
-
 		[Preserve(Conditional = true)]
-		[Export("tableViewColumnDidMove:")]
-		public void ColumnDidMove(NSNotification notification)
-		{
-			columnDidMove?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableViewColumnDidResize:")]
-		public void ColumnDidResize(NSNotification notification)
-		{
-			columnDidResize?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:rowViewForRow:")]
-		public NSTableRowView CoreGetRowView(NSTableView tableView, nint row)
-		{
-			return coreGetRowView?.Invoke(tableView, row);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:didAddRowView:forRow:")]
-		public void DidAddRowView(NSTableView tableView, NSTableRowView rowView, nint row)
-		{
-			EventHandler<NSTableViewRowEventArgs> eventHandler = didAddRowView;
-			if (eventHandler != null)
-			{
-				NSTableViewRowEventArgs e = new NSTableViewRowEventArgs(rowView, row);
-				eventHandler(tableView, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:didClickTableColumn:")]
-		public void DidClickTableColumn(NSTableView tableView, NSTableColumn tableColumn)
-		{
-			EventHandler<NSTableViewTableEventArgs> eventHandler = didClickTableColumn;
-			if (eventHandler != null)
-			{
-				NSTableViewTableEventArgs e = new NSTableViewTableEventArgs(tableColumn);
-				eventHandler(tableView, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:didDragTableColumn:")]
-		public void DidDragTableColumn(NSTableView tableView, NSTableColumn tableColumn)
-		{
-			EventHandler<NSTableViewTableEventArgs> eventHandler = didDragTableColumn;
-			if (eventHandler != null)
-			{
-				NSTableViewTableEventArgs e = new NSTableViewTableEventArgs(tableColumn);
-				eventHandler(tableView, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:didRemoveRowView:forRow:")]
-		public void DidRemoveRowView(NSTableView tableView, NSTableRowView rowView, nint row)
-		{
-			EventHandler<NSTableViewRowEventArgs> eventHandler = didRemoveRowView;
-			if (eventHandler != null)
-			{
-				NSTableViewRowEventArgs e = new NSTableViewRowEventArgs(rowView, row);
-				eventHandler(tableView, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:dataCellForTableColumn:row:")]
-		public NSCell GetDataCell(NSTableView tableView, NSTableColumn tableColumn, nint row)
-		{
-			NSTableViewCellGetter nSTableViewCellGetter = getDataCell;
-			if (nSTableViewCellGetter != null)
-			{
-				return nSTableViewCellGetter(tableView, tableColumn, row);
-			}
-			throw new You_Should_Not_Call_base_In_This_Method();
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:nextTypeSelectMatchFromRow:toRow:forString:")]
-		public nint GetNextTypeSelectMatch(NSTableView tableView, nint startRow, nint endRow, string searchString)
-		{
-			return getNextTypeSelectMatch?.Invoke(tableView, startRow, endRow, searchString) ?? ((nint)(-1));
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:heightOfRow:")]
-		public nfloat GetRowHeight(NSTableView tableView, nint row)
-		{
-			NSTableViewRowHeight nSTableViewRowHeight = getRowHeight;
-			if (nSTableViewRowHeight != null)
-			{
-				return nSTableViewRowHeight(tableView, row);
-			}
-			throw new You_Should_Not_Call_base_In_This_Method();
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:typeSelectStringForTableColumn:row:")]
-		public string GetSelectString(NSTableView tableView, NSTableColumn tableColumn, nint row)
-		{
-			NSTableViewColumnRowString nSTableViewColumnRowString = getSelectString;
-			if (nSTableViewColumnRowString != null)
-			{
-				return nSTableViewColumnRowString(tableView, tableColumn, row);
-			}
-			return string.Empty;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:selectionIndexesForProposedSelection:")]
-		public NSIndexSet GetSelectionIndexes(NSTableView tableView, NSIndexSet proposedSelectionIndexes)
-		{
-			NSTableViewIndexFilter nSTableViewIndexFilter = getSelectionIndexes;
-			if (nSTableViewIndexFilter != null)
-			{
-				return nSTableViewIndexFilter(tableView, proposedSelectionIndexes);
-			}
-			return proposedSelectionIndexes;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:sizeToFitWidthOfColumn:")]
-		public nfloat GetSizeToFitColumnWidth(NSTableView tableView, nint column)
-		{
-			return getSizeToFitColumnWidth?.Invoke(tableView, column) ?? ((nfloat)80);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:toolTipForCell:rect:tableColumn:row:mouseLocation:")]
-		public NSString GetToolTip(NSTableView tableView, NSCell cell, ref CGRect rect, NSTableColumn? tableColumn, nint row, CGPoint mouseLocation)
-		{
-			return getToolTip?.Invoke(tableView, cell, ref rect, tableColumn, row, mouseLocation);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:viewForTableColumn:row:")]
-		public NSView GetViewForItem(NSTableView tableView, NSTableColumn tableColumn, nint row)
-		{
-			NSTableViewViewGetter nSTableViewViewGetter = getViewForItem;
-			if (nSTableViewViewGetter != null)
-			{
-				return nSTableViewViewGetter(tableView, tableColumn, row);
-			}
-			throw new You_Should_Not_Call_base_In_This_Method();
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:isGroupRow:")]
-		public bool IsGroupRow(NSTableView tableView, nint row)
-		{
-			return isGroupRow?.Invoke(tableView, row) ?? false;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:mouseDownInHeaderOfTableColumn:")]
-		public void MouseDownInHeaderOfTableColumn(NSTableView tableView, NSTableColumn tableColumn)
-		{
-			EventHandler<NSTableViewTableEventArgs> eventHandler = mouseDownInHeaderOfTableColumn;
-			if (eventHandler != null)
-			{
-				NSTableViewTableEventArgs e = new NSTableViewTableEventArgs(tableColumn);
-				eventHandler(tableView, e);
-			}
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:rowActionsForRow:edge:")]
-		public NSTableViewRowAction[] RowActions(NSTableView tableView, nint row, NSTableRowActionEdge edge)
-		{
-			NSTableViewRowActionsGetter nSTableViewRowActionsGetter = rowActions;
-			if (nSTableViewRowActionsGetter != null)
-			{
-				return nSTableViewRowActionsGetter(tableView, row, edge);
-			}
-			throw new You_Should_Not_Call_base_In_This_Method();
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableViewSelectionDidChange:")]
-		public void SelectionDidChange(NSNotification notification)
-		{
-			selectionDidChange?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableViewSelectionIsChanging:")]
-		public void SelectionIsChanging(NSNotification notification)
-		{
-			selectionIsChanging?.Invoke(notification, EventArgs.Empty);
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("selectionShouldChangeInTableView:")]
-		public bool SelectionShouldChange(NSTableView tableView)
-		{
-			return selectionShouldChange?.Invoke(tableView) ?? true;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:shouldEditTableColumn:row:")]
-		public bool ShouldEditTableColumn(NSTableView tableView, NSTableColumn tableColumn, nint row)
-		{
-			return shouldEditTableColumn?.Invoke(tableView, tableColumn, row) ?? false;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:shouldReorderColumn:toColumn:")]
-		public bool ShouldReorder(NSTableView tableView, nint columnIndex, nint newColumnIndex)
-		{
-			return shouldReorder?.Invoke(tableView, columnIndex, newColumnIndex) ?? false;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:shouldSelectRow:")]
-		public bool ShouldSelectRow(NSTableView tableView, nint row)
-		{
-			return shouldSelectRow?.Invoke(tableView, row) ?? true;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:shouldSelectTableColumn:")]
-		public bool ShouldSelectTableColumn(NSTableView tableView, NSTableColumn tableColumn)
-		{
-			return shouldSelectTableColumn?.Invoke(tableView, tableColumn) ?? true;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:shouldShowCellExpansionForTableColumn:row:")]
-		public bool ShouldShowCellExpansion(NSTableView tableView, NSTableColumn tableColumn, nint row)
-		{
-			return shouldShowCellExpansion?.Invoke(tableView, tableColumn, row) ?? false;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:shouldTrackCell:forTableColumn:row:")]
-		public bool ShouldTrackCell(NSTableView tableView, NSCell cell, NSTableColumn tableColumn, nint row)
-		{
-			return shouldTrackCell?.Invoke(tableView, cell, tableColumn, row) ?? false;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:shouldTypeSelectForEvent:withCurrentSearchString:")]
-		public bool ShouldTypeSelect(NSTableView tableView, NSEvent theEvent, string searchString)
-		{
-			return shouldTypeSelect?.Invoke(tableView, theEvent, searchString) ?? false;
-		}
-
-		[Preserve(Conditional = true)]
-		[Export("tableView:willDisplayCell:forTableColumn:row:")]
-		public void WillDisplayCell(NSTableView tableView, NSObject cell, NSTableColumn tableColumn, nint row)
+		public override void WillDisplayCell(NSTableView tableView, NSObject cell, NSTableColumn tableColumn, long row)
 		{
 			EventHandler<NSTableViewCellEventArgs> eventHandler = willDisplayCell;
 			if (eventHandler != null)
@@ -349,981 +86,525 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 
 		[Preserve(Conditional = true)]
-		public override bool RespondsToSelector(Selector? sel)
+		public override bool ShouldEditTableColumn(NSTableView tableView, NSTableColumn tableColumn, long row)
 		{
-			if (sel == null)
+			return shouldEditTableColumn?.Invoke(tableView, tableColumn, row) ?? false;
+		}
+
+		[Preserve(Conditional = true)]
+		public override bool SelectionShouldChange(NSTableView tableView)
+		{
+			return selectionShouldChange?.Invoke(tableView) ?? false;
+		}
+
+		[Preserve(Conditional = true)]
+		public override bool ShouldSelectRow(NSTableView tableView, long row)
+		{
+			return shouldSelectRow?.Invoke(tableView, row) ?? true;
+		}
+
+		[Preserve(Conditional = true)]
+		public override NSIndexSet GetSelectionIndexes(NSTableView tableView, NSIndexSet proposedSelectionIndexes)
+		{
+			NSTableViewIndexFilter nSTableViewIndexFilter = getSelectionIndexes;
+			if (nSTableViewIndexFilter != null)
 			{
-				return false;
+				return nSTableViewIndexFilter(tableView, proposedSelectionIndexes);
 			}
-			IntPtr arg = ((sel == null) ? IntPtr.Zero : sel.Handle);
-			if (arg.Equals(selGetDataCellHandle))
+			return proposedSelectionIndexes;
+		}
+
+		[Preserve(Conditional = true)]
+		public override bool ShouldSelectTableColumn(NSTableView tableView, NSTableColumn tableColumn)
+		{
+			return shouldSelectTableColumn?.Invoke(tableView, tableColumn) ?? true;
+		}
+
+		[Preserve(Conditional = true)]
+		public override void MouseDownInHeaderOfTableColumn(NSTableView tableView, NSTableColumn tableColumn)
+		{
+			EventHandler<NSTableViewTableEventArgs> eventHandler = mouseDownInHeaderOfTableColumn;
+			if (eventHandler != null)
 			{
-				return getDataCell != null;
+				NSTableViewTableEventArgs e = new NSTableViewTableEventArgs(tableColumn);
+				eventHandler(tableView, e);
 			}
-			if (arg.Equals(selGetRowHeightHandle))
+		}
+
+		[Preserve(Conditional = true)]
+		public override void DidClickTableColumn(NSTableView tableView, NSTableColumn tableColumn)
+		{
+			EventHandler<NSTableViewTableEventArgs> eventHandler = didClickTableColumn;
+			if (eventHandler != null)
+			{
+				NSTableViewTableEventArgs e = new NSTableViewTableEventArgs(tableColumn);
+				eventHandler(tableView, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		public override void DidDragTableColumn(NSTableView tableView, NSTableColumn tableColumn)
+		{
+			EventHandler<NSTableViewTableEventArgs> eventHandler = didDragTableColumn;
+			if (eventHandler != null)
+			{
+				NSTableViewTableEventArgs e = new NSTableViewTableEventArgs(tableColumn);
+				eventHandler(tableView, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		public override double GetRowHeight(NSTableView tableView, long row)
+		{
+			NSTableViewRowHeight nSTableViewRowHeight = getRowHeight;
+			if (nSTableViewRowHeight != null)
+			{
+				return nSTableViewRowHeight(tableView, row);
+			}
+			throw new You_Should_Not_Call_base_In_This_Method();
+		}
+
+		[Preserve(Conditional = true)]
+		public override string GetSelectString(NSTableView tableView, NSTableColumn tableColumn, long row)
+		{
+			NSTableViewColumnRowString nSTableViewColumnRowString = getSelectString;
+			if (nSTableViewColumnRowString != null)
+			{
+				return nSTableViewColumnRowString(tableView, tableColumn, row);
+			}
+			return string.Empty;
+		}
+
+		[Preserve(Conditional = true)]
+		public override long GetNextTypeSelectMatch(NSTableView tableView, long startRow, long endRow, string searchString)
+		{
+			return getNextTypeSelectMatch?.Invoke(tableView, startRow, endRow, searchString) ?? (-1);
+		}
+
+		[Preserve(Conditional = true)]
+		public override bool ShouldTypeSelect(NSTableView tableView, NSEvent theEvent, string searchString)
+		{
+			return shouldTypeSelect?.Invoke(tableView, theEvent, searchString) ?? false;
+		}
+
+		[Preserve(Conditional = true)]
+		public override bool ShouldShowCellExpansion(NSTableView tableView, NSTableColumn tableColumn, long row)
+		{
+			return shouldShowCellExpansion?.Invoke(tableView, tableColumn, row) ?? false;
+		}
+
+		[Preserve(Conditional = true)]
+		public override bool ShouldTrackCell(NSTableView tableView, NSCell cell, NSTableColumn tableColumn, long row)
+		{
+			return shouldTrackCell?.Invoke(tableView, cell, tableColumn, row) ?? false;
+		}
+
+		[Preserve(Conditional = true)]
+		public override NSCell GetDataCell(NSTableView tableView, NSTableColumn tableColumn, long row)
+		{
+			NSTableViewCellGetter nSTableViewCellGetter = getDataCell;
+			if (nSTableViewCellGetter != null)
+			{
+				return nSTableViewCellGetter(tableView, tableColumn, row);
+			}
+			throw new You_Should_Not_Call_base_In_This_Method();
+		}
+
+		[Preserve(Conditional = true)]
+		public override bool IsGroupRow(NSTableView tableView, long row)
+		{
+			return isGroupRow?.Invoke(tableView, row) ?? false;
+		}
+
+		[Preserve(Conditional = true)]
+		public override double GetSizeToFitColumnWidth(NSTableView tableView, long column)
+		{
+			return getSizeToFitColumnWidth?.Invoke(tableView, column) ?? 80.0;
+		}
+
+		[Preserve(Conditional = true)]
+		public override bool ShouldReorder(NSTableView tableView, long columnIndex, long newColumnIndex)
+		{
+			return shouldReorder?.Invoke(tableView, columnIndex, newColumnIndex) ?? false;
+		}
+
+		[Preserve(Conditional = true)]
+		public override void SelectionDidChange(NSNotification notification)
+		{
+			selectionDidChange?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void ColumnDidMove(NSNotification notification)
+		{
+			columnDidMove?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void ColumnDidResize(NSNotification notification)
+		{
+			columnDidResize?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void SelectionIsChanging(NSNotification notification)
+		{
+			selectionIsChanging?.Invoke(notification, EventArgs.Empty);
+		}
+
+		[Preserve(Conditional = true)]
+		public override NSView GetViewForItem(NSTableView tableView, NSTableColumn tableColumn, long row)
+		{
+			NSTableViewViewGetter nSTableViewViewGetter = getViewForItem;
+			if (nSTableViewViewGetter != null)
+			{
+				return nSTableViewViewGetter(tableView, tableColumn, row);
+			}
+			throw new You_Should_Not_Call_base_In_This_Method();
+		}
+
+		[Preserve(Conditional = true)]
+		public override NSTableRowView CoreGetRowView(NSTableView tableView, long row)
+		{
+			return coreGetRowView?.Invoke(tableView, row);
+		}
+
+		[Preserve(Conditional = true)]
+		public override void DidAddRowView(NSTableView tableView, NSTableRowView rowView, long row)
+		{
+			EventHandler<NSTableViewRowEventArgs> eventHandler = didAddRowView;
+			if (eventHandler != null)
+			{
+				NSTableViewRowEventArgs e = new NSTableViewRowEventArgs(rowView, row);
+				eventHandler(tableView, e);
+			}
+		}
+
+		[Preserve(Conditional = true)]
+		public override void DidRemoveRowView(NSTableView tableView, NSTableRowView rowView, long row)
+		{
+			EventHandler<NSTableViewRowEventArgs> eventHandler = didRemoveRowView;
+			if (eventHandler != null)
+			{
+				NSTableViewRowEventArgs e = new NSTableViewRowEventArgs(rowView, row);
+				eventHandler(tableView, e);
+			}
+		}
+
+		public override bool RespondsToSelector(Selector sel)
+		{
+			IntPtr arg = sel.Handle;
+			if (arg.Equals((object?)(nint)selGetRowHeightHandle))
 			{
 				return getRowHeight != null;
 			}
-			if (arg.Equals(selGetViewForItemHandle))
+			if (arg.Equals((object?)(nint)selGetDataCellHandle))
+			{
+				return getDataCell != null;
+			}
+			if (arg.Equals((object?)(nint)selGetViewForItemHandle))
 			{
 				return getViewForItem != null;
 			}
-			if (arg.Equals(selRowActionsHandle))
-			{
-				return rowActions != null;
-			}
-			return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selRespondsToSelector, arg);
+			return Messaging.bool_objc_msgSendSuper_intptr(base.SuperHandle, selRespondsToSelector, arg);
 		}
 	}
-
-	public new static class Notifications
-	{
-		public static NSObject ObserveColumnDidMove(EventHandler<NSViewColumnMoveEventArgs> handler)
-		{
-			EventHandler<NSViewColumnMoveEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ColumnDidMoveNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSViewColumnMoveEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveColumnDidMove(NSObject objectToObserve, EventHandler<NSViewColumnMoveEventArgs> handler)
-		{
-			EventHandler<NSViewColumnMoveEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ColumnDidMoveNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSViewColumnMoveEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveColumnDidResize(EventHandler<NSViewColumnResizeEventArgs> handler)
-		{
-			EventHandler<NSViewColumnResizeEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ColumnDidResizeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSViewColumnResizeEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveColumnDidResize(NSObject objectToObserve, EventHandler<NSViewColumnResizeEventArgs> handler)
-		{
-			EventHandler<NSViewColumnResizeEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(ColumnDidResizeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSViewColumnResizeEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveSelectionDidChange(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectionDidChangeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveSelectionDidChange(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectionDidChangeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveSelectionIsChanging(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectionIsChangingNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveSelectionIsChanging(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(SelectionIsChangingNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityColumnHeaderUIElements = "accessibilityColumnHeaderUIElements";
-
-	private static readonly IntPtr selAccessibilityColumnHeaderUIElementsHandle = Selector.GetHandle("accessibilityColumnHeaderUIElements");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityColumns = "accessibilityColumns";
-
-	private static readonly IntPtr selAccessibilityColumnsHandle = Selector.GetHandle("accessibilityColumns");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityFrame = "accessibilityFrame";
-
-	private static readonly IntPtr selAccessibilityFrameHandle = Selector.GetHandle("accessibilityFrame");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityHeaderGroup = "accessibilityHeaderGroup";
-
-	private static readonly IntPtr selAccessibilityHeaderGroupHandle = Selector.GetHandle("accessibilityHeaderGroup");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityIdentifier = "accessibilityIdentifier";
-
-	private static readonly IntPtr selAccessibilityIdentifierHandle = Selector.GetHandle("accessibilityIdentifier");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityLabel = "accessibilityLabel";
-
-	private static readonly IntPtr selAccessibilityLabelHandle = Selector.GetHandle("accessibilityLabel");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityParent = "accessibilityParent";
-
-	private static readonly IntPtr selAccessibilityParentHandle = Selector.GetHandle("accessibilityParent");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityRowHeaderUIElements = "accessibilityRowHeaderUIElements";
-
-	private static readonly IntPtr selAccessibilityRowHeaderUIElementsHandle = Selector.GetHandle("accessibilityRowHeaderUIElements");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityRows = "accessibilityRows";
-
-	private static readonly IntPtr selAccessibilityRowsHandle = Selector.GetHandle("accessibilityRows");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySelectedCells = "accessibilitySelectedCells";
-
-	private static readonly IntPtr selAccessibilitySelectedCellsHandle = Selector.GetHandle("accessibilitySelectedCells");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySelectedColumns = "accessibilitySelectedColumns";
-
-	private static readonly IntPtr selAccessibilitySelectedColumnsHandle = Selector.GetHandle("accessibilitySelectedColumns");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilitySelectedRows = "accessibilitySelectedRows";
-
-	private static readonly IntPtr selAccessibilitySelectedRowsHandle = Selector.GetHandle("accessibilitySelectedRows");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityVisibleCells = "accessibilityVisibleCells";
-
-	private static readonly IntPtr selAccessibilityVisibleCellsHandle = Selector.GetHandle("accessibilityVisibleCells");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityVisibleColumns = "accessibilityVisibleColumns";
-
-	private static readonly IntPtr selAccessibilityVisibleColumnsHandle = Selector.GetHandle("accessibilityVisibleColumns");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAccessibilityVisibleRows = "accessibilityVisibleRows";
-
-	private static readonly IntPtr selAccessibilityVisibleRowsHandle = Selector.GetHandle("accessibilityVisibleRows");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddTableColumn_ = "addTableColumn:";
-
-	private static readonly IntPtr selAddTableColumn_Handle = Selector.GetHandle("addTableColumn:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAllowsColumnReordering = "allowsColumnReordering";
-
-	private static readonly IntPtr selAllowsColumnReorderingHandle = Selector.GetHandle("allowsColumnReordering");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAllowsColumnResizing = "allowsColumnResizing";
-
-	private static readonly IntPtr selAllowsColumnResizingHandle = Selector.GetHandle("allowsColumnResizing");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAllowsColumnSelection = "allowsColumnSelection";
-
-	private static readonly IntPtr selAllowsColumnSelectionHandle = Selector.GetHandle("allowsColumnSelection");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAllowsEmptySelection = "allowsEmptySelection";
-
-	private static readonly IntPtr selAllowsEmptySelectionHandle = Selector.GetHandle("allowsEmptySelection");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAllowsMultipleSelection = "allowsMultipleSelection";
-
-	private static readonly IntPtr selAllowsMultipleSelectionHandle = Selector.GetHandle("allowsMultipleSelection");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAllowsTypeSelect = "allowsTypeSelect";
-
-	private static readonly IntPtr selAllowsTypeSelectHandle = Selector.GetHandle("allowsTypeSelect");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAutosaveName = "autosaveName";
-
-	private static readonly IntPtr selAutosaveNameHandle = Selector.GetHandle("autosaveName");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAutosaveTableColumns = "autosaveTableColumns";
-
-	private static readonly IntPtr selAutosaveTableColumnsHandle = Selector.GetHandle("autosaveTableColumns");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selBackgroundColor = "backgroundColor";
-
-	private static readonly IntPtr selBackgroundColorHandle = Selector.GetHandle("backgroundColor");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selBeginUpdates = "beginUpdates";
-
-	private static readonly IntPtr selBeginUpdatesHandle = Selector.GetHandle("beginUpdates");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCanDragRowsWithIndexes_AtPoint_ = "canDragRowsWithIndexes:atPoint:";
-
-	private static readonly IntPtr selCanDragRowsWithIndexes_AtPoint_Handle = Selector.GetHandle("canDragRowsWithIndexes:atPoint:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selClickedColumn = "clickedColumn";
-
-	private static readonly IntPtr selClickedColumnHandle = Selector.GetHandle("clickedColumn");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selClickedRow = "clickedRow";
-
-	private static readonly IntPtr selClickedRowHandle = Selector.GetHandle("clickedRow");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selColumnAtPoint_ = "columnAtPoint:";
-
-	private static readonly IntPtr selColumnAtPoint_Handle = Selector.GetHandle("columnAtPoint:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selColumnAutoresizingStyle = "columnAutoresizingStyle";
-
-	private static readonly IntPtr selColumnAutoresizingStyleHandle = Selector.GetHandle("columnAutoresizingStyle");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selColumnForView_ = "columnForView:";
-
-	private static readonly IntPtr selColumnForView_Handle = Selector.GetHandle("columnForView:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selColumnIndexesInRect_ = "columnIndexesInRect:";
-
-	private static readonly IntPtr selColumnIndexesInRect_Handle = Selector.GetHandle("columnIndexesInRect:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selColumnWithIdentifier_ = "columnWithIdentifier:";
-
-	private static readonly IntPtr selColumnWithIdentifier_Handle = Selector.GetHandle("columnWithIdentifier:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCornerView = "cornerView";
-
-	private static readonly IntPtr selCornerViewHandle = Selector.GetHandle("cornerView");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDataSource = "dataSource";
-
-	private static readonly IntPtr selDataSourceHandle = Selector.GetHandle("dataSource");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDelegate = "delegate";
-
-	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeselectAll_ = "deselectAll:";
-
-	private static readonly IntPtr selDeselectAll_Handle = Selector.GetHandle("deselectAll:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeselectColumn_ = "deselectColumn:";
-
-	private static readonly IntPtr selDeselectColumn_Handle = Selector.GetHandle("deselectColumn:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeselectRow_ = "deselectRow:";
-
-	private static readonly IntPtr selDeselectRow_Handle = Selector.GetHandle("deselectRow:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDidAddRowView_ForRow_ = "didAddRowView:forRow:";
-
-	private static readonly IntPtr selDidAddRowView_ForRow_Handle = Selector.GetHandle("didAddRowView:forRow:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDidRemoveRowView_ForRow_ = "didRemoveRowView:forRow:";
-
-	private static readonly IntPtr selDidRemoveRowView_ForRow_Handle = Selector.GetHandle("didRemoveRowView:forRow:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDoubleAction = "doubleAction";
-
-	private static readonly IntPtr selDoubleActionHandle = Selector.GetHandle("doubleAction");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDragImageForRowsWithIndexes_TableColumns_Event_Offset_ = "dragImageForRowsWithIndexes:tableColumns:event:offset:";
-
-	private static readonly IntPtr selDragImageForRowsWithIndexes_TableColumns_Event_Offset_Handle = Selector.GetHandle("dragImageForRowsWithIndexes:tableColumns:event:offset:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDraggedImage_BeganAt_ = "draggedImage:beganAt:";
-
-	private static readonly IntPtr selDraggedImage_BeganAt_Handle = Selector.GetHandle("draggedImage:beganAt:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDraggedImage_EndedAt_Deposited_ = "draggedImage:endedAt:deposited:";
-
-	private static readonly IntPtr selDraggedImage_EndedAt_Deposited_Handle = Selector.GetHandle("draggedImage:endedAt:deposited:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDraggedImage_EndedAt_Operation_ = "draggedImage:endedAt:operation:";
-
-	private static readonly IntPtr selDraggedImage_EndedAt_Operation_Handle = Selector.GetHandle("draggedImage:endedAt:operation:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDraggedImage_MovedTo_ = "draggedImage:movedTo:";
-
-	private static readonly IntPtr selDraggedImage_MovedTo_Handle = Selector.GetHandle("draggedImage:movedTo:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDraggingDestinationFeedbackStyle = "draggingDestinationFeedbackStyle";
-
-	private static readonly IntPtr selDraggingDestinationFeedbackStyleHandle = Selector.GetHandle("draggingDestinationFeedbackStyle");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDraggingSourceOperationMaskForLocal_ = "draggingSourceOperationMaskForLocal:";
-
-	private static readonly IntPtr selDraggingSourceOperationMaskForLocal_Handle = Selector.GetHandle("draggingSourceOperationMaskForLocal:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDrawBackgroundInClipRect_ = "drawBackgroundInClipRect:";
-
-	private static readonly IntPtr selDrawBackgroundInClipRect_Handle = Selector.GetHandle("drawBackgroundInClipRect:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDrawGridInClipRect_ = "drawGridInClipRect:";
-
-	private static readonly IntPtr selDrawGridInClipRect_Handle = Selector.GetHandle("drawGridInClipRect:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDrawRow_ClipRect_ = "drawRow:clipRect:";
-
-	private static readonly IntPtr selDrawRow_ClipRect_Handle = Selector.GetHandle("drawRow:clipRect:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEditColumn_Row_WithEvent_Select_ = "editColumn:row:withEvent:select:";
-
-	private static readonly IntPtr selEditColumn_Row_WithEvent_Select_Handle = Selector.GetHandle("editColumn:row:withEvent:select:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEditedColumn = "editedColumn";
-
-	private static readonly IntPtr selEditedColumnHandle = Selector.GetHandle("editedColumn");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEditedRow = "editedRow";
-
-	private static readonly IntPtr selEditedRowHandle = Selector.GetHandle("editedRow");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEffectiveRowSizeStyle = "effectiveRowSizeStyle";
-
-	private static readonly IntPtr selEffectiveRowSizeStyleHandle = Selector.GetHandle("effectiveRowSizeStyle");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEndUpdates = "endUpdates";
-
-	private static readonly IntPtr selEndUpdatesHandle = Selector.GetHandle("endUpdates");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEnumerateAvailableRowViewsUsingBlock_ = "enumerateAvailableRowViewsUsingBlock:";
-
-	private static readonly IntPtr selEnumerateAvailableRowViewsUsingBlock_Handle = Selector.GetHandle("enumerateAvailableRowViewsUsingBlock:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFloatsGroupRows = "floatsGroupRows";
-
-	private static readonly IntPtr selFloatsGroupRowsHandle = Selector.GetHandle("floatsGroupRows");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFocusedColumn = "focusedColumn";
-
-	private static readonly IntPtr selFocusedColumnHandle = Selector.GetHandle("focusedColumn");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFrameOfCellAtColumn_Row_ = "frameOfCellAtColumn:row:";
-
-	private static readonly IntPtr selFrameOfCellAtColumn_Row_Handle = Selector.GetHandle("frameOfCellAtColumn:row:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGridColor = "gridColor";
-
-	private static readonly IntPtr selGridColorHandle = Selector.GetHandle("gridColor");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selGridStyleMask = "gridStyleMask";
-
-	private static readonly IntPtr selGridStyleMaskHandle = Selector.GetHandle("gridStyleMask");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHeaderView = "headerView";
-
-	private static readonly IntPtr selHeaderViewHandle = Selector.GetHandle("headerView");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHiddenRowIndexes = "hiddenRowIndexes";
-
-	private static readonly IntPtr selHiddenRowIndexesHandle = Selector.GetHandle("hiddenRowIndexes");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHideRowsAtIndexes_WithAnimation_ = "hideRowsAtIndexes:withAnimation:";
-
-	private static readonly IntPtr selHideRowsAtIndexes_WithAnimation_Handle = Selector.GetHandle("hideRowsAtIndexes:withAnimation:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHighlightSelectionInClipRect_ = "highlightSelectionInClipRect:";
-
-	private static readonly IntPtr selHighlightSelectionInClipRect_Handle = Selector.GetHandle("highlightSelectionInClipRect:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHighlightedTableColumn = "highlightedTableColumn";
-
-	private static readonly IntPtr selHighlightedTableColumnHandle = Selector.GetHandle("highlightedTableColumn");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIgnoreModifierKeysWhileDragging = "ignoreModifierKeysWhileDragging";
-
-	private static readonly IntPtr selIgnoreModifierKeysWhileDraggingHandle = Selector.GetHandle("ignoreModifierKeysWhileDragging");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIndicatorImageInTableColumn_ = "indicatorImageInTableColumn:";
-
-	private static readonly IntPtr selIndicatorImageInTableColumn_Handle = Selector.GetHandle("indicatorImageInTableColumn:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithFrame_ = "initWithFrame:";
-
-	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInsertRowsAtIndexes_WithAnimation_ = "insertRowsAtIndexes:withAnimation:";
-
-	private static readonly IntPtr selInsertRowsAtIndexes_WithAnimation_Handle = Selector.GetHandle("insertRowsAtIndexes:withAnimation:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIntercellSpacing = "intercellSpacing";
-
-	private static readonly IntPtr selIntercellSpacingHandle = Selector.GetHandle("intercellSpacing");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsAccessibilityFocused = "isAccessibilityFocused";
-
-	private static readonly IntPtr selIsAccessibilityFocusedHandle = Selector.GetHandle("isAccessibilityFocused");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsColumnSelected_ = "isColumnSelected:";
-
-	private static readonly IntPtr selIsColumnSelected_Handle = Selector.GetHandle("isColumnSelected:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsRowSelected_ = "isRowSelected:";
-
-	private static readonly IntPtr selIsRowSelected_Handle = Selector.GetHandle("isRowSelected:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMakeViewWithIdentifier_Owner_ = "makeViewWithIdentifier:owner:";
-
-	private static readonly IntPtr selMakeViewWithIdentifier_Owner_Handle = Selector.GetHandle("makeViewWithIdentifier:owner:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMoveColumn_ToColumn_ = "moveColumn:toColumn:";
-
-	private static readonly IntPtr selMoveColumn_ToColumn_Handle = Selector.GetHandle("moveColumn:toColumn:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMoveRowAtIndex_ToIndex_ = "moveRowAtIndex:toIndex:";
-
-	private static readonly IntPtr selMoveRowAtIndex_ToIndex_Handle = Selector.GetHandle("moveRowAtIndex:toIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNamesOfPromisedFilesDroppedAtDestination_ = "namesOfPromisedFilesDroppedAtDestination:";
-
-	private static readonly IntPtr selNamesOfPromisedFilesDroppedAtDestination_Handle = Selector.GetHandle("namesOfPromisedFilesDroppedAtDestination:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNoteHeightOfRowsWithIndexesChanged_ = "noteHeightOfRowsWithIndexesChanged:";
-
-	private static readonly IntPtr selNoteHeightOfRowsWithIndexesChanged_Handle = Selector.GetHandle("noteHeightOfRowsWithIndexesChanged:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNoteNumberOfRowsChanged = "noteNumberOfRowsChanged";
-
-	private static readonly IntPtr selNoteNumberOfRowsChangedHandle = Selector.GetHandle("noteNumberOfRowsChanged");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNumberOfColumns = "numberOfColumns";
 
 	private static readonly IntPtr selNumberOfColumnsHandle = Selector.GetHandle("numberOfColumns");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNumberOfRows = "numberOfRows";
-
 	private static readonly IntPtr selNumberOfRowsHandle = Selector.GetHandle("numberOfRows");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNumberOfSelectedColumns = "numberOfSelectedColumns";
+	private static readonly IntPtr selEditedColumnHandle = Selector.GetHandle("editedColumn");
 
-	private static readonly IntPtr selNumberOfSelectedColumnsHandle = Selector.GetHandle("numberOfSelectedColumns");
+	private static readonly IntPtr selEditedRowHandle = Selector.GetHandle("editedRow");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNumberOfSelectedRows = "numberOfSelectedRows";
+	private static readonly IntPtr selClickedColumnHandle = Selector.GetHandle("clickedColumn");
 
-	private static readonly IntPtr selNumberOfSelectedRowsHandle = Selector.GetHandle("numberOfSelectedRows");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPerformClickOnCellAtColumn_Row_ = "performClickOnCellAtColumn:row:";
-
-	private static readonly IntPtr selPerformClickOnCellAtColumn_Row_Handle = Selector.GetHandle("performClickOnCellAtColumn:row:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPreparedCellAtColumn_Row_ = "preparedCellAtColumn:row:";
-
-	private static readonly IntPtr selPreparedCellAtColumn_Row_Handle = Selector.GetHandle("preparedCellAtColumn:row:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRectOfColumn_ = "rectOfColumn:";
-
-	private static readonly IntPtr selRectOfColumn_Handle = Selector.GetHandle("rectOfColumn:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRectOfRow_ = "rectOfRow:";
-
-	private static readonly IntPtr selRectOfRow_Handle = Selector.GetHandle("rectOfRow:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRegisterNib_ForIdentifier_ = "registerNib:forIdentifier:";
-
-	private static readonly IntPtr selRegisterNib_ForIdentifier_Handle = Selector.GetHandle("registerNib:forIdentifier:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRegisteredNibsByIdentifier = "registeredNibsByIdentifier";
-
-	private static readonly IntPtr selRegisteredNibsByIdentifierHandle = Selector.GetHandle("registeredNibsByIdentifier");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selReloadData = "reloadData";
-
-	private static readonly IntPtr selReloadDataHandle = Selector.GetHandle("reloadData");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selReloadDataForRowIndexes_ColumnIndexes_ = "reloadDataForRowIndexes:columnIndexes:";
-
-	private static readonly IntPtr selReloadDataForRowIndexes_ColumnIndexes_Handle = Selector.GetHandle("reloadDataForRowIndexes:columnIndexes:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveRowsAtIndexes_WithAnimation_ = "removeRowsAtIndexes:withAnimation:";
-
-	private static readonly IntPtr selRemoveRowsAtIndexes_WithAnimation_Handle = Selector.GetHandle("removeRowsAtIndexes:withAnimation:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveTableColumn_ = "removeTableColumn:";
-
-	private static readonly IntPtr selRemoveTableColumn_Handle = Selector.GetHandle("removeTableColumn:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRowActionsVisible = "rowActionsVisible";
-
-	private static readonly IntPtr selRowActionsVisibleHandle = Selector.GetHandle("rowActionsVisible");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRowAtPoint_ = "rowAtPoint:";
-
-	private static readonly IntPtr selRowAtPoint_Handle = Selector.GetHandle("rowAtPoint:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRowForView_ = "rowForView:";
-
-	private static readonly IntPtr selRowForView_Handle = Selector.GetHandle("rowForView:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRowHeight = "rowHeight";
-
-	private static readonly IntPtr selRowHeightHandle = Selector.GetHandle("rowHeight");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRowSizeStyle = "rowSizeStyle";
-
-	private static readonly IntPtr selRowSizeStyleHandle = Selector.GetHandle("rowSizeStyle");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRowViewAtRow_MakeIfNecessary_ = "rowViewAtRow:makeIfNecessary:";
-
-	private static readonly IntPtr selRowViewAtRow_MakeIfNecessary_Handle = Selector.GetHandle("rowViewAtRow:makeIfNecessary:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRowsInRect_ = "rowsInRect:";
-
-	private static readonly IntPtr selRowsInRect_Handle = Selector.GetHandle("rowsInRect:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selScrollColumnToVisible_ = "scrollColumnToVisible:";
-
-	private static readonly IntPtr selScrollColumnToVisible_Handle = Selector.GetHandle("scrollColumnToVisible:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selScrollRowToVisible_ = "scrollRowToVisible:";
-
-	private static readonly IntPtr selScrollRowToVisible_Handle = Selector.GetHandle("scrollRowToVisible:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSelectAll_ = "selectAll:";
-
-	private static readonly IntPtr selSelectAll_Handle = Selector.GetHandle("selectAll:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSelectColumnIndexes_ByExtendingSelection_ = "selectColumnIndexes:byExtendingSelection:";
-
-	private static readonly IntPtr selSelectColumnIndexes_ByExtendingSelection_Handle = Selector.GetHandle("selectColumnIndexes:byExtendingSelection:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSelectRowIndexes_ByExtendingSelection_ = "selectRowIndexes:byExtendingSelection:";
-
-	private static readonly IntPtr selSelectRowIndexes_ByExtendingSelection_Handle = Selector.GetHandle("selectRowIndexes:byExtendingSelection:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSelectedColumn = "selectedColumn";
-
-	private static readonly IntPtr selSelectedColumnHandle = Selector.GetHandle("selectedColumn");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSelectedColumnIndexes = "selectedColumnIndexes";
+	private static readonly IntPtr selClickedRowHandle = Selector.GetHandle("clickedRow");
 
 	private static readonly IntPtr selSelectedColumnIndexesHandle = Selector.GetHandle("selectedColumnIndexes");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSelectedRow = "selectedRow";
+	private static readonly IntPtr selSelectedRowIndexesHandle = Selector.GetHandle("selectedRowIndexes");
+
+	private static readonly IntPtr selSelectedColumnHandle = Selector.GetHandle("selectedColumn");
 
 	private static readonly IntPtr selSelectedRowHandle = Selector.GetHandle("selectedRow");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSelectedRowIndexes = "selectedRowIndexes";
+	private static readonly IntPtr selNumberOfSelectedColumnsHandle = Selector.GetHandle("numberOfSelectedColumns");
 
-	private static readonly IntPtr selSelectedRowIndexesHandle = Selector.GetHandle("selectedRowIndexes");
+	private static readonly IntPtr selNumberOfSelectedRowsHandle = Selector.GetHandle("numberOfSelectedRows");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSelectionHighlightStyle = "selectionHighlightStyle";
-
-	private static readonly IntPtr selSelectionHighlightStyleHandle = Selector.GetHandle("selectionHighlightStyle");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAccessibilitySelectedRows_ = "setAccessibilitySelectedRows:";
-
-	private static readonly IntPtr selSetAccessibilitySelectedRows_Handle = Selector.GetHandle("setAccessibilitySelectedRows:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAllowsColumnReordering_ = "setAllowsColumnReordering:";
-
-	private static readonly IntPtr selSetAllowsColumnReordering_Handle = Selector.GetHandle("setAllowsColumnReordering:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAllowsColumnResizing_ = "setAllowsColumnResizing:";
-
-	private static readonly IntPtr selSetAllowsColumnResizing_Handle = Selector.GetHandle("setAllowsColumnResizing:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAllowsColumnSelection_ = "setAllowsColumnSelection:";
-
-	private static readonly IntPtr selSetAllowsColumnSelection_Handle = Selector.GetHandle("setAllowsColumnSelection:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAllowsEmptySelection_ = "setAllowsEmptySelection:";
-
-	private static readonly IntPtr selSetAllowsEmptySelection_Handle = Selector.GetHandle("setAllowsEmptySelection:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAllowsMultipleSelection_ = "setAllowsMultipleSelection:";
-
-	private static readonly IntPtr selSetAllowsMultipleSelection_Handle = Selector.GetHandle("setAllowsMultipleSelection:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAllowsTypeSelect_ = "setAllowsTypeSelect:";
-
-	private static readonly IntPtr selSetAllowsTypeSelect_Handle = Selector.GetHandle("setAllowsTypeSelect:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAutosaveName_ = "setAutosaveName:";
-
-	private static readonly IntPtr selSetAutosaveName_Handle = Selector.GetHandle("setAutosaveName:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAutosaveTableColumns_ = "setAutosaveTableColumns:";
-
-	private static readonly IntPtr selSetAutosaveTableColumns_Handle = Selector.GetHandle("setAutosaveTableColumns:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetBackgroundColor_ = "setBackgroundColor:";
-
-	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetColumnAutoresizingStyle_ = "setColumnAutoresizingStyle:";
-
-	private static readonly IntPtr selSetColumnAutoresizingStyle_Handle = Selector.GetHandle("setColumnAutoresizingStyle:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetCornerView_ = "setCornerView:";
-
-	private static readonly IntPtr selSetCornerView_Handle = Selector.GetHandle("setCornerView:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDataSource_ = "setDataSource:";
+	private static readonly IntPtr selDataSourceHandle = Selector.GetHandle("dataSource");
 
 	private static readonly IntPtr selSetDataSource_Handle = Selector.GetHandle("setDataSource:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDelegate_ = "setDelegate:";
+	private static readonly IntPtr selDelegateHandle = Selector.GetHandle("delegate");
 
 	private static readonly IntPtr selSetDelegate_Handle = Selector.GetHandle("setDelegate:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDoubleAction_ = "setDoubleAction:";
-
-	private static readonly IntPtr selSetDoubleAction_Handle = Selector.GetHandle("setDoubleAction:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDraggingDestinationFeedbackStyle_ = "setDraggingDestinationFeedbackStyle:";
-
-	private static readonly IntPtr selSetDraggingDestinationFeedbackStyle_Handle = Selector.GetHandle("setDraggingDestinationFeedbackStyle:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDraggingSourceOperationMask_ForLocal_ = "setDraggingSourceOperationMask:forLocal:";
-
-	private static readonly IntPtr selSetDraggingSourceOperationMask_ForLocal_Handle = Selector.GetHandle("setDraggingSourceOperationMask:forLocal:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDropRow_DropOperation_ = "setDropRow:dropOperation:";
-
-	private static readonly IntPtr selSetDropRow_DropOperation_Handle = Selector.GetHandle("setDropRow:dropOperation:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetFloatsGroupRows_ = "setFloatsGroupRows:";
-
-	private static readonly IntPtr selSetFloatsGroupRows_Handle = Selector.GetHandle("setFloatsGroupRows:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetFocusedColumn_ = "setFocusedColumn:";
-
-	private static readonly IntPtr selSetFocusedColumn_Handle = Selector.GetHandle("setFocusedColumn:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetGridColor_ = "setGridColor:";
-
-	private static readonly IntPtr selSetGridColor_Handle = Selector.GetHandle("setGridColor:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetGridStyleMask_ = "setGridStyleMask:";
-
-	private static readonly IntPtr selSetGridStyleMask_Handle = Selector.GetHandle("setGridStyleMask:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetHeaderView_ = "setHeaderView:";
+	private static readonly IntPtr selHeaderViewHandle = Selector.GetHandle("headerView");
 
 	private static readonly IntPtr selSetHeaderView_Handle = Selector.GetHandle("setHeaderView:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetHighlightedTableColumn_ = "setHighlightedTableColumn:";
+	private static readonly IntPtr selCornerViewHandle = Selector.GetHandle("cornerView");
 
-	private static readonly IntPtr selSetHighlightedTableColumn_Handle = Selector.GetHandle("setHighlightedTableColumn:");
+	private static readonly IntPtr selSetCornerView_Handle = Selector.GetHandle("setCornerView:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetIndicatorImage_InTableColumn_ = "setIndicatorImage:inTableColumn:";
+	private static readonly IntPtr selAllowsColumnReorderingHandle = Selector.GetHandle("allowsColumnReordering");
 
-	private static readonly IntPtr selSetIndicatorImage_InTableColumn_Handle = Selector.GetHandle("setIndicatorImage:inTableColumn:");
+	private static readonly IntPtr selSetAllowsColumnReordering_Handle = Selector.GetHandle("setAllowsColumnReordering:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetIntercellSpacing_ = "setIntercellSpacing:";
+	private static readonly IntPtr selAllowsColumnResizingHandle = Selector.GetHandle("allowsColumnResizing");
+
+	private static readonly IntPtr selSetAllowsColumnResizing_Handle = Selector.GetHandle("setAllowsColumnResizing:");
+
+	private static readonly IntPtr selColumnAutoresizingStyleHandle = Selector.GetHandle("columnAutoresizingStyle");
+
+	private static readonly IntPtr selSetColumnAutoresizingStyle_Handle = Selector.GetHandle("setColumnAutoresizingStyle:");
+
+	private static readonly IntPtr selGridStyleMaskHandle = Selector.GetHandle("gridStyleMask");
+
+	private static readonly IntPtr selSetGridStyleMask_Handle = Selector.GetHandle("setGridStyleMask:");
+
+	private static readonly IntPtr selIntercellSpacingHandle = Selector.GetHandle("intercellSpacing");
 
 	private static readonly IntPtr selSetIntercellSpacing_Handle = Selector.GetHandle("setIntercellSpacing:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetRowActionsVisible_ = "setRowActionsVisible:";
-
-	private static readonly IntPtr selSetRowActionsVisible_Handle = Selector.GetHandle("setRowActionsVisible:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetRowHeight_ = "setRowHeight:";
-
-	private static readonly IntPtr selSetRowHeight_Handle = Selector.GetHandle("setRowHeight:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetRowSizeStyle_ = "setRowSizeStyle:";
-
-	private static readonly IntPtr selSetRowSizeStyle_Handle = Selector.GetHandle("setRowSizeStyle:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetSelectionHighlightStyle_ = "setSelectionHighlightStyle:";
-
-	private static readonly IntPtr selSetSelectionHighlightStyle_Handle = Selector.GetHandle("setSelectionHighlightStyle:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetSortDescriptors_ = "setSortDescriptors:";
-
-	private static readonly IntPtr selSetSortDescriptors_Handle = Selector.GetHandle("setSortDescriptors:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetUserInterfaceLayoutDirection_ = "setUserInterfaceLayoutDirection:";
-
-	private static readonly IntPtr selSetUserInterfaceLayoutDirection_Handle = Selector.GetHandle("setUserInterfaceLayoutDirection:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetUsesAlternatingRowBackgroundColors_ = "setUsesAlternatingRowBackgroundColors:";
+	private static readonly IntPtr selUsesAlternatingRowBackgroundColorsHandle = Selector.GetHandle("usesAlternatingRowBackgroundColors");
 
 	private static readonly IntPtr selSetUsesAlternatingRowBackgroundColors_Handle = Selector.GetHandle("setUsesAlternatingRowBackgroundColors:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetUsesAutomaticRowHeights_ = "setUsesAutomaticRowHeights:";
+	private static readonly IntPtr selBackgroundColorHandle = Selector.GetHandle("backgroundColor");
 
-	private static readonly IntPtr selSetUsesAutomaticRowHeights_Handle = Selector.GetHandle("setUsesAutomaticRowHeights:");
+	private static readonly IntPtr selSetBackgroundColor_Handle = Selector.GetHandle("setBackgroundColor:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetUsesStaticContents_ = "setUsesStaticContents:";
+	private static readonly IntPtr selGridColorHandle = Selector.GetHandle("gridColor");
 
-	private static readonly IntPtr selSetUsesStaticContents_Handle = Selector.GetHandle("setUsesStaticContents:");
+	private static readonly IntPtr selSetGridColor_Handle = Selector.GetHandle("setGridColor:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetVerticalMotionCanBeginDrag_ = "setVerticalMotionCanBeginDrag:";
+	private static readonly IntPtr selRowHeightHandle = Selector.GetHandle("rowHeight");
 
-	private static readonly IntPtr selSetVerticalMotionCanBeginDrag_Handle = Selector.GetHandle("setVerticalMotionCanBeginDrag:");
+	private static readonly IntPtr selSetRowHeight_Handle = Selector.GetHandle("setRowHeight:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selShouldFocusCell_AtColumn_Row_ = "shouldFocusCell:atColumn:row:";
+	private static readonly IntPtr selDoubleActionHandle = Selector.GetHandle("doubleAction");
 
-	private static readonly IntPtr selShouldFocusCell_AtColumn_Row_Handle = Selector.GetHandle("shouldFocusCell:atColumn:row:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSizeLastColumnToFit = "sizeLastColumnToFit";
-
-	private static readonly IntPtr selSizeLastColumnToFitHandle = Selector.GetHandle("sizeLastColumnToFit");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSizeToFit = "sizeToFit";
-
-	private static readonly IntPtr selSizeToFitHandle = Selector.GetHandle("sizeToFit");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSortDescriptors = "sortDescriptors";
+	private static readonly IntPtr selSetDoubleAction_Handle = Selector.GetHandle("setDoubleAction:");
 
 	private static readonly IntPtr selSortDescriptorsHandle = Selector.GetHandle("sortDescriptors");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTableColumnWithIdentifier_ = "tableColumnWithIdentifier:";
+	private static readonly IntPtr selSetSortDescriptors_Handle = Selector.GetHandle("setSortDescriptors:");
 
-	private static readonly IntPtr selTableColumnWithIdentifier_Handle = Selector.GetHandle("tableColumnWithIdentifier:");
+	private static readonly IntPtr selHighlightedTableColumnHandle = Selector.GetHandle("highlightedTableColumn");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTableColumns = "tableColumns";
-
-	private static readonly IntPtr selTableColumnsHandle = Selector.GetHandle("tableColumns");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTextDidBeginEditing_ = "textDidBeginEditing:";
-
-	private static readonly IntPtr selTextDidBeginEditing_Handle = Selector.GetHandle("textDidBeginEditing:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTextDidChange_ = "textDidChange:";
-
-	private static readonly IntPtr selTextDidChange_Handle = Selector.GetHandle("textDidChange:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTextDidEndEditing_ = "textDidEndEditing:";
-
-	private static readonly IntPtr selTextDidEndEditing_Handle = Selector.GetHandle("textDidEndEditing:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTextShouldBeginEditing_ = "textShouldBeginEditing:";
-
-	private static readonly IntPtr selTextShouldBeginEditing_Handle = Selector.GetHandle("textShouldBeginEditing:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTextShouldEndEditing_ = "textShouldEndEditing:";
-
-	private static readonly IntPtr selTextShouldEndEditing_Handle = Selector.GetHandle("textShouldEndEditing:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTile = "tile";
-
-	private static readonly IntPtr selTileHandle = Selector.GetHandle("tile");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUnhideRowsAtIndexes_WithAnimation_ = "unhideRowsAtIndexes:withAnimation:";
-
-	private static readonly IntPtr selUnhideRowsAtIndexes_WithAnimation_Handle = Selector.GetHandle("unhideRowsAtIndexes:withAnimation:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUserInterfaceLayoutDirection = "userInterfaceLayoutDirection";
-
-	private static readonly IntPtr selUserInterfaceLayoutDirectionHandle = Selector.GetHandle("userInterfaceLayoutDirection");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUsesAlternatingRowBackgroundColors = "usesAlternatingRowBackgroundColors";
-
-	private static readonly IntPtr selUsesAlternatingRowBackgroundColorsHandle = Selector.GetHandle("usesAlternatingRowBackgroundColors");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUsesAutomaticRowHeights = "usesAutomaticRowHeights";
-
-	private static readonly IntPtr selUsesAutomaticRowHeightsHandle = Selector.GetHandle("usesAutomaticRowHeights");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUsesStaticContents = "usesStaticContents";
-
-	private static readonly IntPtr selUsesStaticContentsHandle = Selector.GetHandle("usesStaticContents");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selValidateUserInterfaceItem_ = "validateUserInterfaceItem:";
-
-	private static readonly IntPtr selValidateUserInterfaceItem_Handle = Selector.GetHandle("validateUserInterfaceItem:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selVerticalMotionCanBeginDrag = "verticalMotionCanBeginDrag";
+	private static readonly IntPtr selSetHighlightedTableColumn_Handle = Selector.GetHandle("setHighlightedTableColumn:");
 
 	private static readonly IntPtr selVerticalMotionCanBeginDragHandle = Selector.GetHandle("verticalMotionCanBeginDrag");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selViewAtColumn_Row_MakeIfNecessary_ = "viewAtColumn:row:makeIfNecessary:";
+	private static readonly IntPtr selSetVerticalMotionCanBeginDrag_Handle = Selector.GetHandle("setVerticalMotionCanBeginDrag:");
 
-	private static readonly IntPtr selViewAtColumn_Row_MakeIfNecessary_Handle = Selector.GetHandle("viewAtColumn:row:makeIfNecessary:");
+	private static readonly IntPtr selAllowsMultipleSelectionHandle = Selector.GetHandle("allowsMultipleSelection");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSTableView");
+	private static readonly IntPtr selSetAllowsMultipleSelection_Handle = Selector.GetHandle("setAllowsMultipleSelection:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_WeakDataSource_var;
+	private static readonly IntPtr selAllowsEmptySelectionHandle = Selector.GetHandle("allowsEmptySelection");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_WeakDelegate_var;
+	private static readonly IntPtr selSetAllowsEmptySelection_Handle = Selector.GetHandle("setAllowsEmptySelection:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ColumnDidMoveNotification;
+	private static readonly IntPtr selAllowsColumnSelectionHandle = Selector.GetHandle("allowsColumnSelection");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ColumnDidResizeNotification;
+	private static readonly IntPtr selSetAllowsColumnSelection_Handle = Selector.GetHandle("setAllowsColumnSelection:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _RowViewKey;
+	private static readonly IntPtr selAllowsTypeSelectHandle = Selector.GetHandle("allowsTypeSelect");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _SelectionDidChangeNotification;
+	private static readonly IntPtr selSetAllowsTypeSelect_Handle = Selector.GetHandle("setAllowsTypeSelect:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _SelectionIsChangingNotification;
+	private static readonly IntPtr selSelectionHighlightStyleHandle = Selector.GetHandle("selectionHighlightStyle");
+
+	private static readonly IntPtr selSetSelectionHighlightStyle_Handle = Selector.GetHandle("setSelectionHighlightStyle:");
+
+	private static readonly IntPtr selDraggingDestinationFeedbackStyleHandle = Selector.GetHandle("draggingDestinationFeedbackStyle");
+
+	private static readonly IntPtr selSetDraggingDestinationFeedbackStyle_Handle = Selector.GetHandle("setDraggingDestinationFeedbackStyle:");
+
+	private static readonly IntPtr selAutosaveNameHandle = Selector.GetHandle("autosaveName");
+
+	private static readonly IntPtr selSetAutosaveName_Handle = Selector.GetHandle("setAutosaveName:");
+
+	private static readonly IntPtr selAutosaveTableColumnsHandle = Selector.GetHandle("autosaveTableColumns");
+
+	private static readonly IntPtr selSetAutosaveTableColumns_Handle = Selector.GetHandle("setAutosaveTableColumns:");
+
+	private static readonly IntPtr selFocusedColumnHandle = Selector.GetHandle("focusedColumn");
+
+	private static readonly IntPtr selSetFocusedColumn_Handle = Selector.GetHandle("setFocusedColumn:");
+
+	private static readonly IntPtr selEffectiveRowSizeStyleHandle = Selector.GetHandle("effectiveRowSizeStyle");
+
+	private static readonly IntPtr selRowSizeStyleHandle = Selector.GetHandle("rowSizeStyle");
+
+	private static readonly IntPtr selSetRowSizeStyle_Handle = Selector.GetHandle("setRowSizeStyle:");
+
+	private static readonly IntPtr selFloatsGroupRowsHandle = Selector.GetHandle("floatsGroupRows");
+
+	private static readonly IntPtr selSetFloatsGroupRows_Handle = Selector.GetHandle("setFloatsGroupRows:");
+
+	private static readonly IntPtr selIgnoreModifierKeysWhileDraggingHandle = Selector.GetHandle("ignoreModifierKeysWhileDragging");
+
+	private static readonly IntPtr selInitWithFrame_Handle = Selector.GetHandle("initWithFrame:");
+
+	private static readonly IntPtr selNoteHeightOfRowsWithIndexesChanged_Handle = Selector.GetHandle("noteHeightOfRowsWithIndexesChanged:");
+
+	private static readonly IntPtr selTableColumnsHandle = Selector.GetHandle("tableColumns");
+
+	private static readonly IntPtr selAddTableColumn_Handle = Selector.GetHandle("addTableColumn:");
+
+	private static readonly IntPtr selRemoveTableColumn_Handle = Selector.GetHandle("removeTableColumn:");
+
+	private static readonly IntPtr selMoveColumnToColumn_Handle = Selector.GetHandle("moveColumn:toColumn:");
+
+	private static readonly IntPtr selColumnWithIdentifier_Handle = Selector.GetHandle("columnWithIdentifier:");
+
+	private static readonly IntPtr selTableColumnWithIdentifier_Handle = Selector.GetHandle("tableColumnWithIdentifier:");
+
+	private static readonly IntPtr selTileHandle = Selector.GetHandle("tile");
+
+	private static readonly IntPtr selSizeToFitHandle = Selector.GetHandle("sizeToFit");
+
+	private static readonly IntPtr selSizeLastColumnToFitHandle = Selector.GetHandle("sizeLastColumnToFit");
+
+	private static readonly IntPtr selScrollRowToVisible_Handle = Selector.GetHandle("scrollRowToVisible:");
+
+	private static readonly IntPtr selScrollColumnToVisible_Handle = Selector.GetHandle("scrollColumnToVisible:");
+
+	private static readonly IntPtr selReloadDataHandle = Selector.GetHandle("reloadData");
+
+	private static readonly IntPtr selNoteNumberOfRowsChangedHandle = Selector.GetHandle("noteNumberOfRowsChanged");
+
+	private static readonly IntPtr selReloadDataForRowIndexesColumnIndexes_Handle = Selector.GetHandle("reloadDataForRowIndexes:columnIndexes:");
+
+	private static readonly IntPtr selSetIndicatorImageInTableColumn_Handle = Selector.GetHandle("setIndicatorImage:inTableColumn:");
+
+	private static readonly IntPtr selIndicatorImageInTableColumn_Handle = Selector.GetHandle("indicatorImageInTableColumn:");
+
+	private static readonly IntPtr selCanDragRowsWithIndexesAtPoint_Handle = Selector.GetHandle("canDragRowsWithIndexes:atPoint:");
+
+	private static readonly IntPtr selSetDraggingSourceOperationMaskForLocal_Handle = Selector.GetHandle("setDraggingSourceOperationMask:forLocal:");
+
+	private static readonly IntPtr selSetDropRowDropOperation_Handle = Selector.GetHandle("setDropRow:dropOperation:");
+
+	private static readonly IntPtr selSelectAll_Handle = Selector.GetHandle("selectAll:");
+
+	private static readonly IntPtr selDeselectAll_Handle = Selector.GetHandle("deselectAll:");
+
+	private static readonly IntPtr selSelectColumnIndexesByExtendingSelection_Handle = Selector.GetHandle("selectColumnIndexes:byExtendingSelection:");
+
+	private static readonly IntPtr selSelectRowIndexesByExtendingSelection_Handle = Selector.GetHandle("selectRowIndexes:byExtendingSelection:");
+
+	private static readonly IntPtr selDeselectColumn_Handle = Selector.GetHandle("deselectColumn:");
+
+	private static readonly IntPtr selDeselectRow_Handle = Selector.GetHandle("deselectRow:");
+
+	private static readonly IntPtr selIsColumnSelected_Handle = Selector.GetHandle("isColumnSelected:");
+
+	private static readonly IntPtr selIsRowSelected_Handle = Selector.GetHandle("isRowSelected:");
+
+	private static readonly IntPtr selRectOfColumn_Handle = Selector.GetHandle("rectOfColumn:");
+
+	private static readonly IntPtr selRectOfRow_Handle = Selector.GetHandle("rectOfRow:");
+
+	private static readonly IntPtr selColumnIndexesInRect_Handle = Selector.GetHandle("columnIndexesInRect:");
+
+	private static readonly IntPtr selRowsInRect_Handle = Selector.GetHandle("rowsInRect:");
+
+	private static readonly IntPtr selColumnAtPoint_Handle = Selector.GetHandle("columnAtPoint:");
+
+	private static readonly IntPtr selRowAtPoint_Handle = Selector.GetHandle("rowAtPoint:");
+
+	private static readonly IntPtr selFrameOfCellAtColumnRow_Handle = Selector.GetHandle("frameOfCellAtColumn:row:");
+
+	private static readonly IntPtr selPreparedCellAtColumnRow_Handle = Selector.GetHandle("preparedCellAtColumn:row:");
+
+	private static readonly IntPtr selTextShouldBeginEditing_Handle = Selector.GetHandle("textShouldBeginEditing:");
+
+	private static readonly IntPtr selTextShouldEndEditing_Handle = Selector.GetHandle("textShouldEndEditing:");
+
+	private static readonly IntPtr selTextDidBeginEditing_Handle = Selector.GetHandle("textDidBeginEditing:");
+
+	private static readonly IntPtr selTextDidEndEditing_Handle = Selector.GetHandle("textDidEndEditing:");
+
+	private static readonly IntPtr selTextDidChange_Handle = Selector.GetHandle("textDidChange:");
+
+	private static readonly IntPtr selShouldFocusCellAtColumnRow_Handle = Selector.GetHandle("shouldFocusCell:atColumn:row:");
+
+	private static readonly IntPtr selPerformClickOnCellAtColumnRow_Handle = Selector.GetHandle("performClickOnCellAtColumn:row:");
+
+	private static readonly IntPtr selEditColumnRowWithEventSelect_Handle = Selector.GetHandle("editColumn:row:withEvent:select:");
+
+	private static readonly IntPtr selDrawRowClipRect_Handle = Selector.GetHandle("drawRow:clipRect:");
+
+	private static readonly IntPtr selHighlightSelectionInClipRect_Handle = Selector.GetHandle("highlightSelectionInClipRect:");
+
+	private static readonly IntPtr selDrawGridInClipRect_Handle = Selector.GetHandle("drawGridInClipRect:");
+
+	private static readonly IntPtr selDrawBackgroundInClipRect_Handle = Selector.GetHandle("drawBackgroundInClipRect:");
+
+	private static readonly IntPtr selViewAtColumnRowMakeIfNecessary_Handle = Selector.GetHandle("viewAtColumn:row:makeIfNecessary:");
+
+	private static readonly IntPtr selRowViewAtRowMakeIfNecessary_Handle = Selector.GetHandle("rowViewAtRow:makeIfNecessary:");
+
+	private static readonly IntPtr selRowForView_Handle = Selector.GetHandle("rowForView:");
+
+	private static readonly IntPtr selColumnForView_Handle = Selector.GetHandle("columnForView:");
+
+	private static readonly IntPtr selMakeViewWithIdentifierOwner_Handle = Selector.GetHandle("makeViewWithIdentifier:owner:");
+
+	private static readonly IntPtr selEnumerateAvailableRowViewsUsingBlock_Handle = Selector.GetHandle("enumerateAvailableRowViewsUsingBlock:");
+
+	private static readonly IntPtr selBeginUpdatesHandle = Selector.GetHandle("beginUpdates");
+
+	private static readonly IntPtr selEndUpdatesHandle = Selector.GetHandle("endUpdates");
+
+	private static readonly IntPtr selInsertRowsAtIndexesWithAnimation_Handle = Selector.GetHandle("insertRowsAtIndexes:withAnimation:");
+
+	private static readonly IntPtr selRemoveRowsAtIndexesWithAnimation_Handle = Selector.GetHandle("removeRowsAtIndexes:withAnimation:");
+
+	private static readonly IntPtr selMoveRowAtIndexToIndex_Handle = Selector.GetHandle("moveRowAtIndex:toIndex:");
+
+	private static readonly IntPtr selDraggingSourceOperationMaskForLocal_Handle = Selector.GetHandle("draggingSourceOperationMaskForLocal:");
+
+	private static readonly IntPtr selNamesOfPromisedFilesDroppedAtDestination_Handle = Selector.GetHandle("namesOfPromisedFilesDroppedAtDestination:");
+
+	private static readonly IntPtr selDraggedImageBeganAt_Handle = Selector.GetHandle("draggedImage:beganAt:");
+
+	private static readonly IntPtr selDraggedImageEndedAtOperation_Handle = Selector.GetHandle("draggedImage:endedAt:operation:");
+
+	private static readonly IntPtr selDraggedImageMovedTo_Handle = Selector.GetHandle("draggedImage:movedTo:");
+
+	private static readonly IntPtr selDraggedImageEndedAtDeposited_Handle = Selector.GetHandle("draggedImage:endedAt:deposited:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSTableView");
+
+	private object __mt_SelectedColumns_var;
+
+	private object __mt_SelectedRows_var;
+
+	private object __mt_WeakDataSource_var;
+
+	private object __mt_WeakDelegate_var;
+
+	private object __mt_HeaderView_var;
+
+	private object __mt_CornerView_var;
+
+	private object __mt_BackgroundColor_var;
+
+	private object __mt_GridColor_var;
+
+	private object __mt_SortDescriptors_var;
+
+	private object __mt_HighlightedTableColumn_var;
+
+	private static NSString _RowViewKey;
 
 	public NSTableViewSource Source
 	{
@@ -1344,291 +625,297 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public new virtual NSObject[] AccessibilityColumnHeaderUIElements
+	public virtual long ColumnCount
 	{
-		[Export("accessibilityColumnHeaderUIElements")]
+		[Export("numberOfColumns")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityColumnHeaderUIElementsHandle));
+				return Messaging.Int64_objc_msgSend(base.Handle, selNumberOfColumnsHandle);
 			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityColumnHeaderUIElementsHandle));
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selNumberOfColumnsHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public new virtual NSObject[] AccessibilityColumns
+	public virtual long RowCount
 	{
-		[Export("accessibilityColumns")]
+		[Export("numberOfRows")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityColumnsHandle));
+				return Messaging.Int64_objc_msgSend(base.Handle, selNumberOfRowsHandle);
 			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityColumnsHandle));
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selNumberOfRowsHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public new virtual bool AccessibilityFocused
+	public virtual long EditedColumn
 	{
-		[Export("isAccessibilityFocused")]
+		[Export("editedColumn")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsAccessibilityFocusedHandle);
+				return Messaging.Int64_objc_msgSend(base.Handle, selEditedColumnHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsAccessibilityFocusedHandle);
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selEditedColumnHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public new virtual CGRect AccessibilityFrame
+	public virtual long EditedRow
 	{
-		[Export("accessibilityFrame")]
+		[Export("editedRow")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			CGRect retval;
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selAccessibilityFrameHandle);
+				return Messaging.Int64_objc_msgSend(base.Handle, selEditedRowHandle);
 			}
-			else
-			{
-				Messaging.CGRect_objc_msgSendSuper_stret(out retval, base.SuperHandle, selAccessibilityFrameHandle);
-			}
-			return retval;
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selEditedRowHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'AccessibilityHeader' instead.")]
-	public virtual string AccessibilityHeaderGroup
+	public virtual long ClickedColumn
 	{
-		[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'AccessibilityHeader' instead.")]
-		[Export("accessibilityHeaderGroup")]
+		[Export("clickedColumn")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityHeaderGroupHandle));
+				return Messaging.Int64_objc_msgSend(base.Handle, selClickedColumnHandle);
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityHeaderGroupHandle));
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selClickedColumnHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public new virtual string AccessibilityIdentifier
+	public virtual long ClickedRow
 	{
-		[Export("accessibilityIdentifier")]
+		[Export("clickedRow")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityIdentifierHandle));
+				return Messaging.Int64_objc_msgSend(base.Handle, selClickedRowHandle);
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityIdentifierHandle));
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selClickedRowHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public new virtual string? AccessibilityLabel
+	public virtual NSIndexSet SelectedColumns
 	{
-		[Export("accessibilityLabel")]
+		[Export("selectedColumnIndexes")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityLabelHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityLabelHandle));
+			return (NSIndexSet)(__mt_SelectedColumns_var = ((!IsDirectBinding) ? ((NSIndexSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectedColumnIndexesHandle))) : ((NSIndexSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectedColumnIndexesHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public new virtual NSObject? AccessibilityParent
+	public virtual NSIndexSet SelectedRows
 	{
-		[Export("accessibilityParent")]
+		[Export("selectedRowIndexes")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityParentHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityParentHandle));
+			return (NSIndexSet)(__mt_SelectedRows_var = ((!IsDirectBinding) ? ((NSIndexSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectedRowIndexesHandle))) : ((NSIndexSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectedRowIndexesHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public new virtual NSObject[] AccessibilityRowHeaderUIElements
+	public virtual int SelectedColumn
 	{
-		[Export("accessibilityRowHeaderUIElements")]
+		[Export("selectedColumn")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityRowHeaderUIElementsHandle));
+				return Messaging.int_objc_msgSend(base.Handle, selSelectedColumnHandle);
 			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityRowHeaderUIElementsHandle));
+			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selSelectedColumnHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public new virtual INSAccessibilityRow[]? AccessibilityRows
+	public virtual long SelectedRow
 	{
-		[Export("accessibilityRows")]
+		[Export("selectedRow")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSArray.ArrayFromHandle<INSAccessibilityRow>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityRowsHandle));
+				return Messaging.Int64_objc_msgSend(base.Handle, selSelectedRowHandle);
 			}
-			return NSArray.ArrayFromHandle<INSAccessibilityRow>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityRowsHandle));
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selSelectedRowHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public new virtual NSObject[] AccessibilitySelectedCells
+	public virtual long SelectedColumnsCount
 	{
-		[Export("accessibilitySelectedCells")]
+		[Export("numberOfSelectedColumns")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilitySelectedCellsHandle));
+				return Messaging.Int64_objc_msgSend(base.Handle, selNumberOfSelectedColumnsHandle);
 			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilitySelectedCellsHandle));
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selNumberOfSelectedColumnsHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public new virtual NSObject[] AccessibilitySelectedColumns
+	public virtual long SelectedRowCount
 	{
-		[Export("accessibilitySelectedColumns")]
+		[Export("numberOfSelectedRows")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilitySelectedColumnsHandle));
+				return Messaging.Int64_objc_msgSend(base.Handle, selNumberOfSelectedRowsHandle);
 			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilitySelectedColumnsHandle));
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selNumberOfSelectedRowsHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public new virtual INSAccessibilityRow[]? AccessibilitySelectedRows
+	public virtual NSObject WeakDataSource
 	{
-		[Export("accessibilitySelectedRows")]
+		[Export("dataSource")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<INSAccessibilityRow>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilitySelectedRowsHandle));
-			}
-			return NSArray.ArrayFromHandle<INSAccessibilityRow>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilitySelectedRowsHandle));
+			return (NSObject)(__mt_WeakDataSource_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDataSourceHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDataSourceHandle))));
 		}
-		[Export("setAccessibilitySelectedRows:")]
+		[Export("setDataSource:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAccessibilitySelectedRows_Handle, nSArray?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDataSource_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAccessibilitySelectedRows_Handle, nSArray?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDataSource_Handle, value?.Handle ?? IntPtr.Zero);
 			}
-			nSArray?.Dispose();
+			__mt_WeakDataSource_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public new virtual NSObject[] AccessibilityVisibleCells
+	public NSTableViewDataSource DataSource
 	{
-		[Export("accessibilityVisibleCells")]
+		get
+		{
+			return WeakDataSource as NSTableViewDataSource;
+		}
+		set
+		{
+			WeakDataSource = value;
+		}
+	}
+
+	public virtual NSObject WeakDelegate
+	{
+		[Export("delegate", ArgumentSemantic.Assign)]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
+		}
+		[Export("setDelegate:", ArgumentSemantic.Assign)]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
 			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityVisibleCellsHandle));
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityVisibleCellsHandle));
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			__mt_WeakDelegate_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public new virtual NSObject[] AccessibilityVisibleColumns
+	public NSTableViewDelegate Delegate
 	{
-		[Export("accessibilityVisibleColumns")]
+		get
+		{
+			return WeakDelegate as NSTableViewDelegate;
+		}
+		set
+		{
+			WeakDelegate = value;
+		}
+	}
+
+	public virtual NSTableHeaderView HeaderView
+	{
+		[Export("headerView")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			return (NSTableHeaderView)(__mt_HeaderView_var = ((!IsDirectBinding) ? ((NSTableHeaderView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selHeaderViewHandle))) : ((NSTableHeaderView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selHeaderViewHandle)))));
+		}
+		[Export("setHeaderView:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
 			{
-				return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityVisibleColumnsHandle));
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetHeaderView_Handle, value?.Handle ?? IntPtr.Zero);
 			}
-			return NSArray.ArrayFromHandle<NSObject>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityVisibleColumnsHandle));
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetHeaderView_Handle, value?.Handle ?? IntPtr.Zero);
+			}
+			__mt_HeaderView_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public new virtual INSAccessibilityRow[] AccessibilityVisibleRows
+	public virtual NSView CornerView
 	{
-		[Export("accessibilityVisibleRows")]
+		[Export("cornerView")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			return (NSView)(__mt_CornerView_var = ((!IsDirectBinding) ? ((NSView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCornerViewHandle))) : ((NSView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCornerViewHandle)))));
+		}
+		[Export("setCornerView:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
 			{
-				return NSArray.ArrayFromHandle<INSAccessibilityRow>(Messaging.IntPtr_objc_msgSend(base.Handle, selAccessibilityVisibleRowsHandle));
+				throw new ArgumentNullException("value");
 			}
-			return NSArray.ArrayFromHandle<INSAccessibilityRow>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAccessibilityVisibleRowsHandle));
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCornerView_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCornerView_Handle, value.Handle);
+			}
+			__mt_CornerView_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool AllowsColumnReordering
 	{
 		[Export("allowsColumnReordering")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selAllowsColumnReorderingHandle);
 			}
@@ -1638,7 +925,7 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsColumnReordering_Handle, value);
 			}
@@ -1649,14 +936,13 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool AllowsColumnResizing
 	{
 		[Export("allowsColumnResizing")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selAllowsColumnResizingHandle);
 			}
@@ -1666,7 +952,7 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsColumnResizing_Handle, value);
 			}
@@ -1677,70 +963,320 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AllowsColumnSelection
+	public virtual NSTableViewColumnAutoresizingStyle ColumnAutoresizingStyle
 	{
-		[Export("allowsColumnSelection")]
+		[Export("columnAutoresizingStyle")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAllowsColumnSelectionHandle);
+				return (NSTableViewColumnAutoresizingStyle)Messaging.UInt64_objc_msgSend(base.Handle, selColumnAutoresizingStyleHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAllowsColumnSelectionHandle);
+			return (NSTableViewColumnAutoresizingStyle)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selColumnAutoresizingStyleHandle);
 		}
-		[Export("setAllowsColumnSelection:")]
+		[Export("setColumnAutoresizingStyle:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsColumnSelection_Handle, value);
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetColumnAutoresizingStyle_Handle, (ulong)value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAllowsColumnSelection_Handle, value);
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetColumnAutoresizingStyle_Handle, (ulong)value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AllowsEmptySelection
+	public virtual NSTableViewGridStyle GridStyleMask
 	{
-		[Export("allowsEmptySelection")]
+		[Export("gridStyleMask")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAllowsEmptySelectionHandle);
+				return (NSTableViewGridStyle)Messaging.UInt64_objc_msgSend(base.Handle, selGridStyleMaskHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAllowsEmptySelectionHandle);
+			return (NSTableViewGridStyle)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selGridStyleMaskHandle);
 		}
-		[Export("setAllowsEmptySelection:")]
+		[Export("setGridStyleMask:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsEmptySelection_Handle, value);
+				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetGridStyleMask_Handle, (ulong)value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAllowsEmptySelection_Handle, value);
+				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetGridStyleMask_Handle, (ulong)value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGSize IntercellSpacing
+	{
+		[Export("intercellSpacing")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.CGSize_objc_msgSend(base.Handle, selIntercellSpacingHandle);
+			}
+			return Messaging.CGSize_objc_msgSendSuper(base.SuperHandle, selIntercellSpacingHandle);
+		}
+		[Export("setIntercellSpacing:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_CGSize(base.Handle, selSetIntercellSpacing_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_CGSize(base.SuperHandle, selSetIntercellSpacing_Handle, value);
+			}
+		}
+	}
+
+	public virtual bool UsesAlternatingRowBackgroundColors
+	{
+		[Export("usesAlternatingRowBackgroundColors")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selUsesAlternatingRowBackgroundColorsHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selUsesAlternatingRowBackgroundColorsHandle);
+		}
+		[Export("setUsesAlternatingRowBackgroundColors:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetUsesAlternatingRowBackgroundColors_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetUsesAlternatingRowBackgroundColors_Handle, value);
+			}
+		}
+	}
+
+	public virtual NSColor BackgroundColor
+	{
+		[Export("backgroundColor")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSColor)(__mt_BackgroundColor_var = ((!IsDirectBinding) ? ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle))) : ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle)))));
+		}
+		[Export("setBackgroundColor:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBackgroundColor_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBackgroundColor_Handle, value.Handle);
+			}
+			__mt_BackgroundColor_var = value;
+		}
+	}
+
+	public virtual NSColor GridColor
+	{
+		[Export("gridColor")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSColor)(__mt_GridColor_var = ((!IsDirectBinding) ? ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selGridColorHandle))) : ((NSColor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selGridColorHandle)))));
+		}
+		[Export("setGridColor:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetGridColor_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetGridColor_Handle, value.Handle);
+			}
+			__mt_GridColor_var = value;
+		}
+	}
+
+	public virtual double RowHeight
+	{
+		[Export("rowHeight")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.Double_objc_msgSend(base.Handle, selRowHeightHandle);
+			}
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selRowHeightHandle);
+		}
+		[Export("setRowHeight:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Double(base.Handle, selSetRowHeight_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Double(base.SuperHandle, selSetRowHeight_Handle, value);
+			}
+		}
+	}
+
+	public virtual Selector DoubleAction
+	{
+		[Export("doubleAction")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Selector.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDoubleActionHandle));
+			}
+			return Selector.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDoubleActionHandle));
+		}
+		[Export("setDoubleAction:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDoubleAction_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDoubleAction_Handle, value.Handle);
+			}
+		}
+	}
+
+	public virtual NSSortDescriptor[] SortDescriptors
+	{
+		[Export("sortDescriptors")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSSortDescriptor[])(__mt_SortDescriptors_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSSortDescriptor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSortDescriptorsHandle)) : NSArray.ArrayFromHandle<NSSortDescriptor>(Messaging.IntPtr_objc_msgSend(base.Handle, selSortDescriptorsHandle))));
+		}
+		[Export("setSortDescriptors:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			NSArray nSArray = NSArray.FromNSObjects(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSortDescriptors_Handle, nSArray.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSortDescriptors_Handle, nSArray.Handle);
+			}
+			nSArray.Dispose();
+			__mt_SortDescriptors_var = value;
+		}
+	}
+
+	public virtual NSTableColumn HighlightedTableColumn
+	{
+		[Export("highlightedTableColumn")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSTableColumn)(__mt_HighlightedTableColumn_var = ((!IsDirectBinding) ? ((NSTableColumn)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selHighlightedTableColumnHandle))) : ((NSTableColumn)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selHighlightedTableColumnHandle)))));
+		}
+		[Export("setHighlightedTableColumn:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetHighlightedTableColumn_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetHighlightedTableColumn_Handle, value.Handle);
+			}
+			__mt_HighlightedTableColumn_var = value;
+		}
+	}
+
+	public virtual bool VerticalMotionCanBeginDrag
+	{
+		[Export("verticalMotionCanBeginDrag")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selVerticalMotionCanBeginDragHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selVerticalMotionCanBeginDragHandle);
+		}
+		[Export("setVerticalMotionCanBeginDrag:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetVerticalMotionCanBeginDrag_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetVerticalMotionCanBeginDrag_Handle, value);
+			}
+		}
+	}
+
 	public virtual bool AllowsMultipleSelection
 	{
 		[Export("allowsMultipleSelection")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selAllowsMultipleSelectionHandle);
 			}
@@ -1750,7 +1286,7 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsMultipleSelection_Handle, value);
 			}
@@ -1761,14 +1297,67 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool AllowsEmptySelection
+	{
+		[Export("allowsEmptySelection")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selAllowsEmptySelectionHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAllowsEmptySelectionHandle);
+		}
+		[Export("setAllowsEmptySelection:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsEmptySelection_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAllowsEmptySelection_Handle, value);
+			}
+		}
+	}
+
+	public virtual bool AllowsColumnSelection
+	{
+		[Export("allowsColumnSelection")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selAllowsColumnSelectionHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAllowsColumnSelectionHandle);
+		}
+		[Export("setAllowsColumnSelection:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsColumnSelection_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAllowsColumnSelection_Handle, value);
+			}
+		}
+	}
+
 	public virtual bool AllowsTypeSelect
 	{
 		[Export("allowsTypeSelect")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selAllowsTypeSelectHandle);
 			}
@@ -1778,7 +1367,7 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsTypeSelect_Handle, value);
 			}
@@ -1789,14 +1378,67 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSTableViewSelectionHighlightStyle SelectionHighlightStyle
+	{
+		[Export("selectionHighlightStyle")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return (NSTableViewSelectionHighlightStyle)Messaging.Int64_objc_msgSend(base.Handle, selSelectionHighlightStyleHandle);
+			}
+			return (NSTableViewSelectionHighlightStyle)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selSelectionHighlightStyleHandle);
+		}
+		[Export("setSelectionHighlightStyle:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetSelectionHighlightStyle_Handle, (long)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetSelectionHighlightStyle_Handle, (long)value);
+			}
+		}
+	}
+
+	public virtual NSTableViewDraggingDestinationFeedbackStyle DraggingDestinationFeedbackStyle
+	{
+		[Export("draggingDestinationFeedbackStyle")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return (NSTableViewDraggingDestinationFeedbackStyle)Messaging.Int64_objc_msgSend(base.Handle, selDraggingDestinationFeedbackStyleHandle);
+			}
+			return (NSTableViewDraggingDestinationFeedbackStyle)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selDraggingDestinationFeedbackStyleHandle);
+		}
+		[Export("setDraggingDestinationFeedbackStyle:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetDraggingDestinationFeedbackStyle_Handle, (long)value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetDraggingDestinationFeedbackStyle_Handle, (long)value);
+			}
+		}
+	}
+
 	public virtual string AutosaveName
 	{
 		[Export("autosaveName")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAutosaveNameHandle));
 			}
@@ -1811,7 +1453,7 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAutosaveName_Handle, arg);
 			}
@@ -1823,14 +1465,13 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool AutosaveTableColumns
 	{
 		[Export("autosaveTableColumns")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selAutosaveTableColumnsHandle);
 			}
@@ -1840,7 +1481,7 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetAutosaveTableColumns_Handle, value);
 			}
@@ -1851,277 +1492,40 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSColor BackgroundColor
+	public virtual long FocusedColumn
 	{
-		[Export("backgroundColor", ArgumentSemantic.Copy)]
+		[Export("focusedColumn")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selBackgroundColorHandle));
+				return Messaging.Int64_objc_msgSend(base.Handle, selFocusedColumnHandle);
 			}
-			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selBackgroundColorHandle));
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selFocusedColumnHandle);
 		}
-		[Export("setBackgroundColor:", ArgumentSemantic.Copy)]
+		[Export("setFocusedColumn:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (value == null)
+			if (IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetBackgroundColor_Handle, value.Handle);
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetFocusedColumn_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetBackgroundColor_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetFocusedColumn_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint ClickedColumn
-	{
-		[Export("clickedColumn")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selClickedColumnHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selClickedColumnHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint ClickedRow
-	{
-		[Export("clickedRow")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selClickedRowHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selClickedRowHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSTableViewColumnAutoresizingStyle ColumnAutoresizingStyle
-	{
-		[Export("columnAutoresizingStyle")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSTableViewColumnAutoresizingStyle)Messaging.UInt64_objc_msgSend(base.Handle, selColumnAutoresizingStyleHandle);
-			}
-			return (NSTableViewColumnAutoresizingStyle)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selColumnAutoresizingStyleHandle);
-		}
-		[Export("setColumnAutoresizingStyle:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetColumnAutoresizingStyle_Handle, (ulong)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetColumnAutoresizingStyle_Handle, (ulong)value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint ColumnCount
-	{
-		[Export("numberOfColumns")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selNumberOfColumnsHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selNumberOfColumnsHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSView CornerView
-	{
-		[Export("cornerView", ArgumentSemantic.Retain)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSView>(Messaging.IntPtr_objc_msgSend(base.Handle, selCornerViewHandle));
-			}
-			return Runtime.GetNSObject<NSView>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCornerViewHandle));
-		}
-		[Export("setCornerView:", ArgumentSemantic.Retain)]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCornerView_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetCornerView_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public INSTableViewDataSource? DataSource
-	{
-		get
-		{
-			return WeakDataSource as INSTableViewDataSource;
-		}
-		set
-		{
-			NSObject nSObject = value as NSObject;
-			if (value != null && nSObject == null)
-			{
-				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
-			}
-			WeakDataSource = nSObject;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public INSTableViewDelegate? Delegate
-	{
-		get
-		{
-			return WeakDelegate as INSTableViewDelegate;
-		}
-		set
-		{
-			NSObject nSObject = value as NSObject;
-			if (value != null && nSObject == null)
-			{
-				throw new ArgumentException("The object passed of type " + value.GetType()?.ToString() + " does not derive from NSObject");
-			}
-			WeakDelegate = nSObject;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual Selector DoubleAction
-	{
-		[Export("doubleAction")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Selector.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDoubleActionHandle));
-			}
-			return Selector.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDoubleActionHandle));
-		}
-		[Export("setDoubleAction:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDoubleAction_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDoubleAction_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSTableViewDraggingDestinationFeedbackStyle DraggingDestinationFeedbackStyle
-	{
-		[Export("draggingDestinationFeedbackStyle")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSTableViewDraggingDestinationFeedbackStyle)Messaging.Int64_objc_msgSend(base.Handle, selDraggingDestinationFeedbackStyleHandle);
-			}
-			return (NSTableViewDraggingDestinationFeedbackStyle)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selDraggingDestinationFeedbackStyleHandle);
-		}
-		[Export("setDraggingDestinationFeedbackStyle:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetDraggingDestinationFeedbackStyle_Handle, (long)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetDraggingDestinationFeedbackStyle_Handle, (long)value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint EditedColumn
-	{
-		[Export("editedColumn")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selEditedColumnHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selEditedColumnHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint EditedRow
-	{
-		[Export("editedRow")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selEditedRowHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selEditedRowHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSTableViewRowSizeStyle EffectiveRowSizeStyle
 	{
 		[Export("effectiveRowSizeStyle")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (NSTableViewRowSizeStyle)Messaging.Int64_objc_msgSend(base.Handle, selEffectiveRowSizeStyleHandle);
 			}
@@ -2129,342 +1533,13 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool FloatsGroupRows
-	{
-		[Export("floatsGroupRows")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selFloatsGroupRowsHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selFloatsGroupRowsHandle);
-		}
-		[Export("setFloatsGroupRows:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetFloatsGroupRows_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetFloatsGroupRows_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, "Use a View Based TableView; observe the window’s firstResponder.")]
-	public virtual nint FocusedColumn
-	{
-		[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, "Use a View Based TableView; observe the window’s firstResponder.")]
-		[Export("focusedColumn")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selFocusedColumnHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selFocusedColumnHandle);
-		}
-		[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, "Use a View Based TableView; observe the window’s firstResponder.")]
-		[Export("setFocusedColumn:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetFocusedColumn_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetFocusedColumn_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSColor GridColor
-	{
-		[Export("gridColor", ArgumentSemantic.Copy)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSend(base.Handle, selGridColorHandle));
-			}
-			return Runtime.GetNSObject<NSColor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selGridColorHandle));
-		}
-		[Export("setGridColor:", ArgumentSemantic.Copy)]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetGridColor_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetGridColor_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSTableViewGridStyle GridStyleMask
-	{
-		[Export("gridStyleMask")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSTableViewGridStyle)Messaging.UInt64_objc_msgSend(base.Handle, selGridStyleMaskHandle);
-			}
-			return (NSTableViewGridStyle)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selGridStyleMaskHandle);
-		}
-		[Export("setGridStyleMask:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetGridStyleMask_Handle, (ulong)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetGridStyleMask_Handle, (ulong)value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSTableHeaderView? HeaderView
-	{
-		[Export("headerView", ArgumentSemantic.Retain)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSTableHeaderView>(Messaging.IntPtr_objc_msgSend(base.Handle, selHeaderViewHandle));
-			}
-			return Runtime.GetNSObject<NSTableHeaderView>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selHeaderViewHandle));
-		}
-		[Export("setHeaderView:", ArgumentSemantic.Retain)]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetHeaderView_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetHeaderView_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	public virtual NSIndexSet HiddenRowIndexes
-	{
-		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-		[Export("hiddenRowIndexes", ArgumentSemantic.Copy)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSIndexSet>(Messaging.IntPtr_objc_msgSend(base.Handle, selHiddenRowIndexesHandle));
-			}
-			return Runtime.GetNSObject<NSIndexSet>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selHiddenRowIndexesHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSTableColumn HighlightedTableColumn
-	{
-		[Export("highlightedTableColumn")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSTableColumn>(Messaging.IntPtr_objc_msgSend(base.Handle, selHighlightedTableColumnHandle));
-			}
-			return Runtime.GetNSObject<NSTableColumn>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selHighlightedTableColumnHandle));
-		}
-		[Export("setHighlightedTableColumn:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetHighlightedTableColumn_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetHighlightedTableColumn_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool IgnoreModifierKeysWhileDragging
-	{
-		[Export("ignoreModifierKeysWhileDragging")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIgnoreModifierKeysWhileDraggingHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIgnoreModifierKeysWhileDraggingHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGSize IntercellSpacing
-	{
-		[Export("intercellSpacing")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.CGSize_objc_msgSend(base.Handle, selIntercellSpacingHandle);
-			}
-			return Messaging.CGSize_objc_msgSendSuper(base.SuperHandle, selIntercellSpacingHandle);
-		}
-		[Export("setIntercellSpacing:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_CGSize(base.Handle, selSetIntercellSpacing_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_CGSize(base.SuperHandle, selSetIntercellSpacing_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary RegisteredNibsByIdentifier
-	{
-		[Export("registeredNibsByIdentifier", ArgumentSemantic.Copy)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selRegisteredNibsByIdentifierHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRegisteredNibsByIdentifierHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	public virtual bool RowActionsVisible
-	{
-		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-		[Export("rowActionsVisible")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selRowActionsVisibleHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selRowActionsVisibleHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-		[Export("setRowActionsVisible:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetRowActionsVisible_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetRowActionsVisible_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint RowCount
-	{
-		[Export("numberOfRows")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selNumberOfRowsHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selNumberOfRowsHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nfloat RowHeight
-	{
-		[Export("rowHeight")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selRowHeightHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selRowHeightHandle);
-		}
-		[Export("setRowHeight:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetRowHeight_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetRowHeight_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSTableViewRowSizeStyle RowSizeStyle
 	{
 		[Export("rowSizeStyle")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (NSTableViewRowSizeStyle)Messaging.Int64_objc_msgSend(base.Handle, selRowSizeStyleHandle);
 			}
@@ -2474,7 +1549,7 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_Int64(base.Handle, selSetRowSizeStyle_Handle, (long)value);
 			}
@@ -2485,391 +1560,44 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint SelectedColumn
+	public virtual bool FloatsGroupRows
 	{
-		[Export("selectedColumn")]
+		[Export("floatsGroupRows")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nint_objc_msgSend(base.Handle, selSelectedColumnHandle);
+				return Messaging.bool_objc_msgSend(base.Handle, selFloatsGroupRowsHandle);
 			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selSelectedColumnHandle);
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selFloatsGroupRowsHandle);
 		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSIndexSet SelectedColumns
-	{
-		[Export("selectedColumnIndexes")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSIndexSet>(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectedColumnIndexesHandle));
-			}
-			return Runtime.GetNSObject<NSIndexSet>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectedColumnIndexesHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint SelectedColumnsCount
-	{
-		[Export("numberOfSelectedColumns")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selNumberOfSelectedColumnsHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selNumberOfSelectedColumnsHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint SelectedRow
-	{
-		[Export("selectedRow")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selSelectedRowHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selSelectedRowHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint SelectedRowCount
-	{
-		[Export("numberOfSelectedRows")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selNumberOfSelectedRowsHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selNumberOfSelectedRowsHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSIndexSet SelectedRows
-	{
-		[Export("selectedRowIndexes")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSIndexSet>(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectedRowIndexesHandle));
-			}
-			return Runtime.GetNSObject<NSIndexSet>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectedRowIndexesHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSTableViewSelectionHighlightStyle SelectionHighlightStyle
-	{
-		[Export("selectionHighlightStyle")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSTableViewSelectionHighlightStyle)Messaging.Int64_objc_msgSend(base.Handle, selSelectionHighlightStyleHandle);
-			}
-			return (NSTableViewSelectionHighlightStyle)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selSelectionHighlightStyleHandle);
-		}
-		[Export("setSelectionHighlightStyle:")]
+		[Export("setFloatsGroupRows:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetSelectionHighlightStyle_Handle, (long)value);
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetFloatsGroupRows_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetSelectionHighlightStyle_Handle, (long)value);
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetFloatsGroupRows_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSSortDescriptor[] SortDescriptors
+	public virtual bool IgnoreModifierKeysWhileDragging
 	{
-		[Export("sortDescriptors", ArgumentSemantic.Copy)]
+		[Export("ignoreModifierKeysWhileDragging")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return NSArray.ArrayFromHandle<NSSortDescriptor>(Messaging.IntPtr_objc_msgSend(base.Handle, selSortDescriptorsHandle));
+				return Messaging.bool_objc_msgSend(base.Handle, selIgnoreModifierKeysWhileDraggingHandle);
 			}
-			return NSArray.ArrayFromHandle<NSSortDescriptor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSortDescriptorsHandle));
-		}
-		[Export("setSortDescriptors:", ArgumentSemantic.Copy)]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			NSArray nSArray = NSArray.FromNSObjects(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSortDescriptors_Handle, nSArray.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSortDescriptors_Handle, nSArray.Handle);
-			}
-			nSArray.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	public new virtual NSUserInterfaceLayoutDirection UserInterfaceLayoutDirection
-	{
-		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-		[Export("userInterfaceLayoutDirection")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return (NSUserInterfaceLayoutDirection)Messaging.Int64_objc_msgSend(base.Handle, selUserInterfaceLayoutDirectionHandle);
-			}
-			return (NSUserInterfaceLayoutDirection)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selUserInterfaceLayoutDirectionHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-		[Export("setUserInterfaceLayoutDirection:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetUserInterfaceLayoutDirection_Handle, (long)value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetUserInterfaceLayoutDirection_Handle, (long)value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool UsesAlternatingRowBackgroundColors
-	{
-		[Export("usesAlternatingRowBackgroundColors")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selUsesAlternatingRowBackgroundColorsHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selUsesAlternatingRowBackgroundColorsHandle);
-		}
-		[Export("setUsesAlternatingRowBackgroundColors:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetUsesAlternatingRowBackgroundColors_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetUsesAlternatingRowBackgroundColors_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-	public virtual bool UsesAutomaticRowHeights
-	{
-		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-		[Export("usesAutomaticRowHeights")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selUsesAutomaticRowHeightsHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selUsesAutomaticRowHeightsHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-		[Export("setUsesAutomaticRowHeights:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetUsesAutomaticRowHeights_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetUsesAutomaticRowHeights_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual bool UsesStaticContents
-	{
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("usesStaticContents")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selUsesStaticContentsHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selUsesStaticContentsHandle);
-		}
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setUsesStaticContents:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetUsesStaticContents_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetUsesStaticContents_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool VerticalMotionCanBeginDrag
-	{
-		[Export("verticalMotionCanBeginDrag")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selVerticalMotionCanBeginDragHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selVerticalMotionCanBeginDragHandle);
-		}
-		[Export("setVerticalMotionCanBeginDrag:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetVerticalMotionCanBeginDrag_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetVerticalMotionCanBeginDrag_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject? WeakDataSource
-	{
-		[Export("dataSource", ArgumentSemantic.Assign)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDataSourceHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDataSourceHandle)));
-			MarkDirty();
-			__mt_WeakDataSource_var = nSObject;
-			return nSObject;
-		}
-		[Export("setDataSource:", ArgumentSemantic.Assign)]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDataSource_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDataSource_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			MarkDirty();
-			__mt_WeakDataSource_var = value;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject? WeakDelegate
-	{
-		[Export("delegate", ArgumentSemantic.Assign)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle)));
-			MarkDirty();
-			__mt_WeakDelegate_var = nSObject;
-			return nSObject;
-		}
-		[Export("setDelegate:", ArgumentSemantic.Assign)]
-		set
-		{
-			NSApplication.EnsureDelegateAssignIsNotOverwritingInternalDelegate(__mt_WeakDelegate_var, value, GetInternalEventDelegateType);
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			MarkDirty();
-			__mt_WeakDelegate_var = value;
-		}
-	}
-
-	[Field("NSTableViewColumnDidMoveNotification", "AppKit")]
-	[Advice("Use NSTableView.Notifications.ObserveColumnDidMove helper method instead.")]
-	public static NSString ColumnDidMoveNotification
-	{
-		get
-		{
-			if (_ColumnDidMoveNotification == null)
-			{
-				_ColumnDidMoveNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSTableViewColumnDidMoveNotification");
-			}
-			return _ColumnDidMoveNotification;
-		}
-	}
-
-	[Field("NSTableViewColumnDidResizeNotification", "AppKit")]
-	[Advice("Use NSTableView.Notifications.ObserveColumnDidResize helper method instead.")]
-	public static NSString ColumnDidResizeNotification
-	{
-		get
-		{
-			if (_ColumnDidResizeNotification == null)
-			{
-				_ColumnDidResizeNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSTableViewColumnDidResizeNotification");
-			}
-			return _ColumnDidResizeNotification;
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIgnoreModifierKeysWhileDraggingHandle);
 		}
 	}
 
@@ -2886,181 +1614,7 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	[Field("NSTableViewSelectionDidChangeNotification", "AppKit")]
-	[Advice("Use NSTableView.Notifications.ObserveSelectionDidChange helper method instead.")]
-	public static NSString SelectionDidChangeNotification
-	{
-		get
-		{
-			if (_SelectionDidChangeNotification == null)
-			{
-				_SelectionDidChangeNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSTableViewSelectionDidChangeNotification");
-			}
-			return _SelectionDidChangeNotification;
-		}
-	}
-
-	[Field("NSTableViewSelectionIsChangingNotification", "AppKit")]
-	[Advice("Use NSTableView.Notifications.ObserveSelectionIsChanging helper method instead.")]
-	public static NSString SelectionIsChangingNotification
-	{
-		get
-		{
-			if (_SelectionIsChangingNotification == null)
-			{
-				_SelectionIsChangingNotification = Dlfcn.GetStringConstant(Libraries.AppKit.Handle, "NSTableViewSelectionIsChangingNotification");
-			}
-			return _SelectionIsChangingNotification;
-		}
-	}
-
-	internal virtual Type GetInternalEventDelegateType => typeof(_NSTableViewDelegate);
-
-	public NSTableViewRowGetter? CoreGetRowView
-	{
-		get
-		{
-			return EnsureNSTableViewDelegate().coreGetRowView;
-		}
-		set
-		{
-			EnsureNSTableViewDelegate().coreGetRowView = value;
-		}
-	}
-
-	public NSTableViewCellGetter? GetDataCell
-	{
-		get
-		{
-			return EnsureNSTableViewDelegate().getDataCell;
-		}
-		set
-		{
-			EnsureNSTableViewDelegate().getDataCell = value;
-		}
-	}
-
-	public NSTableViewSearchString? GetNextTypeSelectMatch
-	{
-		get
-		{
-			return EnsureNSTableViewDelegate().getNextTypeSelectMatch;
-		}
-		set
-		{
-			EnsureNSTableViewDelegate().getNextTypeSelectMatch = value;
-		}
-	}
-
-	public NSTableViewRowHeight? GetRowHeight
-	{
-		get
-		{
-			return EnsureNSTableViewDelegate().getRowHeight;
-		}
-		set
-		{
-			EnsureNSTableViewDelegate().getRowHeight = value;
-		}
-	}
-
-	public NSTableViewColumnRowString? GetSelectString
-	{
-		get
-		{
-			return EnsureNSTableViewDelegate().getSelectString;
-		}
-		set
-		{
-			EnsureNSTableViewDelegate().getSelectString = value;
-		}
-	}
-
-	public NSTableViewIndexFilter? GetSelectionIndexes
-	{
-		get
-		{
-			return EnsureNSTableViewDelegate().getSelectionIndexes;
-		}
-		set
-		{
-			EnsureNSTableViewDelegate().getSelectionIndexes = value;
-		}
-	}
-
-	public NSTableViewColumnWidth? GetSizeToFitColumnWidth
-	{
-		get
-		{
-			return EnsureNSTableViewDelegate().getSizeToFitColumnWidth;
-		}
-		set
-		{
-			EnsureNSTableViewDelegate().getSizeToFitColumnWidth = value;
-		}
-	}
-
-	public NSTableViewToolTip? GetToolTip
-	{
-		get
-		{
-			return EnsureNSTableViewDelegate().getToolTip;
-		}
-		set
-		{
-			EnsureNSTableViewDelegate().getToolTip = value;
-		}
-	}
-
-	public NSTableViewViewGetter? GetViewForItem
-	{
-		get
-		{
-			return EnsureNSTableViewDelegate().getViewForItem;
-		}
-		set
-		{
-			EnsureNSTableViewDelegate().getViewForItem = value;
-		}
-	}
-
-	public NSTableViewRowPredicate? IsGroupRow
-	{
-		get
-		{
-			return EnsureNSTableViewDelegate().isGroupRow;
-		}
-		set
-		{
-			EnsureNSTableViewDelegate().isGroupRow = value;
-		}
-	}
-
-	public NSTableViewRowActionsGetter? RowActions
-	{
-		get
-		{
-			return EnsureNSTableViewDelegate().rowActions;
-		}
-		set
-		{
-			EnsureNSTableViewDelegate().rowActions = value;
-		}
-	}
-
-	public NSTableViewPredicate? SelectionShouldChange
-	{
-		get
-		{
-			return EnsureNSTableViewDelegate().selectionShouldChange;
-		}
-		set
-		{
-			EnsureNSTableViewDelegate().selectionShouldChange = value;
-		}
-	}
-
-	public NSTableViewColumnRowPredicate? ShouldEditTableColumn
+	public NSTableViewColumnRowPredicate ShouldEditTableColumn
 	{
 		get
 		{
@@ -3072,19 +1626,19 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	public NSTableReorder? ShouldReorder
+	public NSTableViewPredicate SelectionShouldChange
 	{
 		get
 		{
-			return EnsureNSTableViewDelegate().shouldReorder;
+			return EnsureNSTableViewDelegate().selectionShouldChange;
 		}
 		set
 		{
-			EnsureNSTableViewDelegate().shouldReorder = value;
+			EnsureNSTableViewDelegate().selectionShouldChange = value;
 		}
 	}
 
-	public NSTableViewRowPredicate? ShouldSelectRow
+	public NSTableViewRowPredicate ShouldSelectRow
 	{
 		get
 		{
@@ -3096,7 +1650,19 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	public NSTableViewColumnPredicate? ShouldSelectTableColumn
+	public NSTableViewIndexFilter GetSelectionIndexes
+	{
+		get
+		{
+			return EnsureNSTableViewDelegate().getSelectionIndexes;
+		}
+		set
+		{
+			EnsureNSTableViewDelegate().getSelectionIndexes = value;
+		}
+	}
+
+	public NSTableViewColumnPredicate ShouldSelectTableColumn
 	{
 		get
 		{
@@ -3108,7 +1674,55 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	public NSTableViewColumnRowPredicate? ShouldShowCellExpansion
+	public NSTableViewRowHeight GetRowHeight
+	{
+		get
+		{
+			return EnsureNSTableViewDelegate().getRowHeight;
+		}
+		set
+		{
+			EnsureNSTableViewDelegate().getRowHeight = value;
+		}
+	}
+
+	public NSTableViewColumnRowString GetSelectString
+	{
+		get
+		{
+			return EnsureNSTableViewDelegate().getSelectString;
+		}
+		set
+		{
+			EnsureNSTableViewDelegate().getSelectString = value;
+		}
+	}
+
+	public NSTableViewSearchString GetNextTypeSelectMatch
+	{
+		get
+		{
+			return EnsureNSTableViewDelegate().getNextTypeSelectMatch;
+		}
+		set
+		{
+			EnsureNSTableViewDelegate().getNextTypeSelectMatch = value;
+		}
+	}
+
+	public NSTableViewEventString ShouldTypeSelect
+	{
+		get
+		{
+			return EnsureNSTableViewDelegate().shouldTypeSelect;
+		}
+		set
+		{
+			EnsureNSTableViewDelegate().shouldTypeSelect = value;
+		}
+	}
+
+	public NSTableViewColumnRowPredicate ShouldShowCellExpansion
 	{
 		get
 		{
@@ -3120,7 +1734,7 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	public NSTableViewCell? ShouldTrackCell
+	public NSTableViewCell ShouldTrackCell
 	{
 		get
 		{
@@ -3132,15 +1746,75 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	public NSTableViewEventString? ShouldTypeSelect
+	public NSTableViewCellGetter GetDataCell
 	{
 		get
 		{
-			return EnsureNSTableViewDelegate().shouldTypeSelect;
+			return EnsureNSTableViewDelegate().getDataCell;
 		}
 		set
 		{
-			EnsureNSTableViewDelegate().shouldTypeSelect = value;
+			EnsureNSTableViewDelegate().getDataCell = value;
+		}
+	}
+
+	public NSTableViewRowPredicate IsGroupRow
+	{
+		get
+		{
+			return EnsureNSTableViewDelegate().isGroupRow;
+		}
+		set
+		{
+			EnsureNSTableViewDelegate().isGroupRow = value;
+		}
+	}
+
+	public NSTableViewColumnWidth GetSizeToFitColumnWidth
+	{
+		get
+		{
+			return EnsureNSTableViewDelegate().getSizeToFitColumnWidth;
+		}
+		set
+		{
+			EnsureNSTableViewDelegate().getSizeToFitColumnWidth = value;
+		}
+	}
+
+	public NSTableReorder ShouldReorder
+	{
+		get
+		{
+			return EnsureNSTableViewDelegate().shouldReorder;
+		}
+		set
+		{
+			EnsureNSTableViewDelegate().shouldReorder = value;
+		}
+	}
+
+	public NSTableViewViewGetter GetViewForItem
+	{
+		get
+		{
+			return EnsureNSTableViewDelegate().getViewForItem;
+		}
+		set
+		{
+			EnsureNSTableViewDelegate().getViewForItem = value;
+		}
+	}
+
+	public NSTableViewRowGetter CoreGetRowView
+	{
+		get
+		{
+			return EnsureNSTableViewDelegate().coreGetRowView;
+		}
+		set
+		{
+			EnsureNSTableViewDelegate().coreGetRowView = value;
 		}
 	}
 
@@ -3157,45 +1831,31 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	public event EventHandler ColumnDidMove
+	public event EventHandler<NSTableViewCellEventArgs> WillDisplayCell
 	{
 		add
 		{
 			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
-			nSTableViewDelegate.columnDidMove = (EventHandler)System.Delegate.Combine(nSTableViewDelegate.columnDidMove, value);
+			nSTableViewDelegate.willDisplayCell = (EventHandler<NSTableViewCellEventArgs>)System.Delegate.Combine(nSTableViewDelegate.willDisplayCell, value);
 		}
 		remove
 		{
 			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
-			nSTableViewDelegate.columnDidMove = (EventHandler)System.Delegate.Remove(nSTableViewDelegate.columnDidMove, value);
+			nSTableViewDelegate.willDisplayCell = (EventHandler<NSTableViewCellEventArgs>)System.Delegate.Remove(nSTableViewDelegate.willDisplayCell, value);
 		}
 	}
 
-	public event EventHandler ColumnDidResize
+	public event EventHandler<NSTableViewTableEventArgs> MouseDownInHeaderOfTableColumn
 	{
 		add
 		{
 			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
-			nSTableViewDelegate.columnDidResize = (EventHandler)System.Delegate.Combine(nSTableViewDelegate.columnDidResize, value);
+			nSTableViewDelegate.mouseDownInHeaderOfTableColumn = (EventHandler<NSTableViewTableEventArgs>)System.Delegate.Combine(nSTableViewDelegate.mouseDownInHeaderOfTableColumn, value);
 		}
 		remove
 		{
 			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
-			nSTableViewDelegate.columnDidResize = (EventHandler)System.Delegate.Remove(nSTableViewDelegate.columnDidResize, value);
-		}
-	}
-
-	public event EventHandler<NSTableViewRowEventArgs> DidAddRowView
-	{
-		add
-		{
-			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
-			nSTableViewDelegate.didAddRowView = (EventHandler<NSTableViewRowEventArgs>)System.Delegate.Combine(nSTableViewDelegate.didAddRowView, value);
-		}
-		remove
-		{
-			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
-			nSTableViewDelegate.didAddRowView = (EventHandler<NSTableViewRowEventArgs>)System.Delegate.Remove(nSTableViewDelegate.didAddRowView, value);
+			nSTableViewDelegate.mouseDownInHeaderOfTableColumn = (EventHandler<NSTableViewTableEventArgs>)System.Delegate.Remove(nSTableViewDelegate.mouseDownInHeaderOfTableColumn, value);
 		}
 	}
 
@@ -3227,34 +1887,6 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	public event EventHandler<NSTableViewRowEventArgs> DidRemoveRowView
-	{
-		add
-		{
-			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
-			nSTableViewDelegate.didRemoveRowView = (EventHandler<NSTableViewRowEventArgs>)System.Delegate.Combine(nSTableViewDelegate.didRemoveRowView, value);
-		}
-		remove
-		{
-			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
-			nSTableViewDelegate.didRemoveRowView = (EventHandler<NSTableViewRowEventArgs>)System.Delegate.Remove(nSTableViewDelegate.didRemoveRowView, value);
-		}
-	}
-
-	public event EventHandler<NSTableViewTableEventArgs> MouseDownInHeaderOfTableColumn
-	{
-		add
-		{
-			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
-			nSTableViewDelegate.mouseDownInHeaderOfTableColumn = (EventHandler<NSTableViewTableEventArgs>)System.Delegate.Combine(nSTableViewDelegate.mouseDownInHeaderOfTableColumn, value);
-		}
-		remove
-		{
-			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
-			nSTableViewDelegate.mouseDownInHeaderOfTableColumn = (EventHandler<NSTableViewTableEventArgs>)System.Delegate.Remove(nSTableViewDelegate.mouseDownInHeaderOfTableColumn, value);
-		}
-	}
-
 	public event EventHandler SelectionDidChange
 	{
 		add
@@ -3266,6 +1898,34 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		{
 			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
 			nSTableViewDelegate.selectionDidChange = (EventHandler)System.Delegate.Remove(nSTableViewDelegate.selectionDidChange, value);
+		}
+	}
+
+	public event EventHandler ColumnDidMove
+	{
+		add
+		{
+			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
+			nSTableViewDelegate.columnDidMove = (EventHandler)System.Delegate.Combine(nSTableViewDelegate.columnDidMove, value);
+		}
+		remove
+		{
+			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
+			nSTableViewDelegate.columnDidMove = (EventHandler)System.Delegate.Remove(nSTableViewDelegate.columnDidMove, value);
+		}
+	}
+
+	public event EventHandler ColumnDidResize
+	{
+		add
+		{
+			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
+			nSTableViewDelegate.columnDidResize = (EventHandler)System.Delegate.Combine(nSTableViewDelegate.columnDidResize, value);
+		}
+		remove
+		{
+			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
+			nSTableViewDelegate.columnDidResize = (EventHandler)System.Delegate.Remove(nSTableViewDelegate.columnDidResize, value);
 		}
 	}
 
@@ -3283,693 +1943,102 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	public event EventHandler<NSTableViewCellEventArgs> WillDisplayCell
+	public event EventHandler<NSTableViewRowEventArgs> DidAddRowView
 	{
 		add
 		{
 			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
-			nSTableViewDelegate.willDisplayCell = (EventHandler<NSTableViewCellEventArgs>)System.Delegate.Combine(nSTableViewDelegate.willDisplayCell, value);
+			nSTableViewDelegate.didAddRowView = (EventHandler<NSTableViewRowEventArgs>)System.Delegate.Combine(nSTableViewDelegate.didAddRowView, value);
 		}
 		remove
 		{
 			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
-			nSTableViewDelegate.willDisplayCell = (EventHandler<NSTableViewCellEventArgs>)System.Delegate.Remove(nSTableViewDelegate.willDisplayCell, value);
+			nSTableViewDelegate.didAddRowView = (EventHandler<NSTableViewRowEventArgs>)System.Delegate.Remove(nSTableViewDelegate.didAddRowView, value);
 		}
 	}
 
-	public void SelectRow(nint row, bool byExtendingSelection)
+	public event EventHandler<NSTableViewRowEventArgs> DidRemoveRowView
+	{
+		add
+		{
+			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
+			nSTableViewDelegate.didRemoveRowView = (EventHandler<NSTableViewRowEventArgs>)System.Delegate.Combine(nSTableViewDelegate.didRemoveRowView, value);
+		}
+		remove
+		{
+			_NSTableViewDelegate nSTableViewDelegate = EnsureNSTableViewDelegate();
+			nSTableViewDelegate.didRemoveRowView = (EventHandler<NSTableViewRowEventArgs>)System.Delegate.Remove(nSTableViewDelegate.didRemoveRowView, value);
+		}
+	}
+
+	public void SelectRow(ulong row, bool byExtendingSelection)
 	{
 		SelectRows(NSIndexSet.FromIndex(row), byExtendingSelection);
 	}
 
-	public void SelectColumn(nint column, bool byExtendingSelection)
+	public void SelectColumn(ulong column, bool byExtendingSelection)
 	{
 		SelectColumns(NSIndexSet.FromIndex(column), byExtendingSelection);
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSTableView()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSTableView(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSTableView(NSObjectFlag t)
+	public NSTableView(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSTableView(IntPtr handle)
+	public NSTableView(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithFrame:")]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSTableView(CGRect frameRect)
 		: base(NSObjectFlag.Empty)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selInitWithFrame_Handle, frameRect);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect), "initWithFrame:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selInitWithFrame_Handle, frameRect);
 		}
-	}
-
-	[Export("addTableColumn:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void AddColumn(NSTableColumn tableColumn)
-	{
-		NSApplication.EnsureUIThread();
-		if (tableColumn == null)
-		{
-			throw new ArgumentNullException("tableColumn");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddTableColumn_Handle, tableColumn.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAddTableColumn_Handle, tableColumn.Handle);
-		}
-	}
-
-	[Export("beginUpdates")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void BeginUpdates()
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selBeginUpdatesHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selBeginUpdatesHandle);
-		}
-	}
-
-	[Export("canDragRowsWithIndexes:atPoint:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool CanDragRows(NSIndexSet rowIndexes, CGPoint mouseDownPoint)
-	{
-		NSApplication.EnsureUIThread();
-		if (rowIndexes == null)
-		{
-			throw new ArgumentNullException("rowIndexes");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_IntPtr_CGPoint(base.Handle, selCanDragRowsWithIndexes_AtPoint_Handle, rowIndexes.Handle, mouseDownPoint);
-		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr_CGPoint(base.SuperHandle, selCanDragRowsWithIndexes_AtPoint_Handle, rowIndexes.Handle, mouseDownPoint);
-	}
-
-	[Export("columnForView:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint ColumnForView(NSView view)
-	{
-		NSApplication.EnsureUIThread();
-		if (view == null)
-		{
-			throw new ArgumentNullException("view");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.nint_objc_msgSend_IntPtr(base.Handle, selColumnForView_Handle, view.Handle);
-		}
-		return Messaging.nint_objc_msgSendSuper_IntPtr(base.SuperHandle, selColumnForView_Handle, view.Handle);
-	}
-
-	[Export("deselectAll:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DeselectAll(NSObject? sender)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selDeselectAll_Handle, sender?.Handle ?? IntPtr.Zero);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selDeselectAll_Handle, sender?.Handle ?? IntPtr.Zero);
-		}
-	}
-
-	[Export("deselectColumn:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DeselectColumn(nint column)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint(base.Handle, selDeselectColumn_Handle, column);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selDeselectColumn_Handle, column);
-		}
-	}
-
-	[Export("deselectRow:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DeselectRow(nint row)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint(base.Handle, selDeselectRow_Handle, row);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selDeselectRow_Handle, row);
-		}
-	}
-
-	[Export("dragImageForRowsWithIndexes:tableColumns:event:offset:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSImage DragImageForRowsWithIndexestableColumnseventoffset(NSIndexSet dragRows, NSTableColumn[] tableColumns, NSEvent dragEvent, ref CGPoint dragImageOffset)
-	{
-		NSApplication.EnsureUIThread();
-		if (dragRows == null)
-		{
-			throw new ArgumentNullException("dragRows");
-		}
-		if (tableColumns == null)
-		{
-			throw new ArgumentNullException("tableColumns");
-		}
-		if (dragEvent == null)
-		{
-			throw new ArgumentNullException("dragEvent");
-		}
-		NSArray nSArray = NSArray.FromNSObjects(tableColumns);
-		NSImage result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_ref_CGPoint(base.SuperHandle, selDragImageForRowsWithIndexes_TableColumns_Event_Offset_Handle, dragRows.Handle, nSArray.Handle, dragEvent.Handle, ref dragImageOffset)) : Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr_ref_CGPoint(base.Handle, selDragImageForRowsWithIndexes_TableColumns_Event_Offset_Handle, dragRows.Handle, nSArray.Handle, dragEvent.Handle, ref dragImageOffset)));
-		nSArray.Dispose();
-		return result;
-	}
-
-	[Export("draggedImage:beganAt:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DraggedImageBeganAt(NSImage image, CGPoint screenPoint)
-	{
-		NSApplication.EnsureUIThread();
-		if (image == null)
-		{
-			throw new ArgumentNullException("image");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_CGPoint(base.Handle, selDraggedImage_BeganAt_Handle, image.Handle, screenPoint);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_CGPoint(base.SuperHandle, selDraggedImage_BeganAt_Handle, image.Handle, screenPoint);
-		}
-	}
-
-	[Export("draggedImage:endedAt:deposited:")]
-	[Deprecated(PlatformName.MacOSX, 10, 1, PlatformArchitecture.All, "Use DraggedImageEndedAtOperation instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DraggedImageEndedAtDeposited(NSImage image, CGPoint screenPoint, bool deposited)
-	{
-		NSApplication.EnsureUIThread();
-		if (image == null)
-		{
-			throw new ArgumentNullException("image");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_CGPoint_bool(base.Handle, selDraggedImage_EndedAt_Deposited_Handle, image.Handle, screenPoint, deposited);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_CGPoint_bool(base.SuperHandle, selDraggedImage_EndedAt_Deposited_Handle, image.Handle, screenPoint, deposited);
-		}
-	}
-
-	[Export("draggedImage:endedAt:operation:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DraggedImageEndedAtOperation(NSImage image, CGPoint screenPoint, NSDragOperation operation)
-	{
-		NSApplication.EnsureUIThread();
-		if (image == null)
-		{
-			throw new ArgumentNullException("image");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_CGPoint_UInt64(base.Handle, selDraggedImage_EndedAt_Operation_Handle, image.Handle, screenPoint, (ulong)operation);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_CGPoint_UInt64(base.SuperHandle, selDraggedImage_EndedAt_Operation_Handle, image.Handle, screenPoint, (ulong)operation);
-		}
-	}
-
-	[Export("draggedImage:movedTo:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DraggedImageMovedTo(NSImage image, CGPoint screenPoint)
-	{
-		NSApplication.EnsureUIThread();
-		if (image == null)
-		{
-			throw new ArgumentNullException("image");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_CGPoint(base.Handle, selDraggedImage_MovedTo_Handle, image.Handle, screenPoint);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_CGPoint(base.SuperHandle, selDraggedImage_MovedTo_Handle, image.Handle, screenPoint);
-		}
-	}
-
-	[Export("draggingSourceOperationMaskForLocal:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDragOperation DraggingSourceOperationMaskForLocal(bool flag)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return (NSDragOperation)Messaging.UInt64_objc_msgSend_bool(base.Handle, selDraggingSourceOperationMaskForLocal_Handle, flag);
-		}
-		return (NSDragOperation)Messaging.UInt64_objc_msgSendSuper_bool(base.SuperHandle, selDraggingSourceOperationMaskForLocal_Handle, flag);
-	}
-
-	[Export("drawBackgroundInClipRect:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DrawBackground(CGRect clipRect)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGRect(base.Handle, selDrawBackgroundInClipRect_Handle, clipRect);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selDrawBackgroundInClipRect_Handle, clipRect);
-		}
-	}
-
-	[Export("drawGridInClipRect:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DrawGrid(CGRect clipRect)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGRect(base.Handle, selDrawGridInClipRect_Handle, clipRect);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selDrawGridInClipRect_Handle, clipRect);
-		}
-	}
-
-	[Export("drawRow:clipRect:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DrawRow(nint row, CGRect clipRect)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint_CGRect(base.Handle, selDrawRow_ClipRect_Handle, row, clipRect);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint_CGRect(base.SuperHandle, selDrawRow_ClipRect_Handle, row, clipRect);
-		}
-	}
-
-	[Export("editColumn:row:withEvent:select:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EditColumn(nint column, nint row, NSEvent? theEvent, bool select)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint_nint_IntPtr_bool(base.Handle, selEditColumn_Row_WithEvent_Select_Handle, column, row, theEvent?.Handle ?? IntPtr.Zero, select);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint_nint_IntPtr_bool(base.SuperHandle, selEditColumn_Row_WithEvent_Select_Handle, column, row, theEvent?.Handle ?? IntPtr.Zero, select);
-		}
-	}
-
-	[Export("endUpdates")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EndUpdates()
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selEndUpdatesHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selEndUpdatesHandle);
-		}
-	}
-
-	[Export("enumerateAvailableRowViewsUsingBlock:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe virtual void EnumerateAvailableRowViews([BlockProxy(typeof(Trampolines.NIDNSTableViewRowHandler))] NSTableViewRowHandler callback)
-	{
-		NSApplication.EnsureUIThread();
-		if (callback == null)
-		{
-			throw new ArgumentNullException("callback");
-		}
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDNSTableViewRowHandler.Handler, callback);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEnumerateAvailableRowViewsUsingBlock_Handle, (IntPtr)ptr);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEnumerateAvailableRowViewsUsingBlock_Handle, (IntPtr)ptr);
-		}
-		ptr->CleanupBlock();
-	}
-
-	[Export("columnWithIdentifier:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint FindColumn(NSString identifier)
-	{
-		NSApplication.EnsureUIThread();
-		if (identifier == null)
-		{
-			throw new ArgumentNullException("identifier");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.nint_objc_msgSend_IntPtr(base.Handle, selColumnWithIdentifier_Handle, identifier.Handle);
-		}
-		return Messaging.nint_objc_msgSendSuper_IntPtr(base.SuperHandle, selColumnWithIdentifier_Handle, identifier.Handle);
-	}
-
-	[Export("tableColumnWithIdentifier:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSTableColumn FindTableColumn(NSString identifier)
-	{
-		NSApplication.EnsureUIThread();
-		if (identifier == null)
-		{
-			throw new ArgumentNullException("identifier");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSTableColumn>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selTableColumnWithIdentifier_Handle, identifier.Handle));
-		}
-		return Runtime.GetNSObject<NSTableColumn>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selTableColumnWithIdentifier_Handle, identifier.Handle));
-	}
-
-	[Export("preparedCellAtColumn:row:")]
-	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, "Use View Based TableView and GetView.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSCell GetCell(nint column, nint row)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSCell>(Messaging.IntPtr_objc_msgSend_nint_nint(base.Handle, selPreparedCellAtColumn_Row_Handle, column, row));
-		}
-		return Runtime.GetNSObject<NSCell>(Messaging.IntPtr_objc_msgSendSuper_nint_nint(base.SuperHandle, selPreparedCellAtColumn_Row_Handle, column, row));
-	}
-
-	[Export("frameOfCellAtColumn:row:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGRect GetCellFrame(nint column, nint row)
-	{
-		NSApplication.EnsureUIThread();
-		CGRect retval;
-		if (base.IsDirectBinding)
-		{
-			Messaging.CGRect_objc_msgSend_stret_nint_nint(out retval, base.Handle, selFrameOfCellAtColumn_Row_Handle, column, row);
-		}
-		else
-		{
-			Messaging.CGRect_objc_msgSendSuper_stret_nint_nint(out retval, base.SuperHandle, selFrameOfCellAtColumn_Row_Handle, column, row);
-		}
-		return retval;
-	}
-
-	[Export("columnAtPoint:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint GetColumn(CGPoint point)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.nint_objc_msgSend_CGPoint(base.Handle, selColumnAtPoint_Handle, point);
-		}
-		return Messaging.nint_objc_msgSendSuper_CGPoint(base.SuperHandle, selColumnAtPoint_Handle, point);
-	}
-
-	[Export("columnIndexesInRect:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSIndexSet GetColumnIndexesInRect(CGRect rect)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSIndexSet>(Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selColumnIndexesInRect_Handle, rect));
-		}
-		return Runtime.GetNSObject<NSIndexSet>(Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selColumnIndexesInRect_Handle, rect));
-	}
-
-	[Export("indicatorImageInTableColumn:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSImage GetIndicatorImage(NSTableColumn tableColumn)
-	{
-		NSApplication.EnsureUIThread();
-		if (tableColumn == null)
-		{
-			throw new ArgumentNullException("tableColumn");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selIndicatorImageInTableColumn_Handle, tableColumn.Handle));
-		}
-		return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selIndicatorImageInTableColumn_Handle, tableColumn.Handle));
-	}
-
-	[Export("rowAtPoint:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint GetRow(CGPoint point)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.nint_objc_msgSend_CGPoint(base.Handle, selRowAtPoint_Handle, point);
-		}
-		return Messaging.nint_objc_msgSendSuper_CGPoint(base.SuperHandle, selRowAtPoint_Handle, point);
-	}
-
-	[Export("rowViewAtRow:makeIfNecessary:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSTableRowView GetRowView(nint row, bool makeIfNecessary)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSTableRowView>(Messaging.IntPtr_objc_msgSend_nint_bool(base.Handle, selRowViewAtRow_MakeIfNecessary_Handle, row, makeIfNecessary));
-		}
-		return Runtime.GetNSObject<NSTableRowView>(Messaging.IntPtr_objc_msgSendSuper_nint_bool(base.SuperHandle, selRowViewAtRow_MakeIfNecessary_Handle, row, makeIfNecessary));
-	}
-
-	[Export("viewAtColumn:row:makeIfNecessary:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSView GetView(nint column, nint row, bool makeIfNecessary)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSView>(Messaging.IntPtr_objc_msgSend_nint_nint_bool(base.Handle, selViewAtColumn_Row_MakeIfNecessary_Handle, column, row, makeIfNecessary));
-		}
-		return Runtime.GetNSObject<NSView>(Messaging.IntPtr_objc_msgSendSuper_nint_nint_bool(base.SuperHandle, selViewAtColumn_Row_MakeIfNecessary_Handle, column, row, makeIfNecessary));
-	}
-
-	[Export("hideRowsAtIndexes:withAnimation:")]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void HideRows(NSIndexSet indexes, NSTableViewAnimation rowAnimation)
-	{
-		NSApplication.EnsureUIThread();
-		if (indexes == null)
-		{
-			throw new ArgumentNullException("indexes");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_UInt64(base.Handle, selHideRowsAtIndexes_WithAnimation_Handle, indexes.Handle, (ulong)rowAnimation);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selHideRowsAtIndexes_WithAnimation_Handle, indexes.Handle, (ulong)rowAnimation);
-		}
-	}
-
-	[Export("highlightSelectionInClipRect:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void HighlightSelection(CGRect clipRect)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGRect(base.Handle, selHighlightSelectionInClipRect_Handle, clipRect);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selHighlightSelectionInClipRect_Handle, clipRect);
-		}
-	}
-
-	[Export("insertRowsAtIndexes:withAnimation:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void InsertRows(NSIndexSet indexes, NSTableViewAnimation animationOptions)
-	{
-		NSApplication.EnsureUIThread();
-		if (indexes == null)
-		{
-			throw new ArgumentNullException("indexes");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_UInt64(base.Handle, selInsertRowsAtIndexes_WithAnimation_Handle, indexes.Handle, (ulong)animationOptions);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selInsertRowsAtIndexes_WithAnimation_Handle, indexes.Handle, (ulong)animationOptions);
-		}
-	}
-
-	[Export("isColumnSelected:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool IsColumnSelected(nint column)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_nint(base.Handle, selIsColumnSelected_Handle, column);
-		}
-		return Messaging.bool_objc_msgSendSuper_nint(base.SuperHandle, selIsColumnSelected_Handle, column);
-	}
-
-	[Export("isRowSelected:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool IsRowSelected(nint row)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_nint(base.Handle, selIsRowSelected_Handle, row);
-		}
-		return Messaging.bool_objc_msgSendSuper_nint(base.SuperHandle, selIsRowSelected_Handle, row);
-	}
-
-	[Export("makeViewWithIdentifier:owner:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSView MakeView(string? identifier, NSObject? owner)
-	{
-		NSApplication.EnsureUIThread();
-		IntPtr arg = NSString.CreateNative(identifier);
-		NSView result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSView>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selMakeViewWithIdentifier_Owner_Handle, arg, owner?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject<NSView>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selMakeViewWithIdentifier_Owner_Handle, arg, owner?.Handle ?? IntPtr.Zero)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("moveColumn:toColumn:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void MoveColumn(nint oldIndex, nint newIndex)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint_nint(base.Handle, selMoveColumn_ToColumn_Handle, oldIndex, newIndex);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint_nint(base.SuperHandle, selMoveColumn_ToColumn_Handle, oldIndex, newIndex);
-		}
-	}
-
-	[Export("moveRowAtIndex:toIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void MoveRow(nint oldIndex, nint newIndex)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint_nint(base.Handle, selMoveRowAtIndex_ToIndex_Handle, oldIndex, newIndex);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint_nint(base.SuperHandle, selMoveRowAtIndex_ToIndex_Handle, oldIndex, newIndex);
-		}
-	}
-
-	[Export("namesOfPromisedFilesDroppedAtDestination:")]
-	[Deprecated(PlatformName.MacOSX, 10, 13, PlatformArchitecture.None, "Use NSFilePromiseProvider objects instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string[] NamesOfPromisedFilesDroppedAtDestination(NSUrl dropDestination)
-	{
-		NSApplication.EnsureUIThread();
-		if (dropDestination == null)
-		{
-			throw new ArgumentNullException("dropDestination");
-		}
-		if (base.IsDirectBinding)
-		{
-			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selNamesOfPromisedFilesDroppedAtDestination_Handle, dropDestination.Handle));
-		}
-		return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selNamesOfPromisedFilesDroppedAtDestination_Handle, dropDestination.Handle));
 	}
 
 	[Export("noteHeightOfRowsWithIndexesChanged:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void NoteHeightOfRowsWithIndexesChanged(NSIndexSet indexSet)
 	{
 		NSApplication.EnsureUIThread();
@@ -3977,7 +2046,7 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		{
 			throw new ArgumentNullException("indexSet");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selNoteHeightOfRowsWithIndexesChanged_Handle, indexSet.Handle);
 		}
@@ -3987,98 +2056,172 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	[Export("noteNumberOfRowsChanged")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void NoteNumberOfRowsChanged()
+	[Export("tableColumns")]
+	public virtual NSTableColumn[] TableColumns()
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selNoteNumberOfRowsChangedHandle);
+			return NSArray.ArrayFromHandle<NSTableColumn>(Messaging.IntPtr_objc_msgSend(base.Handle, selTableColumnsHandle));
+		}
+		return NSArray.ArrayFromHandle<NSTableColumn>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTableColumnsHandle));
+	}
+
+	[Export("addTableColumn:")]
+	public virtual void AddColumn(NSTableColumn tableColumn)
+	{
+		NSApplication.EnsureUIThread();
+		if (tableColumn == null)
+		{
+			throw new ArgumentNullException("tableColumn");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddTableColumn_Handle, tableColumn.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selNoteNumberOfRowsChangedHandle);
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAddTableColumn_Handle, tableColumn.Handle);
 		}
 	}
 
-	[Export("performClickOnCellAtColumn:row:")]
-	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, "Use a View Based TableView; directly interact with a particular view as required and call PerformClick on it, if necessary.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void PerformClick(nint column, nint row)
+	[Export("removeTableColumn:")]
+	public virtual void RemoveColumn(NSTableColumn tableColumn)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (tableColumn == null)
 		{
-			Messaging.void_objc_msgSend_nint_nint(base.Handle, selPerformClickOnCellAtColumn_Row_Handle, column, row);
+			throw new ArgumentNullException("tableColumn");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveTableColumn_Handle, tableColumn.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_nint_nint(base.SuperHandle, selPerformClickOnCellAtColumn_Row_Handle, column, row);
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveTableColumn_Handle, tableColumn.Handle);
 		}
 	}
 
-	[Export("rectOfColumn:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGRect RectForColumn(nint column)
+	[Export("moveColumn:toColumn:")]
+	public virtual void MoveColumn(long oldIndex, long newIndex)
 	{
 		NSApplication.EnsureUIThread();
-		CGRect retval;
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.CGRect_objc_msgSend_stret_nint(out retval, base.Handle, selRectOfColumn_Handle, column);
+			Messaging.void_objc_msgSend_Int64_Int64(base.Handle, selMoveColumnToColumn_Handle, oldIndex, newIndex);
 		}
 		else
 		{
-			Messaging.CGRect_objc_msgSendSuper_stret_nint(out retval, base.SuperHandle, selRectOfColumn_Handle, column);
+			Messaging.void_objc_msgSendSuper_Int64_Int64(base.SuperHandle, selMoveColumnToColumn_Handle, oldIndex, newIndex);
 		}
-		return retval;
 	}
 
-	[Export("rectOfRow:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGRect RectForRow(nint row)
-	{
-		NSApplication.EnsureUIThread();
-		CGRect retval;
-		if (base.IsDirectBinding)
-		{
-			Messaging.CGRect_objc_msgSend_stret_nint(out retval, base.Handle, selRectOfRow_Handle, row);
-		}
-		else
-		{
-			Messaging.CGRect_objc_msgSendSuper_stret_nint(out retval, base.SuperHandle, selRectOfRow_Handle, row);
-		}
-		return retval;
-	}
-
-	[Export("registerNib:forIdentifier:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RegisterNib(NSNib? nib, string identifier)
+	[Export("columnWithIdentifier:")]
+	public virtual long FindColumn(NSString identifier)
 	{
 		NSApplication.EnsureUIThread();
 		if (identifier == null)
 		{
 			throw new ArgumentNullException("identifier");
 		}
-		IntPtr arg = NSString.CreateNative(identifier);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selRegisterNib_ForIdentifier_Handle, nib?.Handle ?? IntPtr.Zero, arg);
+			return Messaging.Int64_objc_msgSend_IntPtr(base.Handle, selColumnWithIdentifier_Handle, identifier.Handle);
+		}
+		return Messaging.Int64_objc_msgSendSuper_IntPtr(base.SuperHandle, selColumnWithIdentifier_Handle, identifier.Handle);
+	}
+
+	[Export("tableColumnWithIdentifier:")]
+	public virtual NSTableColumn FindTableColumn(NSString identifier)
+	{
+		NSApplication.EnsureUIThread();
+		if (identifier == null)
+		{
+			throw new ArgumentNullException("identifier");
+		}
+		if (IsDirectBinding)
+		{
+			return (NSTableColumn)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selTableColumnWithIdentifier_Handle, identifier.Handle));
+		}
+		return (NSTableColumn)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selTableColumnWithIdentifier_Handle, identifier.Handle));
+	}
+
+	[Export("tile")]
+	public virtual void Tile()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selTileHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selRegisterNib_ForIdentifier_Handle, nib?.Handle ?? IntPtr.Zero, arg);
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selTileHandle);
 		}
-		NSString.ReleaseNative(arg);
+	}
+
+	[Export("sizeToFit")]
+	public new virtual void SizeToFit()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selSizeToFitHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selSizeToFitHandle);
+		}
+	}
+
+	[Export("sizeLastColumnToFit")]
+	public virtual void SizeLastColumnToFit()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selSizeLastColumnToFitHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selSizeLastColumnToFitHandle);
+		}
+	}
+
+	[Export("scrollRowToVisible:")]
+	public virtual void ScrollRowToVisible(long row)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_Int64(base.Handle, selScrollRowToVisible_Handle, row);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selScrollRowToVisible_Handle, row);
+		}
+	}
+
+	[Export("scrollColumnToVisible:")]
+	public virtual void ScrollColumnToVisible(long column)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_Int64(base.Handle, selScrollColumnToVisible_Handle, column);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selScrollColumnToVisible_Handle, column);
+		}
 	}
 
 	[Export("reloadData")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ReloadData()
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selReloadDataHandle);
 		}
@@ -4088,8 +2231,21 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
+	[Export("noteNumberOfRowsChanged")]
+	public virtual void NoteNumberOfRowsChanged()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selNoteNumberOfRowsChangedHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selNoteNumberOfRowsChangedHandle);
+		}
+	}
+
 	[Export("reloadDataForRowIndexes:columnIndexes:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ReloadData(NSIndexSet rowIndexes, NSIndexSet columnIndexes)
 	{
 		NSApplication.EnsureUIThread();
@@ -4101,156 +2257,97 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		{
 			throw new ArgumentNullException("columnIndexes");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selReloadDataForRowIndexes_ColumnIndexes_Handle, rowIndexes.Handle, columnIndexes.Handle);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selReloadDataForRowIndexesColumnIndexes_Handle, rowIndexes.Handle, columnIndexes.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selReloadDataForRowIndexes_ColumnIndexes_Handle, rowIndexes.Handle, columnIndexes.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selReloadDataForRowIndexesColumnIndexes_Handle, rowIndexes.Handle, columnIndexes.Handle);
 		}
 	}
 
-	[Export("removeTableColumn:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RemoveColumn(NSTableColumn tableColumn)
+	[Export("setIndicatorImage:inTableColumn:")]
+	public virtual void SetIndicatorImage(NSImage anImage, NSTableColumn tableColumn)
 	{
 		NSApplication.EnsureUIThread();
 		if (tableColumn == null)
 		{
 			throw new ArgumentNullException("tableColumn");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveTableColumn_Handle, tableColumn.Handle);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetIndicatorImageInTableColumn_Handle, anImage?.Handle ?? IntPtr.Zero, tableColumn.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveTableColumn_Handle, tableColumn.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetIndicatorImageInTableColumn_Handle, anImage?.Handle ?? IntPtr.Zero, tableColumn.Handle);
 		}
 	}
 
-	[Export("removeRowsAtIndexes:withAnimation:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RemoveRows(NSIndexSet indexes, NSTableViewAnimation animationOptions)
+	[Export("indicatorImageInTableColumn:")]
+	public virtual NSImage GetIndicatorImage(NSTableColumn tableColumn)
 	{
 		NSApplication.EnsureUIThread();
-		if (indexes == null)
+		if (tableColumn == null)
 		{
-			throw new ArgumentNullException("indexes");
+			throw new ArgumentNullException("tableColumn");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_UInt64(base.Handle, selRemoveRowsAtIndexes_WithAnimation_Handle, indexes.Handle, (ulong)animationOptions);
+			return (NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selIndicatorImageInTableColumn_Handle, tableColumn.Handle));
+		}
+		return (NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selIndicatorImageInTableColumn_Handle, tableColumn.Handle));
+	}
+
+	[Export("canDragRowsWithIndexes:atPoint:")]
+	public virtual bool CanDragRows(NSIndexSet rowIndexes, CGPoint mouseDownPoint)
+	{
+		NSApplication.EnsureUIThread();
+		if (rowIndexes == null)
+		{
+			throw new ArgumentNullException("rowIndexes");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_IntPtr_CGPoint(base.Handle, selCanDragRowsWithIndexesAtPoint_Handle, rowIndexes.Handle, mouseDownPoint);
+		}
+		return Messaging.bool_objc_msgSendSuper_IntPtr_CGPoint(base.SuperHandle, selCanDragRowsWithIndexesAtPoint_Handle, rowIndexes.Handle, mouseDownPoint);
+	}
+
+	[Export("setDraggingSourceOperationMask:forLocal:")]
+	public virtual void SetDraggingSourceOperationMask(NSDragOperation mask, bool isLocal)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_UInt64_bool(base.Handle, selSetDraggingSourceOperationMaskForLocal_Handle, (ulong)mask, isLocal);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selRemoveRowsAtIndexes_WithAnimation_Handle, indexes.Handle, (ulong)animationOptions);
+			Messaging.void_objc_msgSendSuper_UInt64_bool(base.SuperHandle, selSetDraggingSourceOperationMaskForLocal_Handle, (ulong)mask, isLocal);
 		}
 	}
 
-	[Export("rowForView:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint RowForView(NSView view)
+	[Export("setDropRow:dropOperation:")]
+	public virtual void SetDropRowDropOperation(long row, NSTableViewDropOperation dropOperation)
 	{
 		NSApplication.EnsureUIThread();
-		if (view == null)
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("view");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.nint_objc_msgSend_IntPtr(base.Handle, selRowForView_Handle, view.Handle);
-		}
-		return Messaging.nint_objc_msgSendSuper_IntPtr(base.SuperHandle, selRowForView_Handle, view.Handle);
-	}
-
-	[Export("didAddRowView:forRow:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RowViewAdded(NSTableRowView rowView, nint row)
-	{
-		NSApplication.EnsureUIThread();
-		if (rowView == null)
-		{
-			throw new ArgumentNullException("rowView");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_nint(base.Handle, selDidAddRowView_ForRow_Handle, rowView.Handle, row);
+			Messaging.void_objc_msgSend_Int64_UInt64(base.Handle, selSetDropRowDropOperation_Handle, row, (ulong)dropOperation);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_nint(base.SuperHandle, selDidAddRowView_ForRow_Handle, rowView.Handle, row);
-		}
-	}
-
-	[Export("didRemoveRowView:forRow:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RowViewRemoved(NSTableRowView rowView, nint row)
-	{
-		NSApplication.EnsureUIThread();
-		if (rowView == null)
-		{
-			throw new ArgumentNullException("rowView");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_nint(base.Handle, selDidRemoveRowView_ForRow_Handle, rowView.Handle, row);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_nint(base.SuperHandle, selDidRemoveRowView_ForRow_Handle, rowView.Handle, row);
-		}
-	}
-
-	[Export("rowsInRect:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSRange RowsInRect(CGRect rect)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Messaging.NSRange_objc_msgSend_CGRect(base.Handle, selRowsInRect_Handle, rect);
-		}
-		return Messaging.NSRange_objc_msgSendSuper_CGRect(base.SuperHandle, selRowsInRect_Handle, rect);
-	}
-
-	[Export("scrollColumnToVisible:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ScrollColumnToVisible(nint column)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint(base.Handle, selScrollColumnToVisible_Handle, column);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selScrollColumnToVisible_Handle, column);
-		}
-	}
-
-	[Export("scrollRowToVisible:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void ScrollRowToVisible(nint row)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_nint(base.Handle, selScrollRowToVisible_Handle, row);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selScrollRowToVisible_Handle, row);
+			Messaging.void_objc_msgSendSuper_Int64_UInt64(base.SuperHandle, selSetDropRowDropOperation_Handle, row, (ulong)dropOperation);
 		}
 	}
 
 	[Export("selectAll:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SelectAll(NSObject? sender)
+	public virtual void SelectAll(NSObject sender)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSelectAll_Handle, sender?.Handle ?? IntPtr.Zero);
 		}
@@ -4260,8 +2357,21 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
+	[Export("deselectAll:")]
+	public virtual void DeselectAll(NSObject sender)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selDeselectAll_Handle, sender?.Handle ?? IntPtr.Zero);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selDeselectAll_Handle, sender?.Handle ?? IntPtr.Zero);
+		}
+	}
+
 	[Export("selectColumnIndexes:byExtendingSelection:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SelectColumns(NSIndexSet indexes, bool byExtendingSelection)
 	{
 		NSApplication.EnsureUIThread();
@@ -4269,18 +2379,17 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		{
 			throw new ArgumentNullException("indexes");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selSelectColumnIndexes_ByExtendingSelection_Handle, indexes.Handle, byExtendingSelection);
+			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selSelectColumnIndexesByExtendingSelection_Handle, indexes.Handle, byExtendingSelection);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selSelectColumnIndexes_ByExtendingSelection_Handle, indexes.Handle, byExtendingSelection);
+			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selSelectColumnIndexesByExtendingSelection_Handle, indexes.Handle, byExtendingSelection);
 		}
 	}
 
 	[Export("selectRowIndexes:byExtendingSelection:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void SelectRows(NSIndexSet indexes, bool byExtendingSelection)
 	{
 		NSApplication.EnsureUIThread();
@@ -4288,127 +2397,200 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		{
 			throw new ArgumentNullException("indexes");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selSelectRowIndexes_ByExtendingSelection_Handle, indexes.Handle, byExtendingSelection);
+			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selSelectRowIndexesByExtendingSelection_Handle, indexes.Handle, byExtendingSelection);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selSelectRowIndexes_ByExtendingSelection_Handle, indexes.Handle, byExtendingSelection);
+			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selSelectRowIndexesByExtendingSelection_Handle, indexes.Handle, byExtendingSelection);
 		}
 	}
 
-	[Export("setDraggingSourceOperationMask:forLocal:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SetDraggingSourceOperationMask(NSDragOperation mask, bool isLocal)
+	[Export("deselectColumn:")]
+	public virtual void DeselectColumn(long column)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_UInt64_bool(base.Handle, selSetDraggingSourceOperationMask_ForLocal_Handle, (ulong)mask, isLocal);
+			Messaging.void_objc_msgSend_Int64(base.Handle, selDeselectColumn_Handle, column);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_UInt64_bool(base.SuperHandle, selSetDraggingSourceOperationMask_ForLocal_Handle, (ulong)mask, isLocal);
+			Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selDeselectColumn_Handle, column);
 		}
 	}
 
-	[Export("setDropRow:dropOperation:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SetDropRowDropOperation(nint row, NSTableViewDropOperation dropOperation)
+	[Export("deselectRow:")]
+	public virtual void DeselectRow(long row)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_nint_UInt64(base.Handle, selSetDropRow_DropOperation_Handle, row, (ulong)dropOperation);
+			Messaging.void_objc_msgSend_Int64(base.Handle, selDeselectRow_Handle, row);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_nint_UInt64(base.SuperHandle, selSetDropRow_DropOperation_Handle, row, (ulong)dropOperation);
+			Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selDeselectRow_Handle, row);
 		}
 	}
 
-	[Export("setIndicatorImage:inTableColumn:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SetIndicatorImage(NSImage? anImage, NSTableColumn tableColumn)
+	[Export("isColumnSelected:")]
+	public virtual bool IsColumnSelected(long column)
 	{
 		NSApplication.EnsureUIThread();
-		if (tableColumn == null)
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("tableColumn");
+			return Messaging.bool_objc_msgSend_Int64(base.Handle, selIsColumnSelected_Handle, column);
 		}
-		if (base.IsDirectBinding)
+		return Messaging.bool_objc_msgSendSuper_Int64(base.SuperHandle, selIsColumnSelected_Handle, column);
+	}
+
+	[Export("isRowSelected:")]
+	public virtual bool IsRowSelected(long row)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetIndicatorImage_InTableColumn_Handle, anImage?.Handle ?? IntPtr.Zero, tableColumn.Handle);
+			return Messaging.bool_objc_msgSend_Int64(base.Handle, selIsRowSelected_Handle, row);
+		}
+		return Messaging.bool_objc_msgSendSuper_Int64(base.SuperHandle, selIsRowSelected_Handle, row);
+	}
+
+	[Export("rectOfColumn:")]
+	public virtual CGRect RectForColumn(long column)
+	{
+		NSApplication.EnsureUIThread();
+		CGRect retval;
+		if (IsDirectBinding)
+		{
+			Messaging.CGRect_objc_msgSend_stret_Int64(out retval, base.Handle, selRectOfColumn_Handle, column);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetIndicatorImage_InTableColumn_Handle, anImage?.Handle ?? IntPtr.Zero, tableColumn.Handle);
+			Messaging.CGRect_objc_msgSendSuper_stret_Int64(out retval, base.SuperHandle, selRectOfColumn_Handle, column);
 		}
+		return retval;
 	}
 
-	[Export("shouldFocusCell:atColumn:row:")]
-	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, "Use a View Based TableView; observe the window’s firstResponder for focus change notifications.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool ShouldFocusCell(NSCell cell, nint column, nint row)
+	[Export("rectOfRow:")]
+	public virtual CGRect RectForRow(long row)
 	{
 		NSApplication.EnsureUIThread();
-		if (cell == null)
+		CGRect retval;
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("cell");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_IntPtr_nint_nint(base.Handle, selShouldFocusCell_AtColumn_Row_Handle, cell.Handle, column, row);
-		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr_nint_nint(base.SuperHandle, selShouldFocusCell_AtColumn_Row_Handle, cell.Handle, column, row);
-	}
-
-	[Export("sizeLastColumnToFit")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SizeLastColumnToFit()
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selSizeLastColumnToFitHandle);
+			Messaging.CGRect_objc_msgSend_stret_Int64(out retval, base.Handle, selRectOfRow_Handle, row);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selSizeLastColumnToFitHandle);
+			Messaging.CGRect_objc_msgSendSuper_stret_Int64(out retval, base.SuperHandle, selRectOfRow_Handle, row);
 		}
+		return retval;
 	}
 
-	[Export("sizeToFit")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public new virtual void SizeToFit()
+	[Export("columnIndexesInRect:")]
+	public virtual NSIndexSet GetColumnIndexesInRect(CGRect rect)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selSizeToFitHandle);
+			return (NSIndexSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_CGRect(base.Handle, selColumnIndexesInRect_Handle, rect));
+		}
+		return (NSIndexSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_CGRect(base.SuperHandle, selColumnIndexesInRect_Handle, rect));
+	}
+
+	[Export("rowsInRect:")]
+	public virtual NSRange RowsInRect(CGRect rect)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return Messaging.NSRange_objc_msgSend_CGRect(base.Handle, selRowsInRect_Handle, rect);
+		}
+		return Messaging.NSRange_objc_msgSendSuper_CGRect(base.SuperHandle, selRowsInRect_Handle, rect);
+	}
+
+	[Export("columnAtPoint:")]
+	public virtual long GetColumn(CGPoint point)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return Messaging.Int64_objc_msgSend_CGPoint(base.Handle, selColumnAtPoint_Handle, point);
+		}
+		return Messaging.Int64_objc_msgSendSuper_CGPoint(base.SuperHandle, selColumnAtPoint_Handle, point);
+	}
+
+	[Export("rowAtPoint:")]
+	public virtual long GetRow(CGPoint point)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return Messaging.Int64_objc_msgSend_CGPoint(base.Handle, selRowAtPoint_Handle, point);
+		}
+		return Messaging.Int64_objc_msgSendSuper_CGPoint(base.SuperHandle, selRowAtPoint_Handle, point);
+	}
+
+	[Export("frameOfCellAtColumn:row:")]
+	public virtual CGRect GetCellFrame(long column, long row)
+	{
+		NSApplication.EnsureUIThread();
+		CGRect retval;
+		if (IsDirectBinding)
+		{
+			Messaging.CGRect_objc_msgSend_stret_Int64_Int64(out retval, base.Handle, selFrameOfCellAtColumnRow_Handle, column, row);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selSizeToFitHandle);
+			Messaging.CGRect_objc_msgSendSuper_stret_Int64_Int64(out retval, base.SuperHandle, selFrameOfCellAtColumnRow_Handle, column, row);
 		}
+		return retval;
 	}
 
-	[Export("tableColumns")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSTableColumn[] TableColumns()
+	[Export("preparedCellAtColumn:row:")]
+	public virtual NSCell GetCell(long column, long row)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return NSArray.ArrayFromHandle<NSTableColumn>(Messaging.IntPtr_objc_msgSend(base.Handle, selTableColumnsHandle));
+			return (NSCell)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_Int64_Int64(base.Handle, selPreparedCellAtColumnRow_Handle, column, row));
 		}
-		return NSArray.ArrayFromHandle<NSTableColumn>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTableColumnsHandle));
+		return (NSCell)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_Int64_Int64(base.SuperHandle, selPreparedCellAtColumnRow_Handle, column, row));
+	}
+
+	[Export("textShouldBeginEditing:")]
+	public virtual bool TextShouldBeginEditing(NSText textObject)
+	{
+		NSApplication.EnsureUIThread();
+		if (textObject == null)
+		{
+			throw new ArgumentNullException("textObject");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selTextShouldBeginEditing_Handle, textObject.Handle);
+		}
+		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selTextShouldBeginEditing_Handle, textObject.Handle);
+	}
+
+	[Export("textShouldEndEditing:")]
+	public virtual bool TextShouldEndEditing(NSText textObject)
+	{
+		NSApplication.EnsureUIThread();
+		if (textObject == null)
+		{
+			throw new ArgumentNullException("textObject");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selTextShouldEndEditing_Handle, textObject.Handle);
+		}
+		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selTextShouldEndEditing_Handle, textObject.Handle);
 	}
 
 	[Export("textDidBeginEditing:")]
-	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, "Use a View Based TableView with an NSTextField.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void TextDidBeginEditing(NSNotification notification)
 	{
 		NSApplication.EnsureUIThread();
@@ -4416,7 +2598,7 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		{
 			throw new ArgumentNullException("notification");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selTextDidBeginEditing_Handle, notification.Handle);
 		}
@@ -4426,29 +2608,7 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	[Export("textDidChange:")]
-	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, "Use a View Based TableView with an NSTextField.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void TextDidChange(NSNotification notification)
-	{
-		NSApplication.EnsureUIThread();
-		if (notification == null)
-		{
-			throw new ArgumentNullException("notification");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selTextDidChange_Handle, notification.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selTextDidChange_Handle, notification.Handle);
-		}
-	}
-
 	[Export("textDidEndEditing:")]
-	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, "Use a View Based TableView with an NSTextField.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void TextDidEndEditing(NSNotification notification)
 	{
 		NSApplication.EnsureUIThread();
@@ -4456,7 +2616,7 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		{
 			throw new ArgumentNullException("notification");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selTextDidEndEditing_Handle, notification.Handle);
 		}
@@ -4466,119 +2626,421 @@ public class NSTableView : NSControl, INSAccessibilityElementProtocol, INativeOb
 		}
 	}
 
-	[Export("textShouldBeginEditing:")]
-	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, "Use a View Based TableView with an NSTextField.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool TextShouldBeginEditing(NSText textObject)
+	[Export("textDidChange:")]
+	public virtual void TextDidChange(NSNotification notification)
 	{
 		NSApplication.EnsureUIThread();
-		if (textObject == null)
+		if (notification == null)
 		{
-			throw new ArgumentNullException("textObject");
+			throw new ArgumentNullException("notification");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selTextShouldBeginEditing_Handle, textObject.Handle);
-		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selTextShouldBeginEditing_Handle, textObject.Handle);
-	}
-
-	[Export("textShouldEndEditing:")]
-	[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, "Use a View Based TableView with an NSTextField.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool TextShouldEndEditing(NSText textObject)
-	{
-		NSApplication.EnsureUIThread();
-		if (textObject == null)
-		{
-			throw new ArgumentNullException("textObject");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selTextShouldEndEditing_Handle, textObject.Handle);
-		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selTextShouldEndEditing_Handle, textObject.Handle);
-	}
-
-	[Export("tile")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void Tile()
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selTileHandle);
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selTextDidChange_Handle, notification.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selTileHandle);
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selTextDidChange_Handle, notification.Handle);
 		}
 	}
 
-	[Export("unhideRowsAtIndexes:withAnimation:")]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void UnhideRows(NSIndexSet indexes, NSTableViewAnimation rowAnimation)
+	[Export("shouldFocusCell:atColumn:row:")]
+	public virtual bool ShouldFocusCell(NSCell cell, long column, long row)
+	{
+		NSApplication.EnsureUIThread();
+		if (cell == null)
+		{
+			throw new ArgumentNullException("cell");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_IntPtr_Int64_Int64(base.Handle, selShouldFocusCellAtColumnRow_Handle, cell.Handle, column, row);
+		}
+		return Messaging.bool_objc_msgSendSuper_IntPtr_Int64_Int64(base.SuperHandle, selShouldFocusCellAtColumnRow_Handle, cell.Handle, column, row);
+	}
+
+	[Export("performClickOnCellAtColumn:row:")]
+	public virtual void PerformClick(long column, long row)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_Int64_Int64(base.Handle, selPerformClickOnCellAtColumnRow_Handle, column, row);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_Int64_Int64(base.SuperHandle, selPerformClickOnCellAtColumnRow_Handle, column, row);
+		}
+	}
+
+	[Export("editColumn:row:withEvent:select:")]
+	public virtual void EditColumn(long column, long row, NSEvent theEvent, bool select)
+	{
+		NSApplication.EnsureUIThread();
+		if (theEvent == null)
+		{
+			throw new ArgumentNullException("theEvent");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_Int64_Int64_IntPtr_bool(base.Handle, selEditColumnRowWithEventSelect_Handle, column, row, theEvent.Handle, select);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_Int64_Int64_IntPtr_bool(base.SuperHandle, selEditColumnRowWithEventSelect_Handle, column, row, theEvent.Handle, select);
+		}
+	}
+
+	[Export("drawRow:clipRect:")]
+	public virtual void DrawRow(long row, CGRect clipRect)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_Int64_CGRect(base.Handle, selDrawRowClipRect_Handle, row, clipRect);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_Int64_CGRect(base.SuperHandle, selDrawRowClipRect_Handle, row, clipRect);
+		}
+	}
+
+	[Export("highlightSelectionInClipRect:")]
+	public virtual void HighlightSelection(CGRect clipRect)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGRect(base.Handle, selHighlightSelectionInClipRect_Handle, clipRect);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selHighlightSelectionInClipRect_Handle, clipRect);
+		}
+	}
+
+	[Export("drawGridInClipRect:")]
+	public virtual void DrawGrid(CGRect clipRect)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGRect(base.Handle, selDrawGridInClipRect_Handle, clipRect);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selDrawGridInClipRect_Handle, clipRect);
+		}
+	}
+
+	[Export("drawBackgroundInClipRect:")]
+	public virtual void DrawBackground(CGRect clipRect)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGRect(base.Handle, selDrawBackgroundInClipRect_Handle, clipRect);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selDrawBackgroundInClipRect_Handle, clipRect);
+		}
+	}
+
+	[Export("viewAtColumn:row:makeIfNecessary:")]
+	public virtual NSView GetView(long column, long row, bool makeIfNecessary)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return (NSView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_Int64_Int64_bool(base.Handle, selViewAtColumnRowMakeIfNecessary_Handle, column, row, makeIfNecessary));
+		}
+		return (NSView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_Int64_Int64_bool(base.SuperHandle, selViewAtColumnRowMakeIfNecessary_Handle, column, row, makeIfNecessary));
+	}
+
+	[Export("rowViewAtRow:makeIfNecessary:")]
+	public virtual NSTableRowView GetRowView(long row, bool makeIfNecessary)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return (NSTableRowView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_Int64_bool(base.Handle, selRowViewAtRowMakeIfNecessary_Handle, row, makeIfNecessary));
+		}
+		return (NSTableRowView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_Int64_bool(base.SuperHandle, selRowViewAtRowMakeIfNecessary_Handle, row, makeIfNecessary));
+	}
+
+	[Export("rowForView:")]
+	public virtual long RowForView(NSView view)
+	{
+		NSApplication.EnsureUIThread();
+		if (view == null)
+		{
+			throw new ArgumentNullException("view");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.Int64_objc_msgSend_IntPtr(base.Handle, selRowForView_Handle, view.Handle);
+		}
+		return Messaging.Int64_objc_msgSendSuper_IntPtr(base.SuperHandle, selRowForView_Handle, view.Handle);
+	}
+
+	[Export("columnForView:")]
+	public virtual long ColumnForView(NSView view)
+	{
+		NSApplication.EnsureUIThread();
+		if (view == null)
+		{
+			throw new ArgumentNullException("view");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.Int64_objc_msgSend_IntPtr(base.Handle, selColumnForView_Handle, view.Handle);
+		}
+		return Messaging.Int64_objc_msgSendSuper_IntPtr(base.SuperHandle, selColumnForView_Handle, view.Handle);
+	}
+
+	[Export("makeViewWithIdentifier:owner:")]
+	public virtual NSView MakeView(string identifier, NSObject owner)
+	{
+		NSApplication.EnsureUIThread();
+		if (identifier == null)
+		{
+			throw new ArgumentNullException("identifier");
+		}
+		if (owner == null)
+		{
+			throw new ArgumentNullException("owner");
+		}
+		IntPtr arg = NSString.CreateNative(identifier);
+		NSView result = ((!IsDirectBinding) ? ((NSView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selMakeViewWithIdentifierOwner_Handle, arg, owner.Handle))) : ((NSView)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selMakeViewWithIdentifierOwner_Handle, arg, owner.Handle))));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("enumerateAvailableRowViewsUsingBlock:")]
+	public unsafe virtual void EnumerateAvailableRowViews(NSTableViewRowHandler callback)
+	{
+		NSApplication.EnsureUIThread();
+		if (callback == null)
+		{
+			throw new ArgumentNullException("callback");
+		}
+		BlockLiteral blockLiteral = default(BlockLiteral);
+		BlockLiteral* ptr = &blockLiteral;
+		blockLiteral.SetupBlock(Trampolines.SDNSTableViewRowHandler.Handler, callback);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEnumerateAvailableRowViewsUsingBlock_Handle, (IntPtr)ptr);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEnumerateAvailableRowViewsUsingBlock_Handle, (IntPtr)ptr);
+		}
+		ptr->CleanupBlock();
+	}
+
+	[Export("beginUpdates")]
+	public virtual void BeginUpdates()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selBeginUpdatesHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selBeginUpdatesHandle);
+		}
+	}
+
+	[Export("endUpdates")]
+	public virtual void EndUpdates()
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selEndUpdatesHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selEndUpdatesHandle);
+		}
+	}
+
+	[Export("insertRowsAtIndexes:withAnimation:")]
+	public virtual void InsertRows(NSIndexSet indexes, NSTableViewAnimation animationOptions)
 	{
 		NSApplication.EnsureUIThread();
 		if (indexes == null)
 		{
 			throw new ArgumentNullException("indexes");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_UInt64(base.Handle, selUnhideRowsAtIndexes_WithAnimation_Handle, indexes.Handle, (ulong)rowAnimation);
+			Messaging.void_objc_msgSend_IntPtr_UInt64(base.Handle, selInsertRowsAtIndexesWithAnimation_Handle, indexes.Handle, (ulong)animationOptions);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selUnhideRowsAtIndexes_WithAnimation_Handle, indexes.Handle, (ulong)rowAnimation);
+			Messaging.void_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selInsertRowsAtIndexesWithAnimation_Handle, indexes.Handle, (ulong)animationOptions);
 		}
 	}
 
-	[Export("validateUserInterfaceItem:")]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool ValidateUserInterfaceItem(INSValidatedUserInterfaceItem item)
+	[Export("removeRowsAtIndexes:withAnimation:")]
+	public virtual void RemoveRows(NSIndexSet indexes, NSTableViewAnimation animationOptions)
 	{
 		NSApplication.EnsureUIThread();
-		if (item == null)
+		if (indexes == null)
 		{
-			throw new ArgumentNullException("item");
+			throw new ArgumentNullException("indexes");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selValidateUserInterfaceItem_Handle, item.Handle);
+			Messaging.void_objc_msgSend_IntPtr_UInt64(base.Handle, selRemoveRowsAtIndexesWithAnimation_Handle, indexes.Handle, (ulong)animationOptions);
 		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selValidateUserInterfaceItem_Handle, item.Handle);
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_UInt64(base.SuperHandle, selRemoveRowsAtIndexesWithAnimation_Handle, indexes.Handle, (ulong)animationOptions);
+		}
 	}
 
-	internal virtual _NSTableViewDelegate CreateInternalEventDelegateType()
+	[Export("moveRowAtIndex:toIndex:")]
+	public virtual void MoveRow(long oldIndex, long newIndex)
 	{
-		return new _NSTableViewDelegate();
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_Int64_Int64(base.Handle, selMoveRowAtIndexToIndex_Handle, oldIndex, newIndex);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_Int64_Int64(base.SuperHandle, selMoveRowAtIndexToIndex_Handle, oldIndex, newIndex);
+		}
 	}
 
-	internal _NSTableViewDelegate EnsureNSTableViewDelegate()
+	[Export("draggingSourceOperationMaskForLocal:")]
+	public virtual NSDragOperation DraggingSourceOperationMaskForLocal(bool flag)
 	{
-		if (WeakDelegate != null)
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
 		{
-			NSApplication.EnsureEventAndDelegateAreNotMismatched(WeakDelegate, GetInternalEventDelegateType);
+			return (NSDragOperation)Messaging.UInt64_objc_msgSend_bool(base.Handle, selDraggingSourceOperationMaskForLocal_Handle, flag);
 		}
-		_NSTableViewDelegate nSTableViewDelegate = Delegate as _NSTableViewDelegate;
-		if (nSTableViewDelegate == null)
-		{
-			nSTableViewDelegate = (_NSTableViewDelegate)(Delegate = CreateInternalEventDelegateType());
-		}
-		return nSTableViewDelegate;
+		return (NSDragOperation)Messaging.UInt64_objc_msgSendSuper_bool(base.SuperHandle, selDraggingSourceOperationMaskForLocal_Handle, flag);
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export("namesOfPromisedFilesDroppedAtDestination:")]
+	public virtual string[] NamesOfPromisedFilesDroppedAtDestination(NSUrl dropDestination)
+	{
+		NSApplication.EnsureUIThread();
+		if (dropDestination == null)
+		{
+			throw new ArgumentNullException("dropDestination");
+		}
+		if (IsDirectBinding)
+		{
+			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selNamesOfPromisedFilesDroppedAtDestination_Handle, dropDestination.Handle));
+		}
+		return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selNamesOfPromisedFilesDroppedAtDestination_Handle, dropDestination.Handle));
+	}
+
+	[Export("draggedImage:beganAt:")]
+	public virtual void DraggedImageBeganAt(NSImage image, CGPoint screenPoint)
+	{
+		NSApplication.EnsureUIThread();
+		if (image == null)
+		{
+			throw new ArgumentNullException("image");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_CGPoint(base.Handle, selDraggedImageBeganAt_Handle, image.Handle, screenPoint);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_CGPoint(base.SuperHandle, selDraggedImageBeganAt_Handle, image.Handle, screenPoint);
+		}
+	}
+
+	[Export("draggedImage:endedAt:operation:")]
+	public virtual void DraggedImageEndedAtOperation(NSImage image, CGPoint screenPoint, NSDragOperation operation)
+	{
+		NSApplication.EnsureUIThread();
+		if (image == null)
+		{
+			throw new ArgumentNullException("image");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_CGPoint_UInt64(base.Handle, selDraggedImageEndedAtOperation_Handle, image.Handle, screenPoint, (ulong)operation);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_CGPoint_UInt64(base.SuperHandle, selDraggedImageEndedAtOperation_Handle, image.Handle, screenPoint, (ulong)operation);
+		}
+	}
+
+	[Export("draggedImage:movedTo:")]
+	public virtual void DraggedImageMovedTo(NSImage image, CGPoint screenPoint)
+	{
+		NSApplication.EnsureUIThread();
+		if (image == null)
+		{
+			throw new ArgumentNullException("image");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_CGPoint(base.Handle, selDraggedImageMovedTo_Handle, image.Handle, screenPoint);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_CGPoint(base.SuperHandle, selDraggedImageMovedTo_Handle, image.Handle, screenPoint);
+		}
+	}
+
+	[Export("draggedImage:endedAt:deposited:")]
+	[Obsolete("On 10.1 and newer, use DraggedImageEndedAtOperation() instead", false)]
+	public virtual void DraggedImageEndedAtDeposited(NSImage image, CGPoint screenPoint, bool deposited)
+	{
+		NSApplication.EnsureUIThread();
+		if (image == null)
+		{
+			throw new ArgumentNullException("image");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_CGPoint_bool(base.Handle, selDraggedImageEndedAtDeposited_Handle, image.Handle, screenPoint, deposited);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_CGPoint_bool(base.SuperHandle, selDraggedImageEndedAtDeposited_Handle, image.Handle, screenPoint, deposited);
+		}
+	}
+
+	private _NSTableViewDelegate EnsureNSTableViewDelegate()
+	{
+		NSTableViewDelegate nSTableViewDelegate = Delegate;
+		if (nSTableViewDelegate == null || !(nSTableViewDelegate is _NSTableViewDelegate))
+		{
+			nSTableViewDelegate = (Delegate = new _NSTableViewDelegate());
+		}
+		return (_NSTableViewDelegate)nSTableViewDelegate;
+	}
+
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
+			__mt_SelectedColumns_var = null;
+			__mt_SelectedRows_var = null;
 			__mt_WeakDataSource_var = null;
 			__mt_WeakDelegate_var = null;
+			__mt_HeaderView_var = null;
+			__mt_CornerView_var = null;
+			__mt_BackgroundColor_var = null;
+			__mt_GridColor_var = null;
+			__mt_SortDescriptors_var = null;
+			__mt_HighlightedTableColumn_var = null;
 		}
 	}
 }

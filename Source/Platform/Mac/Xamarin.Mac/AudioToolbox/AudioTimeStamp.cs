@@ -6,15 +6,14 @@ namespace AudioToolbox;
 public struct AudioTimeStamp
 {
 	[Flags]
-	public enum AtsFlags : uint
+	public enum AtsFlags
 	{
-		NothingValid = 0u,
-		SampleTimeValid = 1u,
-		HostTimeValid = 2u,
-		RateScalarValid = 4u,
-		WordClockTimeValid = 8u,
-		SmpteTimeValid = 0x10u,
-		SampleHostTimeValid = 3u
+		SampleTimeValid = 1,
+		HostTimeValid = 2,
+		RateScalarValid = 4,
+		WordClockTimeValid = 8,
+		SmpteTimeValid = 0x10,
+		SampleHostTimeValid = 3
 	}
 
 	public double SampleTime;

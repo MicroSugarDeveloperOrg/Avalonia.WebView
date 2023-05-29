@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace AppKit;
 
-[Native]
 public enum NSTabViewType : ulong
 {
 	NSTopTabsBezelBorder,

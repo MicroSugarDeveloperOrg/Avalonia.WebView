@@ -1,18 +1,17 @@
 using System.Runtime.InteropServices;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreText;
 
 [StructLayout(LayoutKind.Sequential)]
 internal class CTRunDelegateCallbacks
 {
-	public nint version;
+	public CTRunDelegateVersion version;
 
 	public CTRunDelegateDeallocateCallback dealloc;
 
-	public CTRunDelegateGetCallback getAscent;
+	public CTRunDelegateGetAscentCallback getAscent;
 
-	public CTRunDelegateGetCallback getDescent;
+	public CTRunDelegateGetDescentCallback getDescent;
 
-	public CTRunDelegateGetCallback getWidth;
+	public CTRunDelegateGetWidthCallback getWidth;
 }

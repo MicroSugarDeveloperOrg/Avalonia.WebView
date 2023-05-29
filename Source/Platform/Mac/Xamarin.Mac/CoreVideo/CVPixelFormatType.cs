@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace CoreVideo;
 
-[Watch(3, 0)]
 public enum CVPixelFormatType : uint
 {
 	CV1Monochrome = 1u,
@@ -52,21 +49,5 @@ public enum CVPixelFormatType : uint
 	TwoComponent16Half = 843264104u,
 	TwoComponent32Float = 843264102u,
 	CV64RGBAHalf = 1380411457u,
-	CV128RGBAFloat = 1380410945u,
-	CV30RgbLePackedWideGamut = 1999843442u,
-	CV14BayerGrbg = 1735549492u,
-	CV14BayerRggb = 1919379252u,
-	CV14BayerBggr = 1650943796u,
-	CV14BayerGbrg = 1734505012u,
-	Argb2101010LEPacked = 1815162994u,
-	DisparityFloat16 = 1751411059u,
-	DisparityFloat32 = 1717856627u,
-	DepthFloat16 = 1751410032u,
-	DepthFloat32 = 1717855600u,
-	CV420YpCbCr10BiPlanarVideoRange = 2016686640u,
-	CV422YpCbCr10BiPlanarVideoRange = 2016686642u,
-	CV444YpCbCr10BiPlanarVideoRange = 2016687156u,
-	CV420YpCbCr10BiPlanarFullRange = 2019963440u,
-	CV422YpCbCr10BiPlanarFullRange = 2019963442u,
-	CV444YpCbCr10BiPlanarFullRange = 2019963956u
+	CV128RGBAFloat = 1380410945u
 }

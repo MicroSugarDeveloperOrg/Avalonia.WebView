@@ -5,56 +5,109 @@ using ObjCRuntime;
 
 namespace WebKit;
 
-[Protocol]
-[Register("Xamarin_Mac__WebKit_WebOpenPanelResultListener", false)]
-[Model]
-[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
-public class WebOpenPanelResultListener : NSObject, IWebOpenPanelResultListener, INativeObject, IDisposable
+[Register("WebOpenPanelResultListener", true)]
+public class WebOpenPanelResultListener : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	private static readonly IntPtr selChooseFilename_Handle = Selector.GetHandle("chooseFilename:");
+
+	private static readonly IntPtr selChooseFilenames_Handle = Selector.GetHandle("chooseFilenames:");
+
+	private static readonly IntPtr selCancelHandle = Selector.GetHandle("cancel");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("WebOpenPanelResultListener");
+
+	public override IntPtr ClassHandle => class_ptr;
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public WebOpenPanelResultListener()
 		: base(NSObjectFlag.Empty)
 	{
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected WebOpenPanelResultListener(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public WebOpenPanelResultListener(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public WebOpenPanelResultListener(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal WebOpenPanelResultListener(IntPtr handle)
+	public WebOpenPanelResultListener(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
-	}
-
-	[Export("cancel")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void Cancel()
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("chooseFilename:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ChooseFilename(string filename)
 	{
-		throw new You_Should_Not_Call_base_In_This_Method();
+		if (filename == null)
+		{
+			throw new ArgumentNullException("filename");
+		}
+		IntPtr arg = NSString.CreateNative(filename);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selChooseFilename_Handle, arg);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selChooseFilename_Handle, arg);
+		}
+		NSString.ReleaseNative(arg);
 	}
 
 	[Export("chooseFilenames:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void ChooseFilenames(string[] filenames)
 	{
-		throw new You_Should_Not_Call_base_In_This_Method();
+		if (filenames == null)
+		{
+			throw new ArgumentNullException("filenames");
+		}
+		NSArray nSArray = NSArray.FromStrings(filenames);
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selChooseFilenames_Handle, nSArray.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selChooseFilenames_Handle, nSArray.Handle);
+		}
+		nSArray.Dispose();
+	}
+
+	[Export("cancel")]
+	public virtual void Cancel()
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selCancelHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selCancelHandle);
+		}
 	}
 }

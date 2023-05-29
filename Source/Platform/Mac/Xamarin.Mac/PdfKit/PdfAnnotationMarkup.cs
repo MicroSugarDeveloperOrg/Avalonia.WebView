@@ -1,183 +1,126 @@
 using System;
 using System.ComponentModel;
-using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 
 namespace PdfKit;
 
 [Register("PDFAnnotationMarkup", true)]
-[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-[Deprecated(PlatformName.MacOSX, 10, 12, PlatformArchitecture.None, null)]
 public class PdfAnnotationMarkup : PdfAnnotation
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMarkupType = "markupType";
-
-	private static readonly IntPtr selMarkupTypeHandle = Selector.GetHandle("markupType");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selQuadrilateralPoints = "quadrilateralPoints";
-
 	private static readonly IntPtr selQuadrilateralPointsHandle = Selector.GetHandle("quadrilateralPoints");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMarkupType_ = "setMarkupType:";
-
-	private static readonly IntPtr selSetMarkupType_Handle = Selector.GetHandle("setMarkupType:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetQuadrilateralPoints_ = "setQuadrilateralPoints:";
 
 	private static readonly IntPtr selSetQuadrilateralPoints_Handle = Selector.GetHandle("setQuadrilateralPoints:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("PDFAnnotationMarkup");
+	private static readonly IntPtr selMarkupTypeHandle = Selector.GetHandle("markupType");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_WeakQuadrilateralPoints_var;
+	private static readonly IntPtr selSetMarkupType_Handle = Selector.GetHandle("setMarkupType:");
 
-	private new CGPoint[] QuadrilateralPoints
+	private static readonly IntPtr class_ptr = Class.GetHandle("PDFAnnotationMarkup");
+
+	private object __mt_QuadrilateralPoints_var;
+
+	public override IntPtr ClassHandle => class_ptr;
+
+	public virtual NSArray QuadrilateralPoints
 	{
+		[Export("quadrilateralPoints")]
 		get
 		{
-			NSArray weakQuadrilateralPoints = WeakQuadrilateralPoints;
-			if (weakQuadrilateralPoints == null)
-			{
-				return null;
-			}
-			CGPoint[] array = new CGPoint[(ulong)weakQuadrilateralPoints.Count];
-			for (uint num = 0u; num < array.Length; num++)
-			{
-				array[num] = weakQuadrilateralPoints.GetItem<NSValue>(num).CGPointValue;
-			}
-			return array;
+			return (NSArray)(__mt_QuadrilateralPoints_var = ((!IsDirectBinding) ? ((NSArray)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selQuadrilateralPointsHandle))) : ((NSArray)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selQuadrilateralPointsHandle)))));
 		}
+		[Export("setQuadrilateralPoints:")]
 		set
 		{
 			if (value == null)
 			{
-				WeakQuadrilateralPoints = null;
-				return;
+				throw new ArgumentNullException("value");
 			}
-			NSValue[] array = new NSValue[value.Length];
-			for (int i = 0; i < array.Length; i++)
+			if (IsDirectBinding)
 			{
-				array[i] = NSValue.FromCGPoint(value[i]);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetQuadrilateralPoints_Handle, value.Handle);
 			}
-			WeakQuadrilateralPoints = NSArray.FromNSObjects(array);
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetQuadrilateralPoints_Handle, value.Handle);
+			}
+			__mt_QuadrilateralPoints_var = value;
 		}
 	}
 
-	public override IntPtr ClassHandle => class_ptr;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public new virtual PdfMarkupType MarkupType
+	public virtual PdfMarkupType MarkupType
 	{
 		[Export("markupType")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return (PdfMarkupType)Messaging.Int64_objc_msgSend(base.Handle, selMarkupTypeHandle);
+				return (PdfMarkupType)Messaging.int_objc_msgSend(base.Handle, selMarkupTypeHandle);
 			}
-			return (PdfMarkupType)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selMarkupTypeHandle);
+			return (PdfMarkupType)Messaging.int_objc_msgSendSuper(base.SuperHandle, selMarkupTypeHandle);
 		}
 		[Export("setMarkupType:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetMarkupType_Handle, (long)value);
+				Messaging.void_objc_msgSend_int(base.Handle, selSetMarkupType_Handle, (int)value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetMarkupType_Handle, (long)value);
+				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetMarkupType_Handle, (int)value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSArray? WeakQuadrilateralPoints
-	{
-		[Export("quadrilateralPoints", ArgumentSemantic.Assign)]
-		get
-		{
-			NSArray nSArray = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSArray>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selQuadrilateralPointsHandle)) : Runtime.GetNSObject<NSArray>(Messaging.IntPtr_objc_msgSend(base.Handle, selQuadrilateralPointsHandle)));
-			MarkDirty();
-			__mt_WeakQuadrilateralPoints_var = nSArray;
-			return nSArray;
-		}
-		[Export("setQuadrilateralPoints:", ArgumentSemantic.Assign)]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetQuadrilateralPoints_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetQuadrilateralPoints_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			MarkDirty();
-			__mt_WeakQuadrilateralPoints_var = value;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public PdfAnnotationMarkup()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public PdfAnnotationMarkup(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected PdfAnnotationMarkup(NSObjectFlag t)
+	public PdfAnnotationMarkup(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal PdfAnnotationMarkup(IntPtr handle)
+	public PdfAnnotationMarkup(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
-			__mt_WeakQuadrilateralPoints_var = null;
+			__mt_QuadrilateralPoints_var = null;
 		}
 	}
 }

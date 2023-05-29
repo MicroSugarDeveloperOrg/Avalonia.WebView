@@ -44,14 +44,18 @@ public class AudioBalanceFade
 			return null;
 		}
 		float[] array = new float[outPropertyDataSize / 4];
-		AudioFormatError audioFormatError;
+		AudioFormatError num2;
 		fixed (float* outPropertyData = array)
 		{
-			audioFormatError = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.BalanceFade, num, intPtr, ref outPropertyDataSize, outPropertyData);
+			num2 = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.BalanceFade, num, intPtr, ref outPropertyDataSize, outPropertyData);
 		}
 		Marshal.FreeHGlobal(layout.ChannelLayoutWeak);
 		Marshal.FreeHGlobal(intPtr);
-		return (audioFormatError == AudioFormatError.None) ? array : null;
+		if (num2 != 0)
+		{
+			return null;
+		}
+		return array;
 	}
 
 	private Layout ToStruct()

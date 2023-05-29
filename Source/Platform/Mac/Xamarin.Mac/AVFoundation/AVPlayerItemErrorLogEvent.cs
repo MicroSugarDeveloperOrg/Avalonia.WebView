@@ -1,150 +1,48 @@
+using System;
 using System.ComponentModel;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AVFoundation;
 
 [Register("AVPlayerItemErrorLogEvent", true)]
-[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-public class AVPlayerItemErrorLogEvent : NSObject, INSCopying, INativeObject, IDisposable
+public class AVPlayerItemErrorLogEvent : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selURI = "URI";
+	private static readonly IntPtr selDateHandle = Selector.GetHandle("date");
 
 	private static readonly IntPtr selURIHandle = Selector.GetHandle("URI");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCopyWithZone_ = "copyWithZone:";
-
-	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDate = "date";
-
-	private static readonly IntPtr selDateHandle = Selector.GetHandle("date");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selErrorComment = "errorComment";
-
-	private static readonly IntPtr selErrorCommentHandle = Selector.GetHandle("errorComment");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selErrorDomain = "errorDomain";
-
-	private static readonly IntPtr selErrorDomainHandle = Selector.GetHandle("errorDomain");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selErrorStatusCode = "errorStatusCode";
-
-	private static readonly IntPtr selErrorStatusCodeHandle = Selector.GetHandle("errorStatusCode");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPlaybackSessionID = "playbackSessionID";
+	private static readonly IntPtr selServerAddressHandle = Selector.GetHandle("serverAddress");
 
 	private static readonly IntPtr selPlaybackSessionIDHandle = Selector.GetHandle("playbackSessionID");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selServerAddress = "serverAddress";
+	private static readonly IntPtr selErrorStatusCodeHandle = Selector.GetHandle("errorStatusCode");
 
-	private static readonly IntPtr selServerAddressHandle = Selector.GetHandle("serverAddress");
+	private static readonly IntPtr selErrorDomainHandle = Selector.GetHandle("errorDomain");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVPlayerItemErrorLogEvent");
+	private static readonly IntPtr selErrorCommentHandle = Selector.GetHandle("errorComment");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("AVPlayerItemErrorLogEvent");
+
+	private object __mt_Date_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDate? Date
+	public virtual NSDate Date
 	{
 		[Export("date")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSend(base.Handle, selDateHandle));
-			}
-			return Runtime.GetNSObject<NSDate>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDateHandle));
+			return (NSDate)(__mt_Date_var = ((!IsDirectBinding) ? ((NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDateHandle))) : ((NSDate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDateHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string? ErrorComment
-	{
-		[Export("errorComment")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selErrorCommentHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selErrorCommentHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string ErrorDomain
-	{
-		[Export("errorDomain")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selErrorDomainHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selErrorDomainHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint ErrorStatusCode
-	{
-		[Export("errorStatusCode")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selErrorStatusCodeHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selErrorStatusCodeHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string? PlaybackSessionID
-	{
-		[Export("playbackSessionID")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPlaybackSessionIDHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPlaybackSessionIDHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string? ServerAddress
-	{
-		[Export("serverAddress")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selServerAddressHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selServerAddressHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string? Uri
+	public virtual string Uri
 	{
 		[Export("URI")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selURIHandle));
 			}
@@ -152,46 +50,119 @@ public class AVPlayerItemErrorLogEvent : NSObject, INSCopying, INativeObject, ID
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string ServerAddress
+	{
+		[Export("serverAddress")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selServerAddressHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selServerAddressHandle));
+		}
+	}
+
+	public virtual string PlaybackSessionID
+	{
+		[Export("playbackSessionID")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPlaybackSessionIDHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPlaybackSessionIDHandle));
+		}
+	}
+
+	public virtual int ErrorStatusCode
+	{
+		[Export("errorStatusCode")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.int_objc_msgSend(base.Handle, selErrorStatusCodeHandle);
+			}
+			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selErrorStatusCodeHandle);
+		}
+	}
+
+	public virtual string ErrorDomain
+	{
+		[Export("errorDomain")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selErrorDomainHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selErrorDomainHandle));
+		}
+	}
+
+	public virtual string ErrorComment
+	{
+		[Export("errorComment")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selErrorCommentHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selErrorCommentHandle));
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public AVPlayerItemErrorLogEvent()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected AVPlayerItemErrorLogEvent(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public AVPlayerItemErrorLogEvent(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public AVPlayerItemErrorLogEvent(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal AVPlayerItemErrorLogEvent(IntPtr handle)
+	public AVPlayerItemErrorLogEvent(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("copyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject Copy(NSZone? zone)
+	protected override void Dispose(bool disposing)
 	{
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
+			__mt_Date_var = null;
 		}
-		return nSObject;
 	}
 }

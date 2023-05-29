@@ -3,13 +3,13 @@ using System;
 namespace CoreAnimation;
 
 [Flags]
-public enum CAAutoresizingMask : uint
+public enum CAAutoresizingMask
 {
-	NotSizable = 0u,
-	MinXMargin = 1u,
-	WidthSizable = 2u,
-	MaxXMargin = 4u,
-	MinYMargin = 8u,
-	HeightSizable = 0x10u,
-	MaxYMargin = 0x20u
+	NotSizable = 0,
+	MinXMargin = 1,
+	WidthSizable = 2,
+	MaxXMargin = 4,
+	MinYMargin = 8,
+	HeightSizable = 0x10,
+	MaxYMargin = 0x20
 }

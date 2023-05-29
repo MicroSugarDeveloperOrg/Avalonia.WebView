@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace WebKit;
 
-[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
 public enum DomCssRuleType : ushort
 {
 	Unknown,
@@ -14,6 +11,5 @@ public enum DomCssRuleType : ushort
 	Page,
 	Variables,
 	WebKitKeyFrames,
-	WebKitKeyFrame,
-	NamespaceRule
+	WebKitKeyFrame
 }

@@ -6,227 +6,124 @@ using ObjCRuntime;
 namespace WebKit;
 
 [Register("WebDataSource", true)]
-[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
 public class WebDataSource : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddSubresource_ = "addSubresource:";
-
-	private static readonly IntPtr selAddSubresource_Handle = Selector.GetHandle("addSubresource:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selData = "data";
-
 	private static readonly IntPtr selDataHandle = Selector.GetHandle("data");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithRequest_ = "initWithRequest:";
-
-	private static readonly IntPtr selInitWithRequest_Handle = Selector.GetHandle("initWithRequest:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitialRequest = "initialRequest";
-
-	private static readonly IntPtr selInitialRequestHandle = Selector.GetHandle("initialRequest");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsLoading = "isLoading";
-
-	private static readonly IntPtr selIsLoadingHandle = Selector.GetHandle("isLoading");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMainResource = "mainResource";
-
-	private static readonly IntPtr selMainResourceHandle = Selector.GetHandle("mainResource");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPageTitle = "pageTitle";
-
-	private static readonly IntPtr selPageTitleHandle = Selector.GetHandle("pageTitle");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRepresentation = "representation";
 
 	private static readonly IntPtr selRepresentationHandle = Selector.GetHandle("representation");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRequest = "request";
+	private static readonly IntPtr selWebFrameHandle = Selector.GetHandle("webFrame");
+
+	private static readonly IntPtr selInitialRequestHandle = Selector.GetHandle("initialRequest");
 
 	private static readonly IntPtr selRequestHandle = Selector.GetHandle("request");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selResponse = "response";
-
 	private static readonly IntPtr selResponseHandle = Selector.GetHandle("response");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSubresourceForURL_ = "subresourceForURL:";
-
-	private static readonly IntPtr selSubresourceForURL_Handle = Selector.GetHandle("subresourceForURL:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSubresources = "subresources";
-
-	private static readonly IntPtr selSubresourcesHandle = Selector.GetHandle("subresources");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTextEncodingName = "textEncodingName";
 
 	private static readonly IntPtr selTextEncodingNameHandle = Selector.GetHandle("textEncodingName");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUnreachableURL = "unreachableURL";
+	private static readonly IntPtr selIsLoadingHandle = Selector.GetHandle("isLoading");
+
+	private static readonly IntPtr selPageTitleHandle = Selector.GetHandle("pageTitle");
 
 	private static readonly IntPtr selUnreachableURLHandle = Selector.GetHandle("unreachableURL");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selWebArchive = "webArchive";
-
 	private static readonly IntPtr selWebArchiveHandle = Selector.GetHandle("webArchive");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selWebFrame = "webFrame";
+	private static readonly IntPtr selMainResourceHandle = Selector.GetHandle("mainResource");
 
-	private static readonly IntPtr selWebFrameHandle = Selector.GetHandle("webFrame");
+	private static readonly IntPtr selSubresourcesHandle = Selector.GetHandle("subresources");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("WebDataSource");
+	private static readonly IntPtr selInitWithRequest_Handle = Selector.GetHandle("initWithRequest:");
+
+	private static readonly IntPtr selSubresourceForURL_Handle = Selector.GetHandle("subresourceForURL:");
+
+	private static readonly IntPtr selAddSubresource_Handle = Selector.GetHandle("addSubresource:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("WebDataSource");
+
+	private object __mt_Data_var;
+
+	private object __mt_Representation_var;
+
+	private object __mt_WebFrame_var;
+
+	private object __mt_InitialRequest_var;
+
+	private object __mt_Request_var;
+
+	private object __mt_Response_var;
+
+	private object __mt_UnreachableURL_var;
+
+	private object __mt_WebArchive_var;
+
+	private object __mt_MainResource_var;
+
+	private object __mt_Subresources_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSData Data
 	{
 		[Export("data")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSend(base.Handle, selDataHandle));
-			}
-			return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDataHandle));
+			return (NSData)(__mt_Data_var = ((!IsDirectBinding) ? ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDataHandle))) : ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDataHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual WebDocumentRepresentation Representation
+	{
+		[Export("representation")]
+		get
+		{
+			return (WebDocumentRepresentation)(__mt_Representation_var = ((!IsDirectBinding) ? ((WebDocumentRepresentation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRepresentationHandle))) : ((WebDocumentRepresentation)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selRepresentationHandle)))));
+		}
+	}
+
+	public virtual WebFrame WebFrame
+	{
+		[Export("webFrame")]
+		get
+		{
+			return (WebFrame)(__mt_WebFrame_var = ((!IsDirectBinding) ? ((WebFrame)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selWebFrameHandle))) : ((WebFrame)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selWebFrameHandle)))));
+		}
+	}
+
 	public virtual NSUrlRequest InitialRequest
 	{
 		[Export("initialRequest")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSUrlRequest>(Messaging.IntPtr_objc_msgSend(base.Handle, selInitialRequestHandle));
-			}
-			return Runtime.GetNSObject<NSUrlRequest>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInitialRequestHandle));
+			return (NSUrlRequest)(__mt_InitialRequest_var = ((!IsDirectBinding) ? ((NSUrlRequest)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInitialRequestHandle))) : ((NSUrlRequest)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selInitialRequestHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool IsLoading
-	{
-		[Export("isLoading")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsLoadingHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsLoadingHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual WebResource MainResource
-	{
-		[Export("mainResource")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<WebResource>(Messaging.IntPtr_objc_msgSend(base.Handle, selMainResourceHandle));
-			}
-			return Runtime.GetNSObject<WebResource>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainResourceHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string PageTitle
-	{
-		[Export("pageTitle")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPageTitleHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPageTitleHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual IWebDocumentRepresentation Representation
-	{
-		[Export("representation")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetINativeObject<IWebDocumentRepresentation>(Messaging.IntPtr_objc_msgSend(base.Handle, selRepresentationHandle), owns: false);
-			}
-			return Runtime.GetINativeObject<IWebDocumentRepresentation>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRepresentationHandle), owns: false);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSMutableUrlRequest Request
 	{
 		[Export("request")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSMutableUrlRequest>(Messaging.IntPtr_objc_msgSend(base.Handle, selRequestHandle));
-			}
-			return Runtime.GetNSObject<NSMutableUrlRequest>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRequestHandle));
+			return (NSMutableUrlRequest)(__mt_Request_var = ((!IsDirectBinding) ? ((NSMutableUrlRequest)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRequestHandle))) : ((NSMutableUrlRequest)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selRequestHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSUrlResponse Response
 	{
 		[Export("response")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSUrlResponse>(Messaging.IntPtr_objc_msgSend(base.Handle, selResponseHandle));
-			}
-			return Runtime.GetNSObject<NSUrlResponse>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selResponseHandle));
+			return (NSUrlResponse)(__mt_Response_var = ((!IsDirectBinding) ? ((NSUrlResponse)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selResponseHandle))) : ((NSUrlResponse)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selResponseHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual WebResource[] Subresources
-	{
-		[Export("subresources")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<WebResource>(Messaging.IntPtr_objc_msgSend(base.Handle, selSubresourcesHandle));
-			}
-			return NSArray.ArrayFromHandle<WebResource>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSubresourcesHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string TextEncodingName
 	{
 		[Export("textEncodingName")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selTextEncodingNameHandle));
 			}
@@ -234,80 +131,111 @@ public class WebDataSource : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool IsLoading
+	{
+		[Export("isLoading")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIsLoadingHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsLoadingHandle);
+		}
+	}
+
+	public virtual string PageTitle
+	{
+		[Export("pageTitle")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPageTitleHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPageTitleHandle));
+		}
+	}
+
 	public virtual NSUrl UnreachableURL
 	{
 		[Export("unreachableURL")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selUnreachableURLHandle));
-			}
-			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUnreachableURLHandle));
+			return (NSUrl)(__mt_UnreachableURL_var = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUnreachableURLHandle))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selUnreachableURLHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual WebArchive WebArchive
 	{
 		[Export("webArchive")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<WebArchive>(Messaging.IntPtr_objc_msgSend(base.Handle, selWebArchiveHandle));
-			}
-			return Runtime.GetNSObject<WebArchive>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selWebArchiveHandle));
+			return (WebArchive)(__mt_WebArchive_var = ((!IsDirectBinding) ? ((WebArchive)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selWebArchiveHandle))) : ((WebArchive)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selWebArchiveHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual WebFrame WebFrame
+	public virtual WebResource MainResource
 	{
-		[Export("webFrame")]
+		[Export("mainResource")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<WebFrame>(Messaging.IntPtr_objc_msgSend(base.Handle, selWebFrameHandle));
-			}
-			return Runtime.GetNSObject<WebFrame>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selWebFrameHandle));
+			return (WebResource)(__mt_MainResource_var = ((!IsDirectBinding) ? ((WebResource)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainResourceHandle))) : ((WebResource)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMainResourceHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual WebResource[] Subresources
+	{
+		[Export("subresources")]
+		get
+		{
+			return (WebResource[])(__mt_Subresources_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<WebResource>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSubresourcesHandle)) : NSArray.ArrayFromHandle<WebResource>(Messaging.IntPtr_objc_msgSend(base.Handle, selSubresourcesHandle))));
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public WebDataSource()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected WebDataSource(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public WebDataSource(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public WebDataSource(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal WebDataSource(IntPtr handle)
+	public WebDataSource(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithRequest:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public WebDataSource(NSUrlRequest request)
 		: base(NSObjectFlag.Empty)
 	{
@@ -315,25 +243,38 @@ public class WebDataSource : NSObject
 		{
 			throw new ArgumentNullException("request");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithRequest_Handle, request.Handle), "initWithRequest:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithRequest_Handle, request.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithRequest_Handle, request.Handle), "initWithRequest:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithRequest_Handle, request.Handle);
 		}
 	}
 
+	[Export("subresourceForURL:")]
+	public virtual WebResource SubresourceForUrl(NSUrl url)
+	{
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		if (IsDirectBinding)
+		{
+			return (WebResource)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selSubresourceForURL_Handle, url.Handle));
+		}
+		return (WebResource)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selSubresourceForURL_Handle, url.Handle));
+	}
+
 	[Export("addSubresource:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AddSubresource(WebResource subresource)
 	{
 		if (subresource == null)
 		{
 			throw new ArgumentNullException("subresource");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddSubresource_Handle, subresource.Handle);
 		}
@@ -343,18 +284,21 @@ public class WebDataSource : NSObject
 		}
 	}
 
-	[Export("subresourceForURL:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual WebResource SubresourceForUrl(NSUrl url)
+	protected override void Dispose(bool disposing)
 	{
-		if (url == null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			throw new ArgumentNullException("url");
+			__mt_Data_var = null;
+			__mt_Representation_var = null;
+			__mt_WebFrame_var = null;
+			__mt_InitialRequest_var = null;
+			__mt_Request_var = null;
+			__mt_Response_var = null;
+			__mt_UnreachableURL_var = null;
+			__mt_WebArchive_var = null;
+			__mt_MainResource_var = null;
+			__mt_Subresources_var = null;
 		}
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<WebResource>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selSubresourceForURL_Handle, url.Handle));
-		}
-		return Runtime.GetNSObject<WebResource>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selSubresourceForURL_Handle, url.Handle));
 	}
 }

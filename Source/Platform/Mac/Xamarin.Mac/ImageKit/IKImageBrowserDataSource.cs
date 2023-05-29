@@ -1,72 +1,26 @@
+using System;
 using System.ComponentModel;
 using AppKit;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace ImageKit;
 
-[Protocol(IsInformal = true)]
-[Register("IKImageBrowserDataSource", false)]
+[Register("IKImageBrowserDataSource", true)]
 [Model]
-public abstract class IKImageBrowserDataSource : NSObject, IIKImageBrowserDataSource, INativeObject, IDisposable
+public abstract class IKImageBrowserDataSource : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _GroupBackgroundColorKey;
+	private static NSString _GroupRangeKey;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _GroupFooterLayer;
+	private static NSString _GroupBackgroundColorKey;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _GroupHeaderLayer;
+	private static NSString _GroupTitleKey;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _GroupRangeKey;
+	private static NSString _GroupStyleKey;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _GroupStyleKey;
+	private static NSString _GroupHeaderLayer;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _GroupTitleKey;
-
-	[Field("IKImageBrowserGroupBackgroundColorKey", "ImageKit")]
-	public static NSString GroupBackgroundColorKey
-	{
-		get
-		{
-			if (_GroupBackgroundColorKey == null)
-			{
-				_GroupBackgroundColorKey = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserGroupBackgroundColorKey");
-			}
-			return _GroupBackgroundColorKey;
-		}
-	}
-
-	[Field("IKImageBrowserGroupFooterLayer", "ImageKit")]
-	public static NSString GroupFooterLayer
-	{
-		get
-		{
-			if (_GroupFooterLayer == null)
-			{
-				_GroupFooterLayer = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserGroupFooterLayer");
-			}
-			return _GroupFooterLayer;
-		}
-	}
-
-	[Field("IKImageBrowserGroupHeaderLayer", "ImageKit")]
-	public static NSString GroupHeaderLayer
-	{
-		get
-		{
-			if (_GroupHeaderLayer == null)
-			{
-				_GroupHeaderLayer = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserGroupHeaderLayer");
-			}
-			return _GroupHeaderLayer;
-		}
-	}
+	private static NSString _GroupFooterLayer;
 
 	[Field("IKImageBrowserGroupRangeKey", "ImageKit")]
 	public static NSString GroupRangeKey
@@ -81,16 +35,16 @@ public abstract class IKImageBrowserDataSource : NSObject, IIKImageBrowserDataSo
 		}
 	}
 
-	[Field("IKImageBrowserGroupStyleKey", "ImageKit")]
-	public static NSString GroupStyleKey
+	[Field("IKImageBrowserGroupBackgroundColorKey", "ImageKit")]
+	public static NSString GroupBackgroundColorKey
 	{
 		get
 		{
-			if (_GroupStyleKey == null)
+			if (_GroupBackgroundColorKey == null)
 			{
-				_GroupStyleKey = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserGroupStyleKey");
+				_GroupBackgroundColorKey = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserGroupBackgroundColorKey");
 			}
-			return _GroupStyleKey;
+			return _GroupBackgroundColorKey;
 		}
 	}
 
@@ -107,71 +61,119 @@ public abstract class IKImageBrowserDataSource : NSObject, IIKImageBrowserDataSo
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Field("IKImageBrowserGroupStyleKey", "ImageKit")]
+	public static NSString GroupStyleKey
+	{
+		get
+		{
+			if (_GroupStyleKey == null)
+			{
+				_GroupStyleKey = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserGroupStyleKey");
+			}
+			return _GroupStyleKey;
+		}
+	}
+
+	[Field("IKImageBrowserGroupHeaderLayer", "ImageKit")]
+	public static NSString GroupHeaderLayer
+	{
+		get
+		{
+			if (_GroupHeaderLayer == null)
+			{
+				_GroupHeaderLayer = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserGroupHeaderLayer");
+			}
+			return _GroupHeaderLayer;
+		}
+	}
+
+	[Field("IKImageBrowserGroupFooterLayer", "ImageKit")]
+	public static NSString GroupFooterLayer
+	{
+		get
+		{
+			if (_GroupFooterLayer == null)
+			{
+				_GroupFooterLayer = Dlfcn.GetStringConstant(Libraries.ImageKit.Handle, "IKImageBrowserGroupFooterLayer");
+			}
+			return _GroupFooterLayer;
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
-	protected IKImageBrowserDataSource()
+	public IKImageBrowserDataSource()
 		: base(NSObjectFlag.Empty)
 	{
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected IKImageBrowserDataSource(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public IKImageBrowserDataSource(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public IKImageBrowserDataSource(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal IKImageBrowserDataSource(IntPtr handle)
+	public IKImageBrowserDataSource(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
-	}
-
-	[Export("imageBrowser:groupAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary GetGroup(IKImageBrowserView aBrowser, nint index)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("imageBrowser:itemAtIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public abstract IIKImageBrowserItem GetItem(IKImageBrowserView aBrowser, nint index);
-
-	[Export("numberOfGroupsInImageBrowser:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint GroupCount(IKImageBrowserView aBrowser)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("numberOfItemsInImageBrowser:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public abstract nint ItemCount(IKImageBrowserView aBrowser);
+	public abstract int ItemCount(IKImageBrowserView aBrowser);
 
-	[Export("imageBrowser:moveItemsAtIndexes:toIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool MoveItems(IKImageBrowserView aBrowser, NSIndexSet indexes, nint destinationIndex)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
+	[Export("imageBrowser:itemAtIndex:")]
+	public abstract IKImageBrowserItem GetItem(IKImageBrowserView aBrowser, int index);
 
 	[Export("imageBrowser:removeItemsAtIndexes:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void RemoveItems(IKImageBrowserView aBrowser, NSIndexSet indexes)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
+	[Export("imageBrowser:moveItemsAtIndexes:toIndex:")]
+	public virtual bool MoveItems(IKImageBrowserView aBrowser, NSIndexSet indexes, int destinationIndex)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
 	[Export("imageBrowser:writeItemsAtIndexes:toPasteboard:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint WriteItemsToPasteboard(IKImageBrowserView aBrowser, NSIndexSet itemIndexes, NSPasteboard pasteboard)
+	public virtual int WriteItemsToPasteboard(IKImageBrowserView aBrowser, NSIndexSet itemIndexes, NSPasteboard pasteboard)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("numberOfGroupsInImageBrowser:")]
+	public virtual int GroupCount(IKImageBrowserView aBrowser)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("imageBrowser:groupAtIndex:")]
+	public virtual NSDictionary GetGroup(IKImageBrowserView aBrowser, int index)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

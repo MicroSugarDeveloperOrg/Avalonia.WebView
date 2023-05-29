@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace AppKit;
 
-[Native]
 public enum NSWindowAnimationBehavior : long
 {
 	Default = 0L,

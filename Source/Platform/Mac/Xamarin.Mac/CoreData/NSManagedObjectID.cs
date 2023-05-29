@@ -6,62 +6,50 @@ using ObjCRuntime;
 namespace CoreData;
 
 [Register("NSManagedObjectID", true)]
-public class NSManagedObjectID : NSObject, INSCopying, INativeObject, IDisposable, INSFetchRequestResult
+public class NSManagedObjectID : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selURIRepresentation = "URIRepresentation";
-
-	private static readonly IntPtr selURIRepresentationHandle = Selector.GetHandle("URIRepresentation");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCopyWithZone_ = "copyWithZone:";
-
-	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEntity = "entity";
-
 	private static readonly IntPtr selEntityHandle = Selector.GetHandle("entity");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsTemporaryID = "isTemporaryID";
-
-	private static readonly IntPtr selIsTemporaryIDHandle = Selector.GetHandle("isTemporaryID");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPersistentStore = "persistentStore";
 
 	private static readonly IntPtr selPersistentStoreHandle = Selector.GetHandle("persistentStore");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSManagedObjectID");
+	private static readonly IntPtr selIsTemporaryIDHandle = Selector.GetHandle("isTemporaryID");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private object? __mt_PersistentStore_var;
+	private static readonly IntPtr selURIRepresentationHandle = Selector.GetHandle("URIRepresentation");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSManagedObjectID");
+
+	private object __mt_Entity_var;
+
+	private object __mt_PersistentStore_var;
+
+	private object __mt_URIRepresentation_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSEntityDescription Entity
 	{
-		[Export("entity", ArgumentSemantic.Retain)]
+		[Export("entity")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSEntityDescription>(Messaging.IntPtr_objc_msgSend(base.Handle, selEntityHandle));
-			}
-			return Runtime.GetNSObject<NSEntityDescription>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntityHandle));
+			return (NSEntityDescription)(__mt_Entity_var = ((!IsDirectBinding) ? ((NSEntityDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntityHandle))) : ((NSEntityDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selEntityHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSPersistentStore PersistentStore
+	{
+		[Export("persistentStore")]
+		get
+		{
+			return (NSPersistentStore)(__mt_PersistentStore_var = ((!IsDirectBinding) ? ((NSPersistentStore)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPersistentStoreHandle))) : ((NSPersistentStore)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPersistentStoreHandle)))));
+		}
+	}
+
 	public virtual bool IsTemporaryID
 	{
 		[Export("isTemporaryID")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsTemporaryIDHandle);
 			}
@@ -69,67 +57,50 @@ public class NSManagedObjectID : NSObject, INSCopying, INativeObject, IDisposabl
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSPersistentStore? PersistentStore
-	{
-		[Export("persistentStore", ArgumentSemantic.Weak)]
-		get
-		{
-			NSPersistentStore nSPersistentStore = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSPersistentStore>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPersistentStoreHandle)) : Runtime.GetNSObject<NSPersistentStore>(Messaging.IntPtr_objc_msgSend(base.Handle, selPersistentStoreHandle)));
-			MarkDirty();
-			__mt_PersistentStore_var = nSPersistentStore;
-			return nSPersistentStore;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSUrl URIRepresentation
 	{
 		[Export("URIRepresentation")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selURIRepresentationHandle));
-			}
-			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selURIRepresentationHandle));
+			return (NSUrl)(__mt_URIRepresentation_var = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selURIRepresentationHandle))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selURIRepresentationHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSManagedObjectID(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSManagedObjectID(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSManagedObjectID(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSManagedObjectID(IntPtr handle)
+	public NSManagedObjectID(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("copyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject Copy(NSZone? zone)
-	{
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
-		{
-			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
-		}
-		return nSObject;
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
 		if (base.Handle == IntPtr.Zero)
 		{
+			__mt_Entity_var = null;
 			__mt_PersistentStore_var = null;
+			__mt_URIRepresentation_var = null;
 		}
 	}
 }

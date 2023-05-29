@@ -1,26 +1,23 @@
-using ObjCRuntime;
-
 namespace QTKit;
 
-[Native]
-public enum QTError : long
+public enum QTError
 {
-	Unknown = -1L,
-	None = 0L,
-	IncompatibleInput = 1002L,
-	IncompatibleOutput = 1003L,
-	InvalidInputsOrOutputs = 1100L,
-	DeviceAlreadyUsedbyAnotherSession = 1101L,
-	NoDataCaptured = 1200L,
-	SessionConfigurationChanged = 1201L,
-	DiskFull = 1202L,
-	DeviceWasDisconnected = 1203L,
-	MediaChanged = 1204L,
-	MaximumDurationReached = 1205L,
-	MaximumFileSizeReached = 1206L,
-	MediaDiscontinuity = 1207L,
-	MaximumNumberOfSamplesForFileFormatReached = 1208L,
-	DeviceNotConnected = 1300L,
-	DeviceInUseByAnotherApplication = 1301L,
-	DeviceExcludedByAnotherDevice = 1302L
+	Unknown = -1,
+	None = 0,
+	IncompatibleInput = 1002,
+	IncompatibleOutput = 1003,
+	InvalidInputsOrOutputs = 1100,
+	DeviceAlreadyUsedbyAnotherSession = 1101,
+	NoDataCaptured = 1200,
+	SessionConfigurationChanged = 1201,
+	DiskFull = 1202,
+	DeviceWasDisconnected = 1203,
+	MediaChanged = 1204,
+	MaximumDurationReached = 1205,
+	MaximumFileSizeReached = 1206,
+	MediaDiscontinuity = 1207,
+	MaximumNumberOfSamplesForFileFormatReached = 1208,
+	DeviceNotConnected = 1300,
+	DeviceInUseByAnotherApplication = 1301,
+	DeviceExcludedByAnotherDevice = 1302
 }

@@ -1,176 +1,80 @@
+using System;
 using System.ComponentModel;
-using CoreFoundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 
 [Register("NSOperationQueue", true)]
-public class NSOperationQueue : NSObject, INSProgressReporting, INativeObject, IDisposable
+public class NSOperationQueue : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddBarrierBlock_ = "addBarrierBlock:";
-
-	private static readonly IntPtr selAddBarrierBlock_Handle = Selector.GetHandle("addBarrierBlock:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddOperation_ = "addOperation:";
-
-	private static readonly IntPtr selAddOperation_Handle = Selector.GetHandle("addOperation:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddOperationWithBlock_ = "addOperationWithBlock:";
-
-	private static readonly IntPtr selAddOperationWithBlock_Handle = Selector.GetHandle("addOperationWithBlock:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddOperations_WaitUntilFinished_ = "addOperations:waitUntilFinished:";
-
-	private static readonly IntPtr selAddOperations_WaitUntilFinished_Handle = Selector.GetHandle("addOperations:waitUntilFinished:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCancelAllOperations = "cancelAllOperations";
-
-	private static readonly IntPtr selCancelAllOperationsHandle = Selector.GetHandle("cancelAllOperations");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCurrentQueue = "currentQueue";
-
-	private static readonly IntPtr selCurrentQueueHandle = Selector.GetHandle("currentQueue");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsSuspended = "isSuspended";
-
-	private static readonly IntPtr selIsSuspendedHandle = Selector.GetHandle("isSuspended");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMainQueue = "mainQueue";
-
-	private static readonly IntPtr selMainQueueHandle = Selector.GetHandle("mainQueue");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMaxConcurrentOperationCount = "maxConcurrentOperationCount";
-
-	private static readonly IntPtr selMaxConcurrentOperationCountHandle = Selector.GetHandle("maxConcurrentOperationCount");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selName = "name";
-
-	private static readonly IntPtr selNameHandle = Selector.GetHandle("name");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOperationCount = "operationCount";
+	private static readonly IntPtr selOperationsHandle = Selector.GetHandle("operations");
 
 	private static readonly IntPtr selOperationCountHandle = Selector.GetHandle("operationCount");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOperations = "operations";
-
-	private static readonly IntPtr selOperationsHandle = Selector.GetHandle("operations");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selProgress = "progress";
-
-	private static readonly IntPtr selProgressHandle = Selector.GetHandle("progress");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selQualityOfService = "qualityOfService";
-
-	private static readonly IntPtr selQualityOfServiceHandle = Selector.GetHandle("qualityOfService");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetMaxConcurrentOperationCount_ = "setMaxConcurrentOperationCount:";
-
-	private static readonly IntPtr selSetMaxConcurrentOperationCount_Handle = Selector.GetHandle("setMaxConcurrentOperationCount:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetName_ = "setName:";
+	private static readonly IntPtr selNameHandle = Selector.GetHandle("name");
 
 	private static readonly IntPtr selSetName_Handle = Selector.GetHandle("setName:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetQualityOfService_ = "setQualityOfService:";
+	private static readonly IntPtr selCurrentQueueHandle = Selector.GetHandle("currentQueue");
 
-	private static readonly IntPtr selSetQualityOfService_Handle = Selector.GetHandle("setQualityOfService:");
+	private static readonly IntPtr selMainQueueHandle = Selector.GetHandle("mainQueue");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetSuspended_ = "setSuspended:";
+	private static readonly IntPtr selMaxConcurrentOperationCountHandle = Selector.GetHandle("maxConcurrentOperationCount");
+
+	private static readonly IntPtr selSetMaxConcurrentOperationCount_Handle = Selector.GetHandle("setMaxConcurrentOperationCount:");
+
+	private static readonly IntPtr selIsSuspendedHandle = Selector.GetHandle("isSuspended");
 
 	private static readonly IntPtr selSetSuspended_Handle = Selector.GetHandle("setSuspended:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetUnderlyingQueue_ = "setUnderlyingQueue:";
+	private static readonly IntPtr selAddOperation_Handle = Selector.GetHandle("addOperation:");
 
-	private static readonly IntPtr selSetUnderlyingQueue_Handle = Selector.GetHandle("setUnderlyingQueue:");
+	private static readonly IntPtr selAddOperationsWaitUntilFinished_Handle = Selector.GetHandle("addOperations:waitUntilFinished:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUnderlyingQueue = "underlyingQueue";
+	private static readonly IntPtr selAddOperationWithBlock_Handle = Selector.GetHandle("addOperationWithBlock:");
 
-	private static readonly IntPtr selUnderlyingQueueHandle = Selector.GetHandle("underlyingQueue");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selWaitUntilAllOperationsAreFinished = "waitUntilAllOperationsAreFinished";
+	private static readonly IntPtr selCancelAllOperationsHandle = Selector.GetHandle("cancelAllOperations");
 
 	private static readonly IntPtr selWaitUntilAllOperationsAreFinishedHandle = Selector.GetHandle("waitUntilAllOperationsAreFinished");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSOperationQueue");
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSOperationQueue");
+
+	private object __mt_Operations_var;
+
+	private static object __mt_CurrentQueue_var_static;
+
+	private static object __mt_MainQueue_var_static;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSOperationQueue CurrentQueue
+	public virtual NSOperation[] Operations
 	{
-		[Export("currentQueue", ArgumentSemantic.Retain)]
+		[Export("operations")]
 		get
 		{
-			return Runtime.GetNSObject<NSOperationQueue>(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentQueueHandle));
+			return (NSOperation[])(__mt_Operations_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSOperation>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOperationsHandle)) : NSArray.ArrayFromHandle<NSOperation>(Messaging.IntPtr_objc_msgSend(base.Handle, selOperationsHandle))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSOperationQueue MainQueue
+	public virtual ulong OperationCount
 	{
-		[Export("mainQueue", ArgumentSemantic.Retain)]
+		[Export("operationCount")]
 		get
 		{
-			return Runtime.GetNSObject<NSOperationQueue>(Messaging.IntPtr_objc_msgSend(class_ptr, selMainQueueHandle));
+			if (IsDirectBinding)
+			{
+				return Messaging.UInt64_objc_msgSend(base.Handle, selOperationCountHandle);
+			}
+			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selOperationCountHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint MaxConcurrentOperationCount
-	{
-		[Export("maxConcurrentOperationCount")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selMaxConcurrentOperationCountHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selMaxConcurrentOperationCountHandle);
-		}
-		[Export("setMaxConcurrentOperationCount:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetMaxConcurrentOperationCount_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetMaxConcurrentOperationCount_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string Name
 	{
 		[Export("name")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selNameHandle));
 			}
@@ -184,7 +88,7 @@ public class NSOperationQueue : NSObject, INSProgressReporting, INativeObject, I
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetName_Handle, arg);
 			}
@@ -196,105 +100,55 @@ public class NSOperationQueue : NSObject, INSProgressReporting, INativeObject, I
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, null)]
-	[Deprecated(PlatformName.iOS, 13, 0, PlatformArchitecture.None, null)]
-	[Deprecated(PlatformName.WatchOS, 6, 0, PlatformArchitecture.None, null)]
-	[Deprecated(PlatformName.TvOS, 13, 0, PlatformArchitecture.None, null)]
-	public virtual nint OperationCount
+	public static NSOperationQueue CurrentQueue
 	{
-		[Deprecated(PlatformName.MacOSX, 10, 15, PlatformArchitecture.None, null)]
-		[Deprecated(PlatformName.iOS, 13, 0, PlatformArchitecture.None, null)]
-		[Deprecated(PlatformName.WatchOS, 6, 0, PlatformArchitecture.None, null)]
-		[Deprecated(PlatformName.TvOS, 13, 0, PlatformArchitecture.None, null)]
-		[Export("operationCount")]
+		[Export("currentQueue")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selOperationCountHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selOperationCountHandle);
+			return (NSOperationQueue)(__mt_CurrentQueue_var_static = (NSOperationQueue)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selCurrentQueueHandle)));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Deprecated(PlatformName.MacOSX, 10, 15, 0, PlatformArchitecture.None, "This API should not be used as it is subject to race conditions. If synchronization is needed use 'AddBarrier' instead.")]
-	[Deprecated(PlatformName.iOS, 13, 0, PlatformArchitecture.None, "This API should not be used as it is subject to race conditions. If synchronization is needed use 'AddBarrier' instead.")]
-	[Deprecated(PlatformName.WatchOS, 6, 0, PlatformArchitecture.None, "This API should not be used as it is subject to race conditions. If synchronization is needed use 'AddBarrier' instead.")]
-	[Deprecated(PlatformName.TvOS, 13, 0, PlatformArchitecture.None, "This API should not be used as it is subject to race conditions. If synchronization is needed use 'AddBarrier' instead.")]
-	public virtual NSOperation[] Operations
+	public static NSOperationQueue MainQueue
 	{
-		[Deprecated(PlatformName.MacOSX, 10, 15, 0, PlatformArchitecture.None, "This API should not be used as it is subject to race conditions. If synchronization is needed use 'AddBarrier' instead.")]
-		[Deprecated(PlatformName.iOS, 13, 0, PlatformArchitecture.None, "This API should not be used as it is subject to race conditions. If synchronization is needed use 'AddBarrier' instead.")]
-		[Deprecated(PlatformName.WatchOS, 6, 0, PlatformArchitecture.None, "This API should not be used as it is subject to race conditions. If synchronization is needed use 'AddBarrier' instead.")]
-		[Deprecated(PlatformName.TvOS, 13, 0, PlatformArchitecture.None, "This API should not be used as it is subject to race conditions. If synchronization is needed use 'AddBarrier' instead.")]
-		[Export("operations")]
+		[Export("mainQueue")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSOperation>(Messaging.IntPtr_objc_msgSend(base.Handle, selOperationsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSOperation>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOperationsHandle));
+			return (NSOperationQueue)(__mt_MainQueue_var_static = (NSOperationQueue)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selMainQueueHandle)));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	public virtual NSProgress Progress
+	public virtual long MaxConcurrentOperationCount
 	{
-		[Export("progress")]
+		[Export("maxConcurrentOperationCount")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSProgress>(Messaging.IntPtr_objc_msgSend(base.Handle, selProgressHandle));
+				return Messaging.Int64_objc_msgSend(base.Handle, selMaxConcurrentOperationCountHandle);
 			}
-			return Runtime.GetNSObject<NSProgress>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selProgressHandle));
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selMaxConcurrentOperationCountHandle);
 		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual NSQualityOfService QualityOfService
-	{
-		[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("qualityOfService")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return (NSQualityOfService)Messaging.Int64_objc_msgSend(base.Handle, selQualityOfServiceHandle);
-			}
-			return (NSQualityOfService)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selQualityOfServiceHandle);
-		}
-		[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setQualityOfService:")]
+		[Export("setMaxConcurrentOperationCount:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_Int64(base.Handle, selSetQualityOfService_Handle, (long)value);
+				Messaging.void_objc_msgSend_Int64(base.Handle, selSetMaxConcurrentOperationCount_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetQualityOfService_Handle, (long)value);
+				Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selSetMaxConcurrentOperationCount_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool Suspended
 	{
 		[Export("isSuspended")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsSuspendedHandle);
 			}
@@ -303,7 +157,7 @@ public class NSOperationQueue : NSObject, INSProgressReporting, INativeObject, I
 		[Export("setSuspended:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetSuspended_Handle, value);
 			}
@@ -314,96 +168,52 @@ public class NSOperationQueue : NSObject, INSProgressReporting, INativeObject, I
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-	public virtual DispatchQueue? UnderlyingQueue
-	{
-		[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("underlyingQueue", ArgumentSemantic.Assign)]
-		get
-		{
-			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUnderlyingQueueHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selUnderlyingQueueHandle));
-			return (intPtr == IntPtr.Zero) ? null : new DispatchQueue(intPtr);
-		}
-		[Introduced(PlatformName.iOS, 8, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 10, PlatformArchitecture.All, null)]
-		[Export("setUnderlyingQueue:", ArgumentSemantic.Assign)]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetUnderlyingQueue_Handle, (value == null) ? IntPtr.Zero : value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetUnderlyingQueue_Handle, (value == null) ? IntPtr.Zero : value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSOperationQueue()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSOperationQueue(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSOperationQueue(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSOperationQueue(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSOperationQueue(IntPtr handle)
+	public NSOperationQueue(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("addBarrierBlock:")]
-	[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe virtual void AddBarrier([BlockProxy(typeof(Trampolines.NIDAction))] Action barrier)
-	{
-		if (barrier == null)
-		{
-			throw new ArgumentNullException("barrier");
-		}
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDAction.Handler, barrier);
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddBarrierBlock_Handle, (IntPtr)ptr);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAddBarrierBlock_Handle, (IntPtr)ptr);
-		}
-		ptr->CleanupBlock();
-	}
-
 	[Export("addOperation:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void AddOperation(NSOperation? op)
+	public virtual void AddOperation(NSOperation op)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddOperation_Handle, op?.Handle ?? IntPtr.Zero);
 		}
@@ -411,11 +221,27 @@ public class NSOperationQueue : NSObject, INSProgressReporting, INativeObject, I
 		{
 			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAddOperation_Handle, op?.Handle ?? IntPtr.Zero);
 		}
+		_ = Operations;
+	}
+
+	[Export("addOperations:waitUntilFinished:")]
+	public virtual void AddOperations(NSOperation[] operations, bool waitUntilFinished)
+	{
+		NSArray nSArray = ((operations == null) ? null : NSArray.FromNSObjects(operations));
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selAddOperationsWaitUntilFinished_Handle, nSArray?.Handle ?? IntPtr.Zero, waitUntilFinished);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selAddOperationsWaitUntilFinished_Handle, nSArray?.Handle ?? IntPtr.Zero, waitUntilFinished);
+		}
+		nSArray?.Dispose();
+		_ = Operations;
 	}
 
 	[Export("addOperationWithBlock:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe virtual void AddOperation([BlockProxy(typeof(Trampolines.NIDAction))] Action operation)
+	public unsafe virtual void AddOperation(NSAction operation)
 	{
 		if (operation == null)
 		{
@@ -423,8 +249,8 @@ public class NSOperationQueue : NSObject, INSProgressReporting, INativeObject, I
 		}
 		BlockLiteral blockLiteral = default(BlockLiteral);
 		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDAction.Handler, operation);
-		if (base.IsDirectBinding)
+		blockLiteral.SetupBlock(Trampolines.SDNSAction.Handler, operation);
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddOperationWithBlock_Handle, (IntPtr)ptr);
 		}
@@ -433,29 +259,13 @@ public class NSOperationQueue : NSObject, INSProgressReporting, INativeObject, I
 			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selAddOperationWithBlock_Handle, (IntPtr)ptr);
 		}
 		ptr->CleanupBlock();
-	}
-
-	[Export("addOperations:waitUntilFinished:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void AddOperations(NSOperation[]? operations, bool waitUntilFinished)
-	{
-		NSArray nSArray = ((operations == null) ? null : NSArray.FromNSObjects(operations));
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selAddOperations_WaitUntilFinished_Handle, nSArray?.Handle ?? IntPtr.Zero, waitUntilFinished);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selAddOperations_WaitUntilFinished_Handle, nSArray?.Handle ?? IntPtr.Zero, waitUntilFinished);
-		}
-		nSArray?.Dispose();
+		_ = Operations;
 	}
 
 	[Export("cancelAllOperations")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void CancelAllOperations()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selCancelAllOperationsHandle);
 		}
@@ -463,19 +273,28 @@ public class NSOperationQueue : NSObject, INSProgressReporting, INativeObject, I
 		{
 			Messaging.void_objc_msgSendSuper(base.SuperHandle, selCancelAllOperationsHandle);
 		}
+		_ = Operations;
 	}
 
 	[Export("waitUntilAllOperationsAreFinished")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void WaitUntilAllOperationsAreFinished()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selWaitUntilAllOperationsAreFinishedHandle);
 		}
 		else
 		{
 			Messaging.void_objc_msgSendSuper(base.SuperHandle, selWaitUntilAllOperationsAreFinishedHandle);
+		}
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_Operations_var = null;
 		}
 	}
 }

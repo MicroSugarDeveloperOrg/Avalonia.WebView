@@ -1,12 +1,8 @@
-using ObjCRuntime;
-
 namespace AppKit;
 
-[Deprecated(PlatformName.MacOSX, 10, 10, PlatformArchitecture.None, "Use NSAlertButtonReturn instead.")]
-[Native]
-public enum NSAlertType : long
+public enum NSAlertType
 {
-	ErrorReturn = -2L,
+	ErrorReturn = -2,
 	OtherReturn,
 	AlternateReturn,
 	DefaultReturn

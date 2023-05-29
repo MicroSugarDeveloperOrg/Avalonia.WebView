@@ -1,140 +1,53 @@
+using System;
 using System.ComponentModel;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
 [Register("NSTextAttachmentCell", true)]
 public class NSTextAttachmentCell : NSCell
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAttachment = "attachment";
-
-	private static readonly IntPtr selAttachmentHandle = Selector.GetHandle("attachment");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCellBaselineOffset = "cellBaselineOffset";
+	private static readonly IntPtr selCellSizeHandle = Selector.GetHandle("cellSize");
 
 	private static readonly IntPtr selCellBaselineOffsetHandle = Selector.GetHandle("cellBaselineOffset");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCellFrameForTextContainer_ProposedLineFragment_GlyphPosition_CharacterIndex_ = "cellFrameForTextContainer:proposedLineFragment:glyphPosition:characterIndex:";
-
-	private static readonly IntPtr selCellFrameForTextContainer_ProposedLineFragment_GlyphPosition_CharacterIndex_Handle = Selector.GetHandle("cellFrameForTextContainer:proposedLineFragment:glyphPosition:characterIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCellSize = "cellSize";
-
-	private static readonly IntPtr selCellSizeHandle = Selector.GetHandle("cellSize");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDrawWithFrame_InView_CharacterIndex_ = "drawWithFrame:inView:characterIndex:";
-
-	private static readonly IntPtr selDrawWithFrame_InView_CharacterIndex_Handle = Selector.GetHandle("drawWithFrame:inView:characterIndex:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDrawWithFrame_InView_CharacterIndex_LayoutManager_ = "drawWithFrame:inView:characterIndex:layoutManager:";
-
-	private static readonly IntPtr selDrawWithFrame_InView_CharacterIndex_LayoutManager_Handle = Selector.GetHandle("drawWithFrame:inView:characterIndex:layoutManager:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHighlight_WithFrame_InView_ = "highlight:withFrame:inView:";
-
-	private static readonly IntPtr selHighlight_WithFrame_InView_Handle = Selector.GetHandle("highlight:withFrame:inView:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitImageCell_ = "initImageCell:";
-
-	private static readonly IntPtr selInitImageCell_Handle = Selector.GetHandle("initImageCell:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitTextCell_ = "initTextCell:";
-
-	private static readonly IntPtr selInitTextCell_Handle = Selector.GetHandle("initTextCell:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAttachment_ = "setAttachment:";
+	private static readonly IntPtr selAttachmentHandle = Selector.GetHandle("attachment");
 
 	private static readonly IntPtr selSetAttachment_Handle = Selector.GetHandle("setAttachment:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTrackMouse_InRect_OfView_AtCharacterIndex_UntilMouseUp_ = "trackMouse:inRect:ofView:atCharacterIndex:untilMouseUp:";
-
-	private static readonly IntPtr selTrackMouse_InRect_OfView_AtCharacterIndex_UntilMouseUp_Handle = Selector.GetHandle("trackMouse:inRect:ofView:atCharacterIndex:untilMouseUp:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTrackMouse_InRect_OfView_UntilMouseUp_ = "trackMouse:inRect:ofView:untilMouseUp:";
-
-	private static readonly IntPtr selTrackMouse_InRect_OfView_UntilMouseUp_Handle = Selector.GetHandle("trackMouse:inRect:ofView:untilMouseUp:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selWantsToTrackMouse = "wantsToTrackMouse";
+	private static readonly IntPtr selInitImageCell_Handle = Selector.GetHandle("initImageCell:");
 
 	private static readonly IntPtr selWantsToTrackMouseHandle = Selector.GetHandle("wantsToTrackMouse");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selWantsToTrackMouseForEvent_InRect_OfView_AtCharacterIndex_ = "wantsToTrackMouseForEvent:inRect:ofView:atCharacterIndex:";
+	private static readonly IntPtr selHighlightWithFrameInView_Handle = Selector.GetHandle("highlight:withFrame:inView:");
 
-	private static readonly IntPtr selWantsToTrackMouseForEvent_InRect_OfView_AtCharacterIndex_Handle = Selector.GetHandle("wantsToTrackMouseForEvent:inRect:ofView:atCharacterIndex:");
+	private static readonly IntPtr selTrackMouseInRectOfViewUntilMouseUp_Handle = Selector.GetHandle("trackMouse:inRect:ofView:untilMouseUp:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSTextAttachmentCell");
+	private static readonly IntPtr selDrawWithFrameInViewCharacterIndex_Handle = Selector.GetHandle("drawWithFrame:inView:characterIndex:");
+
+	private static readonly IntPtr selDrawWithFrameInViewCharacterIndexLayoutManager_Handle = Selector.GetHandle("drawWithFrame:inView:characterIndex:layoutManager:");
+
+	private static readonly IntPtr selWantsToTrackMouseForEventInRectOfViewAtCharacterIndex_Handle = Selector.GetHandle("wantsToTrackMouseForEvent:inRect:ofView:atCharacterIndex:");
+
+	private static readonly IntPtr selTrackMouseInRectOfViewAtCharacterIndexUntilMouseUp_Handle = Selector.GetHandle("trackMouse:inRect:ofView:atCharacterIndex:untilMouseUp:");
+
+	private static readonly IntPtr selCellFrameForTextContainerProposedLineFragmentGlyphPositionCharacterIndex_Handle = Selector.GetHandle("cellFrameForTextContainer:proposedLineFragment:glyphPosition:characterIndex:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSTextAttachmentCell");
+
+	private object __mt_Attachment_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSTextAttachment? Attachment
-	{
-		[Export("attachment")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSTextAttachment>(Messaging.IntPtr_objc_msgSend(base.Handle, selAttachmentHandle));
-			}
-			return Runtime.GetNSObject<NSTextAttachment>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAttachmentHandle));
-		}
-		[Export("setAttachment:")]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAttachment_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAttachment_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGPoint CellBaselineOffset
-	{
-		[Export("cellBaselineOffset")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.CGPoint_objc_msgSend(base.Handle, selCellBaselineOffsetHandle);
-			}
-			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selCellBaselineOffsetHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new virtual CGSize CellSize
 	{
 		[Export("cellSize")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.CGSize_objc_msgSend(base.Handle, selCellSizeHandle);
 			}
@@ -142,57 +55,91 @@ public class NSTextAttachmentCell : NSCell
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGPoint CellBaselineOffset
+	{
+		[Export("cellBaselineOffset")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			if (IsDirectBinding)
+			{
+				return Messaging.CGPoint_objc_msgSend(base.Handle, selCellBaselineOffsetHandle);
+			}
+			return Messaging.CGPoint_objc_msgSendSuper(base.SuperHandle, selCellBaselineOffsetHandle);
+		}
+	}
+
+	public virtual NSTextAttachment Attachment
+	{
+		[Export("attachment")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSTextAttachment)(__mt_Attachment_var = ((!IsDirectBinding) ? ((NSTextAttachment)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAttachmentHandle))) : ((NSTextAttachment)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAttachmentHandle)))));
+		}
+		[Export("setAttachment:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAttachment_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAttachment_Handle, value.Handle);
+			}
+			__mt_Attachment_var = value;
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSTextAttachmentCell()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSTextAttachmentCell(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSTextAttachmentCell(NSObjectFlag t)
+	public NSTextAttachmentCell(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSTextAttachmentCell(IntPtr handle)
+	public NSTextAttachmentCell(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initImageCell:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSTextAttachmentCell(NSImage image)
 		: base(NSObjectFlag.Empty)
 	{
@@ -201,103 +148,28 @@ public class NSTextAttachmentCell : NSCell
 		{
 			throw new ArgumentNullException("image");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitImageCell_Handle, image.Handle), "initImageCell:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitImageCell_Handle, image.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitImageCell_Handle, image.Handle), "initImageCell:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitImageCell_Handle, image.Handle);
 		}
 	}
 
-	[Export("initTextCell:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public NSTextAttachmentCell(string aString)
-		: base(NSObjectFlag.Empty)
+	[Export("wantsToTrackMouse")]
+	public virtual bool WantsToTrackMouse()
 	{
 		NSApplication.EnsureUIThread();
-		if (aString == null)
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("aString");
+			return Messaging.bool_objc_msgSend(base.Handle, selWantsToTrackMouseHandle);
 		}
-		IntPtr arg = NSString.CreateNative(aString);
-		if (base.IsDirectBinding)
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitTextCell_Handle, arg), "initTextCell:");
-		}
-		else
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitTextCell_Handle, arg), "initTextCell:");
-		}
-		NSString.ReleaseNative(arg);
-	}
-
-	[Export("cellFrameForTextContainer:proposedLineFragment:glyphPosition:characterIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGRect CellFrameForTextContainer(NSTextContainer textContainer, CGRect lineFrag, CGPoint position, nuint charIndex)
-	{
-		NSApplication.EnsureUIThread();
-		if (textContainer == null)
-		{
-			throw new ArgumentNullException("textContainer");
-		}
-		CGRect retval;
-		if (base.IsDirectBinding)
-		{
-			Messaging.CGRect_objc_msgSend_stret_IntPtr_CGRect_CGPoint_nuint(out retval, base.Handle, selCellFrameForTextContainer_ProposedLineFragment_GlyphPosition_CharacterIndex_Handle, textContainer.Handle, lineFrag, position, charIndex);
-		}
-		else
-		{
-			Messaging.CGRect_objc_msgSendSuper_stret_IntPtr_CGRect_CGPoint_nuint(out retval, base.SuperHandle, selCellFrameForTextContainer_ProposedLineFragment_GlyphPosition_CharacterIndex_Handle, textContainer.Handle, lineFrag, position, charIndex);
-		}
-		return retval;
-	}
-
-	[Export("drawWithFrame:inView:characterIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DrawWithFrame(CGRect cellFrame, NSView controlView, nuint charIndex)
-	{
-		NSApplication.EnsureUIThread();
-		if (controlView == null)
-		{
-			throw new ArgumentNullException("controlView");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGRect_IntPtr_nuint(base.Handle, selDrawWithFrame_InView_CharacterIndex_Handle, cellFrame, controlView.Handle, charIndex);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGRect_IntPtr_nuint(base.SuperHandle, selDrawWithFrame_InView_CharacterIndex_Handle, cellFrame, controlView.Handle, charIndex);
-		}
-	}
-
-	[Export("drawWithFrame:inView:characterIndex:layoutManager:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DrawWithFrame(CGRect cellFrame, NSView controlView, nuint charIndex, NSLayoutManager layoutManager)
-	{
-		NSApplication.EnsureUIThread();
-		if (controlView == null)
-		{
-			throw new ArgumentNullException("controlView");
-		}
-		if (layoutManager == null)
-		{
-			throw new ArgumentNullException("layoutManager");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_CGRect_IntPtr_nuint_IntPtr(base.Handle, selDrawWithFrame_InView_CharacterIndex_LayoutManager_Handle, cellFrame, controlView.Handle, charIndex, layoutManager.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_CGRect_IntPtr_nuint_IntPtr(base.SuperHandle, selDrawWithFrame_InView_CharacterIndex_LayoutManager_Handle, cellFrame, controlView.Handle, charIndex, layoutManager.Handle);
-		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selWantsToTrackMouseHandle);
 	}
 
 	[Export("highlight:withFrame:inView:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new virtual void Highlight(bool highlight, CGRect cellFrame, NSView controlView)
 	{
 		NSApplication.EnsureUIThread();
@@ -305,18 +177,17 @@ public class NSTextAttachmentCell : NSCell
 		{
 			throw new ArgumentNullException("controlView");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_bool_CGRect_IntPtr(base.Handle, selHighlight_WithFrame_InView_Handle, highlight, cellFrame, controlView.Handle);
+			Messaging.void_objc_msgSend_bool_CGRect_IntPtr(base.Handle, selHighlightWithFrameInView_Handle, highlight, cellFrame, controlView.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_bool_CGRect_IntPtr(base.SuperHandle, selHighlight_WithFrame_InView_Handle, highlight, cellFrame, controlView.Handle);
+			Messaging.void_objc_msgSendSuper_bool_CGRect_IntPtr(base.SuperHandle, selHighlightWithFrameInView_Handle, highlight, cellFrame, controlView.Handle);
 		}
 	}
 
 	[Export("trackMouse:inRect:ofView:untilMouseUp:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new virtual bool TrackMouse(NSEvent theEvent, CGRect cellFrame, NSView controlView, bool untilMouseUp)
 	{
 		NSApplication.EnsureUIThread();
@@ -328,48 +199,55 @@ public class NSTextAttachmentCell : NSCell
 		{
 			throw new ArgumentNullException("controlView");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr_CGRect_IntPtr_bool(base.Handle, selTrackMouse_InRect_OfView_UntilMouseUp_Handle, theEvent.Handle, cellFrame, controlView.Handle, untilMouseUp);
+			return Messaging.bool_objc_msgSend_IntPtr_CGRect_IntPtr_bool(base.Handle, selTrackMouseInRectOfViewUntilMouseUp_Handle, theEvent.Handle, cellFrame, controlView.Handle, untilMouseUp);
 		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr_CGRect_IntPtr_bool(base.SuperHandle, selTrackMouse_InRect_OfView_UntilMouseUp_Handle, theEvent.Handle, cellFrame, controlView.Handle, untilMouseUp);
+		return Messaging.bool_objc_msgSendSuper_IntPtr_CGRect_IntPtr_bool(base.SuperHandle, selTrackMouseInRectOfViewUntilMouseUp_Handle, theEvent.Handle, cellFrame, controlView.Handle, untilMouseUp);
 	}
 
-	[Export("trackMouse:inRect:ofView:atCharacterIndex:untilMouseUp:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool TrackMouse(NSEvent theEvent, CGRect cellFrame, NSView controlView, nuint charIndex, bool untilMouseUp)
+	[Export("drawWithFrame:inView:characterIndex:")]
+	public virtual void DrawWithFrame(CGRect cellFrame, NSView controlView, ulong charIndex)
 	{
 		NSApplication.EnsureUIThread();
-		if (theEvent == null)
-		{
-			throw new ArgumentNullException("theEvent");
-		}
 		if (controlView == null)
 		{
 			throw new ArgumentNullException("controlView");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr_CGRect_IntPtr_nuint_bool(base.Handle, selTrackMouse_InRect_OfView_AtCharacterIndex_UntilMouseUp_Handle, theEvent.Handle, cellFrame, controlView.Handle, charIndex, untilMouseUp);
+			Messaging.void_objc_msgSend_CGRect_IntPtr_UInt64(base.Handle, selDrawWithFrameInViewCharacterIndex_Handle, cellFrame, controlView.Handle, charIndex);
 		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr_CGRect_IntPtr_nuint_bool(base.SuperHandle, selTrackMouse_InRect_OfView_AtCharacterIndex_UntilMouseUp_Handle, theEvent.Handle, cellFrame, controlView.Handle, charIndex, untilMouseUp);
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGRect_IntPtr_UInt64(base.SuperHandle, selDrawWithFrameInViewCharacterIndex_Handle, cellFrame, controlView.Handle, charIndex);
+		}
 	}
 
-	[Export("wantsToTrackMouse")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool WantsToTrackMouse()
+	[Export("drawWithFrame:inView:characterIndex:layoutManager:")]
+	public virtual void DrawWithFrame(CGRect cellFrame, NSView controlView, ulong charIndex, NSLayoutManager layoutManager)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (controlView == null)
 		{
-			return Messaging.bool_objc_msgSend(base.Handle, selWantsToTrackMouseHandle);
+			throw new ArgumentNullException("controlView");
 		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selWantsToTrackMouseHandle);
+		if (layoutManager == null)
+		{
+			throw new ArgumentNullException("layoutManager");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_CGRect_IntPtr_UInt64_IntPtr(base.Handle, selDrawWithFrameInViewCharacterIndexLayoutManager_Handle, cellFrame, controlView.Handle, charIndex, layoutManager.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_CGRect_IntPtr_UInt64_IntPtr(base.SuperHandle, selDrawWithFrameInViewCharacterIndexLayoutManager_Handle, cellFrame, controlView.Handle, charIndex, layoutManager.Handle);
+		}
 	}
 
 	[Export("wantsToTrackMouseForEvent:inRect:ofView:atCharacterIndex:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool WantsToTrackMouse(NSEvent theEvent, CGRect cellFrame, NSView controlView, nuint charIndex)
+	public virtual bool WantsToTrackMouse(NSEvent theEvent, CGRect cellFrame, NSView controlView, ulong charIndex)
 	{
 		NSApplication.EnsureUIThread();
 		if (theEvent == null)
@@ -380,10 +258,58 @@ public class NSTextAttachmentCell : NSCell
 		{
 			throw new ArgumentNullException("controlView");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr_CGRect_IntPtr_nuint(base.Handle, selWantsToTrackMouseForEvent_InRect_OfView_AtCharacterIndex_Handle, theEvent.Handle, cellFrame, controlView.Handle, charIndex);
+			return Messaging.bool_objc_msgSend_IntPtr_CGRect_IntPtr_UInt64(base.Handle, selWantsToTrackMouseForEventInRectOfViewAtCharacterIndex_Handle, theEvent.Handle, cellFrame, controlView.Handle, charIndex);
 		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr_CGRect_IntPtr_nuint(base.SuperHandle, selWantsToTrackMouseForEvent_InRect_OfView_AtCharacterIndex_Handle, theEvent.Handle, cellFrame, controlView.Handle, charIndex);
+		return Messaging.bool_objc_msgSendSuper_IntPtr_CGRect_IntPtr_UInt64(base.SuperHandle, selWantsToTrackMouseForEventInRectOfViewAtCharacterIndex_Handle, theEvent.Handle, cellFrame, controlView.Handle, charIndex);
+	}
+
+	[Export("trackMouse:inRect:ofView:atCharacterIndex:untilMouseUp:")]
+	public virtual bool TrackMouse(NSEvent theEvent, CGRect cellFrame, NSView controlView, ulong charIndex, bool untilMouseUp)
+	{
+		NSApplication.EnsureUIThread();
+		if (theEvent == null)
+		{
+			throw new ArgumentNullException("theEvent");
+		}
+		if (controlView == null)
+		{
+			throw new ArgumentNullException("controlView");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_IntPtr_CGRect_IntPtr_UInt64_bool(base.Handle, selTrackMouseInRectOfViewAtCharacterIndexUntilMouseUp_Handle, theEvent.Handle, cellFrame, controlView.Handle, charIndex, untilMouseUp);
+		}
+		return Messaging.bool_objc_msgSendSuper_IntPtr_CGRect_IntPtr_UInt64_bool(base.SuperHandle, selTrackMouseInRectOfViewAtCharacterIndexUntilMouseUp_Handle, theEvent.Handle, cellFrame, controlView.Handle, charIndex, untilMouseUp);
+	}
+
+	[Export("cellFrameForTextContainer:proposedLineFragment:glyphPosition:characterIndex:")]
+	public virtual CGRect CellFrameForTextContainer(NSTextContainer textContainer, CGRect lineFrag, CGPoint position, ulong charIndex)
+	{
+		NSApplication.EnsureUIThread();
+		if (textContainer == null)
+		{
+			throw new ArgumentNullException("textContainer");
+		}
+		CGRect retval;
+		if (IsDirectBinding)
+		{
+			Messaging.CGRect_objc_msgSend_stret_IntPtr_CGRect_CGPoint_UInt64(out retval, base.Handle, selCellFrameForTextContainerProposedLineFragmentGlyphPositionCharacterIndex_Handle, textContainer.Handle, lineFrag, position, charIndex);
+		}
+		else
+		{
+			Messaging.CGRect_objc_msgSendSuper_stret_IntPtr_CGRect_CGPoint_UInt64(out retval, base.SuperHandle, selCellFrameForTextContainerProposedLineFragmentGlyphPositionCharacterIndex_Handle, textContainer.Handle, lineFrag, position, charIndex);
+		}
+		return retval;
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_Attachment_var = null;
+		}
 	}
 }

@@ -6,95 +6,22 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Register("AVCaptureAudioChannel", true)]
-[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
 public class AVCaptureAudioChannel : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAveragePowerLevel = "averagePowerLevel";
+	private static readonly IntPtr selPeakHoldLevelHandle = Selector.GetHandle("peakHoldLevel");
 
 	private static readonly IntPtr selAveragePowerLevelHandle = Selector.GetHandle("averagePowerLevel");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsEnabled = "isEnabled";
-
-	private static readonly IntPtr selIsEnabledHandle = Selector.GetHandle("isEnabled");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPeakHoldLevel = "peakHoldLevel";
-
-	private static readonly IntPtr selPeakHoldLevelHandle = Selector.GetHandle("peakHoldLevel");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetEnabled_ = "setEnabled:";
-
-	private static readonly IntPtr selSetEnabled_Handle = Selector.GetHandle("setEnabled:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetVolume_ = "setVolume:";
-
-	private static readonly IntPtr selSetVolume_Handle = Selector.GetHandle("setVolume:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selVolume = "volume";
-
-	private static readonly IntPtr selVolumeHandle = Selector.GetHandle("volume");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVCaptureAudioChannel");
+	private static readonly IntPtr class_ptr = Class.GetHandle("AVCaptureAudioChannel");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual float AveragePowerLevel
-	{
-		[Export("averagePowerLevel")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.float_objc_msgSend(base.Handle, selAveragePowerLevelHandle);
-			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selAveragePowerLevelHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-	public virtual bool Enabled
-	{
-		[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-		[Export("isEnabled")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsEnabledHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsEnabledHandle);
-		}
-		[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-		[Export("setEnabled:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetEnabled_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetEnabled_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual float PeakHoldLevel
 	{
 		[Export("peakHoldLevel")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.float_objc_msgSend(base.Handle, selPeakHoldLevelHandle);
 			}
@@ -102,61 +29,57 @@ public class AVCaptureAudioChannel : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-	public virtual float Volume
+	public virtual float AveragePowerLevel
 	{
-		[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-		[Export("volume")]
+		[Export("averagePowerLevel")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.float_objc_msgSend(base.Handle, selVolumeHandle);
+				return Messaging.float_objc_msgSend(base.Handle, selAveragePowerLevelHandle);
 			}
-			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selVolumeHandle);
-		}
-		[Unavailable(PlatformName.iOS, PlatformArchitecture.All, null)]
-		[Export("setVolume:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_float(base.Handle, selSetVolume_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetVolume_Handle, value);
-			}
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selAveragePowerLevelHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public AVCaptureAudioChannel()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected AVCaptureAudioChannel(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public AVCaptureAudioChannel(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public AVCaptureAudioChannel(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal AVCaptureAudioChannel(IntPtr handle)
+	public AVCaptureAudioChannel(IntPtr handle)
 		: base(handle)
 	{
 	}

@@ -1,267 +1,77 @@
 using System;
 using System.ComponentModel;
-using AppKit;
+using System.Runtime.InteropServices;
 using ObjCRuntime;
 
 namespace Foundation;
 
 [Register("NSFileWrapper", true)]
-public class NSFileWrapper : NSObject, INSCoding, INativeObject, IDisposable, INSSecureCoding
+public class NSFileWrapper : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddFileWrapper_ = "addFileWrapper:";
-
-	private static readonly IntPtr selAddFileWrapper_Handle = Selector.GetHandle("addFileWrapper:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAddRegularFileWithContents_PreferredFilename_ = "addRegularFileWithContents:preferredFilename:";
-
-	private static readonly IntPtr selAddRegularFileWithContents_PreferredFilename_Handle = Selector.GetHandle("addRegularFileWithContents:preferredFilename:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFileAttributes = "fileAttributes";
-
-	private static readonly IntPtr selFileAttributesHandle = Selector.GetHandle("fileAttributes");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFileWrappers = "fileWrappers";
-
-	private static readonly IntPtr selFileWrappersHandle = Selector.GetHandle("fileWrappers");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFilename = "filename";
-
-	private static readonly IntPtr selFilenameHandle = Selector.GetHandle("filename");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIcon = "icon";
-
-	private static readonly IntPtr selIconHandle = Selector.GetHandle("icon");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitDirectoryWithFileWrappers_ = "initDirectoryWithFileWrappers:";
-
-	private static readonly IntPtr selInitDirectoryWithFileWrappers_Handle = Selector.GetHandle("initDirectoryWithFileWrappers:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitRegularFileWithContents_ = "initRegularFileWithContents:";
-
-	private static readonly IntPtr selInitRegularFileWithContents_Handle = Selector.GetHandle("initRegularFileWithContents:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitSymbolicLinkWithDestinationURL_ = "initSymbolicLinkWithDestinationURL:";
-
-	private static readonly IntPtr selInitSymbolicLinkWithDestinationURL_Handle = Selector.GetHandle("initSymbolicLinkWithDestinationURL:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
-
-	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithURL_Options_Error_ = "initWithURL:options:error:";
-
-	private static readonly IntPtr selInitWithURL_Options_Error_Handle = Selector.GetHandle("initWithURL:options:error:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsDirectory = "isDirectory";
-
 	private static readonly IntPtr selIsDirectoryHandle = Selector.GetHandle("isDirectory");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsRegularFile = "isRegularFile";
 
 	private static readonly IntPtr selIsRegularFileHandle = Selector.GetHandle("isRegularFile");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsSymbolicLink = "isSymbolicLink";
-
 	private static readonly IntPtr selIsSymbolicLinkHandle = Selector.GetHandle("isSymbolicLink");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selKeyForFileWrapper_ = "keyForFileWrapper:";
-
-	private static readonly IntPtr selKeyForFileWrapper_Handle = Selector.GetHandle("keyForFileWrapper:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMatchesContentsOfURL_ = "matchesContentsOfURL:";
-
-	private static readonly IntPtr selMatchesContentsOfURL_Handle = Selector.GetHandle("matchesContentsOfURL:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPreferredFilename = "preferredFilename";
-
-	private static readonly IntPtr selPreferredFilenameHandle = Selector.GetHandle("preferredFilename");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selReadFromURL_Options_Error_ = "readFromURL:options:error:";
-
-	private static readonly IntPtr selReadFromURL_Options_Error_Handle = Selector.GetHandle("readFromURL:options:error:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRegularFileContents = "regularFileContents";
-
-	private static readonly IntPtr selRegularFileContentsHandle = Selector.GetHandle("regularFileContents");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveFileWrapper_ = "removeFileWrapper:";
-
-	private static readonly IntPtr selRemoveFileWrapper_Handle = Selector.GetHandle("removeFileWrapper:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSerializedRepresentation = "serializedRepresentation";
-
-	private static readonly IntPtr selSerializedRepresentationHandle = Selector.GetHandle("serializedRepresentation");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetFileAttributes_ = "setFileAttributes:";
-
-	private static readonly IntPtr selSetFileAttributes_Handle = Selector.GetHandle("setFileAttributes:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetFilename_ = "setFilename:";
-
-	private static readonly IntPtr selSetFilename_Handle = Selector.GetHandle("setFilename:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetIcon_ = "setIcon:";
-
-	private static readonly IntPtr selSetIcon_Handle = Selector.GetHandle("setIcon:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPreferredFilename_ = "setPreferredFilename:";
-
-	private static readonly IntPtr selSetPreferredFilename_Handle = Selector.GetHandle("setPreferredFilename:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSymbolicLinkDestinationURL = "symbolicLinkDestinationURL";
+	private static readonly IntPtr selFileWrappersHandle = Selector.GetHandle("fileWrappers");
 
 	private static readonly IntPtr selSymbolicLinkDestinationURLHandle = Selector.GetHandle("symbolicLinkDestinationURL");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selWriteToURL_Options_OriginalContentsURL_Error_ = "writeToURL:options:originalContentsURL:error:";
+	private static readonly IntPtr selPreferredFilenameHandle = Selector.GetHandle("preferredFilename");
 
-	private static readonly IntPtr selWriteToURL_Options_OriginalContentsURL_Error_Handle = Selector.GetHandle("writeToURL:options:originalContentsURL:error:");
+	private static readonly IntPtr selSetPreferredFilename_Handle = Selector.GetHandle("setPreferredFilename:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSFileWrapper");
+	private static readonly IntPtr selFilenameHandle = Selector.GetHandle("filename");
+
+	private static readonly IntPtr selSetFilename_Handle = Selector.GetHandle("setFilename:");
+
+	private static readonly IntPtr selFileAttributesHandle = Selector.GetHandle("fileAttributes");
+
+	private static readonly IntPtr selSetFileAttributes_Handle = Selector.GetHandle("setFileAttributes:");
+
+	private static readonly IntPtr selInitWithURLOptionsError_Handle = Selector.GetHandle("initWithURL:options:error:");
+
+	private static readonly IntPtr selInitDirectoryWithFileWrappers_Handle = Selector.GetHandle("initDirectoryWithFileWrappers:");
+
+	private static readonly IntPtr selInitRegularFileWithContents_Handle = Selector.GetHandle("initRegularFileWithContents:");
+
+	private static readonly IntPtr selInitSymbolicLinkWithDestinationURL_Handle = Selector.GetHandle("initSymbolicLinkWithDestinationURL:");
+
+	private static readonly IntPtr selMatchesContentsOfURL_Handle = Selector.GetHandle("matchesContentsOfURL:");
+
+	private static readonly IntPtr selReadFromURLOptionsError_Handle = Selector.GetHandle("readFromURL:options:error:");
+
+	private static readonly IntPtr selWriteToURLOptionsOriginalContentsURLError_Handle = Selector.GetHandle("writeToURL:options:originalContentsURL:error:");
+
+	private static readonly IntPtr selSerializedRepresentationHandle = Selector.GetHandle("serializedRepresentation");
+
+	private static readonly IntPtr selAddFileWrapper_Handle = Selector.GetHandle("addFileWrapper:");
+
+	private static readonly IntPtr selAddRegularFileWithContentsPreferredFilename_Handle = Selector.GetHandle("addRegularFileWithContents:preferredFilename:");
+
+	private static readonly IntPtr selRemoveFileWrapper_Handle = Selector.GetHandle("removeFileWrapper:");
+
+	private static readonly IntPtr selKeyForFileWrapper_Handle = Selector.GetHandle("keyForFileWrapper:");
+
+	private static readonly IntPtr selRegularFileContentsHandle = Selector.GetHandle("regularFileContents");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSFileWrapper");
+
+	private object __mt_FileWrappers_var;
+
+	private object __mt_SymbolicLinkDestinationURL_var;
+
+	private object __mt_FileAttributes_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary FileAttributes
-	{
-		[Export("fileAttributes", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selFileAttributesHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileAttributesHandle));
-		}
-		[Export("setFileAttributes:", ArgumentSemantic.Copy)]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFileAttributes_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFileAttributes_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary FileWrappers
-	{
-		[Export("fileWrappers")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selFileWrappersHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileWrappersHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string? Filename
-	{
-		[Export("filename")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selFilenameHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFilenameHandle));
-		}
-		[Export("setFilename:")]
-		set
-		{
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFilename_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFilename_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSImage Icon
-	{
-		[Export("icon", ArgumentSemantic.Retain)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSend(base.Handle, selIconHandle));
-			}
-			return Runtime.GetNSObject<NSImage>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selIconHandle));
-		}
-		[Export("setIcon:", ArgumentSemantic.Retain)]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetIcon_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetIcon_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsDirectory
 	{
 		[Export("isDirectory")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsDirectoryHandle);
 			}
@@ -269,13 +79,12 @@ public class NSFileWrapper : NSObject, INSCoding, INativeObject, IDisposable, IN
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsRegularFile
 	{
 		[Export("isRegularFile")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsRegularFileHandle);
 			}
@@ -283,13 +92,12 @@ public class NSFileWrapper : NSObject, INSCoding, INativeObject, IDisposable, IN
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsSymbolicLink
 	{
 		[Export("isSymbolicLink")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsSymbolicLinkHandle);
 			}
@@ -297,13 +105,30 @@ public class NSFileWrapper : NSObject, INSCoding, INativeObject, IDisposable, IN
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary FileWrappers
+	{
+		[Export("fileWrappers")]
+		get
+		{
+			return (NSDictionary)(__mt_FileWrappers_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileWrappersHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFileWrappersHandle)))));
+		}
+	}
+
+	public virtual NSUrl SymbolicLinkDestinationURL
+	{
+		[Export("symbolicLinkDestinationURL")]
+		get
+		{
+			return (NSUrl)(__mt_SymbolicLinkDestinationURL_var = ((!IsDirectBinding) ? ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSymbolicLinkDestinationURLHandle))) : ((NSUrl)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSymbolicLinkDestinationURLHandle)))));
+		}
+	}
+
 	public virtual string PreferredFilename
 	{
 		[Export("preferredFilename")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPreferredFilenameHandle));
 			}
@@ -317,7 +142,7 @@ public class NSFileWrapper : NSObject, INSCoding, INativeObject, IDisposable, IN
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPreferredFilename_Handle, arg);
 			}
@@ -329,70 +154,106 @@ public class NSFileWrapper : NSObject, INSCoding, INativeObject, IDisposable, IN
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSUrl SymbolicLinkDestinationURL
+	public virtual string Filename
 	{
-		[Export("symbolicLinkDestinationURL")]
+		[Export("filename")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSend(base.Handle, selSymbolicLinkDestinationURLHandle));
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selFilenameHandle));
 			}
-			return Runtime.GetNSObject<NSUrl>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSymbolicLinkDestinationURLHandle));
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFilenameHandle));
+		}
+		[Export("setFilename:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFilename_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFilename_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary FileAttributes
+	{
+		[Export("fileAttributes")]
+		get
+		{
+			return (NSDictionary)(__mt_FileAttributes_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFileAttributesHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFileAttributesHandle)))));
+		}
+		[Export("setFileAttributes:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFileAttributes_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFileAttributes_Handle, value.Handle);
+			}
+			__mt_FileAttributes_var = value;
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSFileWrapper()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSFileWrapper(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSFileWrapper(NSObjectFlag t)
+	public NSFileWrapper(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSFileWrapper(IntPtr handle)
+	public NSFileWrapper(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithURL:options:error:")]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSFileWrapper(NSUrl url, NSFileWrapperReadingOptions options, out NSError outError)
 		: base(NSObjectFlag.Empty)
 	{
@@ -400,21 +261,22 @@ public class NSFileWrapper : NSObject, INSCoding, INativeObject, IDisposable, IN
 		{
 			throw new ArgumentNullException("url");
 		}
-		IntPtr arg = IntPtr.Zero;
-		if (base.IsDirectBinding)
+		IntPtr intPtr = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr, 0);
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_UInt64_ref_IntPtr(base.Handle, selInitWithURL_Options_Error_Handle, url.Handle, (ulong)options, ref arg), "initWithURL:options:error:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_UInt64_IntPtr(base.Handle, selInitWithURLOptionsError_Handle, url.Handle, (ulong)options, intPtr);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_UInt64_ref_IntPtr(base.SuperHandle, selInitWithURL_Options_Error_Handle, url.Handle, (ulong)options, ref arg), "initWithURL:options:error:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_UInt64_IntPtr(base.SuperHandle, selInitWithURLOptionsError_Handle, url.Handle, (ulong)options, intPtr);
 		}
-		outError = Runtime.GetNSObject<NSError>(arg);
+		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
+		outError = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
+		Marshal.FreeHGlobal(intPtr);
 	}
 
 	[Export("initDirectoryWithFileWrappers:")]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSFileWrapper(NSDictionary childrenByPreferredName)
 		: base(NSObjectFlag.Empty)
 	{
@@ -422,19 +284,17 @@ public class NSFileWrapper : NSObject, INSCoding, INativeObject, IDisposable, IN
 		{
 			throw new ArgumentNullException("childrenByPreferredName");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitDirectoryWithFileWrappers_Handle, childrenByPreferredName.Handle), "initDirectoryWithFileWrappers:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitDirectoryWithFileWrappers_Handle, childrenByPreferredName.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitDirectoryWithFileWrappers_Handle, childrenByPreferredName.Handle), "initDirectoryWithFileWrappers:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitDirectoryWithFileWrappers_Handle, childrenByPreferredName.Handle);
 		}
 	}
 
 	[Export("initRegularFileWithContents:")]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSFileWrapper(NSData contents)
 		: base(NSObjectFlag.Empty)
 	{
@@ -442,19 +302,17 @@ public class NSFileWrapper : NSObject, INSCoding, INativeObject, IDisposable, IN
 		{
 			throw new ArgumentNullException("contents");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitRegularFileWithContents_Handle, contents.Handle), "initRegularFileWithContents:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitRegularFileWithContents_Handle, contents.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitRegularFileWithContents_Handle, contents.Handle), "initRegularFileWithContents:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitRegularFileWithContents_Handle, contents.Handle);
 		}
 	}
 
 	[Export("initSymbolicLinkWithDestinationURL:")]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSFileWrapper(NSUrl urlToSymbolicLink)
 		: base(NSObjectFlag.Empty)
 	{
@@ -462,25 +320,84 @@ public class NSFileWrapper : NSObject, INSCoding, INativeObject, IDisposable, IN
 		{
 			throw new ArgumentNullException("urlToSymbolicLink");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitSymbolicLinkWithDestinationURL_Handle, urlToSymbolicLink.Handle), "initSymbolicLinkWithDestinationURL:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitSymbolicLinkWithDestinationURL_Handle, urlToSymbolicLink.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitSymbolicLinkWithDestinationURL_Handle, urlToSymbolicLink.Handle), "initSymbolicLinkWithDestinationURL:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitSymbolicLinkWithDestinationURL_Handle, urlToSymbolicLink.Handle);
 		}
 	}
 
+	[Export("matchesContentsOfURL:")]
+	public virtual bool MatchesContentsOfURL(NSUrl url)
+	{
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selMatchesContentsOfURL_Handle, url.Handle);
+		}
+		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selMatchesContentsOfURL_Handle, url.Handle);
+	}
+
+	[Export("readFromURL:options:error:")]
+	public virtual bool Read(NSUrl url, NSFileWrapperReadingOptions options, out NSError outError)
+	{
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		IntPtr intPtr = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr, 0);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_UInt64_IntPtr(base.SuperHandle, selReadFromURLOptionsError_Handle, url.Handle, (ulong)options, intPtr) : Messaging.bool_objc_msgSend_IntPtr_UInt64_IntPtr(base.Handle, selReadFromURLOptionsError_Handle, url.Handle, (ulong)options, intPtr));
+		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
+		outError = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
+		Marshal.FreeHGlobal(intPtr);
+		return result;
+	}
+
+	[Export("writeToURL:options:originalContentsURL:error:")]
+	public virtual bool Write(NSUrl url, NSFileWrapperWritingOptions options, NSUrl originalContentsURL, out NSError outError)
+	{
+		if (url == null)
+		{
+			throw new ArgumentNullException("url");
+		}
+		if (originalContentsURL == null)
+		{
+			throw new ArgumentNullException("originalContentsURL");
+		}
+		IntPtr intPtr = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr, 0);
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_UInt64_IntPtr_IntPtr(base.SuperHandle, selWriteToURLOptionsOriginalContentsURLError_Handle, url.Handle, (ulong)options, originalContentsURL.Handle, intPtr) : Messaging.bool_objc_msgSend_IntPtr_UInt64_IntPtr_IntPtr(base.Handle, selWriteToURLOptionsOriginalContentsURLError_Handle, url.Handle, (ulong)options, originalContentsURL.Handle, intPtr));
+		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
+		outError = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
+		Marshal.FreeHGlobal(intPtr);
+		return result;
+	}
+
+	[Export("serializedRepresentation")]
+	public virtual NSData GetSerializedRepresentation()
+	{
+		if (IsDirectBinding)
+		{
+			return (NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSerializedRepresentationHandle));
+		}
+		return (NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSerializedRepresentationHandle));
+	}
+
 	[Export("addFileWrapper:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string AddFileWrapper(NSFileWrapper child)
 	{
 		if (child == null)
 		{
 			throw new ArgumentNullException("child");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAddFileWrapper_Handle, child.Handle));
 		}
@@ -488,7 +405,6 @@ public class NSFileWrapper : NSObject, INSCoding, INativeObject, IDisposable, IN
 	}
 
 	[Export("addRegularFileWithContents:preferredFilename:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string AddRegularFile(NSData dataContents, string preferredFilename)
 	{
 		if (dataContents == null)
@@ -500,104 +416,19 @@ public class NSFileWrapper : NSObject, INSCoding, INativeObject, IDisposable, IN
 			throw new ArgumentNullException("preferredFilename");
 		}
 		IntPtr arg = NSString.CreateNative(preferredFilename);
-		string result = ((!base.IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selAddRegularFileWithContents_PreferredFilename_Handle, dataContents.Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selAddRegularFileWithContents_PreferredFilename_Handle, dataContents.Handle, arg)));
+		string result = ((!IsDirectBinding) ? NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selAddRegularFileWithContentsPreferredFilename_Handle, dataContents.Handle, arg)) : NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selAddRegularFileWithContentsPreferredFilename_Handle, dataContents.Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
-	{
-		if (encoder == null)
-		{
-			throw new ArgumentNullException("encoder");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-	}
-
-	[Export("regularFileContents")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSData GetRegularFileContents()
-	{
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSend(base.Handle, selRegularFileContentsHandle));
-		}
-		return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRegularFileContentsHandle));
-	}
-
-	[Export("serializedRepresentation")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSData GetSerializedRepresentation()
-	{
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSend(base.Handle, selSerializedRepresentationHandle));
-		}
-		return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSerializedRepresentationHandle));
-	}
-
-	[Export("keyForFileWrapper:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string KeyForFileWrapper(NSFileWrapper child)
-	{
-		if (child == null)
-		{
-			throw new ArgumentNullException("child");
-		}
-		if (base.IsDirectBinding)
-		{
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selKeyForFileWrapper_Handle, child.Handle));
-		}
-		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selKeyForFileWrapper_Handle, child.Handle));
-	}
-
-	[Export("matchesContentsOfURL:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool MatchesContentsOfURL(NSUrl url)
-	{
-		if (url == null)
-		{
-			throw new ArgumentNullException("url");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selMatchesContentsOfURL_Handle, url.Handle);
-		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selMatchesContentsOfURL_Handle, url.Handle);
-	}
-
-	[Export("readFromURL:options:error:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool Read(NSUrl url, NSFileWrapperReadingOptions options, out NSError outError)
-	{
-		if (url == null)
-		{
-			throw new ArgumentNullException("url");
-		}
-		IntPtr arg = IntPtr.Zero;
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_UInt64_ref_IntPtr(base.SuperHandle, selReadFromURL_Options_Error_Handle, url.Handle, (ulong)options, ref arg) : Messaging.bool_objc_msgSend_IntPtr_UInt64_ref_IntPtr(base.Handle, selReadFromURL_Options_Error_Handle, url.Handle, (ulong)options, ref arg));
-		outError = Runtime.GetNSObject<NSError>(arg);
-		return result;
-	}
-
 	[Export("removeFileWrapper:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void RemoveFileWrapper(NSFileWrapper child)
 	{
 		if (child == null)
 		{
 			throw new ArgumentNullException("child");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveFileWrapper_Handle, child.Handle);
 		}
@@ -607,21 +438,38 @@ public class NSFileWrapper : NSObject, INSCoding, INativeObject, IDisposable, IN
 		}
 	}
 
-	[Export("writeToURL:options:originalContentsURL:error:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool Write(NSUrl url, NSFileWrapperWritingOptions options, NSUrl originalContentsURL, out NSError outError)
+	[Export("keyForFileWrapper:")]
+	public virtual string KeyForFileWrapper(NSFileWrapper child)
 	{
-		if (url == null)
+		if (child == null)
 		{
-			throw new ArgumentNullException("url");
+			throw new ArgumentNullException("child");
 		}
-		if (originalContentsURL == null)
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("originalContentsURL");
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selKeyForFileWrapper_Handle, child.Handle));
 		}
-		IntPtr arg = IntPtr.Zero;
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr_UInt64_IntPtr_ref_IntPtr(base.SuperHandle, selWriteToURL_Options_OriginalContentsURL_Error_Handle, url.Handle, (ulong)options, originalContentsURL.Handle, ref arg) : Messaging.bool_objc_msgSend_IntPtr_UInt64_IntPtr_ref_IntPtr(base.Handle, selWriteToURL_Options_OriginalContentsURL_Error_Handle, url.Handle, (ulong)options, originalContentsURL.Handle, ref arg));
-		outError = Runtime.GetNSObject<NSError>(arg);
-		return result;
+		return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selKeyForFileWrapper_Handle, child.Handle));
+	}
+
+	[Export("regularFileContents")]
+	public virtual NSData GetRegularFileContents()
+	{
+		if (IsDirectBinding)
+		{
+			return (NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selRegularFileContentsHandle));
+		}
+		return (NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRegularFileContentsHandle));
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_FileWrappers_var = null;
+			__mt_SymbolicLinkDestinationURL_var = null;
+			__mt_FileAttributes_var = null;
+		}
 	}
 }

@@ -6,175 +6,124 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Register("AVAssetReaderTrackOutput", true)]
-[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
 public class AVAssetReaderTrackOutput : AVAssetReaderOutput
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAssetReaderTrackOutputWithTrack_OutputSettings_ = "assetReaderTrackOutputWithTrack:outputSettings:";
-
-	private static readonly IntPtr selAssetReaderTrackOutputWithTrack_OutputSettings_Handle = Selector.GetHandle("assetReaderTrackOutputWithTrack:outputSettings:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAudioTimePitchAlgorithm = "audioTimePitchAlgorithm";
-
-	private static readonly IntPtr selAudioTimePitchAlgorithmHandle = Selector.GetHandle("audioTimePitchAlgorithm");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithTrack_OutputSettings_ = "initWithTrack:outputSettings:";
-
-	private static readonly IntPtr selInitWithTrack_OutputSettings_Handle = Selector.GetHandle("initWithTrack:outputSettings:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOutputSettings = "outputSettings";
+	private static readonly IntPtr selTrackHandle = Selector.GetHandle("track");
 
 	private static readonly IntPtr selOutputSettingsHandle = Selector.GetHandle("outputSettings");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAudioTimePitchAlgorithm_ = "setAudioTimePitchAlgorithm:";
+	private static readonly IntPtr selAssetReaderTrackOutputWithTrackOutputSettings_Handle = Selector.GetHandle("assetReaderTrackOutputWithTrack:outputSettings:");
 
-	private static readonly IntPtr selSetAudioTimePitchAlgorithm_Handle = Selector.GetHandle("setAudioTimePitchAlgorithm:");
+	private static readonly IntPtr selInitWithTrackOutputSettings_Handle = Selector.GetHandle("initWithTrack:outputSettings:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTrack = "track";
+	private static readonly IntPtr class_ptr = Class.GetHandle("AVAssetReaderTrackOutput");
 
-	private static readonly IntPtr selTrackHandle = Selector.GetHandle("track");
+	private object __mt_Track_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVAssetReaderTrackOutput");
+	private object __mt_OutputSettings_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-	public virtual NSString AudioTimePitchAlgorithm
-	{
-		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-		[Export("audioTimePitchAlgorithm", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSend(base.Handle, selAudioTimePitchAlgorithmHandle));
-			}
-			return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAudioTimePitchAlgorithmHandle));
-		}
-		[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-		[Export("setAudioTimePitchAlgorithm:", ArgumentSemantic.Copy)]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAudioTimePitchAlgorithm_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAudioTimePitchAlgorithm_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary? OutputSettings
-	{
-		[Export("outputSettings")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selOutputSettingsHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOutputSettingsHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual AVAssetTrack Track
 	{
 		[Export("track")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<AVAssetTrack>(Messaging.IntPtr_objc_msgSend(base.Handle, selTrackHandle));
-			}
-			return Runtime.GetNSObject<AVAssetTrack>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTrackHandle));
+			return (AVAssetTrack)(__mt_Track_var = ((!IsDirectBinding) ? ((AVAssetTrack)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTrackHandle))) : ((AVAssetTrack)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selTrackHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary OutputSettings
+	{
+		[Export("outputSettings")]
+		get
+		{
+			return (NSDictionary)(__mt_OutputSettings_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOutputSettingsHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selOutputSettingsHandle)))));
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected AVAssetReaderTrackOutput(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public AVAssetReaderTrackOutput(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public AVAssetReaderTrackOutput(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal AVAssetReaderTrackOutput(IntPtr handle)
+	public AVAssetReaderTrackOutput(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("assetReaderTrackOutputWithTrack:outputSettings:")]
+	public static AVAssetReaderTrackOutput FromTrack(AVAssetTrack track, NSDictionary outputSettings)
+	{
+		if (track == null)
+		{
+			throw new ArgumentNullException("track");
+		}
+		return (AVAssetReaderTrackOutput)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selAssetReaderTrackOutputWithTrackOutputSettings_Handle, track.Handle, outputSettings?.Handle ?? IntPtr.Zero));
+	}
+
+	public static AVAssetReaderTrackOutput Create(AVAssetTrack track, AudioSettings settings)
+	{
+		return FromTrack(track, settings?.Dictionary);
+	}
+
+	public static AVAssetReaderTrackOutput Create(AVAssetTrack track, AVVideoSettingsUncompressed settings)
+	{
+		return FromTrack(track, settings?.Dictionary);
+	}
+
 	[Export("initWithTrack:outputSettings:")]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public AVAssetReaderTrackOutput(AVAssetTrack track, NSDictionary? outputSettings)
+	public AVAssetReaderTrackOutput(AVAssetTrack track, NSDictionary outputSettings)
 		: base(NSObjectFlag.Empty)
 	{
 		if (track == null)
 		{
 			throw new ArgumentNullException("track");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithTrack_OutputSettings_Handle, track.Handle, outputSettings?.Handle ?? IntPtr.Zero), "initWithTrack:outputSettings:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithTrackOutputSettings_Handle, track.Handle, outputSettings?.Handle ?? IntPtr.Zero);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithTrack_OutputSettings_Handle, track.Handle, outputSettings?.Handle ?? IntPtr.Zero), "initWithTrack:outputSettings:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithTrackOutputSettings_Handle, track.Handle, outputSettings?.Handle ?? IntPtr.Zero);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public AVAssetReaderTrackOutput(AVAssetTrack track, AudioSettings? settings)
-		: this(track, settings.GetDictionary())
+	public AVAssetReaderTrackOutput(AVAssetTrack track, AudioSettings settings)
+		: this(track, settings?.Dictionary)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public AVAssetReaderTrackOutput(AVAssetTrack track, AVVideoSettingsUncompressed? settings)
-		: this(track, settings.GetDictionary())
+	public AVAssetReaderTrackOutput(AVAssetTrack track, AVVideoSettingsUncompressed settings)
+		: this(track, settings?.Dictionary)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static AVAssetReaderTrackOutput Create(AVAssetTrack track, AudioSettings? settings)
+	protected override void Dispose(bool disposing)
 	{
-		return FromTrack(track, settings.GetDictionary());
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static AVAssetReaderTrackOutput Create(AVAssetTrack track, AVVideoSettingsUncompressed? settings)
-	{
-		return FromTrack(track, settings.GetDictionary());
-	}
-
-	[Export("assetReaderTrackOutputWithTrack:outputSettings:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Advice("Use 'Create' method.")]
-	internal static AVAssetReaderTrackOutput FromTrack(AVAssetTrack track, NSDictionary? outputSettings)
-	{
-		if (track == null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			throw new ArgumentNullException("track");
+			__mt_Track_var = null;
+			__mt_OutputSettings_var = null;
 		}
-		return Runtime.GetNSObject<AVAssetReaderTrackOutput>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selAssetReaderTrackOutputWithTrack_OutputSettings_Handle, track.Handle, outputSettings?.Handle ?? IntPtr.Zero));
 	}
 }

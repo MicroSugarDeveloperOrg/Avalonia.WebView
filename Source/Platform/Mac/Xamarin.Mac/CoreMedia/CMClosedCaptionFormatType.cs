@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace CoreMedia;
 
-[Watch(6, 0)]
 public enum CMClosedCaptionFormatType : uint
 {
 	CEA608 = 1664495672u,

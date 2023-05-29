@@ -1,3 +1,0 @@
-namespace Foundation;
-
-public delegate void NSBackgroundActivityCompletionAction(NSBackgroundActivityCompletionHandler handler);

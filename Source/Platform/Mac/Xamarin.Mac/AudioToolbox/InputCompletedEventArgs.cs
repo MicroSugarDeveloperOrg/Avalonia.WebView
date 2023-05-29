@@ -18,8 +18,6 @@ public class InputCompletedEventArgs : EventArgs
 		}
 	}
 
-	public unsafe AudioQueueBuffer Buffer => *(AudioQueueBuffer*)(void*)IntPtrBuffer;
-
 	public AudioTimeStamp TimeStamp { get; private set; }
 
 	public AudioStreamPacketDescription[] PacketDescriptions { get; private set; }

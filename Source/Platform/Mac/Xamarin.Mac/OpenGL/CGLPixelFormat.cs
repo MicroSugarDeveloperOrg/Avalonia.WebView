@@ -6,10 +6,11 @@ using ObjCRuntime;
 
 namespace OpenGL;
 
-[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "Use 'Metal' Framework instead.")]
 public class CGLPixelFormat : INativeObject, IDisposable
 {
 	internal IntPtr handle;
+
+	private static int ignored;
 
 	public IntPtr Handle => handle;
 
@@ -64,33 +65,34 @@ public class CGLPixelFormat : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/OpenGL.framework/OpenGL")]
-	private static extern CGLErrorCode CGLChoosePixelFormat(CGLPixelFormatAttribute[] attributes, out IntPtr pix, out int npix);
+	private static extern CGLErrorCode CGLChoosePixelFormat(CGLPixelFormatAttribute[] attributes, IntPtr pix, IntPtr npix);
 
 	public CGLPixelFormat(CGLPixelFormatAttribute[] attributes, out int npix)
-	{
-		Initialize(attributes, out npix);
-	}
-
-	private void Initialize(CGLPixelFormatAttribute[] attributes, out int npix)
 	{
 		if (attributes == null)
 		{
 			throw new ArgumentNullException("attributes");
 		}
+		IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
+		IntPtr intPtr2 = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
 		CGLPixelFormatAttribute[] array = new CGLPixelFormatAttribute[attributes.Length + 1];
 		Array.Copy(attributes, array, attributes.Length);
-		IntPtr pix;
-		CGLErrorCode cGLErrorCode = CGLChoosePixelFormat(array, out pix, out npix);
+		CGLErrorCode cGLErrorCode = CGLChoosePixelFormat(array, intPtr, intPtr2);
 		if (cGLErrorCode != 0)
 		{
+			Marshal.FreeHGlobal(intPtr);
+			Marshal.FreeHGlobal(intPtr2);
 			throw new Exception("CGLChoosePixelFormat returned: " + cGLErrorCode);
 		}
-		handle = pix;
+		handle = Marshal.ReadIntPtr(intPtr);
+		npix = Marshal.ReadInt32(intPtr2);
+		Marshal.FreeHGlobal(intPtr);
+		Marshal.FreeHGlobal(intPtr2);
 	}
 
 	public CGLPixelFormat(params object[] attributes)
+		: this(ConvertToAttributes(attributes), out ignored)
 	{
-		Initialize(ConvertToAttributes(attributes), out var _);
 	}
 
 	public CGLPixelFormat(out int npix, params object[] attributes)
@@ -145,18 +147,14 @@ public class CGLPixelFormat : INativeObject, IDisposable
 			case CGLPixelFormatAttribute.RendererID:
 			case CGLPixelFormatAttribute.ScreenMask:
 			case CGLPixelFormatAttribute.VirtualScreenCount:
-			{
 				list.Add(cGLPixelFormatAttribute);
 				i++;
 				if (i >= args.Length)
 				{
-					throw new ArgumentException("Attribute " + cGLPixelFormatAttribute.ToString() + " needs a value");
+					throw new ArgumentException(string.Concat("Attribute ", cGLPixelFormatAttribute, " needs a value"));
 				}
-				object obj = args[i];
-				CGLPixelFormatAttribute item = ((!(obj is CGLPixelFormatAttribute)) ? ((CGLPixelFormatAttribute)Convert.ChangeType(obj, typeof(CGLPixelFormatAttribute).GetEnumUnderlyingType())) : ((CGLPixelFormatAttribute)obj));
-				list.Add(item);
+				list.Add((CGLPixelFormatAttribute)args[i]);
 				break;
-			}
 			}
 		}
 		return list.ToArray();

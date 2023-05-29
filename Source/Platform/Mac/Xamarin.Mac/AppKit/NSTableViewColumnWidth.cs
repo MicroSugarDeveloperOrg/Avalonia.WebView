@@ -1,5 +1,3 @@
-using Xamarin.Mac.System.Mac;
-
 namespace AppKit;
 
-public delegate nfloat NSTableViewColumnWidth(NSTableView tableView, nint column);
+public delegate double NSTableViewColumnWidth(NSTableView tableView, long column);

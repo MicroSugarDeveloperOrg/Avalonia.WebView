@@ -1,18 +1,9 @@
-using ObjCRuntime;
-
 namespace AppKit;
 
-[Native]
-public enum NSUnderlineStyle : long
+public enum NSUnderlineStyle
 {
-	None = 0L,
-	Single = 1L,
-	Thick = 2L,
-	Double = 9L,
-	PatternSolid = 0L,
-	PatternDot = 256L,
-	PatternDash = 512L,
-	PatternDashDot = 768L,
-	PatternDashDotDot = 1024L,
-	ByWord = 32768L
+	None = 0,
+	Single = 1,
+	Thick = 2,
+	Double = 9
 }

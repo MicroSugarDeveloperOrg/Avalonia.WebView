@@ -1,17 +1,9 @@
-using ObjCRuntime;
-
 namespace CoreLocation;
 
-[Native]
-public enum CLActivityType : long
+public enum CLActivityType
 {
-	Other = 1L,
+	Other = 1,
 	AutomotiveNavigation,
 	Fitness,
-	OtherNavigation,
-	[iOS(12, 0)]
-	[TV(12, 0)]
-	[Watch(5, 0)]
-	[Mac(10, 14)]
-	Airborne
+	OtherNavigation
 }

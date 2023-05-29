@@ -15,6 +15,6 @@ internal static class CFMutableDictionary
 
 	public static void SetValue(IntPtr theDict, IntPtr key, bool value)
 	{
-		SetValue(theDict, key, value ? CFBoolean.TrueHandle : CFBoolean.FalseHandle);
+		SetValue(theDict, key, value ? CFBoolean.True.Handle : CFBoolean.False.Handle);
 	}
 }

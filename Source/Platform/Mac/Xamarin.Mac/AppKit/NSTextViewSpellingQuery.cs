@@ -1,6 +1,5 @@
 using Foundation;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
-public delegate nint NSTextViewSpellingQuery(NSTextView textView, nint value, NSRange affectedCharRange);
+public delegate long NSTextViewSpellingQuery(NSTextView textView, long value, NSRange affectedCharRange);

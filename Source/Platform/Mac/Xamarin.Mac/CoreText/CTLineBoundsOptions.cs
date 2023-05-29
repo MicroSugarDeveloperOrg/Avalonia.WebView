@@ -1,16 +1,10 @@
-using System;
-using ObjCRuntime;
-
 namespace CoreText;
 
-[Native]
-[Flags]
-public enum CTLineBoundsOptions : ulong
+public enum CTLineBoundsOptions
 {
-	ExcludeTypographicLeading = 1uL,
-	ExcludeTypographicShifts = 2uL,
-	UseHangingPunctuation = 4uL,
-	UseGlyphPathBounds = 8uL,
-	UseOpticalBounds = 0x10uL,
-	IncludeLanguageExtents = 0x20uL
+	ExcludeTypographicLeading = 1,
+	ExcludeTypographicShifts = 2,
+	UseHangingPunctuation = 4,
+	UseGlyphPathBounds = 8,
+	UseOpticalBounds = 0x10
 }

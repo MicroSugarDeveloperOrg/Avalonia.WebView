@@ -1,4 +1,4 @@
-using ObjCRuntime;
+using System;
 
 namespace CoreText;
 
@@ -7,8 +7,7 @@ public enum FontFeatureGroup
 	AllTypographicFeatures = 0,
 	Ligatures = 1,
 	CursiveConnection = 2,
-	[Deprecated(PlatformName.iOS, 6, 0, PlatformArchitecture.None, null)]
-	[Deprecated(PlatformName.MacOSX, 10, 7, PlatformArchitecture.None, null)]
+	[Obsolete("Deprecated. Use LowerCase or UpperCase instead")]
 	LetterCase = 3,
 	VerticalSubstitution = 4,
 	LinguisticRearrangement = 5,

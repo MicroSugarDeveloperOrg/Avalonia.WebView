@@ -1,8 +1,8 @@
+using System;
 using System.Runtime.InteropServices;
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreGraphics;
 
@@ -34,10 +34,10 @@ public class CGGradient : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGGradientRetain(IntPtr gradient);
+	private static extern void CGGradientRetain(IntPtr handle);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGGradientRelease(IntPtr gradient);
+	private static extern void CGGradientRelease(IntPtr handle);
 
 	protected virtual void Dispose(bool disposing)
 	{
@@ -49,9 +49,9 @@ public class CGGradient : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGGradientCreateWithColorComponents(IntPtr colorspace, nfloat[] components, nfloat[] locations, nint count);
+	private static extern IntPtr CGGradientCreateWithColorComponents(IntPtr colorspace, double[] components, double[] locations, IntPtr size_t_count);
 
-	public CGGradient(CGColorSpace colorspace, nfloat[] components, nfloat[] locations)
+	public CGGradient(CGColorSpace colorspace, double[] components, double[] locations)
 	{
 		if (colorspace == null)
 		{
@@ -61,10 +61,10 @@ public class CGGradient : INativeObject, IDisposable
 		{
 			throw new ArgumentNullException("components");
 		}
-		handle = CGGradientCreateWithColorComponents(colorspace.handle, components, locations, components.Length / (colorspace.Components + 1));
+		handle = CGGradientCreateWithColorComponents(colorspace.handle, components, locations, new IntPtr(components.Length / (colorspace.Components + 1)));
 	}
 
-	public CGGradient(CGColorSpace colorspace, nfloat[] components)
+	public CGGradient(CGColorSpace colorspace, double[] components)
 	{
 		if (colorspace == null)
 		{
@@ -74,21 +74,21 @@ public class CGGradient : INativeObject, IDisposable
 		{
 			throw new ArgumentNullException("components");
 		}
-		handle = CGGradientCreateWithColorComponents(colorspace.handle, components, null, components.Length / (colorspace.Components + 1));
+		handle = CGGradientCreateWithColorComponents(colorspace.handle, components, null, new IntPtr(components.Length / (colorspace.Components + 1)));
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGGradientCreateWithColors(IntPtr space, IntPtr colors, nfloat[] locations);
+	private static extern IntPtr CGGradientCreateWithColors(IntPtr colorspace, IntPtr colors, double[] locations);
 
-	public CGGradient(CGColorSpace colorspace, CGColor[] colors, nfloat[] locations)
+	public CGGradient(CGColorSpace colorspace, CGColor[] colors, double[] locations)
 	{
 		if (colors == null)
 		{
 			throw new ArgumentNullException("colors");
 		}
-		IntPtr space = colorspace?.handle ?? IntPtr.Zero;
+		IntPtr colorspace2 = colorspace?.handle ?? IntPtr.Zero;
 		using CFArray cFArray = CFArray.FromNativeObjects(colors);
-		handle = CGGradientCreateWithColors(space, cFArray.Handle, locations);
+		handle = CGGradientCreateWithColors(colorspace2, cFArray.Handle, locations);
 	}
 
 	public CGGradient(CGColorSpace colorspace, CGColor[] colors)
@@ -97,8 +97,8 @@ public class CGGradient : INativeObject, IDisposable
 		{
 			throw new ArgumentNullException("colors");
 		}
-		IntPtr space = colorspace?.handle ?? IntPtr.Zero;
+		IntPtr colorspace2 = colorspace?.handle ?? IntPtr.Zero;
 		using CFArray cFArray = CFArray.FromNativeObjects(colors);
-		handle = CGGradientCreateWithColors(space, cFArray.Handle, null);
+		handle = CGGradientCreateWithColors(colorspace2, cFArray.Handle, null);
 	}
 }

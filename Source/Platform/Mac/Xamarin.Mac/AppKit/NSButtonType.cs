@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace AppKit;
 
-[Native]
 public enum NSButtonType : ulong
 {
 	MomentaryLightButton,
@@ -12,7 +9,5 @@ public enum NSButtonType : ulong
 	Radio,
 	MomentaryChange,
 	OnOff,
-	MomentaryPushIn,
-	Accelerator,
-	MultiLevelAccelerator
+	MomentaryPushIn
 }

@@ -1,4 +1,4 @@
-using Xamarin.Mac.System.Mac;
+using System;
 
 namespace CoreText;
 
@@ -6,7 +6,7 @@ internal struct CTParagraphStyleSetting
 {
 	public CTParagraphStyleSpecifier spec;
 
-	public nuint valueSize;
+	public uint valueSize;
 
 	public IntPtr value;
 }

@@ -1,9 +1,6 @@
-using ObjCRuntime;
-
 namespace CoreFoundation;
 
-[Native]
-public enum CFUrlPathStyle : long
+public enum CFUrlPathStyle
 {
 	POSIX,
 	HFS,

@@ -1,9 +1,6 @@
-using ObjCRuntime;
-
 namespace CoreMidi;
 
-[Native]
-public enum MidiNetworkConnectionPolicy : ulong
+public enum MidiNetworkConnectionPolicy
 {
 	NoOne,
 	HostsInContactsList,

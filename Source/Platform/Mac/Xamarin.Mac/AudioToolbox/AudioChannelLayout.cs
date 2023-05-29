@@ -15,7 +15,7 @@ public class AudioChannelLayout
 
 	public AudioChannelDescription[] Channels;
 
-	[Advice("Use the strongly typed 'AudioTag' instead.")]
+	[Advice("Use the strongly typed AudioTag instead")]
 	public int Tag
 	{
 		get
@@ -28,7 +28,7 @@ public class AudioChannelLayout
 		}
 	}
 
-	[Advice("Use 'ChannelUsage' instead.")]
+	[Advice("Use ChannelUsage instead")]
 	public int Bitmap
 	{
 		get
@@ -49,9 +49,9 @@ public class AudioChannelLayout
 			int size;
 			IntPtr intPtr = ToBlock(out size);
 			IntPtr outPropertyData;
-			AudioFormatError audioFormatError = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.ChannelLayoutName, size, intPtr, ref ioDataSize, out outPropertyData);
+			AudioFormatError num = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.ChannelLayoutName, size, intPtr, ref ioDataSize, out outPropertyData);
 			Marshal.FreeHGlobal(intPtr);
-			if (audioFormatError != 0)
+			if (num != 0)
 			{
 				return null;
 			}
@@ -67,9 +67,9 @@ public class AudioChannelLayout
 			int size;
 			IntPtr intPtr = ToBlock(out size);
 			IntPtr outPropertyData;
-			AudioFormatError audioFormatError = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.ChannelLayoutName, size, intPtr, ref ioDataSize, out outPropertyData);
+			AudioFormatError num = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.ChannelLayoutName, size, intPtr, ref ioDataSize, out outPropertyData);
 			Marshal.FreeHGlobal(intPtr);
-			if (audioFormatError != 0)
+			if (num != 0)
 			{
 				return null;
 			}
@@ -184,19 +184,23 @@ public class AudioChannelLayout
 		IntPtr[] array = new IntPtr[2] { intPtr, intPtr2 };
 		size = sizeof(IntPtr) * array.Length;
 		int[] array2;
-		AudioFormatError audioFormatError;
+		AudioFormatError num;
 		fixed (IntPtr* inSpecifier = &array[0])
 		{
 			array2 = new int[numberOfChannels.Value];
 			int ioDataSize = 4 * array2.Length;
 			fixed (int* outPropertyData = &array2[0])
 			{
-				audioFormatError = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.ChannelMap, size, inSpecifier, ref ioDataSize, outPropertyData);
+				num = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.ChannelMap, size, inSpecifier, ref ioDataSize, outPropertyData);
 			}
 		}
 		Marshal.FreeHGlobal(intPtr);
 		Marshal.FreeHGlobal(intPtr2);
-		return (audioFormatError == AudioFormatError.None) ? array2 : null;
+		if (num != 0)
+		{
+			return null;
+		}
+		return array2;
 	}
 
 	public unsafe static float[,] GetMatrixMixMap(AudioChannelLayout inputLayout, AudioChannelLayout outputLayout)
@@ -225,19 +229,23 @@ public class AudioChannelLayout
 		IntPtr[] array = new IntPtr[2] { intPtr, intPtr2 };
 		size = sizeof(IntPtr) * array.Length;
 		float[,] array2;
-		AudioFormatError audioFormatError;
+		AudioFormatError num;
 		fixed (IntPtr* inSpecifier = &array[0])
 		{
 			array2 = new float[numberOfChannels2.Value, numberOfChannels.Value];
 			int ioDataSize = 4 * numberOfChannels2.Value * numberOfChannels.Value;
 			fixed (float* outPropertyData = &array2[0, 0])
 			{
-				audioFormatError = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.MatrixMixMap, size, inSpecifier, ref ioDataSize, outPropertyData);
+				num = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.MatrixMixMap, size, inSpecifier, ref ioDataSize, outPropertyData);
 			}
 		}
 		Marshal.FreeHGlobal(intPtr);
 		Marshal.FreeHGlobal(intPtr2);
-		return (audioFormatError == AudioFormatError.None) ? array2 : null;
+		if (num != 0)
+		{
+			return null;
+		}
+		return array2;
 	}
 
 	public static int? GetNumberOfChannels(AudioChannelLayout layout)
@@ -250,9 +258,13 @@ public class AudioChannelLayout
 		IntPtr intPtr = layout.ToBlock(out size);
 		int ioDataSize = 4;
 		int outPropertyData;
-		AudioFormatError audioFormatError = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.NumberOfChannelsForLayout, size, intPtr, ref ioDataSize, out outPropertyData);
+		AudioFormatError num = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.NumberOfChannelsForLayout, size, intPtr, ref ioDataSize, out outPropertyData);
 		Marshal.FreeHGlobal(intPtr);
-		return (audioFormatError != 0) ? null : new int?(outPropertyData);
+		if (num == AudioFormatError.None)
+		{
+			return outPropertyData;
+		}
+		return null;
 	}
 
 	public static AudioChannelLayoutTag? GetTagForChannelLayout(AudioChannelLayout layout)
@@ -265,9 +277,13 @@ public class AudioChannelLayout
 		IntPtr intPtr = layout.ToBlock(out size);
 		int ioDataSize = 4;
 		int outPropertyData;
-		AudioFormatError audioFormatError = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.TagForChannelLayout, size, intPtr, ref ioDataSize, out outPropertyData);
+		AudioFormatError num = AudioFormatPropertyNative.AudioFormatGetProperty(AudioFormatProperty.TagForChannelLayout, size, intPtr, ref ioDataSize, out outPropertyData);
 		Marshal.FreeHGlobal(intPtr);
-		return (audioFormatError != 0) ? null : new AudioChannelLayoutTag?((AudioChannelLayoutTag)outPropertyData);
+		if (num == AudioFormatError.None)
+		{
+			return (AudioChannelLayoutTag)outPropertyData;
+		}
+		return null;
 	}
 
 	public unsafe static AudioChannelLayoutTag[] GetTagsForNumberOfChannels(int count)

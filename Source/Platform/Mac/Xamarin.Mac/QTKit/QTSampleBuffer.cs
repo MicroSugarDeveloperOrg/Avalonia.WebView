@@ -1,85 +1,51 @@
+using System;
 using System.ComponentModel;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace QTKit;
 
 [Register("QTSampleBuffer", true)]
 public class QTSampleBuffer : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAttributeForKey_ = "attributeForKey:";
-
-	private static readonly IntPtr selAttributeForKey_Handle = Selector.GetHandle("attributeForKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selBytesForAllSamples = "bytesForAllSamples";
-
 	private static readonly IntPtr selBytesForAllSamplesHandle = Selector.GetHandle("bytesForAllSamples");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDecodeTime = "decodeTime";
-
-	private static readonly IntPtr selDecodeTimeHandle = Selector.GetHandle("decodeTime");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDecrementSampleUseCount = "decrementSampleUseCount";
-
-	private static readonly IntPtr selDecrementSampleUseCountHandle = Selector.GetHandle("decrementSampleUseCount");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDuration = "duration";
-
-	private static readonly IntPtr selDurationHandle = Selector.GetHandle("duration");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFormatDescription = "formatDescription";
-
-	private static readonly IntPtr selFormatDescriptionHandle = Selector.GetHandle("formatDescription");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIncrementSampleUseCount = "incrementSampleUseCount";
-
-	private static readonly IntPtr selIncrementSampleUseCountHandle = Selector.GetHandle("incrementSampleUseCount");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLengthForAllSamples = "lengthForAllSamples";
 
 	private static readonly IntPtr selLengthForAllSamplesHandle = Selector.GetHandle("lengthForAllSamples");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selNumberOfSamples = "numberOfSamples";
+	private static readonly IntPtr selFormatDescriptionHandle = Selector.GetHandle("formatDescription");
 
-	private static readonly IntPtr selNumberOfSamplesHandle = Selector.GetHandle("numberOfSamples");
+	private static readonly IntPtr selDurationHandle = Selector.GetHandle("duration");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPresentationTime = "presentationTime";
+	private static readonly IntPtr selDecodeTimeHandle = Selector.GetHandle("decodeTime");
 
 	private static readonly IntPtr selPresentationTimeHandle = Selector.GetHandle("presentationTime");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSampleBufferAttributes = "sampleBufferAttributes";
+	private static readonly IntPtr selNumberOfSamplesHandle = Selector.GetHandle("numberOfSamples");
 
 	private static readonly IntPtr selSampleBufferAttributesHandle = Selector.GetHandle("sampleBufferAttributes");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSampleUseCount = "sampleUseCount";
-
 	private static readonly IntPtr selSampleUseCountHandle = Selector.GetHandle("sampleUseCount");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("QTSampleBuffer");
+	private static readonly IntPtr selAttributeForKey_Handle = Selector.GetHandle("attributeForKey:");
+
+	private static readonly IntPtr selIncrementSampleUseCountHandle = Selector.GetHandle("incrementSampleUseCount");
+
+	private static readonly IntPtr selDecrementSampleUseCountHandle = Selector.GetHandle("decrementSampleUseCount");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("QTSampleBuffer");
+
+	private object __mt_FormatDescription_var;
+
+	private object __mt_SampleBufferAttributes_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual IntPtr BytesForAllSamples
 	{
 		[Export("bytesForAllSamples")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.IntPtr_objc_msgSend(base.Handle, selBytesForAllSamplesHandle);
 			}
@@ -87,152 +53,159 @@ public class QTSampleBuffer : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual QTTime DecodeTime
+	public virtual uint LengthForAllSamples
 	{
-		[Export("decodeTime")]
+		[Export("lengthForAllSamples")]
 		get
 		{
-			QTTime retval;
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.QTTime_objc_msgSend_stret(out retval, base.Handle, selDecodeTimeHandle);
+				return Messaging.UInt32_objc_msgSend(base.Handle, selLengthForAllSamplesHandle);
 			}
-			else
-			{
-				Messaging.QTTime_objc_msgSendSuper_stret(out retval, base.SuperHandle, selDecodeTimeHandle);
-			}
-			return retval;
+			return Messaging.UInt32_objc_msgSendSuper(base.SuperHandle, selLengthForAllSamplesHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual QTTime Duration
-	{
-		[Export("duration")]
-		get
-		{
-			QTTime retval;
-			if (base.IsDirectBinding)
-			{
-				Messaging.QTTime_objc_msgSend_stret(out retval, base.Handle, selDurationHandle);
-			}
-			else
-			{
-				Messaging.QTTime_objc_msgSendSuper_stret(out retval, base.SuperHandle, selDurationHandle);
-			}
-			return retval;
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual QTFormatDescription FormatDescription
 	{
 		[Export("formatDescription")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<QTFormatDescription>(Messaging.IntPtr_objc_msgSend(base.Handle, selFormatDescriptionHandle));
-			}
-			return Runtime.GetNSObject<QTFormatDescription>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFormatDescriptionHandle));
+			return (QTFormatDescription)(__mt_FormatDescription_var = ((!IsDirectBinding) ? ((QTFormatDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFormatDescriptionHandle))) : ((QTFormatDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFormatDescriptionHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nuint LengthForAllSamples
+	public virtual QTTime Duration
 	{
-		[Export("lengthForAllSamples")]
+		[Export("duration")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selLengthForAllSamplesHandle);
+				return Messaging.QTTime_objc_msgSend(base.Handle, selDurationHandle);
 			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selLengthForAllSamplesHandle);
+			return Messaging.QTTime_objc_msgSendSuper(base.SuperHandle, selDurationHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual QTTime DecodeTime
+	{
+		[Export("decodeTime")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.QTTime_objc_msgSend(base.Handle, selDecodeTimeHandle);
+			}
+			return Messaging.QTTime_objc_msgSendSuper(base.SuperHandle, selDecodeTimeHandle);
+		}
+	}
+
 	public virtual QTTime PresentationTime
 	{
 		[Export("presentationTime")]
 		get
 		{
-			QTTime retval;
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.QTTime_objc_msgSend_stret(out retval, base.Handle, selPresentationTimeHandle);
+				return Messaging.QTTime_objc_msgSend(base.Handle, selPresentationTimeHandle);
 			}
-			else
-			{
-				Messaging.QTTime_objc_msgSendSuper_stret(out retval, base.SuperHandle, selPresentationTimeHandle);
-			}
-			return retval;
+			return Messaging.QTTime_objc_msgSendSuper(base.SuperHandle, selPresentationTimeHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual int SampleCount
+	{
+		[Export("numberOfSamples")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.int_objc_msgSend(base.Handle, selNumberOfSamplesHandle);
+			}
+			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selNumberOfSamplesHandle);
+		}
+	}
+
 	public virtual NSDictionary SampleBufferAttributes
 	{
 		[Export("sampleBufferAttributes")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selSampleBufferAttributesHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSampleBufferAttributesHandle));
+			return (NSDictionary)(__mt_SampleBufferAttributes_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSampleBufferAttributesHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSampleBufferAttributesHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint SampleCount
-	{
-		[Export("numberOfSamples")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selNumberOfSamplesHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selNumberOfSamplesHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint SampleUseCount
+	public virtual int SampleUseCount
 	{
 		[Export("sampleUseCount")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nint_objc_msgSend(base.Handle, selSampleUseCountHandle);
+				return Messaging.int_objc_msgSend(base.Handle, selSampleUseCountHandle);
 			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selSampleUseCountHandle);
+			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selSampleUseCountHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected QTSampleBuffer(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public QTSampleBuffer(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public QTSampleBuffer(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal QTSampleBuffer(IntPtr handle)
+	public QTSampleBuffer(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("attributeForKey:")]
+	public virtual NSObject GetAttribute(string key)
+	{
+		if (key == null)
+		{
+			throw new ArgumentNullException("key");
+		}
+		IntPtr arg = NSString.CreateNative(key);
+		NSObject result = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAttributeForKey_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAttributeForKey_Handle, arg)));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("incrementSampleUseCount")]
+	public virtual void IncrementSampleUseCount()
+	{
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend(base.Handle, selIncrementSampleUseCountHandle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper(base.SuperHandle, selIncrementSampleUseCountHandle);
+		}
+	}
+
 	[Export("decrementSampleUseCount")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void DecrementSampleUseCount()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selDecrementSampleUseCountHandle);
 		}
@@ -242,31 +215,13 @@ public class QTSampleBuffer : NSObject
 		}
 	}
 
-	[Export("attributeForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject GetAttribute(string key)
+	protected override void Dispose(bool disposing)
 	{
-		if (key == null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			throw new ArgumentNullException("key");
-		}
-		IntPtr arg = NSString.CreateNative(key);
-		NSObject result = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAttributeForKey_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAttributeForKey_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("incrementSampleUseCount")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void IncrementSampleUseCount()
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selIncrementSampleUseCountHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selIncrementSampleUseCountHandle);
+			__mt_FormatDescription_var = null;
+			__mt_SampleBufferAttributes_var = null;
 		}
 	}
 }

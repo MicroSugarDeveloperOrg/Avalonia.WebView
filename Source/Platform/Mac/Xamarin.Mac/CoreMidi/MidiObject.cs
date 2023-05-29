@@ -6,11 +6,9 @@ using ObjCRuntime;
 
 namespace CoreMidi;
 
-public class MidiObject : IDisposable
+public class MidiObject : INativeObject, IDisposable
 {
-	internal const int InvalidRef = 0;
-
-	internal int handle;
+	internal IntPtr handle;
 
 	internal bool owns;
 
@@ -102,21 +100,11 @@ public class MidiObject : IDisposable
 
 	internal static IntPtr kMIDIPropertyUniqueID;
 
-	internal static IntPtr kMIDIDriverPropertyUsesSerial;
-
-	internal static IntPtr kMIDIPropertyFactoryPatchNameFile;
-
-	internal static IntPtr kMIDIPropertyUserPatchNameFile;
-
-	internal static IntPtr kMIDIPropertyNameConfigurationDictionary;
-
-	public int Handle => handle;
-
-	internal int MidiHandle => handle;
+	public IntPtr Handle => handle;
 
 	static MidiObject()
 	{
-		IntPtr intPtr = Libraries.CoreMidi.Handle;
+		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI", 0);
 		kMIDIPropertyAdvanceScheduleTimeMuSec = Dlfcn.GetIntPtr(intPtr, "kMIDIPropertyAdvanceScheduleTimeMuSec");
 		kMIDIPropertyCanRoute = Dlfcn.GetIntPtr(intPtr, "kMIDIPropertyCanRoute");
 		kMIDIPropertyConnectionUniqueID = Dlfcn.GetIntPtr(intPtr, "kMIDIPropertyConnectionUniqueID");
@@ -161,10 +149,6 @@ public class MidiObject : IDisposable
 		kMIDIPropertyTransmitsNotes = Dlfcn.GetIntPtr(intPtr, "kMIDIPropertyTransmitsNotes");
 		kMIDIPropertyTransmitsProgramChanges = Dlfcn.GetIntPtr(intPtr, "kMIDIPropertyTransmitsProgramChanges");
 		kMIDIPropertyUniqueID = Dlfcn.GetIntPtr(intPtr, "kMIDIPropertyUniqueID");
-		kMIDIDriverPropertyUsesSerial = Dlfcn.GetIntPtr(intPtr, "kMIDIDriverPropertyUsesSerial");
-		kMIDIPropertyFactoryPatchNameFile = Dlfcn.GetIntPtr(intPtr, "kMIDIPropertyFactoryPatchNameFile");
-		kMIDIPropertyUserPatchNameFile = Dlfcn.GetIntPtr(intPtr, "kMIDIPropertyUserPatchNameFile");
-		kMIDIPropertyNameConfigurationDictionary = Dlfcn.GetIntPtr(intPtr, "kMIDIPropertyNameConfigurationDictionary");
 	}
 
 	internal MidiObject()
@@ -173,7 +157,7 @@ public class MidiObject : IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIObjectGetIntegerProperty(int obj, IntPtr str, out int ret);
+	private static extern int MIDIObjectGetIntegerProperty(IntPtr obj, IntPtr str, out int ret);
 
 	internal int GetInt(IntPtr property)
 	{
@@ -187,7 +171,7 @@ public class MidiObject : IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIObjectSetIntegerProperty(int obj, IntPtr str, int val);
+	private static extern int MIDIObjectSetIntegerProperty(IntPtr obj, IntPtr str, int val);
 
 	internal void SetInt(IntPtr property, int value)
 	{
@@ -195,7 +179,7 @@ public class MidiObject : IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIObjectGetDictionaryProperty(int obj, IntPtr str, out IntPtr dict);
+	private static extern int MIDIObjectGetDictionaryProperty(IntPtr obj, IntPtr str, out IntPtr dict);
 
 	internal NSDictionary GetDictionary(IntPtr property)
 	{
@@ -203,18 +187,13 @@ public class MidiObject : IDisposable
 		int num = MIDIObjectGetDictionaryProperty(handle, property, out dict);
 		if (num == 0)
 		{
-			NSDictionary result = (NSDictionary)Runtime.GetNSObject(dict);
-			if (dict != IntPtr.Zero)
-			{
-				CFObject.CFRelease(dict);
-			}
-			return result;
+			return (NSDictionary)Runtime.GetNSObject(dict);
 		}
 		throw new MidiException((MidiError)num);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIObjectSetDictionaryProperty(int obj, IntPtr str, IntPtr dict);
+	private static extern int MIDIObjectSetDictionaryProperty(IntPtr obj, IntPtr str, IntPtr dict);
 
 	internal void SetDictionary(IntPtr property, NSDictionary dict)
 	{
@@ -222,7 +201,7 @@ public class MidiObject : IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIObjectGetDataProperty(int obj, IntPtr str, out IntPtr data);
+	private static extern int MIDIObjectGetDataProperty(IntPtr obj, IntPtr str, out IntPtr data);
 
 	public NSData GetData(IntPtr property)
 	{
@@ -230,18 +209,13 @@ public class MidiObject : IDisposable
 		int num = MIDIObjectGetDataProperty(handle, property, out data);
 		if (num == 0)
 		{
-			NSData result = (NSData)Runtime.GetNSObject(data);
-			if (data != IntPtr.Zero)
-			{
-				CFObject.CFRelease(data);
-			}
-			return result;
+			return (NSData)Runtime.GetNSObject(data);
 		}
 		throw new MidiException((MidiError)num);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIObjectSetDataProperty(int obj, IntPtr str, IntPtr data);
+	private static extern int MIDIObjectSetDataProperty(IntPtr obj, IntPtr str, IntPtr data);
 
 	public void SetData(IntPtr property, NSData data)
 	{
@@ -253,24 +227,21 @@ public class MidiObject : IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIObjectGetStringProperty(int obj, IntPtr str, out IntPtr data);
+	private static extern int MIDIObjectGetStringProperty(IntPtr obj, IntPtr str, out IntPtr data);
 
 	public string GetString(IntPtr property)
 	{
 		if (MIDIObjectGetStringProperty(handle, property, out var data) == 0)
 		{
 			string result = NSString.FromHandle(data);
-			if (data != IntPtr.Zero)
-			{
-				CFObject.CFRelease(data);
-			}
+			CFObject.CFRelease(data);
 			return result;
 		}
 		return null;
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIObjectSetStringProperty(int obj, IntPtr str, IntPtr nstr);
+	private static extern int MIDIObjectSetStringProperty(IntPtr obj, IntPtr str, IntPtr nstr);
 
 	public void SetString(IntPtr property, string value)
 	{
@@ -283,7 +254,7 @@ public class MidiObject : IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern MidiError MIDIObjectRemoveProperty(int obj, IntPtr str);
+	private static extern MidiError MIDIObjectRemoveProperty(IntPtr obj, IntPtr str);
 
 	public MidiError RemoveProperty(string property)
 	{
@@ -292,27 +263,25 @@ public class MidiObject : IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIObjectGetProperties(int obj, out IntPtr dict, [MarshalAs(UnmanagedType.U1)] bool deep);
+	private static extern int MIDIObjectGetProperties(IntPtr obj, out IntPtr dict, bool deep);
 
 	public NSDictionary GetDictionaryProperties(bool deep)
 	{
-		if (MIDIObjectGetProperties(handle, out var dict, deep) != 0 || dict == IntPtr.Zero)
+		if (MIDIObjectGetProperties(handle, out var dict, deep) != 0)
 		{
 			return null;
 		}
-		NSDictionary result = (NSDictionary)Runtime.GetNSObject(dict);
-		CFObject.CFRelease(dict);
-		return result;
+		return (NSDictionary)Runtime.GetNSObject(dict);
 	}
 
-	public MidiObject(int handle)
+	public MidiObject(IntPtr handle)
 		: this(handle, owns: true)
 	{
 	}
 
-	internal MidiObject(int handle, bool owns)
+	internal MidiObject(IntPtr handle, bool owns)
 	{
-		if (handle == 0)
+		if (handle == IntPtr.Zero)
 		{
 			throw new Exception("Invalid parameters to context creation");
 		}
@@ -327,7 +296,7 @@ public class MidiObject : IDisposable
 
 	internal virtual void DisposeHandle()
 	{
-		handle = 0;
+		handle = IntPtr.Zero;
 	}
 
 	public void Dispose()
@@ -336,49 +305,30 @@ public class MidiObject : IDisposable
 		GC.SuppressFinalize(this);
 	}
 
-	protected virtual void Dispose(bool disposing)
+	public virtual void Dispose(bool disposing)
 	{
 		DisposeHandle();
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern MidiError MIDIObjectFindByUniqueID(int uniqueId, out int obj, out MidiObjectType objectType);
+	private static extern MidiError MIDIObjectFindByUniqueID(int uniqueId, out IntPtr obj, out MidiObjectType objectType);
 
-	internal static MidiObject MidiObjectFromType(MidiObjectType type, int handle)
+	internal static MidiObject MidiObjectFromType(MidiObjectType type, IntPtr handle)
 	{
-		if (handle == 0)
+		return (type & ~MidiObjectType.ExternalMask) switch
 		{
-			return null;
-		}
-		if (type == MidiObjectType.Other)
-		{
-			return new MidiObject(handle, owns: false);
-		}
-		switch (type)
-		{
-		case MidiObjectType.Device:
-		case MidiObjectType.ExternalMask:
-			return new MidiDevice(handle, owns: false);
-		case MidiObjectType.Entity:
-		case MidiObjectType.ExternalEntity:
-			return new MidiEntity(handle, owns: false);
-		case MidiObjectType.Source:
-		case MidiObjectType.ExternalSource:
-			return new MidiEndpoint(handle, owns: false);
-		case MidiObjectType.Destination:
-		case MidiObjectType.ExternalDestination:
-			return new MidiEndpoint(handle, owns: false);
-		default:
-		{
-			int num = (int)type;
-			throw new Exception("Unknown MidiObjectType " + num);
-		}
-		}
+			MidiObjectType.Other => new MidiObject(handle), 
+			MidiObjectType.Device => new MidiDevice(handle), 
+			MidiObjectType.Entity => new MidiEntity(handle), 
+			MidiObjectType.Source => new MidiEndpoint(handle, owns: false), 
+			MidiObjectType.Destination => new MidiEndpoint(handle, owns: false), 
+			_ => throw new Exception("Unknown MidiObjectType " + (int)type), 
+		};
 	}
 
-	public static MidiError FindByUniqueId(int uniqueId, out MidiObject result)
+	private static MidiError FindByUniqueId(int uniqueId, out MidiObject result)
 	{
-		int obj;
+		IntPtr obj;
 		MidiObjectType objectType;
 		MidiError midiError = MIDIObjectFindByUniqueID(uniqueId, out obj, out objectType);
 		result = null;

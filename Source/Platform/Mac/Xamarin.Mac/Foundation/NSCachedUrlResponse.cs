@@ -5,93 +5,63 @@ using ObjCRuntime;
 namespace Foundation;
 
 [Register("NSCachedURLResponse", true)]
-public class NSCachedUrlResponse : NSObject, INSCoding, INativeObject, IDisposable, INSCopying, INSSecureCoding
+public class NSCachedUrlResponse : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCopyWithZone_ = "copyWithZone:";
-
-	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selData = "data";
+	private static readonly IntPtr selResponseHandle = Selector.GetHandle("response");
 
 	private static readonly IntPtr selDataHandle = Selector.GetHandle("data");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
-
-	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithResponse_Data_ = "initWithResponse:data:";
-
-	private static readonly IntPtr selInitWithResponse_Data_Handle = Selector.GetHandle("initWithResponse:data:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithResponse_Data_UserInfo_StoragePolicy_ = "initWithResponse:data:userInfo:storagePolicy:";
-
-	private static readonly IntPtr selInitWithResponse_Data_UserInfo_StoragePolicy_Handle = Selector.GetHandle("initWithResponse:data:userInfo:storagePolicy:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selResponse = "response";
-
-	private static readonly IntPtr selResponseHandle = Selector.GetHandle("response");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selStoragePolicy = "storagePolicy";
+	private static readonly IntPtr selUserInfoHandle = Selector.GetHandle("userInfo");
 
 	private static readonly IntPtr selStoragePolicyHandle = Selector.GetHandle("storagePolicy");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selUserInfo = "userInfo";
+	private static readonly IntPtr selInitWithResponseDataUserInfoStoragePolicy_Handle = Selector.GetHandle("initWithResponse:data:userInfo:storagePolicy:");
 
-	private static readonly IntPtr selUserInfoHandle = Selector.GetHandle("userInfo");
+	private static readonly IntPtr selInitWithResponseData_Handle = Selector.GetHandle("initWithResponse:data:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSCachedURLResponse");
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSCachedURLResponse");
+
+	private object __mt_Response_var;
+
+	private object __mt_Data_var;
+
+	private object __mt_UserInfo_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSData Data
-	{
-		[Export("data")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSend(base.Handle, selDataHandle));
-			}
-			return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDataHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSUrlResponse Response
 	{
 		[Export("response")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSUrlResponse>(Messaging.IntPtr_objc_msgSend(base.Handle, selResponseHandle));
-			}
-			return Runtime.GetNSObject<NSUrlResponse>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selResponseHandle));
+			return (NSUrlResponse)(__mt_Response_var = ((!IsDirectBinding) ? ((NSUrlResponse)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selResponseHandle))) : ((NSUrlResponse)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selResponseHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSData Data
+	{
+		[Export("data")]
+		get
+		{
+			return (NSData)(__mt_Data_var = ((!IsDirectBinding) ? ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDataHandle))) : ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDataHandle)))));
+		}
+	}
+
+	public virtual NSDictionary UserInfo
+	{
+		[Export("userInfo")]
+		get
+		{
+			return (NSDictionary)(__mt_UserInfo_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUserInfoHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selUserInfoHandle)))));
+		}
+	}
+
 	public virtual NSUrlCacheStoragePolicy StoragePolicy
 	{
 		[Export("storagePolicy")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (NSUrlCacheStoragePolicy)Messaging.UInt64_objc_msgSend(base.Handle, selStoragePolicyHandle);
 			}
@@ -99,54 +69,35 @@ public class NSCachedUrlResponse : NSObject, INSCoding, INativeObject, IDisposab
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary UserInfo
-	{
-		[Export("userInfo")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selUserInfoHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selUserInfoHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSCachedUrlResponse(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSCachedUrlResponse(NSObjectFlag t)
+	public NSCachedUrlResponse(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSCachedUrlResponse(IntPtr handle)
+	public NSCachedUrlResponse(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithResponse:data:userInfo:storagePolicy:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public NSCachedUrlResponse(NSUrlResponse response, NSData data, NSDictionary? userInfo, NSUrlCacheStoragePolicy storagePolicy)
+	public NSCachedUrlResponse(NSUrlResponse response, NSData data, NSDictionary userInfo, NSUrlCacheStoragePolicy storagePolicy)
 		: base(NSObjectFlag.Empty)
 	{
 		if (response == null)
@@ -157,18 +108,17 @@ public class NSCachedUrlResponse : NSObject, INSCoding, INativeObject, IDisposab
 		{
 			throw new ArgumentNullException("data");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr_UInt64(base.Handle, selInitWithResponse_Data_UserInfo_StoragePolicy_Handle, response.Handle, data.Handle, userInfo?.Handle ?? IntPtr.Zero, (ulong)storagePolicy), "initWithResponse:data:userInfo:storagePolicy:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr_UInt64(base.Handle, selInitWithResponseDataUserInfoStoragePolicy_Handle, response.Handle, data.Handle, userInfo?.Handle ?? IntPtr.Zero, (ulong)storagePolicy);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_UInt64(base.SuperHandle, selInitWithResponse_Data_UserInfo_StoragePolicy_Handle, response.Handle, data.Handle, userInfo?.Handle ?? IntPtr.Zero, (ulong)storagePolicy), "initWithResponse:data:userInfo:storagePolicy:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_UInt64(base.SuperHandle, selInitWithResponseDataUserInfoStoragePolicy_Handle, response.Handle, data.Handle, userInfo?.Handle ?? IntPtr.Zero, (ulong)storagePolicy);
 		}
 	}
 
 	[Export("initWithResponse:data:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSCachedUrlResponse(NSUrlResponse response, NSData data)
 		: base(NSObjectFlag.Empty)
 	{
@@ -180,44 +130,24 @@ public class NSCachedUrlResponse : NSObject, INSCoding, INativeObject, IDisposab
 		{
 			throw new ArgumentNullException("data");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithResponse_Data_Handle, response.Handle, data.Handle), "initWithResponse:data:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithResponseData_Handle, response.Handle, data.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithResponse_Data_Handle, response.Handle, data.Handle), "initWithResponse:data:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithResponseData_Handle, response.Handle, data.Handle);
 		}
 	}
 
-	[Export("copyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject Copy(NSZone? zone)
+	protected override void Dispose(bool disposing)
 	{
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
-		}
-		return nSObject;
-	}
-
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
-	{
-		if (encoder == null)
-		{
-			throw new ArgumentNullException("encoder");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
+			__mt_Response_var = null;
+			__mt_Data_var = null;
+			__mt_UserInfo_var = null;
 		}
 	}
 }

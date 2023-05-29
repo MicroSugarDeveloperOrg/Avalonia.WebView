@@ -6,181 +6,59 @@ using ObjCRuntime;
 namespace AppKit;
 
 [Register("NSFontDescriptor", true)]
-public class NSFontDescriptor : NSObject, INSCoding, INativeObject, IDisposable, INSCopying, INSSecureCoding
+public class NSFontDescriptor : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCopyWithZone_ = "copyWithZone:";
-
-	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFontAttributes = "fontAttributes";
-
-	private static readonly IntPtr selFontAttributesHandle = Selector.GetHandle("fontAttributes");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFontDescriptorByAddingAttributes_ = "fontDescriptorByAddingAttributes:";
-
-	private static readonly IntPtr selFontDescriptorByAddingAttributes_Handle = Selector.GetHandle("fontDescriptorByAddingAttributes:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFontDescriptorWithDesign_ = "fontDescriptorWithDesign:";
-
-	private static readonly IntPtr selFontDescriptorWithDesign_Handle = Selector.GetHandle("fontDescriptorWithDesign:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFontDescriptorWithFace_ = "fontDescriptorWithFace:";
-
-	private static readonly IntPtr selFontDescriptorWithFace_Handle = Selector.GetHandle("fontDescriptorWithFace:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFontDescriptorWithFamily_ = "fontDescriptorWithFamily:";
-
-	private static readonly IntPtr selFontDescriptorWithFamily_Handle = Selector.GetHandle("fontDescriptorWithFamily:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFontDescriptorWithFontAttributes_ = "fontDescriptorWithFontAttributes:";
-
-	private static readonly IntPtr selFontDescriptorWithFontAttributes_Handle = Selector.GetHandle("fontDescriptorWithFontAttributes:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFontDescriptorWithMatrix_ = "fontDescriptorWithMatrix:";
-
-	private static readonly IntPtr selFontDescriptorWithMatrix_Handle = Selector.GetHandle("fontDescriptorWithMatrix:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFontDescriptorWithName_Matrix_ = "fontDescriptorWithName:matrix:";
-
-	private static readonly IntPtr selFontDescriptorWithName_Matrix_Handle = Selector.GetHandle("fontDescriptorWithName:matrix:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFontDescriptorWithName_Size_ = "fontDescriptorWithName:size:";
-
-	private static readonly IntPtr selFontDescriptorWithName_Size_Handle = Selector.GetHandle("fontDescriptorWithName:size:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFontDescriptorWithSize_ = "fontDescriptorWithSize:";
-
-	private static readonly IntPtr selFontDescriptorWithSize_Handle = Selector.GetHandle("fontDescriptorWithSize:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFontDescriptorWithSymbolicTraits_ = "fontDescriptorWithSymbolicTraits:";
-
-	private static readonly IntPtr selFontDescriptorWithSymbolicTraits_Handle = Selector.GetHandle("fontDescriptorWithSymbolicTraits:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
-
-	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithFontAttributes_ = "initWithFontAttributes:";
-
-	private static readonly IntPtr selInitWithFontAttributes_Handle = Selector.GetHandle("initWithFontAttributes:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMatchingFontDescriptorWithMandatoryKeys_ = "matchingFontDescriptorWithMandatoryKeys:";
-
-	private static readonly IntPtr selMatchingFontDescriptorWithMandatoryKeys_Handle = Selector.GetHandle("matchingFontDescriptorWithMandatoryKeys:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMatchingFontDescriptorsWithMandatoryKeys_ = "matchingFontDescriptorsWithMandatoryKeys:";
-
-	private static readonly IntPtr selMatchingFontDescriptorsWithMandatoryKeys_Handle = Selector.GetHandle("matchingFontDescriptorsWithMandatoryKeys:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMatrix = "matrix";
-
-	private static readonly IntPtr selMatrixHandle = Selector.GetHandle("matrix");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selObjectForKey_ = "objectForKey:";
-
-	private static readonly IntPtr selObjectForKey_Handle = Selector.GetHandle("objectForKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPointSize = "pointSize";
+	private static readonly IntPtr selPostscriptNameHandle = Selector.GetHandle("postscriptName");
 
 	private static readonly IntPtr selPointSizeHandle = Selector.GetHandle("pointSize");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPostscriptName = "postscriptName";
-
-	private static readonly IntPtr selPostscriptNameHandle = Selector.GetHandle("postscriptName");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRequiresFontAssetRequest = "requiresFontAssetRequest";
-
-	private static readonly IntPtr selRequiresFontAssetRequestHandle = Selector.GetHandle("requiresFontAssetRequest");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSymbolicTraits = "symbolicTraits";
+	private static readonly IntPtr selMatrixHandle = Selector.GetHandle("matrix");
 
 	private static readonly IntPtr selSymbolicTraitsHandle = Selector.GetHandle("symbolicTraits");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSFontDescriptor");
+	private static readonly IntPtr selFontAttributesHandle = Selector.GetHandle("fontAttributes");
+
+	private static readonly IntPtr selObjectForKey_Handle = Selector.GetHandle("objectForKey:");
+
+	private static readonly IntPtr selFontDescriptorWithFontAttributes_Handle = Selector.GetHandle("fontDescriptorWithFontAttributes:");
+
+	private static readonly IntPtr selFontDescriptorWithNameSize_Handle = Selector.GetHandle("fontDescriptorWithName:size:");
+
+	private static readonly IntPtr selFontDescriptorWithNameMatrix_Handle = Selector.GetHandle("fontDescriptorWithName:matrix:");
+
+	private static readonly IntPtr selInitWithFontAttributes_Handle = Selector.GetHandle("initWithFontAttributes:");
+
+	private static readonly IntPtr selMatchingFontDescriptorsWithMandatoryKeys_Handle = Selector.GetHandle("matchingFontDescriptorsWithMandatoryKeys:");
+
+	private static readonly IntPtr selMatchingFontDescriptorWithMandatoryKeys_Handle = Selector.GetHandle("matchingFontDescriptorWithMandatoryKeys:");
+
+	private static readonly IntPtr selFontDescriptorByAddingAttributes_Handle = Selector.GetHandle("fontDescriptorByAddingAttributes:");
+
+	private static readonly IntPtr selFontDescriptorWithSymbolicTraits_Handle = Selector.GetHandle("fontDescriptorWithSymbolicTraits:");
+
+	private static readonly IntPtr selFontDescriptorWithSize_Handle = Selector.GetHandle("fontDescriptorWithSize:");
+
+	private static readonly IntPtr selFontDescriptorWithMatrix_Handle = Selector.GetHandle("fontDescriptorWithMatrix:");
+
+	private static readonly IntPtr selFontDescriptorWithFace_Handle = Selector.GetHandle("fontDescriptorWithFace:");
+
+	private static readonly IntPtr selFontDescriptorWithFamily_Handle = Selector.GetHandle("fontDescriptorWithFamily:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSFontDescriptor");
+
+	private object __mt_Matrix_var;
+
+	private object __mt_FontAttributes_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary FontAttributes
-	{
-		[Export("fontAttributes")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selFontAttributesHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFontAttributesHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSAffineTransform Matrix
-	{
-		[Export("matrix")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSAffineTransform>(Messaging.IntPtr_objc_msgSend(base.Handle, selMatrixHandle));
-			}
-			return Runtime.GetNSObject<NSAffineTransform>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMatrixHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nfloat PointSize
-	{
-		[Export("pointSize")]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selPointSizeHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selPointSizeHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string PostscriptName
 	{
 		[Export("postscriptName")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selPostscriptNameHandle));
 			}
@@ -188,31 +66,37 @@ public class NSFontDescriptor : NSObject, INSCoding, INativeObject, IDisposable,
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-	public virtual bool RequiresFontAssetRequest
+	public virtual double PointSize
 	{
-		[Introduced(PlatformName.MacOSX, 10, 13, PlatformArchitecture.All, null)]
-		[Export("requiresFontAssetRequest")]
+		[Export("pointSize")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selRequiresFontAssetRequestHandle);
+				return Messaging.Double_objc_msgSend(base.Handle, selPointSizeHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selRequiresFontAssetRequestHandle);
+			return Messaging.Double_objc_msgSendSuper(base.SuperHandle, selPointSizeHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSAffineTransform Matrix
+	{
+		[Export("matrix")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSAffineTransform)(__mt_Matrix_var = ((!IsDirectBinding) ? ((NSAffineTransform)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMatrixHandle))) : ((NSAffineTransform)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMatrixHandle)))));
+		}
+	}
+
 	public virtual NSFontSymbolicTraits SymbolicTraits
 	{
 		[Export("symbolicTraits")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (NSFontSymbolicTraits)Messaging.int_objc_msgSend(base.Handle, selSymbolicTraitsHandle);
 			}
@@ -220,205 +104,73 @@ public class NSFontDescriptor : NSObject, INSCoding, INativeObject, IDisposable,
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSDictionary FontAttributes
+	{
+		[Export("fontAttributes")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSDictionary)(__mt_FontAttributes_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFontAttributesHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFontAttributesHandle)))));
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSFontDescriptor()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSFontDescriptor(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSFontDescriptor(NSObjectFlag t)
+	public NSFontDescriptor(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSFontDescriptor(IntPtr handle)
+	public NSFontDescriptor(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("initWithFontAttributes:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public NSFontDescriptor(NSDictionary? attributes)
-		: base(NSObjectFlag.Empty)
+	[Export("objectForKey:")]
+	public virtual NSObject ObjectForKey(string key)
 	{
 		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (key == null)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithFontAttributes_Handle, attributes?.Handle ?? IntPtr.Zero), "initWithFontAttributes:");
+			throw new ArgumentNullException("key");
 		}
-		else
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithFontAttributes_Handle, attributes?.Handle ?? IntPtr.Zero), "initWithFontAttributes:");
-		}
-	}
-
-	[Export("copyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject Copy(NSZone? zone)
-	{
-		NSApplication.EnsureUIThread();
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
-		{
-			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
-		}
-		return nSObject;
-	}
-
-	[Export("fontDescriptorWithDesign:")]
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSFontDescriptor? Create(NSFontDescriptorSystemDesign design)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_int(base.Handle, selFontDescriptorWithDesign_Handle, (int)design));
-		}
-		return Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSendSuper_int(base.SuperHandle, selFontDescriptorWithDesign_Handle, (int)design));
-	}
-
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
-	{
-		NSApplication.EnsureUIThread();
-		if (encoder == null)
-		{
-			throw new ArgumentNullException("encoder");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-	}
-
-	[Export("fontDescriptorByAddingAttributes:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSFontDescriptor FontDescriptorByAddingAttributes(NSDictionary attributes)
-	{
-		NSApplication.EnsureUIThread();
-		if (attributes == null)
-		{
-			throw new ArgumentNullException("attributes");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selFontDescriptorByAddingAttributes_Handle, attributes.Handle));
-		}
-		return Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selFontDescriptorByAddingAttributes_Handle, attributes.Handle));
-	}
-
-	[Export("fontDescriptorWithFace:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSFontDescriptor FontDescriptorWithFace(string newFace)
-	{
-		NSApplication.EnsureUIThread();
-		if (newFace == null)
-		{
-			throw new ArgumentNullException("newFace");
-		}
-		IntPtr arg = NSString.CreateNative(newFace);
-		NSFontDescriptor result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selFontDescriptorWithFace_Handle, arg)) : Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selFontDescriptorWithFace_Handle, arg)));
+		IntPtr arg = NSString.CreateNative(key);
+		NSObject result = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selObjectForKey_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selObjectForKey_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
-	}
-
-	[Export("fontDescriptorWithFamily:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSFontDescriptor FontDescriptorWithFamily(string newFamily)
-	{
-		NSApplication.EnsureUIThread();
-		if (newFamily == null)
-		{
-			throw new ArgumentNullException("newFamily");
-		}
-		IntPtr arg = NSString.CreateNative(newFamily);
-		NSFontDescriptor result = ((!base.IsDirectBinding) ? Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selFontDescriptorWithFamily_Handle, arg)) : Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selFontDescriptorWithFamily_Handle, arg)));
-		NSString.ReleaseNative(arg);
-		return result;
-	}
-
-	[Export("fontDescriptorWithMatrix:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSFontDescriptor FontDescriptorWithMatrix(NSAffineTransform matrix)
-	{
-		NSApplication.EnsureUIThread();
-		if (matrix == null)
-		{
-			throw new ArgumentNullException("matrix");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selFontDescriptorWithMatrix_Handle, matrix.Handle));
-		}
-		return Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selFontDescriptorWithMatrix_Handle, matrix.Handle));
-	}
-
-	[Export("fontDescriptorWithSize:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSFontDescriptor FontDescriptorWithSize(nfloat newPointSize)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_nfloat(base.Handle, selFontDescriptorWithSize_Handle, newPointSize));
-		}
-		return Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSendSuper_nfloat(base.SuperHandle, selFontDescriptorWithSize_Handle, newPointSize));
-	}
-
-	[Export("fontDescriptorWithSymbolicTraits:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSFontDescriptor FontDescriptorWithSymbolicTraits(NSFontSymbolicTraits symbolicTraits)
-	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_int(base.Handle, selFontDescriptorWithSymbolicTraits_Handle, (int)symbolicTraits));
-		}
-		return Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSendSuper_int(base.SuperHandle, selFontDescriptorWithSymbolicTraits_Handle, (int)symbolicTraits));
 	}
 
 	[Export("fontDescriptorWithFontAttributes:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSFontDescriptor FromAttributes(NSDictionary attributes)
 	{
 		NSApplication.EnsureUIThread();
@@ -426,11 +178,24 @@ public class NSFontDescriptor : NSObject, INSCoding, INativeObject, IDisposable,
 		{
 			throw new ArgumentNullException("attributes");
 		}
-		return Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selFontDescriptorWithFontAttributes_Handle, attributes.Handle));
+		return (NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selFontDescriptorWithFontAttributes_Handle, attributes.Handle));
+	}
+
+	[Export("fontDescriptorWithName:size:")]
+	public static NSFontDescriptor FromNameSize(string fontName, double size)
+	{
+		NSApplication.EnsureUIThread();
+		if (fontName == null)
+		{
+			throw new ArgumentNullException("fontName");
+		}
+		IntPtr arg = NSString.CreateNative(fontName);
+		NSFontDescriptor result = (NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_Double(class_ptr, selFontDescriptorWithNameSize_Handle, arg, size));
+		NSString.ReleaseNative(arg);
+		return result;
 	}
 
 	[Export("fontDescriptorWithName:matrix:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSFontDescriptor FromNameMatrix(string fontName, NSAffineTransform matrix)
 	{
 		NSApplication.EnsureUIThread();
@@ -443,44 +208,31 @@ public class NSFontDescriptor : NSObject, INSCoding, INativeObject, IDisposable,
 			throw new ArgumentNullException("matrix");
 		}
 		IntPtr arg = NSString.CreateNative(fontName);
-		NSFontDescriptor nSObject = Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selFontDescriptorWithName_Matrix_Handle, arg, matrix.Handle));
+		NSFontDescriptor result = (NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selFontDescriptorWithNameMatrix_Handle, arg, matrix.Handle));
 		NSString.ReleaseNative(arg);
-		return nSObject;
+		return result;
 	}
 
-	[Export("fontDescriptorWithName:size:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSFontDescriptor FromNameSize(string fontName, nfloat size)
+	[Export("initWithFontAttributes:")]
+	public NSFontDescriptor(NSDictionary attributes)
+		: base(NSObjectFlag.Empty)
 	{
 		NSApplication.EnsureUIThread();
-		if (fontName == null)
+		if (attributes == null)
 		{
-			throw new ArgumentNullException("fontName");
+			throw new ArgumentNullException("attributes");
 		}
-		IntPtr arg = NSString.CreateNative(fontName);
-		NSFontDescriptor nSObject = Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_IntPtr_nfloat(class_ptr, selFontDescriptorWithName_Size_Handle, arg, size));
-		NSString.ReleaseNative(arg);
-		return nSObject;
-	}
-
-	[Export("matchingFontDescriptorWithMandatoryKeys:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSFontDescriptor MatchingFontDescriptorWithMandatoryKeys(NSSet mandatoryKeys)
-	{
-		NSApplication.EnsureUIThread();
-		if (mandatoryKeys == null)
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("mandatoryKeys");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithFontAttributes_Handle, attributes.Handle);
 		}
-		if (base.IsDirectBinding)
+		else
 		{
-			return Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selMatchingFontDescriptorWithMandatoryKeys_Handle, mandatoryKeys.Handle));
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithFontAttributes_Handle, attributes.Handle);
 		}
-		return Runtime.GetNSObject<NSFontDescriptor>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selMatchingFontDescriptorWithMandatoryKeys_Handle, mandatoryKeys.Handle));
 	}
 
 	[Export("matchingFontDescriptorsWithMandatoryKeys:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSFontDescriptor[] MatchingFontDescriptors(NSSet mandatoryKeys)
 	{
 		NSApplication.EnsureUIThread();
@@ -488,25 +240,115 @@ public class NSFontDescriptor : NSObject, INSCoding, INativeObject, IDisposable,
 		{
 			throw new ArgumentNullException("mandatoryKeys");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selMatchingFontDescriptorsWithMandatoryKeys_Handle, mandatoryKeys.Handle));
 		}
 		return NSArray.ArrayFromHandle<NSFontDescriptor>(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selMatchingFontDescriptorsWithMandatoryKeys_Handle, mandatoryKeys.Handle));
 	}
 
-	[Export("objectForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject ObjectForKey(string key)
+	[Export("matchingFontDescriptorWithMandatoryKeys:")]
+	public virtual NSFontDescriptor MatchingFontDescriptorWithMandatoryKeys(NSSet mandatoryKeys)
 	{
 		NSApplication.EnsureUIThread();
-		if (key == null)
+		if (mandatoryKeys == null)
 		{
-			throw new ArgumentNullException("key");
+			throw new ArgumentNullException("mandatoryKeys");
 		}
-		IntPtr arg = NSString.CreateNative(key);
-		NSObject result = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selObjectForKey_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selObjectForKey_Handle, arg)));
+		if (IsDirectBinding)
+		{
+			return (NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selMatchingFontDescriptorWithMandatoryKeys_Handle, mandatoryKeys.Handle));
+		}
+		return (NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selMatchingFontDescriptorWithMandatoryKeys_Handle, mandatoryKeys.Handle));
+	}
+
+	[Export("fontDescriptorByAddingAttributes:")]
+	public virtual NSFontDescriptor FontDescriptorByAddingAttributes(NSDictionary attributes)
+	{
+		NSApplication.EnsureUIThread();
+		if (attributes == null)
+		{
+			throw new ArgumentNullException("attributes");
+		}
+		if (IsDirectBinding)
+		{
+			return (NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selFontDescriptorByAddingAttributes_Handle, attributes.Handle));
+		}
+		return (NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selFontDescriptorByAddingAttributes_Handle, attributes.Handle));
+	}
+
+	[Export("fontDescriptorWithSymbolicTraits:")]
+	public virtual NSFontDescriptor FontDescriptorWithSymbolicTraits(NSFontSymbolicTraits symbolicTraits)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return (NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_int(base.Handle, selFontDescriptorWithSymbolicTraits_Handle, (int)symbolicTraits));
+		}
+		return (NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_int(base.SuperHandle, selFontDescriptorWithSymbolicTraits_Handle, (int)symbolicTraits));
+	}
+
+	[Export("fontDescriptorWithSize:")]
+	public virtual NSFontDescriptor FontDescriptorWithSize(double newPointSize)
+	{
+		NSApplication.EnsureUIThread();
+		if (IsDirectBinding)
+		{
+			return (NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_Double(base.Handle, selFontDescriptorWithSize_Handle, newPointSize));
+		}
+		return (NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_Double(base.SuperHandle, selFontDescriptorWithSize_Handle, newPointSize));
+	}
+
+	[Export("fontDescriptorWithMatrix:")]
+	public virtual NSFontDescriptor FontDescriptorWithMatrix(NSAffineTransform matrix)
+	{
+		NSApplication.EnsureUIThread();
+		if (matrix == null)
+		{
+			throw new ArgumentNullException("matrix");
+		}
+		if (IsDirectBinding)
+		{
+			return (NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selFontDescriptorWithMatrix_Handle, matrix.Handle));
+		}
+		return (NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selFontDescriptorWithMatrix_Handle, matrix.Handle));
+	}
+
+	[Export("fontDescriptorWithFace:")]
+	public virtual NSFontDescriptor FontDescriptorWithFace(string newFace)
+	{
+		NSApplication.EnsureUIThread();
+		if (newFace == null)
+		{
+			throw new ArgumentNullException("newFace");
+		}
+		IntPtr arg = NSString.CreateNative(newFace);
+		NSFontDescriptor result = ((!IsDirectBinding) ? ((NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selFontDescriptorWithFace_Handle, arg))) : ((NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selFontDescriptorWithFace_Handle, arg))));
 		NSString.ReleaseNative(arg);
 		return result;
+	}
+
+	[Export("fontDescriptorWithFamily:")]
+	public virtual NSFontDescriptor FontDescriptorWithFamily(string newFamily)
+	{
+		NSApplication.EnsureUIThread();
+		if (newFamily == null)
+		{
+			throw new ArgumentNullException("newFamily");
+		}
+		IntPtr arg = NSString.CreateNative(newFamily);
+		NSFontDescriptor result = ((!IsDirectBinding) ? ((NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selFontDescriptorWithFamily_Handle, arg))) : ((NSFontDescriptor)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selFontDescriptorWithFamily_Handle, arg))));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_Matrix_var = null;
+			__mt_FontAttributes_var = null;
+		}
 	}
 }

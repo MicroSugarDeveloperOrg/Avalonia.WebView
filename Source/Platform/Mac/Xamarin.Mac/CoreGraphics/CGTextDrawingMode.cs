@@ -1,6 +1,6 @@
 namespace CoreGraphics;
 
-public enum CGTextDrawingMode : uint
+public enum CGTextDrawingMode
 {
 	Fill,
 	Stroke,

@@ -6,100 +6,95 @@ using ObjCRuntime;
 namespace AVFoundation;
 
 [Register("AVQueuePlayer", true)]
-[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
 public class AVQueuePlayer : AVPlayer
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAdvanceToNextItem = "advanceToNextItem";
-
-	private static readonly IntPtr selAdvanceToNextItemHandle = Selector.GetHandle("advanceToNextItem");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCanInsertItem_AfterItem_ = "canInsertItem:afterItem:";
-
-	private static readonly IntPtr selCanInsertItem_AfterItem_Handle = Selector.GetHandle("canInsertItem:afterItem:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithItems_ = "initWithItems:";
-
-	private static readonly IntPtr selInitWithItems_Handle = Selector.GetHandle("initWithItems:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInsertItem_AfterItem_ = "insertItem:afterItem:";
-
-	private static readonly IntPtr selInsertItem_AfterItem_Handle = Selector.GetHandle("insertItem:afterItem:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selItems = "items";
-
 	private static readonly IntPtr selItemsHandle = Selector.GetHandle("items");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selQueuePlayerWithItems_ = "queuePlayerWithItems:";
 
 	private static readonly IntPtr selQueuePlayerWithItems_Handle = Selector.GetHandle("queuePlayerWithItems:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveAllItems = "removeAllItems";
+	private static readonly IntPtr selInitWithItems_Handle = Selector.GetHandle("initWithItems:");
 
-	private static readonly IntPtr selRemoveAllItemsHandle = Selector.GetHandle("removeAllItems");
+	private static readonly IntPtr selAdvanceToNextItemHandle = Selector.GetHandle("advanceToNextItem");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRemoveItem_ = "removeItem:";
+	private static readonly IntPtr selCanInsertItemAfterItem_Handle = Selector.GetHandle("canInsertItem:afterItem:");
+
+	private static readonly IntPtr selInsertItemAfterItem_Handle = Selector.GetHandle("insertItem:afterItem:");
 
 	private static readonly IntPtr selRemoveItem_Handle = Selector.GetHandle("removeItem:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVQueuePlayer");
+	private static readonly IntPtr selRemoveAllItemsHandle = Selector.GetHandle("removeAllItems");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("AVQueuePlayer");
+
+	private object __mt_Items_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual AVPlayerItem[] Items
 	{
 		[Export("items")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<AVPlayerItem>(Messaging.IntPtr_objc_msgSend(base.Handle, selItemsHandle));
-			}
-			return NSArray.ArrayFromHandle<AVPlayerItem>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selItemsHandle));
+			return (AVPlayerItem[])(__mt_Items_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<AVPlayerItem>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selItemsHandle)) : NSArray.ArrayFromHandle<AVPlayerItem>(Messaging.IntPtr_objc_msgSend(base.Handle, selItemsHandle))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public AVQueuePlayer()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected AVQueuePlayer(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public AVQueuePlayer(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public AVQueuePlayer(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal AVQueuePlayer(IntPtr handle)
+	public AVQueuePlayer(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("queuePlayerWithItems:")]
+	public static AVQueuePlayer FromItems(AVPlayerItem[] items)
+	{
+		if (items == null)
+		{
+			throw new ArgumentNullException("items");
+		}
+		NSArray nSArray = NSArray.FromNSObjects(items);
+		AVQueuePlayer result = (AVQueuePlayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selQueuePlayerWithItems_Handle, nSArray.Handle));
+		nSArray.Dispose();
+		return result;
+	}
+
 	[Export("initWithItems:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public AVQueuePlayer(AVPlayerItem[] items)
 		: base(NSObjectFlag.Empty)
 	{
@@ -108,22 +103,21 @@ public class AVQueuePlayer : AVPlayer
 			throw new ArgumentNullException("items");
 		}
 		NSArray nSArray = NSArray.FromNSObjects(items);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithItems_Handle, nSArray.Handle), "initWithItems:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithItems_Handle, nSArray.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithItems_Handle, nSArray.Handle), "initWithItems:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithItems_Handle, nSArray.Handle);
 		}
 		nSArray.Dispose();
 	}
 
 	[Export("advanceToNextItem")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void AdvanceToNextItem()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selAdvanceToNextItemHandle);
 		}
@@ -134,57 +128,65 @@ public class AVQueuePlayer : AVPlayer
 	}
 
 	[Export("canInsertItem:afterItem:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool CanInsert(AVPlayerItem item, AVPlayerItem? afterItem)
+	public virtual bool CanInsert(AVPlayerItem item, AVPlayerItem afterItem)
 	{
 		if (item == null)
 		{
 			throw new ArgumentNullException("item");
 		}
-		if (base.IsDirectBinding)
+		if (afterItem == null)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selCanInsertItem_AfterItem_Handle, item.Handle, afterItem?.Handle ?? IntPtr.Zero);
+			throw new ArgumentNullException("afterItem");
 		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selCanInsertItem_AfterItem_Handle, item.Handle, afterItem?.Handle ?? IntPtr.Zero);
-	}
-
-	[Export("queuePlayerWithItems:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static AVQueuePlayer FromItems(AVPlayerItem[] items)
-	{
-		if (items == null)
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("items");
+			return Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selCanInsertItemAfterItem_Handle, item.Handle, afterItem.Handle);
 		}
-		NSArray nSArray = NSArray.FromNSObjects(items);
-		AVQueuePlayer nSObject = Runtime.GetNSObject<AVQueuePlayer>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selQueuePlayerWithItems_Handle, nSArray.Handle));
-		nSArray.Dispose();
-		return nSObject;
+		return Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selCanInsertItemAfterItem_Handle, item.Handle, afterItem.Handle);
 	}
 
 	[Export("insertItem:afterItem:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void InsertItem(AVPlayerItem item, AVPlayerItem? afterItem)
+	public virtual void InsertItem(AVPlayerItem item, AVPlayerItem afterItem)
 	{
 		if (item == null)
 		{
 			throw new ArgumentNullException("item");
 		}
-		if (base.IsDirectBinding)
+		if (afterItem == null)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selInsertItem_AfterItem_Handle, item.Handle, afterItem?.Handle ?? IntPtr.Zero);
+			throw new ArgumentNullException("afterItem");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selInsertItemAfterItem_Handle, item.Handle, afterItem.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInsertItem_AfterItem_Handle, item.Handle, afterItem?.Handle ?? IntPtr.Zero);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInsertItemAfterItem_Handle, item.Handle, afterItem.Handle);
+		}
+	}
+
+	[Export("removeItem:")]
+	public virtual void RemoveItem(AVPlayerItem item)
+	{
+		if (item == null)
+		{
+			throw new ArgumentNullException("item");
+		}
+		if (IsDirectBinding)
+		{
+			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveItem_Handle, item.Handle);
+		}
+		else
+		{
+			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveItem_Handle, item.Handle);
 		}
 	}
 
 	[Export("removeAllItems")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void RemoveAllItems()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selRemoveAllItemsHandle);
 		}
@@ -194,21 +196,12 @@ public class AVQueuePlayer : AVPlayer
 		}
 	}
 
-	[Export("removeItem:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void RemoveItem(AVPlayerItem item)
+	protected override void Dispose(bool disposing)
 	{
-		if (item == null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			throw new ArgumentNullException("item");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveItem_Handle, item.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveItem_Handle, item.Handle);
+			__mt_Items_var = null;
 		}
 	}
 }

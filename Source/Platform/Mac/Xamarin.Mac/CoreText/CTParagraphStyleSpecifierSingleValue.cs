@@ -1,14 +1,12 @@
-using System;
-
 namespace CoreText;
 
 internal class CTParagraphStyleSpecifierSingleValue : CTParagraphStyleSpecifierValue
 {
-	private nfloat value;
+	private float value;
 
-	internal override int ValueSize => IntPtr.Size;
+	internal override int ValueSize => 4;
 
-	public CTParagraphStyleSpecifierSingleValue(CTParagraphStyleSpecifier spec, nfloat value)
+	public CTParagraphStyleSpecifierSingleValue(CTParagraphStyleSpecifier spec, float value)
 		: base(spec)
 	{
 		this.value = value;

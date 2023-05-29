@@ -1,185 +1,129 @@
+using System;
 using System.ComponentModel;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 
 [Register("NSURLAuthenticationChallenge", true)]
-public class NSUrlAuthenticationChallenge : NSObject, INSCoding, INativeObject, IDisposable, INSSecureCoding
+public class NSUrlAuthenticationChallenge : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selError = "error";
-
-	private static readonly IntPtr selErrorHandle = Selector.GetHandle("error");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFailureResponse = "failureResponse";
-
-	private static readonly IntPtr selFailureResponseHandle = Selector.GetHandle("failureResponse");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithAuthenticationChallenge_Sender_ = "initWithAuthenticationChallenge:sender:";
-
-	private static readonly IntPtr selInitWithAuthenticationChallenge_Sender_Handle = Selector.GetHandle("initWithAuthenticationChallenge:sender:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
-
-	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithProtectionSpace_ProposedCredential_PreviousFailureCount_FailureResponse_Error_Sender_ = "initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:sender:";
-
-	private static readonly IntPtr selInitWithProtectionSpace_ProposedCredential_PreviousFailureCount_FailureResponse_Error_Sender_Handle = Selector.GetHandle("initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:sender:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPreviousFailureCount = "previousFailureCount";
-
-	private static readonly IntPtr selPreviousFailureCountHandle = Selector.GetHandle("previousFailureCount");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selProposedCredential = "proposedCredential";
+	private static readonly IntPtr selProtectionSpaceHandle = Selector.GetHandle("protectionSpace");
 
 	private static readonly IntPtr selProposedCredentialHandle = Selector.GetHandle("proposedCredential");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selProtectionSpace = "protectionSpace";
+	private static readonly IntPtr selPreviousFailureCountHandle = Selector.GetHandle("previousFailureCount");
 
-	private static readonly IntPtr selProtectionSpaceHandle = Selector.GetHandle("protectionSpace");
+	private static readonly IntPtr selFailureResponseHandle = Selector.GetHandle("failureResponse");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSender = "sender";
+	private static readonly IntPtr selErrorHandle = Selector.GetHandle("error");
 
 	private static readonly IntPtr selSenderHandle = Selector.GetHandle("sender");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSURLAuthenticationChallenge");
+	private static readonly IntPtr selInitWithProtectionSpaceProposedCredentialPreviousFailureCountFailureResponseErrorSender_Handle = Selector.GetHandle("initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:sender:");
+
+	private static readonly IntPtr selInitWithAuthenticationChallengeSender_Handle = Selector.GetHandle("initWithAuthenticationChallenge:sender:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSURLAuthenticationChallenge");
+
+	private object __mt_ProtectionSpace_var;
+
+	private object __mt_ProposedCredential_var;
+
+	private object __mt_FailureResponse_var;
+
+	private object __mt_Error_var;
+
+	private object __mt_Sender_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSError Error
-	{
-		[Export("error")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSError>(Messaging.IntPtr_objc_msgSend(base.Handle, selErrorHandle));
-			}
-			return Runtime.GetNSObject<NSError>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selErrorHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSUrlResponse FailureResponse
-	{
-		[Export("failureResponse")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSUrlResponse>(Messaging.IntPtr_objc_msgSend(base.Handle, selFailureResponseHandle));
-			}
-			return Runtime.GetNSObject<NSUrlResponse>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFailureResponseHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint PreviousFailureCount
-	{
-		[Export("previousFailureCount")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selPreviousFailureCountHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selPreviousFailureCountHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSUrlCredential ProposedCredential
-	{
-		[Export("proposedCredential")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSUrlCredential>(Messaging.IntPtr_objc_msgSend(base.Handle, selProposedCredentialHandle));
-			}
-			return Runtime.GetNSObject<NSUrlCredential>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selProposedCredentialHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSUrlProtectionSpace ProtectionSpace
 	{
 		[Export("protectionSpace")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSUrlProtectionSpace>(Messaging.IntPtr_objc_msgSend(base.Handle, selProtectionSpaceHandle));
-			}
-			return Runtime.GetNSObject<NSUrlProtectionSpace>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selProtectionSpaceHandle));
+			return (NSUrlProtectionSpace)(__mt_ProtectionSpace_var = ((!IsDirectBinding) ? ((NSUrlProtectionSpace)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selProtectionSpaceHandle))) : ((NSUrlProtectionSpace)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selProtectionSpaceHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSUrlCredential ProposedCredential
+	{
+		[Export("proposedCredential")]
+		get
+		{
+			return (NSUrlCredential)(__mt_ProposedCredential_var = ((!IsDirectBinding) ? ((NSUrlCredential)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selProposedCredentialHandle))) : ((NSUrlCredential)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selProposedCredentialHandle)))));
+		}
+	}
+
+	public virtual long PreviousFailureCount
+	{
+		[Export("previousFailureCount")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.Int64_objc_msgSend(base.Handle, selPreviousFailureCountHandle);
+			}
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selPreviousFailureCountHandle);
+		}
+	}
+
+	public virtual NSUrlResponse FailureResponse
+	{
+		[Export("failureResponse")]
+		get
+		{
+			return (NSUrlResponse)(__mt_FailureResponse_var = ((!IsDirectBinding) ? ((NSUrlResponse)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFailureResponseHandle))) : ((NSUrlResponse)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFailureResponseHandle)))));
+		}
+	}
+
+	public virtual NSError Error
+	{
+		[Export("error")]
+		get
+		{
+			return (NSError)(__mt_Error_var = ((!IsDirectBinding) ? ((NSError)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selErrorHandle))) : ((NSError)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selErrorHandle)))));
+		}
+	}
+
 	public virtual NSUrlConnection Sender
 	{
 		[Export("sender")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSUrlConnection>(Messaging.IntPtr_objc_msgSend(base.Handle, selSenderHandle));
-			}
-			return Runtime.GetNSObject<NSUrlConnection>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSenderHandle));
+			return (NSUrlConnection)(__mt_Sender_var = ((!IsDirectBinding) ? ((NSUrlConnection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSenderHandle))) : ((NSUrlConnection)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSenderHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSUrlAuthenticationChallenge(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSUrlAuthenticationChallenge(NSObjectFlag t)
+	public NSUrlAuthenticationChallenge(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSUrlAuthenticationChallenge(IntPtr handle)
+	public NSUrlAuthenticationChallenge(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:sender:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public NSUrlAuthenticationChallenge(NSUrlProtectionSpace space, NSUrlCredential credential, nint previousFailureCount, NSUrlResponse response, NSError? error, NSUrlConnection sender)
+	public NSUrlAuthenticationChallenge(NSUrlProtectionSpace space, NSUrlCredential credential, long previousFailureCount, NSUrlResponse response, NSError error, NSUrlConnection sender)
 		: base(NSObjectFlag.Empty)
 	{
 		if (space == null)
@@ -198,18 +142,17 @@ public class NSUrlAuthenticationChallenge : NSObject, INSCoding, INativeObject, 
 		{
 			throw new ArgumentNullException("sender");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_nint_IntPtr_IntPtr_IntPtr(base.Handle, selInitWithProtectionSpace_ProposedCredential_PreviousFailureCount_FailureResponse_Error_Sender_Handle, space.Handle, credential.Handle, previousFailureCount, response.Handle, error?.Handle ?? IntPtr.Zero, sender.Handle), "initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:sender:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_Int64_IntPtr_IntPtr_IntPtr(base.Handle, selInitWithProtectionSpaceProposedCredentialPreviousFailureCountFailureResponseErrorSender_Handle, space.Handle, credential.Handle, previousFailureCount, response.Handle, error?.Handle ?? IntPtr.Zero, sender.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_nint_IntPtr_IntPtr_IntPtr(base.SuperHandle, selInitWithProtectionSpace_ProposedCredential_PreviousFailureCount_FailureResponse_Error_Sender_Handle, space.Handle, credential.Handle, previousFailureCount, response.Handle, error?.Handle ?? IntPtr.Zero, sender.Handle), "initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:sender:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_Int64_IntPtr_IntPtr_IntPtr(base.SuperHandle, selInitWithProtectionSpaceProposedCredentialPreviousFailureCountFailureResponseErrorSender_Handle, space.Handle, credential.Handle, previousFailureCount, response.Handle, error?.Handle ?? IntPtr.Zero, sender.Handle);
 		}
 	}
 
 	[Export("initWithAuthenticationChallenge:sender:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSUrlAuthenticationChallenge(NSUrlAuthenticationChallenge challenge, NSUrlConnection sender)
 		: base(NSObjectFlag.Empty)
 	{
@@ -221,31 +164,26 @@ public class NSUrlAuthenticationChallenge : NSObject, INSCoding, INativeObject, 
 		{
 			throw new ArgumentNullException("sender");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithAuthenticationChallenge_Sender_Handle, challenge.Handle, sender.Handle), "initWithAuthenticationChallenge:sender:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithAuthenticationChallengeSender_Handle, challenge.Handle, sender.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithAuthenticationChallenge_Sender_Handle, challenge.Handle, sender.Handle), "initWithAuthenticationChallenge:sender:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithAuthenticationChallengeSender_Handle, challenge.Handle, sender.Handle);
 		}
 	}
 
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
+	protected override void Dispose(bool disposing)
 	{
-		if (encoder == null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			throw new ArgumentNullException("encoder");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
+			__mt_ProtectionSpace_var = null;
+			__mt_ProposedCredential_var = null;
+			__mt_FailureResponse_var = null;
+			__mt_Error_var = null;
+			__mt_Sender_var = null;
 		}
 	}
 }

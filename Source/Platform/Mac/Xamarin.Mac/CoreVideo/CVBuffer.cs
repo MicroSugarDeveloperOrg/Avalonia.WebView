@@ -5,90 +5,41 @@ using ObjCRuntime;
 
 namespace CoreVideo;
 
-[Watch(4, 0)]
+[Since(4, 0)]
 public class CVBuffer : INativeObject, IDisposable
 {
+	public static readonly NSString MovieTimeKey;
+
+	public static readonly NSString TimeValueKey;
+
+	public static readonly NSString TimeScaleKey;
+
+	public static readonly NSString PropagatedAttachmentsKey;
+
+	public static readonly NSString NonPropagatedAttachmentsKey;
+
 	internal IntPtr handle;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _MovieTimeKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _NonPropagatedAttachmentsKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _PropagatedAttachmentsKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _TimeScaleKey;
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _TimeValueKey;
 
 	public IntPtr Handle => handle;
 
-	[Field("kCVBufferMovieTimeKey", "CoreVideo")]
-	public static NSString MovieTimeKey
+	static CVBuffer()
 	{
-		get
+		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/CoreVideo.framework/CoreVideo", 0);
+		if (intPtr == IntPtr.Zero)
 		{
-			if (_MovieTimeKey == null)
-			{
-				_MovieTimeKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVBufferMovieTimeKey");
-			}
-			return _MovieTimeKey;
+			return;
 		}
-	}
-
-	[Field("kCVBufferNonPropagatedAttachmentsKey", "CoreVideo")]
-	public static NSString NonPropagatedAttachmentsKey
-	{
-		get
+		try
 		{
-			if (_NonPropagatedAttachmentsKey == null)
-			{
-				_NonPropagatedAttachmentsKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVBufferNonPropagatedAttachmentsKey");
-			}
-			return _NonPropagatedAttachmentsKey;
+			MovieTimeKey = Dlfcn.GetStringConstant(intPtr, "kCVBufferMovieTimeKey");
+			TimeValueKey = Dlfcn.GetStringConstant(intPtr, "kCVBufferTimeValueKey");
+			TimeScaleKey = Dlfcn.GetStringConstant(intPtr, "kCVBufferTimeScaleKey");
+			PropagatedAttachmentsKey = Dlfcn.GetStringConstant(intPtr, "kCVBufferPropagatedAttachmentsKey");
+			NonPropagatedAttachmentsKey = Dlfcn.GetStringConstant(intPtr, "kCVBufferNonPropagatedAttachmentsKey");
 		}
-	}
-
-	[Field("kCVBufferPropagatedAttachmentsKey", "CoreVideo")]
-	public static NSString PropagatedAttachmentsKey
-	{
-		get
+		finally
 		{
-			if (_PropagatedAttachmentsKey == null)
-			{
-				_PropagatedAttachmentsKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVBufferPropagatedAttachmentsKey");
-			}
-			return _PropagatedAttachmentsKey;
-		}
-	}
-
-	[Field("kCVBufferTimeScaleKey", "CoreVideo")]
-	public static NSString TimeScaleKey
-	{
-		get
-		{
-			if (_TimeScaleKey == null)
-			{
-				_TimeScaleKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVBufferTimeScaleKey");
-			}
-			return _TimeScaleKey;
-		}
-	}
-
-	[Field("kCVBufferTimeValueKey", "CoreVideo")]
-	public static NSString TimeValueKey
-	{
-		get
-		{
-			if (_TimeValueKey == null)
-			{
-				_TimeValueKey = Dlfcn.GetStringConstant(Libraries.CoreVideo.Handle, "kCVBufferTimeValueKey");
-			}
-			return _TimeValueKey;
+			Dlfcn.dlclose(intPtr);
 		}
 	}
 
@@ -128,10 +79,10 @@ public class CVBuffer : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
-	private static extern void CVBufferRelease(IntPtr buffer);
+	private static extern void CVBufferRelease(IntPtr handle);
 
 	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
-	private static extern IntPtr CVBufferRetain(IntPtr buffer);
+	private static extern void CVBufferRetain(IntPtr handle);
 
 	protected virtual void Dispose(bool disposing)
 	{
@@ -155,10 +106,6 @@ public class CVBuffer : INativeObject, IDisposable
 
 	public void RemoveAttachment(NSString key)
 	{
-		if (key == null)
-		{
-			throw new ArgumentNullException("key");
-		}
 		CVBufferRemoveAttachment(handle, key.Handle);
 	}
 
@@ -167,10 +114,6 @@ public class CVBuffer : INativeObject, IDisposable
 
 	public NSObject GetAttachment(NSString key, out CVAttachmentMode attachmentMode)
 	{
-		if (key == null)
-		{
-			throw new ArgumentNullException("key");
-		}
 		return Runtime.GetNSObject(CVBufferGetAttachment(handle, key.Handle, out attachmentMode));
 	}
 
@@ -182,36 +125,19 @@ public class CVBuffer : INativeObject, IDisposable
 		return (NSDictionary)Runtime.GetNSObject(CVBufferGetAttachments(handle, attachmentMode));
 	}
 
-	public NSDictionary<TKey, TValue> GetAttachments<TKey, TValue>(CVAttachmentMode attachmentMode) where TKey : class, INativeObject where TValue : class, INativeObject
-	{
-		return Runtime.GetNSObject<NSDictionary<TKey, TValue>>(CVBufferGetAttachments(handle, attachmentMode));
-	}
-
 	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
 	private static extern void CVBufferPropagateAttachments(IntPtr sourceBuffer, IntPtr destinationBuffer);
 
 	public void PropogateAttachments(CVBuffer destinationBuffer)
 	{
-		if (destinationBuffer == null)
-		{
-			throw new ArgumentNullException("destinationBuffer");
-		}
 		CVBufferPropagateAttachments(handle, destinationBuffer.Handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreVideo.framework/CoreVideo")]
 	private static extern void CVBufferSetAttachment(IntPtr buffer, IntPtr key, IntPtr value, CVAttachmentMode attachmentMode);
 
-	public void SetAttachment(NSString key, INativeObject value, CVAttachmentMode attachmentMode)
+	public void SetAttachment(NSString key, NSObject value, CVAttachmentMode attachmentMode)
 	{
-		if (key == null)
-		{
-			throw new ArgumentNullException("key");
-		}
-		if (value == null)
-		{
-			throw new ArgumentNullException("value");
-		}
 		CVBufferSetAttachment(handle, key.Handle, value.Handle, attachmentMode);
 	}
 
@@ -220,10 +146,6 @@ public class CVBuffer : INativeObject, IDisposable
 
 	public void SetAttachments(NSDictionary theAttachments, CVAttachmentMode attachmentMode)
 	{
-		if (theAttachments == null)
-		{
-			throw new ArgumentNullException("theAttachments");
-		}
 		CVBufferSetAttachments(handle, theAttachments.Handle, attachmentMode);
 	}
 }

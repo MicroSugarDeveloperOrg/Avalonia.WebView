@@ -2,7 +2,6 @@ namespace AudioToolbox;
 
 public enum AudioFileError
 {
-	Success = 0,
 	Unspecified = 2003334207,
 	UnsupportedFileType = 1954115647,
 	UnsupportedDataFormat = 1718449215,
@@ -14,7 +13,6 @@ public enum AudioFileError
 	DoesNotAllow64BitDataSize = 1868981823,
 	InvalidPacketOffset = 1885563711,
 	InvalidFile = 1685348671,
-	OperationNotSupported = 1869627199,
 	FileNotOpen = -38,
 	EndOfFile = -39,
 	FileNotFound = -43,

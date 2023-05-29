@@ -1,9 +1,11 @@
 using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using ObjCRuntime;
 
 namespace CoreText;
 
+[Since(3, 2)]
 public class CTRunDelegateOperations : IDisposable
 {
 	internal GCHandle handle;
@@ -13,18 +15,7 @@ public class CTRunDelegateOperations : IDisposable
 		handle = GCHandle.Alloc(this);
 	}
 
-	~CTRunDelegateOperations()
-	{
-		Dispose(disposing: false);
-	}
-
-	public void Dispose()
-	{
-		Dispose(disposing: true);
-		GC.SuppressFinalize(this);
-	}
-
-	protected virtual void Dispose(bool disposing)
+	public virtual void Dispose()
 	{
 	}
 
@@ -45,12 +36,25 @@ public class CTRunDelegateOperations : IDisposable
 
 	internal CTRunDelegateCallbacks GetCallbacks()
 	{
-		CTRunDelegateCallbacks cTRunDelegateCallbacks = new CTRunDelegateCallbacks();
-		cTRunDelegateCallbacks.version = 1;
-		cTRunDelegateCallbacks.dealloc = Deallocate;
-		cTRunDelegateCallbacks.getAscent = GetAscent;
-		cTRunDelegateCallbacks.getDescent = GetDescent;
-		cTRunDelegateCallbacks.getWidth = GetWidth;
+		CTRunDelegateCallbacks cTRunDelegateCallbacks = new CTRunDelegateCallbacks
+		{
+			version = CTRunDelegateVersion.Version1,
+			dealloc = Deallocate
+		};
+		BindingFlags bindingAttr = BindingFlags.Instance | BindingFlags.Public;
+		MethodInfo method;
+		if ((method = GetType().GetMethod("GetAscent", bindingAttr)) != null && method.DeclaringType != typeof(CTRunDelegateOperations))
+		{
+			cTRunDelegateCallbacks.getAscent = GetAscent;
+		}
+		if ((method = GetType().GetMethod("GetDescent", bindingAttr)) != null && method.DeclaringType != typeof(CTRunDelegateOperations))
+		{
+			cTRunDelegateCallbacks.getDescent = GetDescent;
+		}
+		if ((method = GetType().GetMethod("GetWidth", bindingAttr)) != null && method.DeclaringType != typeof(CTRunDelegateOperations))
+		{
+			cTRunDelegateCallbacks.getWidth = GetWidth;
+		}
 		return cTRunDelegateCallbacks;
 	}
 
@@ -74,36 +78,21 @@ public class CTRunDelegateOperations : IDisposable
 		return GCHandle.FromIntPtr(refCon).Target as CTRunDelegateOperations;
 	}
 
-	[MonoPInvokeCallback(typeof(CTRunDelegateGetCallback))]
-	private static nfloat GetAscent(IntPtr refCon)
+	[MonoPInvokeCallback(typeof(CTRunDelegateGetAscentCallback))]
+	private static float GetAscent(IntPtr refCon)
 	{
-		CTRunDelegateOperations operations = GetOperations(refCon);
-		if (operations == null)
-		{
-			return 0;
-		}
-		return operations.GetAscent();
+		return GetOperations(refCon)?.GetAscent() ?? 0f;
 	}
 
-	[MonoPInvokeCallback(typeof(CTRunDelegateGetCallback))]
-	private static nfloat GetDescent(IntPtr refCon)
+	[MonoPInvokeCallback(typeof(CTRunDelegateGetDescentCallback))]
+	private static float GetDescent(IntPtr refCon)
 	{
-		CTRunDelegateOperations operations = GetOperations(refCon);
-		if (operations == null)
-		{
-			return 0;
-		}
-		return operations.GetDescent();
+		return GetOperations(refCon)?.GetDescent() ?? 0f;
 	}
 
-	[MonoPInvokeCallback(typeof(CTRunDelegateGetCallback))]
-	private static nfloat GetWidth(IntPtr refCon)
+	[MonoPInvokeCallback(typeof(CTRunDelegateGetWidthCallback))]
+	private static float GetWidth(IntPtr refCon)
 	{
-		CTRunDelegateOperations operations = GetOperations(refCon);
-		if (operations == null)
-		{
-			return 0;
-		}
-		return operations.GetWidth();
+		return GetOperations(refCon)?.GetWidth() ?? 0f;
 	}
 }

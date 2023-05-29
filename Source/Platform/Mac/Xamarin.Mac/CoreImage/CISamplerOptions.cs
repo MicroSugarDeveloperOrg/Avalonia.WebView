@@ -11,30 +11,23 @@ public class CISamplerOptions
 
 	public CIFilterMode? FilterMode { get; set; }
 
-	public CGColorSpace ColorSpace { get; set; }
-
 	internal NSDictionary ToDictionary()
 	{
 		NSMutableDictionary nSMutableDictionary = new NSMutableDictionary();
 		if (AffineMatrix.HasValue)
 		{
 			CGAffineTransform value = AffineMatrix.Value;
-			using NSArray obj = NSArray.FromObjects(value.xx, value.yx, value.xy, value.yy, value.x0, value.y0);
-			nSMutableDictionary.SetObject(obj, CISampler.AffineMatrix);
+			nSMutableDictionary.SetObject(NSArray.FromNSObjects(NSNumber.FromDouble(value.xx), NSNumber.FromDouble(value.yx), NSNumber.FromDouble(value.xy), NSNumber.FromDouble(value.yy), NSNumber.FromDouble(value.x0), NSNumber.FromDouble(value.y0)), CISampler.AffineMatrix);
 		}
 		if (WrapMode.HasValue)
 		{
-			NSString obj2 = ((WrapMode.Value == CIWrapMode.Black) ? CISampler.WrapBlack : CISampler.FilterNearest);
-			nSMutableDictionary.SetObject(obj2, CISampler.WrapMode);
+			NSString obj = ((WrapMode.Value == CIWrapMode.Black) ? CISampler.WrapBlack : CISampler.FilterNearest);
+			nSMutableDictionary.SetObject(obj, CISampler.WrapMode);
 		}
 		if (FilterMode.HasValue)
 		{
-			NSString obj3 = ((FilterMode.Value == CIFilterMode.Nearest) ? CISampler.FilterNearest : CISampler.FilterLinear);
-			nSMutableDictionary.SetObject(obj3, CISampler.FilterMode);
-		}
-		if (ColorSpace != null)
-		{
-			nSMutableDictionary.LowlevelSetObject(ColorSpace.Handle, CISampler.ColorSpace.Handle);
+			NSString obj2 = ((FilterMode.Value == CIFilterMode.Nearest) ? CISampler.FilterNearest : CISampler.FilterLinear);
+			nSMutableDictionary.SetObject(obj2, CISampler.FilterMode);
 		}
 		return nSMutableDictionary;
 	}

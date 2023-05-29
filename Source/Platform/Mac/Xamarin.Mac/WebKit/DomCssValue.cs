@@ -6,42 +6,30 @@ using ObjCRuntime;
 namespace WebKit;
 
 [Register("DOMCSSValue", true)]
-[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
 public class DomCssValue : DomObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCssText = "cssText";
-
 	private static readonly IntPtr selCssTextHandle = Selector.GetHandle("cssText");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCssValueType = "cssValueType";
-
-	private static readonly IntPtr selCssValueTypeHandle = Selector.GetHandle("cssValueType");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetCssText_ = "setCssText:";
 
 	private static readonly IntPtr selSetCssText_Handle = Selector.GetHandle("setCssText:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("DOMCSSValue");
+	private static readonly IntPtr selCssValueTypeHandle = Selector.GetHandle("cssValueType");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("DOMCSSValue");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string CssText
 	{
-		[Export("cssText", ArgumentSemantic.Copy)]
+		[Export("cssText")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selCssTextHandle));
 			}
 			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCssTextHandle));
 		}
-		[Export("setCssText:", ArgumentSemantic.Copy)]
+		[Export("setCssText:")]
 		set
 		{
 			if (value == null)
@@ -49,7 +37,7 @@ public class DomCssValue : DomObject
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetCssText_Handle, arg);
 			}
@@ -61,13 +49,12 @@ public class DomCssValue : DomObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomCssValueType Type
 	{
 		[Export("cssValueType")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (DomCssValueType)Messaging.UInt16_objc_msgSend(base.Handle, selCssValueTypeHandle);
 			}
@@ -75,16 +62,29 @@ public class DomCssValue : DomObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected DomCssValue(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public DomCssValue(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public DomCssValue(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal DomCssValue(IntPtr handle)
+	public DomCssValue(IntPtr handle)
 		: base(handle)
 	{
 	}

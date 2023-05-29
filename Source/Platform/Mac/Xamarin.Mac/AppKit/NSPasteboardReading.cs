@@ -5,55 +5,58 @@ using ObjCRuntime;
 
 namespace AppKit;
 
-[Protocol]
-[Register("NSPasteboardReading", false)]
+[Register("NSPasteboardReading", true)]
 [Model]
-public abstract class NSPasteboardReading : NSObject, INSPasteboardReading, INativeObject, IDisposable
+public abstract class NSPasteboardReading : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
-	protected NSPasteboardReading()
+	public NSPasteboardReading()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSPasteboardReading(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSPasteboardReading(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSPasteboardReading(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSPasteboardReading(IntPtr handle)
+	public NSPasteboardReading(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
 	}
 
 	[Export("readableTypesForPasteboard:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static string[] GetReadableTypesForPasteboard(NSPasteboard pasteboard)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
+	public abstract string[] GetReadableTypesForPasteboard(NSPasteboard pasteboard);
 
 	[Export("readingOptionsForType:pasteboard:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSPasteboardReadingOptions GetReadingOptionsForType(string type, NSPasteboard pasteboard)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
+	public abstract NSPasteboardReadingOptions GetReadingOptionsForType(string type, NSPasteboard pasteboard);
 
-	[Export("xamarinselector:removed:")]
-	[Obsolete("It will never be called.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Export("initWithPasteboardPropertyList:ofType:")]
 	public abstract NSObject InitWithPasteboardPropertyList(NSObject propertyList, string type);
 }

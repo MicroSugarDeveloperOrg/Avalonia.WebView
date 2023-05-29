@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace CoreMedia;
 
-[Watch(6, 0)]
 public enum CMMuxedStreamType : uint
 {
 	MPEG1System = 1836069235u,

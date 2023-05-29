@@ -1,47 +1,42 @@
 using System;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
 namespace AVFoundation;
 
 [Register("AVCaptureDeviceInput", true)]
-[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
 public class AVCaptureDeviceInput : AVCaptureInput
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDevice = "device";
+	private static NSError globalerr;
 
 	private static readonly IntPtr selDeviceHandle = Selector.GetHandle("device");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDeviceInputWithDevice_Error_ = "deviceInputWithDevice:error:";
+	private static readonly IntPtr selDeviceInputWithDeviceError_Handle = Selector.GetHandle("deviceInputWithDevice:error:");
 
-	private static readonly IntPtr selDeviceInputWithDevice_Error_Handle = Selector.GetHandle("deviceInputWithDevice:error:");
+	private static readonly IntPtr selInitWithDeviceError_Handle = Selector.GetHandle("initWithDevice:error:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithDevice_Error_ = "initWithDevice:error:";
+	private static readonly IntPtr class_ptr = Class.GetHandle("AVCaptureDeviceInput");
 
-	private static readonly IntPtr selInitWithDevice_Error_Handle = Selector.GetHandle("initWithDevice:error:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("AVCaptureDeviceInput");
+	private object __mt_Device_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual AVCaptureDevice Device
 	{
 		[Export("device")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<AVCaptureDevice>(Messaging.IntPtr_objc_msgSend(base.Handle, selDeviceHandle));
-			}
-			return Runtime.GetNSObject<AVCaptureDevice>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDeviceHandle));
+			return (AVCaptureDevice)(__mt_Device_var = ((!IsDirectBinding) ? ((AVCaptureDevice)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDeviceHandle))) : ((AVCaptureDevice)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDeviceHandle)))));
 		}
+	}
+
+	[Obsolete("Use FromDevice (AVCaptureDevice, ref NSError) instead")]
+	public static AVCaptureDeviceInput FromDevice(AVCaptureDevice device, IntPtr handle)
+	{
+		NSError error;
+		return FromDevice(device, out error);
 	}
 
 	public static AVCaptureDeviceInput FromDevice(AVCaptureDevice device)
@@ -50,22 +45,56 @@ public class AVCaptureDeviceInput : AVCaptureInput
 		return FromDevice(device, out error);
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	[Obsolete("Use AVCaptureDeviceInput (AVCaptureDevice, ref NSError) instead")]
+	public AVCaptureDeviceInput(AVCaptureDevice device, IntPtr handle)
+		: this(device, out globalerr)
+	{
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected AVCaptureDeviceInput(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public AVCaptureDeviceInput(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public AVCaptureDeviceInput(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal AVCaptureDeviceInput(IntPtr handle)
+	public AVCaptureDeviceInput(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("deviceInputWithDevice:error:")]
+	public static AVCaptureDeviceInput FromDevice(AVCaptureDevice device, out NSError error)
+	{
+		if (device == null)
+		{
+			throw new ArgumentNullException("device");
+		}
+		IntPtr intPtr = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr, 0);
+		AVCaptureDeviceInput result = (AVCaptureDeviceInput)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selDeviceInputWithDeviceError_Handle, device.Handle, intPtr));
+		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
+		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
+		Marshal.FreeHGlobal(intPtr);
+		return result;
+	}
+
 	[Export("initWithDevice:error:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public AVCaptureDeviceInput(AVCaptureDevice device, out NSError error)
 		: base(NSObjectFlag.Empty)
 	{
@@ -73,29 +102,27 @@ public class AVCaptureDeviceInput : AVCaptureInput
 		{
 			throw new ArgumentNullException("device");
 		}
-		IntPtr arg = IntPtr.Zero;
-		if (base.IsDirectBinding)
+		IntPtr intPtr = Marshal.AllocHGlobal(4);
+		Marshal.WriteInt32(intPtr, 0);
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_ref_IntPtr(base.Handle, selInitWithDevice_Error_Handle, device.Handle, ref arg), "initWithDevice:error:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selInitWithDeviceError_Handle, device.Handle, intPtr);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_ref_IntPtr(base.SuperHandle, selInitWithDevice_Error_Handle, device.Handle, ref arg), "initWithDevice:error:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selInitWithDeviceError_Handle, device.Handle, intPtr);
 		}
-		error = Runtime.GetNSObject<NSError>(arg);
+		IntPtr intPtr2 = Marshal.ReadIntPtr(intPtr);
+		error = ((intPtr2 != IntPtr.Zero) ? ((NSError)Runtime.GetNSObject(intPtr2)) : null);
+		Marshal.FreeHGlobal(intPtr);
 	}
 
-	[Export("deviceInputWithDevice:error:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static AVCaptureDeviceInput? FromDevice(AVCaptureDevice device, out NSError error)
+	protected override void Dispose(bool disposing)
 	{
-		if (device == null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			throw new ArgumentNullException("device");
+			__mt_Device_var = null;
 		}
-		IntPtr arg = IntPtr.Zero;
-		AVCaptureDeviceInput nSObject = Runtime.GetNSObject<AVCaptureDeviceInput>(Messaging.IntPtr_objc_msgSend_IntPtr_ref_IntPtr(class_ptr, selDeviceInputWithDevice_Error_Handle, device.Handle, ref arg));
-		error = Runtime.GetNSObject<NSError>(arg);
-		return nSObject;
 	}
 }

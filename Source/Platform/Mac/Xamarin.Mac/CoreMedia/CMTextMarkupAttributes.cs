@@ -4,14 +4,54 @@ using ObjCRuntime;
 
 namespace CoreMedia;
 
-[Watch(6, 0)]
+[Since(6, 0)]
 public class CMTextMarkupAttributes : DictionaryContainer
 {
+	private static class Keys
+	{
+		public static readonly NSString ForegroundColorARGB;
+
+		public static readonly NSString BackgroundColorARGB;
+
+		public static readonly NSString BoldStyle;
+
+		public static readonly NSString ItalicStyle;
+
+		public static readonly NSString UnderlineStyle;
+
+		public static readonly NSString FontFamilyName;
+
+		public static readonly NSString RelativeFontSize;
+
+		static Keys()
+		{
+			IntPtr intPtr = Dlfcn.dlopen("/System/Library/PrivateFrameworks/CoreMedia.framework/Versions/A/CoreMedia", 0);
+			if (intPtr == IntPtr.Zero)
+			{
+				return;
+			}
+			try
+			{
+				ForegroundColorARGB = Dlfcn.GetStringConstant(intPtr, "kCMTextMarkupAttribute_ForegroundColorARGB");
+				BackgroundColorARGB = Dlfcn.GetStringConstant(intPtr, "kCMTextMarkupAttribute_BackgroundColorARGB");
+				BoldStyle = Dlfcn.GetStringConstant(intPtr, "kCMTextMarkupAttribute_BoldStyle");
+				ItalicStyle = Dlfcn.GetStringConstant(intPtr, "kCMTextMarkupAttribute_ItalicStyle");
+				UnderlineStyle = Dlfcn.GetStringConstant(intPtr, "kCMTextMarkupAttribute_UnderlineStyle");
+				FontFamilyName = Dlfcn.GetStringConstant(intPtr, "kCMTextMarkupAttribute_FontFamilyName");
+				RelativeFontSize = Dlfcn.GetStringConstant(intPtr, "kCMTextMarkupAttribute_RelativeFontSize");
+			}
+			finally
+			{
+				Dlfcn.dlclose(intPtr);
+			}
+		}
+	}
+
 	public TextMarkupColor? ForegroundColor
 	{
 		get
 		{
-			NSNumber[] array = GetArray<NSNumber>(CMTextMarkupAttributesKeys.ForegroundColorARGB);
+			NSNumber[] array = GetArray<NSNumber>(Keys.ForegroundColorARGB);
 			if (array == null)
 			{
 				return null;
@@ -23,7 +63,7 @@ public class CMTextMarkupAttributes : DictionaryContainer
 			if (value.HasValue)
 			{
 				TextMarkupColor value2 = value.Value;
-				SetArrayValue(CMTextMarkupAttributesKeys.ForegroundColorARGB, new NSNumber[4]
+				SetArrayValue(Keys.ForegroundColorARGB, new NSNumber[4]
 				{
 					NSNumber.FromFloat(value2.Alpha),
 					NSNumber.FromFloat(value2.Red),
@@ -33,7 +73,7 @@ public class CMTextMarkupAttributes : DictionaryContainer
 			}
 			else
 			{
-				RemoveValue(CMTextMarkupAttributesKeys.ForegroundColorARGB);
+				RemoveValue(Keys.ForegroundColorARGB);
 			}
 		}
 	}
@@ -42,7 +82,7 @@ public class CMTextMarkupAttributes : DictionaryContainer
 	{
 		get
 		{
-			NSNumber[] array = GetArray<NSNumber>(CMTextMarkupAttributesKeys.BackgroundColorARGB);
+			NSNumber[] array = GetArray<NSNumber>(Keys.BackgroundColorARGB);
 			if (array == null)
 			{
 				return null;
@@ -54,7 +94,7 @@ public class CMTextMarkupAttributes : DictionaryContainer
 			if (value.HasValue)
 			{
 				TextMarkupColor value2 = value.Value;
-				SetArrayValue(CMTextMarkupAttributesKeys.BackgroundColorARGB, new NSNumber[4]
+				SetArrayValue(Keys.BackgroundColorARGB, new NSNumber[4]
 				{
 					NSNumber.FromFloat(value2.Alpha),
 					NSNumber.FromFloat(value2.Red),
@@ -64,7 +104,7 @@ public class CMTextMarkupAttributes : DictionaryContainer
 			}
 			else
 			{
-				RemoveValue(CMTextMarkupAttributesKeys.BackgroundColorARGB);
+				RemoveValue(Keys.BackgroundColorARGB);
 			}
 		}
 	}
@@ -73,11 +113,11 @@ public class CMTextMarkupAttributes : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMTextMarkupAttributesKeys.BoldStyle);
+			return GetBoolValue(Keys.BoldStyle);
 		}
 		set
 		{
-			SetBooleanValue(CMTextMarkupAttributesKeys.BoldStyle, value);
+			SetBooleanValue(Keys.BoldStyle, value);
 		}
 	}
 
@@ -85,11 +125,11 @@ public class CMTextMarkupAttributes : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMTextMarkupAttributesKeys.ItalicStyle);
+			return GetBoolValue(Keys.ItalicStyle);
 		}
 		set
 		{
-			SetBooleanValue(CMTextMarkupAttributesKeys.ItalicStyle, value);
+			SetBooleanValue(Keys.ItalicStyle, value);
 		}
 	}
 
@@ -97,11 +137,11 @@ public class CMTextMarkupAttributes : DictionaryContainer
 	{
 		get
 		{
-			return GetBoolValue(CMTextMarkupAttributesKeys.UnderlineStyle);
+			return GetBoolValue(Keys.UnderlineStyle);
 		}
 		set
 		{
-			SetBooleanValue(CMTextMarkupAttributesKeys.UnderlineStyle, value);
+			SetBooleanValue(Keys.UnderlineStyle, value);
 		}
 	}
 
@@ -109,11 +149,11 @@ public class CMTextMarkupAttributes : DictionaryContainer
 	{
 		get
 		{
-			return GetStringValue(CMTextMarkupAttributesKeys.FontFamilyName);
+			return GetStringValue(Keys.FontFamilyName);
 		}
 		set
 		{
-			SetStringValue(CMTextMarkupAttributesKeys.FontFamilyName, value);
+			SetStringValue(Keys.FontFamilyName, value);
 		}
 	}
 
@@ -121,7 +161,7 @@ public class CMTextMarkupAttributes : DictionaryContainer
 	{
 		get
 		{
-			return GetInt32Value(CMTextMarkupAttributesKeys.RelativeFontSize);
+			return GetInt32Value(Keys.RelativeFontSize);
 		}
 		set
 		{
@@ -129,23 +169,7 @@ public class CMTextMarkupAttributes : DictionaryContainer
 			{
 				throw new ArgumentOutOfRangeException("value");
 			}
-			SetNumberValue(CMTextMarkupAttributesKeys.RelativeFontSize, value);
-		}
-	}
-
-	public float? BaseFontSizePercentageRelativeToVideoHeight
-	{
-		get
-		{
-			return GetFloatValue(CMTextMarkupAttributesKeys.BaseFontSizePercentageRelativeToVideoHeight);
-		}
-		set
-		{
-			if (value < 0f)
-			{
-				throw new ArgumentOutOfRangeException("value");
-			}
-			SetNumberValue(CMTextMarkupAttributesKeys.BaseFontSizePercentageRelativeToVideoHeight, value);
+			SetNumberValue(Keys.RelativeFontSize, value);
 		}
 	}
 

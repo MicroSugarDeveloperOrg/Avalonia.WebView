@@ -6,12 +6,10 @@ using ObjCRuntime;
 
 namespace AppKit;
 
-[Protocol]
-[Register("NSDraggingSource", false)]
+[Register("NSDraggingSource", true)]
 [Model]
-public class NSDraggingSource : NSObject, INSDraggingSource, INativeObject, IDisposable
+public class NSDraggingSource : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IgnoreModifierKeysWhileDragging
 	{
 		[Export("ignoreModifierKeysWhileDragging")]
@@ -21,73 +19,81 @@ public class NSDraggingSource : NSObject, INSDraggingSource, INativeObject, IDis
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSDraggingSource()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		base.IsDirectBinding = false;
-		InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSDraggingSource(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSDraggingSource(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSDraggingSource(NSObjectFlag t)
 		: base(t)
 	{
-		base.IsDirectBinding = false;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSDraggingSource(IntPtr handle)
+	public NSDraggingSource(IntPtr handle)
 		: base(handle)
 	{
-		base.IsDirectBinding = false;
-	}
-
-	[Export("draggedImage:beganAt:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DraggedImageBeganAt(NSImage image, CGPoint screenPoint)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("draggedImage:endedAt:deposited:")]
-	[Deprecated(PlatformName.MacOSX, 10, 1, PlatformArchitecture.All, "Use DraggedImageEndedAtOperation instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DraggedImageEndedAtDeposited(NSImage image, CGPoint screenPoint, bool deposited)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("draggedImage:endedAt:operation:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DraggedImageEndedAtOperation(NSImage image, CGPoint screenPoint, NSDragOperation operation)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
-	}
-
-	[Export("draggedImage:movedTo:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void DraggedImageMovedTo(NSImage image, CGPoint screenPoint)
-	{
-		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("draggingSourceOperationMaskForLocal:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSDragOperation DraggingSourceOperationMaskForLocal(bool flag)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}
 
 	[Export("namesOfPromisedFilesDroppedAtDestination:")]
-	[Deprecated(PlatformName.MacOSX, 10, 13, PlatformArchitecture.None, "Use NSFilePromiseProvider objects instead.")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string[] NamesOfPromisedFilesDroppedAtDestination(NSUrl dropDestination)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("draggedImage:beganAt:")]
+	public virtual void DraggedImageBeganAt(NSImage image, CGPoint screenPoint)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("draggedImage:endedAt:operation:")]
+	public virtual void DraggedImageEndedAtOperation(NSImage image, CGPoint screenPoint, NSDragOperation operation)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("draggedImage:movedTo:")]
+	public virtual void DraggedImageMovedTo(NSImage image, CGPoint screenPoint)
+	{
+		throw new You_Should_Not_Call_base_In_This_Method();
+	}
+
+	[Export("draggedImage:endedAt:deposited:")]
+	[Obsolete("On 10.1 and newer, use DraggedImageEndedAtOperation() instead", false)]
+	public virtual void DraggedImageEndedAtDeposited(NSImage image, CGPoint screenPoint, bool deposited)
 	{
 		throw new You_Should_Not_Call_base_In_This_Method();
 	}

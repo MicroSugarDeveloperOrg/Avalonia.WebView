@@ -1,7 +1,7 @@
 namespace AudioToolbox;
 
-public enum PanningMode : uint
+public enum PanningMode
 {
-	SoundField = 3u,
+	SoundField = 3,
 	VectorBasedPanning
 }

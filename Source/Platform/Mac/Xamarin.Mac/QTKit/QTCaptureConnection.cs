@@ -8,205 +8,93 @@ namespace QTKit;
 [Register("QTCaptureConnection", true)]
 public class QTCaptureConnection : NSObject
 {
-	public static class Notifications
-	{
-		public static NSObject ObserveAttributeDidChange(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(AttributeDidChangeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveAttributeDidChange(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(AttributeDidChangeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveAttributeWillChange(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(AttributeWillChangeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveAttributeWillChange(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(AttributeWillChangeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveFormatDescriptionDidChange(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(FormatDescriptionDidChangeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveFormatDescriptionDidChange(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(FormatDescriptionDidChangeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-
-		public static NSObject ObserveFormatDescriptionWillChange(EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(FormatDescriptionWillChangeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			});
-		}
-
-		public static NSObject ObserveFormatDescriptionWillChange(NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
-		{
-			EventHandler<NSNotificationEventArgs> handler2 = handler;
-			return NSNotificationCenter.DefaultCenter.AddObserver(FormatDescriptionWillChangeNotification, delegate(NSNotification notification)
-			{
-				handler2(null, new NSNotificationEventArgs(notification));
-			}, objectToObserve);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAttributeForKey_ = "attributeForKey:";
-
-	private static readonly IntPtr selAttributeForKey_Handle = Selector.GetHandle("attributeForKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAttributeIsReadOnly_ = "attributeIsReadOnly:";
-
-	private static readonly IntPtr selAttributeIsReadOnly_Handle = Selector.GetHandle("attributeIsReadOnly:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selConnectionAttributes = "connectionAttributes";
-
-	private static readonly IntPtr selConnectionAttributesHandle = Selector.GetHandle("connectionAttributes");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFormatDescription = "formatDescription";
-
-	private static readonly IntPtr selFormatDescriptionHandle = Selector.GetHandle("formatDescription");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsEnabled = "isEnabled";
-
-	private static readonly IntPtr selIsEnabledHandle = Selector.GetHandle("isEnabled");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selMediaType = "mediaType";
+	private static readonly IntPtr selOwnerHandle = Selector.GetHandle("owner");
 
 	private static readonly IntPtr selMediaTypeHandle = Selector.GetHandle("mediaType");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOwner = "owner";
+	private static readonly IntPtr selFormatDescriptionHandle = Selector.GetHandle("formatDescription");
 
-	private static readonly IntPtr selOwnerHandle = Selector.GetHandle("owner");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAttribute_ForKey_ = "setAttribute:forKey:";
-
-	private static readonly IntPtr selSetAttribute_ForKey_Handle = Selector.GetHandle("setAttribute:forKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetConnectionAttributes_ = "setConnectionAttributes:";
-
-	private static readonly IntPtr selSetConnectionAttributes_Handle = Selector.GetHandle("setConnectionAttributes:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetEnabled_ = "setEnabled:";
+	private static readonly IntPtr selIsEnabledHandle = Selector.GetHandle("isEnabled");
 
 	private static readonly IntPtr selSetEnabled_Handle = Selector.GetHandle("setEnabled:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("QTCaptureConnection");
+	private static readonly IntPtr selConnectionAttributesHandle = Selector.GetHandle("connectionAttributes");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _AttributeDidChangeNotification;
+	private static readonly IntPtr selSetConnectionAttributes_Handle = Selector.GetHandle("setConnectionAttributes:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _AttributeWillChangeNotification;
+	private static readonly IntPtr selAttributeIsReadOnly_Handle = Selector.GetHandle("attributeIsReadOnly:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _AudioAveragePowerLevelsAttribute;
+	private static readonly IntPtr selAttributeForKey_Handle = Selector.GetHandle("attributeForKey:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _AudioMasterVolumeAttribute;
+	private static readonly IntPtr selSetAttributeForKey_Handle = Selector.GetHandle("setAttribute:forKey:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _AudioPeakHoldLevelsAttribute;
+	private static readonly IntPtr class_ptr = Class.GetHandle("QTCaptureConnection");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _AudioVolumesAttribute;
+	private object __mt_Owner_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _ChangedAttributeKey;
+	private object __mt_FormatDescription_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _EnabledAudioChannelsAttribute;
+	private object __mt_ConnectionAttributes_var;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _FormatDescriptionDidChangeNotification;
+	private static NSString _FormatDescriptionWillChangeNotification;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _FormatDescriptionWillChangeNotification;
+	private static NSString _FormatDescriptionDidChangeNotification;
 
-	public QTMediaType MediaTypeValue => QTMedia.QTMediaTypeFromNSString((NSString)MediaType);
+	private static NSString _AttributeWillChangeNotification;
+
+	private static NSString _AttributeDidChangeNotification;
+
+	private static NSString _ChangedAttributeKey;
+
+	private static NSString _AudioAveragePowerLevelsAttribute;
+
+	private static NSString _AudioPeakHoldLevelsAttribute;
+
+	private static NSString _AudioMasterVolumeAttribute;
+
+	private static NSString _AudioVolumesAttribute;
+
+	private static NSString _EnabledAudioChannelsAttribute;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSDictionary ConnectionAttributes
+	public virtual NSObject Owner
 	{
-		[Export("connectionAttributes")]
+		[Export("owner")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSend(base.Handle, selConnectionAttributesHandle));
-			}
-			return Runtime.GetNSObject<NSDictionary>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selConnectionAttributesHandle));
-		}
-		[Export("setConnectionAttributes:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetConnectionAttributes_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetConnectionAttributes_Handle, value.Handle);
-			}
+			return (NSObject)(__mt_Owner_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOwnerHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selOwnerHandle))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string MediaType
+	{
+		[Export("mediaType")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMediaTypeHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMediaTypeHandle));
+		}
+	}
+
+	public virtual QTFormatDescription FormatDescription
+	{
+		[Export("formatDescription")]
+		get
+		{
+			return (QTFormatDescription)(__mt_FormatDescription_var = ((!IsDirectBinding) ? ((QTFormatDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFormatDescriptionHandle))) : ((QTFormatDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selFormatDescriptionHandle)))));
+		}
+	}
+
 	public virtual bool Enabled
 	{
 		[Export("isEnabled")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsEnabledHandle);
 			}
@@ -215,7 +103,7 @@ public class QTCaptureConnection : NSObject
 		[Export("setEnabled:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetEnabled_Handle, value);
 			}
@@ -226,64 +114,59 @@ public class QTCaptureConnection : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual QTFormatDescription FormatDescription
+	public virtual NSDictionary ConnectionAttributes
 	{
-		[Export("formatDescription")]
+		[Export("connectionAttributes")]
 		get
 		{
-			if (base.IsDirectBinding)
+			return (NSDictionary)(__mt_ConnectionAttributes_var = ((!IsDirectBinding) ? ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selConnectionAttributesHandle))) : ((NSDictionary)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selConnectionAttributesHandle)))));
+		}
+		[Export("setConnectionAttributes:")]
+		set
+		{
+			if (value == null)
 			{
-				return Runtime.GetNSObject<QTFormatDescription>(Messaging.IntPtr_objc_msgSend(base.Handle, selFormatDescriptionHandle));
+				throw new ArgumentNullException("value");
 			}
-			return Runtime.GetNSObject<QTFormatDescription>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFormatDescriptionHandle));
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetConnectionAttributes_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetConnectionAttributes_Handle, value.Handle);
+			}
+			__mt_ConnectionAttributes_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string MediaType
+	[Field("QTCaptureConnectionFormatDescriptionWillChangeNotification", "QTKit")]
+	public static NSString FormatDescriptionWillChangeNotification
 	{
-		[Export("mediaType")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (_FormatDescriptionWillChangeNotification == null)
 			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selMediaTypeHandle));
+				_FormatDescriptionWillChangeNotification = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureConnectionFormatDescriptionWillChangeNotification");
 			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMediaTypeHandle));
+			return _FormatDescriptionWillChangeNotification;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject Owner
-	{
-		[Export("owner")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selOwnerHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOwnerHandle));
-		}
-	}
-
-	[Field("QTCaptureConnectionAttributeDidChangeNotification", "QTKit")]
-	[Advice("Use QTCaptureConnection.Notifications.ObserveAttributeDidChange helper method instead.")]
-	public static NSString AttributeDidChangeNotification
+	[Field("QTCaptureConnectionFormatDescriptionDidChangeNotification", "QTKit")]
+	public static NSString FormatDescriptionDidChangeNotification
 	{
 		get
 		{
-			if (_AttributeDidChangeNotification == null)
+			if (_FormatDescriptionDidChangeNotification == null)
 			{
-				_AttributeDidChangeNotification = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureConnectionAttributeDidChangeNotification");
+				_FormatDescriptionDidChangeNotification = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureConnectionFormatDescriptionDidChangeNotification");
 			}
-			return _AttributeDidChangeNotification;
+			return _FormatDescriptionDidChangeNotification;
 		}
 	}
 
 	[Field("QTCaptureConnectionAttributeWillChangeNotification", "QTKit")]
-	[Advice("Use QTCaptureConnection.Notifications.ObserveAttributeWillChange helper method instead.")]
 	public static NSString AttributeWillChangeNotification
 	{
 		get
@@ -296,55 +179,16 @@ public class QTCaptureConnection : NSObject
 		}
 	}
 
-	[Field("QTCaptureConnectionAudioAveragePowerLevelsAttribute", "QTKit")]
-	public static NSString AudioAveragePowerLevelsAttribute
+	[Field("QTCaptureConnectionAttributeDidChangeNotification", "QTKit")]
+	public static NSString AttributeDidChangeNotification
 	{
 		get
 		{
-			if (_AudioAveragePowerLevelsAttribute == null)
+			if (_AttributeDidChangeNotification == null)
 			{
-				_AudioAveragePowerLevelsAttribute = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureConnectionAudioAveragePowerLevelsAttribute");
+				_AttributeDidChangeNotification = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureConnectionAttributeDidChangeNotification");
 			}
-			return _AudioAveragePowerLevelsAttribute;
-		}
-	}
-
-	[Field("QTCaptureConnectionAudioMasterVolumeAttribute", "QTKit")]
-	public static NSString AudioMasterVolumeAttribute
-	{
-		get
-		{
-			if (_AudioMasterVolumeAttribute == null)
-			{
-				_AudioMasterVolumeAttribute = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureConnectionAudioMasterVolumeAttribute");
-			}
-			return _AudioMasterVolumeAttribute;
-		}
-	}
-
-	[Field("QTCaptureConnectionAudioPeakHoldLevelsAttribute", "QTKit")]
-	public static NSString AudioPeakHoldLevelsAttribute
-	{
-		get
-		{
-			if (_AudioPeakHoldLevelsAttribute == null)
-			{
-				_AudioPeakHoldLevelsAttribute = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureConnectionAudioPeakHoldLevelsAttribute");
-			}
-			return _AudioPeakHoldLevelsAttribute;
-		}
-	}
-
-	[Field("QTCaptureConnectionAudioVolumesAttribute", "QTKit")]
-	public static NSString AudioVolumesAttribute
-	{
-		get
-		{
-			if (_AudioVolumesAttribute == null)
-			{
-				_AudioVolumesAttribute = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureConnectionAudioVolumesAttribute");
-			}
-			return _AudioVolumesAttribute;
+			return _AttributeDidChangeNotification;
 		}
 	}
 
@@ -361,6 +205,58 @@ public class QTCaptureConnection : NSObject
 		}
 	}
 
+	[Field("QTCaptureConnectionAudioAveragePowerLevelsAttribute", "QTKit")]
+	public static NSString AudioAveragePowerLevelsAttribute
+	{
+		get
+		{
+			if (_AudioAveragePowerLevelsAttribute == null)
+			{
+				_AudioAveragePowerLevelsAttribute = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureConnectionAudioAveragePowerLevelsAttribute");
+			}
+			return _AudioAveragePowerLevelsAttribute;
+		}
+	}
+
+	[Field("QTCaptureConnectionAudioPeakHoldLevelsAttribute", "QTKit")]
+	public static NSString AudioPeakHoldLevelsAttribute
+	{
+		get
+		{
+			if (_AudioPeakHoldLevelsAttribute == null)
+			{
+				_AudioPeakHoldLevelsAttribute = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureConnectionAudioPeakHoldLevelsAttribute");
+			}
+			return _AudioPeakHoldLevelsAttribute;
+		}
+	}
+
+	[Field("QTCaptureConnectionAudioMasterVolumeAttribute", "QTKit")]
+	public static NSString AudioMasterVolumeAttribute
+	{
+		get
+		{
+			if (_AudioMasterVolumeAttribute == null)
+			{
+				_AudioMasterVolumeAttribute = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureConnectionAudioMasterVolumeAttribute");
+			}
+			return _AudioMasterVolumeAttribute;
+		}
+	}
+
+	[Field("QTCaptureConnectionAudioVolumesAttribute", "QTKit")]
+	public static NSString AudioVolumesAttribute
+	{
+		get
+		{
+			if (_AudioVolumesAttribute == null)
+			{
+				_AudioVolumesAttribute = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureConnectionAudioVolumesAttribute");
+			}
+			return _AudioVolumesAttribute;
+		}
+	}
+
 	[Field("QTCaptureConnectionEnabledAudioChannelsAttribute", "QTKit")]
 	public static NSString EnabledAudioChannelsAttribute
 	{
@@ -374,91 +270,49 @@ public class QTCaptureConnection : NSObject
 		}
 	}
 
-	[Field("QTCaptureConnectionFormatDescriptionDidChangeNotification", "QTKit")]
-	[Advice("Use QTCaptureConnection.Notifications.ObserveFormatDescriptionDidChange helper method instead.")]
-	public static NSString FormatDescriptionDidChangeNotification
-	{
-		get
-		{
-			if (_FormatDescriptionDidChangeNotification == null)
-			{
-				_FormatDescriptionDidChangeNotification = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureConnectionFormatDescriptionDidChangeNotification");
-			}
-			return _FormatDescriptionDidChangeNotification;
-		}
-	}
-
-	[Field("QTCaptureConnectionFormatDescriptionWillChangeNotification", "QTKit")]
-	[Advice("Use QTCaptureConnection.Notifications.ObserveFormatDescriptionWillChange helper method instead.")]
-	public static NSString FormatDescriptionWillChangeNotification
-	{
-		get
-		{
-			if (_FormatDescriptionWillChangeNotification == null)
-			{
-				_FormatDescriptionWillChangeNotification = Dlfcn.GetStringConstant(Libraries.QTKit.Handle, "QTCaptureConnectionFormatDescriptionWillChangeNotification");
-			}
-			return _FormatDescriptionWillChangeNotification;
-		}
-	}
-
-	public NSObject GetAttribute(string attributeKey)
-	{
-		return GetAttribute((NSString)attributeKey);
-	}
-
-	public void SetAttribute(NSObject attribute, string key)
-	{
-		SetAttribute(attribute, (NSString)key);
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public QTCaptureConnection()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected QTCaptureConnection(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public QTCaptureConnection(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public QTCaptureConnection(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal QTCaptureConnection(IntPtr handle)
+	public QTCaptureConnection(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("attributeForKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject GetAttribute(NSString attributeKey)
-	{
-		if (attributeKey == null)
-		{
-			throw new ArgumentNullException("attributeKey");
-		}
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAttributeForKey_Handle, attributeKey.Handle));
-		}
-		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAttributeForKey_Handle, attributeKey.Handle));
-	}
-
 	[Export("attributeIsReadOnly:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual bool IsAttributeReadOnly(string attributeKey)
 	{
 		if (attributeKey == null)
@@ -466,14 +320,26 @@ public class QTCaptureConnection : NSObject
 			throw new ArgumentNullException("attributeKey");
 		}
 		IntPtr arg = NSString.CreateNative(attributeKey);
-		bool result = ((!base.IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selAttributeIsReadOnly_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selAttributeIsReadOnly_Handle, arg));
+		bool result = ((!IsDirectBinding) ? Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selAttributeIsReadOnly_Handle, arg) : Messaging.bool_objc_msgSend_IntPtr(base.Handle, selAttributeIsReadOnly_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
+	[Export("attributeForKey:")]
+	public virtual NSObject GetAttribute(string attributeKey)
+	{
+		if (attributeKey == null)
+		{
+			throw new ArgumentNullException("attributeKey");
+		}
+		IntPtr arg = NSString.CreateNative(attributeKey);
+		NSObject result = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selAttributeForKey_Handle, arg)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selAttributeForKey_Handle, arg)));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
 
 	[Export("setAttribute:forKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SetAttribute(NSObject attribute, NSString key)
+	public virtual void SetAttribute(NSObject attribute, string key)
 	{
 		if (attribute == null)
 		{
@@ -483,13 +349,26 @@ public class QTCaptureConnection : NSObject
 		{
 			throw new ArgumentNullException("key");
 		}
-		if (base.IsDirectBinding)
+		IntPtr arg = NSString.CreateNative(key);
+		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetAttribute_ForKey_Handle, attribute.Handle, key.Handle);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr(base.Handle, selSetAttributeForKey_Handle, attribute.Handle, arg);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetAttribute_ForKey_Handle, attribute.Handle, key.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selSetAttributeForKey_Handle, attribute.Handle, arg);
+		}
+		NSString.ReleaseNative(arg);
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_Owner_var = null;
+			__mt_FormatDescription_var = null;
+			__mt_ConnectionAttributes_var = null;
 		}
 	}
 }

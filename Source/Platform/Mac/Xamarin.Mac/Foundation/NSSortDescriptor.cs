@@ -5,94 +5,34 @@ using ObjCRuntime;
 namespace Foundation;
 
 [Register("NSSortDescriptor", true)]
-public class NSSortDescriptor : NSObject, INSCoding, INativeObject, IDisposable, INSCopying, INSSecureCoding
+public class NSSortDescriptor : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAllowEvaluation = "allowEvaluation";
+	private static readonly IntPtr selKeyHandle = Selector.GetHandle("key");
 
-	private static readonly IntPtr selAllowEvaluationHandle = ObjCRuntime.Selector.GetHandle("allowEvaluation");
+	private static readonly IntPtr selAscendingHandle = Selector.GetHandle("ascending");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAscending = "ascending";
+	private static readonly IntPtr selSelectorHandle = Selector.GetHandle("selector");
 
-	private static readonly IntPtr selAscendingHandle = ObjCRuntime.Selector.GetHandle("ascending");
+	private static readonly IntPtr selReversedSortDescriptorHandle = Selector.GetHandle("reversedSortDescriptor");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCompareObject_ToObject_ = "compareObject:toObject:";
+	private static readonly IntPtr selInitWithKeyAscending_Handle = Selector.GetHandle("initWithKey:ascending:");
 
-	private static readonly IntPtr selCompareObject_ToObject_Handle = ObjCRuntime.Selector.GetHandle("compareObject:toObject:");
+	private static readonly IntPtr selInitWithKeyAscendingSelector_Handle = Selector.GetHandle("initWithKey:ascending:selector:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCopyWithZone_ = "copyWithZone:";
+	private static readonly IntPtr selCompareObjectToObject_Handle = Selector.GetHandle("compareObject:toObject:");
 
-	private static readonly IntPtr selCopyWithZone_Handle = ObjCRuntime.Selector.GetHandle("copyWithZone:");
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSSortDescriptor");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = ObjCRuntime.Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
-
-	private static readonly IntPtr selInitWithCoder_Handle = ObjCRuntime.Selector.GetHandle("initWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithKey_Ascending_ = "initWithKey:ascending:";
-
-	private static readonly IntPtr selInitWithKey_Ascending_Handle = ObjCRuntime.Selector.GetHandle("initWithKey:ascending:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithKey_Ascending_Comparator_ = "initWithKey:ascending:comparator:";
-
-	private static readonly IntPtr selInitWithKey_Ascending_Comparator_Handle = ObjCRuntime.Selector.GetHandle("initWithKey:ascending:comparator:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithKey_Ascending_Selector_ = "initWithKey:ascending:selector:";
-
-	private static readonly IntPtr selInitWithKey_Ascending_Selector_Handle = ObjCRuntime.Selector.GetHandle("initWithKey:ascending:selector:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selKey = "key";
-
-	private static readonly IntPtr selKeyHandle = ObjCRuntime.Selector.GetHandle("key");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selReversedSortDescriptor = "reversedSortDescriptor";
-
-	private static readonly IntPtr selReversedSortDescriptorHandle = ObjCRuntime.Selector.GetHandle("reversedSortDescriptor");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSelector = "selector";
-
-	private static readonly IntPtr selSelectorHandle = ObjCRuntime.Selector.GetHandle("selector");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSSortDescriptor");
+	private object __mt_ReversedSortDescriptor_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool Ascending
-	{
-		[Export("ascending")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAscendingHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAscendingHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string Key
 	{
 		[Export("key")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selKeyHandle));
 			}
@@ -100,83 +40,84 @@ public class NSSortDescriptor : NSObject, INSCoding, INativeObject, IDisposable,
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject ReversedSortDescriptor
+	public virtual bool Ascending
 	{
-		[Export("reversedSortDescriptor")]
+		[Export("ascending")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selReversedSortDescriptorHandle));
+				return Messaging.bool_objc_msgSend(base.Handle, selAscendingHandle);
 			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selReversedSortDescriptorHandle));
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAscendingHandle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual Selector Selector
 	{
 		[Export("selector")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return ObjCRuntime.Selector.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectorHandle));
+				return Selector.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selSelectorHandle));
 			}
-			return ObjCRuntime.Selector.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectorHandle));
+			return Selector.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSelectorHandle));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual NSObject ReversedSortDescriptor
+	{
+		[Export("reversedSortDescriptor")]
+		get
+		{
+			return (NSObject)(__mt_ReversedSortDescriptor_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selReversedSortDescriptorHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selReversedSortDescriptorHandle))));
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSSortDescriptor()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, ObjCRuntime.Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, ObjCRuntime.Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSSortDescriptor(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, ObjCRuntime.Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, ObjCRuntime.Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSSortDescriptor(NSObjectFlag t)
+	public NSSortDescriptor(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSSortDescriptor(IntPtr handle)
+	public NSSortDescriptor(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("initWithKey:ascending:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSSortDescriptor(string key, bool ascending)
 		: base(NSObjectFlag.Empty)
 	{
@@ -185,19 +126,18 @@ public class NSSortDescriptor : NSObject, INSCoding, INativeObject, IDisposable,
 			throw new ArgumentNullException("key");
 		}
 		IntPtr arg = NSString.CreateNative(key);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_bool(base.Handle, selInitWithKey_Ascending_Handle, arg, ascending), "initWithKey:ascending:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_bool(base.Handle, selInitWithKeyAscending_Handle, arg, ascending);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selInitWithKey_Ascending_Handle, arg, ascending), "initWithKey:ascending:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selInitWithKeyAscending_Handle, arg, ascending);
 		}
 		NSString.ReleaseNative(arg);
 	}
 
 	[Export("initWithKey:ascending:selector:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSSortDescriptor(string key, bool ascending, Selector selector)
 		: base(NSObjectFlag.Empty)
 	{
@@ -210,64 +150,18 @@ public class NSSortDescriptor : NSObject, INSCoding, INativeObject, IDisposable,
 			throw new ArgumentNullException("selector");
 		}
 		IntPtr arg = NSString.CreateNative(key);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_bool_IntPtr(base.Handle, selInitWithKey_Ascending_Selector_Handle, arg, ascending, selector.Handle), "initWithKey:ascending:selector:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr_bool_IntPtr(base.Handle, selInitWithKeyAscendingSelector_Handle, arg, ascending, selector.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool_IntPtr(base.SuperHandle, selInitWithKey_Ascending_Selector_Handle, arg, ascending, selector.Handle), "initWithKey:ascending:selector:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool_IntPtr(base.SuperHandle, selInitWithKeyAscendingSelector_Handle, arg, ascending, selector.Handle);
 		}
 		NSString.ReleaseNative(arg);
-	}
-
-	[Export("initWithKey:ascending:comparator:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe NSSortDescriptor(string key, bool ascending, [BlockProxy(typeof(Trampolines.NIDNSComparator))] NSComparator comparator)
-		: base(NSObjectFlag.Empty)
-	{
-		if (key == null)
-		{
-			throw new ArgumentNullException("key");
-		}
-		if (comparator == null)
-		{
-			throw new ArgumentNullException("comparator");
-		}
-		IntPtr arg = NSString.CreateNative(key);
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDNSComparator.Handler, comparator);
-		if (base.IsDirectBinding)
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr_bool_IntPtr(base.Handle, selInitWithKey_Ascending_Comparator_Handle, arg, ascending, (IntPtr)ptr), "initWithKey:ascending:comparator:");
-		}
-		else
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool_IntPtr(base.SuperHandle, selInitWithKey_Ascending_Comparator_Handle, arg, ascending, (IntPtr)ptr), "initWithKey:ascending:comparator:");
-		}
-		NSString.ReleaseNative(arg);
-		ptr->CleanupBlock();
-	}
-
-	[Export("allowEvaluation")]
-	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void AllowEvaluation()
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selAllowEvaluationHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selAllowEvaluationHandle);
-		}
 	}
 
 	[Export("compareObject:toObject:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSComparisonResult Compare(NSObject object1, NSObject object2)
 	{
 		if (object1 == null)
@@ -278,41 +172,19 @@ public class NSSortDescriptor : NSObject, INSCoding, INativeObject, IDisposable,
 		{
 			throw new ArgumentNullException("object2");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			return (NSComparisonResult)Messaging.Int64_objc_msgSend_IntPtr_IntPtr(base.Handle, selCompareObject_ToObject_Handle, object1.Handle, object2.Handle);
+			return (NSComparisonResult)Messaging.Int64_objc_msgSend_IntPtr_IntPtr(base.Handle, selCompareObjectToObject_Handle, object1.Handle, object2.Handle);
 		}
-		return (NSComparisonResult)Messaging.Int64_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selCompareObject_ToObject_Handle, object1.Handle, object2.Handle);
+		return (NSComparisonResult)Messaging.Int64_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selCompareObjectToObject_Handle, object1.Handle, object2.Handle);
 	}
 
-	[Export("copyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject Copy(NSZone? zone)
+	protected override void Dispose(bool disposing)
 	{
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			Messaging.void_objc_msgSend(nSObject.Handle, ObjCRuntime.Selector.GetHandle("release"));
-		}
-		return nSObject;
-	}
-
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
-	{
-		if (encoder == null)
-		{
-			throw new ArgumentNullException("encoder");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
+			__mt_ReversedSortDescriptor_var = null;
 		}
 	}
 }

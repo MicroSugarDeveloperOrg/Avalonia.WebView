@@ -3,9 +3,8 @@ using System;
 namespace CoreGraphics;
 
 [Flags]
-public enum CGGradientDrawingOptions : uint
+public enum CGGradientDrawingOptions
 {
-	None = 0u,
-	DrawsBeforeStartLocation = 1u,
-	DrawsAfterEndLocation = 2u
+	DrawsBeforeStartLocation = 1,
+	DrawsAfterEndLocation = 2
 }

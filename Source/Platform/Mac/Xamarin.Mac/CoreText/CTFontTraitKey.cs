@@ -4,6 +4,7 @@ using ObjCRuntime;
 
 namespace CoreText;
 
+[Since(3, 2)]
 public static class CTFontTraitKey
 {
 	public static readonly NSString Symbolic;
@@ -16,10 +17,21 @@ public static class CTFontTraitKey
 
 	static CTFontTraitKey()
 	{
-		IntPtr handle = Libraries.CoreText.Handle;
-		Symbolic = Dlfcn.GetStringConstant(handle, "kCTFontSymbolicTrait");
-		Weight = Dlfcn.GetStringConstant(handle, "kCTFontWeightTrait");
-		Width = Dlfcn.GetStringConstant(handle, "kCTFontWidthTrait");
-		Slant = Dlfcn.GetStringConstant(handle, "kCTFontSlantTrait");
+		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText", 0);
+		if (intPtr == IntPtr.Zero)
+		{
+			return;
+		}
+		try
+		{
+			Symbolic = Dlfcn.GetStringConstant(intPtr, "kCTFontSymbolicTrait");
+			Weight = Dlfcn.GetStringConstant(intPtr, "kCTFontWeightTrait");
+			Width = Dlfcn.GetStringConstant(intPtr, "kCTFontWidthTrait");
+			Slant = Dlfcn.GetStringConstant(intPtr, "kCTFontSlantTrait");
+		}
+		finally
+		{
+			Dlfcn.dlclose(intPtr);
+		}
 	}
 }

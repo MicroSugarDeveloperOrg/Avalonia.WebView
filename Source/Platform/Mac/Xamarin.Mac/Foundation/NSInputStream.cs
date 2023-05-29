@@ -1,8 +1,8 @@
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using CoreFoundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace Foundation;
 
@@ -17,84 +17,47 @@ public class NSInputStream : NSStream
 
 	private CFStreamClientContext context;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHasBytesAvailable = "hasBytesAvailable";
-
 	private static readonly IntPtr selHasBytesAvailableHandle = Selector.GetHandle("hasBytesAvailable");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithData_ = "initWithData:";
-
-	private static readonly IntPtr selInitWithData_Handle = Selector.GetHandle("initWithData:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithFileAtPath_ = "initWithFileAtPath:";
 
 	private static readonly IntPtr selInitWithFileAtPath_Handle = Selector.GetHandle("initWithFileAtPath:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithURL_ = "initWithURL:";
+	private static readonly IntPtr selInitWithData_Handle = Selector.GetHandle("initWithData:");
 
 	private static readonly IntPtr selInitWithURL_Handle = Selector.GetHandle("initWithURL:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInputStreamWithData_ = "inputStreamWithData:";
-
 	private static readonly IntPtr selInputStreamWithData_Handle = Selector.GetHandle("inputStreamWithData:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInputStreamWithFileAtPath_ = "inputStreamWithFileAtPath:";
 
 	private static readonly IntPtr selInputStreamWithFileAtPath_Handle = Selector.GetHandle("inputStreamWithFileAtPath:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInputStreamWithURL_ = "inputStreamWithURL:";
-
 	private static readonly IntPtr selInputStreamWithURL_Handle = Selector.GetHandle("inputStreamWithURL:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSInputStream");
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSInputStream");
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public nint Read(byte[] buffer, nuint len)
+	public long Read(byte[] buffer, ulong len)
 	{
 		return objc_msgSend(base.Handle, Selector.GetHandle("read:maxLength:"), buffer, len);
 	}
 
-	public unsafe nint Read(byte[] buffer, int offset, nuint len)
-	{
-		if (offset + (long)len > buffer.Length)
-		{
-			throw new ArgumentException();
-		}
-		fixed (byte* ptr = &buffer[offset])
-		{
-			return Read((IntPtr)ptr, len);
-		}
-	}
+	[DllImport("/usr/lib/libobjc.dylib")]
+	private static extern long objc_msgSend(IntPtr handle, IntPtr sel, [In][Out] byte[] buffer, ulong len);
 
 	[DllImport("/usr/lib/libobjc.dylib")]
-	private static extern nint objc_msgSend(IntPtr handle, IntPtr sel, [In][Out] byte[] buffer, nuint len);
-
-	[DllImport("/usr/lib/libobjc.dylib")]
-	private static extern nint objc_msgSend(IntPtr handle, IntPtr sel, IntPtr buffer, nuint len);
-
-	[DllImport("/usr/lib/libobjc.dylib")]
-	private static extern nint objc_msgSendSuper(IntPtr handle, IntPtr sel, IntPtr buffer, nuint len);
+	private static extern long objc_msgSend(IntPtr handle, IntPtr sel, IntPtr buffer, ulong len);
 
 	[Export("read:maxLength:")]
-	public virtual nint Read(IntPtr buffer, nuint len)
+	public virtual long Read(IntPtr buffer, ulong len)
 	{
 		if (buffer == IntPtr.Zero)
 		{
 			throw new ArgumentNullException("buffer");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			return objc_msgSend(base.Handle, Selector.GetHandle("read:maxLength:"), buffer, len);
 		}
-		return objc_msgSendSuper(base.SuperHandle, Selector.GetHandle("read:maxLength:"), buffer, len);
+		return objc_msgSend(base.SuperHandle, Selector.GetHandle("read:maxLength:"), buffer, len);
 	}
 
 	protected override void Dispose(bool disposing)
@@ -125,10 +88,10 @@ public class NSInputStream : NSStream
 	}
 
 	[Export("getBuffer:length:")]
-	protected virtual bool GetBuffer(out IntPtr buffer, out nuint len)
+	protected virtual bool GetBuffer(out IntPtr buffer, out uint len)
 	{
 		buffer = IntPtr.Zero;
-		len = (byte)0;
+		len = 0u;
 		return false;
 	}
 
@@ -140,38 +103,59 @@ public class NSInputStream : NSStream
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	protected NSInputStream()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSInputStream(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSInputStream(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSInputStream(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSInputStream(IntPtr handle)
+	public NSInputStream(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("hasBytesAvailable")]
+	public virtual bool HasBytesAvailable()
+	{
+		if (IsDirectBinding)
+		{
+			return Messaging.bool_objc_msgSend(base.Handle, selHasBytesAvailableHandle);
+		}
+		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selHasBytesAvailableHandle);
+	}
+
 	[Export("initWithFileAtPath:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSInputStream(string path)
 		: base(NSObjectFlag.Empty)
 	{
@@ -180,20 +164,18 @@ public class NSInputStream : NSStream
 			throw new ArgumentNullException("path");
 		}
 		IntPtr arg = NSString.CreateNative(path);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithFileAtPath_Handle, arg), "initWithFileAtPath:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithFileAtPath_Handle, arg);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithFileAtPath_Handle, arg), "initWithFileAtPath:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithFileAtPath_Handle, arg);
 		}
 		NSString.ReleaseNative(arg);
 	}
 
 	[Export("initWithData:")]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSInputStream(NSData data)
 		: base(NSObjectFlag.Empty)
 	{
@@ -201,19 +183,17 @@ public class NSInputStream : NSStream
 		{
 			throw new ArgumentNullException("data");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithData_Handle, data.Handle), "initWithData:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithData_Handle, data.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithData_Handle, data.Handle), "initWithData:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithData_Handle, data.Handle);
 		}
 	}
 
 	[Export("initWithURL:")]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSInputStream(NSUrl url)
 		: base(NSObjectFlag.Empty)
 	{
@@ -221,29 +201,27 @@ public class NSInputStream : NSStream
 		{
 			throw new ArgumentNullException("url");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithURL_Handle, url.Handle), "initWithURL:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithURL_Handle, url.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithURL_Handle, url.Handle), "initWithURL:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithURL_Handle, url.Handle);
 		}
 	}
 
 	[Export("inputStreamWithData:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSInputStream FromData(NSData data)
 	{
 		if (data == null)
 		{
 			throw new ArgumentNullException("data");
 		}
-		return Runtime.GetNSObject<NSInputStream>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selInputStreamWithData_Handle, data.Handle));
+		return (NSInputStream)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selInputStreamWithData_Handle, data.Handle));
 	}
 
 	[Export("inputStreamWithFileAtPath:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSInputStream FromFile(string path)
 	{
 		if (path == null)
@@ -251,30 +229,18 @@ public class NSInputStream : NSStream
 			throw new ArgumentNullException("path");
 		}
 		IntPtr arg = NSString.CreateNative(path);
-		NSInputStream nSObject = Runtime.GetNSObject<NSInputStream>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selInputStreamWithFileAtPath_Handle, arg));
+		NSInputStream result = (NSInputStream)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selInputStreamWithFileAtPath_Handle, arg));
 		NSString.ReleaseNative(arg);
-		return nSObject;
+		return result;
 	}
 
 	[Export("inputStreamWithURL:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSInputStream FromUrl(NSUrl url)
 	{
 		if (url == null)
 		{
 			throw new ArgumentNullException("url");
 		}
-		return Runtime.GetNSObject<NSInputStream>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selInputStreamWithURL_Handle, url.Handle));
-	}
-
-	[Export("hasBytesAvailable")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool HasBytesAvailable()
-	{
-		if (base.IsDirectBinding)
-		{
-			return Messaging.bool_objc_msgSend(base.Handle, selHasBytesAvailableHandle);
-		}
-		return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selHasBytesAvailableHandle);
+		return (NSInputStream)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selInputStreamWithURL_Handle, url.Handle));
 	}
 }

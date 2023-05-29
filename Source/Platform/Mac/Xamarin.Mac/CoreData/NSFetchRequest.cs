@@ -1,600 +1,230 @@
+using System;
 using System.ComponentModel;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreData;
 
 [Register("NSFetchRequest", true)]
-public class NSFetchRequest : NSPersistentStoreRequest, INSCoding, INativeObject, IDisposable
+public class NSFetchRequest : NSPersistentStoreRequest
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAffectedStores = "affectedStores";
-
-	private static readonly IntPtr selAffectedStoresHandle = Selector.GetHandle("affectedStores");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEntity = "entity";
-
 	private static readonly IntPtr selEntityHandle = Selector.GetHandle("entity");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEntityName = "entityName";
-
-	private static readonly IntPtr selEntityNameHandle = Selector.GetHandle("entityName");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExecute_ = "execute:";
-
-	private static readonly IntPtr selExecute_Handle = Selector.GetHandle("execute:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFetchBatchSize = "fetchBatchSize";
-
-	private static readonly IntPtr selFetchBatchSizeHandle = Selector.GetHandle("fetchBatchSize");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFetchLimit = "fetchLimit";
-
-	private static readonly IntPtr selFetchLimitHandle = Selector.GetHandle("fetchLimit");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFetchOffset = "fetchOffset";
-
-	private static readonly IntPtr selFetchOffsetHandle = Selector.GetHandle("fetchOffset");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFetchRequestWithEntityName_ = "fetchRequestWithEntityName:";
-
-	private static readonly IntPtr selFetchRequestWithEntityName_Handle = Selector.GetHandle("fetchRequestWithEntityName:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selHavingPredicate = "havingPredicate";
-
-	private static readonly IntPtr selHavingPredicateHandle = Selector.GetHandle("havingPredicate");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIncludesPendingChanges = "includesPendingChanges";
-
-	private static readonly IntPtr selIncludesPendingChangesHandle = Selector.GetHandle("includesPendingChanges");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIncludesPropertyValues = "includesPropertyValues";
-
-	private static readonly IntPtr selIncludesPropertyValuesHandle = Selector.GetHandle("includesPropertyValues");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIncludesSubentities = "includesSubentities";
-
-	private static readonly IntPtr selIncludesSubentitiesHandle = Selector.GetHandle("includesSubentities");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInit = "init";
-
-	private static readonly IntPtr selInitHandle = Selector.GetHandle("init");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
-
-	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithEntityName_ = "initWithEntityName:";
-
-	private static readonly IntPtr selInitWithEntityName_Handle = Selector.GetHandle("initWithEntityName:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPredicate = "predicate";
-
-	private static readonly IntPtr selPredicateHandle = Selector.GetHandle("predicate");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPropertiesToFetch = "propertiesToFetch";
-
-	private static readonly IntPtr selPropertiesToFetchHandle = Selector.GetHandle("propertiesToFetch");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPropertiesToGroupBy = "propertiesToGroupBy";
-
-	private static readonly IntPtr selPropertiesToGroupByHandle = Selector.GetHandle("propertiesToGroupBy");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRelationshipKeyPathsForPrefetching = "relationshipKeyPathsForPrefetching";
-
-	private static readonly IntPtr selRelationshipKeyPathsForPrefetchingHandle = Selector.GetHandle("relationshipKeyPathsForPrefetching");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selResultType = "resultType";
-
-	private static readonly IntPtr selResultTypeHandle = Selector.GetHandle("resultType");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selReturnsDistinctResults = "returnsDistinctResults";
-
-	private static readonly IntPtr selReturnsDistinctResultsHandle = Selector.GetHandle("returnsDistinctResults");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selReturnsObjectsAsFaults = "returnsObjectsAsFaults";
-
-	private static readonly IntPtr selReturnsObjectsAsFaultsHandle = Selector.GetHandle("returnsObjectsAsFaults");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAffectedStores_ = "setAffectedStores:";
-
-	private static readonly IntPtr selSetAffectedStores_Handle = Selector.GetHandle("setAffectedStores:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetEntity_ = "setEntity:";
 
 	private static readonly IntPtr selSetEntity_Handle = Selector.GetHandle("setEntity:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetFetchBatchSize_ = "setFetchBatchSize:";
-
-	private static readonly IntPtr selSetFetchBatchSize_Handle = Selector.GetHandle("setFetchBatchSize:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetFetchLimit_ = "setFetchLimit:";
-
-	private static readonly IntPtr selSetFetchLimit_Handle = Selector.GetHandle("setFetchLimit:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetFetchOffset_ = "setFetchOffset:";
-
-	private static readonly IntPtr selSetFetchOffset_Handle = Selector.GetHandle("setFetchOffset:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetHavingPredicate_ = "setHavingPredicate:";
-
-	private static readonly IntPtr selSetHavingPredicate_Handle = Selector.GetHandle("setHavingPredicate:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetIncludesPendingChanges_ = "setIncludesPendingChanges:";
-
-	private static readonly IntPtr selSetIncludesPendingChanges_Handle = Selector.GetHandle("setIncludesPendingChanges:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetIncludesPropertyValues_ = "setIncludesPropertyValues:";
-
-	private static readonly IntPtr selSetIncludesPropertyValues_Handle = Selector.GetHandle("setIncludesPropertyValues:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetIncludesSubentities_ = "setIncludesSubentities:";
-
-	private static readonly IntPtr selSetIncludesSubentities_Handle = Selector.GetHandle("setIncludesSubentities:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPredicate_ = "setPredicate:";
+	private static readonly IntPtr selPredicateHandle = Selector.GetHandle("predicate");
 
 	private static readonly IntPtr selSetPredicate_Handle = Selector.GetHandle("setPredicate:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPropertiesToFetch_ = "setPropertiesToFetch:";
-
-	private static readonly IntPtr selSetPropertiesToFetch_Handle = Selector.GetHandle("setPropertiesToFetch:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPropertiesToGroupBy_ = "setPropertiesToGroupBy:";
-
-	private static readonly IntPtr selSetPropertiesToGroupBy_Handle = Selector.GetHandle("setPropertiesToGroupBy:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetRelationshipKeyPathsForPrefetching_ = "setRelationshipKeyPathsForPrefetching:";
-
-	private static readonly IntPtr selSetRelationshipKeyPathsForPrefetching_Handle = Selector.GetHandle("setRelationshipKeyPathsForPrefetching:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetResultType_ = "setResultType:";
-
-	private static readonly IntPtr selSetResultType_Handle = Selector.GetHandle("setResultType:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetReturnsDistinctResults_ = "setReturnsDistinctResults:";
-
-	private static readonly IntPtr selSetReturnsDistinctResults_Handle = Selector.GetHandle("setReturnsDistinctResults:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetReturnsObjectsAsFaults_ = "setReturnsObjectsAsFaults:";
-
-	private static readonly IntPtr selSetReturnsObjectsAsFaults_Handle = Selector.GetHandle("setReturnsObjectsAsFaults:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetShouldRefreshRefetchedObjects_ = "setShouldRefreshRefetchedObjects:";
-
-	private static readonly IntPtr selSetShouldRefreshRefetchedObjects_Handle = Selector.GetHandle("setShouldRefreshRefetchedObjects:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetSortDescriptors_ = "setSortDescriptors:";
+	private static readonly IntPtr selSortDescriptorsHandle = Selector.GetHandle("sortDescriptors");
 
 	private static readonly IntPtr selSetSortDescriptors_Handle = Selector.GetHandle("setSortDescriptors:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selShouldRefreshRefetchedObjects = "shouldRefreshRefetchedObjects";
+	private static readonly IntPtr selFetchLimitHandle = Selector.GetHandle("fetchLimit");
+
+	private static readonly IntPtr selSetFetchLimit_Handle = Selector.GetHandle("setFetchLimit:");
+
+	private static readonly IntPtr selAffectedStoresHandle = Selector.GetHandle("affectedStores");
+
+	private static readonly IntPtr selSetAffectedStores_Handle = Selector.GetHandle("setAffectedStores:");
+
+	private static readonly IntPtr selResultTypeHandle = Selector.GetHandle("resultType");
+
+	private static readonly IntPtr selSetResultType_Handle = Selector.GetHandle("setResultType:");
+
+	private static readonly IntPtr selIncludesSubentitiesHandle = Selector.GetHandle("includesSubentities");
+
+	private static readonly IntPtr selSetIncludesSubentities_Handle = Selector.GetHandle("setIncludesSubentities:");
+
+	private static readonly IntPtr selIncludesPropertyValuesHandle = Selector.GetHandle("includesPropertyValues");
+
+	private static readonly IntPtr selSetIncludesPropertyValues_Handle = Selector.GetHandle("setIncludesPropertyValues:");
+
+	private static readonly IntPtr selReturnsObjectsAsFaultsHandle = Selector.GetHandle("returnsObjectsAsFaults");
+
+	private static readonly IntPtr selSetReturnsObjectsAsFaults_Handle = Selector.GetHandle("setReturnsObjectsAsFaults:");
+
+	private static readonly IntPtr selRelationshipKeyPathsForPrefetchingHandle = Selector.GetHandle("relationshipKeyPathsForPrefetching");
+
+	private static readonly IntPtr selSetRelationshipKeyPathsForPrefetching_Handle = Selector.GetHandle("setRelationshipKeyPathsForPrefetching:");
+
+	private static readonly IntPtr selEntityNameHandle = Selector.GetHandle("entityName");
+
+	private static readonly IntPtr selFetchBatchSizeHandle = Selector.GetHandle("fetchBatchSize");
+
+	private static readonly IntPtr selSetFetchBatchSize_Handle = Selector.GetHandle("setFetchBatchSize:");
 
 	private static readonly IntPtr selShouldRefreshRefetchedObjectsHandle = Selector.GetHandle("shouldRefreshRefetchedObjects");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSortDescriptors = "sortDescriptors";
+	private static readonly IntPtr selSetShouldRefreshRefetchedObjects_Handle = Selector.GetHandle("setShouldRefreshRefetchedObjects:");
 
-	private static readonly IntPtr selSortDescriptorsHandle = Selector.GetHandle("sortDescriptors");
+	private static readonly IntPtr selHavingPredicateHandle = Selector.GetHandle("havingPredicate");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSFetchRequest");
+	private static readonly IntPtr selSetHavingPredicate_Handle = Selector.GetHandle("setHavingPredicate:");
+
+	private static readonly IntPtr selPropertiesToGroupByHandle = Selector.GetHandle("propertiesToGroupBy");
+
+	private static readonly IntPtr selSetPropertiesToGroupBy_Handle = Selector.GetHandle("setPropertiesToGroupBy:");
+
+	private static readonly IntPtr selFetchRequestWithEntityName_Handle = Selector.GetHandle("fetchRequestWithEntityName:");
+
+	private static readonly IntPtr selInitWithEntityName_Handle = Selector.GetHandle("initWithEntityName:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSFetchRequest");
+
+	private object __mt_Entity_var;
+
+	private object __mt_Predicate_var;
+
+	private object __mt_SortDescriptors_var;
+
+	private object __mt_AffectedStores_var;
+
+	private object __mt_HavingPredicate_var;
+
+	private object __mt_PropertiesToGroupBy_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public new virtual NSPersistentStore[]? AffectedStores
+	public virtual NSEntityDescription Entity
 	{
-		[Export("affectedStores", ArgumentSemantic.Retain)]
+		[Export("entity")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSPersistentStore>(Messaging.IntPtr_objc_msgSend(base.Handle, selAffectedStoresHandle));
-			}
-			return NSArray.ArrayFromHandle<NSPersistentStore>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAffectedStoresHandle));
+			return (NSEntityDescription)(__mt_Entity_var = ((!IsDirectBinding) ? ((NSEntityDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntityHandle))) : ((NSEntityDescription)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selEntityHandle)))));
 		}
-		[Export("setAffectedStores:", ArgumentSemantic.Retain)]
+		[Export("setEntity:")]
 		set
 		{
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAffectedStores_Handle, nSArray?.Handle ?? IntPtr.Zero);
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetEntity_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAffectedStores_Handle, nSArray?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetEntity_Handle, value.Handle);
 			}
-			nSArray?.Dispose();
+			__mt_Entity_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSEntityDescription? Entity
+	public virtual NSPredicate Predicate
 	{
-		[Export("entity", ArgumentSemantic.Retain)]
+		[Export("predicate")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSEntityDescription>(Messaging.IntPtr_objc_msgSend(base.Handle, selEntityHandle));
-			}
-			return Runtime.GetNSObject<NSEntityDescription>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntityHandle));
+			return (NSPredicate)(__mt_Predicate_var = ((!IsDirectBinding) ? ((NSPredicate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPredicateHandle))) : ((NSPredicate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPredicateHandle)))));
 		}
-		[Export("setEntity:", ArgumentSemantic.Retain)]
+		[Export("setPredicate:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetEntity_Handle, value?.Handle ?? IntPtr.Zero);
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPredicate_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetEntity_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPredicate_Handle, value.Handle);
 			}
+			__mt_Predicate_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string? EntityName
+	public virtual NSSortDescriptor[] SortDescriptors
 	{
-		[Export("entityName", ArgumentSemantic.Retain)]
+		[Export("sortDescriptors")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selEntityNameHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntityNameHandle));
+			return (NSSortDescriptor[])(__mt_SortDescriptors_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSSortDescriptor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSortDescriptorsHandle)) : NSArray.ArrayFromHandle<NSSortDescriptor>(Messaging.IntPtr_objc_msgSend(base.Handle, selSortDescriptorsHandle))));
 		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nint FetchBatchSize
-	{
-		[Export("fetchBatchSize")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nint_objc_msgSend(base.Handle, selFetchBatchSizeHandle);
-			}
-			return Messaging.nint_objc_msgSendSuper(base.SuperHandle, selFetchBatchSizeHandle);
-		}
-		[Export("setFetchBatchSize:")]
+		[Export("setSortDescriptors:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_nint(base.Handle, selSetFetchBatchSize_Handle, value);
+				throw new ArgumentNullException("value");
+			}
+			NSArray nSArray = NSArray.FromNSObjects(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSortDescriptors_Handle, nSArray.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_nint(base.SuperHandle, selSetFetchBatchSize_Handle, value);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSortDescriptors_Handle, nSArray.Handle);
 			}
+			nSArray.Dispose();
+			__mt_SortDescriptors_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nuint FetchLimit
+	public virtual uint FetchLimit
 	{
 		[Export("fetchLimit")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selFetchLimitHandle);
+				return Messaging.UInt32_objc_msgSend(base.Handle, selFetchLimitHandle);
 			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selFetchLimitHandle);
+			return Messaging.UInt32_objc_msgSendSuper(base.SuperHandle, selFetchLimitHandle);
 		}
 		[Export("setFetchLimit:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_nuint(base.Handle, selSetFetchLimit_Handle, value);
+				Messaging.void_objc_msgSend_UInt32(base.Handle, selSetFetchLimit_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_nuint(base.SuperHandle, selSetFetchLimit_Handle, value);
+				Messaging.void_objc_msgSendSuper_UInt32(base.SuperHandle, selSetFetchLimit_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nuint FetchOffset
+	public new virtual NSPersistentStore[] AffectedStores
 	{
-		[Export("fetchOffset")]
+		[Export("affectedStores")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nuint_objc_msgSend(base.Handle, selFetchOffsetHandle);
-			}
-			return Messaging.nuint_objc_msgSendSuper(base.SuperHandle, selFetchOffsetHandle);
+			return (NSPersistentStore[])(__mt_AffectedStores_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSPersistentStore>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAffectedStoresHandle)) : NSArray.ArrayFromHandle<NSPersistentStore>(Messaging.IntPtr_objc_msgSend(base.Handle, selAffectedStoresHandle))));
 		}
-		[Export("setFetchOffset:")]
+		[Export("setAffectedStores:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_nuint(base.Handle, selSetFetchOffset_Handle, value);
+				throw new ArgumentNullException("value");
+			}
+			NSArray nSArray = NSArray.FromNSObjects(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAffectedStores_Handle, nSArray.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_nuint(base.SuperHandle, selSetFetchOffset_Handle, value);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAffectedStores_Handle, nSArray.Handle);
 			}
+			nSArray.Dispose();
+			__mt_AffectedStores_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSPredicate? HavingPredicate
-	{
-		[Export("havingPredicate", ArgumentSemantic.Retain)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSPredicate>(Messaging.IntPtr_objc_msgSend(base.Handle, selHavingPredicateHandle));
-			}
-			return Runtime.GetNSObject<NSPredicate>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selHavingPredicateHandle));
-		}
-		[Export("setHavingPredicate:", ArgumentSemantic.Retain)]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetHavingPredicate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetHavingPredicate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool IncludesPendingChanges
-	{
-		[Export("includesPendingChanges")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIncludesPendingChangesHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIncludesPendingChangesHandle);
-		}
-		[Export("setIncludesPendingChanges:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetIncludesPendingChanges_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetIncludesPendingChanges_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool IncludesPropertyValues
-	{
-		[Export("includesPropertyValues")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIncludesPropertyValuesHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIncludesPropertyValuesHandle);
-		}
-		[Export("setIncludesPropertyValues:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetIncludesPropertyValues_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetIncludesPropertyValues_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool IncludesSubentities
-	{
-		[Export("includesSubentities")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIncludesSubentitiesHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIncludesSubentitiesHandle);
-		}
-		[Export("setIncludesSubentities:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetIncludesSubentities_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetIncludesSubentities_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSPredicate? Predicate
-	{
-		[Export("predicate", ArgumentSemantic.Retain)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSPredicate>(Messaging.IntPtr_objc_msgSend(base.Handle, selPredicateHandle));
-			}
-			return Runtime.GetNSObject<NSPredicate>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPredicateHandle));
-		}
-		[Export("setPredicate:", ArgumentSemantic.Retain)]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPredicate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPredicate_Handle, value?.Handle ?? IntPtr.Zero);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSPropertyDescription[]? PropertiesToFetch
-	{
-		[Export("propertiesToFetch", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSPropertyDescription>(Messaging.IntPtr_objc_msgSend(base.Handle, selPropertiesToFetchHandle));
-			}
-			return NSArray.ArrayFromHandle<NSPropertyDescription>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPropertiesToFetchHandle));
-		}
-		[Export("setPropertiesToFetch:", ArgumentSemantic.Copy)]
-		set
-		{
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPropertiesToFetch_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPropertiesToFetch_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSPropertyDescription[]? PropertiesToGroupBy
-	{
-		[Export("propertiesToGroupBy", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSPropertyDescription>(Messaging.IntPtr_objc_msgSend(base.Handle, selPropertiesToGroupByHandle));
-			}
-			return NSArray.ArrayFromHandle<NSPropertyDescription>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPropertiesToGroupByHandle));
-		}
-		[Export("setPropertiesToGroupBy:", ArgumentSemantic.Copy)]
-		set
-		{
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPropertiesToGroupBy_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPropertiesToGroupBy_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string[]? RelationshipKeyPathsForPrefetching
-	{
-		[Export("relationshipKeyPathsForPrefetching")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selRelationshipKeyPathsForPrefetchingHandle));
-			}
-			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRelationshipKeyPathsForPrefetchingHandle));
-		}
-		[Export("setRelationshipKeyPathsForPrefetching:")]
-		set
-		{
-			NSArray nSArray = ((value == null) ? null : NSArray.FromStrings(value));
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetRelationshipKeyPathsForPrefetching_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetRelationshipKeyPathsForPrefetching_Handle, nSArray?.Handle ?? IntPtr.Zero);
-			}
-			nSArray?.Dispose();
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSFetchRequestResultType ResultType
 	{
 		[Export("resultType")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (NSFetchRequestResultType)Messaging.UInt64_objc_msgSend(base.Handle, selResultTypeHandle);
 			}
@@ -603,7 +233,7 @@ public class NSFetchRequest : NSPersistentStoreRequest, INSCoding, INativeObject
 		[Export("setResultType:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetResultType_Handle, (ulong)value);
 			}
@@ -614,39 +244,62 @@ public class NSFetchRequest : NSPersistentStoreRequest, INSCoding, INativeObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool ReturnsDistinctResults
+	public virtual bool IncludesSubentities
 	{
-		[Export("returnsDistinctResults")]
+		[Export("includesSubentities")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selReturnsDistinctResultsHandle);
+				return Messaging.bool_objc_msgSend(base.Handle, selIncludesSubentitiesHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selReturnsDistinctResultsHandle);
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIncludesSubentitiesHandle);
 		}
-		[Export("setReturnsDistinctResults:")]
+		[Export("setIncludesSubentities:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetReturnsDistinctResults_Handle, value);
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetIncludesSubentities_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetReturnsDistinctResults_Handle, value);
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetIncludesSubentities_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual bool IncludesPropertyValues
+	{
+		[Export("includesPropertyValues")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.bool_objc_msgSend(base.Handle, selIncludesPropertyValuesHandle);
+			}
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIncludesPropertyValuesHandle);
+		}
+		[Export("setIncludesPropertyValues:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetIncludesPropertyValues_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetIncludesPropertyValues_Handle, value);
+			}
+		}
+	}
+
 	public virtual bool ReturnsObjectsAsFaults
 	{
 		[Export("returnsObjectsAsFaults")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selReturnsObjectsAsFaultsHandle);
 			}
@@ -655,7 +308,7 @@ public class NSFetchRequest : NSPersistentStoreRequest, INSCoding, INativeObject
 		[Export("setReturnsObjectsAsFaults:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetReturnsObjectsAsFaults_Handle, value);
 			}
@@ -666,13 +319,84 @@ public class NSFetchRequest : NSPersistentStoreRequest, INSCoding, INativeObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual string[] RelationshipKeyPathsForPrefetching
+	{
+		[Export("relationshipKeyPathsForPrefetching")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selRelationshipKeyPathsForPrefetchingHandle));
+			}
+			return NSArray.StringArrayFromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRelationshipKeyPathsForPrefetchingHandle));
+		}
+		[Export("setRelationshipKeyPathsForPrefetching:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			NSArray nSArray = NSArray.FromStrings(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetRelationshipKeyPathsForPrefetching_Handle, nSArray.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetRelationshipKeyPathsForPrefetching_Handle, nSArray.Handle);
+			}
+			nSArray.Dispose();
+		}
+	}
+
+	[Since(5, 0)]
+	public virtual string EntityName
+	{
+		[Export("entityName")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selEntityNameHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selEntityNameHandle));
+		}
+	}
+
+	[Since(5, 0)]
+	public virtual int FetchBatchSize
+	{
+		[Export("fetchBatchSize")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.int_objc_msgSend(base.Handle, selFetchBatchSizeHandle);
+			}
+			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selFetchBatchSizeHandle);
+		}
+		[Export("setFetchBatchSize:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_int(base.Handle, selSetFetchBatchSize_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_int(base.SuperHandle, selSetFetchBatchSize_Handle, value);
+			}
+		}
+	}
+
+	[Since(5, 0)]
 	public virtual bool ShouldRefreshRefetchedObjects
 	{
 		[Export("shouldRefreshRefetchedObjects")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selShouldRefreshRefetchedObjectsHandle);
 			}
@@ -681,7 +405,7 @@ public class NSFetchRequest : NSPersistentStoreRequest, INSCoding, INativeObject
 		[Export("setShouldRefreshRefetchedObjects:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetShouldRefreshRefetchedObjects_Handle, value);
 			}
@@ -692,83 +416,118 @@ public class NSFetchRequest : NSPersistentStoreRequest, INSCoding, INativeObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSSortDescriptor[]? SortDescriptors
+	[Since(5, 0)]
+	public virtual NSPredicate HavingPredicate
 	{
-		[Export("sortDescriptors", ArgumentSemantic.Retain)]
+		[Export("havingPredicate")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSSortDescriptor>(Messaging.IntPtr_objc_msgSend(base.Handle, selSortDescriptorsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSSortDescriptor>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSortDescriptorsHandle));
+			return (NSPredicate)(__mt_HavingPredicate_var = ((!IsDirectBinding) ? ((NSPredicate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selHavingPredicateHandle))) : ((NSPredicate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selHavingPredicateHandle)))));
 		}
-		[Export("setSortDescriptors:", ArgumentSemantic.Retain)]
+		[Export("setHavingPredicate:")]
 		set
 		{
-			NSArray nSArray = ((value == null) ? null : NSArray.FromNSObjects(value));
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetSortDescriptors_Handle, nSArray?.Handle ?? IntPtr.Zero);
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetHavingPredicate_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetSortDescriptors_Handle, nSArray?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetHavingPredicate_Handle, value.Handle);
 			}
-			nSArray?.Dispose();
+			__mt_HavingPredicate_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
+	[Since(5, 0)]
+	public virtual NSPropertyDescription[] PropertiesToGroupBy
+	{
+		[Export("propertiesToGroupBy")]
+		get
+		{
+			return (NSPropertyDescription[])(__mt_PropertiesToGroupBy_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSPropertyDescription>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPropertiesToGroupByHandle)) : NSArray.ArrayFromHandle<NSPropertyDescription>(Messaging.IntPtr_objc_msgSend(base.Handle, selPropertiesToGroupByHandle))));
+		}
+		[Export("setPropertiesToGroupBy:")]
+		set
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			NSArray nSArray = NSArray.FromNSObjects(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetPropertiesToGroupBy_Handle, nSArray.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetPropertiesToGroupBy_Handle, nSArray.Handle);
+			}
+			nSArray.Dispose();
+			__mt_PropertiesToGroupBy_var = value;
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	[Export("init")]
+	public NSFetchRequest()
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSFetchRequest(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSFetchRequest(NSObjectFlag t)
+	public NSFetchRequest(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSFetchRequest(IntPtr handle)
+	public NSFetchRequest(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("init")]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public NSFetchRequest()
-		: base(NSObjectFlag.Empty)
+	[Export("fetchRequestWithEntityName:")]
+	public static NSFetchRequest FromEntityName(string entityName)
 	{
-		if (base.IsDirectBinding)
+		if (entityName == null)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selInitHandle), "init");
+			throw new ArgumentNullException("entityName");
 		}
-		else
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInitHandle), "init");
-		}
+		IntPtr arg = NSString.CreateNative(entityName);
+		NSFetchRequest result = (NSFetchRequest)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selFetchRequestWithEntityName_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
 	}
 
 	[Export("initWithEntityName:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSFetchRequest(string entityName)
 		: base(NSObjectFlag.Empty)
 	{
@@ -777,60 +536,28 @@ public class NSFetchRequest : NSPersistentStoreRequest, INSCoding, INativeObject
 			throw new ArgumentNullException("entityName");
 		}
 		IntPtr arg = NSString.CreateNative(entityName);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithEntityName_Handle, arg), "initWithEntityName:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithEntityName_Handle, arg);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithEntityName_Handle, arg), "initWithEntityName:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithEntityName_Handle, arg);
 		}
 		NSString.ReleaseNative(arg);
 	}
 
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
+	protected override void Dispose(bool disposing)
 	{
-		if (encoder == null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			throw new ArgumentNullException("encoder");
+			__mt_Entity_var = null;
+			__mt_Predicate_var = null;
+			__mt_SortDescriptors_var = null;
+			__mt_AffectedStores_var = null;
+			__mt_HavingPredicate_var = null;
+			__mt_PropertiesToGroupBy_var = null;
 		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-	}
-
-	[Export("execute:")]
-	[Introduced(PlatformName.WatchOS, 3, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 10, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.iOS, 10, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 12, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual INSFetchRequestResult[]? Execute(out NSError error)
-	{
-		IntPtr arg = IntPtr.Zero;
-		INSFetchRequestResult[] result = ((!base.IsDirectBinding) ? NSArray.ArrayFromHandle<INSFetchRequestResult>(Messaging.IntPtr_objc_msgSendSuper_ref_IntPtr(base.SuperHandle, selExecute_Handle, ref arg)) : NSArray.ArrayFromHandle<INSFetchRequestResult>(Messaging.IntPtr_objc_msgSend_ref_IntPtr(base.Handle, selExecute_Handle, ref arg)));
-		error = Runtime.GetNSObject<NSError>(arg);
-		return result;
-	}
-
-	[Export("fetchRequestWithEntityName:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSFetchRequest FromEntityName(string entityName)
-	{
-		if (entityName == null)
-		{
-			throw new ArgumentNullException("entityName");
-		}
-		IntPtr arg = NSString.CreateNative(entityName);
-		NSFetchRequest nSObject = Runtime.GetNSObject<NSFetchRequest>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selFetchRequestWithEntityName_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return nSObject;
 	}
 }

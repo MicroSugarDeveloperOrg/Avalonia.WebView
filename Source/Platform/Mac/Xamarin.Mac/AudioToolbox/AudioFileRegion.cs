@@ -1,6 +1,6 @@
+using System;
 using System.Runtime.InteropServices;
 using CoreFoundation;
-using Xamarin.Mac.System.Mac;
 
 namespace AudioToolbox;
 
@@ -26,8 +26,7 @@ public struct AudioFileRegion
 			{
 				throw new ArgumentOutOfRangeException("index");
 			}
-			AudioFileMarker* ptr = (AudioFileMarker*)((byte*)(void*)this.ptr + (nint)12 * (nint)sizeof(AudioFileMarker) + (nint)sizeof(IntPtr) * (nint)sizeof(AudioFileMarker) + (nint)(index * sizeof(AudioFileMarker)) * (nint)sizeof(AudioFileMarker));
-			return *ptr;
+			return *(AudioFileMarker*)((byte*)(void*)ptr + (nint)12 * (nint)sizeof(AudioFileMarker) + (nint)sizeof(IntPtr) * (nint)sizeof(AudioFileMarker) + (nint)(index * sizeof(AudioFileMarker)) * (nint)sizeof(AudioFileMarker));
 		}
 	}
 

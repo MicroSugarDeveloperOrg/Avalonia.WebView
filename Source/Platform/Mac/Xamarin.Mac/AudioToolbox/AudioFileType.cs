@@ -1,5 +1,3 @@
-using ObjCRuntime;
-
 namespace AudioToolbox;
 
 public enum AudioFileType
@@ -7,11 +5,6 @@ public enum AudioFileType
 	AIFF = 1095321158,
 	AIFC = 1095321155,
 	WAVE = 1463899717,
-	[NoWatch]
-	[iOS(11, 0)]
-	[Mac(10, 13)]
-	[TV(11, 0)]
-	RF64 = 1380333108,
 	SoundDesigner2 = 1399075430,
 	Next = 1315264596,
 	MP3 = 1297106739,
@@ -25,16 +18,5 @@ public enum AudioFileType
 	CAF = 1667327590,
 	ThreeGP = 862417008,
 	ThreeGP2 = 862416946,
-	AMR = 1634562662,
-	[NoWatch]
-	[iOS(11, 0)]
-	[Mac(10, 13)]
-	[TV(11, 0)]
-	FLAC = 1718378851,
-	[Introduced(PlatformName.MacCatalyst, 13, 0, PlatformArchitecture.None, null)]
-	[NoWatch]
-	[iOS(13, 0)]
-	[Mac(10, 15)]
-	[TV(13, 0)]
-	LatmInLoas = 1819238771
+	AMR = 1634562662
 }

@@ -6,47 +6,47 @@ using ObjCRuntime;
 namespace WebKit;
 
 [Register("DOMProcessingInstruction", true)]
-[Deprecated(PlatformName.MacOSX, 10, 14, PlatformArchitecture.None, "No longer supported.")]
-public class DomProcessingInstruction : DomCharacterData
+public class DomProcessingInstruction : DomNode
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selData = "data";
+	private static readonly IntPtr selTargetHandle = Selector.GetHandle("target");
 
 	private static readonly IntPtr selDataHandle = Selector.GetHandle("data");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetData_ = "setData:";
-
 	private static readonly IntPtr selSetData_Handle = Selector.GetHandle("setData:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSheet = "sheet";
 
 	private static readonly IntPtr selSheetHandle = Selector.GetHandle("sheet");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTarget = "target";
+	private static readonly IntPtr class_ptr = Class.GetHandle("DOMProcessingInstruction");
 
-	private static readonly IntPtr selTargetHandle = Selector.GetHandle("target");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("DOMProcessingInstruction");
+	private object __mt_Sheet_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public new virtual string Data
+	public virtual string Target
 	{
-		[Export("data", ArgumentSemantic.Copy)]
+		[Export("target")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
+			{
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selTargetHandle));
+			}
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTargetHandle));
+		}
+	}
+
+	public virtual string Data
+	{
+		[Export("data")]
+		get
+		{
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selDataHandle));
 			}
 			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDataHandle));
 		}
-		[Export("setData:", ArgumentSemantic.Copy)]
+		[Export("setData:")]
 		set
 		{
 			if (value == null)
@@ -54,7 +54,7 @@ public class DomProcessingInstruction : DomCharacterData
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetData_Handle, arg);
 			}
@@ -66,45 +66,48 @@ public class DomProcessingInstruction : DomCharacterData
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual DomStyleSheet Sheet
 	{
-		[Export("sheet", ArgumentSemantic.Retain)]
+		[Export("sheet")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<DomStyleSheet>(Messaging.IntPtr_objc_msgSend(base.Handle, selSheetHandle));
-			}
-			return Runtime.GetNSObject<DomStyleSheet>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSheetHandle));
+			return (DomStyleSheet)(__mt_Sheet_var = ((!IsDirectBinding) ? ((DomStyleSheet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selSheetHandle))) : ((DomStyleSheet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selSheetHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string Target
-	{
-		[Export("target", ArgumentSemantic.Copy)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selTargetHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTargetHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected DomProcessingInstruction(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public DomProcessingInstruction(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public DomProcessingInstruction(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal DomProcessingInstruction(IntPtr handle)
+	public DomProcessingInstruction(IntPtr handle)
 		: base(handle)
 	{
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_Sheet_var = null;
+		}
 	}
 }

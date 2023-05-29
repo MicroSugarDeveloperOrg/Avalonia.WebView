@@ -18,8 +18,5 @@ public enum ExtAudioFileError
 	NotOpenError = -38,
 	EndOfFileError = -39,
 	PositionError = -40,
-	FileNotFoundError = -43,
-	BadFilePathError = 561017960,
-	FilePermissionError = -54,
-	TooManyFilesOpenError = -42
+	FileNotFoundError = -43
 }

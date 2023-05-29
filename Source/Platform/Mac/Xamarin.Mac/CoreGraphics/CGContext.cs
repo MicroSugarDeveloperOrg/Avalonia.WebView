@@ -1,29 +1,15 @@
+using System;
 using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreGraphics;
 
 public class CGContext : INativeObject, IDisposable
 {
-	private IntPtr handle;
+	internal IntPtr handle;
 
-	public IntPtr Handle
-	{
-		get
-		{
-			return handle;
-		}
-		internal set
-		{
-			if (value == IntPtr.Zero)
-			{
-				throw new Exception("Invalid parameters to context creation");
-			}
-			handle = value;
-		}
-	}
+	public IntPtr Handle => handle;
 
 	public CGInterpolationQuality InterpolationQuality
 	{
@@ -62,8 +48,13 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	public CGContext(IntPtr handle)
-		: this(handle, owns: false)
 	{
+		if (handle == IntPtr.Zero)
+		{
+			throw new Exception("Invalid parameters to context creation");
+		}
+		CGContextRetain(handle);
+		this.handle = handle;
 	}
 
 	internal CGContext()
@@ -73,11 +64,15 @@ public class CGContext : INativeObject, IDisposable
 	[Preserve(Conditional = true)]
 	internal CGContext(IntPtr handle, bool owns)
 	{
-		Handle = handle;
 		if (!owns)
 		{
 			CGContextRetain(handle);
 		}
+		if (handle == IntPtr.Zero)
+		{
+			throw new Exception("Invalid handle");
+		}
+		this.handle = handle;
 	}
 
 	~CGContext()
@@ -92,10 +87,10 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextRelease(IntPtr c);
+	private static extern void CGContextRelease(IntPtr handle);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern IntPtr CGContextRetain(IntPtr c);
+	private static extern void CGContextRetain(IntPtr handle);
 
 	protected virtual void Dispose(bool disposing)
 	{
@@ -107,10 +102,10 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSaveGState(IntPtr c);
+	private static extern void CGContextSaveGState(IntPtr context);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextRestoreGState(IntPtr c);
+	private static extern void CGContextRestoreGState(IntPtr context);
 
 	public void SaveState()
 	{
@@ -123,31 +118,31 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextScaleCTM(IntPtr c, nfloat sx, nfloat sy);
+	private static extern void CGContextScaleCTM(IntPtr ctx, double sx, double sy);
 
-	public void ScaleCTM(nfloat sx, nfloat sy)
+	public void ScaleCTM(double sx, double sy)
 	{
 		CGContextScaleCTM(handle, sx, sy);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextTranslateCTM(IntPtr c, nfloat tx, nfloat ty);
+	private static extern void CGContextTranslateCTM(IntPtr ctx, double tx, double ty);
 
-	public void TranslateCTM(nfloat tx, nfloat ty)
+	public void TranslateCTM(double tx, double ty)
 	{
 		CGContextTranslateCTM(handle, tx, ty);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextRotateCTM(IntPtr c, nfloat angle);
+	private static extern void CGContextRotateCTM(IntPtr ctx, double angle);
 
-	public void RotateCTM(nfloat angle)
+	public void RotateCTM(double angle)
 	{
 		CGContextRotateCTM(handle, angle);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextConcatCTM(IntPtr c, CGAffineTransform transform);
+	private static extern void CGContextConcatCTM(IntPtr ctx, CGAffineTransform transform);
 
 	public void ConcatCTM(CGAffineTransform transform)
 	{
@@ -155,9 +150,9 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetLineWidth(IntPtr c, nfloat width);
+	private static extern void CGContextSetLineWidth(IntPtr c, double width);
 
-	public void SetLineWidth(nfloat w)
+	public void SetLineWidth(double w)
 	{
 		CGContextSetLineWidth(handle, w);
 	}
@@ -179,23 +174,22 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetMiterLimit(IntPtr c, nfloat limit);
+	private static extern void CGContextSetMiterLimit(IntPtr c, double limit);
 
-	public void SetMiterLimit(nfloat limit)
+	public void SetMiterLimit(double limit)
 	{
 		CGContextSetMiterLimit(handle, limit);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetLineDash(IntPtr c, nfloat phase, nfloat[] lengths, nint count);
+	private static extern void CGContextSetLineDash(IntPtr c, double phase, double[] lengths, long count);
 
-	public void SetLineDash(nfloat phase, nfloat[] lengths)
+	public void SetLineDash(double phase, double[] lengths)
 	{
-		int num = ((lengths != null) ? lengths.Length : 0);
-		CGContextSetLineDash(handle, phase, lengths, num);
+		SetLineDash(phase, lengths, lengths.Length);
 	}
 
-	public void SetLineDash(nfloat phase, nfloat[] lengths, int n)
+	public void SetLineDash(double phase, double[] lengths, int n)
 	{
 		if (lengths == null)
 		{
@@ -209,23 +203,23 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetFlatness(IntPtr c, nfloat flatness);
+	private static extern void CGContextSetFlatness(IntPtr c, double flatness);
 
-	public void SetFlatness(nfloat flatness)
+	public void SetFlatness(double flatness)
 	{
 		CGContextSetFlatness(handle, flatness);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetAlpha(IntPtr c, nfloat alpha);
+	private static extern void CGContextSetAlpha(IntPtr c, double alpha);
 
-	public void SetAlpha(nfloat alpha)
+	public void SetAlpha(double alpha)
 	{
 		CGContextSetAlpha(handle, alpha);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetBlendMode(IntPtr c, CGBlendMode mode);
+	private static extern void CGContextSetBlendMode(IntPtr context, CGBlendMode mode);
 
 	public void SetBlendMode(CGBlendMode mode)
 	{
@@ -249,33 +243,33 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextMoveToPoint(IntPtr c, nfloat x, nfloat y);
+	private static extern void CGContextMoveToPoint(IntPtr c, double x, double y);
 
-	public void MoveTo(nfloat x, nfloat y)
+	public void MoveTo(double x, double y)
 	{
 		CGContextMoveToPoint(handle, x, y);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextAddLineToPoint(IntPtr c, nfloat x, nfloat y);
+	private static extern void CGContextAddLineToPoint(IntPtr c, double x, double y);
 
-	public void AddLineToPoint(nfloat x, nfloat y)
+	public void AddLineToPoint(double x, double y)
 	{
 		CGContextAddLineToPoint(handle, x, y);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextAddCurveToPoint(IntPtr c, nfloat cp1x, nfloat cp1y, nfloat cp2x, nfloat cp2y, nfloat x, nfloat y);
+	private static extern void CGContextAddCurveToPoint(IntPtr c, double cp1x, double cp1y, double cp2x, double cp2y, double x, double y);
 
-	public void AddCurveToPoint(nfloat cp1x, nfloat cp1y, nfloat cp2x, nfloat cp2y, nfloat x, nfloat y)
+	public void AddCurveToPoint(double cp1x, double cp1y, double cp2x, double cp2y, double x, double y)
 	{
 		CGContextAddCurveToPoint(handle, cp1x, cp1y, cp2x, cp2y, x, y);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextAddQuadCurveToPoint(IntPtr c, nfloat cpx, nfloat cpy, nfloat x, nfloat y);
+	private static extern void CGContextAddQuadCurveToPoint(IntPtr c, double cpx, double cpy, double x, double y);
 
-	public void AddQuadCurveToPoint(nfloat cpx, nfloat cpy, nfloat x, nfloat y)
+	public void AddQuadCurveToPoint(double cpx, double cpy, double x, double y)
 	{
 		CGContextAddQuadCurveToPoint(handle, cpx, cpy, x, y);
 	}
@@ -297,31 +291,23 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextAddRects(IntPtr c, CGRect[] rects, nint count);
+	private static extern void CGContextAddRects(IntPtr c, CGRect[] rects, IntPtr size_t_count);
 
 	public void AddRects(CGRect[] rects)
 	{
-		if (rects == null)
-		{
-			throw new ArgumentNullException("rects");
-		}
-		CGContextAddRects(handle, rects, rects.Length);
+		CGContextAddRects(handle, rects, new IntPtr(rects.Length));
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextAddLines(IntPtr c, CGPoint[] points, nint count);
+	private static extern void CGContextAddLines(IntPtr c, CGPoint[] points, IntPtr size_t_count);
 
 	public void AddLines(CGPoint[] points)
 	{
-		if (points == null)
-		{
-			throw new ArgumentNullException("points");
-		}
-		CGContextAddLines(handle, points, points.Length);
+		CGContextAddLines(handle, points, new IntPtr(points.Length));
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextAddEllipseInRect(IntPtr c, CGRect rect);
+	private static extern void CGContextAddEllipseInRect(IntPtr context, CGRect rect);
 
 	public void AddEllipseInRect(CGRect rect)
 	{
@@ -329,30 +315,26 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextAddArc(IntPtr c, nfloat x, nfloat y, nfloat radius, nfloat startAngle, nfloat endAngle, int clockwise);
+	private static extern void CGContextAddArc(IntPtr c, double x, double y, double radius, double startAngle, double endAngle, int clockwise);
 
-	public void AddArc(nfloat x, nfloat y, nfloat radius, nfloat startAngle, nfloat endAngle, bool clockwise)
+	public void AddArc(double x, double y, double radius, double startAngle, double endAngle, bool clockwise)
 	{
 		CGContextAddArc(handle, x, y, radius, startAngle, endAngle, clockwise ? 1 : 0);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextAddArcToPoint(IntPtr c, nfloat x1, nfloat y1, nfloat x2, nfloat y2, nfloat radius);
+	private static extern void CGContextAddArcToPoint(IntPtr c, double x1, double y1, double x2, double y2, double radius);
 
-	public void AddArcToPoint(nfloat x1, nfloat y1, nfloat x2, nfloat y2, nfloat radius)
+	public void AddArcToPoint(double x1, double y1, double x2, double y2, double radius)
 	{
 		CGContextAddArcToPoint(handle, x1, y1, x2, y2, radius);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextAddPath(IntPtr c, IntPtr path);
+	private static extern void CGContextAddPath(IntPtr context, IntPtr path_ref);
 
 	public void AddPath(CGPath path)
 	{
-		if (path == null)
-		{
-			throw new ArgumentNullException("path");
-		}
 		CGContextAddPath(handle, path.handle);
 	}
 
@@ -365,15 +347,15 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern bool CGContextIsPathEmpty(IntPtr context);
+	private static extern int CGContextIsPathEmpty(IntPtr c);
 
 	public bool IsPathEmpty()
 	{
-		return CGContextIsPathEmpty(handle);
+		return CGContextIsPathEmpty(handle) != 0;
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern CGPoint CGContextGetPathCurrentPoint(IntPtr context);
+	private static extern CGPoint CGContextGetPathCurrentPoint(IntPtr c);
 
 	public CGPoint GetPathCurrentPoint()
 	{
@@ -381,7 +363,7 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern CGRect CGContextGetPathBoundingBox(IntPtr context);
+	private static extern CGRect CGContextGetPathBoundingBox(IntPtr c);
 
 	public CGRect GetPathBoundingBox()
 	{
@@ -389,15 +371,15 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern bool CGContextPathContainsPoint(IntPtr context, CGPoint point, CGPathDrawingMode mode);
+	private static extern int CGContextPathContainsPoint(IntPtr context, CGPoint point, CGPathDrawingMode mode);
 
 	public bool PathContainsPoint(CGPoint point, CGPathDrawingMode mode)
 	{
-		return CGContextPathContainsPoint(handle, point, mode);
+		return CGContextPathContainsPoint(handle, point, mode) != 0;
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextDrawPath(IntPtr context, CGPathDrawingMode mode);
+	private static extern void CGContextDrawPath(IntPtr c, CGPathDrawingMode mode);
 
 	public void DrawPath(CGPathDrawingMode mode)
 	{
@@ -437,15 +419,11 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextFillRects(IntPtr c, CGRect[] rects, nint count);
+	private static extern void CGContextFillRects(IntPtr c, CGRect[] rects, IntPtr size_t_count);
 
 	public void ContextFillRects(CGRect[] rects)
 	{
-		if (rects == null)
-		{
-			throw new ArgumentNullException("rects");
-		}
-		CGContextFillRects(handle, rects, rects.Length);
+		CGContextFillRects(handle, rects, new IntPtr(rects.Length));
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -457,9 +435,9 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextStrokeRectWithWidth(IntPtr c, CGRect rect, nfloat width);
+	private static extern void CGContextStrokeRectWithWidth(IntPtr c, CGRect rect, double width);
 
-	public void StrokeRectWithWidth(CGRect rect, nfloat width)
+	public void StrokeRectWithWidth(CGRect rect, double width)
 	{
 		CGContextStrokeRectWithWidth(handle, rect, width);
 	}
@@ -489,11 +467,11 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextStrokeLineSegments(IntPtr c, CGPoint[] points, nint count);
+	private static extern void CGContextStrokeLineSegments(IntPtr c, CGPoint[] points, IntPtr size_t_count);
 
 	public void StrokeLineSegments(CGPoint[] points)
 	{
-		CGContextStrokeLineSegments(handle, points, (points != null) ? points.Length : 0);
+		CGContextStrokeLineSegments(handle, points, new IntPtr(points.Length));
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -513,27 +491,11 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	[iOS(11, 0)]
-	[Mac(10, 13)]
-	[TV(11, 0)]
-	[Watch(4, 0)]
-	private static extern void CGContextResetClip(IntPtr c);
-
-	[iOS(11, 0)]
-	[Mac(10, 13)]
-	[TV(11, 0)]
-	[Watch(4, 0)]
-	public void ResetClip()
-	{
-		CGContextResetClip(handle);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
 	private static extern void CGContextClipToMask(IntPtr c, CGRect rect, IntPtr mask);
 
 	public void ClipToMask(CGRect rect, CGImage mask)
 	{
-		CGContextClipToMask(handle, rect, mask?.handle ?? IntPtr.Zero);
+		CGContextClipToMask(handle, rect, mask.handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -553,15 +515,11 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextClipToRects(IntPtr c, CGRect[] rects, nint count);
+	private static extern void CGContextClipToRects(IntPtr c, CGRect[] rects, IntPtr size_t_count);
 
 	public void ClipToRects(CGRect[] rects)
 	{
-		if (rects == null)
-		{
-			throw new ArgumentNullException("rects");
-		}
-		CGContextClipToRects(handle, rects, rects.Length);
+		CGContextClipToRects(handle, rects, new IntPtr(rects.Length));
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -569,7 +527,13 @@ public class CGContext : INativeObject, IDisposable
 
 	public void SetFillColor(CGColor color)
 	{
-		CGContextSetFillColorWithColor(handle, (color == null) ? IntPtr.Zero : color.handle);
+		CGContextSetFillColorWithColor(handle, color.handle);
+	}
+
+	[Advice("Use SetFillColor() instead.")]
+	public void SetFillColorWithColor(CGColor color)
+	{
+		CGContextSetFillColorWithColor(handle, color.handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -577,7 +541,13 @@ public class CGContext : INativeObject, IDisposable
 
 	public void SetStrokeColor(CGColor color)
 	{
-		CGContextSetStrokeColorWithColor(handle, (color == null) ? IntPtr.Zero : color.handle);
+		CGContextSetStrokeColorWithColor(handle, color.handle);
+	}
+
+	[Advice("Use SetStrokeColor() instead.")]
+	public void SetStrokeColorWithColor(CGColor color)
+	{
+		CGContextSetStrokeColorWithColor(handle, color.handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -585,7 +555,7 @@ public class CGContext : INativeObject, IDisposable
 
 	public void SetFillColorSpace(CGColorSpace space)
 	{
-		CGContextSetFillColorSpace(handle, space?.handle ?? IntPtr.Zero);
+		CGContextSetFillColorSpace(handle, space.handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -593,39 +563,55 @@ public class CGContext : INativeObject, IDisposable
 
 	public void SetStrokeColorSpace(CGColorSpace space)
 	{
-		CGContextSetStrokeColorSpace(handle, space?.handle ?? IntPtr.Zero);
+		CGContextSetStrokeColorSpace(handle, space.handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetFillColor(IntPtr context, nfloat[] components);
+	private static extern void CGContextSetFillColor(IntPtr context, double[] components);
 
-	public void SetFillColor(nfloat[] components)
+	public void SetFillColor(double[] components)
 	{
+		if (components == null)
+		{
+			throw new ArgumentNullException("components");
+		}
 		CGContextSetFillColor(handle, components);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetStrokeColor(IntPtr context, nfloat[] components);
+	private static extern void CGContextSetStrokeColor(IntPtr context, double[] components);
 
-	public void SetStrokeColor(nfloat[] components)
+	public void SetStrokeColor(double[] components)
 	{
+		if (components == null)
+		{
+			throw new ArgumentNullException("components");
+		}
 		CGContextSetStrokeColor(handle, components);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetFillPattern(IntPtr context, IntPtr pattern, nfloat[] components);
+	private static extern void CGContextSetFillPattern(IntPtr context, IntPtr pattern, double[] components);
 
-	public void SetFillPattern(CGPattern pattern, nfloat[] components)
+	public void SetFillPattern(CGPattern pattern, double[] components)
 	{
-		CGContextSetFillPattern(handle, pattern.GetHandle(), components);
+		if (components == null)
+		{
+			throw new ArgumentNullException("components");
+		}
+		CGContextSetFillPattern(handle, pattern.handle, components);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetStrokePattern(IntPtr context, IntPtr pattern, nfloat[] components);
+	private static extern void CGContextSetStrokePattern(IntPtr context, IntPtr pattern, double[] components);
 
-	public void SetStrokePattern(CGPattern pattern, nfloat[] components)
+	public void SetStrokePattern(CGPattern pattern, double[] components)
 	{
-		CGContextSetStrokePattern(handle, pattern.GetHandle(), components);
+		if (components == null)
+		{
+			throw new ArgumentNullException("components");
+		}
+		CGContextSetStrokePattern(handle, pattern.handle, components);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -637,49 +623,85 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetGrayFillColor(IntPtr context, nfloat gray, nfloat alpha);
+	private static extern void CGContextSetGrayFillColor(IntPtr context, double gray, double alpha);
 
-	public void SetFillColor(nfloat gray, nfloat alpha)
+	public void SetFillColor(double gray, double alpha)
+	{
+		CGContextSetGrayFillColor(handle, gray, alpha);
+	}
+
+	[Advice("Use SetFillColor() instead.")]
+	public void SetGrayFillColor(double gray, double alpha)
 	{
 		CGContextSetGrayFillColor(handle, gray, alpha);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetGrayStrokeColor(IntPtr context, nfloat gray, nfloat alpha);
+	private static extern void CGContextSetGrayStrokeColor(IntPtr context, double gray, double alpha);
 
-	public void SetStrokeColor(nfloat gray, nfloat alpha)
+	public void SetStrokeColor(double gray, double alpha)
+	{
+		CGContextSetGrayStrokeColor(handle, gray, alpha);
+	}
+
+	[Advice("Use SetStrokeColor() instead.")]
+	public void SetGrayStrokeColor(double gray, double alpha)
 	{
 		CGContextSetGrayStrokeColor(handle, gray, alpha);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetRGBFillColor(IntPtr context, nfloat red, nfloat green, nfloat blue, nfloat alpha);
+	private static extern void CGContextSetRGBFillColor(IntPtr context, double red, double green, double blue, double alpha);
 
-	public void SetFillColor(nfloat red, nfloat green, nfloat blue, nfloat alpha)
+	public void SetFillColor(double red, double green, double blue, double alpha)
+	{
+		CGContextSetRGBFillColor(handle, red, green, blue, alpha);
+	}
+
+	[Advice("Use SetFillColor() instead.")]
+	public void SetRGBFillColor(double red, double green, double blue, double alpha)
 	{
 		CGContextSetRGBFillColor(handle, red, green, blue, alpha);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetRGBStrokeColor(IntPtr context, nfloat red, nfloat green, nfloat blue, nfloat alpha);
+	private static extern void CGContextSetRGBStrokeColor(IntPtr context, double red, double green, double blue, double alpha);
 
-	public void SetStrokeColor(nfloat red, nfloat green, nfloat blue, nfloat alpha)
+	public void SetStrokeColor(double red, double green, double blue, double alpha)
+	{
+		CGContextSetRGBStrokeColor(handle, red, green, blue, alpha);
+	}
+
+	[Advice("Use SetStrokeColor() instead.")]
+	public void SetRGBStrokeColor(double red, double green, double blue, double alpha)
 	{
 		CGContextSetRGBStrokeColor(handle, red, green, blue, alpha);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetCMYKFillColor(IntPtr context, nfloat cyan, nfloat magenta, nfloat yellow, nfloat black, nfloat alpha);
+	private static extern void CGContextSetCMYKFillColor(IntPtr context, double cyan, double magenta, double yellow, double black, double alpha);
 
-	public void SetFillColor(nfloat cyan, nfloat magenta, nfloat yellow, nfloat black, nfloat alpha)
+	public void SetFillColor(double cyan, double magenta, double yellow, double black, double alpha)
+	{
+		CGContextSetCMYKFillColor(handle, cyan, magenta, yellow, black, alpha);
+	}
+
+	[Advice("Use SetFillColor() instead.")]
+	public void SetCMYKFillColor(double cyan, double magenta, double yellow, double black, double alpha)
 	{
 		CGContextSetCMYKFillColor(handle, cyan, magenta, yellow, black, alpha);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetCMYKStrokeColor(IntPtr context, nfloat cyan, nfloat magenta, nfloat yellow, nfloat black, nfloat alpha);
+	private static extern void CGContextSetCMYKStrokeColor(IntPtr context, double cyan, double magenta, double yellow, double black, double alpha);
 
-	public void SetStrokeColor(nfloat cyan, nfloat magenta, nfloat yellow, nfloat black, nfloat alpha)
+	public void SetStrokeColor(double cyan, double magenta, double yellow, double black, double alpha)
+	{
+		CGContextSetCMYKStrokeColor(handle, cyan, magenta, yellow, black, alpha);
+	}
+
+	[Advice("Use SetStrokeColor() instead.")]
+	public void SetCMYKStrokeColor(double cyan, double magenta, double yellow, double black, double alpha)
 	{
 		CGContextSetCMYKStrokeColor(handle, cyan, magenta, yellow, black, alpha);
 	}
@@ -697,7 +719,7 @@ public class CGContext : INativeObject, IDisposable
 
 	public void DrawImage(CGRect rect, CGImage image)
 	{
-		CGContextDrawImage(handle, rect, image?.Handle ?? IntPtr.Zero);
+		CGContextDrawImage(handle, rect, image.handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -705,7 +727,7 @@ public class CGContext : INativeObject, IDisposable
 
 	public void DrawTiledImage(CGRect rect, CGImage image)
 	{
-		CGContextDrawTiledImage(handle, rect, image?.Handle ?? IntPtr.Zero);
+		CGContextDrawTiledImage(handle, rect, image.handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -715,21 +737,19 @@ public class CGContext : INativeObject, IDisposable
 	private static extern void CGContextSetInterpolationQuality(IntPtr context, CGInterpolationQuality quality);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetShadowWithColor(IntPtr context, CGSize offset, nfloat blur, IntPtr color);
+	private static extern void CGContextSetShadowWithColor(IntPtr context, CGSize offset, double blur, IntPtr color);
+
+	public void SetShadowWithColor(CGSize offset, double blur, CGColor color)
+	{
+		CGContextSetShadowWithColor(handle, offset, blur, color.handle);
+	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetShadow(IntPtr context, CGSize offset, nfloat blur);
+	private static extern void CGContextSetShadow(IntPtr context, CGSize offset, double blur);
 
-	public void SetShadow(CGSize offset, nfloat blur, CGColor color = null)
+	public void SetShadow(CGSize offset, double blur)
 	{
-		if (color == null)
-		{
-			CGContextSetShadow(handle, offset, blur);
-		}
-		else
-		{
-			CGContextSetShadowWithColor(handle, offset, blur, color.handle);
-		}
+		CGContextSetShadow(handle, offset, blur);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -737,15 +757,15 @@ public class CGContext : INativeObject, IDisposable
 
 	public void DrawLinearGradient(CGGradient gradient, CGPoint startPoint, CGPoint endPoint, CGGradientDrawingOptions options)
 	{
-		CGContextDrawLinearGradient(handle, gradient?.handle ?? IntPtr.Zero, startPoint, endPoint, options);
+		CGContextDrawLinearGradient(handle, gradient.handle, startPoint, endPoint, options);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextDrawRadialGradient(IntPtr context, IntPtr gradient, CGPoint startCenter, nfloat startRadius, CGPoint endCenter, nfloat endRadius, CGGradientDrawingOptions options);
+	private static extern void CGContextDrawRadialGradient(IntPtr context, IntPtr gradient, CGPoint startCenter, double startRadius, CGPoint endCenter, double endRadius, CGGradientDrawingOptions options);
 
-	public void DrawRadialGradient(CGGradient gradient, CGPoint startCenter, nfloat startRadius, CGPoint endCenter, nfloat endRadius, CGGradientDrawingOptions options)
+	public void DrawRadialGradient(CGGradient gradient, CGPoint startCenter, double startRadius, CGPoint endCenter, double endRadius, CGGradientDrawingOptions options)
 	{
-		CGContextDrawRadialGradient(handle, gradient?.handle ?? IntPtr.Zero, startCenter, startRadius, endCenter, endRadius, options);
+		CGContextDrawRadialGradient(handle, gradient.handle, startCenter, startRadius, endCenter, endRadius, options);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -753,19 +773,19 @@ public class CGContext : INativeObject, IDisposable
 
 	public void DrawShading(CGShading shading)
 	{
-		CGContextDrawShading(handle, shading?.handle ?? IntPtr.Zero);
+		CGContextDrawShading(handle, shading.handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetCharacterSpacing(IntPtr context, nfloat spacing);
+	private static extern void CGContextSetCharacterSpacing(IntPtr context, double spacing);
 
-	public void SetCharacterSpacing(nfloat spacing)
+	public void SetCharacterSpacing(double spacing)
 	{
 		CGContextSetCharacterSpacing(handle, spacing);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetTextPosition(IntPtr c, nfloat x, nfloat y);
+	private static extern void CGContextSetTextPosition(IntPtr c, double x, double y);
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
 	private static extern CGPoint CGContextGetTextPosition(IntPtr context);
@@ -789,189 +809,205 @@ public class CGContext : INativeObject, IDisposable
 
 	public void SetFont(CGFont font)
 	{
-		CGContextSetFont(handle, font?.handle ?? IntPtr.Zero);
+		CGContextSetFont(handle, font.handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetFontSize(IntPtr c, nfloat size);
+	private static extern void CGContextSetFontSize(IntPtr c, double size);
 
-	public void SetFontSize(nfloat size)
+	public void SetFontSize(double size)
 	{
 		CGContextSetFontSize(handle, size);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSelectFont(IntPtr c, string name, nfloat size, CGTextEncoding textEncoding);
+	private static extern void CGContextSelectFont(IntPtr c, string name, double size, CGTextEncoding textEncoding);
 
-	[Deprecated(PlatformName.iOS, 7, 0, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	public void SelectFont(string name, nfloat size, CGTextEncoding textEncoding)
+	public void SelectFont(string name, double size, CGTextEncoding textEncoding)
 	{
+		if (name == null)
+		{
+			throw new ArgumentNullException("name");
+		}
 		CGContextSelectFont(handle, name, size, textEncoding);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextShowGlyphsAtPositions(IntPtr context, ushort[] glyphs, CGPoint[] positions, nint count);
+	private static extern void CGContextShowGlyphsAtPositions(IntPtr context, ushort[] glyphs, CGPoint[] positions, IntPtr size_t_count);
 
-	public void ShowGlyphsAtPositions(ushort[] glyphs, CGPoint[] positions, int count = -1)
+	public void ShowGlyphsAtPositions(ushort[] glyphs, CGPoint[] positions, int size_t_count)
 	{
+		if (positions == null)
+		{
+			throw new ArgumentNullException("positions");
+		}
 		if (glyphs == null)
 		{
-			count = 0;
+			throw new ArgumentNullException("glyphs");
 		}
-		else if (count < 0)
-		{
-			count = glyphs.Length;
-		}
-		CGContextShowGlyphsAtPositions(handle, glyphs, positions, count);
+		CGContextShowGlyphsAtPositions(handle, glyphs, positions, new IntPtr(size_t_count));
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextShowText(IntPtr c, string s, nint length);
+	private static extern void CGContextShowText(IntPtr c, string s, IntPtr size_t_length);
 
-	[Deprecated(PlatformName.iOS, 7, 0, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
 	public void ShowText(string str, int count)
 	{
 		if (str == null)
 		{
-			count = 0;
+			throw new ArgumentNullException("str");
 		}
-		else if (count > str.Length)
+		if (count > str.Length)
 		{
 			throw new ArgumentException("count");
 		}
-		CGContextShowText(handle, str, count);
+		CGContextShowText(handle, str, new IntPtr(count));
 	}
 
-	[Deprecated(PlatformName.iOS, 7, 0, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
 	public void ShowText(string str)
 	{
-		CGContextShowText(handle, str, str?.Length ?? 0);
+		if (str == null)
+		{
+			throw new ArgumentNullException("str");
+		}
+		CGContextShowText(handle, str, new IntPtr(str.Length));
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextShowText(IntPtr c, byte[] bytes, nint length);
+	private static extern void CGContextShowText(IntPtr c, byte[] bytes, IntPtr size_t_length);
 
-	[Deprecated(PlatformName.iOS, 7, 0, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
 	public void ShowText(byte[] bytes, int count)
 	{
 		if (bytes == null)
 		{
-			count = 0;
+			throw new ArgumentNullException("bytes");
 		}
-		else if (count > bytes.Length)
+		if (count > bytes.Length)
 		{
 			throw new ArgumentException("count");
 		}
-		CGContextShowText(handle, bytes, count);
+		CGContextShowText(handle, bytes, new IntPtr(count));
 	}
 
-	[Deprecated(PlatformName.iOS, 7, 0, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
 	public void ShowText(byte[] bytes)
 	{
-		CGContextShowText(handle, bytes, (bytes != null) ? bytes.Length : 0);
+		if (bytes == null)
+		{
+			throw new ArgumentNullException("bytes");
+		}
+		CGContextShowText(handle, bytes, new IntPtr(bytes.Length));
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextShowTextAtPoint(IntPtr c, nfloat x, nfloat y, string str, nint length);
+	private static extern void CGContextShowTextAtPoint(IntPtr c, double x, double y, string str, IntPtr size_t_length);
 
-	[Deprecated(PlatformName.iOS, 7, 0, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	public void ShowTextAtPoint(nfloat x, nfloat y, string str, int length)
+	public void ShowTextAtPoint(double x, double y, string str, int length)
 	{
-		CGContextShowTextAtPoint(handle, x, y, str, length);
+		if (str == null)
+		{
+			throw new ArgumentNullException("str");
+		}
+		CGContextShowTextAtPoint(handle, x, y, str, new IntPtr(length));
 	}
 
-	[Deprecated(PlatformName.iOS, 7, 0, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	public void ShowTextAtPoint(nfloat x, nfloat y, string str)
+	public void ShowTextAtPoint(double x, double y, string str)
 	{
-		CGContextShowTextAtPoint(handle, x, y, str, str?.Length ?? 0);
-	}
-
-	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextShowTextAtPoint(IntPtr c, nfloat x, nfloat y, byte[] bytes, nint length);
-
-	public void ShowTextAtPoint(nfloat x, nfloat y, byte[] bytes, int length)
-	{
-		CGContextShowTextAtPoint(handle, x, y, bytes, length);
-	}
-
-	public void ShowTextAtPoint(nfloat x, nfloat y, byte[] bytes)
-	{
-		CGContextShowTextAtPoint(handle, x, y, bytes, (bytes != null) ? bytes.Length : 0);
+		if (str == null)
+		{
+			throw new ArgumentNullException("str");
+		}
+		CGContextShowTextAtPoint(handle, x, y, str, new IntPtr(str.Length));
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextShowGlyphs(IntPtr c, ushort[] glyphs, nint count);
+	private static extern void CGContextShowTextAtPoint(IntPtr c, double x, double y, byte[] bytes, IntPtr size_t_length);
 
-	[Deprecated(PlatformName.iOS, 7, 0, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
+	public void ShowTextAtPoint(double x, double y, byte[] bytes, int length)
+	{
+		if (bytes == null)
+		{
+			throw new ArgumentNullException("bytes");
+		}
+		CGContextShowTextAtPoint(handle, x, y, bytes, new IntPtr(length));
+	}
+
+	public void ShowTextAtPoint(double x, double y, byte[] bytes)
+	{
+		if (bytes == null)
+		{
+			throw new ArgumentNullException("bytes");
+		}
+		CGContextShowTextAtPoint(handle, x, y, bytes, new IntPtr(bytes.Length));
+	}
+
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	private static extern void CGContextShowGlyphs(IntPtr c, ushort[] glyphs, IntPtr size_t_count);
+
 	public void ShowGlyphs(ushort[] glyphs)
 	{
-		CGContextShowGlyphs(handle, glyphs, (glyphs != null) ? glyphs.Length : 0);
+		if (glyphs == null)
+		{
+			throw new ArgumentNullException("glyphs");
+		}
+		CGContextShowGlyphs(handle, glyphs, new IntPtr(glyphs.Length));
 	}
 
-	[Deprecated(PlatformName.iOS, 7, 0, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
 	public void ShowGlyphs(ushort[] glyphs, int count)
 	{
 		if (glyphs == null)
 		{
-			count = 0;
+			throw new ArgumentNullException("glyphs");
 		}
-		else if (count > glyphs.Length)
+		if (count > glyphs.Length)
 		{
 			throw new ArgumentException("count");
 		}
-		CGContextShowGlyphs(handle, glyphs, count);
+		CGContextShowGlyphs(handle, glyphs, new IntPtr(count));
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextShowGlyphsAtPoint(IntPtr context, nfloat x, nfloat y, ushort[] glyphs, nint count);
+	private static extern void CGContextShowGlyphsAtPoint(IntPtr context, double x, double y, ushort[] glyphs, IntPtr size_t_count);
 
-	[Deprecated(PlatformName.iOS, 7, 0, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	public void ShowGlyphsAtPoint(nfloat x, nfloat y, ushort[] glyphs, int count)
+	public void ShowGlyphsAtPoint(double x, double y, ushort[] glyphs, int count)
 	{
 		if (glyphs == null)
 		{
-			count = 0;
+			throw new ArgumentNullException("glyphs");
 		}
-		else if (count > glyphs.Length)
+		if (count > glyphs.Length)
 		{
 			throw new ArgumentException("count");
 		}
-		CGContextShowGlyphsAtPoint(handle, x, y, glyphs, count);
+		CGContextShowGlyphsAtPoint(handle, x, y, glyphs, new IntPtr(count));
 	}
 
-	[Deprecated(PlatformName.iOS, 7, 0, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	public void ShowGlyphsAtPoint(nfloat x, nfloat y, ushort[] glyphs)
+	public void ShowGlyphsAtPoint(double x, double y, ushort[] glyphs)
 	{
-		CGContextShowGlyphsAtPoint(handle, x, y, glyphs, (glyphs != null) ? glyphs.Length : 0);
+		if (glyphs == null)
+		{
+			throw new ArgumentNullException("glyphs");
+		}
+		CGContextShowGlyphsAtPoint(handle, x, y, glyphs, new IntPtr(glyphs.Length));
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextShowGlyphsWithAdvances(IntPtr c, ushort[] glyphs, CGSize[] advances, nint count);
+	private static extern void CGContextShowGlyphsWithAdvances(IntPtr c, ushort[] glyphs, CGSize[] advances, IntPtr size_t_count);
 
-	[Deprecated(PlatformName.iOS, 7, 0, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
-	[Deprecated(PlatformName.MacOSX, 10, 9, PlatformArchitecture.None, "Use the 'CoreText' API instead.")]
 	public void ShowGlyphsWithAdvances(ushort[] glyphs, CGSize[] advances, int count)
 	{
 		if (glyphs == null)
 		{
-			count = 0;
+			throw new ArgumentNullException("glyphs");
+		}
+		if (advances == null)
+		{
+			throw new ArgumentNullException("advances");
 		}
 		if (count > glyphs.Length || count > advances.Length)
 		{
 			throw new ArgumentException("count");
 		}
-		CGContextShowGlyphsWithAdvances(handle, glyphs, advances, count);
+		CGContextShowGlyphsWithAdvances(handle, glyphs, advances, new IntPtr(count));
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -979,22 +1015,25 @@ public class CGContext : INativeObject, IDisposable
 
 	public void DrawPDFPage(CGPDFPage page)
 	{
-		CGContextDrawPDFPage(handle, page?.handle ?? IntPtr.Zero);
+		CGContextDrawPDFPage(handle, page.handle);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private unsafe static extern void CGContextBeginPage(IntPtr c, CGRect* mediaBox);
+	private static extern void CGContextBeginPage(IntPtr c, ref CGRect mediaBox);
 
-	public unsafe void BeginPage(CGRect? rect)
+	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
+	private static extern void CGContextBeginPage(IntPtr c, IntPtr zero);
+
+	public void BeginPage(CGRect? rect)
 	{
 		if (rect.HasValue)
 		{
-			CGRect value = rect.Value;
-			CGContextBeginPage(handle, &value);
+			CGRect mediaBox = rect.Value;
+			CGContextBeginPage(handle, ref mediaBox);
 		}
 		else
 		{
-			CGContextBeginPage(handle, null);
+			CGContextBeginPage(handle, IntPtr.Zero);
 		}
 	}
 
@@ -1023,27 +1062,27 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetShouldAntialias(IntPtr context, bool shouldAntialias);
+	private static extern void CGContextSetShouldAntialias(IntPtr c, int shouldAntialias);
 
 	public void SetShouldAntialias(bool shouldAntialias)
 	{
-		CGContextSetShouldAntialias(handle, shouldAntialias);
+		CGContextSetShouldAntialias(handle, shouldAntialias ? 1 : 0);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetAllowsAntialiasing(IntPtr context, bool allowsAntialiasing);
+	private static extern void CGContextSetAllowsAntialiasing(IntPtr context, int allowsAntialiasing);
 
 	public void SetAllowsAntialiasing(bool allowsAntialiasing)
 	{
-		CGContextSetAllowsAntialiasing(handle, allowsAntialiasing);
+		CGContextSetAllowsAntialiasing(handle, allowsAntialiasing ? 1 : 0);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetShouldSmoothFonts(IntPtr context, bool shouldSmoothFonts);
+	private static extern void CGContextSetShouldSmoothFonts(IntPtr c, int shouldSmoothFonts);
 
 	public void SetShouldSmoothFonts(bool shouldSmoothFonts)
 	{
-		CGContextSetShouldSmoothFonts(handle, shouldSmoothFonts);
+		CGContextSetShouldSmoothFonts(handle, shouldSmoothFonts ? 1 : 0);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
@@ -1129,54 +1168,64 @@ public class CGContext : INativeObject, IDisposable
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
 	private static extern IntPtr CGContextCopyPath(IntPtr context);
 
+	[Since(4, 0)]
 	public CGPath CopyPath()
 	{
-		IntPtr intPtr = CGContextCopyPath(handle);
-		return new CGPath(intPtr, owns: true);
+		return new CGPath(CGContextCopyPath(handle), owns: true);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetAllowsFontSmoothing(IntPtr context, bool shouldSubpixelPositionFonts);
+	private static extern IntPtr CGContextSetAllowsFontSmoothing(IntPtr context, bool allows);
 
+	[Since(4, 0)]
 	public void SetAllowsFontSmoothing(bool allows)
 	{
 		CGContextSetAllowsFontSmoothing(handle, allows);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetAllowsFontSubpixelPositioning(IntPtr context, bool allowsFontSubpixelPositioning);
+	private static extern IntPtr CGContextSetAllowsFontSubpixelPositioning(IntPtr context, bool allows);
 
+	[Since(4, 0)]
 	public void SetAllowsSubpixelPositioning(bool allows)
 	{
 		CGContextSetAllowsFontSubpixelPositioning(handle, allows);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetAllowsFontSubpixelQuantization(IntPtr context, bool shouldSubpixelQuantizeFonts);
+	private static extern IntPtr CGContextSetAllowsFontSubpixelQuantization(IntPtr context, bool allows);
 
+	[Since(4, 0)]
 	public void SetAllowsFontSubpixelQuantization(bool allows)
 	{
 		CGContextSetAllowsFontSubpixelQuantization(handle, allows);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetShouldSubpixelPositionFonts(IntPtr context, bool shouldSubpixelPositionFonts);
+	private static extern IntPtr CGContextSetShouldSubpixelPositionFonts(IntPtr context, bool should);
 
+	[Since(4, 0)]
 	public void SetShouldSubpixelPositionFonts(bool shouldSubpixelPositionFonts)
 	{
 		CGContextSetShouldSubpixelPositionFonts(handle, shouldSubpixelPositionFonts);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextSetShouldSubpixelQuantizeFonts(IntPtr context, bool shouldSubpixelQuantizeFonts);
+	private static extern IntPtr CGContextSetShouldSubpixelQuantizeFonts(IntPtr context, bool should);
 
+	[Since(4, 0)]
 	public void ShouldSubpixelQuantizeFonts(bool shouldSubpixelQuantizeFonts)
 	{
 		CGContextSetShouldSubpixelQuantizeFonts(handle, shouldSubpixelQuantizeFonts);
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextBeginTransparencyLayer(IntPtr context, IntPtr auxiliaryInfo);
+	private static extern IntPtr CGContextBeginTransparencyLayer(IntPtr context, IntPtr dictionary);
+
+	public void BeginTransparencyLayer()
+	{
+		CGContextBeginTransparencyLayer(handle, IntPtr.Zero);
+	}
 
 	public void BeginTransparencyLayer(NSDictionary auxiliaryInfo = null)
 	{
@@ -1184,23 +1233,23 @@ public class CGContext : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextBeginTransparencyLayerWithRect(IntPtr context, CGRect rect, IntPtr auxiliaryInfo);
+	private static extern IntPtr CGContextBeginTransparencyLayerWithRect(IntPtr context, CGRect rect, IntPtr dictionary);
 
 	public void BeginTransparencyLayer(CGRect rectangle, NSDictionary auxiliaryInfo = null)
 	{
 		CGContextBeginTransparencyLayerWithRect(handle, rectangle, auxiliaryInfo?.Handle ?? IntPtr.Zero);
 	}
 
+	public void BeginTransparencyLayer(CGRect rectangle)
+	{
+		CGContextBeginTransparencyLayerWithRect(handle, rectangle, IntPtr.Zero);
+	}
+
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/CoreGraphics")]
-	private static extern void CGContextEndTransparencyLayer(IntPtr context);
+	private static extern IntPtr CGContextEndTransparencyLayer(IntPtr context);
 
 	public void EndTransparencyLayer()
 	{
 		CGContextEndTransparencyLayer(handle);
-	}
-
-	public CGBitmapContext AsBitmapContext()
-	{
-		return new CGBitmapContext(Handle, owns: false);
 	}
 }

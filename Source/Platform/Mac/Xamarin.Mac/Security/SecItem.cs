@@ -1,118 +1,274 @@
 using System;
 using System.Runtime.InteropServices;
-using Foundation;
 using ObjCRuntime;
 
 namespace Security;
 
-internal static class SecItem
+internal class SecItem
 {
-	[Field("kSecMatchCaseInsensitive", "Security")]
-	public static IntPtr MatchCaseInsensitive => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecMatchCaseInsensitive");
+	internal static IntPtr securityLibrary = Dlfcn.dlopen("/System/Library/Frameworks/Security.framework/Security", 0);
 
-	[Field("kSecMatchEmailAddressIfPresent", "Security")]
-	public static IntPtr MatchEmailAddressIfPresent => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecMatchEmailAddressIfPresent");
+	private static IntPtr _MatchPolicy;
 
-	[Field("kSecMatchIssuers", "Security")]
-	public static IntPtr MatchIssuers => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecMatchIssuers");
+	private static IntPtr _MatchItemList;
 
-	[Field("kSecMatchItemList", "Security")]
-	public static IntPtr MatchItemList => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecMatchItemList");
+	private static IntPtr _MatchSearchList;
 
-	[Field("kSecMatchLimit", "Security")]
-	public static IntPtr MatchLimit => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecMatchLimit");
+	private static IntPtr _MatchIssuers;
 
-	[Field("kSecMatchPolicy", "Security")]
-	public static IntPtr MatchPolicy => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecMatchPolicy");
+	private static IntPtr _MatchEmailAddressIfPresent;
 
-	[Field("kSecMatchSearchList", "Security")]
-	public static IntPtr MatchSearchList => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecMatchSearchList");
+	private static IntPtr _MatchSubjectContains;
 
-	[Field("kSecMatchSubjectContains", "Security")]
-	public static IntPtr MatchSubjectContains => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecMatchSubjectContains");
+	private static IntPtr _MatchCaseInsensitive;
 
-	[Field("kSecMatchTrustedOnly", "Security")]
-	public static IntPtr MatchTrustedOnly => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecMatchTrustedOnly");
+	private static IntPtr _MatchTrustedOnly;
 
-	[Field("kSecMatchValidOnDate", "Security")]
-	public static IntPtr MatchValidOnDate => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecMatchValidOnDate");
+	private static IntPtr _MatchValidOnDate;
 
-	[Field("kSecReturnAttributes", "Security")]
-	public static IntPtr ReturnAttributes => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecReturnAttributes");
+	private static IntPtr _MatchLimit;
 
-	[Field("kSecReturnData", "Security")]
-	public static IntPtr ReturnData => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecReturnData");
+	private static IntPtr _ReturnData;
 
-	[Field("kSecReturnPersistentRef", "Security")]
-	public static IntPtr ReturnPersistentRef => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecReturnPersistentRef");
+	private static IntPtr _ReturnAttributes;
 
-	[Field("kSecReturnRef", "Security")]
-	public static IntPtr ReturnRef => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecReturnRef");
+	private static IntPtr _ReturnRef;
 
-	[Field("kSecUseAuthenticationContext", "Security")]
-	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	public static IntPtr UseAuthenticationContext
+	private static IntPtr _ReturnPersistentRef;
+
+	private static IntPtr _ValueData;
+
+	private static IntPtr _ValueRef;
+
+	private static IntPtr _ValuePersistentRef;
+
+	private static IntPtr _UseItemList;
+
+	public static IntPtr MatchPolicy
 	{
-		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
 		get
 		{
-			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecUseAuthenticationContext");
+			if (_MatchPolicy == IntPtr.Zero)
+			{
+				_MatchPolicy = Dlfcn.GetIntPtr(securityLibrary, "kSecMatchPolicy");
+			}
+			return _MatchPolicy;
 		}
 	}
 
-	[Field("kSecUseAuthenticationUI", "Security")]
-	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	public static IntPtr UseAuthenticationUI
+	public static IntPtr MatchItemList
 	{
-		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
 		get
 		{
-			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecUseAuthenticationUI");
+			if (_MatchItemList == IntPtr.Zero)
+			{
+				_MatchItemList = Dlfcn.GetIntPtr(securityLibrary, "kSecMatchItemList");
+			}
+			return _MatchItemList;
 		}
 	}
 
-	[Field("kSecUseDataProtectionKeychain", "Security")]
-	[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	public static IntPtr UseDataProtectionKeychain
+	public static IntPtr MatchSearchList
 	{
-		[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
 		get
 		{
-			return Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecUseDataProtectionKeychain");
+			if (_MatchSearchList == IntPtr.Zero)
+			{
+				_MatchSearchList = Dlfcn.GetIntPtr(securityLibrary, "kSecMatchSearchList");
+			}
+			return _MatchSearchList;
 		}
 	}
 
-	[Field("kSecUseItemList", "Security")]
-	public static IntPtr UseItemList => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecUseItemList");
+	public static IntPtr MatchIssuers
+	{
+		get
+		{
+			if (_MatchIssuers == IntPtr.Zero)
+			{
+				_MatchIssuers = Dlfcn.GetIntPtr(securityLibrary, "kSecMatchIssuers");
+			}
+			return _MatchIssuers;
+		}
+	}
 
-	[Field("kSecValueData", "Security")]
-	public static IntPtr ValueData => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecValueData");
+	public static IntPtr MatchEmailAddressIfPresent
+	{
+		get
+		{
+			if (_MatchEmailAddressIfPresent == IntPtr.Zero)
+			{
+				_MatchEmailAddressIfPresent = Dlfcn.GetIntPtr(securityLibrary, "kSecMatchEmailAddressIfPresent");
+			}
+			return _MatchEmailAddressIfPresent;
+		}
+	}
 
-	[Field("kSecValuePersistentRef", "Security")]
-	public static IntPtr ValuePersistentRef => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecValuePersistentRef");
+	public static IntPtr MatchSubjectContains
+	{
+		get
+		{
+			if (_MatchSubjectContains == IntPtr.Zero)
+			{
+				_MatchSubjectContains = Dlfcn.GetIntPtr(securityLibrary, "kSecMatchSubjectContains");
+			}
+			return _MatchSubjectContains;
+		}
+	}
 
-	[Field("kSecValueRef", "Security")]
-	public static IntPtr ValueRef => Dlfcn.GetIntPtr(Libraries.Security.Handle, "kSecValueRef");
+	public static IntPtr MatchCaseInsensitive
+	{
+		get
+		{
+			if (_MatchCaseInsensitive == IntPtr.Zero)
+			{
+				_MatchCaseInsensitive = Dlfcn.GetIntPtr(securityLibrary, "kSecMatchCaseInsensitive");
+			}
+			return _MatchCaseInsensitive;
+		}
+	}
+
+	public static IntPtr MatchTrustedOnly
+	{
+		get
+		{
+			if (_MatchTrustedOnly == IntPtr.Zero)
+			{
+				_MatchTrustedOnly = Dlfcn.GetIntPtr(securityLibrary, "kSecMatchTrustedOnly");
+			}
+			return _MatchTrustedOnly;
+		}
+	}
+
+	public static IntPtr MatchValidOnDate
+	{
+		get
+		{
+			if (_MatchValidOnDate == IntPtr.Zero)
+			{
+				_MatchValidOnDate = Dlfcn.GetIntPtr(securityLibrary, "kSecMatchValidOnDate");
+			}
+			return _MatchValidOnDate;
+		}
+	}
+
+	public static IntPtr MatchLimit
+	{
+		get
+		{
+			if (_MatchLimit == IntPtr.Zero)
+			{
+				_MatchLimit = Dlfcn.GetIntPtr(securityLibrary, "kSecMatchLimit");
+			}
+			return _MatchLimit;
+		}
+	}
+
+	public static IntPtr ReturnData
+	{
+		get
+		{
+			if (_ReturnData == IntPtr.Zero)
+			{
+				_ReturnData = Dlfcn.GetIntPtr(securityLibrary, "kSecReturnData");
+			}
+			return _ReturnData;
+		}
+	}
+
+	public static IntPtr ReturnAttributes
+	{
+		get
+		{
+			if (_ReturnAttributes == IntPtr.Zero)
+			{
+				_ReturnAttributes = Dlfcn.GetIntPtr(securityLibrary, "kSecReturnAttributes");
+			}
+			return _ReturnAttributes;
+		}
+	}
+
+	public static IntPtr ReturnRef
+	{
+		get
+		{
+			if (_ReturnRef == IntPtr.Zero)
+			{
+				_ReturnRef = Dlfcn.GetIntPtr(securityLibrary, "kSecReturnRef");
+			}
+			return _ReturnRef;
+		}
+	}
+
+	public static IntPtr ReturnPersistentRef
+	{
+		get
+		{
+			if (_ReturnPersistentRef == IntPtr.Zero)
+			{
+				_ReturnPersistentRef = Dlfcn.GetIntPtr(securityLibrary, "kSecReturnPersistentRef");
+			}
+			return _ReturnPersistentRef;
+		}
+	}
+
+	public static IntPtr ValueData
+	{
+		get
+		{
+			if (_ValueData == IntPtr.Zero)
+			{
+				_ValueData = Dlfcn.GetIntPtr(securityLibrary, "kSecValueData");
+			}
+			return _ValueData;
+		}
+	}
+
+	public static IntPtr ValueRef
+	{
+		get
+		{
+			if (_ValueRef == IntPtr.Zero)
+			{
+				_ValueRef = Dlfcn.GetIntPtr(securityLibrary, "kSecValueRef");
+			}
+			return _ValueRef;
+		}
+	}
+
+	public static IntPtr ValuePersistentRef
+	{
+		get
+		{
+			if (_ValuePersistentRef == IntPtr.Zero)
+			{
+				_ValuePersistentRef = Dlfcn.GetIntPtr(securityLibrary, "kSecValuePersistentRef");
+			}
+			return _ValuePersistentRef;
+		}
+	}
+
+	public static IntPtr UseItemList
+	{
+		get
+		{
+			if (_UseItemList == IntPtr.Zero)
+			{
+				_UseItemList = Dlfcn.GetIntPtr(securityLibrary, "kSecUseItemList");
+			}
+			return _UseItemList;
+		}
+	}
 
 	[DllImport("/System/Library/Frameworks/Security.framework/Security")]
-	internal static extern SecStatusCode SecItemCopyMatching(IntPtr query, out IntPtr result);
+	internal static extern SecStatusCode SecItemCopyMatching(IntPtr cfDictRef, out IntPtr result);
 
 	[DllImport("/System/Library/Frameworks/Security.framework/Security")]
-	internal static extern SecStatusCode SecItemAdd(IntPtr attributes, IntPtr result);
+	internal static extern SecStatusCode SecItemAdd(IntPtr cfDictRef, IntPtr result);
 
 	[DllImport("/System/Library/Frameworks/Security.framework/Security")]
-	internal static extern SecStatusCode SecItemDelete(IntPtr query);
+	internal static extern SecStatusCode SecItemDelete(IntPtr cfDictRef);
 
 	[DllImport("/System/Library/Frameworks/Security.framework/Security")]
-	internal static extern SecStatusCode SecItemUpdate(IntPtr query, IntPtr attributesToUpdate);
+	internal static extern SecStatusCode SecItemUpdate(IntPtr cfDictRef, IntPtr attrsToUpdate);
 }

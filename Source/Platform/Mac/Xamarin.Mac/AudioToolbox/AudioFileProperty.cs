@@ -31,7 +31,5 @@ public enum AudioFileProperty
 	SourceBitDepth = 1935832164,
 	AlbumArtwork = 1633776244,
 	ReadyToProducePackets = 1919247481,
-	AverageBytesPerPacket = 1633841264,
-	AudioTrackCount = 1635017588,
-	UseAudioTrack = 1969321067
+	AverageBytesPerPacket = 1633841264
 }

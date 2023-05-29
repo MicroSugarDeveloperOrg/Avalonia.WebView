@@ -1,11 +1,10 @@
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreVideo;
 
-[Watch(4, 0)]
+[Since(6, 0)]
 public class CVPixelBufferAttributes : DictionaryContainer
 {
 	public CVPixelFormatType? PixelFormatType
@@ -22,17 +21,13 @@ public class CVPixelBufferAttributes : DictionaryContainer
 
 	public CFAllocator MemoryAllocator
 	{
-		get
-		{
-			return GetNativeValue<CFAllocator>(CVPixelBuffer.MemoryAllocatorKey);
-		}
 		set
 		{
 			SetNativeValue(CVPixelBuffer.MemoryAllocatorKey, value);
 		}
 	}
 
-	public nint? Width
+	public int? Width
 	{
 		get
 		{
@@ -44,7 +39,7 @@ public class CVPixelBufferAttributes : DictionaryContainer
 		}
 	}
 
-	public nint? Height
+	public int? Height
 	{
 		get
 		{
@@ -164,6 +159,19 @@ public class CVPixelBufferAttributes : DictionaryContainer
 		}
 	}
 
+	[Since(6, 0)]
+	public bool? OpenGLESCompatibility
+	{
+		get
+		{
+			return GetBoolValue(CVPixelBuffer.OpenGLESCompatibilityKey);
+		}
+		set
+		{
+			SetBooleanValue(CVPixelBuffer.OpenGLESCompatibilityKey, value);
+		}
+	}
+
 	public CVPixelBufferAttributes()
 		: base(new NSMutableDictionary())
 	{
@@ -174,7 +182,7 @@ public class CVPixelBufferAttributes : DictionaryContainer
 	{
 	}
 
-	public CVPixelBufferAttributes(CVPixelFormatType pixelFormatType, nint width, nint height)
+	public CVPixelBufferAttributes(CVPixelFormatType pixelFormatType, int width, int height)
 		: this()
 	{
 		PixelFormatType = pixelFormatType;

@@ -12,14 +12,4 @@ public static class AudioChannelLayoutTagExtensions
 		}
 		return (AudioChannelBit)outPropertyData;
 	}
-
-	public static uint GetNumberOfChannels(this AudioChannelLayoutTag inLayoutTag)
-	{
-		return (uint)(inLayoutTag & (AudioChannelLayoutTag)65535u);
-	}
-
-	public static bool IsReserved(this AudioChannelLayoutTag value)
-	{
-		return (uint)value >= 4026531840u && (uint)value <= 4294967294u;
-	}
 }

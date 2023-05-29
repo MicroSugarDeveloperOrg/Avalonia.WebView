@@ -8,109 +8,42 @@ namespace CoreData;
 [Register("NSAttributeDescription", true)]
 public class NSAttributeDescription : NSPropertyDescription
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAllowsExternalBinaryDataStorage = "allowsExternalBinaryDataStorage";
-
-	private static readonly IntPtr selAllowsExternalBinaryDataStorageHandle = Selector.GetHandle("allowsExternalBinaryDataStorage");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAttributeType = "attributeType";
-
 	private static readonly IntPtr selAttributeTypeHandle = Selector.GetHandle("attributeType");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAttributeValueClassName = "attributeValueClassName";
-
-	private static readonly IntPtr selAttributeValueClassNameHandle = Selector.GetHandle("attributeValueClassName");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDefaultValue = "defaultValue";
-
-	private static readonly IntPtr selDefaultValueHandle = Selector.GetHandle("defaultValue");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPreservesValueInHistoryOnDeletion = "preservesValueInHistoryOnDeletion";
-
-	private static readonly IntPtr selPreservesValueInHistoryOnDeletionHandle = Selector.GetHandle("preservesValueInHistoryOnDeletion");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAllowsExternalBinaryDataStorage_ = "setAllowsExternalBinaryDataStorage:";
-
-	private static readonly IntPtr selSetAllowsExternalBinaryDataStorage_Handle = Selector.GetHandle("setAllowsExternalBinaryDataStorage:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAttributeType_ = "setAttributeType:";
 
 	private static readonly IntPtr selSetAttributeType_Handle = Selector.GetHandle("setAttributeType:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAttributeValueClassName_ = "setAttributeValueClassName:";
+	private static readonly IntPtr selAttributeValueClassNameHandle = Selector.GetHandle("attributeValueClassName");
 
 	private static readonly IntPtr selSetAttributeValueClassName_Handle = Selector.GetHandle("setAttributeValueClassName:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetDefaultValue_ = "setDefaultValue:";
+	private static readonly IntPtr selDefaultValueHandle = Selector.GetHandle("defaultValue");
 
 	private static readonly IntPtr selSetDefaultValue_Handle = Selector.GetHandle("setDefaultValue:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetPreservesValueInHistoryOnDeletion_ = "setPreservesValueInHistoryOnDeletion:";
-
-	private static readonly IntPtr selSetPreservesValueInHistoryOnDeletion_Handle = Selector.GetHandle("setPreservesValueInHistoryOnDeletion:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetValueTransformerName_ = "setValueTransformerName:";
-
-	private static readonly IntPtr selSetValueTransformerName_Handle = Selector.GetHandle("setValueTransformerName:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selValueTransformerName = "valueTransformerName";
+	private static readonly IntPtr selVersionHashHandle = Selector.GetHandle("versionHash");
 
 	private static readonly IntPtr selValueTransformerNameHandle = Selector.GetHandle("valueTransformerName");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selVersionHash = "versionHash";
+	private static readonly IntPtr selSetValueTransformerName_Handle = Selector.GetHandle("setValueTransformerName:");
 
-	private static readonly IntPtr selVersionHashHandle = Selector.GetHandle("versionHash");
+	private static readonly IntPtr selAllowsExternalBinaryDataStorageHandle = Selector.GetHandle("allowsExternalBinaryDataStorage");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSAttributeDescription");
+	private static readonly IntPtr selSetAllowsExternalBinaryDataStorage_Handle = Selector.GetHandle("setAllowsExternalBinaryDataStorage:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSAttributeDescription");
+
+	private object __mt_DefaultValue_var;
+
+	private object __mt_VersionHash_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual bool AllowsExternalBinaryDataStorage
-	{
-		[Export("allowsExternalBinaryDataStorage")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAllowsExternalBinaryDataStorageHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAllowsExternalBinaryDataStorageHandle);
-		}
-		[Export("setAllowsExternalBinaryDataStorage:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsExternalBinaryDataStorage_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAllowsExternalBinaryDataStorage_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSAttributeType AttributeType
 	{
 		[Export("attributeType")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (NSAttributeType)Messaging.UInt64_objc_msgSend(base.Handle, selAttributeTypeHandle);
 			}
@@ -119,7 +52,7 @@ public class NSAttributeDescription : NSPropertyDescription
 		[Export("setAttributeType:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetAttributeType_Handle, (ulong)value);
 			}
@@ -130,13 +63,12 @@ public class NSAttributeDescription : NSPropertyDescription
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual string AttributeValueClassName
 	{
 		[Export("attributeValueClassName")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAttributeValueClassNameHandle));
 			}
@@ -150,7 +82,7 @@ public class NSAttributeDescription : NSPropertyDescription
 				throw new ArgumentNullException("value");
 			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAttributeValueClassName_Handle, arg);
 			}
@@ -162,77 +94,47 @@ public class NSAttributeDescription : NSPropertyDescription
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject? DefaultValue
+	public virtual NSObject DefaultValue
 	{
-		[Export("defaultValue", ArgumentSemantic.Retain)]
+		[Export("defaultValue")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDefaultValueHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDefaultValueHandle));
+			return (NSObject)(__mt_DefaultValue_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDefaultValueHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDefaultValueHandle))));
 		}
-		[Export("setDefaultValue:", ArgumentSemantic.Retain)]
+		[Export("setDefaultValue:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDefaultValue_Handle, value?.Handle ?? IntPtr.Zero);
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDefaultValue_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDefaultValue_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDefaultValue_Handle, value.Handle);
 			}
+			__mt_DefaultValue_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
-	public virtual bool PreservesValueInHistoryOnDeletion
+	public new virtual NSData VersionHash
 	{
-		[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
-		[Export("preservesValueInHistoryOnDeletion")]
+		[Export("versionHash")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selPreservesValueInHistoryOnDeletionHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selPreservesValueInHistoryOnDeletionHandle);
-		}
-		[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.TvOS, 13, 0, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.MacOSX, 10, 15, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.iOS, 13, 0, PlatformArchitecture.All, null)]
-		[Export("setPreservesValueInHistoryOnDeletion:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetPreservesValueInHistoryOnDeletion_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetPreservesValueInHistoryOnDeletion_Handle, value);
-			}
+			return (NSData)(__mt_VersionHash_var = ((!IsDirectBinding) ? ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selVersionHashHandle))) : ((NSData)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selVersionHashHandle)))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string? ValueTransformerName
+	public virtual string ValueTransformerName
 	{
 		[Export("valueTransformerName")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selValueTransformerNameHandle));
 			}
@@ -241,8 +143,12 @@ public class NSAttributeDescription : NSPropertyDescription
 		[Export("setValueTransformerName:")]
 		set
 		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetValueTransformerName_Handle, arg);
 			}
@@ -254,64 +160,81 @@ public class NSAttributeDescription : NSPropertyDescription
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public new virtual NSData VersionHash
+	[Since(5, 0)]
+	public virtual bool AllowsExternalBinaryDataStorage
 	{
-		[Export("versionHash")]
+		[Export("allowsExternalBinaryDataStorage")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSend(base.Handle, selVersionHashHandle));
+				return Messaging.bool_objc_msgSend(base.Handle, selAllowsExternalBinaryDataStorageHandle);
 			}
-			return Runtime.GetNSObject<NSData>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selVersionHashHandle));
+			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAllowsExternalBinaryDataStorageHandle);
+		}
+		[Export("setAllowsExternalBinaryDataStorage:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsExternalBinaryDataStorage_Handle, value);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAllowsExternalBinaryDataStorage_Handle, value);
+			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSAttributeDescription()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSAttributeDescription(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSAttributeDescription(NSObjectFlag t)
+	public NSAttributeDescription(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSAttributeDescription(IntPtr handle)
+	public NSAttributeDescription(IntPtr handle)
 		: base(handle)
 	{
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
+		{
+			__mt_DefaultValue_var = null;
+			__mt_VersionHash_var = null;
+		}
 	}
 }

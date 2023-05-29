@@ -2,12 +2,10 @@ using ObjCRuntime;
 
 namespace AVFoundation;
 
-[Unavailable(PlatformName.TvOS, PlatformArchitecture.All, null)]
-[Unavailable(PlatformName.WatchOS, PlatformArchitecture.All, null)]
-[Native]
-public enum AVCaptureVideoOrientation : long
+[Since(4, 0)]
+public enum AVCaptureVideoOrientation
 {
-	Portrait = 1L,
+	Portrait = 1,
 	PortraitUpsideDown,
 	LandscapeRight,
 	LandscapeLeft

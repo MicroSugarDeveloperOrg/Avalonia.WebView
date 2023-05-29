@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using AppKit;
 using CoreFoundation;
@@ -5,110 +6,83 @@ using CoreGraphics;
 using CoreText;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreAnimation;
 
 [Register("CATextLayer", true)]
 public class CATextLayer : CALayer
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAlignmentMode = "alignmentMode";
-
-	private static readonly IntPtr selAlignmentModeHandle = Selector.GetHandle("alignmentMode");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAllowsFontSubpixelQuantization = "allowsFontSubpixelQuantization";
-
-	private static readonly IntPtr selAllowsFontSubpixelQuantizationHandle = Selector.GetHandle("allowsFontSubpixelQuantization");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFont = "font";
-
-	private static readonly IntPtr selFontHandle = Selector.GetHandle("font");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFontSize = "fontSize";
-
-	private static readonly IntPtr selFontSizeHandle = Selector.GetHandle("fontSize");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selForegroundColor = "foregroundColor";
-
-	private static readonly IntPtr selForegroundColorHandle = Selector.GetHandle("foregroundColor");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selIsWrapped = "isWrapped";
-
-	private static readonly IntPtr selIsWrappedHandle = Selector.GetHandle("isWrapped");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLayer = "layer";
-
-	private static readonly IntPtr selLayerHandle = Selector.GetHandle("layer");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAlignmentMode_ = "setAlignmentMode:";
-
-	private static readonly IntPtr selSetAlignmentMode_Handle = Selector.GetHandle("setAlignmentMode:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetAllowsFontSubpixelQuantization_ = "setAllowsFontSubpixelQuantization:";
-
-	private static readonly IntPtr selSetAllowsFontSubpixelQuantization_Handle = Selector.GetHandle("setAllowsFontSubpixelQuantization:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetFont_ = "setFont:";
-
-	private static readonly IntPtr selSetFont_Handle = Selector.GetHandle("setFont:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetFontSize_ = "setFontSize:";
-
-	private static readonly IntPtr selSetFontSize_Handle = Selector.GetHandle("setFontSize:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetForegroundColor_ = "setForegroundColor:";
-
-	private static readonly IntPtr selSetForegroundColor_Handle = Selector.GetHandle("setForegroundColor:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetString_ = "setString:";
+	private static readonly IntPtr selStringHandle = Selector.GetHandle("string");
 
 	private static readonly IntPtr selSetString_Handle = Selector.GetHandle("setString:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetTruncationMode_ = "setTruncationMode:";
+	private static readonly IntPtr selFontSizeHandle = Selector.GetHandle("fontSize");
 
-	private static readonly IntPtr selSetTruncationMode_Handle = Selector.GetHandle("setTruncationMode:");
+	private static readonly IntPtr selSetFontSize_Handle = Selector.GetHandle("setFontSize:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetWrapped_ = "setWrapped:";
+	private static readonly IntPtr selFontHandle = Selector.GetHandle("font");
+
+	private static readonly IntPtr selSetFont_Handle = Selector.GetHandle("setFont:");
+
+	private static readonly IntPtr selForegroundColorHandle = Selector.GetHandle("foregroundColor");
+
+	private static readonly IntPtr selSetForegroundColor_Handle = Selector.GetHandle("setForegroundColor:");
+
+	private static readonly IntPtr selIsWrappedHandle = Selector.GetHandle("isWrapped");
 
 	private static readonly IntPtr selSetWrapped_Handle = Selector.GetHandle("setWrapped:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selString = "string";
-
-	private static readonly IntPtr selStringHandle = Selector.GetHandle("string");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTruncationMode = "truncationMode";
-
 	private static readonly IntPtr selTruncationModeHandle = Selector.GetHandle("truncationMode");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("CATextLayer");
+	private static readonly IntPtr selSetTruncationMode_Handle = Selector.GetHandle("setTruncationMode:");
 
-	public NSAttributedString AttributedString
+	private static readonly IntPtr selAlignmentModeHandle = Selector.GetHandle("alignmentMode");
+
+	private static readonly IntPtr selSetAlignmentMode_Handle = Selector.GetHandle("setAlignmentMode:");
+
+	private static readonly IntPtr selLayerHandle = Selector.GetHandle("layer");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("CATextLayer");
+
+	private static NSString _TruncationNone;
+
+	private static NSString _TruncantionStart;
+
+	private static NSString _TruncantionEnd;
+
+	private static NSString _TruncantionMiddle;
+
+	private static NSString _AlignmentNatural;
+
+	private static NSString _AlignmentLeft;
+
+	private static NSString _AlignmentRight;
+
+	private static NSString _AlignmentCenter;
+
+	private static NSString _AlignmentJustified;
+
+	public virtual NSAttributedString AttributedString
 	{
 		get
 		{
-			return Runtime.GetNSObject(_AttributedString) as NSAttributedString;
+			IntPtr ptr = ((!IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selStringHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selStringHandle));
+			return Runtime.GetNSObject(ptr) as NSAttributedString;
 		}
 		set
 		{
-			_AttributedString = value?.Handle ?? IntPtr.Zero;
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetString_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetString_Handle, value.Handle);
+			}
 		}
 	}
 
@@ -117,7 +91,7 @@ public class CATextLayer : CALayer
 		get
 		{
 			IntPtr font = _Font;
-			nint typeID = CFType.GetTypeID(font);
+			int typeID = CFType.GetTypeID(font);
 			if (typeID == CTFont.GetTypeID())
 			{
 				return new CTFont(font);
@@ -162,172 +136,14 @@ public class CATextLayer : CALayer
 		}
 	}
 
-	[Obsolete("Use 'TextTruncationMode' instead.")]
-	public virtual string TruncationMode
-	{
-		get
-		{
-			return WeakTruncationMode;
-		}
-		set
-		{
-			WeakTruncationMode = (NSString)value;
-		}
-	}
-
-	[Obsolete("Use 'TextAlignmentMode' instead.")]
-	public virtual string AlignmentMode
-	{
-		get
-		{
-			return WeakAlignmentMode;
-		}
-		set
-		{
-			WeakAlignmentMode = (NSString)value;
-		}
-	}
-
-	public CATextLayerTruncationMode TextTruncationMode
-	{
-		get
-		{
-			return CATextLayerTruncationModeExtensions.GetValue(WeakTruncationMode);
-		}
-		set
-		{
-			WeakTruncationMode = value.GetConstant();
-		}
-	}
-
-	public CATextLayerAlignmentMode TextAlignmentMode
-	{
-		get
-		{
-			return CATextLayerAlignmentModeExtensions.GetValue(WeakAlignmentMode);
-		}
-		set
-		{
-			WeakAlignmentMode = value.GetConstant();
-		}
-	}
-
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Obsolete("Use 'CATextLayerAlignmentMode.Center.GetConstant ()' instead.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	public static NSString AlignmentCenter => CATextLayerAlignmentMode.Center.GetConstant();
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Obsolete("Use 'CATextLayerAlignmentMode.Justified.GetConstant ()' instead.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	public static NSString AlignmentJustified => CATextLayerAlignmentMode.Justified.GetConstant();
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Obsolete("Use 'CATextLayerAlignmentMode.Left.GetConstant ()' instead.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	public static NSString AlignmentLeft => CATextLayerAlignmentMode.Left.GetConstant();
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Obsolete("Use 'CATextLayerAlignmentMode.Natural.GetConstant ()' instead.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	public static NSString AlignmentNatural => CATextLayerAlignmentMode.Natural.GetConstant();
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Obsolete("Use 'CATextLayerAlignmentMode.Right.GetConstant ()' instead.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	public static NSString AlignmentRight => CATextLayerAlignmentMode.Right.GetConstant();
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-	public virtual bool AllowsFontSubpixelQuantization
-	{
-		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-		[Export("allowsFontSubpixelQuantization")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.bool_objc_msgSend(base.Handle, selAllowsFontSubpixelQuantizationHandle);
-			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selAllowsFontSubpixelQuantizationHandle);
-		}
-		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-		[Export("setAllowsFontSubpixelQuantization:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_bool(base.Handle, selSetAllowsFontSubpixelQuantization_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetAllowsFontSubpixelQuantization_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual nfloat FontSize
-	{
-		[Export("fontSize")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.nfloat_objc_msgSend(base.Handle, selFontSizeHandle);
-			}
-			return Messaging.nfloat_objc_msgSendSuper(base.SuperHandle, selFontSizeHandle);
-		}
-		[Export("setFontSize:")]
-		set
-		{
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_nfloat(base.Handle, selSetFontSize_Handle, value);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_nfloat(base.SuperHandle, selSetFontSize_Handle, value);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual CGColor ForegroundColor
-	{
-		[Export("foregroundColor")]
-		get
-		{
-			IntPtr intPtr = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selForegroundColorHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selForegroundColorHandle));
-			return (intPtr == IntPtr.Zero) ? null : new CGColor(intPtr);
-		}
-		[Export("setForegroundColor:")]
-		set
-		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetForegroundColor_Handle, value.Handle);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetForegroundColor_Handle, value.Handle);
-			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string? String
+	public virtual string String
 	{
 		[Export("string", ArgumentSemantic.Copy)]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selStringHandle));
 			}
@@ -336,8 +152,12 @@ public class CATextLayer : CALayer
 		[Export("setString:", ArgumentSemantic.Copy)]
 		set
 		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
 			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetString_Handle, arg);
 			}
@@ -349,93 +169,87 @@ public class CATextLayer : CALayer
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Obsolete("Use 'CATextLayerTruncationMode.End.GetConstant ()' instead.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	public static NSString TruncantionEnd => CATextLayerTruncationMode.End.GetConstant();
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Obsolete("Use 'CATextLayerTruncationMode.Middle.GetConstant ()' instead.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	public static NSString TruncantionMiddle => CATextLayerTruncationMode.Middle.GetConstant();
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Obsolete("Use 'CATextLayerTruncationMode.Start.GetConstant ()' instead.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	public static NSString TruncantionStart => CATextLayerTruncationMode.Start.GetConstant();
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Obsolete("Use 'CATextLayerTruncationMode.None.GetConstant ()' instead.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	public static NSString TruncationNone => CATextLayerTruncationMode.None.GetConstant();
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	protected virtual NSString WeakAlignmentMode
+	public virtual float FontSize
 	{
-		[Export("alignmentMode", ArgumentSemantic.Copy)]
+		[Export("fontSize")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSend(base.Handle, selAlignmentModeHandle));
+				return Messaging.float_objc_msgSend(base.Handle, selFontSizeHandle);
 			}
-			return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAlignmentModeHandle));
+			return Messaging.float_objc_msgSendSuper(base.SuperHandle, selFontSizeHandle);
 		}
-		[Export("setAlignmentMode:", ArgumentSemantic.Copy)]
+		[Export("setFontSize:")]
 		set
 		{
-			if (value == null)
+			if (IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAlignmentMode_Handle, value.Handle);
+				Messaging.void_objc_msgSend_float(base.Handle, selSetFontSize_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAlignmentMode_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_float(base.SuperHandle, selSetFontSize_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	protected virtual NSString WeakTruncationMode
+	internal virtual IntPtr _Font
 	{
-		[Export("truncationMode", ArgumentSemantic.Copy)]
+		[Export("font")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSend(base.Handle, selTruncationModeHandle));
+				return Messaging.IntPtr_objc_msgSend(base.Handle, selFontHandle);
 			}
-			return Runtime.GetNSObject<NSString>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTruncationModeHandle));
+			return Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFontHandle);
 		}
-		[Export("setTruncationMode:", ArgumentSemantic.Copy)]
+		[Export("setFont:")]
 		set
 		{
-			if (value == null)
+			if (IsDirectBinding)
 			{
-				throw new ArgumentNullException("value");
-			}
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTruncationMode_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFont_Handle, value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTruncationMode_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFont_Handle, value);
 			}
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual CGColor ForegroundColor
+	{
+		[Export("foregroundColor")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return new CGColor(Messaging.IntPtr_objc_msgSend(base.Handle, selForegroundColorHandle));
+			}
+			return new CGColor(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selForegroundColorHandle));
+		}
+		[Export("setForegroundColor:")]
+		set
+		{
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetForegroundColor_Handle, value.Handle);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetForegroundColor_Handle, value.Handle);
+			}
+		}
+	}
+
 	public virtual bool Wrapped
 	{
 		[Export("isWrapped")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return Messaging.bool_objc_msgSend(base.Handle, selIsWrappedHandle);
 			}
@@ -444,7 +258,7 @@ public class CATextLayer : CALayer
 		[Export("setWrapped:")]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_bool(base.Handle, selSetWrapped_Handle, value);
 			}
@@ -455,53 +269,182 @@ public class CATextLayer : CALayer
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal IntPtr _AttributedString
+	public virtual string TruncationMode
 	{
+		[Export("truncationMode", ArgumentSemantic.Copy)]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.IntPtr_objc_msgSend(base.Handle, selStringHandle);
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selTruncationModeHandle));
 			}
-			return Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selStringHandle);
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTruncationModeHandle));
 		}
+		[Export("setTruncationMode:", ArgumentSemantic.Copy)]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetString_Handle, value);
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetTruncationMode_Handle, arg);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetString_Handle, value);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetTruncationMode_Handle, arg);
 			}
+			NSString.ReleaseNative(arg);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal virtual IntPtr _Font
+	public virtual string AlignmentMode
 	{
-		[Export("font")]
+		[Export("alignmentMode", ArgumentSemantic.Copy)]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Messaging.IntPtr_objc_msgSend(base.Handle, selFontHandle);
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selAlignmentModeHandle));
 			}
-			return Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFontHandle);
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAlignmentModeHandle));
 		}
-		[Export("setFont:")]
+		[Export("setAlignmentMode:", ArgumentSemantic.Copy)]
 		set
 		{
-			if (base.IsDirectBinding)
+			if (value == null)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetFont_Handle, value);
+				throw new ArgumentNullException("value");
+			}
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetAlignmentMode_Handle, arg);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetFont_Handle, value);
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetAlignmentMode_Handle, arg);
 			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	[Field("kCATruncationNone", "CoreAnimation")]
+	public static NSString TruncationNone
+	{
+		get
+		{
+			if (_TruncationNone == null)
+			{
+				_TruncationNone = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCATruncationNone");
+			}
+			return _TruncationNone;
+		}
+	}
+
+	[Field("kCATruncationStart", "CoreAnimation")]
+	public static NSString TruncantionStart
+	{
+		get
+		{
+			if (_TruncantionStart == null)
+			{
+				_TruncantionStart = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCATruncationStart");
+			}
+			return _TruncantionStart;
+		}
+	}
+
+	[Field("kCATruncationEnd", "CoreAnimation")]
+	public static NSString TruncantionEnd
+	{
+		get
+		{
+			if (_TruncantionEnd == null)
+			{
+				_TruncantionEnd = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCATruncationEnd");
+			}
+			return _TruncantionEnd;
+		}
+	}
+
+	[Field("kCATruncationMiddle", "CoreAnimation")]
+	public static NSString TruncantionMiddle
+	{
+		get
+		{
+			if (_TruncantionMiddle == null)
+			{
+				_TruncantionMiddle = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCATruncationMiddle");
+			}
+			return _TruncantionMiddle;
+		}
+	}
+
+	[Field("kCAAlignmentNatural", "CoreAnimation")]
+	public static NSString AlignmentNatural
+	{
+		get
+		{
+			if (_AlignmentNatural == null)
+			{
+				_AlignmentNatural = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAAlignmentNatural");
+			}
+			return _AlignmentNatural;
+		}
+	}
+
+	[Field("kCAAlignmentLeft", "CoreAnimation")]
+	public static NSString AlignmentLeft
+	{
+		get
+		{
+			if (_AlignmentLeft == null)
+			{
+				_AlignmentLeft = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAAlignmentLeft");
+			}
+			return _AlignmentLeft;
+		}
+	}
+
+	[Field("kCAAlignmentRight", "CoreAnimation")]
+	public static NSString AlignmentRight
+	{
+		get
+		{
+			if (_AlignmentRight == null)
+			{
+				_AlignmentRight = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAAlignmentRight");
+			}
+			return _AlignmentRight;
+		}
+	}
+
+	[Field("kCAAlignmentCenter", "CoreAnimation")]
+	public static NSString AlignmentCenter
+	{
+		get
+		{
+			if (_AlignmentCenter == null)
+			{
+				_AlignmentCenter = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAAlignmentCenter");
+			}
+			return _AlignmentCenter;
+		}
+	}
+
+	[Field("kCAAlignmentJustified", "CoreAnimation")]
+	public static NSString AlignmentJustified
+	{
+		get
+		{
+			if (_AlignmentJustified == null)
+			{
+				_AlignmentJustified = Dlfcn.GetStringConstant(Libraries.CoreAnimation.Handle, "kCAAlignmentJustified");
+			}
+			return _AlignmentJustified;
 		}
 	}
 
@@ -542,57 +485,51 @@ public class CATextLayer : CALayer
 		_Font = font.Handle;
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public CATextLayer()
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public CATextLayer(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected CATextLayer(NSObjectFlag t)
+	public CATextLayer(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal CATextLayer(IntPtr handle)
+	public CATextLayer(IntPtr handle)
 		: base(handle)
 	{
 	}
 
 	[Export("layer")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public new static CALayer Create()
 	{
-		return Runtime.GetNSObject<CALayer>(Messaging.IntPtr_objc_msgSend(class_ptr, selLayerHandle));
+		return (CALayer)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selLayerHandle));
 	}
 }

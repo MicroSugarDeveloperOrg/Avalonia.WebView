@@ -1,12 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreText;
 
+[Since(3, 2)]
 public class CTParagraphStyle : INativeObject, IDisposable
 {
 	internal IntPtr handle;
@@ -15,9 +16,9 @@ public class CTParagraphStyle : INativeObject, IDisposable
 
 	public CTTextAlignment Alignment => (CTTextAlignment)GetByteValue(CTParagraphStyleSpecifier.Alignment);
 
-	public CTLineBreakMode LineBreakMode => (CTLineBreakMode)GetByteValue(CTParagraphStyleSpecifier.LineBreakMode);
+	public CTLineBreakMode LineBreakMode => (CTLineBreakMode)GetByteValue(CTParagraphStyleSpecifier.Alignment);
 
-	public CTWritingDirection BaseWritingDirection => (CTWritingDirection)GetByteValue(CTParagraphStyleSpecifier.BaseWritingDirection);
+	public CTWritingDirection BaseWritingDirection => (CTWritingDirection)GetByteValue(CTParagraphStyleSpecifier.Alignment);
 
 	public float FirstLineHeadIndent => GetFloatValue(CTParagraphStyleSpecifier.FirstLineHeadIndent);
 
@@ -73,7 +74,7 @@ public class CTParagraphStyle : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private static extern IntPtr CTParagraphStyleCreate(CTParagraphStyleSetting[] settings, nint settingCount);
+	private static extern IntPtr CTParagraphStyleCreate(CTParagraphStyleSetting[] settings, int settingCount);
 
 	public CTParagraphStyle(CTParagraphStyleSettings settings)
 	{
@@ -129,7 +130,7 @@ public class CTParagraphStyle : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreText.framework/CoreText")]
-	private unsafe static extern bool CTParagraphStyleGetValueForSpecifier(IntPtr paragraphStyle, CTParagraphStyleSpecifier spec, nuint valueBufferSize, void* valueBuffer);
+	private unsafe static extern bool CTParagraphStyleGetValueForSpecifier(IntPtr paragraphStyle, CTParagraphStyleSpecifier spec, uint valueBufferSize, void* valueBuffer);
 
 	public unsafe CTTextTab[] GetTabStops()
 	{
@@ -148,7 +149,7 @@ public class CTParagraphStyle : INativeObject, IDisposable
 	private unsafe byte GetByteValue(CTParagraphStyleSpecifier spec)
 	{
 		byte result = default(byte);
-		if (!CTParagraphStyleGetValueForSpecifier(handle, spec, (byte)1, &result))
+		if (!CTParagraphStyleGetValueForSpecifier(handle, spec, 1u, &result))
 		{
 			throw new InvalidOperationException("Unable to get property value.");
 		}
@@ -157,11 +158,11 @@ public class CTParagraphStyle : INativeObject, IDisposable
 
 	private unsafe float GetFloatValue(CTParagraphStyleSpecifier spec)
 	{
-		nfloat nfloat = default(nfloat);
-		if (!CTParagraphStyleGetValueForSpecifier(handle, spec, (nuint)sizeof(nfloat), &nfloat))
+		float result = default(float);
+		if (!CTParagraphStyleGetValueForSpecifier(handle, spec, 4u, &result))
 		{
 			throw new InvalidOperationException("Unable to get property value.");
 		}
-		return (float)nfloat;
+		return result;
 	}
 }

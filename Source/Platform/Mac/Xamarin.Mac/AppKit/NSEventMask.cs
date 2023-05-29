@@ -34,8 +34,5 @@ public enum NSEventMask : ulong
 	EventRotate = 0x40000uL,
 	EventBeginGesture = 0x80000uL,
 	EventEndGesture = 0x100000uL,
-	SmartMagnify = 0x100000000uL,
-	Pressure = 0x400000000uL,
-	DirectTouch = 0x2000000000uL,
-	AnyEvent = ulong.MaxValue
+	AnyEvent = 0xFFFFFFFFuL
 }

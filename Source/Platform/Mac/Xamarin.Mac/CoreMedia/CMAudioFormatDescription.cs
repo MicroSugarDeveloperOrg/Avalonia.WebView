@@ -3,7 +3,7 @@ using ObjCRuntime;
 
 namespace CoreMedia;
 
-[Watch(6, 0)]
+[Since(4, 0)]
 public class CMAudioFormatDescription : CMFormatDescription
 {
 	internal CMAudioFormatDescription(IntPtr handle)

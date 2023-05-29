@@ -5,391 +5,95 @@ using ObjCRuntime;
 namespace Foundation;
 
 [Register("NSExpression", true)]
-public class NSExpression : NSObject, INSCoding, INativeObject, IDisposable, INSCopying, INSSecureCoding
+public class NSExpression : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selAllowEvaluation = "allowEvaluation";
-
-	private static readonly IntPtr selAllowEvaluationHandle = Selector.GetHandle("allowEvaluation");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selArguments = "arguments";
-
-	private static readonly IntPtr selArgumentsHandle = Selector.GetHandle("arguments");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCollection = "collection";
-
-	private static readonly IntPtr selCollectionHandle = Selector.GetHandle("collection");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selConstantValue = "constantValue";
-
-	private static readonly IntPtr selConstantValueHandle = Selector.GetHandle("constantValue");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selCopyWithZone_ = "copyWithZone:";
-
-	private static readonly IntPtr selCopyWithZone_Handle = Selector.GetHandle("copyWithZone:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selEncodeWithCoder_ = "encodeWithCoder:";
-
-	private static readonly IntPtr selEncodeWithCoder_Handle = Selector.GetHandle("encodeWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionBlock = "expressionBlock";
-
-	private static readonly IntPtr selExpressionBlockHandle = Selector.GetHandle("expressionBlock");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionForAggregate_ = "expressionForAggregate:";
-
-	private static readonly IntPtr selExpressionForAggregate_Handle = Selector.GetHandle("expressionForAggregate:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionForAnyKey = "expressionForAnyKey";
-
-	private static readonly IntPtr selExpressionForAnyKeyHandle = Selector.GetHandle("expressionForAnyKey");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionForBlock_Arguments_ = "expressionForBlock:arguments:";
-
-	private static readonly IntPtr selExpressionForBlock_Arguments_Handle = Selector.GetHandle("expressionForBlock:arguments:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionForConditional_TrueExpression_FalseExpression_ = "expressionForConditional:trueExpression:falseExpression:";
-
-	private static readonly IntPtr selExpressionForConditional_TrueExpression_FalseExpression_Handle = Selector.GetHandle("expressionForConditional:trueExpression:falseExpression:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionForConstantValue_ = "expressionForConstantValue:";
-
-	private static readonly IntPtr selExpressionForConstantValue_Handle = Selector.GetHandle("expressionForConstantValue:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionForEvaluatedObject = "expressionForEvaluatedObject";
-
 	private static readonly IntPtr selExpressionForEvaluatedObjectHandle = Selector.GetHandle("expressionForEvaluatedObject");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionForFunction_Arguments_ = "expressionForFunction:arguments:";
-
-	private static readonly IntPtr selExpressionForFunction_Arguments_Handle = Selector.GetHandle("expressionForFunction:arguments:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionForFunction_SelectorName_Arguments_ = "expressionForFunction:selectorName:arguments:";
-
-	private static readonly IntPtr selExpressionForFunction_SelectorName_Arguments_Handle = Selector.GetHandle("expressionForFunction:selectorName:arguments:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionForIntersectSet_With_ = "expressionForIntersectSet:with:";
-
-	private static readonly IntPtr selExpressionForIntersectSet_With_Handle = Selector.GetHandle("expressionForIntersectSet:with:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionForKeyPath_ = "expressionForKeyPath:";
-
-	private static readonly IntPtr selExpressionForKeyPath_Handle = Selector.GetHandle("expressionForKeyPath:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionForMinusSet_With_ = "expressionForMinusSet:with:";
-
-	private static readonly IntPtr selExpressionForMinusSet_With_Handle = Selector.GetHandle("expressionForMinusSet:with:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionForSubquery_UsingIteratorVariable_Predicate_ = "expressionForSubquery:usingIteratorVariable:predicate:";
-
-	private static readonly IntPtr selExpressionForSubquery_UsingIteratorVariable_Predicate_Handle = Selector.GetHandle("expressionForSubquery:usingIteratorVariable:predicate:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionForUnionSet_With_ = "expressionForUnionSet:with:";
-
-	private static readonly IntPtr selExpressionForUnionSet_With_Handle = Selector.GetHandle("expressionForUnionSet:with:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionForVariable_ = "expressionForVariable:";
-
-	private static readonly IntPtr selExpressionForVariable_Handle = Selector.GetHandle("expressionForVariable:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionType = "expressionType";
 
 	private static readonly IntPtr selExpressionTypeHandle = Selector.GetHandle("expressionType");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionValueWithObject_Context_ = "expressionValueWithObject:context:";
-
-	private static readonly IntPtr selExpressionValueWithObject_Context_Handle = Selector.GetHandle("expressionValueWithObject:context:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionWithFormat_ = "expressionWithFormat:";
-
-	private static readonly IntPtr selExpressionWithFormat_Handle = Selector.GetHandle("expressionWithFormat:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExpressionWithFormat_ArgumentArray_ = "expressionWithFormat:argumentArray:";
-
-	private static readonly IntPtr selExpressionWithFormat_ArgumentArray_Handle = Selector.GetHandle("expressionWithFormat:argumentArray:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFalseExpression = "falseExpression";
-
-	private static readonly IntPtr selFalseExpressionHandle = Selector.GetHandle("falseExpression");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFunction = "function";
-
-	private static readonly IntPtr selFunctionHandle = Selector.GetHandle("function");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithCoder_ = "initWithCoder:";
-
-	private static readonly IntPtr selInitWithCoder_Handle = Selector.GetHandle("initWithCoder:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithExpressionType_ = "initWithExpressionType:";
-
-	private static readonly IntPtr selInitWithExpressionType_Handle = Selector.GetHandle("initWithExpressionType:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selKeyPath = "keyPath";
+	private static readonly IntPtr selConstantValueHandle = Selector.GetHandle("constantValue");
 
 	private static readonly IntPtr selKeyPathHandle = Selector.GetHandle("keyPath");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selLeftExpression = "leftExpression";
-
-	private static readonly IntPtr selLeftExpressionHandle = Selector.GetHandle("leftExpression");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selOperand = "operand";
-
-	private static readonly IntPtr selOperandHandle = Selector.GetHandle("operand");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selPredicate = "predicate";
-
-	private static readonly IntPtr selPredicateHandle = Selector.GetHandle("predicate");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selRightExpression = "rightExpression";
-
-	private static readonly IntPtr selRightExpressionHandle = Selector.GetHandle("rightExpression");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selTrueExpression = "trueExpression";
-
-	private static readonly IntPtr selTrueExpressionHandle = Selector.GetHandle("trueExpression");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selVariable = "variable";
+	private static readonly IntPtr selFunctionHandle = Selector.GetHandle("function");
 
 	private static readonly IntPtr selVariableHandle = Selector.GetHandle("variable");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSExpression");
+	private static readonly IntPtr selOperandHandle = Selector.GetHandle("operand");
 
-	[Export("arguments")]
-	public virtual NSExpression[] Arguments
-	{
-		get
-		{
-			NSExpressionType expressionType = ExpressionType;
-			if (expressionType != NSExpressionType.Function && expressionType != NSExpressionType.Block && expressionType != NSExpressionType.KeyPath)
-			{
-				throw new InvalidOperationException($"NSExpressions of type {expressionType} do not support the Arguments property. Expressions that support the property " + "are of type Function, Block and KeyPath");
-			}
-			return _Arguments;
-		}
-	}
+	private static readonly IntPtr selArgumentsHandle = Selector.GetHandle("arguments");
 
-	[Export("collection")]
-	public virtual NSObject Collection
-	{
-		get
-		{
-			NSExpressionType expressionType = ExpressionType;
-			if (expressionType != NSExpressionType.NSAggregate)
-			{
-				throw new InvalidOperationException($"NSExpressions of type {expressionType} do not support the Collection property. Expressions that support the property " + "are of type NSAggregate");
-			}
-			return _Collection;
-		}
-	}
+	private static readonly IntPtr selCollectionHandle = Selector.GetHandle("collection");
 
-	[Export("predicate")]
-	public virtual NSPredicate Predicate
-	{
-		get
-		{
-			NSExpressionType expressionType = ExpressionType;
-			if (expressionType != NSExpressionType.Conditional && expressionType != NSExpressionType.Subquery)
-			{
-				throw new InvalidOperationException($"NSExpressions of type {expressionType} do not support the Predicate property. Expressions that support the property " + "are of type Conditional and Subquery");
-			}
-			return _Predicate;
-		}
-	}
+	private static readonly IntPtr selPredicateHandle = Selector.GetHandle("predicate");
 
-	[Export("expressionBlock")]
-	public virtual NSExpressionCallbackHandler Block
-	{
-		get
-		{
-			if (ExpressionType != NSExpressionType.Block)
-			{
-				throw new InvalidOperationException($"NSExpressions of type {ExpressionType} do not support the Block property. Expressions that support the property " + "are created via the FromFunction (NSExpressionHandler target, NSExpression[] parameters) method.");
-			}
-			return _Block;
-		}
-	}
+	private static readonly IntPtr selLeftExpressionHandle = Selector.GetHandle("leftExpression");
 
-	[Export("constantValue")]
-	public virtual NSObject ConstantValue
-	{
-		get
-		{
-			if (ExpressionType != NSExpressionType.ConstantValue)
-			{
-				throw new InvalidOperationException($"NSExpressions of type {ExpressionType} do not support the ConstantValue property. Expressions that support the property " + "are created via the FromConstant methods.");
-			}
-			return _ConstantValue;
-		}
-	}
+	private static readonly IntPtr selRightExpressionHandle = Selector.GetHandle("rightExpression");
 
-	[Export("keyPath")]
-	public virtual string KeyPath
-	{
-		get
-		{
-			if (ExpressionType != NSExpressionType.KeyPath)
-			{
-				throw new InvalidOperationException($"NSExpressions of type {ExpressionType} do not support the KeyPath property. Expressions that support the property " + "are created via the FromKeyPath method.");
-			}
-			return _KeyPath;
-		}
-	}
+	private static readonly IntPtr selExpressionForConstantValue_Handle = Selector.GetHandle("expressionForConstantValue:");
 
-	[Export("leftExpression")]
-	public virtual NSExpression LeftExpression
-	{
-		get
-		{
-			NSExpressionType expressionType = ExpressionType;
-			if (expressionType != NSExpressionType.Conditional && expressionType != NSExpressionType.IntersectSet && expressionType != NSExpressionType.MinusSet && expressionType != NSExpressionType.Subquery && expressionType != NSExpressionType.UnionSet)
-			{
-				throw new InvalidOperationException($"NSExpressions of type {expressionType} do not support the LeftExpression property. Expressions that support the property " + "are of type Conditional, IntersectSet, MinusSet, Subquery or UnionSet");
-			}
-			return _LeftExpression;
-		}
-	}
+	private static readonly IntPtr selExpressionForVariable_Handle = Selector.GetHandle("expressionForVariable:");
 
-	[Mac(10, 11)]
-	[iOS(9, 0)]
-	[Export("trueExpression")]
-	public virtual NSExpression TrueExpression
-	{
-		get
-		{
-			NSExpressionType expressionType = ExpressionType;
-			if (expressionType != NSExpressionType.Conditional && expressionType != NSExpressionType.Subquery)
-			{
-				throw new InvalidOperationException($"NSExpressions of type {expressionType} do not support the TrueExpression property. Expressions that support the property " + "are of type Conditional and Subquery");
-			}
-			return _TrueExpression;
-		}
-	}
+	private static readonly IntPtr selExpressionForKeyPath_Handle = Selector.GetHandle("expressionForKeyPath:");
 
-	[Mac(10, 11)]
-	[iOS(9, 0)]
-	[Export("falseExpression")]
-	public virtual NSExpression FalseExpression
-	{
-		get
-		{
-			NSExpressionType expressionType = ExpressionType;
-			if (expressionType != NSExpressionType.Conditional && expressionType != NSExpressionType.Subquery)
-			{
-				throw new InvalidOperationException($"NSExpressions of type {expressionType} do not support the FalseExpression property. Expressions that support the property " + "are of type Conditional and Subquery");
-			}
-			return _FalseExpression;
-		}
-	}
+	private static readonly IntPtr selExpressionForFunctionArguments_Handle = Selector.GetHandle("expressionForFunction:arguments:");
 
-	[Export("rightExpression")]
-	public virtual NSExpression RightExpression
-	{
-		get
-		{
-			NSExpressionType expressionType = ExpressionType;
-			if (expressionType != NSExpressionType.Conditional && expressionType != NSExpressionType.IntersectSet && expressionType != NSExpressionType.MinusSet && expressionType != NSExpressionType.Subquery && expressionType != NSExpressionType.UnionSet)
-			{
-				throw new InvalidOperationException($"NSExpressions of type {expressionType} do not support the RightExpression property. Expressions that support the property " + "are of type Conditional, IntersectSet, MinusSet, Subquery or UnionSet");
-			}
-			return _RightExpression;
-		}
-	}
+	private static readonly IntPtr selExpressionWithFormatArgumentArray_Handle = Selector.GetHandle("expressionWithFormat:argumentArray:");
 
-	[Export("function")]
-	public virtual string Function
-	{
-		get
-		{
-			if (ExpressionType != NSExpressionType.Function)
-			{
-				throw new InvalidOperationException($"NSExpressions of type {ExpressionType} do not support the Function property. Expressions that support the property " + "are created via the FromFunction (FromFunction (string name, NSExpression[] parameters) or FromFormat methods.");
-			}
-			return _Function;
-		}
-	}
+	private static readonly IntPtr selExpressionForAggregate_Handle = Selector.GetHandle("expressionForAggregate:");
 
-	[Export("variable")]
-	public virtual string Variable
-	{
-		get
-		{
-			if (ExpressionType != NSExpressionType.Variable)
-			{
-				throw new InvalidOperationException($"NSExpressions of type {ExpressionType} do not support the Function property. Expressions that support the property " + "are created via the FromVariable method.");
-			}
-			return _Variable;
-		}
-	}
+	private static readonly IntPtr selExpressionForUnionSetWith_Handle = Selector.GetHandle("expressionForUnionSet:with:");
 
-	[Export("operand")]
-	public virtual NSExpression Operand
-	{
-		get
-		{
-			NSExpressionType expressionType = ExpressionType;
-			if (expressionType != NSExpressionType.KeyPath && expressionType != NSExpressionType.Function)
-			{
-				throw new InvalidOperationException($"NSExpressions of type {expressionType} do not support the Arguments property. Expressions that support the property " + "are of type Function, Block and KeyPath");
-			}
-			return _Operand;
-		}
-	}
+	private static readonly IntPtr selExpressionForIntersectSetWith_Handle = Selector.GetHandle("expressionForIntersectSet:with:");
+
+	private static readonly IntPtr selExpressionForMinusSetWith_Handle = Selector.GetHandle("expressionForMinusSet:with:");
+
+	private static readonly IntPtr selExpressionForSubqueryUsingIteratorVariablePredicate_Handle = Selector.GetHandle("expressionForSubquery:usingIteratorVariable:predicate:");
+
+	private static readonly IntPtr selExpressionForFunctionSelectorNameArguments_Handle = Selector.GetHandle("expressionForFunction:selectorName:arguments:");
+
+	private static readonly IntPtr selExpressionForBlockArguments_Handle = Selector.GetHandle("expressionForBlock:arguments:");
+
+	private static readonly IntPtr selInitWithExpressionType_Handle = Selector.GetHandle("initWithExpressionType:");
+
+	private static readonly IntPtr selExpressionValueWithObjectContext_Handle = Selector.GetHandle("expressionValueWithObject:context:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSExpression");
+
+	private static object __mt_ExpressionForEvaluatedObject_var_static;
+
+	private object __mt_ConstantValue_var;
+
+	private object __mt_Operand_var;
+
+	private object __mt_Arguments_var;
+
+	private object __mt_Collection_var;
+
+	private object __mt_Predicate_var;
+
+	private object __mt_LeftExpression_var;
+
+	private object __mt_RightExpression_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSExpression ExpressionForEvaluatedObject
 	{
 		[Export("expressionForEvaluatedObject")]
 		get
 		{
-			return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend(class_ptr, selExpressionForEvaluatedObjectHandle));
+			return (NSExpression)(__mt_ExpressionForEvaluatedObject_var_static = (NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(class_ptr, selExpressionForEvaluatedObjectHandle)));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual NSExpressionType ExpressionType
 	{
 		[Export("expressionType")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return (NSExpressionType)Messaging.UInt64_objc_msgSend(base.Handle, selExpressionTypeHandle);
 			}
@@ -397,91 +101,21 @@ public class NSExpression : NSObject, INSCoding, INativeObject, IDisposable, INS
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal NSExpression[] _Arguments
+	public virtual NSObject ConstantValue
 	{
+		[Export("constantValue")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return NSArray.ArrayFromHandle<NSExpression>(Messaging.IntPtr_objc_msgSend(base.Handle, selArgumentsHandle));
-			}
-			return NSArray.ArrayFromHandle<NSExpression>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selArgumentsHandle));
+			return (NSObject)(__mt_ConstantValue_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selConstantValueHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selConstantValueHandle))));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal NSExpressionCallbackHandler _Block
+	public virtual string KeyPath
 	{
+		[Export("keyPath")]
 		get
 		{
-			IntPtr block = ((!base.IsDirectBinding) ? Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selExpressionBlockHandle) : Messaging.IntPtr_objc_msgSend(base.Handle, selExpressionBlockHandle));
-			return Trampolines.NIDNSExpressionCallbackHandler.Create(block);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal NSObject _Collection
-	{
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCollectionHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCollectionHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal NSObject _ConstantValue
-	{
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selConstantValueHandle));
-			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selConstantValueHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-	internal NSExpression _FalseExpression
-	{
-		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend(base.Handle, selFalseExpressionHandle));
-			}
-			return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFalseExpressionHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal string _Function
-	{
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selFunctionHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFunctionHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal string _KeyPath
-	{
-		get
-		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selKeyPathHandle));
 			}
@@ -489,81 +123,25 @@ public class NSExpression : NSObject, INSCoding, INativeObject, IDisposable, INS
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal NSExpression _LeftExpression
+	public virtual string Function
 	{
+		[Export("function")]
 		get
 		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend(base.Handle, selLeftExpressionHandle));
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selFunctionHandle));
 			}
-			return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLeftExpressionHandle));
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selFunctionHandle));
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal NSExpression _Operand
+	public virtual string Variable
 	{
+		[Export("variable")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend(base.Handle, selOperandHandle));
-			}
-			return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOperandHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal NSPredicate _Predicate
-	{
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSPredicate>(Messaging.IntPtr_objc_msgSend(base.Handle, selPredicateHandle));
-			}
-			return Runtime.GetNSObject<NSPredicate>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPredicateHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal NSExpression _RightExpression
-	{
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend(base.Handle, selRightExpressionHandle));
-			}
-			return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRightExpressionHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-	internal NSExpression _TrueExpression
-	{
-		[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-		[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend(base.Handle, selTrueExpressionHandle));
-			}
-			return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selTrueExpressionHandle));
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	internal string _Variable
-	{
-		get
-		{
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selVariableHandle));
 			}
@@ -571,227 +149,124 @@ public class NSExpression : NSObject, INSCoding, INativeObject, IDisposable, INS
 		}
 	}
 
-	[Obsolete("Use 'EvaluateWith' instead.")]
-	public virtual NSExpression ExpressionValueWithObject(NSObject obj, NSMutableDictionary context)
+	public virtual NSExpression Operand
 	{
-		NSObject nSObject = EvaluateWith(obj, context);
-		return nSObject as NSExpression;
+		[Export("operand")]
+		get
+		{
+			return (NSExpression)(__mt_Operand_var = ((!IsDirectBinding) ? ((NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selOperandHandle))) : ((NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selOperandHandle)))));
+		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[DesignatedInitializer]
+	public virtual NSExpression[] Arguments
+	{
+		[Export("arguments")]
+		get
+		{
+			return (NSExpression[])(__mt_Arguments_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSExpression>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selArgumentsHandle)) : NSArray.ArrayFromHandle<NSExpression>(Messaging.IntPtr_objc_msgSend(base.Handle, selArgumentsHandle))));
+		}
+	}
+
+	public virtual NSObject Collection
+	{
+		[Export("collection")]
+		get
+		{
+			return (NSObject)(__mt_Collection_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCollectionHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCollectionHandle))));
+		}
+	}
+
+	public virtual NSPredicate Predicate
+	{
+		[Export("predicate")]
+		get
+		{
+			return (NSPredicate)(__mt_Predicate_var = ((!IsDirectBinding) ? ((NSPredicate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selPredicateHandle))) : ((NSPredicate)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selPredicateHandle)))));
+		}
+	}
+
+	public virtual NSExpression LeftExpression
+	{
+		[Export("leftExpression")]
+		get
+		{
+			return (NSExpression)(__mt_LeftExpression_var = ((!IsDirectBinding) ? ((NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selLeftExpressionHandle))) : ((NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selLeftExpressionHandle)))));
+		}
+	}
+
+	public virtual NSExpression RightExpression
+	{
+		[Export("rightExpression")]
+		get
+		{
+			return (NSExpression)(__mt_RightExpression_var = ((!IsDirectBinding) ? ((NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selRightExpressionHandle))) : ((NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selRightExpressionHandle)))));
+		}
+	}
+
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("initWithCoder:")]
 	public NSExpression(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle), "initWithCoder:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSExpression(NSObjectFlag t)
+	public NSExpression(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSExpression(IntPtr handle)
+	public NSExpression(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("initWithExpressionType:")]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public NSExpression(NSExpressionType type)
-		: base(NSObjectFlag.Empty)
-	{
-		if (base.IsDirectBinding)
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_UInt64(base.Handle, selInitWithExpressionType_Handle, (ulong)type), "initWithExpressionType:");
-		}
-		else
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_UInt64(base.SuperHandle, selInitWithExpressionType_Handle, (ulong)type), "initWithExpressionType:");
-		}
-	}
-
-	[Export("allowEvaluation")]
-	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void AllowEvaluation()
-	{
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend(base.Handle, selAllowEvaluationHandle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selAllowEvaluationHandle);
-		}
-	}
-
-	[Export("copyWithZone:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[return: Release]
-	public virtual NSObject Copy(NSZone? zone)
-	{
-		NSObject nSObject = ((!base.IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selCopyWithZone_Handle, zone?.Handle ?? IntPtr.Zero)));
-		if (nSObject != null)
-		{
-			Messaging.void_objc_msgSend(nSObject.Handle, Selector.GetHandle("release"));
-		}
-		return nSObject;
-	}
-
-	[Export("encodeWithCoder:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void EncodeTo(NSCoder encoder)
-	{
-		if (encoder == null)
-		{
-			throw new ArgumentNullException("encoder");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEncodeWithCoder_Handle, encoder.Handle);
-		}
-	}
-
-	[Export("expressionValueWithObject:context:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject? EvaluateWith(NSObject? obj, NSMutableDictionary? context)
-	{
-		if (base.IsDirectBinding)
-		{
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selExpressionValueWithObject_Context_Handle, obj?.Handle ?? IntPtr.Zero, context?.Handle ?? IntPtr.Zero));
-		}
-		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selExpressionValueWithObject_Context_Handle, obj?.Handle ?? IntPtr.Zero, context?.Handle ?? IntPtr.Zero));
-	}
-
-	[Export("expressionForAggregate:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSExpression FromAggregate(NSExpression[] subexpressions)
-	{
-		if (subexpressions == null)
-		{
-			throw new ArgumentNullException("subexpressions");
-		}
-		NSArray nSArray = NSArray.FromNSObjects(subexpressions);
-		NSExpression nSObject = Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selExpressionForAggregate_Handle, nSArray.Handle));
-		nSArray.Dispose();
-		return nSObject;
-	}
-
-	[Export("expressionForAnyKey")]
-	[Introduced(PlatformName.iOS, 7, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 9, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSExpression FromAnyKey()
-	{
-		return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend(class_ptr, selExpressionForAnyKeyHandle));
-	}
-
-	[Export("expressionForConditional:trueExpression:falseExpression:")]
-	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-	[Introduced(PlatformName.MacOSX, 10, 11, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSExpression FromConditional(NSPredicate predicate, NSExpression trueExpression, NSExpression falseExpression)
-	{
-		if (predicate == null)
-		{
-			throw new ArgumentNullException("predicate");
-		}
-		if (trueExpression == null)
-		{
-			throw new ArgumentNullException("trueExpression");
-		}
-		if (falseExpression == null)
-		{
-			throw new ArgumentNullException("falseExpression");
-		}
-		return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selExpressionForConditional_TrueExpression_FalseExpression_Handle, predicate.Handle, trueExpression.Handle, falseExpression.Handle));
-	}
-
 	[Export("expressionForConstantValue:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSExpression FromConstant(NSObject? obj)
+	public static NSExpression FromConstant(NSObject obj)
 	{
-		return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selExpressionForConstantValue_Handle, obj?.Handle ?? IntPtr.Zero));
+		if (obj == null)
+		{
+			throw new ArgumentNullException("obj");
+		}
+		return (NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selExpressionForConstantValue_Handle, obj.Handle));
 	}
 
-	[Export("expressionWithFormat:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSExpression FromFormat(string expressionFormat)
+	[Export("expressionForVariable:")]
+	public static NSExpression FromVariable(string string1)
 	{
-		if (expressionFormat == null)
+		if (string1 == null)
 		{
-			throw new ArgumentNullException("expressionFormat");
+			throw new ArgumentNullException("string1");
 		}
-		IntPtr arg = NSString.CreateNative(expressionFormat);
-		NSExpression nSObject = Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selExpressionWithFormat_Handle, arg));
+		IntPtr arg = NSString.CreateNative(string1);
+		NSExpression result = (NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selExpressionForVariable_Handle, arg));
 		NSString.ReleaseNative(arg);
-		return nSObject;
+		return result;
 	}
 
-	[Export("expressionWithFormat:argumentArray:")]
-	[Obsolete("Use 'FromFormat (string, NSObject[])' instead.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSExpression FromFormat(string format, NSExpression[] parameters)
+	[Export("expressionForKeyPath:")]
+	public static NSExpression FromKeyPath(string keyPath)
 	{
-		if (format == null)
+		if (keyPath == null)
 		{
-			throw new ArgumentNullException("format");
+			throw new ArgumentNullException("keyPath");
 		}
-		if (parameters == null)
-		{
-			throw new ArgumentNullException("parameters");
-		}
-		IntPtr arg = NSString.CreateNative(format);
-		NSArray nSArray = NSArray.FromNSObjects(parameters);
-		NSExpression nSObject = Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selExpressionWithFormat_ArgumentArray_Handle, arg, nSArray.Handle));
+		IntPtr arg = NSString.CreateNative(keyPath);
+		NSExpression result = (NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selExpressionForKeyPath_Handle, arg));
 		NSString.ReleaseNative(arg);
-		nSArray.Dispose();
-		return nSObject;
-	}
-
-	[Export("expressionWithFormat:argumentArray:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSExpression FromFormat(string format, NSObject[] parameters)
-	{
-		if (format == null)
-		{
-			throw new ArgumentNullException("format");
-		}
-		if (parameters == null)
-		{
-			throw new ArgumentNullException("parameters");
-		}
-		IntPtr arg = NSString.CreateNative(format);
-		NSArray nSArray = NSArray.FromNSObjects(parameters);
-		NSExpression nSObject = Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selExpressionWithFormat_ArgumentArray_Handle, arg, nSArray.Handle));
-		NSString.ReleaseNative(arg);
-		nSArray.Dispose();
-		return nSObject;
+		return result;
 	}
 
 	[Export("expressionForFunction:arguments:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSExpression FromFunction(string name, NSExpression[] parameters)
 	{
 		if (name == null)
@@ -804,14 +279,108 @@ public class NSExpression : NSObject, INSCoding, INativeObject, IDisposable, INS
 		}
 		IntPtr arg = NSString.CreateNative(name);
 		NSArray nSArray = NSArray.FromNSObjects(parameters);
-		NSExpression nSObject = Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selExpressionForFunction_Arguments_Handle, arg, nSArray.Handle));
+		NSExpression result = (NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selExpressionForFunctionArguments_Handle, arg, nSArray.Handle));
 		NSString.ReleaseNative(arg);
 		nSArray.Dispose();
-		return nSObject;
+		return result;
+	}
+
+	[Export("expressionWithFormat:argumentArray:")]
+	public static NSExpression FromFormat(string format, NSExpression[] parameters)
+	{
+		if (format == null)
+		{
+			throw new ArgumentNullException("format");
+		}
+		if (parameters == null)
+		{
+			throw new ArgumentNullException("parameters");
+		}
+		IntPtr arg = NSString.CreateNative(format);
+		NSArray nSArray = NSArray.FromNSObjects(parameters);
+		NSExpression result = (NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selExpressionWithFormatArgumentArray_Handle, arg, nSArray.Handle));
+		NSString.ReleaseNative(arg);
+		nSArray.Dispose();
+		return result;
+	}
+
+	[Export("expressionForAggregate:")]
+	public static NSExpression FromAggregate(NSExpression[] subexpressions)
+	{
+		if (subexpressions == null)
+		{
+			throw new ArgumentNullException("subexpressions");
+		}
+		NSArray nSArray = NSArray.FromNSObjects(subexpressions);
+		NSExpression result = (NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selExpressionForAggregate_Handle, nSArray.Handle));
+		nSArray.Dispose();
+		return result;
+	}
+
+	[Export("expressionForUnionSet:with:")]
+	public static NSExpression FromUnionSet(NSExpression left, NSExpression right)
+	{
+		if (left == null)
+		{
+			throw new ArgumentNullException("left");
+		}
+		if (right == null)
+		{
+			throw new ArgumentNullException("right");
+		}
+		return (NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selExpressionForUnionSetWith_Handle, left.Handle, right.Handle));
+	}
+
+	[Export("expressionForIntersectSet:with:")]
+	public static NSExpression FromIntersectSet(NSExpression left, NSExpression right)
+	{
+		if (left == null)
+		{
+			throw new ArgumentNullException("left");
+		}
+		if (right == null)
+		{
+			throw new ArgumentNullException("right");
+		}
+		return (NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selExpressionForIntersectSetWith_Handle, left.Handle, right.Handle));
+	}
+
+	[Export("expressionForMinusSet:with:")]
+	public static NSExpression FromMinusSet(NSExpression left, NSExpression right)
+	{
+		if (left == null)
+		{
+			throw new ArgumentNullException("left");
+		}
+		if (right == null)
+		{
+			throw new ArgumentNullException("right");
+		}
+		return (NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selExpressionForMinusSetWith_Handle, left.Handle, right.Handle));
+	}
+
+	[Export("expressionForSubquery:usingIteratorVariable:predicate:")]
+	public static NSExpression FromSubquery(NSExpression expression, string variable, NSObject predicate)
+	{
+		if (expression == null)
+		{
+			throw new ArgumentNullException("expression");
+		}
+		if (variable == null)
+		{
+			throw new ArgumentNullException("variable");
+		}
+		if (predicate == null)
+		{
+			throw new ArgumentNullException("predicate");
+		}
+		IntPtr arg = NSString.CreateNative(variable);
+		NSExpression result = (NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selExpressionForSubqueryUsingIteratorVariablePredicate_Handle, expression.Handle, arg, predicate.Handle));
+		NSString.ReleaseNative(arg);
+		return result;
 	}
 
 	[Export("expressionForFunction:selectorName:arguments:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public static NSExpression FromFunction(NSExpression target, string name, NSExpression[] parameters)
 	{
 		if (target == null)
@@ -828,17 +397,14 @@ public class NSExpression : NSObject, INSCoding, INativeObject, IDisposable, INS
 		}
 		IntPtr arg = NSString.CreateNative(name);
 		NSArray nSArray = NSArray.FromNSObjects(parameters);
-		NSExpression nSObject = Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selExpressionForFunction_SelectorName_Arguments_Handle, target.Handle, arg, nSArray.Handle));
+		NSExpression result = (NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selExpressionForFunctionSelectorNameArguments_Handle, target.Handle, arg, nSArray.Handle));
 		NSString.ReleaseNative(arg);
 		nSArray.Dispose();
-		return nSObject;
+		return result;
 	}
 
 	[Export("expressionForBlock:arguments:")]
-	[Obsolete("Use 'FromFunction (NSExpressionCallbackHandler, NSExpression[])' instead.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe static NSExpression FromFunction([BlockProxy(typeof(Trampolines.NIDNSExpressionHandler))] NSExpressionHandler target, NSExpression[] parameters)
+	public unsafe static NSExpression FromFunction(NSExpressionHandler target, NSExpression[] parameters)
 	{
 		if (target == null)
 		{
@@ -850,128 +416,58 @@ public class NSExpression : NSObject, INSCoding, INativeObject, IDisposable, INS
 		}
 		BlockLiteral blockLiteral = default(BlockLiteral);
 		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDNSExpressionHandler.Handler, target);
+		blockLiteral.SetupBlock(Trampolines.SDNSExpressionHandler.Handler, target);
 		NSArray nSArray = NSArray.FromNSObjects(parameters);
-		NSExpression nSObject = Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selExpressionForBlock_Arguments_Handle, (IntPtr)ptr, nSArray.Handle));
+		NSExpression result = (NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selExpressionForBlockArguments_Handle, (IntPtr)ptr, nSArray.Handle));
 		ptr->CleanupBlock();
 		nSArray.Dispose();
-		return nSObject;
+		return result;
 	}
 
-	[Export("expressionForBlock:arguments:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public unsafe static NSExpression FromFunction([BlockProxy(typeof(Trampolines.NIDNSExpressionCallbackHandler))] NSExpressionCallbackHandler target, NSExpression[] parameters)
+	[Export("initWithExpressionType:")]
+	public NSExpression(NSExpressionType type)
+		: base(NSObjectFlag.Empty)
 	{
-		if (target == null)
+		if (IsDirectBinding)
 		{
-			throw new ArgumentNullException("target");
+			base.Handle = Messaging.IntPtr_objc_msgSend_UInt64(base.Handle, selInitWithExpressionType_Handle, (ulong)type);
 		}
-		if (parameters == null)
+		else
 		{
-			throw new ArgumentNullException("parameters");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_UInt64(base.SuperHandle, selInitWithExpressionType_Handle, (ulong)type);
 		}
-		BlockLiteral blockLiteral = default(BlockLiteral);
-		BlockLiteral* ptr = &blockLiteral;
-		blockLiteral.SetupBlockUnsafe(Trampolines.SDNSExpressionCallbackHandler.Handler, target);
-		NSArray nSArray = NSArray.FromNSObjects(parameters);
-		NSExpression nSObject = Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selExpressionForBlock_Arguments_Handle, (IntPtr)ptr, nSArray.Handle));
-		ptr->CleanupBlock();
-		nSArray.Dispose();
-		return nSObject;
 	}
 
-	[Export("expressionForIntersectSet:with:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSExpression FromIntersectSet(NSExpression left, NSExpression right)
+	[Export("expressionValueWithObject:context:")]
+	public virtual NSExpression ExpressionValueWithObject(NSObject object1, NSMutableDictionary context)
 	{
-		if (left == null)
+		if (object1 == null)
 		{
-			throw new ArgumentNullException("left");
+			throw new ArgumentNullException("object1");
 		}
-		if (right == null)
+		if (context == null)
 		{
-			throw new ArgumentNullException("right");
+			throw new ArgumentNullException("context");
 		}
-		return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selExpressionForIntersectSet_With_Handle, left.Handle, right.Handle));
+		if (IsDirectBinding)
+		{
+			return (NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selExpressionValueWithObjectContext_Handle, object1.Handle, context.Handle));
+		}
+		return (NSExpression)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selExpressionValueWithObjectContext_Handle, object1.Handle, context.Handle));
 	}
 
-	[Export("expressionForKeyPath:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSExpression FromKeyPath(string keyPath)
+	protected override void Dispose(bool disposing)
 	{
-		if (keyPath == null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			throw new ArgumentNullException("keyPath");
+			__mt_ConstantValue_var = null;
+			__mt_Operand_var = null;
+			__mt_Arguments_var = null;
+			__mt_Collection_var = null;
+			__mt_Predicate_var = null;
+			__mt_LeftExpression_var = null;
+			__mt_RightExpression_var = null;
 		}
-		IntPtr arg = NSString.CreateNative(keyPath);
-		NSExpression nSObject = Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selExpressionForKeyPath_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return nSObject;
-	}
-
-	[Export("expressionForMinusSet:with:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSExpression FromMinusSet(NSExpression left, NSExpression right)
-	{
-		if (left == null)
-		{
-			throw new ArgumentNullException("left");
-		}
-		if (right == null)
-		{
-			throw new ArgumentNullException("right");
-		}
-		return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selExpressionForMinusSet_With_Handle, left.Handle, right.Handle));
-	}
-
-	[Export("expressionForSubquery:usingIteratorVariable:predicate:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSExpression FromSubquery(NSExpression expression, string variable, NSObject predicate)
-	{
-		if (expression == null)
-		{
-			throw new ArgumentNullException("expression");
-		}
-		if (variable == null)
-		{
-			throw new ArgumentNullException("variable");
-		}
-		if (predicate == null)
-		{
-			throw new ArgumentNullException("predicate");
-		}
-		IntPtr arg = NSString.CreateNative(variable);
-		NSExpression nSObject = Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(class_ptr, selExpressionForSubquery_UsingIteratorVariable_Predicate_Handle, expression.Handle, arg, predicate.Handle));
-		NSString.ReleaseNative(arg);
-		return nSObject;
-	}
-
-	[Export("expressionForUnionSet:with:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSExpression FromUnionSet(NSExpression left, NSExpression right)
-	{
-		if (left == null)
-		{
-			throw new ArgumentNullException("left");
-		}
-		if (right == null)
-		{
-			throw new ArgumentNullException("right");
-		}
-		return Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(class_ptr, selExpressionForUnionSet_With_Handle, left.Handle, right.Handle));
-	}
-
-	[Export("expressionForVariable:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSExpression FromVariable(string string1)
-	{
-		if (string1 == null)
-		{
-			throw new ArgumentNullException("string1");
-		}
-		IntPtr arg = NSString.CreateNative(string1);
-		NSExpression nSObject = Runtime.GetNSObject<NSExpression>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selExpressionForVariable_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return nSObject;
 	}
 }

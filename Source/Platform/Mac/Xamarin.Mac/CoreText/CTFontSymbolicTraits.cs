@@ -1,7 +1,9 @@
 using System;
+using ObjCRuntime;
 
 namespace CoreText;
 
+[Since(3, 2)]
 [Flags]
 public enum CTFontSymbolicTraits : uint
 {

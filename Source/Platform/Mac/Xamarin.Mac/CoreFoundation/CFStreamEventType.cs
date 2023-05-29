@@ -1,16 +1,14 @@
 using System;
-using ObjCRuntime;
 
 namespace CoreFoundation;
 
 [Flags]
-[Native]
-public enum CFStreamEventType : ulong
+public enum CFStreamEventType
 {
-	None = 0uL,
-	OpenCompleted = 1uL,
-	HasBytesAvailable = 2uL,
-	CanAcceptBytes = 4uL,
-	ErrorOccurred = 8uL,
-	EndEncountered = 0x10uL
+	None = 0,
+	OpenCompleted = 1,
+	HasBytesAvailable = 2,
+	CanAcceptBytes = 4,
+	ErrorOccurred = 8,
+	EndEncountered = 0x10
 }

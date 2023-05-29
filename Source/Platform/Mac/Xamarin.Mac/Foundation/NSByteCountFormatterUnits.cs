@@ -1,10 +1,8 @@
 using System;
-using ObjCRuntime;
 
 namespace Foundation;
 
 [Flags]
-[Native]
 public enum NSByteCountFormatterUnits : ulong
 {
 	UseDefault = 0uL,

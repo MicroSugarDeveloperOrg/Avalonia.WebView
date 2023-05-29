@@ -3,23 +3,22 @@ using System;
 namespace CoreGraphics;
 
 [Flags]
-public enum CGBitmapFlags : uint
+public enum CGBitmapFlags
 {
-	None = 0u,
-	PremultipliedLast = 1u,
-	PremultipliedFirst = 2u,
-	Last = 3u,
-	First = 4u,
-	NoneSkipLast = 5u,
-	NoneSkipFirst = 6u,
-	Only = 7u,
-	AlphaInfoMask = 0x1Fu,
-	FloatInfoMask = 0xF00u,
-	FloatComponents = 0x100u,
-	ByteOrderMask = 0x7000u,
-	ByteOrderDefault = 0u,
-	ByteOrder16Little = 0x1000u,
-	ByteOrder32Little = 0x2000u,
-	ByteOrder16Big = 0x3000u,
-	ByteOrder32Big = 0x4000u
+	None = 0,
+	PremultipliedLast = 1,
+	PremultipliedFirst = 2,
+	Last = 3,
+	First = 4,
+	NoneSkipLast = 5,
+	NoneSkipFirst = 6,
+	Only = 7,
+	AlphaInfoMask = 0x1F,
+	FloatComponents = 0x100,
+	ByteOrderMask = 0x7000,
+	ByteOrderDefault = 0,
+	ByteOrder16Little = 0x1000,
+	ByteOrder32Little = 0x2000,
+	ByteOrder16Big = 0x3000,
+	ByteOrder32Big = 0x4000
 }

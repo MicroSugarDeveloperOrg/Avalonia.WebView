@@ -1,10 +1,8 @@
 using System;
-using ObjCRuntime;
 
 namespace AppKit;
 
 [Flags]
-[Native]
 public enum NSTrackingAreaOptions : ulong
 {
 	MouseEnteredAndExited = 1uL,

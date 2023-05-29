@@ -1,11 +1,9 @@
 using System;
-using ObjCRuntime;
 
 namespace AppKit;
 
 [Flags]
-[Native]
-public enum NSFontCollectionOptions : long
+public enum NSFontCollectionOptions : ulong
 {
-	ApplicationOnlyMask = 1L
+	ApplicationOnlyMask = 1uL
 }

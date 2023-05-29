@@ -7,91 +7,37 @@ using ObjCRuntime;
 namespace CoreImage;
 
 [Register("CIImageAccumulator", true)]
-[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
 public class CIImageAccumulator : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selClear = "clear";
-
-	private static readonly IntPtr selClearHandle = Selector.GetHandle("clear");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selExtent = "extent";
-
 	private static readonly IntPtr selExtentHandle = Selector.GetHandle("extent");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFormat = "format";
 
 	private static readonly IntPtr selFormatHandle = Selector.GetHandle("format");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selImage = "image";
-
 	private static readonly IntPtr selImageHandle = Selector.GetHandle("image");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selImageAccumulatorWithExtent_Format_ = "imageAccumulatorWithExtent:format:";
-
-	private static readonly IntPtr selImageAccumulatorWithExtent_Format_Handle = Selector.GetHandle("imageAccumulatorWithExtent:format:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selImageAccumulatorWithExtent_Format_ColorSpace_ = "imageAccumulatorWithExtent:format:colorSpace:";
-
-	private static readonly IntPtr selImageAccumulatorWithExtent_Format_ColorSpace_Handle = Selector.GetHandle("imageAccumulatorWithExtent:format:colorSpace:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInit = "init";
-
-	private static readonly IntPtr selInitHandle = Selector.GetHandle("init");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithExtent_Format_ = "initWithExtent:format:";
-
-	private static readonly IntPtr selInitWithExtent_Format_Handle = Selector.GetHandle("initWithExtent:format:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithExtent_Format_ColorSpace_ = "initWithExtent:format:colorSpace:";
-
-	private static readonly IntPtr selInitWithExtent_Format_ColorSpace_Handle = Selector.GetHandle("initWithExtent:format:colorSpace:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetImage_ = "setImage:";
 
 	private static readonly IntPtr selSetImage_Handle = Selector.GetHandle("setImage:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetImage_DirtyRect_ = "setImage:dirtyRect:";
+	private static readonly IntPtr selImageAccumulatorWithExtentFormat_Handle = Selector.GetHandle("imageAccumulatorWithExtent:format:");
 
-	private static readonly IntPtr selSetImage_DirtyRect_Handle = Selector.GetHandle("setImage:dirtyRect:");
+	private static readonly IntPtr selInitWithExtentFormat_Handle = Selector.GetHandle("initWithExtent:format:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("CIImageAccumulator");
+	private static readonly IntPtr selSetImageDirtyRect_Handle = Selector.GetHandle("setImage:dirtyRect:");
+
+	private static readonly IntPtr selClearHandle = Selector.GetHandle("clear");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("CIImageAccumulator");
+
+	private object __mt_Image_var;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual int CIImageFormat
-	{
-		[Export("format")]
-		get
-		{
-			if (base.IsDirectBinding)
-			{
-				return Messaging.int_objc_msgSend(base.Handle, selFormatHandle);
-			}
-			return Messaging.int_objc_msgSendSuper(base.SuperHandle, selFormatHandle);
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGRect Extent
 	{
 		[Export("extent")]
 		get
 		{
 			CGRect retval;
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selExtentHandle);
 			}
@@ -103,17 +49,25 @@ public class CIImageAccumulator : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual long CIImageFormat
+	{
+		[Export("format")]
+		get
+		{
+			if (IsDirectBinding)
+			{
+				return Messaging.Int64_objc_msgSend(base.Handle, selFormatHandle);
+			}
+			return Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selFormatHandle);
+		}
+	}
+
 	public virtual CIImage Image
 	{
 		[Export("image")]
 		get
 		{
-			if (base.IsDirectBinding)
-			{
-				return Runtime.GetNSObject<CIImage>(Messaging.IntPtr_objc_msgSend(base.Handle, selImageHandle));
-			}
-			return Runtime.GetNSObject<CIImage>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selImageHandle));
+			return (CIImage)(__mt_Image_var = ((!IsDirectBinding) ? ((CIImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selImageHandle))) : ((CIImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selImageHandle)))));
 		}
 		[Export("setImage:")]
 		set
@@ -122,7 +76,7 @@ public class CIImageAccumulator : NSObject
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetImage_Handle, value.Handle);
 			}
@@ -130,87 +84,93 @@ public class CIImageAccumulator : NSObject
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetImage_Handle, value.Handle);
 			}
+			__mt_Image_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected CIImageAccumulator(NSObjectFlag t)
+	[Export("init")]
+	public CIImageAccumulator()
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	[Export("initWithCoder:")]
+	public CIImageAccumulator(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public CIImageAccumulator(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal CIImageAccumulator(IntPtr handle)
+	public CIImageAccumulator(IntPtr handle)
 		: base(handle)
 	{
 	}
 
-	[Export("init")]
-	[Obsolete("The default initializer does not work in recent iOS version (11b4).", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public CIImageAccumulator()
-		: base(NSObjectFlag.Empty)
+	[Export("imageAccumulatorWithExtent:format:")]
+	public static CIImageAccumulator FromRectangle(CGRect rect, long ciImageFormat)
 	{
-		if (base.IsDirectBinding)
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selInitHandle), "init");
-		}
-		else
-		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selInitHandle), "init");
-		}
+		return (CIImageAccumulator)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_CGRect_Int64(class_ptr, selImageAccumulatorWithExtentFormat_Handle, rect, ciImageFormat));
 	}
 
 	[Export("initWithExtent:format:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public CIImageAccumulator(CGRect rectangle, CIFormat format)
+	public CIImageAccumulator(CGRect rectangle, long ciImageFormat)
 		: base(NSObjectFlag.Empty)
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect_int(base.Handle, selInitWithExtent_Format_Handle, rectangle, (int)format), "initWithExtent:format:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_CGRect_Int64(base.Handle, selInitWithExtentFormat_Handle, rectangle, ciImageFormat);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect_int(base.SuperHandle, selInitWithExtent_Format_Handle, rectangle, (int)format), "initWithExtent:format:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_CGRect_Int64(base.SuperHandle, selInitWithExtentFormat_Handle, rectangle, ciImageFormat);
 		}
 	}
 
-	[Obsolete("Use the overload acceping a 'CIFormat' enum instead of an 'int'.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public CIImageAccumulator(CGRect rectangle, int ciImageFormat)
-		: this(rectangle, (CIFormat)ciImageFormat)
+	[Export("setImage:dirtyRect:")]
+	public virtual void SetImageDirty(CIImage image, CGRect dirtyRect)
 	{
-	}
-
-	[Export("initWithExtent:format:colorSpace:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public CIImageAccumulator(CGRect extent, CIFormat format, CGColorSpace colorSpace)
-		: base(NSObjectFlag.Empty)
-	{
-		if (colorSpace == null)
+		if (image == null)
 		{
-			throw new ArgumentNullException("colorSpace");
+			throw new ArgumentNullException("image");
 		}
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_CGRect_int_IntPtr(base.Handle, selInitWithExtent_Format_ColorSpace_Handle, extent, (int)format, colorSpace.Handle), "initWithExtent:format:colorSpace:");
+			Messaging.void_objc_msgSend_IntPtr_CGRect(base.Handle, selSetImageDirtyRect_Handle, image.Handle, dirtyRect);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_CGRect_int_IntPtr(base.SuperHandle, selInitWithExtent_Format_ColorSpace_Handle, extent, (int)format, colorSpace.Handle), "initWithExtent:format:colorSpace:");
+			Messaging.void_objc_msgSendSuper_IntPtr_CGRect(base.SuperHandle, selSetImageDirtyRect_Handle, image.Handle, dirtyRect);
 		}
 	}
 
 	[Export("clear")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual void Clear()
 	{
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
 			Messaging.void_objc_msgSend(base.Handle, selClearHandle);
 		}
@@ -220,48 +180,12 @@ public class CIImageAccumulator : NSObject
 		}
 	}
 
-	[Export("imageAccumulatorWithExtent:format:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static CIImageAccumulator FromRectangle(CGRect rect, CIFormat format)
+	protected override void Dispose(bool disposing)
 	{
-		return Runtime.GetNSObject<CIImageAccumulator>(Messaging.IntPtr_objc_msgSend_CGRect_int(class_ptr, selImageAccumulatorWithExtent_Format_Handle, rect, (int)format));
-	}
-
-	[Obsolete("Use the overload acceping a 'CIFormat' enum instead of an 'int'.", false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static CIImageAccumulator FromRectangle(CGRect rect, int ciImageFormat)
-	{
-		return FromRectangle(rect, (CIFormat)ciImageFormat);
-	}
-
-	[Export("imageAccumulatorWithExtent:format:colorSpace:")]
-	[Introduced(PlatformName.iOS, 9, 0, PlatformArchitecture.All, null)]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static CIImageAccumulator FromRectangle(CGRect extent, CIFormat format, CGColorSpace colorSpace)
-	{
-		if (colorSpace == null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			throw new ArgumentNullException("colorSpace");
-		}
-		return Runtime.GetNSObject<CIImageAccumulator>(Messaging.IntPtr_objc_msgSend_CGRect_int_IntPtr(class_ptr, selImageAccumulatorWithExtent_Format_ColorSpace_Handle, extent, (int)format, colorSpace.Handle));
-	}
-
-	[Export("setImage:dirtyRect:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual void SetImageDirty(CIImage image, CGRect dirtyRect)
-	{
-		if (image == null)
-		{
-			throw new ArgumentNullException("image");
-		}
-		if (base.IsDirectBinding)
-		{
-			Messaging.void_objc_msgSend_IntPtr_CGRect(base.Handle, selSetImage_DirtyRect_Handle, image.Handle, dirtyRect);
-		}
-		else
-		{
-			Messaging.void_objc_msgSendSuper_IntPtr_CGRect(base.SuperHandle, selSetImage_DirtyRect_Handle, image.Handle, dirtyRect);
+			__mt_Image_var = null;
 		}
 	}
 }

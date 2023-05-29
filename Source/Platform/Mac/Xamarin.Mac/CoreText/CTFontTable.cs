@@ -1,14 +1,12 @@
+using ObjCRuntime;
+
 namespace CoreText;
 
+[Since(3, 2)]
 public enum CTFontTable : uint
 {
 	BaselineBASE = 1111577413u,
-	ColorBitmapData = 1128416340u,
-	ColorBitmapLocationData = 1128418371u,
 	PostscriptFontProgram = 1128678944u,
-	CompactFontFormat2 = 1128678962u,
-	ColorTable = 1129270354u,
-	ColorPaletteTable = 1129333068u,
 	DigitalSignature = 1146308935u,
 	EmbeddedBitmap = 1161970772u,
 	EmbeddedBitmapLocation = 1161972803u,
@@ -16,22 +14,14 @@ public enum CTFontTable : uint
 	GlyphDefinition = 1195656518u,
 	GlyphPositioning = 1196445523u,
 	GlyphSubstitution = 1196643650u,
-	HorizontalMetricsVariations = 1213612370u,
 	JustificationJSTF = 1246975046u,
 	LinearThreshold = 1280594760u,
-	MathLayoutData = 1296127048u,
-	Merge = 1296388679u,
-	MetricsVariations = 1297498450u,
 	WindowsSpecificMetrics = 1330851634u,
 	Pcl5Data = 1346587732u,
 	VerticalDeviceMetrics = 1447316824u,
-	StyleAttributes = 1398030676u,
-	ScalableVectorGraphics = 1398163232u,
 	VerticalOrigin = 1448038983u,
-	VerticalMetricsVariations = 1448493394u,
 	GlyphReference = 1516335206u,
 	AccentAttachment = 1633906292u,
-	AnchorPoints = 1634626418u,
 	AxisVariation = 1635148146u,
 	BitmapData = 1650745716u,
 	BitmapFontHeader = 1651008868u,
@@ -43,7 +33,6 @@ public enum CTFontTable : uint
 	FontDescriptor = 1717859171u,
 	LayoutFeature = 1717920116u,
 	FontMetrics = 1718449272u,
-	FondAndNfntData = 1718578788u,
 	FontProgram = 1718642541u,
 	FontVariation = 1719034226u,
 	GridFitting = 1734439792u,
@@ -59,9 +48,7 @@ public enum CTFontTable : uint
 	ExtendedKerning = 1801810552u,
 	LigatureCaret = 1818452338u,
 	IndexToLocation = 1819239265u,
-	LanguageTags = 1819566439u,
 	MaximumProfile = 1835104368u,
-	Metadata = 1835365473u,
 	Morph = 1836020340u,
 	ExtendedMorph = 1836020344u,
 	Name = 1851878757u,
@@ -69,10 +56,10 @@ public enum CTFontTable : uint
 	PostScriptInformation = 1886352244u,
 	ControlValueTableProgram = 1886545264u,
 	Properties = 1886547824u,
-	SBitmapData = 1935829364u,
-	SExtendedBitmapData = 1935829368u,
 	Tracking = 1953653099u,
 	VerticalHeader = 1986553185u,
 	VerticalMetrics = 1986884728u,
-	CrossReference = 2020762982u
+	SBitmapData = 1935829364u,
+	SExtendedBitmapData = 1935829368u,
+	AnchorPoints = 1634626418u
 }

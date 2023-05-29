@@ -1,5 +1,5 @@
+using System;
 using CoreGraphics;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
@@ -9,9 +9,9 @@ public class NSTextViewClickedEventArgs : EventArgs
 
 	public CGRect CellFrame { get; set; }
 
-	public nuint CharIndex { get; set; }
+	public ulong CharIndex { get; set; }
 
-	public NSTextViewClickedEventArgs(NSTextAttachmentCell cell, CGRect cellFrame, nuint charIndex)
+	public NSTextViewClickedEventArgs(NSTextAttachmentCell cell, CGRect cellFrame, ulong charIndex)
 	{
 		Cell = cell;
 		CellFrame = cellFrame;

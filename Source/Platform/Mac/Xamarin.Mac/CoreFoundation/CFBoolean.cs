@@ -1,23 +1,40 @@
+using System;
 using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace CoreFoundation;
 
+[Since(3, 2)]
 internal class CFBoolean : INativeObject, IDisposable
 {
 	private IntPtr handle;
+
+	public static readonly CFBoolean True;
+
+	public static readonly CFBoolean False;
 
 	public IntPtr Handle => handle;
 
 	public bool Value => CFBooleanGetValue(handle);
 
-	[Field("kCFBooleanFalse", "CoreFoundation")]
-	internal static IntPtr FalseHandle => Dlfcn.GetIntPtr(Libraries.CoreFoundation.Handle, "kCFBooleanFalse");
-
-	[Field("kCFBooleanTrue", "CoreFoundation")]
-	internal static IntPtr TrueHandle => Dlfcn.GetIntPtr(Libraries.CoreFoundation.Handle, "kCFBooleanTrue");
+	static CFBoolean()
+	{
+		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", 0);
+		if (intPtr == IntPtr.Zero)
+		{
+			return;
+		}
+		try
+		{
+			True = new CFBoolean(Dlfcn.GetIntPtr(intPtr, "kCFBooleanTrue"), owns: false);
+			False = new CFBoolean(Dlfcn.GetIntPtr(intPtr, "kCFBooleanFalse"), owns: false);
+		}
+		finally
+		{
+			Dlfcn.dlclose(intPtr);
+		}
+	}
 
 	[Preserve(Conditional = true)]
 	internal CFBoolean(IntPtr handle, bool owns)
@@ -35,7 +52,7 @@ internal class CFBoolean : INativeObject, IDisposable
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFBooleanGetTypeID")]
-	public static extern nint GetTypeID();
+	public static extern int GetTypeID();
 
 	public void Dispose()
 	{
@@ -43,7 +60,7 @@ internal class CFBoolean : INativeObject, IDisposable
 		GC.SuppressFinalize(this);
 	}
 
-	protected virtual void Dispose(bool disposing)
+	public virtual void Dispose(bool disposing)
 	{
 		if (handle != IntPtr.Zero)
 		{
@@ -62,18 +79,16 @@ internal class CFBoolean : INativeObject, IDisposable
 		return FromBoolean(value);
 	}
 
-	internal static IntPtr ToHandle(bool value)
-	{
-		return value ? TrueHandle : FalseHandle;
-	}
-
 	public static CFBoolean FromBoolean(bool value)
 	{
-		return new CFBoolean(value ? TrueHandle : FalseHandle, owns: false);
+		if (!value)
+		{
+			return False;
+		}
+		return True;
 	}
 
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	[return: MarshalAs(UnmanagedType.I1)]
+	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", CharSet = CharSet.Unicode)]
 	private static extern bool CFBooleanGetValue(IntPtr boolean);
 
 	public static bool GetValue(IntPtr boolean)

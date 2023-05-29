@@ -9,71 +9,45 @@ namespace AppKit;
 [Register("NSDraggingImageComponent", true)]
 public class NSDraggingImageComponent : NSObject
 {
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selContents = "contents";
-
-	private static readonly IntPtr selContentsHandle = Selector.GetHandle("contents");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selDraggingImageComponentWithKey_ = "draggingImageComponentWithKey:";
-
-	private static readonly IntPtr selDraggingImageComponentWithKey_Handle = Selector.GetHandle("draggingImageComponentWithKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selFrame = "frame";
-
-	private static readonly IntPtr selFrameHandle = Selector.GetHandle("frame");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selInitWithKey_ = "initWithKey:";
-
-	private static readonly IntPtr selInitWithKey_Handle = Selector.GetHandle("initWithKey:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selKey = "key";
-
 	private static readonly IntPtr selKeyHandle = Selector.GetHandle("key");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetContents_ = "setContents:";
-
-	private static readonly IntPtr selSetContents_Handle = Selector.GetHandle("setContents:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetFrame_ = "setFrame:";
-
-	private static readonly IntPtr selSetFrame_Handle = Selector.GetHandle("setFrame:");
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private const string selSetKey_ = "setKey:";
 
 	private static readonly IntPtr selSetKey_Handle = Selector.GetHandle("setKey:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static readonly IntPtr class_ptr = ObjCRuntime.Class.GetHandle("NSDraggingImageComponent");
+	private static readonly IntPtr selContentsHandle = Selector.GetHandle("contents");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _IconKey;
+	private static readonly IntPtr selSetContents_Handle = Selector.GetHandle("setContents:");
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	private static NSString? _LabelKey;
+	private static readonly IntPtr selFrameHandle = Selector.GetHandle("frame");
+
+	private static readonly IntPtr selSetFrame_Handle = Selector.GetHandle("setFrame:");
+
+	private static readonly IntPtr selDraggingImageComponentWithKey_Handle = Selector.GetHandle("draggingImageComponentWithKey:");
+
+	private static readonly IntPtr selInitWithKey_Handle = Selector.GetHandle("initWithKey:");
+
+	private static readonly IntPtr class_ptr = Class.GetHandle("NSDraggingImageComponent");
+
+	private object __mt_Contents_var;
+
+	private static NSString _IconKey;
+
+	private static NSString _LabelKey;
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual NSObject Contents
+	public virtual string Key
 	{
-		[Export("contents", ArgumentSemantic.Retain)]
+		[Export("key")]
 		get
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
-				return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selContentsHandle));
+				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selKeyHandle));
 			}
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContentsHandle));
+			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selKeyHandle));
 		}
-		[Export("setContents:", ArgumentSemantic.Retain)]
+		[Export("setKey:")]
 		set
 		{
 			NSApplication.EnsureUIThread();
@@ -81,7 +55,36 @@ public class NSDraggingImageComponent : NSObject
 			{
 				throw new ArgumentNullException("value");
 			}
-			if (base.IsDirectBinding)
+			IntPtr arg = NSString.CreateNative(value);
+			if (IsDirectBinding)
+			{
+				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetKey_Handle, arg);
+			}
+			else
+			{
+				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetKey_Handle, arg);
+			}
+			NSString.ReleaseNative(arg);
+		}
+	}
+
+	public virtual NSObject Contents
+	{
+		[Export("contents")]
+		get
+		{
+			NSApplication.EnsureUIThread();
+			return (NSObject)(__mt_Contents_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContentsHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selContentsHandle))));
+		}
+		[Export("setContents:")]
+		set
+		{
+			NSApplication.EnsureUIThread();
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetContents_Handle, value.Handle);
 			}
@@ -89,10 +92,10 @@ public class NSDraggingImageComponent : NSObject
 			{
 				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetContents_Handle, value.Handle);
 			}
+			__mt_Contents_var = value;
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual CGRect Frame
 	{
 		[Export("frame")]
@@ -100,7 +103,7 @@ public class NSDraggingImageComponent : NSObject
 		{
 			NSApplication.EnsureUIThread();
 			CGRect retval;
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.CGRect_objc_msgSend_stret(out retval, base.Handle, selFrameHandle);
 			}
@@ -114,7 +117,7 @@ public class NSDraggingImageComponent : NSObject
 		set
 		{
 			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
+			if (IsDirectBinding)
 			{
 				Messaging.void_objc_msgSend_CGRect(base.Handle, selSetFrame_Handle, value);
 			}
@@ -122,40 +125,6 @@ public class NSDraggingImageComponent : NSObject
 			{
 				Messaging.void_objc_msgSendSuper_CGRect(base.SuperHandle, selSetFrame_Handle, value);
 			}
-		}
-	}
-
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual string Key
-	{
-		[Export("key", ArgumentSemantic.Copy)]
-		get
-		{
-			NSApplication.EnsureUIThread();
-			if (base.IsDirectBinding)
-			{
-				return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(base.Handle, selKeyHandle));
-			}
-			return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selKeyHandle));
-		}
-		[Export("setKey:", ArgumentSemantic.Copy)]
-		set
-		{
-			NSApplication.EnsureUIThread();
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
-			IntPtr arg = NSString.CreateNative(value);
-			if (base.IsDirectBinding)
-			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetKey_Handle, arg);
-			}
-			else
-			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetKey_Handle, arg);
-			}
-			NSString.ReleaseNative(arg);
 		}
 	}
 
@@ -185,40 +154,63 @@ public class NSDraggingImageComponent : NSObject
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	[Export("init")]
 	public NSDraggingImageComponent()
 		: base(NSObjectFlag.Empty)
 	{
-		NSApplication.EnsureUIThread();
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init), "init");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
 		}
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected NSDraggingImageComponent(NSObjectFlag t)
+	[Export("initWithCoder:")]
+	public NSDraggingImageComponent(NSCoder coder)
+		: base(NSObjectFlag.Empty)
+	{
+		if (IsDirectBinding)
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+		}
+		else
+		{
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public NSDraggingImageComponent(NSObjectFlag t)
 		: base(t)
 	{
 	}
 
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	protected internal NSDraggingImageComponent(IntPtr handle)
+	public NSDraggingImageComponent(IntPtr handle)
 		: base(handle)
 	{
 	}
 
+	[Export("draggingImageComponentWithKey:")]
+	public static NSDraggingImageComponent FromKey(string key)
+	{
+		NSApplication.EnsureUIThread();
+		if (key == null)
+		{
+			throw new ArgumentNullException("key");
+		}
+		IntPtr arg = NSString.CreateNative(key);
+		NSDraggingImageComponent result = (NSDraggingImageComponent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selDraggingImageComponentWithKey_Handle, arg));
+		NSString.ReleaseNative(arg);
+		return result;
+	}
+
 	[Export("initWithKey:")]
-	[DesignatedInitializer]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public NSDraggingImageComponent(string key)
 		: base(NSObjectFlag.Empty)
 	{
@@ -228,29 +220,23 @@ public class NSDraggingImageComponent : NSObject
 			throw new ArgumentNullException("key");
 		}
 		IntPtr arg = NSString.CreateNative(key);
-		if (base.IsDirectBinding)
+		if (IsDirectBinding)
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithKey_Handle, arg), "initWithKey:");
+			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithKey_Handle, arg);
 		}
 		else
 		{
-			InitializeHandle(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithKey_Handle, arg), "initWithKey:");
+			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithKey_Handle, arg);
 		}
 		NSString.ReleaseNative(arg);
 	}
 
-	[Export("draggingImageComponentWithKey:")]
-	[BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public static NSDraggingImageComponent FromKey(string key)
+	protected override void Dispose(bool disposing)
 	{
-		NSApplication.EnsureUIThread();
-		if (key == null)
+		base.Dispose(disposing);
+		if (base.Handle == IntPtr.Zero)
 		{
-			throw new ArgumentNullException("key");
+			__mt_Contents_var = null;
 		}
-		IntPtr arg = NSString.CreateNative(key);
-		NSDraggingImageComponent nSObject = Runtime.GetNSObject<NSDraggingImageComponent>(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selDraggingImageComponentWithKey_Handle, arg));
-		NSString.ReleaseNative(arg);
-		return nSObject;
 	}
 }

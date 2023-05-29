@@ -1,28 +1,30 @@
+using System;
+using System.Collections.Generic;
 using Foundation;
 using ObjCRuntime;
-using Xamarin.Mac.System.Mac;
 
 namespace AppKit;
 
 [Register("__MonoMac_NSAlertDidEndDispatcher")]
 internal class NSAlertDidEndDispatcher : NSObject
 {
+	private static List<NSAlertDidEndDispatcher> pendingInvokes = new List<NSAlertDidEndDispatcher>();
+
 	private const string selector = "alertDidEnd:returnCode:contextInfo:";
 
 	public static readonly Selector Selector = new Selector("alertDidEnd:returnCode:contextInfo:");
 
-	private Action<nint> action;
+	private Action<int> action;
 
-	public NSAlertDidEndDispatcher(Action<nint> action)
+	public NSAlertDidEndDispatcher(Action<int> action)
 	{
 		this.action = action;
-		base.IsDirectBinding = false;
-		DangerousRetain();
+		pendingInvokes.Add(this);
 	}
 
 	[Export("alertDidEnd:returnCode:contextInfo:")]
 	[Preserve(Conditional = true)]
-	public void OnAlertDidEnd(NSAlert alert, nint returnCode, IntPtr context)
+	public void OnAlertDidEnd(NSAlert alert, int returnCode, IntPtr context)
 	{
 		try
 		{
@@ -34,7 +36,7 @@ internal class NSAlertDidEndDispatcher : NSObject
 		finally
 		{
 			action = null;
-			DangerousRelease();
+			pendingInvokes.Remove(this);
 		}
 	}
 }

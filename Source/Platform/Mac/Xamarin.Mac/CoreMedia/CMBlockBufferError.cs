@@ -1,8 +1,5 @@
-using ObjCRuntime;
-
 namespace CoreMedia;
 
-[Watch(6, 0)]
 public enum CMBlockBufferError
 {
 	None = 0,
@@ -13,6 +10,5 @@ public enum CMBlockBufferError
 	BadLengthParameter = -12704,
 	BadPointerParameter = -12705,
 	EmptyBlockBuffer = -12706,
-	UnallocatedBlock = -12707,
-	InsufficientSpace = -12708
+	UnallocatedBlock = -12707
 }

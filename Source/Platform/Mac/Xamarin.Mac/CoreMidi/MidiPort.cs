@@ -17,13 +17,13 @@ public class MidiPort : MidiObject
 	public event EventHandler<MidiPacketsEventArgs> MessageReceived;
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIInputPortCreate(int client, IntPtr portName, MidiReadProc readProc, IntPtr context, out int midiPort);
+	private static extern int MIDIInputPortCreate(IntPtr client, IntPtr portName, MidiReadProc readProc, IntPtr context, out IntPtr midiPort);
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIOutputPortCreate(int client, IntPtr portName, out int midiPort);
+	private static extern int MIDIOutputPortCreate(IntPtr client, IntPtr portName, out IntPtr midiPort);
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIPortDispose(int port);
+	private static extern int MIDIPortDispose(IntPtr port);
 
 	internal MidiPort(MidiClient client, string portName, bool input)
 	{
@@ -33,7 +33,7 @@ public class MidiPort : MidiObject
 		if (num != 0)
 		{
 			value.Free();
-			handle = 0;
+			handle = IntPtr.Zero;
 			throw new MidiException((MidiError)num);
 		}
 		Client = client;
@@ -43,21 +43,32 @@ public class MidiPort : MidiObject
 
 	internal override void DisposeHandle()
 	{
-		if (handle != 0)
+		if (handle != IntPtr.Zero)
 		{
 			if (owns)
 			{
 				MIDIPortDispose(handle);
 			}
-			handle = 0;
-		}
-		if (gch.IsAllocated)
-		{
+			handle = IntPtr.Zero;
 			gch.Free();
 		}
 	}
 
-	protected override void Dispose(bool disposing)
+	internal static MidiPacket[] ToPackets(IntPtr packetList)
+	{
+		int num = Marshal.ReadInt32(packetList);
+		int num2 = 4;
+		MidiPacket[] array = new MidiPacket[num];
+		for (int i = 0; i < num; i++)
+		{
+			ushort num3 = (ushort)Marshal.ReadInt16(packetList, num2 + 8);
+			array[i] = new MidiPacket(Marshal.ReadInt64(packetList, num2), num3, (IntPtr)((long)packetList + num2 + 10));
+			num2 += 10 + num3;
+		}
+		return array;
+	}
+
+	public override void Dispose(bool disposing)
 	{
 		this.MessageReceived = null;
 		base.Dispose(disposing);
@@ -66,21 +77,14 @@ public class MidiPort : MidiObject
 	private static void Read(IntPtr packetList, IntPtr context, IntPtr srcPtr)
 	{
 		MidiPort midiPort = (MidiPort)GCHandle.FromIntPtr(context).Target;
-		EventHandler<MidiPacketsEventArgs> messageReceived = midiPort.MessageReceived;
-		if (messageReceived != null)
-		{
-			using (MidiPacketsEventArgs e = new MidiPacketsEventArgs(packetList))
-			{
-				messageReceived(midiPort, e);
-			}
-		}
+		midiPort.MessageReceived?.Invoke(midiPort, new MidiPacketsEventArgs(packetList));
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIPortConnectSource(int port, int endpoint, IntPtr context);
+	private static extern int MIDIPortConnectSource(IntPtr port, IntPtr endpoint, IntPtr context);
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern int MIDIPortDisconnectSource(int port, int endpoint);
+	private static extern int MIDIPortDisconnectSource(IntPtr port, IntPtr endpoint);
 
 	public MidiError ConnectSource(MidiEndpoint endpoint)
 	{
@@ -102,11 +106,11 @@ public class MidiPort : MidiObject
 
 	public override string ToString()
 	{
-		return (input ? "[input:" : "[output:") + Client?.ToString() + ":" + PortName + "]";
+		return string.Concat(input ? "[input:" : "[output:", Client, ":", PortName, "]");
 	}
 
 	[DllImport("/System/Library/Frameworks/CoreMIDI.framework/CoreMIDI")]
-	private static extern MidiError MIDISend(int port, int endpoint, IntPtr packets);
+	private static extern MidiError MIDISend(IntPtr port, IntPtr endpoint, IntPtr packets);
 
 	public MidiError Send(MidiEndpoint endpoint, MidiPacket[] packets)
 	{
@@ -118,7 +122,7 @@ public class MidiPort : MidiObject
 		{
 			throw new ArgumentNullException("packets");
 		}
-		IntPtr intPtr = MidiPacket.CreatePacketList(packets);
+		IntPtr intPtr = Midi.EncodePackets(packets);
 		MidiError result = MIDISend(handle, endpoint.handle, intPtr);
 		Marshal.FreeHGlobal(intPtr);
 		return result;

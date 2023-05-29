@@ -2,9 +2,8 @@ using ObjCRuntime;
 
 namespace AVFoundation;
 
-[Introduced(PlatformName.WatchOS, 6, 0, PlatformArchitecture.All, null)]
-[Native]
-public enum AVAssetWriterStatus : long
+[Since(4, 1)]
+public enum AVAssetWriterStatus
 {
 	Unknown,
 	Writing,
