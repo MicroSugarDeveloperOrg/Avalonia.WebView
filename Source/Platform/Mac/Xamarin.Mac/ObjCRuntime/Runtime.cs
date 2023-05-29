@@ -189,7 +189,7 @@ public static class Runtime
 
     #region
 
-    public static T TryGetNSObject<T>(IntPtr ptr) where T : NSObject
+    public static T TryGetNSObjectTx<T>(IntPtr ptr) where T : NSObject
     {
         lock (lock_obj)
         {
