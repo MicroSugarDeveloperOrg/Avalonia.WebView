@@ -134,7 +134,12 @@ public class Selector : IEquatable<Selector>
 		return new Selector(sel, check: false);
 	}
 
-	[DllImport("/usr/lib/libobjc.dylib")]
+    internal static string GetName(IntPtr handle)
+    {
+        return Marshal.PtrToStringAuto(sel_getName(handle));
+    }
+
+    [DllImport("/usr/lib/libobjc.dylib")]
 	private static extern IntPtr sel_getName(IntPtr sel);
 
 	[DllImport("/usr/lib/libobjc.dylib", EntryPoint = "sel_registerName")]

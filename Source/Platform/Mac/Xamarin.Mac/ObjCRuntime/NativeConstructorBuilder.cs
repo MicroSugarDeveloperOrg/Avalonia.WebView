@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
 using Foundation;
+using Xamarin.Utiles;
 
 namespace ObjCRuntime;
 

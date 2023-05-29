@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Foundation;
+using Xamarin.Utiles;
 
 namespace ObjCRuntime;
 
@@ -188,6 +189,34 @@ public static class Runtime
 	}
 
     #region
+
+    internal static MethodInfo FindClosedMethod(Type closed_type, MethodBase open_method)
+    {
+        if (!open_method.ContainsGenericParameters)
+        {
+            return (MethodInfo)open_method;
+        }
+        Type type = closed_type;
+        do
+        {
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == open_method.DeclaringType)
+            {
+                closed_type = type;
+                break;
+            }
+            type = type.BaseType;
+        }
+        while (type != null);
+        MethodInfo[] methods = closed_type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+        foreach (MethodInfo methodInfo in methods)
+        {
+            if (methodInfo.MetadataToken == open_method.MetadataToken)
+            {
+                return methodInfo;
+            }
+        }
+        throw ErrorHelper.CreateError(8003, "Failed to find the closed generic method '{0}' on the type '{1}'.", open_method.Name, closed_type.FullName);
+    }
 
     public static T TryGetNSObjectTx<T>(IntPtr ptr) where T : NSObject
     {

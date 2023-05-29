@@ -1,4 +1,4 @@
-using System;
+﻿namespace Xamarin.Utiles;
 
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 public class RequiredFrameworkAttribute : Attribute

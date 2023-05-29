@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Foundation;
+using Xamarin.Utiles;
 
 namespace ObjCRuntime;
 
@@ -14,7 +15,7 @@ public class Class : INativeObject
 	[MonoNativeFunctionWrapper]
 	private delegate IntPtr addPropertyDelegate(IntPtr cls, string name, objc_attribute_prop[] attributes, int count);
 
-	private struct objc_attribute_prop
+	internal struct objc_attribute_prop
 	{
 		[MarshalAs(UnmanagedType.LPStr)]
 		internal string name;
@@ -318,7 +319,21 @@ public class Class : INativeObject
 		return result;
 	}
 
-	private static bool TypeRequiresFloatingPointTrampoline(Type t)
+    internal unsafe static Type FindType(IntPtr @class, out bool is_custom_type)
+    {
+        is_custom_type = false;
+        var bRet = type_map.TryGetValue(@class, out var type);
+        if (bRet == false)
+            return default;
+
+        bRet = custom_types.TryGetValue(type, out var customtype );
+        is_custom_type = bRet;
+
+        return type;
+    }
+
+
+    private static bool TypeRequiresFloatingPointTrampoline(Type t)
 	{
 		if (IntPtr.Size != 4)
 		{
@@ -408,40 +423,43 @@ public class Class : INativeObject
 	}
 
 	[DllImport("libc", SetLastError = true)]
-	private static extern int mprotect(IntPtr addr, int len, int prot);
+    internal static extern int mprotect(IntPtr addr, int len, int prot);
 
 	[DllImport("libc", SetLastError = true)]
-	private static extern IntPtr mmap(IntPtr start, ulong length, int prot, int flags, int fd, long offset);
+    internal static extern IntPtr mmap(IntPtr start, ulong length, int prot, int flags, int fd, long offset);
 
 	[DllImport("/usr/lib/libobjc.dylib")]
-	private static extern IntPtr objc_allocateClassPair(IntPtr superclass, string name, IntPtr extraBytes);
+	internal static extern IntPtr objc_allocateClassPair(IntPtr superclass, string name, IntPtr extraBytes);
 
 	[DllImport("/usr/lib/libobjc.dylib")]
-	private static extern IntPtr objc_getClass(string name);
+    internal static extern IntPtr objc_getClass(string name);
 
 	[DllImport("/usr/lib/libobjc.dylib")]
-	private static extern IntPtr objc_getProtocol(string name);
+    internal static extern IntPtr objc_getProtocol(string name);
+
+    [DllImport("/usr/lib/libobjc.dylib")]
+    internal static extern bool class_addProtocol(IntPtr cls, IntPtr protocol);
+
+    [DllImport("/usr/lib/libobjc.dylib")]
+    internal static extern void objc_registerClassPair(IntPtr cls);
 
 	[DllImport("/usr/lib/libobjc.dylib")]
-	private static extern void objc_registerClassPair(IntPtr cls);
+    internal static extern bool class_addIvar(IntPtr cls, string name, IntPtr size, ushort alignment, string types);
 
 	[DllImport("/usr/lib/libobjc.dylib")]
-	private static extern bool class_addIvar(IntPtr cls, string name, IntPtr size, ushort alignment, string types);
+    internal static extern bool class_addMethod(IntPtr cls, IntPtr name, Delegate imp, string types);
 
 	[DllImport("/usr/lib/libobjc.dylib")]
-	internal static extern bool class_addMethod(IntPtr cls, IntPtr name, Delegate imp, string types);
+    internal static extern bool class_addMethod(IntPtr cls, IntPtr name, IntPtr imp, string types);
 
 	[DllImport("/usr/lib/libobjc.dylib")]
-	internal static extern bool class_addMethod(IntPtr cls, IntPtr name, IntPtr imp, string types);
+    internal static extern IntPtr class_getName(IntPtr cls);
 
 	[DllImport("/usr/lib/libobjc.dylib")]
-	private static extern IntPtr class_getName(IntPtr cls);
+    internal static extern IntPtr class_getSuperclass(IntPtr cls);
 
 	[DllImport("/usr/lib/libobjc.dylib")]
-	internal static extern IntPtr class_getSuperclass(IntPtr cls);
-
-	[DllImport("/usr/lib/libobjc.dylib")]
-	internal static extern IntPtr object_getClass(IntPtr obj);
+    internal static extern IntPtr object_getClass(IntPtr obj);
 
 	[DllImport("/usr/lib/libobjc.dylib")]
 	internal static extern IntPtr class_getMethodImplementation(IntPtr cls, IntPtr sel);
@@ -449,7 +467,7 @@ public class Class : INativeObject
 	[DllImport("/usr/lib/libobjc.dylib")]
 	internal static extern IntPtr class_getInstanceVariable(IntPtr cls, string name);
 
-	private static IntPtr class_addProperty(IntPtr cls, string name, objc_attribute_prop[] attributes, int count)
+    internal static IntPtr class_addProperty(IntPtr cls, string name, objc_attribute_prop[] attributes, int count)
 	{
 		if (!addPropertyInitialized)
 		{
