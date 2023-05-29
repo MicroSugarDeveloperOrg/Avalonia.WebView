@@ -33,7 +33,10 @@ public sealed class RegisterAttribute : Attribute
 		}
 	}
 
-	public RegisterAttribute()
+    public bool SkipRegistration { get; set; }
+
+
+    public RegisterAttribute()
 	{
 	}
 

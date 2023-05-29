@@ -77,4 +77,9 @@ internal static class Libraries
     {
         public static readonly IntPtr Handle = Dlfcn.dlopen("/System/Library/Frameworks/QuickLook.framework/QuickLook", 0);
     }
+
+    public static class JavaScriptCore
+    {
+        public static readonly IntPtr Handle = Dlfcn.dlopen("/System/Library/Frameworks/JavaScriptCore.framework/JavaScriptCore", 0);
+    }
 }

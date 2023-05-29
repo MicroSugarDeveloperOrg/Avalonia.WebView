@@ -131,7 +131,15 @@ public class NSMutableSet : NSSet, IEnumerable<NSObject>, IEnumerable
 		}
 	}
 
-	[Export("addObject:")]
+    #region
+    internal NSMutableSet(params INativeObject[] objs)
+    : this(NSArray.FromNativeObjects(objs))
+    {
+    }
+
+    #endregion
+
+    [Export("addObject:")]
 	public virtual void Add(NSObject nso)
 	{
 		if (nso == null)
@@ -213,4 +221,155 @@ public class NSMutableSet : NSSet, IEnumerable<NSObject>, IEnumerable
 			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMinusSet_Handle, other.Handle);
 		}
 	}
+
+    #region
+
+    internal void _Add(IntPtr obj)
+    {
+        Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddObject_Handle, obj);
+    }
+
+    internal void _AddObjects(IntPtr objects)
+    {
+        Messaging.void_objc_msgSend_IntPtr(base.Handle, selAddObjectsFromArray_Handle, objects);
+    }
+
+    internal void _Remove(IntPtr nso)
+    {
+        Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveObject_Handle, nso);
+    }
+
+    #endregion
+}
+
+
+[Register("NSMutableSet", SkipRegistration = true)]
+public sealed class NSMutableSet<TKey> : NSMutableSet, IEnumerable<TKey>, IEnumerable where TKey : class, INativeObject
+{
+    public new TKey AnyObject => Runtime.GetNativeObject<TKey>(base._AnyObject);
+
+    public NSMutableSet()
+    {
+    }
+
+    public NSMutableSet(NSCoder coder)
+        : base(coder)
+    {
+    }
+
+    internal NSMutableSet(IntPtr handle)
+        : base(handle)
+    {
+    }
+
+    public NSMutableSet(params TKey[] objs)
+        : base(objs)
+    {
+    }
+
+    public NSMutableSet(NSSet<TKey> other)
+        : base(other)
+    {
+    }
+
+    public NSMutableSet(NSMutableSet<TKey> other)
+        : base(other)
+    {
+    }
+
+    public TKey LookupMember(TKey probe)
+    {
+        if (probe == null)
+        {
+            throw new ArgumentNullException("probe");
+        }
+        return Runtime.GetNativeObject<TKey>(_LookupMember(probe.Handle));
+    }
+
+    public bool Contains(TKey obj)
+    {
+        if (obj == null)
+        {
+            throw new ArgumentNullException("obj");
+        }
+        return _Contains(obj.Handle);
+    }
+
+    public TKey[] ToArray()
+    {
+        return ToNativeArray<TKey>();
+    }
+
+    public static NSMutableSet<TKey> operator +(NSMutableSet<TKey> first, NSMutableSet<TKey> second)
+    {
+        if (first == null || first.Count == (byte)0)
+        {
+            return new NSMutableSet<TKey>(second);
+        }
+        if (second == null || second.Count == (byte)0)
+        {
+            return new NSMutableSet<TKey>(first);
+        }
+        return new NSMutableSet<TKey>(first._SetByAddingObjectsFromSet(second.Handle));
+    }
+
+    public static NSMutableSet<TKey> operator -(NSMutableSet<TKey> first, NSMutableSet<TKey> second)
+    {
+        if (first == null || first.Count == (byte)0)
+        {
+            return null;
+        }
+        if (second == null || second.Count == (byte)0)
+        {
+            return new NSMutableSet<TKey>(first);
+        }
+        NSMutableSet<TKey> nSMutableSet = new NSMutableSet<TKey>(first);
+        nSMutableSet.MinusSet(second);
+        return nSMutableSet;
+    }
+
+    public void Add(TKey obj)
+    {
+        if (obj == null)
+        {
+            throw new ArgumentNullException("obj");
+        }
+        _Add(obj.Handle);
+    }
+
+    public void Remove(TKey obj)
+    {
+        if (obj == null)
+        {
+            throw new ArgumentNullException("obj");
+        }
+        _Remove(obj.Handle);
+    }
+
+    public void AddObjects(params TKey[] objects)
+    {
+        if (objects == null)
+        {
+            throw new ArgumentNullException("objects");
+        }
+        for (int i = 0; i < objects.Length; i++)
+        {
+            if (objects[i] == null)
+            {
+                throw new ArgumentNullException("objects[" + i + "]");
+            }
+        }
+        using NSArray nSArray = NSArray.From(objects, -1L);
+        _AddObjects(nSArray.Handle);
+    }
+
+    IEnumerator<TKey> IEnumerable<TKey>.GetEnumerator()
+    {
+        return new NSFastEnumerator<TKey>(this);
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return new NSFastEnumerator<TKey>(this);
+    }
 }

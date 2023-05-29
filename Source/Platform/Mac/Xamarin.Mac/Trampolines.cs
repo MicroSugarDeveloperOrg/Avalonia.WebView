@@ -4,7 +4,9 @@ using AppKit;
 using AVFoundation;
 using CoreMedia;
 using Foundation;
+using JavaScriptCore;
 using ObjCRuntime;
+using WebKit;
 
 internal static class Trampolines
 {
@@ -469,4 +471,207 @@ internal static class Trampolines
             return ((NSPredicateEvaluator)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))(Runtime.GetNSObject(evaluatedObject), (NSDictionary)Runtime.GetNSObject(bindings));
         }
     }
+
+    #region
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action))]
+    internal delegate void DAction(IntPtr block);
+
+    internal static class SDAction
+    {
+        internal static readonly DAction Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DAction))]
+        private unsafe static void Invoke(IntPtr block)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((Action)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke();
+        }
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<NSHttpCookie[]>))]
+    internal delegate void DActionArity1V31(IntPtr block, IntPtr obj);
+
+    internal static class SDActionArity1V31
+    {
+        internal static readonly DActionArity1V31 Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DActionArity1V31))]
+        private unsafe static void Invoke(IntPtr block, IntPtr obj)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((Action<NSHttpCookie[]>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(NSArray.ArrayFromHandle<NSHttpCookie>(obj));
+        }
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<NSArray>))]
+    internal delegate void DActionArity1V96(IntPtr block, IntPtr obj);
+
+    internal static class SDActionArity1V96
+    {
+        internal static readonly DActionArity1V96 Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DActionArity1V96))]
+        private unsafe static void Invoke(IntPtr block, IntPtr obj)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((Action<NSArray>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObject<NSArray>(obj));
+        }
+    }
+
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<WKNavigationActionPolicy>))]
+    internal delegate void DActionArity1V93(IntPtr block, nint obj);
+
+    internal static class SDActionArity1V93
+    {
+        internal static readonly DActionArity1V93 Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DActionArity1V93))]
+        private unsafe static void Invoke(IntPtr block, nint obj)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((Action<WKNavigationActionPolicy>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((WKNavigationActionPolicy)(long)obj);
+        }
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<WKNavigationResponsePolicy>))]
+    internal delegate void DActionArity1V94(IntPtr block, nint obj);
+
+    internal static class SDActionArity1V94
+    {
+        internal static readonly DActionArity1V94 Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DActionArity1V94))]
+        private unsafe static void Invoke(IntPtr block, nint obj)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((Action<WKNavigationResponsePolicy>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((WKNavigationResponsePolicy)(long)obj);
+        }
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<WKNavigationActionPolicy, WKWebpagePreferences>))]
+    internal delegate void DActionArity2V85(IntPtr block, nint arg1, IntPtr arg2);
+
+    internal static class SDActionArity2V85
+    {
+        internal static readonly DActionArity2V85 Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DActionArity2V85))]
+        private unsafe static void Invoke(IntPtr block, nint arg1, IntPtr arg2)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((Action<WKNavigationActionPolicy, WKWebpagePreferences>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((WKNavigationActionPolicy)(long)arg1, Runtime.GetNSObject<WKWebpagePreferences>(arg2));
+        }
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential>))]
+    internal delegate void DActionArity2V44(IntPtr block, nint arg1, IntPtr arg2);
+
+    internal static class SDActionArity2V44
+    {
+        internal static readonly DActionArity2V44 Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DActionArity2V44))]
+        private unsafe static void Invoke(IntPtr block, nint arg1, IntPtr arg2)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSUrlSessionAuthChallengeDisposition)(long)arg1, Runtime.GetNSObject<NSUrlCredential>(arg2));
+        }
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<string>))]
+    internal delegate void DActionArity1V44(IntPtr block, IntPtr obj);
+
+    internal static class SDActionArity1V44
+    {
+        internal static readonly DActionArity1V44 Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DActionArity1V44))]
+        private unsafe static void Invoke(IntPtr block, IntPtr obj)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((Action<string>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(NSString.FromHandle(obj));
+        }
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<NSUrl[]>))]
+    internal delegate void DActionArity1V95(IntPtr block, IntPtr obj);
+
+    internal static class SDActionArity1V95
+    {
+        internal static readonly DActionArity1V95 Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DActionArity1V95))]
+        private unsafe static void Invoke(IntPtr block, IntPtr obj)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((Action<NSUrl[]>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(NSArray.ArrayFromHandle<NSUrl>(obj));
+        }
+    }
+
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(JSContextExceptionHandler))]
+    internal delegate void DJSContextExceptionHandler(IntPtr block, IntPtr context, IntPtr exception);
+
+    internal static class SDJSContextExceptionHandler
+    {
+        internal static readonly DJSContextExceptionHandler Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DJSContextExceptionHandler))]
+        private unsafe static void Invoke(IntPtr block, IntPtr context, IntPtr exception)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((JSContextExceptionHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObject<JSContext>(context), Runtime.GetNSObject<JSValue>(exception));
+        }
+    }
+
+    internal sealed class NIDJSContextExceptionHandler  
+    {
+        [Preserve(Conditional = true)]
+        public unsafe static JSContextExceptionHandler? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+                return null;
+
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            JSContextExceptionHandler jSContextExceptionHandler = (JSContextExceptionHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target);
+            return jSContextExceptionHandler;
+        }
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(JSPromiseCreationExecutor))]
+    internal delegate void DJSPromiseCreationExecutor(IntPtr block, IntPtr resolve, IntPtr rejected);
+
+    internal static class SDJSPromiseCreationExecutor
+    {
+        internal static readonly DJSPromiseCreationExecutor Handler = Invoke;
+
+        [MonoPInvokeCallback(typeof(DJSPromiseCreationExecutor))]
+        private unsafe static void Invoke(IntPtr block, IntPtr resolve, IntPtr rejected)
+        {
+            BlockLiteral* ptr = (BlockLiteral*)(void*)block;
+            ((JSPromiseCreationExecutor)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObject<JSValue>(resolve), Runtime.GetNSObject<JSValue>(rejected));
+        }
+    }
+
+
+    #endregion
+
+    //(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target)
 }
+
+
+
+

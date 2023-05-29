@@ -415,7 +415,28 @@ public class NSObject : INativeObject, IDisposable
 		Dispose(disposing: false);
 	}
 
-	public void Dispose()
+    protected void InitializeHandle(IntPtr selector)
+    {
+        if (IsDirectBinding)
+            Handle = Messaging.IntPtr_objc_msgSend(Handle, selector);
+        else
+            Handle = Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selector);
+    }
+
+    protected void InitializeHandle(IntPtr selector, NSCoder coder)
+    {
+        if (IsDirectBinding)
+            Handle = Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selector, coder.Handle);
+        else
+            Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selector, coder.Handle);
+    }
+
+    protected void InitializeWithHandle(IntPtr handle)
+    {
+        Handle = handle;
+    }
+
+    public void Dispose()
 	{
 		Dispose(disposing: true);
 		GC.SuppressFinalize(this);

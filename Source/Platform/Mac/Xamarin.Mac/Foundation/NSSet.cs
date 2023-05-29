@@ -37,7 +37,16 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 
 	private static readonly IntPtr selIntersectsSet_Handle = Selector.GetHandle("intersectsSet:");
 
-	private static readonly IntPtr class_ptr = Class.GetHandle("NSSet");
+    #region
+    private const string selMember_ = "member:";
+    private static readonly IntPtr selMember_Handle = Selector.GetHandle(selMember_);
+
+    private const string selSetWithArray_ = "setWithArray:";
+    private static readonly IntPtr selSetWithArray_Handle = Selector.GetHandle(selSetWithArray_);
+
+    #endregion
+
+    private static readonly IntPtr class_ptr = Class.GetHandle("NSSet");
 
 	private object __mt_AnyObject_var;
 
@@ -50,9 +59,9 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 		{
 			if (IsDirectBinding)
 			{
-				return Messaging.UInt64_objc_msgSend(base.Handle, selCountHandle);
+				return Messaging.UInt64_objc_msgSend(Handle, selCountHandle);
 			}
-			return Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selCountHandle);
+			return Messaging.UInt64_objc_msgSendSuper(SuperHandle, selCountHandle);
 		}
 	}
 
@@ -61,11 +70,22 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 		[Export("anyObject")]
 		get
 		{
-			return (NSObject)(__mt_AnyObject_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAnyObjectHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selAnyObjectHandle))));
+			return (NSObject)(__mt_AnyObject_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selAnyObjectHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selAnyObjectHandle))));
 		}
 	}
 
-	public NSSet(params NSObject[] objs)
+    internal IntPtr _AnyObject
+    {
+        get
+        {
+            if (IsDirectBinding)
+                return Messaging.IntPtr_objc_msgSend(Handle, selAnyObjectHandle);
+
+            return Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selAnyObjectHandle);
+        }
+    }
+
+    public NSSet(params NSObject[] objs)
 		: this(NSArray.FromNSObjects(objs))
 	{
 	}
@@ -90,8 +110,8 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 		NSArray nSArray = NSArray.FromNSObjects(values);
 		return (NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, Selector.GetHandle("setWithArray:"), nSArray.Handle));
 	}
-
-	public IEnumerator<NSObject> GetEnumerator()
+     
+    public IEnumerator<NSObject> GetEnumerator()
 	{
 		NSEnumerator enumerator = _GetEnumerator();
 		while (true)
@@ -163,11 +183,11 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 	{
 		if (IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
+			Handle = Messaging.IntPtr_objc_msgSend(Handle, Selector.Init);
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
+			Handle = Messaging.IntPtr_objc_msgSendSuper(SuperHandle, Selector.Init);
 		}
 	}
 
@@ -178,11 +198,11 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 	{
 		if (IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+			Handle = Messaging.IntPtr_objc_msgSend_IntPtr(Handle, Selector.InitWithCoder, coder.Handle);
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+			Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, Selector.InitWithCoder, coder.Handle);
 		}
 	}
 
@@ -214,11 +234,11 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 		}
 		if (IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithSet_Handle, other.Handle);
+			Handle = Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selInitWithSet_Handle, other.Handle);
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithSet_Handle, other.Handle);
+			Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selInitWithSet_Handle, other.Handle);
 		}
 	}
 
@@ -232,11 +252,11 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 		}
 		if (IsDirectBinding)
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selInitWithArray_Handle, other.Handle);
+			Handle = Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selInitWithArray_Handle, other.Handle);
 		}
 		else
 		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selInitWithArray_Handle, other.Handle);
+			Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selInitWithArray_Handle, other.Handle);
 		}
 	}
 
@@ -249,9 +269,9 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 		}
 		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selContainsObject_Handle, id.Handle);
+			return Messaging.bool_objc_msgSend_IntPtr(Handle, selContainsObject_Handle, id.Handle);
 		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selContainsObject_Handle, id.Handle);
+		return Messaging.bool_objc_msgSendSuper_IntPtr(SuperHandle, selContainsObject_Handle, id.Handle);
 	}
 
 	[Export("allObjects")]
@@ -259,9 +279,9 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 	{
 		if (IsDirectBinding)
 		{
-			return Messaging.IntPtr_objc_msgSend(base.Handle, selAllObjectsHandle);
+			return Messaging.IntPtr_objc_msgSend(Handle, selAllObjectsHandle);
 		}
-		return Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selAllObjectsHandle);
+		return Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selAllObjectsHandle);
 	}
 
 	[Export("isEqualToSet:")]
@@ -273,9 +293,9 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 		}
 		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIsEqualToSet_Handle, other.Handle);
+			return Messaging.bool_objc_msgSend_IntPtr(Handle, selIsEqualToSet_Handle, other.Handle);
 		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selIsEqualToSet_Handle, other.Handle);
+		return Messaging.bool_objc_msgSendSuper_IntPtr(SuperHandle, selIsEqualToSet_Handle, other.Handle);
 	}
 
 	[Export("objectEnumerator")]
@@ -283,9 +303,9 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 	{
 		if (IsDirectBinding)
 		{
-			return (NSEnumerator)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selObjectEnumeratorHandle));
+			return (NSEnumerator)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selObjectEnumeratorHandle));
 		}
-		return (NSEnumerator)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selObjectEnumeratorHandle));
+		return (NSEnumerator)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selObjectEnumeratorHandle));
 	}
 
 	[Export("isSubsetOfSet:")]
@@ -297,9 +317,9 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 		}
 		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIsSubsetOfSet_Handle, other.Handle);
+			return Messaging.bool_objc_msgSend_IntPtr(Handle, selIsSubsetOfSet_Handle, other.Handle);
 		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selIsSubsetOfSet_Handle, other.Handle);
+		return Messaging.bool_objc_msgSendSuper_IntPtr(SuperHandle, selIsSubsetOfSet_Handle, other.Handle);
 	}
 
 	[Export("enumerateObjectsUsingBlock:")]
@@ -314,11 +334,11 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 		blockLiteral.SetupBlock(Trampolines.SDNSSetEnumerator.Handler, enumerator);
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEnumerateObjectsUsingBlock_Handle, (IntPtr)ptr);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selEnumerateObjectsUsingBlock_Handle, (IntPtr)ptr);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEnumerateObjectsUsingBlock_Handle, (IntPtr)ptr);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selEnumerateObjectsUsingBlock_Handle, (IntPtr)ptr);
 		}
 		ptr->CleanupBlock();
 	}
@@ -332,9 +352,9 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 		}
 		if (IsDirectBinding)
 		{
-			return (NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selSetByAddingObjectsFromSet_Handle, other.Handle));
+			return (NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selSetByAddingObjectsFromSet_Handle, other.Handle));
 		}
-		return (NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetByAddingObjectsFromSet_Handle, other.Handle));
+		return (NSSet)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selSetByAddingObjectsFromSet_Handle, other.Handle));
 	}
 
 	[Export("intersectsSet:")]
@@ -346,17 +366,149 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 		}
 		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr(base.Handle, selIntersectsSet_Handle, other.Handle);
+			return Messaging.bool_objc_msgSend_IntPtr(Handle, selIntersectsSet_Handle, other.Handle);
 		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr(base.SuperHandle, selIntersectsSet_Handle, other.Handle);
+		return Messaging.bool_objc_msgSendSuper_IntPtr(SuperHandle, selIntersectsSet_Handle, other.Handle);
 	}
 
-	protected override void Dispose(bool disposing)
+    #region
+
+    public T[] ToNativeArray<T>() where T : class, INativeObject
+    {
+        IntPtr intPtr = _AllObjects();
+        return NSArray.ArrayFromNativeHandle<T>(intPtr);
+    }
+
+    public static NSSet MakeNativeSet<T>(T[] values) where T : class, INativeObject
+    {
+        using NSArray nSArray = NSArray.FromNativeObjects(values);
+        return Runtime.GetNativeObject<NSSet>(_SetWithArray(nSArray.Handle));
+    }
+
+    [Export("setWithArray:")]
+    internal static IntPtr _SetWithArray(IntPtr array)
+    {
+        return Messaging.IntPtr_objc_msgSend_IntPtr(class_ptr, selSetWithArray_Handle, array);
+    }
+
+    internal IntPtr _LookupMember(IntPtr probe)
+    {
+        return Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selMember_Handle, probe);
+    }
+
+    internal bool _Contains(IntPtr id)
+    {
+        return Messaging.bool_objc_msgSend_IntPtr(Handle, selContainsObject_Handle, id);
+    }
+
+    internal IntPtr _SetByAddingObjectsFromSet(IntPtr other)
+    {
+        return Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selSetByAddingObjectsFromSet_Handle, other);
+    }
+
+    #endregion
+
+    protected override void Dispose(bool disposing)
 	{
-		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		Dispose(disposing);
+		if (Handle == IntPtr.Zero)
 		{
 			__mt_AnyObject_var = null;
 		}
 	}
+}
+
+[Register("NSSet", SkipRegistration = true)]
+public sealed class NSSet<TKey> : NSSet, IEnumerable<TKey>, IEnumerable where TKey : class, INativeObject
+{
+    public new TKey AnyObject => Runtime.GetNativeObject<TKey>(_AnyObject);
+
+    public NSSet()
+    {
+    }
+
+    public NSSet(NSCoder coder)
+        : base(coder)
+    {
+    }
+
+    internal NSSet(IntPtr handle)
+        : base(handle)
+    {
+    }
+
+    public NSSet(params TKey[] objs)
+        : base(objs)
+    {
+    }
+
+    public NSSet(NSSet<TKey> other)
+        : base(other)
+    {
+    }
+
+    public NSSet(NSMutableSet<TKey> other)
+        : base(other)
+    {
+    }
+
+    public TKey LookupMember(TKey probe)
+    {
+        if (probe == null)
+            throw new ArgumentNullException("probe");
+
+        return Runtime.GetNativeObject<TKey>(_LookupMember(probe.Handle));
+    }
+
+    public bool Contains(TKey obj)
+    {
+        if (obj == null)
+        {
+            throw new ArgumentNullException("obj");
+        }
+        return _Contains(obj.Handle);
+    }
+
+    public TKey[] ToArray()
+    {
+        return ToNativeArray<TKey>();
+    }
+
+    public static NSSet<TKey> operator +(NSSet<TKey> first, NSSet<TKey> second)
+    {
+        if (first == null || first.Count == (byte)0)
+        {
+            return new NSSet<TKey>(second);
+        }
+        if (second == null || second.Count == (byte)0)
+        {
+            return new NSSet<TKey>(first);
+        }
+        return new NSSet<TKey>(first._SetByAddingObjectsFromSet(second.Handle));
+    }
+
+    public static NSSet<TKey> operator -(NSSet<TKey> first, NSSet<TKey> second)
+    {
+        if (first == null || first.Count == (byte)0)
+        {
+            return null;
+        }
+        if (second == null || second.Count == (byte)0)
+        {
+            return new NSSet<TKey>(first);
+        }
+        NSMutableSet<TKey> nSMutableSet = new NSMutableSet<TKey>(first);
+        nSMutableSet.MinusSet(second);
+        return new NSSet<TKey>(nSMutableSet);
+    }
+
+    IEnumerator<TKey> IEnumerable<TKey>.GetEnumerator()
+    {
+        return new NSFastEnumerator<TKey>(this);
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return new NSFastEnumerator<TKey>(this);
+    }
 }

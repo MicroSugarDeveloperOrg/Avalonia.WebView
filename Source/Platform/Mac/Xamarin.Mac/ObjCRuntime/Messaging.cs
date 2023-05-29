@@ -9,6 +9,7 @@ using CoreMedia;
 using CoreVideo;
 using Foundation;
 using QTKit;
+using Xamarin.System;
 
 namespace ObjCRuntime;
 
@@ -4034,4 +4035,97 @@ public static class Messaging
 
 	[DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
 	public static extern IntPtr IntPtr_objc_msgSendSuper_CLLocationCoordinate2D_Double_Double_Double_Double_Double_IntPtr(IntPtr receiver, IntPtr selector, CLLocationCoordinate2D arg1, double arg2, double arg3, double arg4, double arg5, double arg6, IntPtr arg7);
+
+    #region
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern nfloat nfloat_objc_msgSend(IntPtr receiver, IntPtr selector);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern nfloat nfloat_objc_msgSendSuper(IntPtr receiver, IntPtr selector);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern void void_objc_msgSend_nfloat(IntPtr receiver, IntPtr selector, nfloat arg1);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern void void_objc_msgSendSuper_nfloat(IntPtr receiver, IntPtr selector, nfloat arg1);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern IntPtr IntPtr_objc_msgSend_long(IntPtr receiver, IntPtr selector, long arg1);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern IntPtr IntPtr_objc_msgSendSuper_long(IntPtr receiver, IntPtr selector, long arg1);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern IntPtr IntPtr_objc_msgSend_IntPtr_Int64_bool(IntPtr receiver, IntPtr selector, IntPtr arg1, long arg2, bool arg3);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern IntPtr IntPtr_objc_msgSendSuper_IntPtr_Int64_bool(IntPtr receiver, IntPtr selector, IntPtr arg1, long arg2, bool arg3);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern long long_objc_msgSend(IntPtr receiver, IntPtr selector);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern long long_objc_msgSendSuper(IntPtr receiver, IntPtr selector);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern bool bool_objc_msgSend_IntPtr_ref_IntPtr(IntPtr receiver, IntPtr selector, IntPtr arg1, ref IntPtr arg2);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern bool bool_objc_msgSendSuper_IntPtr_ref_IntPtr(IntPtr receiver, IntPtr selector, IntPtr arg1, ref IntPtr arg2);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern bool bool_objc_msgSend_IntPtr_UInt32_ref_IntPtr(IntPtr receiver, IntPtr selector, IntPtr arg1, uint arg2, ref IntPtr arg3);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern bool bool_objc_msgSendSuper_IntPtr_UInt32_ref_IntPtr(IntPtr receiver, IntPtr selector, IntPtr arg1, uint arg2, ref IntPtr arg3);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern void void_objc_msgSend_IntPtr_IntPtr_IntPtr_UInt64_IntPtr(IntPtr receiver, IntPtr selector, IntPtr arg1, IntPtr arg2, IntPtr arg3, ulong arg4, IntPtr arg5);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern void void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_UInt64_IntPtr(IntPtr receiver, IntPtr selector, IntPtr arg1, IntPtr arg2, IntPtr arg3, ulong arg4, IntPtr arg5);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern IntPtr IntPtr_objc_msgSend_IntPtr_ref_IntPtr(IntPtr receiver, IntPtr selector, IntPtr arg1, ref IntPtr arg2);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern IntPtr IntPtr_objc_msgSendSuper_IntPtr_ref_IntPtr(IntPtr receiver, IntPtr selector, IntPtr arg1, ref IntPtr arg2);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern nuint nuint_objc_msgSend_IntPtr(IntPtr receiver, IntPtr selector, IntPtr arg1);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern nuint nuint_objc_msgSendSuper_IntPtr(IntPtr receiver, IntPtr selector, IntPtr arg1);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern IntPtr IntPtr_objc_msgSend_nuint(IntPtr receiver, IntPtr selector, nuint arg1);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern IntPtr IntPtr_objc_msgSendSuper_nuint(IntPtr receiver, IntPtr selector, nuint arg1);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern IntPtr IntPtr_objc_msgSend_IntPtr_nint(IntPtr receiver, IntPtr selector, IntPtr arg1, nint arg2);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern IntPtr IntPtr_objc_msgSendSuper_IntPtr_nint(IntPtr receiver, IntPtr selector, IntPtr arg1, nint arg2);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern void void_objc_msgSend_IntPtr_nuint(IntPtr receiver, IntPtr selector, IntPtr arg1, nuint arg2);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern void void_objc_msgSendSuper_IntPtr_nuint(IntPtr receiver, IntPtr selector, IntPtr arg1, nuint arg2);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern IntPtr IntPtr_objc_msgSend_UInt32_IntPtr(IntPtr receiver, IntPtr selector, uint arg1, IntPtr arg2);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern IntPtr IntPtr_objc_msgSendSuper_UInt32_IntPtr(IntPtr receiver, IntPtr selector, uint arg1, IntPtr arg2);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    public static extern IntPtr IntPtr_objc_msgSend_CGPoint_IntPtr(IntPtr receiver, IntPtr selector, CGPoint arg1, IntPtr arg2);
+
+    [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
+    public static extern IntPtr IntPtr_objc_msgSendSuper_CGPoint_IntPtr(IntPtr receiver, IntPtr selector, CGPoint arg1, IntPtr arg2);
+    #endregion
+
 }

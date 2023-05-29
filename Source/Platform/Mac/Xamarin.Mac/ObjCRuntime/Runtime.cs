@@ -142,7 +142,19 @@ public static class Runtime
 		return null;
 	}
 
-	public static NSObject GetNSObject(IntPtr ptr)
+    public static T TryGetNSObject<T>(IntPtr ptr) where T : NSObject
+    {
+        lock (lock_obj)
+        {
+            if (object_map.TryGetValue(ptr, out var value))
+            {
+                return value.Target as T;
+            }
+        }
+        return null;
+    }
+
+    public static NSObject GetNSObject(IntPtr ptr)
 	{
 		if (ptr == IntPtr.Zero)
 		{
@@ -167,7 +179,51 @@ public static class Runtime
 		return new NSObject(ptr);
 	}
 
-	public static void ConnectMethod(MethodInfo method, Selector selector)
+    public static T GetNSObject<T>(IntPtr ptr) where T : NSObject
+    {
+        if (ptr == IntPtr.Zero)
+            return null;
+
+        lock (lock_obj)
+        {
+            if (object_map.TryGetValue(ptr, out var value))
+            {
+                NSObject nSObject = (NSObject)value.Target;
+                if (nSObject != null)
+                    return nSObject as T;
+            }
+        }
+        Type type = Class.Lookup(Messaging.intptr_objc_msgSend(ptr, selClass));
+        if (type != null)
+        {
+            return Activator.CreateInstance(type, ptr) as T;
+        }
+        return new NSObject(ptr) as T;
+    }
+
+    public static T GetNativeObject<T>(IntPtr ptr) where T : class , INativeObject 
+    {
+        if (ptr == IntPtr.Zero)
+            return default;
+
+        lock (lock_obj)
+        {
+            if (object_map.TryGetValue(ptr, out var value))
+            {
+                var nSObject = value.Target;
+                if (nSObject != null)
+                    return nSObject as T;
+            }
+        }
+
+        Type type = Class.Lookup(Messaging.intptr_objc_msgSend(ptr, selClass));
+        if (type != null)
+            return Activator.CreateInstance(type, ptr) as T;
+
+        return new NSObject(ptr) as T;
+    }
+
+    public static void ConnectMethod(MethodInfo method, Selector selector)
 	{
 		if (method == null)
 		{

@@ -43,7 +43,12 @@ public struct BlockLiteral
 		block_descriptor = global_descriptor_ptr;
 	}
 
-	public void CleanupBlock()
+    public T GetDelegateForBlock<T>() where T : class
+    {
+        return (T)(object)Marshal.GetDelegateForFunctionPointer(invoke, typeof(T));
+    }
+
+    public void CleanupBlock()
 	{
 		GCHandle.FromIntPtr(local_handle).Free();
 	}
