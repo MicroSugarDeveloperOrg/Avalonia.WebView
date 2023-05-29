@@ -1,6 +1,4 @@
-﻿using Xamarin.Mac.System.Mac;
-
-namespace Avalonia.WebView.Mac.Delegates;
+﻿namespace Avalonia.WebView.Mac.Delegates;
 
 public class WebViewResourceLoadDelegate : WebResourceLoadDelegate
 {
@@ -33,7 +31,7 @@ public class WebViewResourceLoadDelegate : WebResourceLoadDelegate
         base.OnReceivedResponse(sender, identifier, responseReceived, dataSource);
     }
 
-    public override void OnReceivedContentLength(MacosWebView sender, NSObject identifier, nint length, WebDataSource dataSource)
+    public override void OnReceivedContentLength(MacosWebView sender, NSObject identifier, int length, WebDataSource dataSource)
     {
         base.OnReceivedContentLength(sender, identifier, length, dataSource);
     }
