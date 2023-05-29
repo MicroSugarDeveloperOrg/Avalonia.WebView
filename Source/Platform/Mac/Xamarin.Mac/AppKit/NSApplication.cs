@@ -9207,6 +9207,7 @@ public class NSApplication : NSResponder, INSAccessibility, INativeObject, IDisp
         if (!is_autoloaded)
         {
             Runtime.Initialize(); 
+
             Assembly assembly1 = typeof(NSApplication).Assembly;
 			Runtime.RegisterAssemblyEx(assembly1);
             AssemblyName name = assembly1.GetName();
