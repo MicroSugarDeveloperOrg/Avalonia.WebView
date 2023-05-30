@@ -57,7 +57,17 @@ internal abstract class Registrar
 
         public bool IsCategory => CategoryAttribute != null;
 
-        public string Name => (RegisterAttribute != null && RegisterAttribute.Name != null) ? RegisterAttribute.Name : Registrar.GetTypeFullName(Type);
+        public string Name
+        {
+            get
+            {
+                if (RegisterAttribute == null || RegisterAttribute.Name == null)
+                {
+                    return Registrar.GetTypeFullName(Type);
+                }
+                return RegisterAttribute.Name;
+            }
+        }
 
         public string CategoryName
         {
@@ -67,9 +77,7 @@ internal abstract class Registrar
                 {
                     throw new InvalidOperationException();
                 }
-                CategoryAttribute categoryAttribute = CategoryAttribute;
-                string name = categoryAttribute.Name ?? Registrar.GetTypeFullName(Type);
-                return StringUtils.SanitizeObjectiveCName(name);
+                return SanitizeObjectiveCName(CategoryAttribute.Name ?? Registrar.GetTypeFullName(Type));
             }
         }
 
@@ -81,9 +89,7 @@ internal abstract class Registrar
                 {
                     throw new InvalidOperationException();
                 }
-                ProtocolAttribute protocolAttribute = Registrar.GetProtocolAttribute(Type);
-                string name = protocolAttribute.Name ?? Registrar.GetTypeFullName(Type);
-                return StringUtils.SanitizeObjectiveCName(name);
+                return SanitizeObjectiveCName(Registrar.GetProtocolAttribute(Type).Name ?? Registrar.GetTypeFullName(Type));
             }
         }
 
@@ -155,8 +161,7 @@ internal abstract class Registrar
         {
             if (!(method.Method == null))
             {
-                string[] array = method.Selector.Split(new char[] { ':' }, StringSplitOptions.None);
-                int num = array.Length - 1;
+                int num = method.Selector.Split(':').Length - 1;
                 if (method.IsVariadic)
                 {
                     num++;
@@ -479,8 +484,7 @@ internal abstract class Registrar
                     return false;
                 }
                 Trampoline trampoline = this.trampoline;
-                Trampoline trampoline2 = trampoline;
-                if ((uint)(trampoline2 - 5) <= 1u || (uint)(trampoline2 - 18) <= 1u)
+                if ((uint)(trampoline - 5) <= 1u || (uint)(trampoline - 18) <= 3u)
                 {
                     return true;
                 }
@@ -608,7 +612,11 @@ internal abstract class Registrar
         {
             get
             {
-                return is_static.HasValue ? is_static.Value : Registrar.IsStatic(Method);
+                if (!is_static.HasValue)
+                {
+                    return Registrar.IsStatic(Method);
+                }
+                return is_static.Value;
             }
             set
             {
@@ -616,9 +624,29 @@ internal abstract class Registrar
             }
         }
 
-        public override bool IsNativeStatic => IsStatic && !IsCategoryInstance;
+        public override bool IsNativeStatic
+        {
+            get
+            {
+                if (IsStatic)
+                {
+                    return !IsCategoryInstance;
+                }
+                return false;
+            }
+        }
 
-        public bool IsCategoryInstance => IsCategory && Registrar.HasThisAttribute(Method);
+        public bool IsCategoryInstance
+        {
+            get
+            {
+                if (IsCategory)
+                {
+                    return Registrar.HasThisAttribute(Method);
+                }
+                return false;
+            }
+        }
 
         public bool IsCategory => CategoryType != null;
 
@@ -634,8 +662,8 @@ internal abstract class Registrar
                 {
                     return trampoline;
                 }
-                MethodInfo methodInfo = (MethodInfo)Method;
-                bool flag = ((IntPtr.Size == 8) ? Stret.X86_64NeedStret(NativeReturnType, null) : Stret.X86NeedStret(NativeReturnType, null));
+                _ = (MethodInfo)Method;
+                bool flag = !RuntimeEx.IsARM64CallingConvention && ((IntPtr.Size == 8) ? Stret.X86_64NeedStret(NativeReturnType, null) : Stret.X86NeedStret(NativeReturnType, null));
                 bool flag2 = IsStatic && !IsCategoryInstance;
                 if (Registrar.IsValueType(NativeReturnType) && !Registrar.IsEnum(NativeReturnType) && Registrar.IsGenericType(NativeReturnType))
                 {
@@ -707,7 +735,15 @@ internal abstract class Registrar
                 {
                     return false;
                 }
-                return Method.IsSpecialName && (Method.Name.StartsWith("get_", StringComparison.Ordinal) || Method.Name.StartsWith("set_", StringComparison.Ordinal));
+                if (Method.IsSpecialName)
+                {
+                    if (!Method.Name.StartsWith("get_", StringComparison.Ordinal))
+                    {
+                        return Method.Name.StartsWith("set_", StringComparison.Ordinal);
+                    }
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -726,36 +762,36 @@ internal abstract class Registrar
         {
             ArgumentSemantic argumentSemantic = ArgumentSemantic;
             MethodInfo methodInfo = method_base as MethodInfo;
-            bool flag = methodInfo != null && methodInfo.GetBaseDefinition().ReturnTypeCustomAttributes.IsDefined(typeof(ReleaseAttribute), inherit: false);
-            bool flag2 = methodInfo != null && DynamicRegistrar.HasThisAttributeImpl(methodInfo);
+            bool num = methodInfo != null && methodInfo.GetBaseDefinition().ReturnTypeCustomAttributes.IsDefined(typeof(ReleaseAttribute), inherit: false);
+            bool flag = methodInfo != null && DynamicRegistrar.HasThisAttributeImpl(methodInfo);
             if (argumentSemantic == ArgumentSemantic.None)
             {
                 argumentSemantic = ArgumentSemantic.Assign;
             }
-            if (flag)
+            if (num)
             {
                 argumentSemantic |= (ArgumentSemantic)1024;
             }
-            if (flag2)
+            if (flag)
             {
                 argumentSemantic |= (ArgumentSemantic)2048;
             }
-            int num = Marshal.ReadInt32(desc + IntPtr.Size + 4);
-            if (num < 1 + Parameters.Length)
+            int num2 = Marshal.ReadInt32((nint)desc + IntPtr.Size + 4);
+            if (num2 < 1 + Parameters.Length)
             {
-                throw ErrorHelper.CreateError(8018, string.Format("Internal consistency error: BindAs array is not big enough (expected at least {0} elements, got {1} elements) for {2}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new.", 1 + parameters.Length, num, method_base.DeclaringType.FullName + "." + method_base.Name));
+                throw ErrorHelper.CreateError(8018, $"Internal consistency error: BindAs array is not big enough (expected at least {1 + parameters.Length} elements, got {num2} elements) for {method_base.DeclaringType.FullName + "." + method_base.Name}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new.");
             }
-            Marshal.WriteIntPtr(desc, Runtime.AllocGCHandle(method_base));
+            Marshal.WriteIntPtr(desc, RuntimeEx.AllocGCHandle(method_base));
             Marshal.WriteInt32((nint)desc + IntPtr.Size, (int)argumentSemantic);
             if (!IsConstructor && ReturnType != NativeReturnType)
             {
-                Marshal.WriteIntPtr((nint)desc + IntPtr.Size + 8, Runtime.AllocGCHandle(NativeReturnType));
+                Marshal.WriteIntPtr((nint)desc + IntPtr.Size + 8, RuntimeEx.AllocGCHandle(NativeReturnType));
             }
             for (int i = 0; i < NativeParameters.Length; i++)
             {
                 if (!(parameters[i] == native_parameters[i]))
                 {
-                    Marshal.WriteIntPtr((nint)desc + IntPtr.Size + 8 + IntPtr.Size * (i + 1), Runtime.AllocGCHandle(native_parameters[i]));
+                    Marshal.WriteIntPtr((nint)desc + IntPtr.Size + 8 + IntPtr.Size * (i + 1), RuntimeEx.AllocGCHandle(native_parameters[i]));
                 }
             }
         }
@@ -763,16 +799,16 @@ internal abstract class Registrar
         private bool IsValidToManagedTypeConversion(Type inputType, Type outputType)
         {
             Type nullableType = Registrar.GetNullableType(outputType);
-            bool flag = nullableType != null;
+            bool num = nullableType != null;
             int rank = 0;
-            bool flag2 = Registrar.IsArray(outputType, out rank);
+            bool flag = Registrar.IsArray(outputType, out rank);
             Type type = outputType;
             Type type2 = inputType;
-            if (flag)
+            if (num)
             {
                 type = nullableType;
             }
-            else if (flag2)
+            else if (flag)
             {
                 if (rank != 1)
                 {
@@ -798,14 +834,19 @@ internal abstract class Registrar
                     case "System.UInt32":
                     case "System.Int64":
                     case "System.UInt64":
+                    case "System.IntPtr":
+                    case "System.UIntPtr":
                     case "System.nint":
                     case "System.nuint":
                     case "System.Single":
                     case "System.Double":
-                    case "System.nfloat":
                     case "System.Boolean":
                         return true;
                     default:
+                        if (typeFullName == "System.Runtime.InteropServices.NFloat")
+                        {
+                            return true;
+                        }
                         return Registrar.IsEnum(type);
                 }
             }
@@ -930,7 +971,11 @@ internal abstract class Registrar
         {
             get
             {
-                return is_static.HasValue ? is_static.Value : Registrar.IsStatic(Property);
+                if (!is_static.HasValue)
+                {
+                    return Registrar.IsStatic(Property);
+                }
+                return is_static.Value;
             }
             set
             {
@@ -997,6 +1042,8 @@ internal abstract class Registrar
         internal const string INativeObject = "INativeObject";
     }
 
+    private const string NFloatTypeName = "System.Runtime.InteropServices.NFloat";
+
     private Dictionary<Assembly, object> assemblies = new Dictionary<Assembly, object>();
 
     private Dictionary<Type, ObjCType> types = new Dictionary<Type, ObjCType>();
@@ -1011,13 +1058,15 @@ internal abstract class Registrar
 
     private MethodBase invoke_conforms_to_protocol;
 
-    internal const string AssemblyName = "Xamarin.Mac";
+    internal const string AssemblyName = "Microsoft.MacCatalyst";
 
     private static StringBuilder trace;
 
     protected abstract bool IsSimulatorOrDesktop { get; }
 
     protected abstract bool Is64Bits { get; }
+
+    protected abstract bool IsARM64 { get; }
 
     protected abstract string PlatformName { get; }
 
@@ -1029,11 +1078,56 @@ internal abstract class Registrar
 
     internal static string CoreAnimation => "CoreAnimation";
 
-    internal static string AppKit => "AppKit";
+    public string PlatformAssembly => "Microsoft.MacCatalyst";
 
-    public string PlatformAssembly => "Xamarin.Mac";
+    internal static string CreateSetterSelector(string getterSelector)
+    {
+        if (string.IsNullOrEmpty(getterSelector))
+        {
+            return getterSelector;
+        }
+        int num = getterSelector[0];
+        if (num >= 97 && num <= 122)
+        {
+            num = (ushort)(num - 32);
+        }
+        return "set" + (char)num + getterSelector.Substring(1) + ":";
+    }
 
-    protected bool SupportsModernObjectiveC => IntPtr.Size == 8;
+    public static string SanitizeObjectiveCName(string name)
+    {
+        StringBuilder stringBuilder = null;
+        for (int i = 0; i < name.Length; i++)
+        {
+            char c = name[i];
+            switch (c)
+            {
+                case '$':
+                case '+':
+                case '-':
+                case '.':
+                case '/':
+                case '<':
+                case '>':
+                case '@':
+                case '`':
+                    if (stringBuilder == null)
+                    {
+                        stringBuilder = new StringBuilder(name, 0, i, name.Length);
+                    }
+                    stringBuilder.Append('_');
+                    break;
+                default:
+                    stringBuilder?.Append(c);
+                    break;
+            }
+        }
+        if (stringBuilder != null)
+        {
+            return stringBuilder.ToString();
+        }
+        return name;
+    }
 
     public IEnumerable<Assembly> GetAssemblies()
     {
@@ -1136,7 +1230,11 @@ internal abstract class Registrar
 
     protected abstract IEnumerable<ProtocolMemberAttribute> GetProtocolMemberAttributes(Type type);
 
-    protected abstract List<AvailabilityBaseAttribute> GetAvailabilityAttributes(Type obj);
+    protected virtual Version GetSdkIntroducedVersion(Type obj, out string message)
+    {
+        message = null;
+        return null;
+    }
 
     protected abstract Version GetSDKVersion();
 
@@ -1231,7 +1329,14 @@ internal abstract class Registrar
         BindAsAttribute bindAsAttribute = GetBindAsAttribute(method.Method, parameter_index);
         if (bindAsAttribute != null)
         {
-            Type type = ((parameter_index == -1) ? GetReturnType(method.Method) : GetParameters(method.Method)[parameter_index]);
+            if (parameter_index != -1)
+            {
+                _ = GetParameters(method.Method)[parameter_index];
+            }
+            else
+            {
+                GetReturnType(method.Method);
+            }
             if (parameter_index == -1)
             {
                 Type returnType = GetReturnType(method.Method);
@@ -1242,14 +1347,14 @@ internal abstract class Registrar
             }
             else
             {
-                Type type2 = GetParameters(method.Method)[parameter_index];
-                if (IsByRef(type2))
+                Type type = GetParameters(method.Method)[parameter_index];
+                if (IsByRef(type))
                 {
-                    type2 = GetElementType(type2);
+                    type = GetElementType(type);
                 }
-                if (!AreEqual(type2, bindAsAttribute.Type))
+                if (!AreEqual(type, bindAsAttribute.Type))
                 {
-                    throw CreateException(4171, method.Method, "The BindAs attribute on the parameter #{0} is invalid: the BindAs type {1} is different from the parameter type {2}.", parameter_index + 1, GetTypeFullName(bindAsAttribute.Type), GetTypeFullName(type2));
+                    throw CreateException(4171, method.Method, "The BindAs attribute on the parameter #{0} is invalid: the BindAs type {1} is different from the parameter type {2}.", parameter_index + 1, GetTypeFullName(bindAsAttribute.Type), GetTypeFullName(type));
                 }
             }
             return bindAsAttribute;
@@ -1291,8 +1396,7 @@ internal abstract class Registrar
         {
             return false;
         }
-        IEnumerable<MethodBase> enumerable = FindMethods(type2, "GetConstant");
-        foreach (MethodBase item in enumerable)
+        foreach (MethodBase item in FindMethods(type2, "GetConstant"))
         {
             if (Is(GetReturnType(item), Foundation, "NSString"))
             {
@@ -1308,8 +1412,7 @@ internal abstract class Registrar
         {
             return false;
         }
-        IEnumerable<MethodBase> enumerable2 = FindMethods(type2, "GetValue");
-        foreach (MethodBase item2 in enumerable2)
+        foreach (MethodBase item2 in FindMethods(type2, "GetValue"))
         {
             if (AreEqual(GetReturnType(item2), type))
             {
@@ -1480,7 +1583,11 @@ internal abstract class Registrar
     protected bool Is(Type type, string @namespace, string name)
     {
         GetNamespaceAndName(type, out var namespace2, out var name2);
-        return namespace2 == @namespace && name2 == name;
+        if (namespace2 == @namespace)
+        {
+            return name2 == name;
+        }
+        return false;
     }
 
     protected virtual bool HasModelAttribute(Type type)
@@ -1555,52 +1662,49 @@ internal abstract class Registrar
 
     private void VerifyTypeInSDK(ref List<Exception> exceptions, Type type, ObjCMethod parameterIn = null, ObjCMethod returnTypeOf = null, ObjCProperty propertyTypeOf = null, Type baseTypeOf = null)
     {
-        List<AvailabilityBaseAttribute> availabilityAttributes = GetAvailabilityAttributes(type);
-        if (availabilityAttributes == null || availabilityAttributes.Count == 0)
+        string message;
+        Version sdkIntroducedVersion = GetSdkIntroducedVersion(type, out message);
+        if ((object)sdkIntroducedVersion == null)
         {
             return;
         }
         Version sDKVersion = GetSDKVersion();
-        foreach (AvailabilityBaseAttribute item in availabilityAttributes)
+        if (!(sdkIntroducedVersion <= sDKVersion))
         {
-            if (item.AvailabilityKind == AvailabilityKind.Introduced && !(item.Version <= sDKVersion))
+            string typeFullName = GetTypeFullName(type);
+            string text = string.Empty;
+            string platformName = PlatformName;
+            string text2 = sDKVersion.ToString();
+            string text3 = sdkIntroducedVersion.ToString();
+            string text4 = (string.IsNullOrEmpty(message) ? "." : (": '" + message + "'."));
+            string format;
+            if (baseTypeOf != null)
             {
-                string format = "The type '{0}' (used as {1} {2}) is not available in {3} {4} (it was introduced in {3} {5}){6} Please build with a newer {3} SDK (usually done by using the most recent version of Xcode).";
-                string typeFullName = GetTypeFullName(type);
-                string text = string.Empty;
-                string text2 = string.Empty;
-                string platformName = PlatformName;
-                string text3 = sDKVersion.ToString();
-                string text4 = item.Version.ToString();
-                string text5 = (string.IsNullOrEmpty(item.Message) ? "." : (": '" + item.Message + "'."));
-                if (baseTypeOf != null)
-                {
-                    text = "a base type of";
-                    text2 = GetTypeFullName(baseTypeOf);
-                }
-                else if (parameterIn != null)
-                {
-                    text = "a parameter in";
-                    text2 = parameterIn.DescriptiveMethodName;
-                }
-                else if (returnTypeOf != null)
-                {
-                    text = "a return type in";
-                    text2 = returnTypeOf.DescriptiveMethodName;
-                }
-                else if (propertyTypeOf != null)
-                {
-                    text = "the property type of";
-                    text2 = propertyTypeOf.FullName;
-                }
-                else
-                {
-                    format = "The type '{0}' is not available in {3} {4} (it was introduced in {3} {5}){6} Please build with a newer {3} SDK (usually done by using the most recent version of Xcode).";
-                }
-                format = string.Format(format, typeFullName, text, text2, platformName, text3, text4, text5);
-                Exception mex = ((baseTypeOf != null) ? CreateException(4162, baseTypeOf, format) : ((parameterIn != null) ? CreateException(4162, parameterIn, format) : ((returnTypeOf != null) ? CreateException(4162, returnTypeOf, format) : ((propertyTypeOf == null) ? CreateException(4162, format) : CreateException(4162, propertyTypeOf, format)))));
-                AddException(ref exceptions, mex);
+                format = "The type '{0}' (used as a base type of {1}) is not available in {2} {3} (it was introduced in {2} {4}){5} Please build with a newer {2} SDK (usually done by using the most recent version of Xcode).";
+                text = GetTypeFullName(baseTypeOf);
             }
+            else if (parameterIn != null)
+            {
+                format = "The type '{0}' (used as a parameter in {1}) is not available in {2} {3} (it was introduced in {2} {4}){5} Please build with a newer {2} SDK (usually done by using the most recent version of Xcode).";
+                text = parameterIn.DescriptiveMethodName;
+            }
+            else if (returnTypeOf != null)
+            {
+                format = "The type '{0}' (used as a return type in {1}) is not available in {2} {3} (it was introduced in {2} {4}){5} Please build with a newer {2} SDK (usually done by using the most recent version of Xcode).";
+                text = returnTypeOf.DescriptiveMethodName;
+            }
+            else if (propertyTypeOf != null)
+            {
+                format = "The type '{0}' (used as the property type of {1}) is not available in {2} {3} (it was introduced in {2} {4}){5} Please build with a newer {2} SDK (usually done by using the most recent version of Xcode).";
+                text = propertyTypeOf.FullName;
+            }
+            else
+            {
+                format = "The type '{0}' is not available in {3} {4} (it was introduced in {3} {5}){6} Please build with a newer {3} SDK (usually done by using the most recent version of Xcode).";
+            }
+            format = string.Format(format, typeFullName, text, platformName, text2, text3, text4);
+            Exception mex = ((baseTypeOf != null) ? CreateException(4162, baseTypeOf, format) : ((parameterIn != null) ? CreateException(4162, parameterIn, format) : ((returnTypeOf != null) ? CreateException(4162, returnTypeOf, format) : ((propertyTypeOf == null) ? CreateException(4162, format) : CreateException(4162, propertyTypeOf, format)))));
+            AddException(ref exceptions, mex);
         }
     }
 
@@ -1886,16 +1990,15 @@ internal abstract class Registrar
         types.Add(type, objCType2);
         foreach (MethodBase item in CollectConstructors(type))
         {
-            ExportAttribute exportAttribute = GetExportAttribute(item);
-            if (exportAttribute != null)
+            if (GetExportAttribute(item) != null)
             {
                 AddException(ref exceptions, CreateException(4158, item, "Cannot register the constructor {0}.{1} in the category {0} because constructors in categories are not supported.", GetTypeFullName(type), GetDescriptiveMethodName(item)));
             }
         }
         foreach (MethodBase item2 in CollectMethods(type))
         {
-            ExportAttribute exportAttribute2 = GetExportAttribute(item2);
-            if (exportAttribute2 == null)
+            ExportAttribute exportAttribute = GetExportAttribute(item2);
+            if (exportAttribute == null)
             {
                 continue;
             }
@@ -1927,7 +2030,7 @@ internal abstract class Registrar
             {
                 CategoryType = objCType2
             };
-            if (objCMethod.SetExportAttribute(exportAttribute2, ref exceptions))
+            if (objCMethod.SetExportAttribute(exportAttribute, ref exceptions))
             {
                 objCType2.Add(objCMethod, ref exceptions);
                 objCType.Add(objCMethod, ref exceptions);
@@ -1972,8 +2075,7 @@ internal abstract class Registrar
                 exceptions.Add(ErrorHelper.CreateError(4148, "The registrar found a generic protocol: '{0}'. Exporting generic protocols is not supported.", GetTypeFullName(type)));
                 return null;
             }
-            ProtocolAttribute protocolAttribute = GetProtocolAttribute(type);
-            flag3 = protocolAttribute.IsInformal;
+            flag3 = GetProtocolAttribute(type).IsInformal;
             flag2 = true;
         }
         Type baseType = GetBaseType(type);
@@ -2077,8 +2179,22 @@ internal abstract class Registrar
                 }, ref exceptions);
                 value.Add(new ObjCMethod(this, value, null)
                 {
-                    Selector = "xamarinSetGCHandle:",
+                    Selector = "xamarinSetGCHandle:flags:",
                     Trampoline = Trampoline.SetGCHandle,
+                    Signature = "v@:^vi",
+                    IsStatic = false
+                }, ref exceptions);
+                value.Add(new ObjCMethod(this, value, null)
+                {
+                    Selector = "xamarinGetFlags",
+                    Trampoline = Trampoline.GetFlags,
+                    Signature = "i@:",
+                    IsStatic = false
+                }, ref exceptions);
+                value.Add(new ObjCMethod(this, value, null)
+                {
+                    Selector = "xamarinSetFlags:",
+                    Trampoline = Trampoline.SetFlags,
                     Signature = "v@:i",
                     IsStatic = false
                 }, ref exceptions);
@@ -2087,14 +2203,17 @@ internal abstract class Registrar
             {
                 foreach (MethodBase item in list)
                 {
-                    switch (GetMethodName(item))
+                    string methodName = GetMethodName(item);
+                    if (!(methodName == "InvokeConformsToProtocol"))
                     {
-                        case "InvokeConformsToProtocol":
-                            invoke_conforms_to_protocol = item;
-                            break;
-                        case "ConformsToProtocol":
+                        if (methodName == "ConformsToProtocol")
+                        {
                             conforms_to_protocol = item;
-                            break;
+                        }
+                    }
+                    else
+                    {
+                        invoke_conforms_to_protocol = item;
                     }
                     if (invoke_conforms_to_protocol != null && conforms_to_protocol != null)
                     {
@@ -2107,33 +2226,32 @@ internal abstract class Registrar
         bool flag5 = false;
         if (flag2 && !flag3)
         {
-            IEnumerable<ProtocolMemberAttribute> protocolMemberAttributes = GetProtocolMemberAttributes(type);
-            foreach (ProtocolMemberAttribute item2 in protocolMemberAttributes)
+            foreach (ProtocolMemberAttribute protocolMemberAttribute in GetProtocolMemberAttributes(type))
             {
                 flag5 = true;
-                if (item2.IsProperty)
+                if (protocolMemberAttribute.IsProperty)
                 {
-                    if (item2.IsStatic)
+                    if (protocolMemberAttribute.IsStatic)
                     {
                         ObjCMethod objCMethod = new ObjCMethod(this, value, null);
-                        objCMethod.Name = item2.Name;
-                        objCMethod.Selector = item2.GetterSelector;
+                        objCMethod.Name = protocolMemberAttribute.Name;
+                        objCMethod.Selector = protocolMemberAttribute.GetterSelector;
                         objCMethod.Parameters = new Type[0];
-                        objCMethod.ReturnType = item2.PropertyType;
-                        objCMethod.IsStatic = item2.IsStatic;
-                        objCMethod.IsOptional = !item2.IsRequired;
+                        objCMethod.ReturnType = protocolMemberAttribute.PropertyType;
+                        objCMethod.IsStatic = protocolMemberAttribute.IsStatic;
+                        objCMethod.IsOptional = !protocolMemberAttribute.IsRequired;
                         objCMethod.IsConstructor = false;
                         ObjCMethod method = objCMethod;
                         value.Add(method, ref exceptions);
-                        if (!string.IsNullOrEmpty(item2.SetterSelector))
+                        if (!string.IsNullOrEmpty(protocolMemberAttribute.SetterSelector))
                         {
                             objCMethod = new ObjCMethod(this, value, null);
-                            objCMethod.Name = item2.Name;
-                            objCMethod.Selector = item2.SetterSelector;
-                            objCMethod.Parameters = new Type[1] { item2.PropertyType };
+                            objCMethod.Name = protocolMemberAttribute.Name;
+                            objCMethod.Selector = protocolMemberAttribute.SetterSelector;
+                            objCMethod.Parameters = new Type[1] { protocolMemberAttribute.PropertyType };
                             objCMethod.ReturnType = GetSystemVoidType();
-                            objCMethod.IsStatic = item2.IsStatic;
-                            objCMethod.IsOptional = !item2.IsRequired;
+                            objCMethod.IsStatic = protocolMemberAttribute.IsStatic;
+                            objCMethod.IsOptional = !protocolMemberAttribute.IsRequired;
                             objCMethod.IsConstructor = false;
                             ObjCMethod method2 = objCMethod;
                             value.Add(method2, ref exceptions);
@@ -2146,15 +2264,15 @@ internal abstract class Registrar
                             Registrar = this,
                             DeclaringType = value,
                             Property = null,
-                            Name = item2.Name,
-                            Selector = item2.Selector,
-                            ArgumentSemantic = item2.ArgumentSemantic,
-                            IsReadOnly = string.IsNullOrEmpty(item2.SetterSelector),
-                            IsStatic = item2.IsStatic,
-                            IsOptional = !item2.IsRequired,
-                            GetterSelector = item2.GetterSelector,
-                            SetterSelector = item2.SetterSelector,
-                            PropertyType = item2.PropertyType
+                            Name = protocolMemberAttribute.Name,
+                            Selector = protocolMemberAttribute.Selector,
+                            ArgumentSemantic = protocolMemberAttribute.ArgumentSemantic,
+                            IsReadOnly = string.IsNullOrEmpty(protocolMemberAttribute.SetterSelector),
+                            IsStatic = protocolMemberAttribute.IsStatic,
+                            IsOptional = !protocolMemberAttribute.IsRequired,
+                            GetterSelector = protocolMemberAttribute.GetterSelector,
+                            SetterSelector = protocolMemberAttribute.SetterSelector,
+                            PropertyType = protocolMemberAttribute.PropertyType
                         };
                         value.Add(property, ref exceptions);
                     }
@@ -2163,27 +2281,27 @@ internal abstract class Registrar
                 MethodBase method3 = null;
                 ObjCMethod objCMethod2 = new ObjCMethod(this, value, method3)
                 {
-                    Name = item2.Name,
-                    Selector = item2.Selector,
-                    ArgumentSemantic = item2.ArgumentSemantic,
-                    IsVariadic = item2.IsVariadic,
-                    ReturnType = (item2.ReturnType ?? GetSystemVoidType()),
-                    IsStatic = item2.IsStatic,
-                    IsOptional = !item2.IsRequired,
+                    Name = protocolMemberAttribute.Name,
+                    Selector = protocolMemberAttribute.Selector,
+                    ArgumentSemantic = protocolMemberAttribute.ArgumentSemantic,
+                    IsVariadic = protocolMemberAttribute.IsVariadic,
+                    ReturnType = (protocolMemberAttribute.ReturnType ?? GetSystemVoidType()),
+                    IsStatic = protocolMemberAttribute.IsStatic,
+                    IsOptional = !protocolMemberAttribute.IsRequired,
                     IsConstructor = false
                 };
-                if (item2.ParameterType != null)
+                if (protocolMemberAttribute.ParameterType != null)
                 {
-                    Type[] array = new Type[item2.ParameterType.Length];
+                    Type[] array = new Type[protocolMemberAttribute.ParameterType.Length];
                     for (int j = 0; j < array.Length; j++)
                     {
-                        if (item2.ParameterByRef[j])
+                        if (protocolMemberAttribute.ParameterByRef[j])
                         {
-                            array[j] = MakeByRef(item2.ParameterType[j]);
+                            array[j] = MakeByRef(protocolMemberAttribute.ParameterType[j]);
                         }
                         else
                         {
-                            array[j] = item2.ParameterType[j];
+                            array[j] = protocolMemberAttribute.ParameterType[j];
                         }
                     }
                     objCMethod2.Parameters = array;
@@ -2195,7 +2313,7 @@ internal abstract class Registrar
                 value.Add(objCMethod2, ref exceptions);
             }
         }
-        foreach (PropertyInfo item3 in list2)
+        foreach (PropertyInfo item2 in list2)
         {
             if (flag5)
             {
@@ -2203,70 +2321,70 @@ internal abstract class Registrar
             }
             if (!flag2)
             {
-                ConnectAttribute connectAttribute = GetConnectAttribute(item3);
+                ConnectAttribute connectAttribute = GetConnectAttribute(item2);
                 if (connectAttribute != null)
                 {
-                    if (!IsINativeObject(GetPropertyType(item3)))
+                    if (!IsINativeObject(GetPropertyType(item2)))
                     {
-                        AddException(ref exceptions, CreateException(4139, item3, "The registrar cannot marshal the property type '{0}' of the property '{1}.{2}'. Properties with the [Connect] attribute must have a property type of NSObject (or a subclass of NSObject).", GetTypeFullName(GetPropertyType(item3)), GetTypeFullName(type), GetPropertyName(item3)));
+                        AddException(ref exceptions, CreateException(4139, item2, "The registrar cannot marshal the property type '{0}' of the property '{1}.{2}'. Properties with the [Connect] attribute must have a property type of NSObject (or a subclass of NSObject).", GetTypeFullName(GetPropertyType(item2)), GetTypeFullName(type), GetPropertyName(item2)));
                         continue;
                     }
                     value.Add(new ObjCField
                     {
                         DeclaringType = value,
-                        Name = (connectAttribute.Name ?? GetPropertyName(item3)),
+                        Name = (connectAttribute.Name ?? GetPropertyName(item2)),
                         Size = (Is64Bits ? 8 : 4),
                         Alignment = (byte)(Is64Bits ? 3u : 2u),
                         FieldType = "@",
                         IsProperty = true,
-                        IsStatic = IsStatic(item3)
+                        IsStatic = IsStatic(item2)
                     }, ref exceptions);
                 }
             }
-            ExportAttribute exportAttribute = GetExportAttribute(item3);
-            if (exportAttribute == null || (IsStatic(item3) && (value.IsWrapper || value.IsModel)))
+            ExportAttribute exportAttribute = GetExportAttribute(item2);
+            if (exportAttribute == null || (IsStatic(item2) && (value.IsWrapper || value.IsModel)))
             {
                 continue;
             }
-            if (IsStatic(item3) && flag)
+            if (IsStatic(item2) && flag)
             {
-                AddException(ref exceptions, CreateException(4131, item3, "The registrar cannot export static properties in generic classes ('{0}.{1}').", GetTypeFullName(type), GetPropertyName(item3)));
+                AddException(ref exceptions, CreateException(4131, item2, "The registrar cannot export static properties in generic classes ('{0}.{1}').", GetTypeFullName(type), GetPropertyName(item2)));
                 continue;
             }
             Type constrained_type = null;
-            if (flag && !VerifyIsConstrainedToNSObject(GetPropertyType(item3), out constrained_type))
+            if (flag && !VerifyIsConstrainedToNSObject(GetPropertyType(item2), out constrained_type))
             {
-                AddException(ref exceptions, CreateException(4132, item3, "The registrar found an invalid generic return type '{0}' in the property '{1}.{2}'. The return type must have an 'NSObject' constraint.", GetTypeFullName(GetPropertyType(item3)), GetTypeFullName(type), GetPropertyName(item3)));
+                AddException(ref exceptions, CreateException(4132, item2, "The registrar found an invalid generic return type '{0}' in the property '{1}.{2}'. The return type must have an 'NSObject' constraint.", GetTypeFullName(GetPropertyType(item2)), GetTypeFullName(type), GetPropertyName(item2)));
                 continue;
             }
             if (constrained_type == null)
             {
-                constrained_type = GetPropertyType(item3);
+                constrained_type = GetPropertyType(item2);
             }
             ObjCProperty property2 = new ObjCProperty
             {
                 Registrar = this,
                 DeclaringType = value,
-                Property = item3,
-                Name = item3.Name,
-                Selector = (exportAttribute.Selector ?? GetPropertyName(item3)),
+                Property = item2,
+                Name = item2.Name,
+                Selector = (exportAttribute.Selector ?? GetPropertyName(item2)),
                 ArgumentSemantic = exportAttribute.ArgumentSemantic,
                 PropertyType = constrained_type
             };
-            MethodBase getMethod = GetGetMethod(item3);
-            MethodBase setMethod = GetSetMethod(item3);
+            MethodBase getMethod = GetGetMethod(item2);
+            MethodBase setMethod = GetSetMethod(item2);
             if (getMethod != null && VerifyNonGenericMethod(ref exceptions, type, getMethod))
             {
                 ObjCMethod objCMethod3 = new ObjCMethod(this, value, getMethod)
                 {
-                    Selector = (exportAttribute.Selector ?? GetPropertyName(item3)),
+                    Selector = (exportAttribute.Selector ?? GetPropertyName(item2)),
                     ArgumentSemantic = exportAttribute.ArgumentSemantic,
                     ReturnType = constrained_type
                 };
                 List<Exception> exceptions2 = null;
                 if (!objCMethod3.ValidateSignature(ref exceptions2))
                 {
-                    exceptions.Add(CreateException(4138, exceptions2[0], item3, "The registrar cannot marshal the property type '{0}' of the property '{1}.{2}'.", GetTypeFullName(item3.PropertyType), item3.DeclaringType.FullName, item3.Name));
+                    exceptions.Add(CreateException(4138, exceptions2[0], item2, "The registrar cannot marshal the property type '{0}' of the property '{1}.{2}'.", GetTypeFullName(item2.PropertyType), item2.DeclaringType.FullName, item2.Name));
                     continue;
                 }
                 if (!value.Add(objCMethod3, ref exceptions))
@@ -2276,7 +2394,7 @@ internal abstract class Registrar
             }
             if (setMethod != null && VerifyNonGenericMethod(ref exceptions, type, setMethod))
             {
-                string getterSelector = exportAttribute.Selector ?? GetPropertyName(item3);
+                string getterSelector = exportAttribute.Selector ?? GetPropertyName(item2);
                 ObjCMethod objCMethod = new ObjCMethod(this, value, setMethod);
                 objCMethod.Selector = CreateSetterSelector(getterSelector);
                 objCMethod.ArgumentSemantic = exportAttribute.ArgumentSemantic;
@@ -2285,7 +2403,7 @@ internal abstract class Registrar
                 List<Exception> exceptions3 = null;
                 if (!objCMethod4.ValidateSignature(ref exceptions3))
                 {
-                    exceptions.Add(CreateException(4138, exceptions3[0], item3, "The registrar cannot marshal the property type '{0}' of the property '{1}.{2}'.", GetTypeFullName(item3.PropertyType), item3.DeclaringType.FullName, item3.Name));
+                    exceptions.Add(CreateException(4138, exceptions3[0], item2, "The registrar cannot marshal the property type '{0}' of the property '{1}.{2}'.", GetTypeFullName(item2.PropertyType), item2.DeclaringType.FullName, item2.Name));
                     continue;
                 }
                 if (!value.Add(objCMethod4, ref exceptions))
@@ -2296,62 +2414,56 @@ internal abstract class Registrar
             value.Add(property2, ref exceptions);
         }
         bool flag6 = !flag4;
-        ObjCMethod objCMethod5 = null;
-        bool flag7 = IsSubClassOf(type, AppKit, "NSCell");
         Dictionary<MethodBase, List<MethodBase>> dictionary = null;
         if (!flag2)
         {
             dictionary = PrepareMethodMapping(type);
         }
-        foreach (MethodBase item4 in list)
+        foreach (MethodBase item3 in list)
         {
             if (flag5)
             {
                 continue;
             }
-            ExportAttribute exportAttribute2 = GetExportAttribute(item4);
-            if (exportAttribute2 == null && dictionary != null && dictionary.TryGetValue(item4, out var value3))
+            ExportAttribute exportAttribute2 = GetExportAttribute(item3);
+            if (exportAttribute2 == null && dictionary != null && dictionary.TryGetValue(item3, out var value3))
             {
                 if (value3.Count != 1)
                 {
-                    foreach (RuntimeException item5 in Shared.GetMT4127(item4, value3))
+                    foreach (RuntimeException item4 in Shared.GetMT4127(item3, value3))
                     {
-                        AddException(ref exceptions, item5);
+                        AddException(ref exceptions, item4);
                     }
                     continue;
                 }
                 exportAttribute2 = GetExportAttribute(value3[0]);
             }
-            if (exportAttribute2 == null || (IsStatic(item4) && (value.IsWrapper || value.IsModel) && (!value.IsProtocol || value.IsFakeProtocol)) || (value.IsModel && IsVirtual(item4)))
+            if (exportAttribute2 == null || (IsStatic(item3) && (value.IsWrapper || value.IsModel) && (!value.IsProtocol || value.IsFakeProtocol)) || (value.IsModel && IsVirtual(item3)))
             {
                 continue;
             }
-            if (!flag6 && item4.DeclaringType == type && GetBaseMethod(item4) == conforms_to_protocol)
+            if (!flag6 && item3.DeclaringType == type && GetBaseMethod(item3) == conforms_to_protocol)
             {
                 flag6 = true;
             }
-            if (!VerifyNonGenericMethod(ref exceptions, type, item4))
+            if (!VerifyNonGenericMethod(ref exceptions, type, item3))
             {
                 continue;
             }
-            ObjCMethod objCMethod6 = new ObjCMethod(this, value, item4);
-            if (!objCMethod6.SetExportAttribute(exportAttribute2, ref exceptions))
+            ObjCMethod objCMethod5 = new ObjCMethod(this, value, item3);
+            if (!objCMethod5.SetExportAttribute(exportAttribute2, ref exceptions))
             {
                 continue;
             }
-            if (objCMethod6.Selector == "copyWithZone:")
+            if (IsStatic(item3) && flag)
             {
-                objCMethod5 = objCMethod6;
+                AddException(ref exceptions, CreateException(4130, item3, "The registrar cannot export static methods in generic classes ('{0}').", GetDescriptiveMethodName(type, item3)));
             }
-            if (IsStatic(item4) && flag)
-            {
-                AddException(ref exceptions, CreateException(4130, item4, "The registrar cannot export static methods in generic classes ('{0}').", GetDescriptiveMethodName(type, item4)));
-            }
-            else if (!flag || VerifyIsConstrainedToNSObject(ref exceptions, type, objCMethod6))
+            else if (!flag || VerifyIsConstrainedToNSObject(ref exceptions, type, objCMethod5))
             {
                 try
                 {
-                    value.Add(objCMethod6, ref exceptions);
+                    value.Add(objCMethod5, ref exceptions);
                 }
                 catch (Exception mex)
                 {
@@ -2369,49 +2481,32 @@ internal abstract class Registrar
                 IsStatic = false
             }, ref exceptions);
         }
-        if (flag7)
+        foreach (MethodBase item5 in CollectConstructors(type))
         {
-            if (objCMethod5 != null)
-            {
-                objCMethod5.Trampoline = Trampoline.CopyWithZone2;
-            }
-            else
-            {
-                value.Add(new ObjCMethod(this, value, null)
-                {
-                    Selector = "copyWithZone:",
-                    Trampoline = Trampoline.CopyWithZone1,
-                    Signature = "@@:^v",
-                    IsStatic = false
-                }, ref exceptions);
-            }
-        }
-        foreach (MethodBase item6 in CollectConstructors(type))
-        {
-            if (IsStatic(item6))
+            if (IsStatic(item5))
             {
                 continue;
             }
-            Type[] parameters = GetParameters(item6);
+            Type[] parameters = GetParameters(item5);
             if (parameters == null || parameters.Length == 0)
             {
-                value.Add(new ObjCMethod(this, value, item6)
+                value.Add(new ObjCMethod(this, value, item5)
                 {
                     Selector = "init",
                     Trampoline = Trampoline.Constructor
                 }, ref exceptions);
                 continue;
             }
-            ExportAttribute exportAttribute3 = GetExportAttribute(item6);
-            if (exportAttribute3 != null && VerifyNonGenericMethod(ref exceptions, type, item6))
+            ExportAttribute exportAttribute3 = GetExportAttribute(item5);
+            if (exportAttribute3 != null && VerifyNonGenericMethod(ref exceptions, type, item5))
             {
-                ObjCMethod objCMethod7 = new ObjCMethod(this, value, item6)
+                ObjCMethod objCMethod6 = new ObjCMethod(this, value, item5)
                 {
                     Trampoline = Trampoline.Constructor
                 };
-                if (objCMethod7.SetExportAttribute(exportAttribute3, ref exceptions))
+                if (objCMethod6.SetExportAttribute(exportAttribute3, ref exceptions))
                 {
-                    value.Add(objCMethod7, ref exceptions);
+                    value.Add(objCMethod6, ref exceptions);
                 }
             }
         }
@@ -2462,9 +2557,9 @@ internal abstract class Registrar
         {
             return;
         }
-        Exception ex2 = ((exceptions.Count == 1) ? exceptions[0] : new AggregateException(exceptions));
-        Console.WriteLine(ex2);
-        throw ex2;
+        Exception obj = ((exceptions.Count == 1) ? exceptions[0] : new AggregateException(exceptions));
+        LogHelper.NSLog(obj.ToString());
+        throw obj;
     }
 
     public string ComputeSignature(Type DeclaringType, MethodBase Method, ObjCMember member = null, bool isCategoryInstance = false, bool isBlockSignature = false)
@@ -2570,7 +2665,7 @@ internal abstract class Registrar
         {
             text = GetTypeFullName(type);
         }
-        return StringUtils.SanitizeObjectiveCName(text);
+        return SanitizeObjectiveCName(text);
     }
 
     protected string GetExportedTypeName(Type type)
@@ -2580,8 +2675,10 @@ internal abstract class Registrar
 
     protected string ToSignature(Type type, ObjCMember member, ref bool success, bool forProperty = false)
     {
-        switch (GetTypeFullName(type))
+        string typeFullName = GetTypeFullName(type);
+        switch (typeFullName)
         {
+            case "System.UIntPtr":
             case "System.IntPtr":
                 return "^v";
             case "System.SByte":
@@ -2607,21 +2704,43 @@ internal abstract class Registrar
             case "System.Double":
                 return "d";
             case "System.Boolean":
-                return "c";
+                if (!Is64Bits)
+                {
+                    return "c";
+                }
+                return "B";
             case "System.Void":
                 return "v";
             case "System.String":
-                return forProperty ? "@\"NSString\"" : "@";
+                if (!forProperty)
+                {
+                    return "@";
+                }
+                return "@\"NSString\"";
             case "System.nint":
-                return Is64Bits ? "q" : "i";
+                if (!Is64Bits)
+                {
+                    return "i";
+                }
+                return "q";
             case "System.nuint":
-                return Is64Bits ? "Q" : "I";
-            case "System.nfloat":
-                return Is64Bits ? "d" : "f";
+                if (!Is64Bits)
+                {
+                    return "I";
+                }
+                return "Q";
             case "System.DateTime":
                 throw CreateException(4102, member, "The registrar found an invalid type `{0}` in signature for method `{2}`. Use `{1}` instead.", "System.DateTime", "Foundation.NSDate", member.FullName);
             default:
                 {
+                    if (typeFullName == "System.Runtime.InteropServices.NFloat")
+                    {
+                        if (!Is64Bits)
+                        {
+                            return "f";
+                        }
+                        return "d";
+                    }
                     if (Is(type, ObjCRuntime, "Selector"))
                     {
                         return ":";
@@ -2650,12 +2769,16 @@ internal abstract class Registrar
                     {
                         if (isNativeEnum && !Is64Bits)
                         {
-                            return GetEnumUnderlyingType(type).FullName switch
+                            string fullName = GetEnumUnderlyingType(type).FullName;
+                            if (!(fullName == "System.Int64"))
                             {
-                                "System.Int64" => "i",
-                                "System.UInt64" => "I",
-                                _ => throw CreateException(4145, "Invalid enum '{0}': enums with the [Native] attribute must have a underlying enum type of either 'long' or 'ulong'.", GetTypeFullName(type)),
-                            };
+                                if (fullName == "System.UInt64")
+                                {
+                                    return "I";
+                                }
+                                throw CreateException(4145, "Invalid enum '{0}': enums with the [Native] attribute must have a underlying enum type of either 'long' or 'ulong'.", GetTypeFullName(type));
+                            }
+                            return "i";
                         }
                         return ToSignature(GetEnumUnderlyingType(type), member, ref success);
                     }
@@ -2708,7 +2831,7 @@ internal abstract class Registrar
 
     protected virtual void ReportError(int code, string message, params object[] args)
     {
-        LogHelper.NSLog(message, args);
+        LogHelper.NSLog(string.Format(message, args));
     }
 
     protected virtual void ReportWarning(int code, string message, params object[] args)
@@ -2736,19 +2859,5 @@ internal abstract class Registrar
         }
         trace.AppendFormat(msg, args);
         trace.AppendLine();
-    }
-
-    internal static string CreateSetterSelector(string getterSelector)
-    {
-        if (string.IsNullOrEmpty(getterSelector))
-        {
-            return getterSelector;
-        }
-        int num = getterSelector[0];
-        if (num >= 97 && num <= 122)
-        {
-            num = (ushort)(num - 32);
-        }
-        return "set" + (char)num + getterSelector.Substring(1) + ":";
     }
 }

@@ -11,7 +11,19 @@ namespace Foundation;
 [Register("NSObject", true)]
 public class NSObject : INativeObject, IDisposable
 {
-	private struct objc_super
+    [Flags]
+    internal enum Flags : byte
+    {
+        Disposed = 1,
+        NativeRef = 2,
+        IsDirectBinding = 4,
+        RegisteredToggleRef = 8,
+        InFinalizerQueue = 0x10,
+        HasManagedRef = 0x20,
+        IsCustomType = 0x80
+    }
+
+    private struct objc_super
 	{
 		public IntPtr receiver;
 
@@ -102,7 +114,7 @@ public class NSObject : INativeObject, IDisposable
 
 	private bool disposed;
 
-	protected bool IsDirectBinding;
+	internal bool IsDirectBinding;
 
 	public static readonly Assembly MonoMacAssembly = typeof(NSObject).Assembly;
 
