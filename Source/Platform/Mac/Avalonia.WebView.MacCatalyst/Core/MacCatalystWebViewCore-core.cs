@@ -3,7 +3,7 @@ partial class MacCatalystWebViewCore
 {
     Task PrepareBlazorWebViewStarting(IVirtualBlazorWebViewProvider? provider)
     {
-        WebView.NavigationDelegate = new WebViewNavigationDelegate(this, _callBack, _filter);
+        //WebView.NavigationDelegate = new WebViewNavigationDelegate(this, _callBack, _filter);
         //WebView.UIDelegate = new WebViewUIDelegate();
 
         return Task.CompletedTask;

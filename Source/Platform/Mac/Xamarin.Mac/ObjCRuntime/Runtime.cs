@@ -166,7 +166,24 @@ public static class Runtime
         Type type = Class.Lookup(Messaging.intptr_objc_msgSend(ptr, selClass));
         if (type != null)
         {
-            return (NSObject)Activator.CreateInstance(type, ptr);
+
+            var intPtrConstructor = GetIntPtrConstructor(type);
+            if (intPtrConstructor is null)
+            {
+                MissingCtor(ptr, IntPtr.Zero, type, MissingCtorResolution.ThrowConstructor1NotFound);
+                return null;
+            }
+
+            object[] array = new object[1];
+            if (intPtrConstructor.GetParameters()[0].ParameterType == typeof(IntPtr))
+            {
+                array[0] = ptr;
+            }
+            else
+            {
+                array[0] = new NativeHandle(ptr);
+            }
+            return (NSObject)intPtrConstructor.Invoke(array);
         }
         return new NSObject(ptr);
     }

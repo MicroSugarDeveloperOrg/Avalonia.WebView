@@ -917,7 +917,7 @@ public class NSDictionary : NSObject, IDictionary, ICollection, IEnumerable, IDi
 
     protected override void Dispose(bool disposing)
 	{
-		Dispose(disposing);
+		base.Dispose(disposing);
 		if (Handle == IntPtr.Zero)
 		{
 			__mt_Keys_var = null;
