@@ -280,7 +280,7 @@ internal abstract class NativeImplementationBuilder
                     continue;
 
                 var wrapperType = protocolAttribute.WrapperType;
-                var constructorInfo = wrapperType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[2] { typeof(IntPtr),typeof(bool) }, null)
+                var constructorInfo = wrapperType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[2] { typeof(IntPtr), typeof(bool) }, null);
                 il.Emit(OpCodes.Ldarg, i);
                 il.Emit(OpCodes.Newobj, constructorInfo);
             }
