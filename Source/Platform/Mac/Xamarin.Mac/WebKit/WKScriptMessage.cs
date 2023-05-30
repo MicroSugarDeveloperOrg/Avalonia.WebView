@@ -97,7 +97,7 @@ public class WKScriptMessage : NSObject
 
     protected override void Dispose(bool disposing)
     {
-        Dispose(disposing);
+        base.Dispose(disposing);
         if (Handle == IntPtr.Zero)
             __mt_WebView_var = null;
     }

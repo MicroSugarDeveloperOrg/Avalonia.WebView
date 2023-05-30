@@ -746,7 +746,7 @@ public class NSApplication : NSResponder
 		get
 		{
 			EnsureUIThread();
-			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDelegateHandle))));
+			return (NSObject)(__mt_WeakDelegate_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selDelegateHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selDelegateHandle))));
 		}
 		[Export("setDelegate:", ArgumentSemantic.Assign)]
 		set
@@ -754,11 +754,11 @@ public class NSApplication : NSResponder
 			EnsureUIThread();
 			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSend_IntPtr(Handle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selSetDelegate_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 			__mt_WeakDelegate_var = value;
 		}
@@ -782,7 +782,7 @@ public class NSApplication : NSResponder
 		get
 		{
 			EnsureUIThread();
-			return (NSGraphicsContext)(__mt_Context_var = ((!IsDirectBinding) ? ((NSGraphicsContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selContextHandle))) : ((NSGraphicsContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selContextHandle)))));
+			return (NSGraphicsContext)(__mt_Context_var = ((!IsDirectBinding) ? ((NSGraphicsContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selContextHandle))) : ((NSGraphicsContext)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selContextHandle)))));
 		}
 	}
 
@@ -792,7 +792,7 @@ public class NSApplication : NSResponder
 		get
 		{
 			EnsureUIThread();
-			return (NSWindow)(__mt_MainWindow_var = ((!IsDirectBinding) ? ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainWindowHandle))) : ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMainWindowHandle)))));
+			return (NSWindow)(__mt_MainWindow_var = ((!IsDirectBinding) ? ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selMainWindowHandle))) : ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selMainWindowHandle)))));
 		}
 	}
 
@@ -802,7 +802,7 @@ public class NSApplication : NSResponder
 		get
 		{
 			EnsureUIThread();
-			return (NSWindow)(__mt_KeyWindow_var = ((!IsDirectBinding) ? ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selKeyWindowHandle))) : ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selKeyWindowHandle)))));
+			return (NSWindow)(__mt_KeyWindow_var = ((!IsDirectBinding) ? ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selKeyWindowHandle))) : ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selKeyWindowHandle)))));
 		}
 	}
 
@@ -814,9 +814,9 @@ public class NSApplication : NSResponder
 			EnsureUIThread();
 			if (IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsActiveHandle);
+				return Messaging.bool_objc_msgSend(Handle, selIsActiveHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsActiveHandle);
+			return Messaging.bool_objc_msgSendSuper(SuperHandle, selIsActiveHandle);
 		}
 	}
 
@@ -828,9 +828,9 @@ public class NSApplication : NSResponder
 			EnsureUIThread();
 			if (IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsHiddenHandle);
+				return Messaging.bool_objc_msgSend(Handle, selIsHiddenHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsHiddenHandle);
+			return Messaging.bool_objc_msgSendSuper(SuperHandle, selIsHiddenHandle);
 		}
 	}
 
@@ -842,9 +842,9 @@ public class NSApplication : NSResponder
 			EnsureUIThread();
 			if (IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsRunningHandle);
+				return Messaging.bool_objc_msgSend(Handle, selIsRunningHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsRunningHandle);
+			return Messaging.bool_objc_msgSendSuper(SuperHandle, selIsRunningHandle);
 		}
 	}
 
@@ -854,7 +854,7 @@ public class NSApplication : NSResponder
 		get
 		{
 			EnsureUIThread();
-			return (NSWindow)(__mt_ModalWindow_var = ((!IsDirectBinding) ? ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selModalWindowHandle))) : ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selModalWindowHandle)))));
+			return (NSWindow)(__mt_ModalWindow_var = ((!IsDirectBinding) ? ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selModalWindowHandle))) : ((NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selModalWindowHandle)))));
 		}
 	}
 
@@ -864,7 +864,7 @@ public class NSApplication : NSResponder
 		get
 		{
 			EnsureUIThread();
-			return (NSEvent)(__mt_CurrentEvent_var = ((!IsDirectBinding) ? ((NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selCurrentEventHandle))) : ((NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selCurrentEventHandle)))));
+			return (NSEvent)(__mt_CurrentEvent_var = ((!IsDirectBinding) ? ((NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selCurrentEventHandle))) : ((NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selCurrentEventHandle)))));
 		}
 	}
 
@@ -874,7 +874,7 @@ public class NSApplication : NSResponder
 		get
 		{
 			EnsureUIThread();
-			return (NSWindow[])(__mt_Windows_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSWindow>(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selWindowsHandle)) : NSArray.ArrayFromHandle<NSWindow>(Messaging.IntPtr_objc_msgSend(base.Handle, selWindowsHandle))));
+			return (NSWindow[])(__mt_Windows_var = ((!IsDirectBinding) ? NSArray.ArrayFromHandle<NSWindow>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selWindowsHandle)) : NSArray.ArrayFromHandle<NSWindow>(Messaging.IntPtr_objc_msgSend(Handle, selWindowsHandle))));
 		}
 	}
 
@@ -884,7 +884,7 @@ public class NSApplication : NSResponder
 		get
 		{
 			EnsureUIThread();
-			return (NSMenu)(__mt_MainMenu_var = ((!IsDirectBinding) ? ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selMainMenuHandle))) : ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selMainMenuHandle)))));
+			return (NSMenu)(__mt_MainMenu_var = ((!IsDirectBinding) ? ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selMainMenuHandle))) : ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selMainMenuHandle)))));
 		}
 		[Export("setMainMenu:")]
 		set
@@ -896,11 +896,11 @@ public class NSApplication : NSResponder
 			}
 			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMainMenu_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(Handle, selSetMainMenu_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMainMenu_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selSetMainMenu_Handle, value.Handle);
 			}
 			__mt_MainMenu_var = value;
 		}
@@ -912,7 +912,7 @@ public class NSApplication : NSResponder
 		get
 		{
 			EnsureUIThread();
-			return (NSMenu)(__mt_HelpMenu_var = ((!IsDirectBinding) ? ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selHelpMenuHandle))) : ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selHelpMenuHandle)))));
+			return (NSMenu)(__mt_HelpMenu_var = ((!IsDirectBinding) ? ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selHelpMenuHandle))) : ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selHelpMenuHandle)))));
 		}
 		[Export("setHelpMenu:")]
 		set
@@ -920,11 +920,11 @@ public class NSApplication : NSResponder
 			EnsureUIThread();
 			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetHelpMenu_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSend_IntPtr(Handle, selSetHelpMenu_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetHelpMenu_Handle, value?.Handle ?? IntPtr.Zero);
+				Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selSetHelpMenu_Handle, value?.Handle ?? IntPtr.Zero);
 			}
 			__mt_HelpMenu_var = value;
 		}
@@ -936,7 +936,7 @@ public class NSApplication : NSResponder
 		get
 		{
 			EnsureUIThread();
-			return (NSImage)(__mt_ApplicationIconImage_var = ((!IsDirectBinding) ? ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selApplicationIconImageHandle))) : ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selApplicationIconImageHandle)))));
+			return (NSImage)(__mt_ApplicationIconImage_var = ((!IsDirectBinding) ? ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selApplicationIconImageHandle))) : ((NSImage)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selApplicationIconImageHandle)))));
 		}
 		[Export("setApplicationIconImage:")]
 		set
@@ -948,11 +948,11 @@ public class NSApplication : NSResponder
 			}
 			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetApplicationIconImage_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(Handle, selSetApplicationIconImage_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetApplicationIconImage_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selSetApplicationIconImage_Handle, value.Handle);
 			}
 			__mt_ApplicationIconImage_var = value;
 		}
@@ -964,7 +964,7 @@ public class NSApplication : NSResponder
 		get
 		{
 			EnsureUIThread();
-			return (NSDockTile)(__mt_DockTile_var = ((!IsDirectBinding) ? ((NSDockTile)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selDockTileHandle))) : ((NSDockTile)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selDockTileHandle)))));
+			return (NSDockTile)(__mt_DockTile_var = ((!IsDirectBinding) ? ((NSDockTile)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selDockTileHandle))) : ((NSDockTile)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selDockTileHandle)))));
 		}
 	}
 
@@ -976,9 +976,9 @@ public class NSApplication : NSResponder
 			EnsureUIThread();
 			if (IsDirectBinding)
 			{
-				return (NSApplicationPresentationOptions)Messaging.UInt64_objc_msgSend(base.Handle, selPresentationOptionsHandle);
+				return (NSApplicationPresentationOptions)Messaging.UInt64_objc_msgSend(Handle, selPresentationOptionsHandle);
 			}
-			return (NSApplicationPresentationOptions)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selPresentationOptionsHandle);
+			return (NSApplicationPresentationOptions)Messaging.UInt64_objc_msgSendSuper(SuperHandle, selPresentationOptionsHandle);
 		}
 		[Export("setPresentationOptions:")]
 		set
@@ -986,11 +986,11 @@ public class NSApplication : NSResponder
 			EnsureUIThread();
 			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_UInt64(base.Handle, selSetPresentationOptions_Handle, (ulong)value);
+				Messaging.void_objc_msgSend_UInt64(Handle, selSetPresentationOptions_Handle, (ulong)value);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selSetPresentationOptions_Handle, (ulong)value);
+				Messaging.void_objc_msgSendSuper_UInt64(SuperHandle, selSetPresentationOptions_Handle, (ulong)value);
 			}
 		}
 	}
@@ -1003,9 +1003,9 @@ public class NSApplication : NSResponder
 			EnsureUIThread();
 			if (IsDirectBinding)
 			{
-				return (NSApplicationPresentationOptions)Messaging.UInt64_objc_msgSend(base.Handle, selCurrentSystemPresentationOptionsHandle);
+				return (NSApplicationPresentationOptions)Messaging.UInt64_objc_msgSend(Handle, selCurrentSystemPresentationOptionsHandle);
 			}
-			return (NSApplicationPresentationOptions)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selCurrentSystemPresentationOptionsHandle);
+			return (NSApplicationPresentationOptions)Messaging.UInt64_objc_msgSendSuper(SuperHandle, selCurrentSystemPresentationOptionsHandle);
 		}
 	}
 
@@ -1015,7 +1015,7 @@ public class NSApplication : NSResponder
 		get
 		{
 			EnsureUIThread();
-			return (NSMenu)(__mt_WindowsMenu_var = ((!IsDirectBinding) ? ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selWindowsMenuHandle))) : ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selWindowsMenuHandle)))));
+			return (NSMenu)(__mt_WindowsMenu_var = ((!IsDirectBinding) ? ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selWindowsMenuHandle))) : ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selWindowsMenuHandle)))));
 		}
 		[Export("setWindowsMenu:")]
 		set
@@ -1027,11 +1027,11 @@ public class NSApplication : NSResponder
 			}
 			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetWindowsMenu_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(Handle, selSetWindowsMenu_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetWindowsMenu_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selSetWindowsMenu_Handle, value.Handle);
 			}
 			__mt_WindowsMenu_var = value;
 		}
@@ -1045,9 +1045,9 @@ public class NSApplication : NSResponder
 			EnsureUIThread();
 			if (IsDirectBinding)
 			{
-				return Messaging.bool_objc_msgSend(base.Handle, selIsFullKeyboardAccessEnabledHandle);
+				return Messaging.bool_objc_msgSend(Handle, selIsFullKeyboardAccessEnabledHandle);
 			}
-			return Messaging.bool_objc_msgSendSuper(base.SuperHandle, selIsFullKeyboardAccessEnabledHandle);
+			return Messaging.bool_objc_msgSendSuper(SuperHandle, selIsFullKeyboardAccessEnabledHandle);
 		}
 	}
 
@@ -1057,7 +1057,7 @@ public class NSApplication : NSResponder
 		get
 		{
 			EnsureUIThread();
-			return (NSObject)(__mt_ServicesProvider_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selServicesProviderHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selServicesProviderHandle))));
+			return (NSObject)(__mt_ServicesProvider_var = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selServicesProviderHandle)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selServicesProviderHandle))));
 		}
 		[Export("setServicesProvider:")]
 		set
@@ -1069,11 +1069,11 @@ public class NSApplication : NSResponder
 			}
 			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetServicesProvider_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(Handle, selSetServicesProvider_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetServicesProvider_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selSetServicesProvider_Handle, value.Handle);
 			}
 			__mt_ServicesProvider_var = value;
 		}
@@ -1087,9 +1087,9 @@ public class NSApplication : NSResponder
 			EnsureUIThread();
 			if (IsDirectBinding)
 			{
-				return (NSApplicationLayoutDirection)Messaging.Int64_objc_msgSend(base.Handle, selUserInterfaceLayoutDirectionHandle);
+				return (NSApplicationLayoutDirection)Messaging.Int64_objc_msgSend(Handle, selUserInterfaceLayoutDirectionHandle);
 			}
-			return (NSApplicationLayoutDirection)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selUserInterfaceLayoutDirectionHandle);
+			return (NSApplicationLayoutDirection)Messaging.Int64_objc_msgSendSuper(SuperHandle, selUserInterfaceLayoutDirectionHandle);
 		}
 	}
 
@@ -1099,7 +1099,7 @@ public class NSApplication : NSResponder
 		get
 		{
 			EnsureUIThread();
-			return (NSMenu)(__mt_ServicesMenu_var = ((!IsDirectBinding) ? ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, selServicesMenuHandle))) : ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(base.Handle, selServicesMenuHandle)))));
+			return (NSMenu)(__mt_ServicesMenu_var = ((!IsDirectBinding) ? ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selServicesMenuHandle))) : ((NSMenu)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selServicesMenuHandle)))));
 		}
 		[Export("setServicesMenu:")]
 		set
@@ -1111,11 +1111,11 @@ public class NSApplication : NSResponder
 			}
 			if (IsDirectBinding)
 			{
-				Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetServicesMenu_Handle, value.Handle);
+				Messaging.void_objc_msgSend_IntPtr(Handle, selSetServicesMenu_Handle, value.Handle);
 			}
 			else
 			{
-				Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetServicesMenu_Handle, value.Handle);
+				Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selSetServicesMenu_Handle, value.Handle);
 			}
 			__mt_ServicesMenu_var = value;
 		}
@@ -1944,34 +1944,18 @@ public class NSApplication : NSResponder
 	public static void Init()
 	{
 		if (initialized)
-		{
-			throw new InvalidOperationException("Init has already be be invoked; it can only be invoke once");
-		}
-		initialized = true;
+            throw new InvalidOperationException("Init has already be be invoked; it can only be invoke once");
+
+        initialized = true;
+
 		Assembly assembly = typeof(NSApplication).Assembly;
-
         //RuntimeEx.RegisterEntryAssembly(assembly);
-
-		Runtime.RegisterAssembly(assembly);
-		AssemblyName name = assembly.GetName();
-		Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-		foreach (Assembly assembly2 in assemblies)
-		{
-			AssemblyName[] referencedAssemblies = assembly2.GetReferencedAssemblies();
-			for (int j = 0; j < referencedAssemblies.Length; j++)
-			{
-				if (AssemblyName.ReferenceMatchesDefinition(referencedAssemblies[j], name))
-				{
-					Runtime.RegisterAssembly(assembly2);
-					break;
-				}
-			}
-		}
+		Runtime.RegisterEntryAssembly(assembly);
+		
 		if (SynchronizationContext.Current == null)
-		{
-			SynchronizationContext.SetSynchronizationContext(new AppKitSynchronizationContext());
-		}
-		mainThread = Thread.CurrentThread;
+            SynchronizationContext.SetSynchronizationContext(new AppKitSynchronizationContext());
+
+        mainThread = Thread.CurrentThread;
 	}
 
 	public static void InitDrawingBridge()
@@ -1985,22 +1969,19 @@ public class NSApplication : NSResponder
 	public static void Main(string[] args)
 	{
 		if (SynchronizationContext.Current == null || !typeof(AppKitSynchronizationContext).IsAssignableFrom(SynchronizationContext.Current.GetType()))
-		{
-			SynchronizationContext.SetSynchronizationContext(new AppKitSynchronizationContext());
-		}
-		mainThread = Thread.CurrentThread;
+            SynchronizationContext.SetSynchronizationContext(new AppKitSynchronizationContext());
+
+        mainThread = Thread.CurrentThread;
 		NSApplicationMain(args.Length, args);
 	}
 
 	public static void EnsureUIThread()
 	{
 		if (CheckForIllegalCrossThreadCalls && mainThread != Thread.CurrentThread)
-		{
-			throw new AppKitThreadAccessException();
-		}
-	}
+            throw new AppKitThreadAccessException();
+    }
 
-	public NSEvent NextEvent(NSEventMask mask, NSDate expiration, string mode, bool deqFlag)
+    public NSEvent NextEvent(NSEventMask mask, NSDate expiration, string mode, bool deqFlag)
 	{
 		return NextEvent((uint)mask, expiration, mode, deqFlag);
 	}
@@ -2015,14 +1996,7 @@ public class NSApplication : NSResponder
 	public NSApplication(NSCoder coder)
 		: base(NSObjectFlag.Empty)
 	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
+		InitializeHandle(Selector.InitWithCoder, coder);
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -2047,11 +2021,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selHide_Handle, sender.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selHide_Handle, sender.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selHide_Handle, sender.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selHide_Handle, sender.Handle);
 		}
 	}
 
@@ -2065,11 +2039,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selUnhide_Handle, sender.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selUnhide_Handle, sender.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selUnhide_Handle, sender.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selUnhide_Handle, sender.Handle);
 		}
 	}
 
@@ -2079,11 +2053,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selUnhideWithoutActivationHandle);
+			Messaging.void_objc_msgSend(Handle, selUnhideWithoutActivationHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selUnhideWithoutActivationHandle);
+			Messaging.void_objc_msgSendSuper(SuperHandle, selUnhideWithoutActivationHandle);
 		}
 	}
 
@@ -2093,9 +2067,9 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			return (NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_Int64(base.Handle, selWindowWithWindowNumber_Handle, windowNum));
+			return (NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_Int64(Handle, selWindowWithWindowNumber_Handle, windowNum));
 		}
-		return (NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_Int64(base.SuperHandle, selWindowWithWindowNumber_Handle, windowNum));
+		return (NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_Int64(SuperHandle, selWindowWithWindowNumber_Handle, windowNum));
 	}
 
 	[Export("deactivate")]
@@ -2104,11 +2078,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selDeactivateHandle);
+			Messaging.void_objc_msgSend(Handle, selDeactivateHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDeactivateHandle);
+			Messaging.void_objc_msgSendSuper(SuperHandle, selDeactivateHandle);
 		}
 	}
 
@@ -2118,11 +2092,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_bool(base.Handle, selActivateIgnoringOtherApps_Handle, flag);
+			Messaging.void_objc_msgSend_bool(Handle, selActivateIgnoringOtherApps_Handle, flag);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selActivateIgnoringOtherApps_Handle, flag);
+			Messaging.void_objc_msgSendSuper_bool(SuperHandle, selActivateIgnoringOtherApps_Handle, flag);
 		}
 	}
 
@@ -2136,11 +2110,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selHideOtherApplications_Handle, sender.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selHideOtherApplications_Handle, sender.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selHideOtherApplications_Handle, sender.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selHideOtherApplications_Handle, sender.Handle);
 		}
 	}
 
@@ -2154,11 +2128,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selUnhideAllApplications_Handle, sender.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selUnhideAllApplications_Handle, sender.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selUnhideAllApplications_Handle, sender.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selUnhideAllApplications_Handle, sender.Handle);
 		}
 	}
 
@@ -2168,11 +2142,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selFinishLaunchingHandle);
+			Messaging.void_objc_msgSend(Handle, selFinishLaunchingHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selFinishLaunchingHandle);
+			Messaging.void_objc_msgSendSuper(SuperHandle, selFinishLaunchingHandle);
 		}
 	}
 
@@ -2182,11 +2156,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selRunHandle);
+			Messaging.void_objc_msgSend(Handle, selRunHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selRunHandle);
+			Messaging.void_objc_msgSendSuper(SuperHandle, selRunHandle);
 		}
 	}
 
@@ -2200,9 +2174,9 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			return Messaging.Int64_objc_msgSend_IntPtr(base.Handle, selRunModalForWindow_Handle, theWindow.Handle);
+			return Messaging.Int64_objc_msgSend_IntPtr(Handle, selRunModalForWindow_Handle, theWindow.Handle);
 		}
-		return Messaging.Int64_objc_msgSendSuper_IntPtr(base.SuperHandle, selRunModalForWindow_Handle, theWindow.Handle);
+		return Messaging.Int64_objc_msgSendSuper_IntPtr(SuperHandle, selRunModalForWindow_Handle, theWindow.Handle);
 	}
 
 	[Export("stop:")]
@@ -2215,11 +2189,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selStop_Handle, sender.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selStop_Handle, sender.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selStop_Handle, sender.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selStop_Handle, sender.Handle);
 		}
 	}
 
@@ -2229,11 +2203,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selStopModalHandle);
+			Messaging.void_objc_msgSend(Handle, selStopModalHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selStopModalHandle);
+			Messaging.void_objc_msgSendSuper(SuperHandle, selStopModalHandle);
 		}
 	}
 
@@ -2243,11 +2217,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_Int64(base.Handle, selStopModalWithCode_Handle, returnCode);
+			Messaging.void_objc_msgSend_Int64(Handle, selStopModalWithCode_Handle, returnCode);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selStopModalWithCode_Handle, returnCode);
+			Messaging.void_objc_msgSendSuper_Int64(SuperHandle, selStopModalWithCode_Handle, returnCode);
 		}
 	}
 
@@ -2257,11 +2231,11 @@ public class NSApplication : NSResponder
 	{
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selAbortModalHandle);
+			Messaging.void_objc_msgSend(Handle, selAbortModalHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selAbortModalHandle);
+			Messaging.void_objc_msgSendSuper(SuperHandle, selAbortModalHandle);
 		}
 	}
 
@@ -2275,9 +2249,9 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			return Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selBeginModalSessionForWindow_Handle, theWindow.Handle);
+			return Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selBeginModalSessionForWindow_Handle, theWindow.Handle);
 		}
-		return Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selBeginModalSessionForWindow_Handle, theWindow.Handle);
+		return Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selBeginModalSessionForWindow_Handle, theWindow.Handle);
 	}
 
 	[Export("runModalSession:")]
@@ -2286,9 +2260,9 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			return Messaging.Int64_objc_msgSend_IntPtr(base.Handle, selRunModalSession_Handle, session);
+			return Messaging.Int64_objc_msgSend_IntPtr(Handle, selRunModalSession_Handle, session);
 		}
-		return Messaging.Int64_objc_msgSendSuper_IntPtr(base.SuperHandle, selRunModalSession_Handle, session);
+		return Messaging.Int64_objc_msgSendSuper_IntPtr(SuperHandle, selRunModalSession_Handle, session);
 	}
 
 	[Export("endModalSession:")]
@@ -2297,11 +2271,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEndModalSession_Handle, session);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selEndModalSession_Handle, session);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEndModalSession_Handle, session);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selEndModalSession_Handle, session);
 		}
 	}
 
@@ -2315,11 +2289,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selTerminate_Handle, sender.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selTerminate_Handle, sender.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selTerminate_Handle, sender.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selTerminate_Handle, sender.Handle);
 		}
 	}
 
@@ -2329,9 +2303,9 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			return Messaging.Int64_objc_msgSend_UInt64(base.Handle, selRequestUserAttention_Handle, (ulong)requestType);
+			return Messaging.Int64_objc_msgSend_UInt64(Handle, selRequestUserAttention_Handle, (ulong)requestType);
 		}
-		return Messaging.Int64_objc_msgSendSuper_UInt64(base.SuperHandle, selRequestUserAttention_Handle, (ulong)requestType);
+		return Messaging.Int64_objc_msgSendSuper_UInt64(SuperHandle, selRequestUserAttention_Handle, (ulong)requestType);
 	}
 
 	[Export("cancelUserAttentionRequest:")]
@@ -2340,11 +2314,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_Int64(base.Handle, selCancelUserAttentionRequest_Handle, request);
+			Messaging.void_objc_msgSend_Int64(Handle, selCancelUserAttentionRequest_Handle, request);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_Int64(base.SuperHandle, selCancelUserAttentionRequest_Handle, request);
+			Messaging.void_objc_msgSendSuper_Int64(SuperHandle, selCancelUserAttentionRequest_Handle, request);
 		}
 	}
 
@@ -2362,11 +2336,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr(base.Handle, selBeginSheetModalForWindowModalDelegateDidEndSelectorContextInfo_Handle, sheet.Handle, docWindow.Handle, modalDelegate?.Handle ?? IntPtr.Zero, (didEndSelector == null) ? IntPtr.Zero : didEndSelector.Handle, contextInfo);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr(Handle, selBeginSheetModalForWindowModalDelegateDidEndSelectorContextInfo_Handle, sheet.Handle, docWindow.Handle, modalDelegate?.Handle ?? IntPtr.Zero, (didEndSelector == null) ? IntPtr.Zero : didEndSelector.Handle, contextInfo);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr(base.SuperHandle, selBeginSheetModalForWindowModalDelegateDidEndSelectorContextInfo_Handle, sheet.Handle, docWindow.Handle, modalDelegate?.Handle ?? IntPtr.Zero, (didEndSelector == null) ? IntPtr.Zero : didEndSelector.Handle, contextInfo);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr(SuperHandle, selBeginSheetModalForWindowModalDelegateDidEndSelectorContextInfo_Handle, sheet.Handle, docWindow.Handle, modalDelegate?.Handle ?? IntPtr.Zero, (didEndSelector == null) ? IntPtr.Zero : didEndSelector.Handle, contextInfo);
 		}
 	}
 
@@ -2380,11 +2354,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selEndSheet_Handle, sheet.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selEndSheet_Handle, sheet.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selEndSheet_Handle, sheet.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selEndSheet_Handle, sheet.Handle);
 		}
 	}
 
@@ -2398,11 +2372,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_Int64(base.Handle, selEndSheetReturnCode_Handle, sheet.Handle, returnCode);
+			Messaging.void_objc_msgSend_IntPtr_Int64(Handle, selEndSheetReturnCode_Handle, sheet.Handle, returnCode);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_Int64(base.SuperHandle, selEndSheetReturnCode_Handle, sheet.Handle, returnCode);
+			Messaging.void_objc_msgSendSuper_IntPtr_Int64(SuperHandle, selEndSheetReturnCode_Handle, sheet.Handle, returnCode);
 		}
 	}
 
@@ -2419,7 +2393,7 @@ public class NSApplication : NSResponder
 			throw new ArgumentNullException("mode");
 		}
 		IntPtr arg = NSString.CreateNative(mode);
-		NSEvent result = ((!IsDirectBinding) ? ((NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_UInt64_IntPtr_IntPtr_bool(base.SuperHandle, selNextEventMatchingMaskUntilDateInModeDequeue_Handle, mask, expiration.Handle, arg, deqFlag))) : ((NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64_IntPtr_IntPtr_bool(base.Handle, selNextEventMatchingMaskUntilDateInModeDequeue_Handle, mask, expiration.Handle, arg, deqFlag))));
+		NSEvent result = ((!IsDirectBinding) ? ((NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_UInt64_IntPtr_IntPtr_bool(SuperHandle, selNextEventMatchingMaskUntilDateInModeDequeue_Handle, mask, expiration.Handle, arg, deqFlag))) : ((NSEvent)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_UInt64_IntPtr_IntPtr_bool(Handle, selNextEventMatchingMaskUntilDateInModeDequeue_Handle, mask, expiration.Handle, arg, deqFlag))));
 		NSString.ReleaseNative(arg);
 		return result;
 	}
@@ -2434,11 +2408,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_UInt64_IntPtr(base.Handle, selDiscardEventsMatchingMaskBeforeEvent_Handle, mask, lastEvent.Handle);
+			Messaging.void_objc_msgSend_UInt64_IntPtr(Handle, selDiscardEventsMatchingMaskBeforeEvent_Handle, mask, lastEvent.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_UInt64_IntPtr(base.SuperHandle, selDiscardEventsMatchingMaskBeforeEvent_Handle, mask, lastEvent.Handle);
+			Messaging.void_objc_msgSendSuper_UInt64_IntPtr(SuperHandle, selDiscardEventsMatchingMaskBeforeEvent_Handle, mask, lastEvent.Handle);
 		}
 	}
 
@@ -2452,11 +2426,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_bool(base.Handle, selPostEventAtStart_Handle, theEvent.Handle, atStart);
+			Messaging.void_objc_msgSend_IntPtr_bool(Handle, selPostEventAtStart_Handle, theEvent.Handle, atStart);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selPostEventAtStart_Handle, theEvent.Handle, atStart);
+			Messaging.void_objc_msgSendSuper_IntPtr_bool(SuperHandle, selPostEventAtStart_Handle, theEvent.Handle, atStart);
 		}
 	}
 
@@ -2470,11 +2444,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSendEvent_Handle, theEvent.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selSendEvent_Handle, theEvent.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSendEvent_Handle, theEvent.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selSendEvent_Handle, theEvent.Handle);
 		}
 	}
 
@@ -2484,11 +2458,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selPreventWindowOrderingHandle);
+			Messaging.void_objc_msgSend(Handle, selPreventWindowOrderingHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selPreventWindowOrderingHandle);
+			Messaging.void_objc_msgSendSuper(SuperHandle, selPreventWindowOrderingHandle);
 		}
 	}
 
@@ -2502,9 +2476,9 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			return (NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_bool(base.Handle, selMakeWindowsPerformInOrder_Handle, aSelector.Handle, inOrder));
+			return (NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_bool(Handle, selMakeWindowsPerformInOrder_Handle, aSelector.Handle, inOrder));
 		}
-		return (NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool(base.SuperHandle, selMakeWindowsPerformInOrder_Handle, aSelector.Handle, inOrder));
+		return (NSWindow)Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_bool(SuperHandle, selMakeWindowsPerformInOrder_Handle, aSelector.Handle, inOrder));
 	}
 
 	[Export("setWindowsNeedUpdate:")]
@@ -2513,11 +2487,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_bool(base.Handle, selSetWindowsNeedUpdate_Handle, needUpdate);
+			Messaging.void_objc_msgSend_bool(Handle, selSetWindowsNeedUpdate_Handle, needUpdate);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selSetWindowsNeedUpdate_Handle, needUpdate);
+			Messaging.void_objc_msgSendSuper_bool(SuperHandle, selSetWindowsNeedUpdate_Handle, needUpdate);
 		}
 	}
 
@@ -2527,11 +2501,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selUpdateWindowsHandle);
+			Messaging.void_objc_msgSend(Handle, selUpdateWindowsHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selUpdateWindowsHandle);
+			Messaging.void_objc_msgSendSuper(SuperHandle, selUpdateWindowsHandle);
 		}
 	}
 
@@ -2546,11 +2520,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selSetMainMenu_Handle, aMenu.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selSetMainMenu_Handle, aMenu.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selSetMainMenu_Handle, aMenu.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selSetMainMenu_Handle, aMenu.Handle);
 		}
 	}
 
@@ -2560,9 +2534,9 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			return (NSApplicationActivationPolicy)Messaging.Int64_objc_msgSend(base.Handle, selActivationPolicyHandle);
+			return (NSApplicationActivationPolicy)Messaging.Int64_objc_msgSend(Handle, selActivationPolicyHandle);
 		}
-		return (NSApplicationActivationPolicy)Messaging.Int64_objc_msgSendSuper(base.SuperHandle, selActivationPolicyHandle);
+		return (NSApplicationActivationPolicy)Messaging.Int64_objc_msgSendSuper(SuperHandle, selActivationPolicyHandle);
 	}
 
 	[Export("setActivationPolicy:")]
@@ -2571,9 +2545,9 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_Int64(base.Handle, selSetActivationPolicy_Handle, (long)activationPolicy);
+			return Messaging.bool_objc_msgSend_Int64(Handle, selSetActivationPolicy_Handle, (long)activationPolicy);
 		}
-		return Messaging.bool_objc_msgSendSuper_Int64(base.SuperHandle, selSetActivationPolicy_Handle, (long)activationPolicy);
+		return Messaging.bool_objc_msgSendSuper_Int64(SuperHandle, selSetActivationPolicy_Handle, (long)activationPolicy);
 	}
 
 	[Export("sendAction:to:from:")]
@@ -2594,9 +2568,9 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selSendActionToFrom_Handle, theAction.Handle, theTarget.Handle, sender.Handle);
+			return Messaging.bool_objc_msgSend_IntPtr_IntPtr_IntPtr(Handle, selSendActionToFrom_Handle, theAction.Handle, theTarget.Handle, sender.Handle);
 		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selSendActionToFrom_Handle, theAction.Handle, theTarget.Handle, sender.Handle);
+		return Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(SuperHandle, selSendActionToFrom_Handle, theAction.Handle, theTarget.Handle, sender.Handle);
 	}
 
 	[Export("targetForAction:")]
@@ -2609,9 +2583,9 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, selTargetForAction_Handle, theAction.Handle));
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr(Handle, selTargetForAction_Handle, theAction.Handle));
 		}
-		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, selTargetForAction_Handle, theAction.Handle));
+		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr(SuperHandle, selTargetForAction_Handle, theAction.Handle));
 	}
 
 	[Export("targetForAction:to:from:")]
@@ -2632,9 +2606,9 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(base.Handle, selTargetForActionToFrom_Handle, theAction.Handle, theTarget.Handle, sender.Handle));
+			return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr(Handle, selTargetForActionToFrom_Handle, theAction.Handle, theTarget.Handle, sender.Handle));
 		}
-		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(base.SuperHandle, selTargetForActionToFrom_Handle, theAction.Handle, theTarget.Handle, sender.Handle));
+		return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(SuperHandle, selTargetForActionToFrom_Handle, theAction.Handle, theTarget.Handle, sender.Handle));
 	}
 
 	[Export("tryToPerform:with:")]
@@ -2651,9 +2625,9 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			return Messaging.bool_objc_msgSend_IntPtr_IntPtr(base.Handle, selTryToPerformWith_Handle, anAction.Handle, target.Handle);
+			return Messaging.bool_objc_msgSend_IntPtr_IntPtr(Handle, selTryToPerformWith_Handle, anAction.Handle, target.Handle);
 		}
-		return Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selTryToPerformWith_Handle, anAction.Handle, target.Handle);
+		return Messaging.bool_objc_msgSendSuper_IntPtr_IntPtr(SuperHandle, selTryToPerformWith_Handle, anAction.Handle, target.Handle);
 	}
 
 	[Export("validRequestorForSendType:returnType:")]
@@ -2670,7 +2644,7 @@ public class NSApplication : NSResponder
 		}
 		IntPtr arg = NSString.CreateNative(sendType);
 		IntPtr arg2 = NSString.CreateNative(returnType);
-		NSObject result = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(base.SuperHandle, selValidRequestorForSendTypeReturnType_Handle, arg, arg2)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(base.Handle, selValidRequestorForSendTypeReturnType_Handle, arg, arg2)));
+		NSObject result = ((!IsDirectBinding) ? Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(SuperHandle, selValidRequestorForSendTypeReturnType_Handle, arg, arg2)) : Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(Handle, selValidRequestorForSendTypeReturnType_Handle, arg, arg2)));
 		NSString.ReleaseNative(arg);
 		NSString.ReleaseNative(arg2);
 		return result;
@@ -2686,11 +2660,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selReportException_Handle, theException.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selReportException_Handle, theException.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selReportException_Handle, theException.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selReportException_Handle, theException.Handle);
 		}
 	}
 
@@ -2719,11 +2693,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_bool(base.Handle, selReplyToApplicationShouldTerminate_Handle, shouldTerminate);
+			Messaging.void_objc_msgSend_bool(Handle, selReplyToApplicationShouldTerminate_Handle, shouldTerminate);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_bool(base.SuperHandle, selReplyToApplicationShouldTerminate_Handle, shouldTerminate);
+			Messaging.void_objc_msgSendSuper_bool(SuperHandle, selReplyToApplicationShouldTerminate_Handle, shouldTerminate);
 		}
 	}
 
@@ -2733,11 +2707,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_UInt64(base.Handle, selReplyToOpenOrPrint_Handle, (ulong)reply);
+			Messaging.void_objc_msgSend_UInt64(Handle, selReplyToOpenOrPrint_Handle, (ulong)reply);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selReplyToOpenOrPrint_Handle, (ulong)reply);
+			Messaging.void_objc_msgSendSuper_UInt64(SuperHandle, selReplyToOpenOrPrint_Handle, (ulong)reply);
 		}
 	}
 
@@ -2751,11 +2725,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selOrderFrontCharacterPalette_Handle, sender.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selOrderFrontCharacterPalette_Handle, sender.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selOrderFrontCharacterPalette_Handle, sender.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selOrderFrontCharacterPalette_Handle, sender.Handle);
 		}
 	}
 
@@ -2769,11 +2743,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selArrangeInFront_Handle, sender.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selArrangeInFront_Handle, sender.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selArrangeInFront_Handle, sender.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selArrangeInFront_Handle, sender.Handle);
 		}
 	}
 
@@ -2787,11 +2761,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selRemoveWindowsItem_Handle, win.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selRemoveWindowsItem_Handle, win.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selRemoveWindowsItem_Handle, win.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selRemoveWindowsItem_Handle, win.Handle);
 		}
 	}
 
@@ -2810,11 +2784,11 @@ public class NSApplication : NSResponder
 		IntPtr arg = NSString.CreateNative(title);
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_bool(base.Handle, selAddWindowsItemTitleFilename_Handle, win.Handle, arg, isFilename);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr_bool(Handle, selAddWindowsItemTitleFilename_Handle, win.Handle, arg, isFilename);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_bool(base.SuperHandle, selAddWindowsItemTitleFilename_Handle, win.Handle, arg, isFilename);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_bool(SuperHandle, selAddWindowsItemTitleFilename_Handle, win.Handle, arg, isFilename);
 		}
 		NSString.ReleaseNative(arg);
 	}
@@ -2834,11 +2808,11 @@ public class NSApplication : NSResponder
 		IntPtr arg = NSString.CreateNative(title);
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_bool(base.Handle, selChangeWindowsItemTitleFilename_Handle, win.Handle, arg, isFilename);
+			Messaging.void_objc_msgSend_IntPtr_IntPtr_bool(Handle, selChangeWindowsItemTitleFilename_Handle, win.Handle, arg, isFilename);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_bool(base.SuperHandle, selChangeWindowsItemTitleFilename_Handle, win.Handle, arg, isFilename);
+			Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_bool(SuperHandle, selChangeWindowsItemTitleFilename_Handle, win.Handle, arg, isFilename);
 		}
 		NSString.ReleaseNative(arg);
 	}
@@ -2853,11 +2827,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selUpdateWindowsItem_Handle, win.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selUpdateWindowsItem_Handle, win.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selUpdateWindowsItem_Handle, win.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selUpdateWindowsItem_Handle, win.Handle);
 		}
 	}
 
@@ -2871,11 +2845,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selMiniaturizeAll_Handle, sender.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selMiniaturizeAll_Handle, sender.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selMiniaturizeAll_Handle, sender.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selMiniaturizeAll_Handle, sender.Handle);
 		}
 	}
 
@@ -2889,11 +2863,11 @@ public class NSApplication : NSResponder
 		}
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_IntPtr(base.Handle, selOrderFrontColorPanel_Handle, sender.Handle);
+			Messaging.void_objc_msgSend_IntPtr(Handle, selOrderFrontColorPanel_Handle, sender.Handle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_IntPtr(base.SuperHandle, selOrderFrontColorPanel_Handle, sender.Handle);
+			Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selOrderFrontColorPanel_Handle, sender.Handle);
 		}
 	}
 
@@ -2903,11 +2877,11 @@ public class NSApplication : NSResponder
 	{
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selDisableRelaunchOnLoginHandle);
+			Messaging.void_objc_msgSend(Handle, selDisableRelaunchOnLoginHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selDisableRelaunchOnLoginHandle);
+			Messaging.void_objc_msgSendSuper(SuperHandle, selDisableRelaunchOnLoginHandle);
 		}
 	}
 
@@ -2917,11 +2891,11 @@ public class NSApplication : NSResponder
 	{
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selEnableRelaunchOnLoginHandle);
+			Messaging.void_objc_msgSend(Handle, selEnableRelaunchOnLoginHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selEnableRelaunchOnLoginHandle);
+			Messaging.void_objc_msgSendSuper(SuperHandle, selEnableRelaunchOnLoginHandle);
 		}
 	}
 
@@ -2931,9 +2905,9 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			return (NSRemoteNotificationType)Messaging.UInt64_objc_msgSend(base.Handle, selEnabledRemoteNotificationTypesHandle);
+			return (NSRemoteNotificationType)Messaging.UInt64_objc_msgSend(Handle, selEnabledRemoteNotificationTypesHandle);
 		}
-		return (NSRemoteNotificationType)Messaging.UInt64_objc_msgSendSuper(base.SuperHandle, selEnabledRemoteNotificationTypesHandle);
+		return (NSRemoteNotificationType)Messaging.UInt64_objc_msgSendSuper(SuperHandle, selEnabledRemoteNotificationTypesHandle);
 	}
 
 	[Export("registerForRemoteNotificationTypes:")]
@@ -2942,11 +2916,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend_UInt64(base.Handle, selRegisterForRemoteNotificationTypes_Handle, (ulong)types);
+			Messaging.void_objc_msgSend_UInt64(Handle, selRegisterForRemoteNotificationTypes_Handle, (ulong)types);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper_UInt64(base.SuperHandle, selRegisterForRemoteNotificationTypes_Handle, (ulong)types);
+			Messaging.void_objc_msgSendSuper_UInt64(SuperHandle, selRegisterForRemoteNotificationTypes_Handle, (ulong)types);
 		}
 	}
 
@@ -2956,11 +2930,11 @@ public class NSApplication : NSResponder
 		EnsureUIThread();
 		if (IsDirectBinding)
 		{
-			Messaging.void_objc_msgSend(base.Handle, selUnregisterForRemoteNotificationsHandle);
+			Messaging.void_objc_msgSend(Handle, selUnregisterForRemoteNotificationsHandle);
 		}
 		else
 		{
-			Messaging.void_objc_msgSendSuper(base.SuperHandle, selUnregisterForRemoteNotificationsHandle);
+			Messaging.void_objc_msgSendSuper(SuperHandle, selUnregisterForRemoteNotificationsHandle);
 		}
 	}
 
@@ -3002,7 +2976,7 @@ public class NSApplication : NSResponder
 	protected override void Dispose(bool disposing)
 	{
 		base.Dispose(disposing);
-		if (base.Handle == IntPtr.Zero)
+		if (Handle == IntPtr.Zero)
 		{
 			__mt_WeakDelegate_var = null;
 			__mt_Context_var = null;

@@ -47,6 +47,25 @@ public static class Runtime
         FrameworksPath = Path.Combine(baseDirectory, "Frameworks");
     }
 
+    public static void RegisterEntryAssembly(Assembly entryAssembly)
+    {
+        RegisterAssembly(entryAssembly);
+        AssemblyName name = entryAssembly.GetName();
+        Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        foreach (Assembly assembly2 in assemblies)
+        {
+            AssemblyName[] referencedAssemblies = assembly2.GetReferencedAssemblies();
+            for (int j = 0; j < referencedAssemblies.Length; j++)
+            {
+                if (AssemblyName.ReferenceMatchesDefinition(referencedAssemblies[j], name))
+                {
+                    RegisterAssembly(assembly2);
+                    break;
+                }
+            }
+        }
+    }
+
     public static void RegisterAssembly(Assembly a)
     {
         object[] customAttributes = a.GetCustomAttributes(typeof(RequiredFrameworkAttribute), inherit: false);

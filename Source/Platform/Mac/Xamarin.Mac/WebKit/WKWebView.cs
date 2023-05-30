@@ -996,7 +996,7 @@ public class WKWebView : NSView
 
     protected override void Dispose(bool disposing)
     {
-        Dispose(disposing);
+        base.Dispose(disposing);
         if (Handle == IntPtr.Zero)
         {
             __mt_WeakNavigationDelegate_var = null;

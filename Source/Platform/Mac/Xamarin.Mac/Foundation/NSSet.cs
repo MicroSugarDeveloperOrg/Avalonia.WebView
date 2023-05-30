@@ -410,7 +410,7 @@ public class NSSet : NSObject, IEnumerable<NSObject>, IEnumerable
 
     protected override void Dispose(bool disposing)
 	{
-		Dispose(disposing);
+		base.Dispose(disposing);
 		if (Handle == IntPtr.Zero)
 		{
 			__mt_AnyObject_var = null;
