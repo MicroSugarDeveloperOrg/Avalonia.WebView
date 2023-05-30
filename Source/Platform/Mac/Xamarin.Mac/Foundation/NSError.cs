@@ -53,7 +53,45 @@ public class NSError : NSObject
 
 	public override IntPtr ClassHandle => class_ptr;
 
-	public virtual string Domain
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    [Export("initWithCoder:")]
+    public NSError(NSCoder coder)
+         : base(NSObjectFlag.Empty)
+    {
+        if (IsDirectBinding)
+        {
+            base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
+        }
+        else
+        {
+            base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
+        }
+    }
+
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public NSError(NSObjectFlag t)
+        : base(t)
+    {
+    }
+
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public NSError(IntPtr handle)
+        : base(handle)
+    {
+    }
+
+    [Advice("Always specify a domain and error code when creating an NSError instance")]
+    public NSError()
+    : this(new NSString("Invalid .ctor used"), 0L, null)
+    {
+    }
+
+    public NSError(NSString domain, int code)
+        : this(domain, code, null)
+    {
+    }
+
+    public virtual string Domain
 	{
 		[Export("domain")]
 		get
@@ -283,55 +321,17 @@ public class NSError : NSObject
 		}
 	}
 
-	[Advice("Always specify a domain and error code when creating an NSError instance")]
-	public NSError()
-		: this(new NSString("Invalid .ctor used"), 0L, null)
-	{
-	}
-
 	public static NSError FromDomain(NSString domain, int code)
 	{
 		return FromDomain(domain, code, null);
-	}
-
-	public NSError(NSString domain, int code)
-		: this(domain, code, null)
-	{
 	}
 
 	public override string ToString()
 	{
 		return LocalizedDescription;
 	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSError(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSError(NSObjectFlag t)
-		: base(t)
-	{
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSError(IntPtr handle)
-		: base(handle)
-	{
-	}
-
-	[Export("errorWithDomain:code:userInfo:")]
+     
+    [Export("errorWithDomain:code:userInfo:")]
 	public static NSError FromDomain(NSString domain, long code, NSDictionary userInfo)
 	{
 		if (domain == null)

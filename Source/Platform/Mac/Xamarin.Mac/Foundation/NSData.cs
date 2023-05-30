@@ -115,7 +115,44 @@ public class NSData : NSObject, IEnumerable, IEnumerable<byte>
 
 	private static readonly IntPtr class_ptr = Class.GetHandle("NSData");
 
-	public virtual byte this[int idx]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    [Export("init")]
+    public NSData()
+    : base(NSObjectFlag.Empty)
+    {
+        InitializeHandle(Selector.Init);
+    }
+
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    [Export("initWithCoder:")]
+    public NSData(NSCoder coder)
+        : base(NSObjectFlag.Empty)
+    {
+        InitializeHandle(Selector.InitWithCoder, coder);
+    }
+
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public NSData(NSObjectFlag t)
+        : base(t)
+    {
+    }
+
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public NSData(IntPtr handle)
+        : base(handle)
+    {
+    }
+
+    internal NSData(IntPtr handle, bool owns)
+    : base(handle)
+    {
+        if (!owns)
+        {
+            Release();
+        }
+    }
+
+    public virtual byte this[int idx]
 	{
 		get
 		{
@@ -163,16 +200,7 @@ public class NSData : NSObject, IEnumerable, IEnumerable<byte>
 		}
 	}
 
-	internal NSData(IntPtr handle, bool owns)
-		: base(handle)
-	{
-		if (!owns)
-		{
-			Release();
-		}
-	}
-
-	IEnumerator IEnumerable.GetEnumerator()
+    IEnumerator IEnumerable.GetEnumerator()
 	{
 		IntPtr source = Bytes;
 		int top = (int)Length;
@@ -317,48 +345,6 @@ public class NSData : NSObject, IEnumerable, IEnumerable<byte>
 		bool result = _Save(url, (ulong)(int)(auxiliaryFile ? 1u : 0u), addr);
 		error = (NSError)Runtime.GetNSObject(ptr);
 		return result;
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("init")]
-	public NSData()
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend(base.Handle, Selector.Init);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper(base.SuperHandle, Selector.Init);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	[Export("initWithCoder:")]
-	public NSData(NSCoder coder)
-		: base(NSObjectFlag.Empty)
-	{
-		if (IsDirectBinding)
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSend_IntPtr(base.Handle, Selector.InitWithCoder, coder.Handle);
-		}
-		else
-		{
-			base.Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr(base.SuperHandle, Selector.InitWithCoder, coder.Handle);
-		}
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSData(NSObjectFlag t)
-		: base(t)
-	{
-	}
-
-	[EditorBrowsable(EditorBrowsableState.Advanced)]
-	public NSData(IntPtr handle)
-		: base(handle)
-	{
 	}
 
 	[Export("dataWithContentsOfURL:")]
