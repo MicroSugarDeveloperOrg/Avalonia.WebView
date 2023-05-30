@@ -263,23 +263,43 @@ internal abstract class NativeImplementationBuilder
 		int num = 0;
 		for (; i < ParameterTypes.Length; i++)
 		{
-			if (Parameters[i - ArgumentOffset].ParameterType.IsByRef && IsWrappedType(Parameters[i - ArgumentOffset].ParameterType.GetElementType()))
+            var parameterInfo = Parameters[i - ArgumentOffset];
+            var parameterType = parameterInfo.ParameterType;
+
+            if (parameterInfo is null)
+                continue;
+
+            if (parameterType is null)
+                continue;
+
+            if (parameterType.IsInterface && typeof(INativeObject).IsAssignableFrom(parameterType))
+            {
+                //此处需要获取对象的构造函数，由于这里使用了Interface所以大概率这里或抱错获取不到构造
+                var protocolAttribute = parameterType.GetCustomAttribute<ProtocolAttribute>();
+                if (protocolAttribute is null)
+                    continue;
+
+                var wrapperType = protocolAttribute.WrapperType;
+                var constructorInfo = wrapperType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[2] { typeof(IntPtr),typeof(bool) }, null)
+                il.Emit(OpCodes.Ldarg, i);
+                il.Emit(OpCodes.Newobj, constructorInfo);
+            }
+            else if (parameterType.IsByRef && IsWrappedType(parameterType.GetElementType()))
 			{
 				il.Emit(OpCodes.Ldloca_S, num + locoffset);
 				num++;
 			}
-			else if (Parameters[i - ArgumentOffset].ParameterType.IsArray && IsWrappedType(Parameters[i - ArgumentOffset].ParameterType.GetElementType()))
+			else if (parameterType.IsArray && IsWrappedType(parameterType.GetElementType()))
 			{
 				il.Emit(OpCodes.Ldloc, num + locoffset);
 				num++;
 			}
-			else if (typeof(INativeObject).IsAssignableFrom(Parameters[i - ArgumentOffset].ParameterType) && !IsWrappedType(Parameters[i - ArgumentOffset].ParameterType))
+			else if (typeof(INativeObject).IsAssignableFrom(parameterType) && !IsWrappedType(parameterType))
 			{
-				il.Emit(OpCodes.Ldarg, i);
-				//此处需要获取对象的构造函数，由于这里使用了Interface所以大概率这里或抱错获取不到构造
-				il.Emit(OpCodes.Newobj, Parameters[i - ArgumentOffset].ParameterType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[1] { typeof(IntPtr) }, null));
+				il.Emit(OpCodes.Ldarg, i); 
+				il.Emit(OpCodes.Newobj, parameterType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[1] { typeof(IntPtr) }, null));
 			}
-			else if (Parameters[i - ArgumentOffset].ParameterType == typeof(string))
+			else if (parameterType == typeof(string))
 			{
 				il.Emit(OpCodes.Ldloc, num + locoffset);
 				num++;
