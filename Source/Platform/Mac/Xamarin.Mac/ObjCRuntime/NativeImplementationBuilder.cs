@@ -152,27 +152,36 @@ internal abstract class NativeImplementationBuilder
 		}
 		for (int i = 0; i < Parameters.Length; i++)
 		{
-			if (Parameters[i].ParameterType.IsByRef && IsWrappedType(Parameters[i].ParameterType.GetElementType()))
+            var parameterInfo = Parameters[i];
+            var parameterType = parameterInfo.ParameterType;
+ 
+            if (parameterInfo is null)
+                continue;
+
+            if (parameterType is null)
+                continue;
+
+            if (parameterType.IsByRef && IsWrappedType(parameterType.GetElementType()))
 			{
 				ParameterTypes[i + ArgumentOffset] = typeof(IntPtr).MakeByRefType();
 			}
-			else if (Parameters[i].ParameterType.IsArray && IsWrappedType(Parameters[i].ParameterType.GetElementType()))
+			else if (parameterType.IsArray && IsWrappedType(parameterType.GetElementType()))
 			{
 				ParameterTypes[i + ArgumentOffset] = typeof(IntPtr);
 			}
-			else if (typeof(INativeObject).IsAssignableFrom(Parameters[i].ParameterType) && !IsWrappedType(Parameters[i].ParameterType))
+			else if (typeof(INativeObject).IsAssignableFrom(parameterType) && !IsWrappedType(parameterType))
 			{
 				ParameterTypes[i + ArgumentOffset] = typeof(IntPtr);
 			}
-			else if (Parameters[i].ParameterType == typeof(string))
+			else if (parameterType == typeof(string))
 			{
 				ParameterTypes[i + ArgumentOffset] = typeof(NSString);
 			}
 			else
 			{
-				ParameterTypes[i + ArgumentOffset] = Parameters[i].ParameterType;
+				ParameterTypes[i + ArgumentOffset] = parameterType;
 			}
-			Signature += TypeConverter.ToNative(Parameters[i].ParameterType);
+			Signature += TypeConverter.ToNative(parameterType);
 		}
 	}
 
@@ -180,15 +189,24 @@ internal abstract class NativeImplementationBuilder
 	{
 		for (int i = 0; i < Parameters.Length; i++)
 		{
-			if (Parameters[i].ParameterType.IsByRef && IsWrappedType(Parameters[i].ParameterType.GetElementType()))
+            var parameterInfo = Parameters[i];
+            var parameterType = parameterInfo.ParameterType;
+
+            if (parameterInfo is null)
+                continue;
+
+            if (parameterType is null)
+                continue;
+
+            if (parameterType.IsByRef && IsWrappedType(parameterType.GetElementType()))
 			{
-				il.DeclareLocal(Parameters[i].ParameterType.GetElementType());
+				il.DeclareLocal(parameterType.GetElementType());
 			}
-			else if (Parameters[i].ParameterType.IsArray && IsWrappedType(Parameters[i].ParameterType.GetElementType()))
+			else if (parameterType.IsArray && IsWrappedType(parameterType.GetElementType()))
 			{
-				il.DeclareLocal(Parameters[i].ParameterType);
+				il.DeclareLocal(parameterType);
 			}
-			else if (Parameters[i].ParameterType == typeof(string))
+			else if (parameterType == typeof(string))
 			{
 				il.DeclareLocal(typeof(string));
 			}
@@ -201,7 +219,16 @@ internal abstract class NativeImplementationBuilder
 		int num = 0;
 		for (; i < ParameterTypes.Length; i++)
 		{
-			if (Parameters[i - ArgumentOffset].ParameterType.IsByRef && Attribute.GetCustomAttribute(Parameters[i - ArgumentOffset], typeof(OutAttribute)) == null && IsWrappedType(Parameters[i - ArgumentOffset].ParameterType.GetElementType()))
+            var parameterInfo = Parameters[i - ArgumentOffset];
+            var parameterType = parameterInfo.ParameterType;
+
+            if (parameterInfo is null)
+                continue;
+
+            if (parameterType is null)
+                continue;
+
+            if (parameterType.IsByRef && Attribute.GetCustomAttribute(parameterInfo, typeof(OutAttribute)) == null && IsWrappedType(parameterType.GetElementType()))
 			{
 				Label label = il.DefineLabel();
 				Label label2 = il.DefineLabel();
@@ -217,20 +244,20 @@ internal abstract class NativeImplementationBuilder
 				il.Emit(OpCodes.Stloc, num + locoffset);
 				num++;
 			}
-			else if (Parameters[i - ArgumentOffset].ParameterType.IsArray && IsWrappedType(Parameters[i - ArgumentOffset].ParameterType.GetElementType()))
+			else if (parameterType.IsArray && IsWrappedType(parameterType.GetElementType()))
 			{
 				Label label3 = il.DefineLabel();
 				Label label4 = il.DefineLabel();
 				il.Emit(OpCodes.Ldarg, i);
 				il.Emit(OpCodes.Brfalse, label3);
 				il.Emit(OpCodes.Ldarg, i);
-				if (Parameters[i - ArgumentOffset].ParameterType.GetElementType() == typeof(string))
+				if (parameterType.GetElementType() == typeof(string))
 				{
 					il.Emit(OpCodes.Call, convertsarray);
 				}
 				else
 				{
-					il.Emit(OpCodes.Call, convertarray.MakeGenericMethod(Parameters[i - ArgumentOffset].ParameterType.GetElementType()));
+					il.Emit(OpCodes.Call, convertarray.MakeGenericMethod(parameterType.GetElementType()));
 				}
 				il.Emit(OpCodes.Br, label4);
 				il.MarkLabel(label3);
@@ -239,7 +266,7 @@ internal abstract class NativeImplementationBuilder
 				il.Emit(OpCodes.Stloc, num + locoffset);
 				num++;
 			}
-			else if (Parameters[i - ArgumentOffset].ParameterType == typeof(string))
+			else if (parameterType == typeof(string))
 			{
 				Label label5 = il.DefineLabel();
 				Label label6 = il.DefineLabel();
@@ -317,7 +344,16 @@ internal abstract class NativeImplementationBuilder
 		int num = 0;
 		for (; i < ParameterTypes.Length; i++)
 		{
-			if (Parameters[i - ArgumentOffset].ParameterType.IsByRef && IsWrappedType(Parameters[i - ArgumentOffset].ParameterType.GetElementType()))
+            var parameterInfo = Parameters[i - ArgumentOffset];
+            var parameterType = parameterInfo.ParameterType;
+
+            if (parameterInfo is null)
+                continue;
+
+            if (parameterType is null)
+                continue;
+
+            if (parameterType.IsByRef && IsWrappedType(parameterType.GetElementType()))
 			{
 				Label label = il.DefineLabel();
 				Label label2 = il.DefineLabel();
@@ -335,11 +371,11 @@ internal abstract class NativeImplementationBuilder
 				il.MarkLabel(label2);
 				num++;
 			}
-			else if (Parameters[i - ArgumentOffset].ParameterType.IsArray && IsWrappedType(Parameters[i - ArgumentOffset].ParameterType.GetElementType()))
+			else if (parameterType.IsArray && IsWrappedType(parameterType.GetElementType()))
 			{
 				num++;
 			}
-			else if (Parameters[i - ArgumentOffset].ParameterType == typeof(string))
+			else if (parameterType == typeof(string))
 			{
 				num++;
 			}
