@@ -8,10 +8,15 @@ namespace CoreFoundation;
 internal class CFArray : NativeObject
 {
     [Preserve(Conditional = true)]
-    internal CFArray(IntPtr handle)
-
+    internal CFArray(IntPtr handle) 
+        : base(handle, false)
     {
-        InitializeHandle(handle);
+    }
+
+    [Preserve(Conditional = true)]
+    internal CFArray(NativeHandle handle, bool owns)
+        : base(handle, owns)
+    {
     }
 
     ~CFArray()
@@ -35,7 +40,9 @@ internal class CFArray : NativeObject
         }
     }
       
-    public IntPtr Count => GetCount(GetCheckedHandle());
+    public IntPtr CountPtr => GetCountPtr(GetCheckedHandle());
+
+    public int Count => GetCount(GetCheckedHandle());
 
     [Field("kCFNull", "CoreFoundation")]
     internal static IntPtr _CFNullHandle => Dlfcn.GetIntPtr(Libraries.CoreFoundation.Handle, "kCFNull");
@@ -59,7 +66,15 @@ internal class CFArray : NativeObject
     [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
     internal static extern IntPtr CFArrayGetValueAtIndex(IntPtr theArray, IntPtr idx);
 
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+    internal static extern IntPtr CFArrayGetValueAtIndex(IntPtr theArray, int idx);
+
     public IntPtr GetValue(IntPtr index)
+    {
+        return CFArrayGetValueAtIndex(GetCheckedHandle(), index);
+    }
+
+    public IntPtr GetValue(int index)
     {
         return CFArrayGetValueAtIndex(GetCheckedHandle(), index);
     }
@@ -120,18 +135,23 @@ internal class CFArray : NativeObject
     }
 
     [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFArrayGetCount")]
-    internal static extern IntPtr GetCount(IntPtr theArray);
+    internal static extern IntPtr GetCountPtr(IntPtr theArray);
+
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFArrayGetCount")]
+    internal static extern int GetCount(IntPtr theArray);
 
     [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
     private static extern IntPtr CFArrayCreateCopy(IntPtr allocator, IntPtr theArray);
+
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+    internal static extern void CFArrayGetValues(IntPtr theArray, CFRange range, IntPtr values);
 
     internal CFArray Clone()
     {
         return new CFArray(CFArrayCreateCopy(IntPtr.Zero, GetCheckedHandle()));
     }
 
-    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-    internal static extern void CFArrayGetValues(IntPtr theArray, CFRange range, IntPtr values);
+
 
     public static string?[]? StringArrayFromHandle(IntPtr handle)
     {
