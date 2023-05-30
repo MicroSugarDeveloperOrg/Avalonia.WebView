@@ -10,4 +10,10 @@ internal sealed class WKNavigationDelegateWrapper : BaseWrapper, IWKNavigationDe
         : base(handle, owns)
     {
     }
+
+    [Preserve(Conditional = false)]
+    public WKNavigationDelegateWrapper(IntPtr handle)
+       : base(handle, false)
+    {
+    }
 }

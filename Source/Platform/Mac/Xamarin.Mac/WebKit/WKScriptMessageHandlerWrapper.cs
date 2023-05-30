@@ -11,6 +11,12 @@ internal class WKScriptMessageHandlerWrapper : BaseWrapper, IWKScriptMessageHand
     {
     }
 
+    [Preserve(Conditional = false)]
+    public WKScriptMessageHandlerWrapper(IntPtr handle)
+       : base(handle, false)
+    {
+    }
+
     [Export("userContentController:didReceiveScriptMessage:")]
     public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
     {

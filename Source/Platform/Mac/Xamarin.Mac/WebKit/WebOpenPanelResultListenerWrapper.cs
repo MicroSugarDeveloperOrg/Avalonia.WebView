@@ -9,4 +9,10 @@ internal sealed class WebOpenPanelResultListenerWrapper : BaseWrapper, IWebOpenP
         : base(handle, owns)
     {
     }
+
+    [Preserve(Conditional = false)]
+    public WebOpenPanelResultListenerWrapper(IntPtr handle)
+      : base(handle, false)
+    {
+    }
 }

@@ -11,6 +11,12 @@ internal sealed class WKUrlSchemeHandlerWrapper : BaseWrapper, IWKUrlSchemeHandl
     {
     }
 
+    [Preserve(Conditional = false)]
+    public WKUrlSchemeHandlerWrapper(IntPtr handle)
+       : base(handle, false)
+    {
+    }
+
     [Export("webView:startURLSchemeTask:")]
     public void StartUrlSchemeTask(WKWebView webView, IWKUrlSchemeTask urlSchemeTask)
     {

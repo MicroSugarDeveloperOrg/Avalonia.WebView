@@ -9,4 +9,10 @@ internal sealed class WebPolicyDelegateWrapper : BaseWrapper, IWebPolicyDelegate
         : base(handle, owns)
     {
     }
+
+    [Preserve(Conditional = false)]
+    public WebPolicyDelegateWrapper(IntPtr handle)
+       : base(handle, false)
+    {
+    }
 }

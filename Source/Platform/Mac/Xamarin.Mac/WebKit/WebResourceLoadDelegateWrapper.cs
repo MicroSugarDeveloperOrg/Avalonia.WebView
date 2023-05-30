@@ -9,4 +9,10 @@ internal sealed class WebResourceLoadDelegateWrapper : BaseWrapper, IWebResource
         : base(handle, owns)
     {
     }
+
+    [Preserve(Conditional = false)]
+    public WebResourceLoadDelegateWrapper(IntPtr handle)
+    : base(handle, false)
+    {
+    }
 }

@@ -9,4 +9,10 @@ internal sealed class WebDownloadDelegateWrapper : BaseWrapper, IWebDownloadDele
         : base(handle, owns)
     {
     }
+
+    [Preserve(Conditional = false)]
+    public WebDownloadDelegateWrapper(IntPtr handle)
+    : base(handle, false)
+    {
+    }
 }

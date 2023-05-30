@@ -32,9 +32,15 @@ internal sealed class WebDocumentRepresentationWrapper : BaseWrapper, IWebDocume
         }
     }
 
+    [Preserve(Conditional = false)]
+    public WebDocumentRepresentationWrapper(IntPtr handle)
+        : base(handle, false)
+    {
+    }
+
     [Preserve(Conditional = true)]
     public WebDocumentRepresentationWrapper(IntPtr handle, bool owns)
-        : base(handle, owns)
+    : base(handle, owns)
     {
     }
 

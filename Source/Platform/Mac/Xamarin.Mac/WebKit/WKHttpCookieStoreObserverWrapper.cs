@@ -9,4 +9,10 @@ internal class WKHttpCookieStoreObserverWrapper : BaseWrapper, IWKHttpCookieStor
     : base(handle, owns)
     {
     }
+
+    [Preserve(Conditional = false)]
+    public WKHttpCookieStoreObserverWrapper(IntPtr handle)
+  : base(handle, false)
+    {
+    }
 }

@@ -9,4 +9,10 @@ internal sealed class WebFrameLoadDelegateWrapper : BaseWrapper, IWebFrameLoadDe
         : base(handle, owns)
     {
     }
+
+    [Preserve(Conditional = false)]
+    public WebFrameLoadDelegateWrapper(IntPtr handle)
+       : base(handle, false)
+    {
+    }
 }

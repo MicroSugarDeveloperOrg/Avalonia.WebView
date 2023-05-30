@@ -9,4 +9,10 @@ internal sealed class WebPolicyDecisionListenerWrapper : BaseWrapper, IWebPolicy
         : base(handle, owns)
     {
     }
+
+    [Preserve(Conditional = false)]
+    public WebPolicyDecisionListenerWrapper(IntPtr handle)
+       : base(handle, false)
+    {
+    }
 }

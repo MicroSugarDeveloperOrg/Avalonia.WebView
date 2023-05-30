@@ -10,4 +10,10 @@ internal sealed class WKUIDelegateWrapper : BaseWrapper, IWKUIDelegate
         : base(handle, owns)
     {
     }
+
+    [Preserve(Conditional = false)]
+    public WKUIDelegateWrapper(IntPtr handle)
+        : base(handle, false)
+    {
+    }
 }

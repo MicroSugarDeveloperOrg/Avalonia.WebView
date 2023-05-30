@@ -5,6 +5,18 @@ namespace WebKit;
 
 internal sealed class WKUrlSchemeTaskWrapper : BaseWrapper, IWKUrlSchemeTask
 {
+    [Preserve(Conditional = true)]
+    public WKUrlSchemeTaskWrapper(IntPtr handle, bool owns)
+        : base(handle, owns)
+    {
+    }
+
+    [Preserve(Conditional = false)]
+    public WKUrlSchemeTaskWrapper(IntPtr handle)
+        : base(handle, false)
+    {
+    }
+
     public NSUrlRequest Request
     {
         [Export("request", ArgumentSemantic.Copy)]
@@ -13,13 +25,7 @@ internal sealed class WKUrlSchemeTaskWrapper : BaseWrapper, IWKUrlSchemeTask
             return Runtime.GetNSObjectTx<NSUrlRequest>(Messaging.IntPtr_objc_msgSend(Handle, Selector.GetHandle("request")));
         }
     }
-
-    [Preserve(Conditional = true)]
-    public WKUrlSchemeTaskWrapper(IntPtr handle, bool owns)
-        : base(handle, owns)
-    {
-    }
-
+  
     [Export("didReceiveResponse:")]
     public void DidReceiveResponse(NSUrlResponse response)
     {
