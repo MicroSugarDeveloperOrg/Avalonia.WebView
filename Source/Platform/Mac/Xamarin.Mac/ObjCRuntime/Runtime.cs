@@ -1,7 +1,9 @@
 using Foundation;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using Xamarin.Utiles;
+using static ObjCRuntime.RuntimeEx;
 
 namespace ObjCRuntime;
 
@@ -10,6 +12,8 @@ public static class Runtime
     private static List<Assembly> assemblies;
 
     private static Dictionary<IntPtr, WeakReference> object_map;
+
+    private static Dictionary<Type, ConstructorInfo> intptr_ctor_cache;
 
     private static object lock_obj;
 
@@ -22,6 +26,7 @@ public static class Runtime
     static Runtime()
     {
         object_map = new Dictionary<IntPtr, WeakReference>();
+        intptr_ctor_cache = new();
         lock_obj = new object();
         selClass = Selector.GetHandle("class");
         string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -228,7 +233,7 @@ public static class Runtime
         return null;
     }
 
-    public static T GetNSObjectTx<T>(IntPtr ptr) where T : NSObject
+    public static T? GetNSObjectTx<T>(IntPtr ptr) where T : NSObject
     {
         if (ptr == IntPtr.Zero)
             return null;
@@ -245,7 +250,23 @@ public static class Runtime
         Type type = Class.Lookup(Messaging.intptr_objc_msgSend(ptr, selClass));
         if (type != null)
         {
-            return Activator.CreateInstance(type, ptr) as T;
+            var intPtrConstructor = GetIntPtrConstructor(type);
+            if (intPtrConstructor is null)
+            {
+                MissingCtor(ptr, IntPtr.Zero, type, MissingCtorResolution.ThrowConstructor1NotFound);
+                return null;
+            }
+
+            object[] array = new object[1];
+            if (intPtrConstructor.GetParameters()[0].ParameterType == typeof(IntPtr))
+            {
+                array[0] = ptr;
+            }
+            else
+            {
+                array[0] = new NativeHandle(ptr);
+            }
+            return (T)intPtrConstructor.Invoke(array);
         }
         return new NSObject(ptr) as T;
     }
@@ -267,9 +288,98 @@ public static class Runtime
 
         Type type = Class.Lookup(Messaging.intptr_objc_msgSend(ptr, selClass));
         if (type != null)
-            return Activator.CreateInstance(type, ptr) as T;
+        {
+            var intPtrConstructor = GetIntPtrConstructor(type);
+            if (intPtrConstructor is null)
+            {
+                MissingCtor(ptr, IntPtr.Zero, type, MissingCtorResolution.ThrowConstructor1NotFound);
+                return null;
+            }
+
+            object[] array = new object[1];
+            if (intPtrConstructor.GetParameters()[0].ParameterType == typeof(IntPtr))
+            {
+                array[0] = ptr;
+            }
+            else
+            {
+                array[0] = new NativeHandle(ptr);
+            }
+            return (T)intPtrConstructor.Invoke(array);
+        }
 
         return new NSObject(ptr) as T;
+    }
+
+
+    private static ConstructorInfo? GetIntPtrConstructor(Type type)
+    {
+        lock (intptr_ctor_cache)
+        {
+            if (intptr_ctor_cache.TryGetValue(type, out ConstructorInfo value))
+                return value;
+        }
+
+        ConstructorInfo[] constructors = type.GetConstructors(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        ConstructorInfo constructorInfo = null;
+        for (int i = 0; i < constructors.Length; i++)
+        {
+            ParameterInfo[] parameters = constructors[i].GetParameters();
+            if (parameters.Length != 1)
+                continue;
+            if (parameters[0].ParameterType == typeof(IntPtr))
+                constructorInfo = constructors[i];
+            else if (!(parameters[0].ParameterType != typeof(NativeHandle)))
+            {
+                lock (intptr_ctor_cache)
+                    intptr_ctor_cache[type] = constructors[i];
+
+                return constructors[i];
+            }
+        }
+        if (constructorInfo != null)
+        {
+            string fullName = typeof(IntPtr).FullName;
+            string fullName2 = typeof(NativeHandle).FullName;
+            LogHelper.NSLog($"The type {type.FullName} does not have a constructor that takes {"an ObjCRuntime.NativeHandle parameter"} but a constructor that takes {"an System.IntPtr parameter"} was found (and will be used instead). It's highly recommended to change the signature of the {fullName} constructor to be {fullName2}.");
+            lock (intptr_ctor_cache)
+            {
+                intptr_ctor_cache[type] = constructorInfo;
+                return constructorInfo;
+            }
+        }
+        return null;
+    }
+
+    private static void MissingCtor(IntPtr ptr, IntPtr klass, Type type, MissingCtorResolution resolution)
+    {
+        if (resolution == MissingCtorResolution.Ignore)
+        {
+            return;
+        }
+        if (klass == IntPtr.Zero)
+        {
+            klass = Class.GetClassForObject(ptr);
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.Append("Failed to marshal the Objective-C object 0x");
+        stringBuilder.Append(ptr.ToString("x"));
+        stringBuilder.Append(" (type: ");
+        stringBuilder.Append(new Class(klass).Name);
+        stringBuilder.Append("). Could not find an existing managed instance for this object, nor was it possible to create a new managed instance (because the type '");
+        stringBuilder.Append(type.FullName);
+        stringBuilder.Append("' does not have a constructor that takes ");
+        switch (resolution)
+        {
+            case MissingCtorResolution.ThrowConstructor1NotFound:
+                stringBuilder.Append("one NativeHandle argument");
+                break;
+            case MissingCtorResolution.ThrowConstructor2NotFound:
+                stringBuilder.Append("two (NativeHandle, bool) arguments");
+                break;
+        }
+        stringBuilder.Append(").");
+        throw ErrorHelper.CreateError(8027, stringBuilder.ToString());
     }
 
     internal static IntPtr AllocGCHandle(object? value, GCHandleType type = GCHandleType.Normal)

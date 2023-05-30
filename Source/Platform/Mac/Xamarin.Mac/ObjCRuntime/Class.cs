@@ -492,4 +492,9 @@ public class Class : INativeObject
 		}
 		return addProperty(cls, name, attributes, count);
 	}
+
+    internal static IntPtr GetClassForObject(IntPtr obj)
+    {
+        return Messaging.IntPtr_objc_msgSend(obj, Selector.GetHandle("class"));
+    }
 }
