@@ -33,7 +33,21 @@ public struct BlockLiteral
 		Marshal.StructureToPtr(global_descriptor, global_descriptor_ptr, fDeleteOld: false);
 	}
 
-	public void SetupBlock(Delegate trampoline, Delegate userDelegate)
+
+    public object Target
+    {
+        get
+        {
+            object target = GCHandle.FromIntPtr((global_handle != IntPtr.Zero) ? global_handle : local_handle).Target;
+            if (target is Tuple<Delegate, Delegate> tuple)
+            {
+                return tuple.Item2;
+            }
+            return target;
+        }
+    }
+
+    public void SetupBlock(Delegate trampoline, Delegate userDelegate)
 	{
 		isa = block_class;
 		invoke = Marshal.GetFunctionPointerForDelegate(trampoline);

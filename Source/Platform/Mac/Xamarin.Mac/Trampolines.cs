@@ -20,7 +20,7 @@ internal static class Trampolines
         private unsafe static void TActionArity1V0(IntPtr block, IntPtr obj)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<NSAnimationContext>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSAnimationContext)Runtime.GetNSObject(obj));
+            ((Action<NSAnimationContext>)((BlockLiteral*)block)->Target)?.Invoke((NSAnimationContext)Runtime.GetNSObject(obj));
         }
     }
 
@@ -34,7 +34,7 @@ internal static class Trampolines
         private unsafe static void TNSAction(IntPtr block)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSAction)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke();
+            ((NSAction)((BlockLiteral*)block)->Target)?.Invoke();
         }
     }
 
@@ -48,7 +48,7 @@ internal static class Trampolines
         private unsafe static void TNSWindowCompletionHandler(IntPtr block, IntPtr window, IntPtr error)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSWindowCompletionHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSWindow)Runtime.GetNSObject(window), (NSError)Runtime.GetNSObject(error));
+            ((NSWindowCompletionHandler)((BlockLiteral*)block)->Target)?.Invoke((NSWindow)Runtime.GetNSObject(window), (NSError)Runtime.GetNSObject(error));
         }
     }
 
@@ -62,7 +62,7 @@ internal static class Trampolines
         private unsafe static void TNSDocumentCompletionHandler(IntPtr block, IntPtr nsErrorPointerOrZero)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSDocumentCompletionHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(nsErrorPointerOrZero);
+            ((NSDocumentCompletionHandler)((BlockLiteral*)block)->Target)?.Invoke(nsErrorPointerOrZero);
         }
     }
 
@@ -76,7 +76,7 @@ internal static class Trampolines
         private unsafe static void TOpenDocumentCompletionHandler(IntPtr block, IntPtr document, bool documentWasAlreadyOpen, IntPtr error)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((OpenDocumentCompletionHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSDocument)Runtime.GetNSObject(document), documentWasAlreadyOpen, (NSError)Runtime.GetNSObject(error));
+            ((OpenDocumentCompletionHandler)((BlockLiteral*)block)->Target)?.Invoke((NSDocument)Runtime.GetNSObject(document), documentWasAlreadyOpen, (NSError)Runtime.GetNSObject(error));
         }
     }
 
@@ -90,7 +90,7 @@ internal static class Trampolines
         private unsafe static IntPtr TNSDraggingItemImagesContentProvider(IntPtr block)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            return NSArray.FromNSObjects(((NSDraggingItemImagesContentProvider)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))()).Handle;
+            return NSArray.FromNSObjects(((NSDraggingItemImagesContentProvider)((BlockLiteral*)block)->Target)()).Handle;
         }
     }
 
@@ -104,7 +104,7 @@ internal static class Trampolines
         private unsafe static void TNSDraggingEnumerator(IntPtr block, IntPtr draggingItem, int idx, [MarshalAs(UnmanagedType.I1)] ref bool stop)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSDraggingEnumerator)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSDraggingItem)Runtime.GetNSObject(draggingItem), idx, ref stop);
+            ((NSDraggingEnumerator)((BlockLiteral*)block)->Target)?.Invoke((NSDraggingItem)Runtime.GetNSObject(draggingItem), idx, ref stop);
         }
     }
 
@@ -118,7 +118,7 @@ internal static class Trampolines
         private unsafe static void TGlobalEventHandler(IntPtr block, IntPtr theEvent)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((GlobalEventHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSEvent)Runtime.GetNSObject(theEvent));
+            ((GlobalEventHandler)((BlockLiteral*)block)->Target)?.Invoke((NSEvent)Runtime.GetNSObject(theEvent));
         }
     }
 
@@ -132,7 +132,7 @@ internal static class Trampolines
         private unsafe static IntPtr TLocalEventHandler(IntPtr block, IntPtr theEvent)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            return ((LocalEventHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))((NSEvent)Runtime.GetNSObject(theEvent))?.Handle ?? IntPtr.Zero;
+            return ((LocalEventHandler)((BlockLiteral*)block)->Target)((NSEvent)Runtime.GetNSObject(theEvent))?.Handle ?? IntPtr.Zero;
         }
     }
 
@@ -146,7 +146,7 @@ internal static class Trampolines
         private unsafe static void TNSEventTrackHandler(IntPtr block, double gestureAmount, NSEventPhase eventPhase, bool isComplete, [MarshalAs(UnmanagedType.I1)] ref bool stop)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSEventTrackHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(gestureAmount, eventPhase, isComplete, ref stop);
+            ((NSEventTrackHandler)((BlockLiteral*)block)->Target)?.Invoke(gestureAmount, eventPhase, isComplete, ref stop);
         }
     }
 
@@ -160,7 +160,7 @@ internal static class Trampolines
         private unsafe static void TNSSavePanelComplete(IntPtr block, int result)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSSavePanelComplete)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(result);
+            ((NSSavePanelComplete)((BlockLiteral*)block)->Target)?.Invoke(result);
         }
     }
 
@@ -174,7 +174,7 @@ internal static class Trampolines
         private unsafe static void TNSTableViewRowHandler(IntPtr block, IntPtr rowView, int row)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSTableViewRowHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSTableRowView)Runtime.GetNSObject(rowView), row);
+            ((NSTableViewRowHandler)((BlockLiteral*)block)->Target)?.Invoke((NSTableRowView)Runtime.GetNSObject(rowView), row);
         }
     }
 
@@ -188,7 +188,7 @@ internal static class Trampolines
         private unsafe static void TNSWorkspaceUrlHandler(IntPtr block, IntPtr newUrls, IntPtr error)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSWorkspaceUrlHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSDictionary)Runtime.GetNSObject(newUrls), (NSError)Runtime.GetNSObject(error));
+            ((NSWorkspaceUrlHandler)((BlockLiteral*)block)->Target)?.Invoke((NSDictionary)Runtime.GetNSObject(newUrls), (NSError)Runtime.GetNSObject(error));
         }
     }
 
@@ -202,7 +202,7 @@ internal static class Trampolines
         private unsafe static void TNSSharingServiceHandler(IntPtr block)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSSharingServiceHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke();
+            ((NSSharingServiceHandler)((BlockLiteral*)block)->Target)?.Invoke();
         }
     }
 
@@ -216,7 +216,7 @@ internal static class Trampolines
         private unsafe static void TAVAssetImageGeneratorCompletionHandler(IntPtr block, CMTime requestedTime, IntPtr imageRef, CMTime actualTime, AVAssetImageGeneratorResult result, IntPtr error)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((AVAssetImageGeneratorCompletionHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(requestedTime, imageRef, actualTime, result, (NSError)Runtime.GetNSObject(error));
+            ((AVAssetImageGeneratorCompletionHandler)((BlockLiteral*)block)->Target)?.Invoke(requestedTime, imageRef, actualTime, result, (NSError)Runtime.GetNSObject(error));
         }
     }
 
@@ -230,7 +230,7 @@ internal static class Trampolines
         private unsafe static void TAVCompletionHandler(IntPtr block)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((AVCompletionHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke();
+            ((AVCompletionHandler)((BlockLiteral*)block)->Target)?.Invoke();
         }
     }
 
@@ -244,7 +244,7 @@ internal static class Trampolines
         private unsafe static void TAVCaptureCompletionHandler(IntPtr block, IntPtr imageDataSampleBuffer, IntPtr error)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((AVCaptureCompletionHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(new CMSampleBuffer(imageDataSampleBuffer, owns: false), (NSError)Runtime.GetNSObject(error));
+            ((AVCaptureCompletionHandler)((BlockLiteral*)block)->Target)?.Invoke(new CMSampleBuffer(imageDataSampleBuffer, owns: false), (NSError)Runtime.GetNSObject(error));
         }
     }
 
@@ -258,7 +258,7 @@ internal static class Trampolines
         private unsafe static void TAVTimeHandler(IntPtr block, CMTime time)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((AVTimeHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(time);
+            ((AVTimeHandler)((BlockLiteral*)block)->Target)?.Invoke(time);
         }
     }
 
@@ -272,7 +272,7 @@ internal static class Trampolines
         private unsafe static void TAVCompletion(IntPtr block, bool finished)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((AVCompletion)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(finished);
+            ((AVCompletion)((BlockLiteral*)block)->Target)?.Invoke(finished);
         }
     }
 
@@ -286,7 +286,7 @@ internal static class Trampolines
         private unsafe static long TNSComparator(IntPtr block, IntPtr obj1, IntPtr obj2)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            return ((NSComparator)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))(Runtime.GetNSObject(obj1), Runtime.GetNSObject(obj2));
+            return ((NSComparator)((BlockLiteral*)block)->Target)(Runtime.GetNSObject(obj1), Runtime.GetNSObject(obj2));
         }
     }
 
@@ -300,7 +300,7 @@ internal static class Trampolines
         private unsafe static void TNSAttributedRangeCallback(IntPtr block, IntPtr attrs, NSRange range, [MarshalAs(UnmanagedType.I1)] ref bool stop)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSAttributedRangeCallback)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSDictionary)Runtime.GetNSObject(attrs), range, ref stop);
+            ((NSAttributedRangeCallback)((BlockLiteral*)block)->Target)?.Invoke((NSDictionary)Runtime.GetNSObject(attrs), range, ref stop);
         }
     }
 
@@ -314,7 +314,7 @@ internal static class Trampolines
         private unsafe static void TNSAttributedStringCallback(IntPtr block, IntPtr value, NSRange range, [MarshalAs(UnmanagedType.I1)] ref bool stop)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSAttributedStringCallback)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObject(value), range, ref stop);
+            ((NSAttributedStringCallback)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObject(value), range, ref stop);
         }
     }
 
@@ -328,7 +328,7 @@ internal static class Trampolines
         private unsafe static void TNSFileHandleUpdateHandler(IntPtr block, IntPtr handle)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSFileHandleUpdateHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSFileHandle)Runtime.GetNSObject(handle));
+            ((NSFileHandleUpdateHandler)((BlockLiteral*)block)->Target)?.Invoke((NSFileHandle)Runtime.GetNSObject(handle));
         }
     }
 
@@ -342,7 +342,7 @@ internal static class Trampolines
         private unsafe static void TNSExpressionHandler(IntPtr block, IntPtr evaluatedObject, IntPtr expressions, IntPtr context)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSExpressionHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObject(evaluatedObject), NSArray.ArrayFromHandle<NSExpression>(expressions), (NSMutableDictionary)Runtime.GetNSObject(context));
+            ((NSExpressionHandler)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObject(evaluatedObject), NSArray.ArrayFromHandle<NSExpression>(expressions), (NSMutableDictionary)Runtime.GetNSObject(context));
         }
     }
 
@@ -356,7 +356,7 @@ internal static class Trampolines
         private unsafe static void TNSLingusticEnumerator(IntPtr block, IntPtr tag, NSRange tokenRange, NSRange sentenceRange, [MarshalAs(UnmanagedType.I1)] ref bool stop)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSLingusticEnumerator)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSString)Runtime.GetNSObject(tag), tokenRange, sentenceRange, ref stop);
+            ((NSLingusticEnumerator)((BlockLiteral*)block)->Target)?.Invoke((NSString)Runtime.GetNSObject(tag), tokenRange, sentenceRange, ref stop);
         }
     }
 
@@ -370,7 +370,7 @@ internal static class Trampolines
         private unsafe static void TNSSetEnumerator(IntPtr block, IntPtr obj, [MarshalAs(UnmanagedType.I1)] ref bool stop)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSSetEnumerator)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObject(obj), ref stop);
+            ((NSSetEnumerator)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObject(obj), ref stop);
         }
     }
 
@@ -384,7 +384,7 @@ internal static class Trampolines
         private unsafe static void TNSUrlConnectionDataResponse(IntPtr block, IntPtr response, IntPtr data, IntPtr error)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSUrlConnectionDataResponse)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSUrlResponse)Runtime.GetNSObject(response), (NSData)Runtime.GetNSObject(data), (NSError)Runtime.GetNSObject(error));
+            ((NSUrlConnectionDataResponse)((BlockLiteral*)block)->Target)?.Invoke((NSUrlResponse)Runtime.GetNSObject(response), (NSData)Runtime.GetNSObject(data), (NSError)Runtime.GetNSObject(error));
         }
     }
 
@@ -398,7 +398,7 @@ internal static class Trampolines
         private unsafe static void TNSRangeIterator(IntPtr block, NSRange range, [MarshalAs(UnmanagedType.I1)] ref bool stop)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSRangeIterator)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(range, ref stop);
+            ((NSRangeIterator)((BlockLiteral*)block)->Target)?.Invoke(range, ref stop);
         }
     }
 
@@ -412,7 +412,7 @@ internal static class Trampolines
         private unsafe static void TNSNotificationHandler(IntPtr block, IntPtr notification)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSNotificationHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSNotification)Runtime.GetNSObject(notification));
+            ((NSNotificationHandler)((BlockLiteral*)block)->Target)?.Invoke((NSNotification)Runtime.GetNSObject(notification));
         }
     }
 
@@ -426,7 +426,7 @@ internal static class Trampolines
         private unsafe static void TNSFileCoordinatorWorker(IntPtr block, IntPtr newUrl)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSFileCoordinatorWorker)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSUrl)Runtime.GetNSObject(newUrl));
+            ((NSFileCoordinatorWorker)((BlockLiteral*)block)->Target)?.Invoke((NSUrl)Runtime.GetNSObject(newUrl));
         }
     }
 
@@ -440,7 +440,7 @@ internal static class Trampolines
         private unsafe static void TNSFileCoordinatorWorkerRW(IntPtr block, IntPtr newReadingUrl, IntPtr newWritingUrl)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((NSFileCoordinatorWorkerRW)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSUrl)Runtime.GetNSObject(newReadingUrl), (NSUrl)Runtime.GetNSObject(newWritingUrl));
+            ((NSFileCoordinatorWorkerRW)((BlockLiteral*)block)->Target)?.Invoke((NSUrl)Runtime.GetNSObject(newReadingUrl), (NSUrl)Runtime.GetNSObject(newWritingUrl));
         }
     }
 
@@ -454,7 +454,7 @@ internal static class Trampolines
         private unsafe static bool TNSEnumerateErrorHandler(IntPtr block, IntPtr url, IntPtr error)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            return ((NSEnumerateErrorHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))((NSUrl)Runtime.GetNSObject(url), (NSError)Runtime.GetNSObject(error));
+            return ((NSEnumerateErrorHandler)((BlockLiteral*)block)->Target)((NSUrl)Runtime.GetNSObject(url), (NSError)Runtime.GetNSObject(error));
         }
     }
 
@@ -468,7 +468,7 @@ internal static class Trampolines
         private unsafe static bool TNSPredicateEvaluator(IntPtr block, IntPtr evaluatedObject, IntPtr bindings)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            return ((NSPredicateEvaluator)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))(Runtime.GetNSObject(evaluatedObject), (NSDictionary)Runtime.GetNSObject(bindings));
+            return ((NSPredicateEvaluator)((BlockLiteral*)block)->Target)(Runtime.GetNSObject(evaluatedObject), (NSDictionary)Runtime.GetNSObject(bindings));
         }
     }
 
@@ -486,7 +486,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke();
+            ((Action)((BlockLiteral*)block)->Target)?.Invoke();
         }
     }
 
@@ -502,7 +502,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr obj)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<NSHttpCookie[]>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(NSArray.ArrayFromHandle<NSHttpCookie>(obj));
+            ((Action<NSHttpCookie[]>)((BlockLiteral*)block)->Target)?.Invoke(NSArray.ArrayFromHandle<NSHttpCookie>(obj));
         }
     }
 
@@ -518,7 +518,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr obj)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<NSArray>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<NSArray>(obj));
+            ((Action<NSArray>)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<NSArray>(obj));
         }
     }
 
@@ -535,7 +535,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, nint obj)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<WKNavigationActionPolicy>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((WKNavigationActionPolicy)(long)obj);
+            ((Action<WKNavigationActionPolicy>)((BlockLiteral*)block)->Target)?.Invoke((WKNavigationActionPolicy)(long)obj);
         }
     }
 
@@ -551,7 +551,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, nint obj)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<WKNavigationResponsePolicy>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((WKNavigationResponsePolicy)(long)obj);
+            ((Action<WKNavigationResponsePolicy>)((BlockLiteral*)block)->Target)?.Invoke((WKNavigationResponsePolicy)(long)obj);
         }
     }
 
@@ -567,7 +567,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, nint arg1, IntPtr arg2)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<WKNavigationActionPolicy, WKWebpagePreferences>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((WKNavigationActionPolicy)(long)arg1, Runtime.GetNSObjectTx<WKWebpagePreferences>(arg2));
+            ((Action<WKNavigationActionPolicy, WKWebpagePreferences>)((BlockLiteral*)block)->Target)?.Invoke((WKNavigationActionPolicy)(long)arg1, Runtime.GetNSObjectTx<WKWebpagePreferences>(arg2));
         }
     }
 
@@ -583,7 +583,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, nint arg1, IntPtr arg2)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke((NSUrlSessionAuthChallengeDisposition)(long)arg1, Runtime.GetNSObjectTx<NSUrlCredential>(arg2));
+            ((Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential>)((BlockLiteral*)block)->Target)?.Invoke((NSUrlSessionAuthChallengeDisposition)(long)arg1, Runtime.GetNSObjectTx<NSUrlCredential>(arg2));
         }
     }
 
@@ -599,7 +599,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr obj)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<string>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(NSString.FromHandle(obj));
+            ((Action<string>)((BlockLiteral*)block)->Target)?.Invoke(NSString.FromHandle(obj));
         }
     }
 
@@ -615,7 +615,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr obj)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<NSUrl[]>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(NSArray.ArrayFromHandle<NSUrl>(obj));
+            ((Action<NSUrl[]>)((BlockLiteral*)block)->Target)?.Invoke(NSArray.ArrayFromHandle<NSUrl>(obj));
         }
     }
 
@@ -632,7 +632,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr context, IntPtr exception)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((JSContextExceptionHandler)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<JSContext>(context), Runtime.GetNSObjectTx<JSValue>(exception));
+            ((JSContextExceptionHandler)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<JSContext>(context), Runtime.GetNSObjectTx<JSValue>(exception));
         }
     }
 
@@ -662,7 +662,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr resolve, IntPtr rejected)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((JSPromiseCreationExecutor)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<JSValue>(resolve), Runtime.GetNSObjectTx<JSValue>(rejected));
+            ((JSPromiseCreationExecutor)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<JSValue>(resolve), Runtime.GetNSObjectTx<JSValue>(rejected));
         }
     }
 
@@ -678,7 +678,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr arg1, IntPtr arg2)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<WKContentRuleList, NSError>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<WKContentRuleList>(arg1), Runtime.GetNSObjectTx<NSError>(arg2));
+            ((Action<WKContentRuleList, NSError>)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<WKContentRuleList>(arg1), Runtime.GetNSObjectTx<NSError>(arg2));
         }
     }
 
@@ -694,7 +694,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr obj)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<string[]>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(NSArray.StringArrayFromHandle(obj));
+            ((Action<string[]>)((BlockLiteral*)block)->Target)?.Invoke(NSArray.StringArrayFromHandle(obj));
         }
     }
 
@@ -710,7 +710,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr obj)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<NSColor>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<NSColor>(obj));
+            ((Action<NSColor>)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<NSColor>(obj));
         }
     }
 
@@ -727,7 +727,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr obj)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<NSError>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<NSError>(obj));
+            ((Action<NSError>)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<NSError>(obj));
         }
     }
 
@@ -743,7 +743,7 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr result, IntPtr error)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((WKJavascriptEvaluationResult)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<NSObject>(result), Runtime.GetNSObjectTx<NSError>(error));
+            ((WKJavascriptEvaluationResult)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<NSObject>(result), Runtime.GetNSObjectTx<NSError>(error));
         }
     }
 
@@ -760,7 +760,55 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr arg1, IntPtr arg2)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<NSImage, NSError>)(ptr->global_handle != IntPtr.Zero ? GCHandle.FromIntPtr(ptr->global_handle).Target : GCHandle.FromIntPtr(ptr->local_handle).Target))?.Invoke(Runtime.GetNSObjectTx<NSImage>(arg1), Runtime.GetNSObjectTx<NSError>(arg2));
+            ((Action<NSImage, NSError>)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<NSImage>(arg1), Runtime.GetNSObjectTx<NSError>(arg2));
+        }
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<NSObject, NSError>))]
+    internal delegate void DActionArity2V69(IntPtr block, NativeHandle arg1, NativeHandle arg2);
+
+    internal static class SDActionArity2V69
+    {
+        internal static readonly DActionArity2V69 Handler = Invoke;
+
+        [Preserve(Conditional = true)] 
+        [MonoPInvokeCallback(typeof(DActionArity2V69))]
+        private unsafe static void Invoke(IntPtr block, NativeHandle arg1, NativeHandle arg2)
+        {
+            ((Action<NSObject, NSError>)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<NSObject>(arg1), Runtime.GetNSObjectTx<NSError>(arg2));
+        }
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<NSData, NSError>))]
+    internal delegate void DActionArity2V16(IntPtr block, NativeHandle arg1, NativeHandle arg2);
+
+    internal static class SDActionArity2V16
+    {
+        internal static readonly DActionArity2V16 Handler = Invoke;
+
+        [Preserve(Conditional = true)]
+        [MonoPInvokeCallback(typeof(DActionArity2V16))]
+        private unsafe static void Invoke(IntPtr block, NativeHandle arg1, NativeHandle arg2)
+        {
+            ((Action<NSData, NSError>)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<NSData>(arg1), Runtime.GetNSObjectTx<NSError>(arg2));
+        }
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<WKFindResult>))]
+    internal delegate void DActionArity1V256(IntPtr block, NativeHandle obj);
+
+    internal static class SDActionArity1V256
+    {
+        internal static readonly DActionArity1V256 Handler = Invoke;
+
+        [Preserve(Conditional = true)]
+        [MonoPInvokeCallback(typeof(DActionArity1V256))]
+        private unsafe static void Invoke(IntPtr block, NativeHandle obj)
+        {
+            ((Action<WKFindResult>)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<WKFindResult>(obj));
         }
     }
 

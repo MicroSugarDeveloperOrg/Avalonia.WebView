@@ -1,17 +1,18 @@
 ﻿using AppKit;
+using CoreFoundation;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 using Security;
 using System.ComponentModel;
 using Xamarin.System;
+using Xamarin.Utiles;
 
 namespace WebKit;
 
 [Register(nameof(WKWebView), true)]
 public class WKWebView : NSView
 {
-
     private const string selUIDelegate = "UIDelegate";
     private static readonly IntPtr selUIDelegateHandle = Selector.GetHandle(selUIDelegate);
 
@@ -27,9 +28,31 @@ public class WKWebView : NSView
     private const string selAllowsMagnification = "allowsMagnification";
     private static readonly IntPtr selAllowsMagnificationHandle = Selector.GetHandle(selAllowsMagnification);
 
+    private const string selCameraCaptureState = "cameraCaptureState";
+    private static readonly IntPtr selCameraCaptureStateHandle = Selector.GetHandle(selCameraCaptureState);
+
     private const string selBackForwardList = "backForwardList";
     private static readonly IntPtr selBackForwardListHandle = Selector.GetHandle(selBackForwardList);
 
+    private const string selFullscreenState = "fullscreenState";
+    private static readonly IntPtr selFullscreenStateHandle = Selector.GetHandle(selFullscreenState);
+
+    private const string selInteractionState = "interactionState";
+    private static readonly IntPtr selInteractionStateHandle = Selector.GetHandle(selInteractionState);
+
+    private const string selSetInteractionState_ = "setInteractionState:";
+    private static readonly IntPtr selSetInteractionStateHandle = Selector.GetHandle(selSetInteractionState_);
+
+    private const string selPageZoom = "pageZoom";
+    private static readonly IntPtr selPageZoomHandle = Selector.GetHandle(selPageZoom);
+
+    private const string selSetPageZoom_ = "setPageZoom:";
+    private static readonly IntPtr selSetPageZoomHandle = Selector.GetHandle(selSetPageZoom_);
+
+    private const string selCreateWebArchiveDataWithCompletionHandler_ = "createWebArchiveDataWithCompletionHandler:";
+    private static readonly IntPtr selCreateWebArchiveDataWithCompletionHandler_Handle = Selector.GetHandle(selCreateWebArchiveDataWithCompletionHandler_);
+
+   
     private const string selCanGoBack = "canGoBack";
     private static readonly IntPtr selCanGoBackHandle = Selector.GetHandle(selCanGoBack);
 
@@ -51,6 +74,12 @@ public class WKWebView : NSView
     private const string selEvaluateJavaScript_CompletionHandler_ = "evaluateJavaScript:completionHandler:";
     private static readonly IntPtr selEvaluateJavaScript_CompletionHandler_Handle = Selector.GetHandle(selEvaluateJavaScript_CompletionHandler_);
 
+    private const string selEvaluateJavaScript_InFrame_InContentWorld_CompletionHandler_ = "evaluateJavaScript:inFrame:inContentWorld:completionHandler:";
+    private static readonly IntPtr selEvaluateJavaScript_InFrame_InContentWorld_CompletionHandler_Handle = Selector.GetHandle(selEvaluateJavaScript_InFrame_InContentWorld_CompletionHandler_);
+
+    private const string selCallAsyncJavaScript_Arguments_InFrame_InContentWorld_CompletionHandler_ = "callAsyncJavaScript:arguments:inFrame:inContentWorld:completionHandler:";
+    private static readonly IntPtr selCallAsyncJavaScript_Arguments_InFrame_InContentWorld_CompletionHandler_Handle = Selector.GetHandle(selCallAsyncJavaScript_Arguments_InFrame_InContentWorld_CompletionHandler_);
+
     private const string selGoBack = "goBack";
     private static readonly IntPtr selGoBackHandle = Selector.GetHandle(selGoBack);
 
@@ -69,11 +98,17 @@ public class WKWebView : NSView
     private const string selInitWithFrame_Configuration_ = "initWithFrame:configuration:";
     private static readonly IntPtr selInitWithFrame_Configuration_Handle = Selector.GetHandle(selInitWithFrame_Configuration_);
 
+    private const string selFindString_WithConfiguration_completionHandler_ = "findString:withConfiguration:completionHandler:";
+    private static readonly IntPtr selFindString_WithConfiguration_completionHandler_Handle = Selector.GetHandle(selFindString_WithConfiguration_completionHandler_);
+
     private const string selIsLoading = "isLoading";
     private static readonly IntPtr selIsLoadingHandle = Selector.GetHandle(selIsLoading);
 
     private const string selLoadData_MIMEType_CharacterEncodingName_BaseURL_ = "loadData:MIMEType:characterEncodingName:baseURL:";
     private static readonly IntPtr selLoadData_MIMEType_CharacterEncodingName_BaseURL_Handle = Selector.GetHandle(selLoadData_MIMEType_CharacterEncodingName_BaseURL_);
+
+    private const string selLoadFileRequest_AllowingReadAccessToURL_ = "loadFileRequest:allowingReadAccessToURL:";
+    private static readonly IntPtr selLoadFileRequest_AllowingReadAccessToURL_Handle = Selector.GetHandle(selLoadFileRequest_AllowingReadAccessToURL_);
 
     private const string selLoadFileURL_AllowingReadAccessToURL_ = "loadFileURL:allowingReadAccessToURL:";
     private static readonly IntPtr selLoadFileURL_AllowingReadAccessToURL_Handle = Selector.GetHandle(selLoadFileURL_AllowingReadAccessToURL_);
@@ -249,6 +284,18 @@ public class WKWebView : NSView
         }
     }
 
+    public virtual WKMediaCaptureState CameraCaptureState
+    {
+        [Export(selCameraCaptureState)]
+        get
+        {
+            if (IsDirectBinding)
+                return (WKMediaCaptureState)Messaging.IntPtr_objc_msgSend(Handle, selCameraCaptureStateHandle);
+
+            return (WKMediaCaptureState)Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selCameraCaptureStateHandle);
+        }
+    }
+
     public virtual bool CanGoBack
     {
         [Export(selCanGoBack)]
@@ -279,9 +326,9 @@ public class WKWebView : NSView
         get
         {
             if (IsDirectBinding)
-                return NSArray.ArrayFromNativeHandle<SecCertificate>(Messaging.IntPtr_objc_msgSend(Handle, selCertificateChainHandle));
+                return CFArray.ArrayFromHandle<SecCertificate>(Messaging.IntPtr_objc_msgSend(Handle, selCertificateChainHandle));
 
-            return NSArray.ArrayFromNativeHandle<SecCertificate>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selCertificateChainHandle));
+            return CFArray.ArrayFromHandle<SecCertificate>(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selCertificateChainHandle));
         }
     }
 
@@ -298,15 +345,15 @@ public class WKWebView : NSView
         }
     }
 
-    public virtual string CustomUserAgent
+    public virtual string? CustomUserAgent
     { 
         [Export(selCustomUserAgent)]
         get
         {
             if (IsDirectBinding)
-                return NSString.FromHandle(Messaging.IntPtr_objc_msgSend(Handle, selCustomUserAgentHandle));
+                return CFString.FromHandle(Messaging.IntPtr_objc_msgSend(Handle, selCustomUserAgentHandle));
 
-            return NSString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selCustomUserAgentHandle));
+            return CFString.FromHandle(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selCustomUserAgentHandle));
         }
  
         [Export(selSetCustomUserAgent_)]
@@ -315,13 +362,13 @@ public class WKWebView : NSView
             if (value == null)
                 throw new ArgumentNullException("value");
 
-            IntPtr arg = NSString.CreateNative(value);
+            IntPtr arg = CFString.CreateNative(value);
             if (IsDirectBinding)
                 Messaging.void_objc_msgSend_IntPtr(Handle, selSetCustomUserAgent_Handle, arg);
             else
                 Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selSetCustomUserAgent_Handle, arg);
 
-            NSString.ReleaseNative(arg);
+            CFString.ReleaseNative(arg);
         }
     }
 
@@ -337,6 +384,18 @@ public class WKWebView : NSView
         }
     }
 
+    public virtual WKFullscreenState FullscreenState
+    {
+        [Export(selFullscreenState)]
+        get
+        {
+            if (IsDirectBinding)
+                return (WKFullscreenState)Messaging.IntPtr_objc_msgSend(Handle, selFullscreenStateHandle);
+
+            return (WKFullscreenState)Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selFullscreenStateHandle);
+        }
+    }
+
     public virtual bool HasOnlySecureContent
     {
         [Export(selHasOnlySecureContent)]
@@ -346,6 +405,28 @@ public class WKWebView : NSView
                 return Messaging.bool_objc_msgSend(Handle, selHasOnlySecureContentHandle);
 
             return Messaging.bool_objc_msgSendSuper(SuperHandle, selHasOnlySecureContentHandle);
+        }
+    }
+
+    public virtual NSObject? InteractionState
+    {
+        [Export(selInteractionState, ArgumentSemantic.Copy)]
+        get
+        {
+            if (IsDirectBinding)
+                return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSend(Handle, selInteractionStateHandle));
+
+            return Runtime.GetNSObject(Messaging.IntPtr_objc_msgSendSuper(SuperHandle, selInteractionStateHandle));
+        }
+
+        [Export(selSetInteractionState_, ArgumentSemantic.Copy)]
+        set
+        {
+            IntPtr arg = value.Handle;
+            if (IsDirectBinding)
+                Messaging.void_objc_msgSend_IntPtr(Handle, selSetInteractionStateHandle, arg);
+            else
+                Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selSetInteractionStateHandle, arg);
         }
     }
 
@@ -393,8 +474,28 @@ public class WKWebView : NSView
             WeakNavigationDelegate = nSObject;
         }
     }
-     
-    public virtual SecTrust? ServerTrust
+
+    public virtual nfloat PageZoom
+    {
+        [Export(selPageZoom)]
+        get
+        {
+            if (IsDirectBinding)
+                return Messaging.nfloat_objc_msgSend(Handle, selPageZoomHandle);
+
+            return Messaging.nfloat_objc_msgSendSuper(SuperHandle, selPageZoomHandle);
+        }
+        [Export(selSetPageZoom_)]
+        set
+        {
+            if (IsDirectBinding)
+                Messaging.void_objc_msgSend_nfloat(Handle, selSetPageZoomHandle, value);
+            else
+                Messaging.void_objc_msgSendSuper_nfloat(SuperHandle, selSetPageZoomHandle, value);
+        }
+    }
+
+    public virtual SecTrust ServerTrust
     {
         [Export(selServerTrust)]
         get
@@ -429,7 +530,7 @@ public class WKWebView : NSView
         }
     }
 
-    public virtual NSUrl Url
+    public virtual NSUrl? Url
     {
         [Export(selURL, ArgumentSemantic.Copy)]
         get
@@ -541,6 +642,127 @@ public class WKWebView : NSView
         return tcs.Task;
     }
 
+    [Export(selEvaluateJavaScript_InFrame_InContentWorld_CompletionHandler_)]
+    public unsafe virtual void EvaluateJavaScript(string javaScriptString, WKFrameInfo? frame, WKContentWorld contentWorld, Action<NSObject, NSError>? completionHandler)
+    {
+        if (javaScriptString == null)
+            ThrowHelper.ThrowArgumentNullException("javaScriptString");
+
+        IntPtr arg = frame.Handle;
+        IntPtr nonNullHandle = contentWorld.Handle;
+        IntPtr arg2 = CFString.CreateNative(javaScriptString);
+        BlockLiteral* ptr;
+        if (completionHandler == null)
+        {
+            ptr = null;
+        }
+        else
+        {
+            BlockLiteral blockLiteral = default(BlockLiteral);
+            ptr = &blockLiteral;
+            blockLiteral.SetupBlock(Trampolines.SDActionArity2V69.Handler, completionHandler);
+        }
+        if (IsDirectBinding)
+            Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(Handle, selEvaluateJavaScript_InFrame_InContentWorld_CompletionHandler_Handle, arg2, arg, nonNullHandle, (nint)ptr);
+        else
+            Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr(SuperHandle, selEvaluateJavaScript_InFrame_InContentWorld_CompletionHandler_Handle, arg2, arg, nonNullHandle, (nint)ptr);
+
+        CFString.ReleaseNative(arg2);
+        if (ptr != null)
+        {
+            ptr->CleanupBlock();
+        }
+    }
+
+    public virtual Task<NSObject> EvaluateJavaScriptAsync(string javaScriptString, WKFrameInfo? frame, WKContentWorld contentWorld)
+    {
+        TaskCompletionSource<NSObject> tcs = new TaskCompletionSource<NSObject>();
+        EvaluateJavaScript(javaScriptString, frame, contentWorld, delegate (NSObject arg1_, NSError arg2_)
+        {
+            if (arg2_ != null)
+            {
+                tcs.SetException(new NSErrorException(arg2_));
+            }
+            else
+            {
+                tcs.SetResult(arg1_);
+            }
+        });
+        return tcs.Task;
+    }
+
+    [Export(selCallAsyncJavaScript_Arguments_InFrame_InContentWorld_CompletionHandler_)]
+    public unsafe virtual void CallAsyncJavaScript(string functionBody, NSDictionary<NSString, NSObject>? arguments, WKFrameInfo? frame, WKContentWorld contentWorld, Action<NSObject, NSError>? completionHandler)
+    {
+        if (functionBody == null)
+            ThrowHelper.ThrowArgumentNullException("functionBody");
+
+        IntPtr arg = arguments.Handle;
+        IntPtr arg2 = frame.Handle;
+        IntPtr nonNullHandle = contentWorld.Handle;
+        IntPtr arg3 = CFString.CreateNative(functionBody);
+        BlockLiteral* ptr;
+        if (completionHandler == null)
+            ptr = null;
+        else
+        {
+            BlockLiteral blockLiteral = default(BlockLiteral);
+            ptr = &blockLiteral;
+            blockLiteral.SetupBlock(Trampolines.SDActionArity2V69.Handler, completionHandler);
+        }
+        if (IsDirectBinding)
+            Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr(Handle, selCallAsyncJavaScript_Arguments_InFrame_InContentWorld_CompletionHandler_Handle, arg3, arg, arg2, nonNullHandle, (nint)ptr);
+        else
+            Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr(SuperHandle, selCallAsyncJavaScript_Arguments_InFrame_InContentWorld_CompletionHandler_Handle, arg3, arg, arg2, nonNullHandle, (nint)ptr);
+
+        CFString.ReleaseNative(arg3);
+        if (ptr != null)
+            ptr->CleanupBlock();
+    }
+
+    public virtual Task<NSObject> CallAsyncJavaScriptAsync(string functionBody, NSDictionary<NSString, NSObject>? arguments, WKFrameInfo? frame, WKContentWorld contentWorld)
+    {
+        TaskCompletionSource<NSObject> tcs = new TaskCompletionSource<NSObject>();
+        CallAsyncJavaScript(functionBody, arguments, frame, contentWorld, delegate (NSObject arg1_, NSError arg2_)
+        {
+            if (arg2_ != null)
+                tcs.SetException(new NSErrorException(arg2_));
+            else
+                tcs.SetResult(arg1_);
+        });
+        return tcs.Task;
+    }
+
+    [Export(selCreateWebArchiveDataWithCompletionHandler_)]
+    public unsafe virtual void CreateWebArchive(Action<NSData, NSError> completionHandler)
+    {
+        if (completionHandler == null)
+            ThrowHelper.ThrowArgumentNullException("completionHandler");
+
+        BlockLiteral blockLiteral = default(BlockLiteral);
+        BlockLiteral* ptr = &blockLiteral;
+        blockLiteral.SetupBlock(Trampolines.SDActionArity2V16.Handler, completionHandler);
+        if (IsDirectBinding)
+            Messaging.void_objc_msgSend_IntPtr(Handle, selCreateWebArchiveDataWithCompletionHandler_Handle, (nint)ptr);
+        else
+            Messaging.void_objc_msgSendSuper_IntPtr(SuperHandle, selCreateWebArchiveDataWithCompletionHandler_Handle, (nint)ptr);
+
+        ptr->CleanupBlock();
+    }
+
+    public virtual Task<NSData> CreateWebArchiveAsync()
+    {
+        TaskCompletionSource<NSData> tcs = new TaskCompletionSource<NSData>();
+        CreateWebArchive(delegate (NSData arg1_, NSError arg2_)
+        {
+            if (arg2_ != null)
+                tcs.SetException(new NSErrorException(arg2_));
+            else
+                tcs.SetResult(arg1_);
+        });
+        return tcs.Task;
+    }
+
     [Export(selGoBack)]
     public virtual WKNavigation GoBack()
     {
@@ -584,7 +806,7 @@ public class WKWebView : NSView
     }
 
     [Export(selLoadData_MIMEType_CharacterEncodingName_BaseURL_)]
-    public virtual WKNavigation? LoadData(NSData data, string mimeType, string characterEncodingName, NSUrl baseUrl)
+    public virtual WKNavigation LoadData(NSData data, string mimeType, string characterEncodingName, NSUrl baseUrl)
     {
         if (data == null)
             throw new ArgumentNullException("data");
@@ -605,6 +827,17 @@ public class WKWebView : NSView
         NSString.ReleaseNative(arg);
         NSString.ReleaseNative(arg2);
         return result;
+    }
+
+    [Export(selLoadFileRequest_AllowingReadAccessToURL_)]
+    public virtual WKNavigation LoadFileRequest(NSUrlRequest request, NSUrl readAccessURL)
+    {
+        IntPtr nonNullHandle = request.GetNonNullHandle("request");
+        IntPtr nonNullHandle2 = readAccessURL.GetNonNullHandle("readAccessURL");
+        if (IsDirectBinding)
+            return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(Handle, selLoadFileRequest_AllowingReadAccessToURL_Handle, nonNullHandle, nonNullHandle2));
+
+        return Runtime.GetNSObjectTx<WKNavigation>(Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr(SuperHandle, selLoadFileRequest_AllowingReadAccessToURL_Handle, nonNullHandle, nonNullHandle2));
     }
 
     [Export(selLoadFileURL_AllowingReadAccessToURL_)]
@@ -725,6 +958,40 @@ public class WKWebView : NSView
             return Messaging.bool_objc_msgSend_IntPtr(Handle, selValidateUserInterfaceItem_Handle, item.Handle);
 
         return Messaging.bool_objc_msgSendSuper_IntPtr(SuperHandle, selValidateUserInterfaceItem_Handle, item.Handle);
+    }
+
+    [Export(selFindString_WithConfiguration_completionHandler_)]
+    public unsafe virtual void Find(string @string, WKFindConfiguration? configuration, Action<WKFindResult> completionHandler)
+    {
+        if (@string == null)
+        {
+            ThrowHelper.ThrowArgumentNullException("string");
+        }
+        IntPtr arg = configuration.Handle;
+        if (completionHandler == null)
+            ThrowHelper.ThrowArgumentNullException("completionHandler");
+
+        IntPtr arg2 = CFString.CreateNative(@string);
+        BlockLiteral blockLiteral = default(BlockLiteral);
+        BlockLiteral* ptr = &blockLiteral;
+        blockLiteral.SetupBlock(Trampolines.SDActionArity1V256.Handler, completionHandler);
+        if (IsDirectBinding)
+            Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr(Handle, selFindString_WithConfiguration_completionHandler_Handle, arg2, arg, (nint)ptr);
+        else
+            Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr(SuperHandle, selFindString_WithConfiguration_completionHandler_Handle, arg2, arg, (nint)ptr);
+
+        CFString.ReleaseNative(arg2);
+        ptr->CleanupBlock();
+    }
+
+    public virtual Task<WKFindResult> FindAsync(string @string, WKFindConfiguration? configuration)
+    {
+        TaskCompletionSource<WKFindResult> tcs = new TaskCompletionSource<WKFindResult>();
+        Find(@string, configuration, delegate (WKFindResult obj_)
+        {
+            tcs.SetResult(obj_);
+        });
+        return tcs.Task;
     }
 
     protected override void Dispose(bool disposing)

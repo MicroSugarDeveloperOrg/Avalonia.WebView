@@ -4139,6 +4139,10 @@ public static class Messaging
     [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSendSuper")]
     public static extern IntPtr IntPtr_objc_msgSendSuper_IntPtr_IntPtr_long(IntPtr receiver, IntPtr selector, IntPtr arg1, IntPtr arg2, long arg3);
 
+ 
+
+    //[DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+    //public static extern IntPtr IntPtr_objc_msgSend_IntPtr(IntPtr receiver, IntPtr selector, IntPtr arg1);
     #endregion
 
 }

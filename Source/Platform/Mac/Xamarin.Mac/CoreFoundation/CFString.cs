@@ -46,10 +46,16 @@ public class CFString : INativeObject, IDisposable
 	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", CharSet = CharSet.Unicode)]
 	private static extern IntPtr CFStringGetCharactersPtr(IntPtr handle);
 
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", CharSet = CharSet.Unicode)]
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", CharSet = CharSet.Unicode)]
+    private unsafe static extern char* CFStringGetCharactersCharPtr(IntPtr handle);
+
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", CharSet = CharSet.Unicode)]
 	private static extern IntPtr CFStringGetCharacters(IntPtr handle, CFRange range, IntPtr buffer);
 
-	public CFString(string str)
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", CharSet = CharSet.Unicode)]
+    private unsafe static extern IntPtr CFStringGetCharacters(IntPtr handle, CFRange range, char* buffer);
+
+    public CFString(string str)
 	{
 		if (str == null)
 		{
@@ -73,7 +79,23 @@ public class CFString : INativeObject, IDisposable
 		GC.SuppressFinalize(this);
 	}
 
-	public virtual void Dispose(bool disposing)
+    public static IntPtr CreateNative(string? value)
+    {
+        if (value == null)
+            return IntPtr.Zero;
+
+        return CFStringCreateWithCharacters(IntPtr.Zero, value, value.Length);
+    }
+
+    public static void ReleaseNative(IntPtr handle)
+    {
+        if (handle != IntPtr.Zero)
+        {
+            CFObject.CFRelease(handle);
+        }
+    }
+
+    public virtual void Dispose(bool disposing)
 	{
 		str = null;
 		if (handle != IntPtr.Zero)
@@ -122,7 +144,46 @@ public class CFString : INativeObject, IDisposable
 		return result;
 	}
 
-	public static implicit operator string(CFString x)
+    public unsafe static string? FromHandle(IntPtr handle)
+    {
+        if (handle == IntPtr.Zero)
+            return null;
+
+        int num = (int)(nint)CFStringGetLength(handle);
+        if (num == 0)
+            return string.Empty;
+
+        bool flag = false;
+        CFRange range = new CFRange(0, num);
+        char* ptr = CFStringGetCharactersCharPtr(handle);
+        if (ptr == null)
+        {
+            flag = num > 128;
+
+            var span = stackalloc char[num];
+            ptr = ((!flag) ? span : ((char*)Marshal.AllocHGlobal(num * 2)));
+            CFStringGetCharacters(handle, range, ptr);
+        }
+        string result = new string(ptr, 0, num);
+        if (flag)
+            Marshal.FreeHGlobal((nint)ptr);
+
+        return result;
+    }
+
+    public static string? FromHandle(NativeHandle handle, bool releaseHandle)
+    {
+        string? result = FromHandle(handle);
+        if (releaseHandle && handle != IntPtr.Zero)
+        {
+            CFObject.CFRelease(handle);
+        }
+        return result;
+    }
+
+
+
+    public static implicit operator string(CFString x)
 	{
 		if (x.str == null)
 		{

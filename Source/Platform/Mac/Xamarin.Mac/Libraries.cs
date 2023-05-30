@@ -1,4 +1,3 @@
-using System;
 using ObjCRuntime;
 
 internal static class Libraries
@@ -82,4 +81,10 @@ internal static class Libraries
     {
         public static readonly IntPtr Handle = Dlfcn.dlopen("/System/Library/Frameworks/JavaScriptCore.framework/JavaScriptCore", 0);
     }
+
+    public static class CoreFoundation
+    {
+        public static readonly IntPtr Handle = Dlfcn.dlopen("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", 0);
+    }
+
 }

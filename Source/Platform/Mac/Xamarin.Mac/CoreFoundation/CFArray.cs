@@ -1,131 +1,210 @@
-using System;
-using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
+using System.Runtime.InteropServices;
+using Xamarin.Utiles;
 
 namespace CoreFoundation;
 
-internal class CFArray : INativeObject, IDisposable
+internal class CFArray : NativeObject
 {
-	internal IntPtr handle;
+    [Preserve(Conditional = true)]
+    internal CFArray(IntPtr handle)
 
-	private static readonly IntPtr kCFTypeArrayCallbacks_ptr;
+    {
+        InitializeHandle(handle);
+    }
 
-	public IntPtr Handle => handle;
+    ~CFArray()
+    {
+        Dispose(disposing: false);
+    }
 
-	public int Count => CFArrayGetCount(handle);
+    internal static IntPtr CFNullHandle = _CFNullHandle;
 
-	internal CFArray(IntPtr handle)
-		: this(handle, owns: false)
-	{
-	}
+    private static IntPtr kCFTypeArrayCallbacks_ptr_value;
 
-	[Preserve(Conditional = true)]
-	internal CFArray(IntPtr handle, bool owns)
-	{
-		if (handle == IntPtr.Zero)
-		{
-			throw new ArgumentNullException("handle");
-		}
-		this.handle = handle;
-		if (!owns)
-		{
-			CFObject.CFRetain(handle);
-		}
-	}
+    private static IntPtr kCFTypeArrayCallbacks_ptr
+    {
+        get
+        {
+            if (kCFTypeArrayCallbacks_ptr_value == IntPtr.Zero)
+            {
+                kCFTypeArrayCallbacks_ptr_value = Dlfcn.GetIndirect(Libraries.CoreFoundation.Handle, "kCFTypeArrayCallBacks");
+            }
+            return kCFTypeArrayCallbacks_ptr_value;
+        }
+    }
+      
+    public IntPtr Count => GetCount(GetCheckedHandle());
 
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFArrayGetTypeID")]
-	public static extern int GetTypeID();
+    [Field("kCFNull", "CoreFoundation")]
+    internal static IntPtr _CFNullHandle => Dlfcn.GetIntPtr(Libraries.CoreFoundation.Handle, "kCFNull");
 
-	~CFArray()
-	{
-		Dispose(disposing: false);
-	}
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFArrayGetTypeID")]
+    internal static extern IntPtr GetTypeID();
 
-	public void Dispose()
-	{
-		Dispose(disposing: true);
-		GC.SuppressFinalize(this);
-	}
+    internal static CFArray FromIntPtrs(params IntPtr[] values)
+    {
+        return new CFArray(Create(values));
+    }
 
-	protected virtual void Dispose(bool disposing)
-	{
-		if (handle != IntPtr.Zero)
-		{
-			CFObject.CFRelease(handle);
-			handle = IntPtr.Zero;
-		}
-	}
+    internal static CFArray FromNativeObjects(params INativeObject[] values)
+    {
+        return new CFArray(Create(values));
+    }
 
-	static CFArray()
-	{
-		IntPtr intPtr = Dlfcn.dlopen("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", 0);
-		if (intPtr == IntPtr.Zero)
-		{
-			return;
-		}
-		try
-		{
-			kCFTypeArrayCallbacks_ptr = Dlfcn.GetIndirect(intPtr, "kCFTypeArrayCallBacks");
-		}
-		finally
-		{
-			Dlfcn.dlclose(intPtr);
-		}
-	}
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+    private static extern IntPtr CFArrayCreate(IntPtr allocator, IntPtr values, IntPtr numValues, IntPtr callBacks);
 
-	public static CFArray FromIntPtrs(params IntPtr[] values)
-	{
-		return new CFArray(Create(values), owns: true);
-	}
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+    internal static extern IntPtr CFArrayGetValueAtIndex(IntPtr theArray, IntPtr idx);
 
-	public static CFArray FromNativeObjects(params INativeObject[] values)
-	{
-		return new CFArray(Create(values), owns: true);
-	}
+    public IntPtr GetValue(IntPtr index)
+    {
+        return CFArrayGetValueAtIndex(GetCheckedHandle(), index);
+    }
 
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFArrayCreate(IntPtr allocator, IntPtr values, CFIndex numValues, IntPtr callbacks);
+    internal unsafe static IntPtr Create(params IntPtr[] values)
+    {
+        if (values == null)
+        {
+            ThrowHelper.ThrowArgumentNullException("values");
+        }
+        fixed (IntPtr* values2 = values)
+        {
+            return CFArrayCreate(IntPtr.Zero, (nint)values2, (IntPtr)values.Length, kCFTypeArrayCallbacks_ptr);
+        }
+    }
 
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern IntPtr CFArrayGetValueAtIndex(IntPtr theArray, IntPtr index);
+    public unsafe static IntPtr Create(params INativeObject[] values)
+    {
+        if (values == null)
+        {
+            ThrowHelper.ThrowArgumentNullException("values");
+        }
+        int num = values.Length;
+        Span<IntPtr> span = ((num > 256) ? ((Span<IntPtr>)new IntPtr[num]) : stackalloc IntPtr[num]);
+        Span<IntPtr> span2 = span;
+        for (int i = 0; i < num; i++)
+        {
+            span2[i] = values[i].Handle;
+        }
+        fixed (IntPtr* values2 = span2)
+        {
+            return CFArrayCreate(IntPtr.Zero, (nint)values2, (IntPtr)num, kCFTypeArrayCallbacks_ptr);
+        }
+    }
 
-	public IntPtr GetValue(int index)
-	{
-		return CFArrayGetValueAtIndex(handle, new IntPtr(index));
-	}
+    public unsafe static IntPtr Create(params string[] values)
+    {
+        if (values == null)
+        {
+            ThrowHelper.ThrowArgumentNullException("values");
+        }
+        int num = values.Length;
+        Span<IntPtr> span = ((num > 256) ? ((Span<IntPtr>)new IntPtr[num]) : stackalloc IntPtr[num]);
+        Span<IntPtr> span2 = span;
+        for (int i = 0; i < num; i++)
+        {
+            span2[i] = ((values[i] == null) ? CFNullHandle : CFString.CreateNative(values[i]));
+        }
+        fixed (IntPtr* values2 = span2)
+        {
+            return CFArrayCreate(IntPtr.Zero, (nint)values2, (IntPtr)num, kCFTypeArrayCallbacks_ptr);
+        }
+    }
 
-	public unsafe static IntPtr Create(params IntPtr[] values)
-	{
-		if (values == null)
-		{
-			throw new ArgumentNullException("values");
-		}
-		fixed (IntPtr* ptr = values)
-		{
-			return CFArrayCreate(IntPtr.Zero, (IntPtr)ptr, values.Length, kCFTypeArrayCallbacks_ptr);
-		}
-	}
+    public static CFArray FromStrings(params string[] items)
+    {
+        return new CFArray(Create(items));
+    }
 
-	public static IntPtr Create(params INativeObject[] values)
-	{
-		if (values == null)
-		{
-			throw new ArgumentNullException("values");
-		}
-		IntPtr[] array = new IntPtr[values.Length];
-		for (int i = 0; i < array.Length; i++)
-		{
-			array[i] = values[i].Handle;
-		}
-		return Create(array);
-	}
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation", EntryPoint = "CFArrayGetCount")]
+    internal static extern IntPtr GetCount(IntPtr theArray);
 
-	[DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-	private static extern CFIndex CFArrayGetCount(IntPtr theArray);
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+    private static extern IntPtr CFArrayCreateCopy(IntPtr allocator, IntPtr theArray);
 
-	public static int GetCount(IntPtr array)
-	{
-		return CFArrayGetCount(array);
-	}
+    internal CFArray Clone()
+    {
+        return new CFArray(CFArrayCreateCopy(IntPtr.Zero, GetCheckedHandle()));
+    }
+
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+    internal static extern void CFArrayGetValues(IntPtr theArray, CFRange range, IntPtr values);
+
+    public static string?[]? StringArrayFromHandle(IntPtr handle)
+    {
+        return ArrayFromHandleFunc(handle, CFString.FromHandle);
+    }
+
+    public static string?[]? StringArrayFromHandle(IntPtr handle, bool releaseHandle)
+    {
+        string?[]? result = StringArrayFromHandle(handle);
+        if (releaseHandle && handle != IntPtr.Zero)
+        {
+            CFObject.CFRelease(handle);
+        }
+        return result;
+    }
+
+    public static T?[]? ArrayFromHandle<T>(IntPtr handle) where T : class, INativeObject
+    {
+        return ArrayFromHandleFunc(handle, DefaultConvert<T>);
+    }
+
+    public static T?[]? ArrayFromHandle<T>(IntPtr handle, bool releaseHandle) where T : class, INativeObject
+    {
+        T?[]? result = ArrayFromHandle<T>(handle);
+        if (releaseHandle && handle != IntPtr.Zero)
+        {
+            CFObject.CFRelease(handle);
+        }
+        return result;
+    }
+
+    private static T DefaultConvert<T>(IntPtr handle) where T : class, INativeObject
+    {
+        if (handle != CFNullHandle)
+        {
+            return Runtime.GetNativeObject<T>(handle);
+        }
+        return null;
+    }
+
+    public unsafe static T[]? ArrayFromHandleFunc<T>(IntPtr handle, Func<IntPtr, T> createObject)
+    {
+        if (handle == IntPtr.Zero)
+        {
+            return null;
+        }
+        int num = (int)(nint)GetCount(handle);
+        if (num == 0)
+        {
+            return Array.Empty<T>();
+        }
+        Span<IntPtr> span = ((num > 256) ? ((Span<IntPtr>)new IntPtr[num]) : stackalloc IntPtr[num]);
+        Span<IntPtr> span2 = span;
+        fixed (IntPtr* ptr = span2)
+        {
+            void* values = ptr;
+            CFArrayGetValues(handle, new CFRange(0, num), (nint)values);
+        }
+        T[] array = new T[num];
+        for (int i = 0; i < num; i++)
+        {
+            array[i] = createObject(span2[i]);
+        }
+        return array;
+    }
+
+    public static T[]? ArrayFromHandleFunc<T>(IntPtr handle, Func<IntPtr, T> createObject, bool releaseHandle)
+    {
+        T[]? result = ArrayFromHandleFunc(handle, createObject);
+        if (releaseHandle && handle != IntPtr.Zero)
+        {
+            CFObject.CFRelease(handle);
+        }
+        return result;
+    } 
 }
