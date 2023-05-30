@@ -1058,7 +1058,7 @@ internal abstract class Registrar
 
     private MethodBase invoke_conforms_to_protocol;
 
-    internal const string AssemblyName = "Microsoft.MacCatalyst";
+    internal const string AssemblyName = "Xamarin.Mac";
 
     private static StringBuilder trace;
 
@@ -1078,7 +1078,7 @@ internal abstract class Registrar
 
     internal static string CoreAnimation => "CoreAnimation";
 
-    public string PlatformAssembly => "Microsoft.MacCatalyst";
+    public string PlatformAssembly => "Xamarin.Mac";
 
     internal static string CreateSetterSelector(string getterSelector)
     {

@@ -25,7 +25,7 @@ internal class DynamicRegistrar : Registrar
 
     protected override bool IsARM64 => RuntimeEx.IsARM64CallingConvention;
 
-    protected override string PlatformName => "iOS";
+    protected override string PlatformName => "Mac"; 
 
     public DynamicRegistrar()
     {
@@ -53,14 +53,14 @@ internal class DynamicRegistrar : Registrar
 
     protected override bool ContainsPlatformReference(Assembly assembly)
     {
-        if (assembly.GetName().Name == "Microsoft.MacCatalyst")
+        if (assembly.GetName().Name == AssemblyName)
         {
             return true;
         }
         AssemblyName[] referencedAssemblies = assembly.GetReferencedAssemblies();
         for (int i = 0; i < referencedAssemblies.Length; i++)
         {
-            if (referencedAssemblies[i].Name == "Microsoft.MacCatalyst")
+            if (referencedAssemblies[i].Name == AssemblyName)
             {
                 return true;
             }

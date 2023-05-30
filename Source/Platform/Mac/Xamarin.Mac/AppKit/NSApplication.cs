@@ -1949,6 +1949,9 @@ public class NSApplication : NSResponder
 		}
 		initialized = true;
 		Assembly assembly = typeof(NSApplication).Assembly;
+
+        RuntimeEx.RegisterEntryAssembly(assembly);
+
 		Runtime.RegisterAssembly(assembly);
 		AssemblyName name = assembly.GetName();
 		Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();

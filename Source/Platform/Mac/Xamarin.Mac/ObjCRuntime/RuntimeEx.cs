@@ -1,6 +1,7 @@
-﻿using Foundation;
+﻿using Registrar;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Xml.Linq;
 using Xamarin.Utiles;
 
 namespace ObjCRuntime;
@@ -14,7 +15,7 @@ public static class RuntimeEx
     }
 
 
-    public static bool Initialize()
+    static RuntimeEx()
     {
         var architecture = RuntimeInformation.ProcessArchitecture;
         if (architecture == Architecture.Arm64)
@@ -22,20 +23,18 @@ public static class RuntimeEx
 
         IntPtrEqualityComparer = new();
         TypeEqualityComparer = new();
-
-        return true;
+        object_map = new();
+        Registrar = new();
+        lock_obj = new();
     }
 
+    public static bool IsARM64CallingConvention = false;
     internal static IntPtrEqualityComparer IntPtrEqualityComparer;
-
     internal static TypeEqualityComparer TypeEqualityComparer;
-
-
     private static Dictionary<IntPtr, GCHandle> object_map;
-
     private static object lock_obj;
 
-    public static bool IsARM64CallingConvention = false;
+    static DynamicRegistrar Registrar; 
 
     internal static IntPtr AllocGCHandle(object? value, GCHandleType type = GCHandleType.Normal)
     {
@@ -69,6 +68,26 @@ public static class RuntimeEx
         }
         throw ErrorHelper.CreateError(8003, $"Failed to find the closed generic method '{open_method.Name}' on the type '{closed_type.FullName}'.");
     }
+
+    public static void RegisterEntryAssembly(Assembly assembly)
+    {
+        AssemblyName name = assembly.GetName();
+        Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        foreach (Assembly assembly2 in assemblies)
+        {
+            AssemblyName[] referencedAssemblies = assembly2.GetReferencedAssemblies();
+            for (int j = 0; j < referencedAssemblies.Length; j++)
+            {
+                if (AssemblyName.ReferenceMatchesDefinition(referencedAssemblies[j], name))
+                {
+                    RegisterAssembly(assembly2);
+                    break;
+                }
+            }
+        }
+    }
+
+    public static void RegisterAssembly(Assembly assembly) => Registrar.RegisterAssembly(assembly);
 
     //public static NSObject? GetNSObject(IntPtr ptr)
     //{
