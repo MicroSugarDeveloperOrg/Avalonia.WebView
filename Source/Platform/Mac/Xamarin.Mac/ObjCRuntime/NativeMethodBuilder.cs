@@ -55,7 +55,34 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
 		this.type = type;
 	}
 
-	internal override Delegate CreateDelegate()
+	internal NativeMethodBuilder(Type type, MethodInfo methodInfo , ProtocolMemberAttribute attribute)
+	{
+		if (attribute == null)
+            throw new ArgumentException("attribute does not have a ProtocolMember attribute");
+
+		if (type is null)
+            throw new ArgumentException("type does not have a ProtocolMember attribute");
+
+		if (methodInfo is null)
+            throw new ArgumentException("type does not have a MethodInfo");
+
+        if (methodInfo.DeclaringType.IsGenericType)
+            throw new ArgumentException("MethodInfo cannot be in a generic type");
+
+		Parameters = methodInfo.GetParameters();
+        rettype = ConvertReturnType(methodInfo.ReturnType);
+        Selector = new Selector(attribute.Selector ?? methodInfo.Name, alloc: true).Handle;
+        Signature = $"{TypeConverter.ToNative(methodInfo.ReturnType)}@:";
+		ConvertParametersByRef(attribute.ParameterType, attribute.ParameterByRef);
+        //ConvertParameters(Parameters, methodInfo.IsStatic, isstret);
+        //ParameterTypes = attribute.ParameterType;
+        //Signature += TypeConverter.ToNative(attribute.ParameterType);
+        DelegateType = CreateDelegateType(rettype, ParameterTypes);
+        this.minfo = methodInfo;
+        this.type = type;
+    }
+
+    internal override Delegate CreateDelegate()
 	{
 		DynamicMethod dynamicMethod = new DynamicMethod($"[{minfo.DeclaringType}:{minfo}]", rettype, base.ParameterTypes, NativeImplementationBuilder.module, skipVisibility: true);
 		ILGenerator iLGenerator = dynamicMethod.GetILGenerator();

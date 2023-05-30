@@ -12,7 +12,7 @@ internal class SchemeHandler : NSObject, IWKUrlSchemeHandler
     readonly MacCatalystWebViewCore _webViewCore;
     readonly IVirtualBlazorWebViewProvider _provider;
 
-    [Export("webView:startURLSchemeTask:")]
+    //[Export("webView:startURLSchemeTask:")]
     public void StartUrlSchemeTask(WKWebView webView, IWKUrlSchemeTask urlSchemeTask)
     {
         var responseBytes = GetResponseBytes(urlSchemeTask.Request.Url?.AbsoluteString ?? "", out var contentType, statusCode: out var statusCode);
@@ -61,7 +61,7 @@ internal class SchemeHandler : NSObject, IWKUrlSchemeHandler
         }
     }
 
-    [Export("webView:stopURLSchemeTask:")]
+    //[Export("webView:stopURLSchemeTask:")]
     public void StopUrlSchemeTask(WKWebView webView, IWKUrlSchemeTask urlSchemeTask)
     {
     }

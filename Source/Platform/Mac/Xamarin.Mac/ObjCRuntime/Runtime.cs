@@ -100,9 +100,7 @@ public static class Runtime
         foreach (Type type in types)
         {
             if (type.IsSubclassOf(typeof(NSObject)) && !Attribute.IsDefined(type, typeof(ModelAttribute), inherit: false))
-            {
                 Class.Register(type);
-            }
         }
     }
 

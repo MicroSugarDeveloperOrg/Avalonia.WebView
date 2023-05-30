@@ -185,7 +185,13 @@ internal abstract class NativeImplementationBuilder
 		}
 	}
 
-	protected void DeclareLocals(ILGenerator il)
+    protected void ConvertParametersByRef(Type[] rawTypes, bool[] refTypes)
+    {
+   
+        
+    }
+
+    protected void DeclareLocals(ILGenerator il)
 	{
 		for (int i = 0; i < Parameters.Length; i++)
 		{

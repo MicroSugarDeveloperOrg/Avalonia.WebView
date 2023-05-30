@@ -10,7 +10,7 @@ internal sealed class WebViewScriptMessageHandler : NSObject, IWKScriptMessageHa
     readonly Uri _baseUri;
     readonly Action<Uri, string> _messageReceivedAction;
 
-    [Export("userContentController:didReceiveScriptMessage:")]
+    //[Export("userContentController:didReceiveScriptMessage:")]
     public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
     {
         if (message is null) throw new ArgumentNullException(nameof(message));

@@ -207,13 +207,18 @@ public class Class : INativeObject
 				}
 				RegisterProperty(propertyInfo, type, zero2);
 			}
+
 			NSObject.OverrideRetainAndRelease(zero2);
+
+			//获取对象的原生接口，确认是否具有Export属性
 			MethodInfo[] methods = type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 			for (int i = 0; i < methods.Length; i++)
-			{
-				RegisterMethod(methods[i], type, zero2);
-			}
-			ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
+                RegisterMethod(methods[i], type, zero2);
+
+			//遍历接口查看是否具有 protocol的接口
+			RegisterInterfaces(type, zero2);
+ 
+            ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
 			if (constructor != null)
 			{
 				NativeConstructorBuilder nativeConstructorBuilder = new NativeConstructorBuilder(constructor);
@@ -298,7 +303,33 @@ public class Class : INativeObject
 		}
 	}
 
-	private static IntPtr AllocExecMemory(int size)
+	private static void RegisterInterfaces(Type type, IntPtr handle)
+	{
+        Type[] interfaceTypes = type.GetInterfaces();
+		foreach (var interfaceType in interfaceTypes)
+		{
+			if (interfaceType == typeof(INativeObject) || interfaceType == typeof(IDisposable))
+				continue;
+
+			var attributes = interfaceType.GetCustomAttributes<ProtocolMemberAttribute>();
+			foreach (var attribute in attributes)
+				RegisterInterface(type, handle, attribute);
+        }
+    }
+
+	private static void RegisterInterface(Type type, IntPtr handle, ProtocolMemberAttribute attribute)
+	{
+        MethodInfo? methodInfo = type.GetMethod(attribute.Name, BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+		if (methodInfo is null)
+			return;
+
+		NativeMethodBuilder nativeMethodBuilder = new NativeMethodBuilder(type, methodInfo, attribute);
+        class_addMethod(methodInfo.IsStatic ? object_getClass(handle) : handle, nativeMethodBuilder.Selector, GetFunctionPointer(methodInfo, nativeMethodBuilder.Delegate), nativeMethodBuilder.Signature);
+        lock (lock_obj)
+            method_wrappers.Add(nativeMethodBuilder.Delegate);
+    }
+
+    private static IntPtr AllocExecMemory(int size)
 	{
 		if (size_left < size)
 		{
