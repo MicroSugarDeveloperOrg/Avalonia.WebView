@@ -76,16 +76,14 @@ internal abstract class NativeImplementationBuilder
         MethodBuilder methodBuilder = null;
         methodBuilder = typeBuilder.DefineMethod("Invoke", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig | MethodAttributes.VtableLayoutMask, return_type, argument_types);
         if (NeedsCustomMarshaler(return_type))
-        {
             SetupParameter(methodBuilder, 0, return_type);
-        }
+
         for (int i = 1; i <= argument_types.Length; i++)
         {
             if (NeedsCustomMarshaler(argument_types[i - 1]))
-            {
                 SetupParameter(methodBuilder, i, argument_types[i - 1]);
-            }
         }
+
         methodBuilder.SetImplementationFlags(MethodImplAttributes.CodeTypeMask);
         return typeBuilder.CreateTypeInfo().AsType();
     }
