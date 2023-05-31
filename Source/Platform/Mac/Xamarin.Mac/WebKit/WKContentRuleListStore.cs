@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using Xamarin.Utiles;
 
 namespace WebKit;
 
@@ -68,7 +69,7 @@ public class WKContentRuleListStore : NSObject
     }
 
     [Export("compileContentRuleListForIdentifier:encodedContentRuleList:completionHandler:")]
-    public unsafe virtual void CompileContentRuleList(string identifier, string encodedContentRuleList, Action<WKContentRuleList, NSError> completionHandler)
+    public unsafe virtual void CompileContentRuleList(string identifier, string encodedContentRuleList, [BlockProxy(typeof(NSAction))] Action<WKContentRuleList, NSError> completionHandler)
     {
         if (identifier == null)
         {
@@ -128,7 +129,7 @@ public class WKContentRuleListStore : NSObject
     }
 
     [Export("getAvailableContentRuleListIdentifiers:")]
-    public unsafe virtual void GetAvailableContentRuleListIdentifiers(Action<string[]> callback)
+    public unsafe virtual void GetAvailableContentRuleListIdentifiers([BlockProxy(typeof(NSAction))] Action<string[]> callback)
     {
         if (callback == null)
         {
@@ -159,7 +160,7 @@ public class WKContentRuleListStore : NSObject
     }
 
     [Export("lookUpContentRuleListForIdentifier:completionHandler:")]
-    public unsafe virtual void LookUpContentRuleList(string identifier, Action<WKContentRuleList, NSError> completionHandler)
+    public unsafe virtual void LookUpContentRuleList(string identifier, [BlockProxy(typeof(NSAction))] Action<WKContentRuleList, NSError> completionHandler)
     {
         if (identifier == null)
         {
@@ -203,7 +204,7 @@ public class WKContentRuleListStore : NSObject
     }
 
     [Export("removeContentRuleListForIdentifier:completionHandler:")]
-    public unsafe virtual void RemoveContentRuleList(string identifier, Action<NSError> completionHandler)
+    public unsafe virtual void RemoveContentRuleList(string identifier, [BlockProxy(typeof(NSAction))] Action<NSError> completionHandler)
     {
         if (identifier == null)
         {

@@ -3,6 +3,7 @@ using ObjCRuntime;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Utiles;
 
 namespace WebKit;
 
@@ -29,7 +30,7 @@ public static class WKUIDelegate_Extensions
         return Runtime.GetNSObjectTx<WKWebView>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(This.Handle, Selector.GetHandle("webView:createWebViewWithConfiguration:forNavigationAction:windowFeatures:"), webView.Handle, configuration.Handle, navigationAction.Handle, windowFeatures.Handle));
     }
 
-    public unsafe static void RunJavaScriptAlertPanel(this IWKUIDelegate This, WKWebView webView, string message, WKFrameInfo frame, Action completionHandler)
+    public unsafe static void RunJavaScriptAlertPanel(this IWKUIDelegate This, WKWebView webView, string message, WKFrameInfo frame, [BlockProxy(typeof(NSAction))] Action completionHandler)
     {
         if (webView == null)
         {
@@ -56,7 +57,7 @@ public static class WKUIDelegate_Extensions
         ptr->CleanupBlock();
     }
 
-    public unsafe static void RunJavaScriptConfirmPanel(this IWKUIDelegate This, WKWebView webView, string message, WKFrameInfo frame, Action<bool> completionHandler)
+    public unsafe static void RunJavaScriptConfirmPanel(this IWKUIDelegate This, WKWebView webView, string message, WKFrameInfo frame, [BlockProxy(typeof(NSAction))] Action<bool> completionHandler)
     {
         if (webView == null)
         {
@@ -83,7 +84,7 @@ public static class WKUIDelegate_Extensions
         ptr->CleanupBlock();
     }
 
-    public unsafe static void RunJavaScriptTextInputPanel(this IWKUIDelegate This, WKWebView webView, string prompt, string? defaultText, WKFrameInfo frame, Action<string> completionHandler)
+    public unsafe static void RunJavaScriptTextInputPanel(this IWKUIDelegate This, WKWebView webView, string prompt, string? defaultText, WKFrameInfo frame, [BlockProxy(typeof(NSAction))] Action<string> completionHandler)
     {
         if (webView == null)
         {
@@ -112,7 +113,7 @@ public static class WKUIDelegate_Extensions
         ptr->CleanupBlock();
     }
 
-    public unsafe static void RunOpenPanel(this IWKUIDelegate This, WKWebView webView, WKOpenPanelParameters parameters, WKFrameInfo frame, Action<NSUrl[]> completionHandler)
+    public unsafe static void RunOpenPanel(this IWKUIDelegate This, WKWebView webView, WKOpenPanelParameters parameters, WKFrameInfo frame, [BlockProxy(typeof(NSAction))] Action<NSUrl[]> completionHandler)
     {
         if (webView == null)
         {

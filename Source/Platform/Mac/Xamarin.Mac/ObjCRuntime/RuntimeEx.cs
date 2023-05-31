@@ -1,7 +1,7 @@
-﻿using Registrar;
+﻿using Foundation;
+using Registrar;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Xml.Linq;
 using Xamarin.Utiles;
 
 namespace ObjCRuntime;
@@ -33,8 +33,9 @@ public static class RuntimeEx
     internal static TypeEqualityComparer TypeEqualityComparer;
     private static Dictionary<IntPtr, GCHandle> object_map;
     private static object lock_obj;
+    public static bool DynamicRegistrationSupported => true;
 
-    static DynamicRegistrar Registrar; 
+    static DynamicRegistrar Registrar;
 
     internal static IntPtr AllocGCHandle(object? value, GCHandleType type = GCHandleType.Normal)
     {
@@ -88,6 +89,94 @@ public static class RuntimeEx
     }
 
     public static void RegisterAssembly(Assembly assembly) => Registrar.RegisterAssembly(assembly);
+
+
+    internal static ExportAttribute? GetExportAttribute(MethodInfo method)
+    {
+        ExportAttribute customAttribute = method.GetCustomAttribute<ExportAttribute>();
+        if (customAttribute == null)
+        {
+            PropertyInfo propertyInfo = FindPropertyInfo(method);
+            if ((object)propertyInfo != null)
+            {
+                customAttribute = propertyInfo.GetCustomAttribute<ExportAttribute>();
+            }
+        }
+        return customAttribute;
+    }
+
+    internal static PropertyInfo? FindPropertyInfo(MethodInfo accessor)
+    {
+        if (!accessor.IsSpecialName)
+        {
+            return null;
+        }
+        PropertyInfo[] properties = accessor.DeclaringType.GetProperties();
+        foreach (PropertyInfo propertyInfo in properties)
+        {
+            if (propertyInfo.GetGetMethod() == accessor)
+            {
+                return propertyInfo;
+            }
+            if (propertyInfo.GetSetMethod() == accessor)
+            {
+                return propertyInfo;
+            }
+        }
+        return null;
+    }
+
+
+    internal static ProtocolMemberAttribute? GetProtocolMemberAttribute(Type type, string selector, MethodInfo method)
+    {
+        IEnumerable<ProtocolMemberAttribute> customAttributes = type.GetCustomAttributes<ProtocolMemberAttribute>();
+        if (customAttributes == null)
+        {
+            return null;
+        }
+        foreach (ProtocolMemberAttribute item in customAttributes)
+        {
+            if (item.IsStatic != method.IsStatic || item.Selector != selector)
+            {
+                continue;
+            }
+            if (!item.IsProperty)
+            {
+                ParameterInfo[] parameters = method.GetParameters();
+                Type[]? parameterType = item.ParameterType;
+                if (((parameterType != null) ? parameterType.Length : 0) != parameters.Length)
+                {
+                    continue;
+                }
+                bool flag = false;
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    Type type2 = parameters[i].ParameterType;
+                    bool isByRef = type2.IsByRef;
+                    if (isByRef)
+                    {
+                        type2 = type2.GetElementType();
+                    }
+                    if (isByRef != item.ParameterByRef[i])
+                    {
+                        flag = true;
+                        break;
+                    }
+                    if (type2 != item.ParameterType[i])
+                    {
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag)
+                {
+                    continue;
+                }
+            }
+            return item;
+        }
+        return null;
+    }
 
     //public static NSObject? GetNSObject(IntPtr ptr)
     //{

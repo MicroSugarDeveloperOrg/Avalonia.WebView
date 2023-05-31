@@ -643,7 +643,7 @@ public class WKWebView : NSView
     }
 
     [Export(selEvaluateJavaScript_InFrame_InContentWorld_CompletionHandler_)]
-    public unsafe virtual void EvaluateJavaScript(string javaScriptString, WKFrameInfo? frame, WKContentWorld contentWorld, Action<NSObject, NSError>? completionHandler)
+    public unsafe virtual void EvaluateJavaScript(string javaScriptString, WKFrameInfo? frame, WKContentWorld contentWorld, [BlockProxy(typeof(NSAction))] Action<NSObject, NSError>? completionHandler)
     {
         if (javaScriptString == null)
             ThrowHelper.ThrowArgumentNullException("javaScriptString");
@@ -692,7 +692,7 @@ public class WKWebView : NSView
     }
 
     [Export(selCallAsyncJavaScript_Arguments_InFrame_InContentWorld_CompletionHandler_)]
-    public unsafe virtual void CallAsyncJavaScript(string functionBody, NSDictionary<NSString, NSObject>? arguments, WKFrameInfo? frame, WKContentWorld contentWorld, Action<NSObject, NSError>? completionHandler)
+    public unsafe virtual void CallAsyncJavaScript(string functionBody, NSDictionary<NSString, NSObject>? arguments, WKFrameInfo? frame, WKContentWorld contentWorld, [BlockProxy(typeof(NSAction))] Action<NSObject, NSError>? completionHandler)
     {
         if (functionBody == null)
             ThrowHelper.ThrowArgumentNullException("functionBody");
@@ -734,7 +734,7 @@ public class WKWebView : NSView
     }
 
     [Export(selCreateWebArchiveDataWithCompletionHandler_)]
-    public unsafe virtual void CreateWebArchive(Action<NSData, NSError> completionHandler)
+    public unsafe virtual void CreateWebArchive([BlockProxy(typeof(NSAction))] Action<NSData, NSError> completionHandler)
     {
         if (completionHandler == null)
             ThrowHelper.ThrowArgumentNullException("completionHandler");
@@ -918,7 +918,7 @@ public class WKWebView : NSView
     }
 
     [Export(selTakeSnapshotWithConfiguration_CompletionHandler_)]
-    public unsafe virtual void TakeSnapshot(WKSnapshotConfiguration? snapshotConfiguration, Action<NSImage, NSError> completionHandler)
+    public unsafe virtual void TakeSnapshot(WKSnapshotConfiguration? snapshotConfiguration, [BlockProxy(typeof(NSAction))] Action<NSImage, NSError> completionHandler)
     {
         if (completionHandler == null)
         {
@@ -961,7 +961,7 @@ public class WKWebView : NSView
     }
 
     [Export(selFindString_WithConfiguration_completionHandler_)]
-    public unsafe virtual void Find(string @string, WKFindConfiguration? configuration, Action<WKFindResult> completionHandler)
+    public unsafe virtual void Find(string @string, WKFindConfiguration? configuration, [BlockProxy(typeof(NSAction))] Action<WKFindResult> completionHandler)
     {
         if (@string == null)
         {

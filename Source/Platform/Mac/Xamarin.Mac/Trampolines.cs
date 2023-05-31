@@ -766,7 +766,7 @@ internal static class Trampolines
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(Action<NSObject, NSError>))]
-    internal delegate void DActionArity2V69(IntPtr block, NativeHandle arg1, NativeHandle arg2);
+    internal delegate void DActionArity2V69(IntPtr block, IntPtr arg1, IntPtr arg2);
 
     internal static class SDActionArity2V69
     {
@@ -774,7 +774,7 @@ internal static class Trampolines
 
         [Preserve(Conditional = true)] 
         [MonoPInvokeCallback(typeof(DActionArity2V69))]
-        private unsafe static void Invoke(IntPtr block, NativeHandle arg1, NativeHandle arg2)
+        private unsafe static void Invoke(IntPtr block, IntPtr arg1, IntPtr arg2)
         {
             ((Action<NSObject, NSError>)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<NSObject>(arg1), Runtime.GetNSObjectTx<NSError>(arg2));
         }
@@ -782,7 +782,7 @@ internal static class Trampolines
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(Action<NSData, NSError>))]
-    internal delegate void DActionArity2V16(IntPtr block, NativeHandle arg1, NativeHandle arg2);
+    internal delegate void DActionArity2V16(IntPtr block, IntPtr arg1, IntPtr arg2);
 
     internal static class SDActionArity2V16
     {
@@ -790,7 +790,7 @@ internal static class Trampolines
 
         [Preserve(Conditional = true)]
         [MonoPInvokeCallback(typeof(DActionArity2V16))]
-        private unsafe static void Invoke(IntPtr block, NativeHandle arg1, NativeHandle arg2)
+        private unsafe static void Invoke(IntPtr block, IntPtr arg1, IntPtr arg2)
         {
             ((Action<NSData, NSError>)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<NSData>(arg1), Runtime.GetNSObjectTx<NSError>(arg2));
         }
@@ -798,7 +798,7 @@ internal static class Trampolines
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(Action<WKFindResult>))]
-    internal delegate void DActionArity1V256(IntPtr block, NativeHandle obj);
+    internal delegate void DActionArity1V256(IntPtr block, IntPtr obj);
 
     internal static class SDActionArity1V256
     {
@@ -806,7 +806,7 @@ internal static class Trampolines
 
         [Preserve(Conditional = true)]
         [MonoPInvokeCallback(typeof(DActionArity1V256))]
-        private unsafe static void Invoke(IntPtr block, NativeHandle obj)
+        private unsafe static void Invoke(IntPtr block, IntPtr obj)
         {
             ((Action<WKFindResult>)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<WKFindResult>(obj));
         }

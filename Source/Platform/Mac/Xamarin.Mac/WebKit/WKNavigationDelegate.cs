@@ -1,6 +1,7 @@
 ﻿using Foundation;
 using ObjCRuntime;
 using System.ComponentModel;
+using Xamarin.Utiles;
 
 namespace WebKit;
 
@@ -39,19 +40,19 @@ public class WKNavigationDelegate : NSObject, IWKNavigationDelegate
     }
 
     [Export("webView:decidePolicyForNavigationAction:decisionHandler:")]
-    public virtual void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, Action<WKNavigationActionPolicy> decisionHandler)
+    public virtual void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, [BlockProxy(typeof(NSAction))] Action<WKNavigationActionPolicy> decisionHandler)
     {
         throw new You_Should_Not_Call_base_In_This_Method();
     }
 
     [Export("webView:decidePolicyForNavigationResponse:decisionHandler:")]
-    public virtual void DecidePolicy(WKWebView webView, WKNavigationResponse navigationResponse, Action<WKNavigationResponsePolicy> decisionHandler)
+    public virtual void DecidePolicy(WKWebView webView, WKNavigationResponse navigationResponse, [BlockProxy(typeof(NSAction))] Action<WKNavigationResponsePolicy> decisionHandler)
     {
         throw new You_Should_Not_Call_base_In_This_Method();
     }
 
     [Export("webView:decidePolicyForNavigationAction:preferences:decisionHandler:")]
-    public virtual void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, WKWebpagePreferences preferences, Action<WKNavigationActionPolicy, WKWebpagePreferences> decisionHandler)
+    public virtual void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, WKWebpagePreferences preferences, [BlockProxy(typeof(NSAction))] Action<WKNavigationActionPolicy, WKWebpagePreferences> decisionHandler)
     {
         throw new You_Should_Not_Call_base_In_This_Method();
     }
@@ -81,7 +82,7 @@ public class WKNavigationDelegate : NSObject, IWKNavigationDelegate
     }
 
     [Export("webView:didReceiveAuthenticationChallenge:completionHandler:")]
-    public virtual void DidReceiveAuthenticationChallenge(WKWebView webView, NSUrlAuthenticationChallenge challenge, Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential> completionHandler)
+    public virtual void DidReceiveAuthenticationChallenge(WKWebView webView, NSUrlAuthenticationChallenge challenge, [BlockProxy(typeof(NSAction))] Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential> completionHandler)
     {
         throw new You_Should_Not_Call_base_In_This_Method();
     }

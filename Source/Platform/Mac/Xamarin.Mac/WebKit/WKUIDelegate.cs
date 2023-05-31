@@ -1,6 +1,7 @@
 ﻿using Foundation;
 using ObjCRuntime;
 using System.ComponentModel;
+using Xamarin.Utiles;
 
 namespace WebKit;
 
@@ -45,25 +46,25 @@ public class WKUIDelegate : NSObject, IWKUIDelegate, INativeObject, IDisposable
     }
 
     [Export("webView:runJavaScriptAlertPanelWithMessage:initiatedByFrame:completionHandler:")]
-    public virtual void RunJavaScriptAlertPanel(WKWebView webView, string message, WKFrameInfo frame, Action completionHandler)
+    public virtual void RunJavaScriptAlertPanel(WKWebView webView, string message, WKFrameInfo frame, [BlockProxy(typeof(NSAction))] Action completionHandler)
     {
         throw new You_Should_Not_Call_base_In_This_Method();
     }
 
     [Export("webView:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:completionHandler:")]
-    public virtual void RunJavaScriptConfirmPanel(WKWebView webView, string message, WKFrameInfo frame, Action<bool> completionHandler)
+    public virtual void RunJavaScriptConfirmPanel(WKWebView webView, string message, WKFrameInfo frame, [BlockProxy(typeof(NSAction))] Action<bool> completionHandler)
     {
         throw new You_Should_Not_Call_base_In_This_Method();
     }
 
     [Export("webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:")]
-    public virtual void RunJavaScriptTextInputPanel(WKWebView webView, string prompt, string? defaultText, WKFrameInfo frame, Action<string> completionHandler)
+    public virtual void RunJavaScriptTextInputPanel(WKWebView webView, string prompt, string? defaultText, WKFrameInfo frame, [BlockProxy(typeof(NSAction))] Action<string> completionHandler)
     {
         throw new You_Should_Not_Call_base_In_This_Method();
     }
 
     [Export("webView:runOpenPanelWithParameters:initiatedByFrame:completionHandler:")]
-    public virtual void RunOpenPanel(WKWebView webView, WKOpenPanelParameters parameters, WKFrameInfo frame, Action<NSUrl[]> completionHandler)
+    public virtual void RunOpenPanel(WKWebView webView, WKOpenPanelParameters parameters, WKFrameInfo frame, [BlockProxy(typeof(NSAction))] Action<NSUrl[]> completionHandler)
     {
         throw new You_Should_Not_Call_base_In_This_Method();
     }

@@ -528,4 +528,54 @@ public class Class : INativeObject
     {
         return Messaging.IntPtr_objc_msgSend(obj, Selector.GetHandle("class"));
     }
+
+    private static Module ResolveModule(Assembly assembly, uint token)
+    {
+        Module[] modules = assembly.GetModules();
+        foreach (Module module in modules)
+        {
+            if (module.MetadataToken == token)
+            {
+                return module;
+            }
+        }
+        throw ErrorHelper.CreateError(8020, $"Could not find the module with MetadataToken 0x{token:X} in the assembly {assembly}.");
+    }
+
+    //internal static Type? ResolveTypeTokenReference(uint token_reference)
+    //{
+    //    MemberInfo memberInfo = ResolveTokenReference(token_reference, 33554432u);
+    //    if ((object)memberInfo == null)
+    //    {
+    //        return null;
+    //    }
+    //    if (memberInfo is Type result)
+    //    {
+    //        return result;
+    //    }
+    //    throw ErrorHelper.CreateError(8022, $"Expected the token reference 0x{token_reference:X} to be a type, but it's a {memberInfo.GetType().Name}. {"Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new."}");
+    //}
+
+    //private unsafe static MemberInfo? ResolveTokenReference(uint token_reference, uint implicit_token_type)
+    //{
+    //    Runtime.MTRegistrationMap* registrationMap = Runtime.options->RegistrationMap;
+    //    if ((token_reference & 1) == 1)
+    //    {
+    //        return ResolveFullTokenReference(token_reference);
+    //    }
+    //    uint num = (token_reference >> 1) & 0x7Fu;
+    //    uint num2 = (token_reference >> 8) + implicit_token_type;
+    //    return ResolveToken(ResolveModule(ResolveAssembly(registrationMap->assemblies[(int)num].name), 1u), num2 | implicit_token_type);
+    //}
+
+    private static MemberInfo? ResolveToken(Module module, uint token)
+    {
+        uint value = token & 0xFF000000u;
+        return (token & 0xFF000000u) switch
+        {
+            33554432u => module.ResolveType((int)token),
+            100663296u => module.ResolveMethod((int)token),
+            _ => throw ErrorHelper.CreateError(8021, $"Unknown implicit token type: 0x{value:X}."),
+        };
+    }
 }
