@@ -48,7 +48,7 @@ internal class NativeConstructorBuilder : NativeImplementationBuilder
 
     internal override Delegate CreateDelegate()
     {
-        DynamicMethod dynamicMethod = new DynamicMethod(Guid.NewGuid().ToString(), typeof(IntPtr), ParameterTypes, module, skipVisibility: true);
+        DynamicMethod dynamicMethod = new DynamicMethod(Guid.NewGuid().ToString(), typeof(IntPtr), ParameterTypes, s_Module, skipVisibility: true);
         ILGenerator iLGenerator = dynamicMethod.GetILGenerator();
         Label label = iLGenerator.DefineLabel();
         iLGenerator.DeclareLocal(typeof(object));

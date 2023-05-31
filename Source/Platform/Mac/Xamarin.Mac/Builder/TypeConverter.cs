@@ -67,9 +67,7 @@ public static class TypeConverter
                         foreach (Type type2 in types)
                         {
                             if (type2.IsValueType && !type2.IsEnum && type2.Name == text)
-                            {
                                 return type2;
-                            }
                         }
                     }
                     throw new NotImplementedException("struct marshalling: " + text + " " + type);
@@ -86,13 +84,11 @@ public static class TypeConverter
     public static string ToNative(Type type)
     {
         if (type.IsGenericParameter)
-        {
             throw new ArgumentException("Unable to convert generic types");
-        }
+
         if (type.IsByRef)
-        {
             return "^" + ToNative(type.GetElementType());
-        }
+
         if (type == typeof(IntPtr))
         {
             return "^v";
@@ -193,24 +189,20 @@ public static class TypeConverter
             stringBuilder.AppendFormat("{{{0}=", type.Name);
             FieldInfo[] fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             foreach (FieldInfo fieldInfo in fields)
-            {
                 stringBuilder.Append(ToNative(fieldInfo.FieldType));
-            }
             stringBuilder.Append("}");
             return stringBuilder.ToString();
         }
+
         if (type.IsValueType && type.IsEnum)
-        {
             return ToNative(Enum.GetUnderlyingType(type));
-        }
+
         if (type.IsArray)
-        {
             return "@";
-        }
+
         if (type.IsSubclassOf(typeof(Delegate)))
-        {
             return "^v";
-        }
+
         throw new NotImplementedException("Don't know how to marshal: " + type.ToString());
     }
 }

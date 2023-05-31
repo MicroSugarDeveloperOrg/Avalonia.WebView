@@ -9,23 +9,29 @@ namespace Builder;
 
 internal abstract class NativeImplementationBuilder
 {
-    internal static AssemblyBuilder builder;
+    static NativeImplementationBuilder()
+    {
+        __convertarray = typeof(NSArray).GetMethod("ArrayFromHandle", new Type[1] { typeof(IntPtr) });
+        __convertsarray = typeof(NSArray).GetMethod("StringArrayFromHandle", new Type[1] { typeof(IntPtr) });
+        __convertstring = typeof(NSString).GetMethod("ToString", Type.EmptyTypes);
+        __getobject = typeof(Runtime).GetMethod("GetNSObject", BindingFlags.Static | BindingFlags.Public);
+        __gethandle = typeof(NSObject).GetMethod("get_Handle", BindingFlags.Instance | BindingFlags.Public);
+        __intptrzero = typeof(IntPtr).GetField("Zero", BindingFlags.Static | BindingFlags.Public);
+        s_Builder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName(Guid.NewGuid().ToString()), AssemblyBuilderAccess.Run);
+        s_Module = s_Builder.DefineDynamicModule("Implementations");
+    }
 
-    internal static ModuleBuilder module;
+    internal static AssemblyBuilder s_Builder;
+    internal static ModuleBuilder s_Module;
 
-    private static MethodInfo convertarray;
+    private static MethodInfo __convertarray;
+    private static MethodInfo __convertsarray;
+    private static MethodInfo __convertstring;
+    private static MethodInfo __getobject;
+    private static MethodInfo __gethandle;
+    private static FieldInfo __intptrzero;
 
-    private static MethodInfo convertsarray;
-
-    private static MethodInfo convertstring;
-
-    private static MethodInfo getobject;
-
-    private static MethodInfo gethandle;
-
-    private static FieldInfo intptrzero;
-
-    private Delegate del;
+    private Delegate _delegate;
 
     internal int ArgumentOffset { get; set; }
 
@@ -39,11 +45,9 @@ internal abstract class NativeImplementationBuilder
     {
         get
         {
-            if ((object)del == null)
-            {
-                del = CreateDelegate();
-            }
-            return del;
+            if ((object)_delegate == null)
+                _delegate = CreateDelegate();
+            return _delegate;
         }
     }
 
@@ -51,37 +55,26 @@ internal abstract class NativeImplementationBuilder
 
     internal string Signature { get; set; }
 
-    static NativeImplementationBuilder()
-    {
-        convertarray = typeof(NSArray).GetMethod("ArrayFromHandle", new Type[1] { typeof(IntPtr) });
-        convertsarray = typeof(NSArray).GetMethod("StringArrayFromHandle", new Type[1] { typeof(IntPtr) });
-        convertstring = typeof(NSString).GetMethod("ToString", Type.EmptyTypes);
-        getobject = typeof(Runtime).GetMethod("GetNSObject", BindingFlags.Static | BindingFlags.Public);
-        gethandle = typeof(NSObject).GetMethod("get_Handle", BindingFlags.Instance | BindingFlags.Public);
-        intptrzero = typeof(IntPtr).GetField("Zero", BindingFlags.Static | BindingFlags.Public);
-        builder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName(Guid.NewGuid().ToString()), AssemblyBuilderAccess.Run);
-        module = builder.DefineDynamicModule("Implementations");
-    }
-
     internal abstract Delegate CreateDelegate();
 
     protected Type CreateDelegateType(Type return_type, Type[] argument_types)
     {
-        TypeBuilder typeBuilder = module.DefineType(Guid.NewGuid().ToString(), TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.AutoClass, typeof(MulticastDelegate));
+        TypeBuilder typeBuilder = s_Module.DefineType(Guid.NewGuid().ToString(), TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.AutoClass, typeof(MulticastDelegate));
         typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, new Type[2]
         {
             typeof(object),
             typeof(int)
         }).SetImplementationFlags(MethodImplAttributes.CodeTypeMask);
-        MethodBuilder methodBuilder = null;
-        methodBuilder = typeBuilder.DefineMethod("Invoke", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig | MethodAttributes.VtableLayoutMask, return_type, argument_types);
+
+        MethodBuilder methodBuilder = typeBuilder.DefineMethod("Invoke", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig | MethodAttributes.VtableLayoutMask, return_type, argument_types);
         if (NeedsCustomMarshaler(return_type))
             SetupParameter(methodBuilder, 0, return_type);
 
-        for (int i = 1; i <= argument_types.Length; i++)
+        for (int i = 0; i < argument_types.Length; i++)
         {
-            if (NeedsCustomMarshaler(argument_types[i - 1]))
-                SetupParameter(methodBuilder, i, argument_types[i - 1]);
+            var argument_type = argument_types[i];
+            if (NeedsCustomMarshaler(argument_type))
+                SetupParameter(methodBuilder, i + 1, argument_type);
         }
 
         methodBuilder.SetImplementationFlags(MethodImplAttributes.CodeTypeMask);
@@ -91,26 +84,22 @@ internal abstract class NativeImplementationBuilder
     private bool NeedsCustomMarshaler(Type t)
     {
         if (t == typeof(NSObject) || t.IsSubclassOf(typeof(NSObject)))
-        {
             return true;
-        }
+
         if (t == typeof(Selector))
-        {
             return true;
-        }
+
         return false;
     }
 
     private Type MarshalerForType(Type t)
     {
         if (t == typeof(NSObject) || t.IsSubclassOf(typeof(NSObject)))
-        {
             return typeof(NSObjectMarshaler<>).MakeGenericType(t);
-        }
+
         if (t == typeof(Selector))
-        {
             return typeof(SelectorMarshaler);
-        }
+
         throw new ArgumentException("Cannot determine marshaler type for: " + t);
     }
 
@@ -160,25 +149,15 @@ internal abstract class NativeImplementationBuilder
                 continue;
 
             if (parameterType.IsByRef && IsWrappedType(parameterType.GetElementType()))
-            {
                 ParameterTypes[i + ArgumentOffset] = typeof(IntPtr).MakeByRefType();
-            }
             else if (parameterType.IsArray && IsWrappedType(parameterType.GetElementType()))
-            {
                 ParameterTypes[i + ArgumentOffset] = typeof(IntPtr);
-            }
             else if (typeof(INativeObject).IsAssignableFrom(parameterType) && !IsWrappedType(parameterType))
-            {
                 ParameterTypes[i + ArgumentOffset] = typeof(IntPtr);
-            }
             else if (parameterType == typeof(string))
-            {
                 ParameterTypes[i + ArgumentOffset] = typeof(NSString);
-            }
             else
-            {
                 ParameterTypes[i + ArgumentOffset] = parameterType;
-            }
 
             var proxyAttribute = parameterInfo.GetCustomAttribute(typeof(BlockProxyAttribute));
             if (proxyAttribute is not null && parameterType.IsSubclassOf(typeof(Delegate)))
@@ -226,8 +205,8 @@ internal abstract class NativeImplementationBuilder
             else
                 ParameterTypes[i + ArgumentOffset] = parameterType;
 
-            //if (proxyType is not null && parameterType.IsSubclassOf(typeof(Delegate)))
-                //ParameterTypes[i + ArgumentOffset] = typeof(NSAction);
+            if (proxyType is not null && parameterType.IsSubclassOf(typeof(Delegate)))
+                ParameterTypes[i + ArgumentOffset] = proxyType;
 
             Signature += TypeConverter.ToNative(parameterType);
         }
@@ -247,17 +226,11 @@ internal abstract class NativeImplementationBuilder
                 continue;
 
             if (parameterType.IsByRef && IsWrappedType(parameterType.GetElementType()))
-            {
                 il.DeclareLocal(parameterType.GetElementType());
-            }
             else if (parameterType.IsArray && IsWrappedType(parameterType.GetElementType()))
-            {
                 il.DeclareLocal(parameterType);
-            }
             else if (parameterType == typeof(string))
-            {
                 il.DeclareLocal(typeof(string));
-            }
         }
     }
 
@@ -284,7 +257,7 @@ internal abstract class NativeImplementationBuilder
                 il.Emit(OpCodes.Brfalse, label);
                 il.Emit(OpCodes.Ldarg, i);
                 il.Emit(OpCodes.Ldind_I);
-                il.Emit(OpCodes.Call, getobject);
+                il.Emit(OpCodes.Call, __getobject);
                 il.Emit(OpCodes.Br, label2);
                 il.MarkLabel(label);
                 il.Emit(OpCodes.Ldnull);
@@ -300,13 +273,9 @@ internal abstract class NativeImplementationBuilder
                 il.Emit(OpCodes.Brfalse, label3);
                 il.Emit(OpCodes.Ldarg, i);
                 if (parameterType.GetElementType() == typeof(string))
-                {
-                    il.Emit(OpCodes.Call, convertsarray);
-                }
+                    il.Emit(OpCodes.Call, __convertsarray);
                 else
-                {
-                    il.Emit(OpCodes.Call, convertarray.MakeGenericMethod(parameterType.GetElementType()));
-                }
+                    il.Emit(OpCodes.Call, __convertarray.MakeGenericMethod(parameterType.GetElementType()));
                 il.Emit(OpCodes.Br, label4);
                 il.MarkLabel(label3);
                 il.Emit(OpCodes.Ldnull);
@@ -321,7 +290,7 @@ internal abstract class NativeImplementationBuilder
                 il.Emit(OpCodes.Ldarg, i);
                 il.Emit(OpCodes.Brfalse, label5);
                 il.Emit(OpCodes.Ldarg, i);
-                il.Emit(OpCodes.Call, convertstring);
+                il.Emit(OpCodes.Call, __convertstring);
                 il.Emit(OpCodes.Br, label6);
                 il.MarkLabel(label5);
                 il.Emit(OpCodes.Ldnull);
@@ -350,19 +319,19 @@ internal abstract class NativeImplementationBuilder
 
             if (proxyType is not null && parameterType.IsSubclassOf(typeof(Delegate)))
             {
-                var createMethod = proxyType.GetMethod("Create", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[1] { typeof(IntPtr) }, null);
-                Label label = il.DefineLabel();
-                Label label2 = il.DefineLabel();
-                il.Emit(OpCodes.Ldarg, i);
-                il.Emit(OpCodes.Brfalse, label);
-                il.Emit(OpCodes.Ldarg, i);
-                il.Emit(OpCodes.Ldind_I);
-                il.Emit(OpCodes.Call, createMethod);
-                il.Emit(OpCodes.Br, label2);
-                il.MarkLabel(label);
-                il.Emit(OpCodes.Ldnull);
-                il.MarkLabel(label2);
-                il.Emit(OpCodes.Stloc, num + locoffset);
+                //var createMethod = proxyType.GetMethod("Create", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[1] { typeof(IntPtr) }, null);
+                //
+                //Label label = il.DefineLabel();
+                //Label label2 = il.DefineLabel();
+                //il.Emit(OpCodes.Ldarg, i);
+                //il.Emit(OpCodes.Brfalse, label);
+                //il.Emit(OpCodes.Ldarg, i);
+                //il.Emit(OpCodes.Call, createMethod);
+                //il.Emit(OpCodes.Br, label2);
+                //il.MarkLabel(label);
+                //il.Emit(OpCodes.Ldnull);
+                //il.MarkLabel(label2);
+                //il.Emit(OpCodes.Stloc, num + locoffset);
                 num++; 
             }
             else if (parameterType.IsByRef && Attribute.GetCustomAttribute(parameterInfo, typeof(OutAttribute)) == null && IsWrappedType(parameterType.GetElementType()))
@@ -373,7 +342,7 @@ internal abstract class NativeImplementationBuilder
                 il.Emit(OpCodes.Brfalse, label);
                 il.Emit(OpCodes.Ldarg, i);
                 il.Emit(OpCodes.Ldind_I);
-                il.Emit(OpCodes.Call, getobject);
+                il.Emit(OpCodes.Call, __getobject);
                 il.Emit(OpCodes.Br, label2);
                 il.MarkLabel(label);
                 il.Emit(OpCodes.Ldnull);
@@ -389,13 +358,9 @@ internal abstract class NativeImplementationBuilder
                 il.Emit(OpCodes.Brfalse, label3);
                 il.Emit(OpCodes.Ldarg, i);
                 if (parameterType.GetElementType() == typeof(string))
-                {
-                    il.Emit(OpCodes.Call, convertsarray);
-                }
+                    il.Emit(OpCodes.Call, __convertsarray);
                 else
-                {
-                    il.Emit(OpCodes.Call, convertarray.MakeGenericMethod(parameterType.GetElementType()));
-                }
+                    il.Emit(OpCodes.Call, __convertarray.MakeGenericMethod(parameterType.GetElementType()));
                 il.Emit(OpCodes.Br, label4);
                 il.MarkLabel(label3);
                 il.Emit(OpCodes.Ldnull);
@@ -410,7 +375,7 @@ internal abstract class NativeImplementationBuilder
                 il.Emit(OpCodes.Ldarg, i);
                 il.Emit(OpCodes.Brfalse, label5);
                 il.Emit(OpCodes.Ldarg, i);
-                il.Emit(OpCodes.Call, convertstring);
+                il.Emit(OpCodes.Call, __convertstring);
                 il.Emit(OpCodes.Br, label6);
                 il.MarkLabel(label5);
                 il.Emit(OpCodes.Ldnull);
@@ -493,7 +458,7 @@ internal abstract class NativeImplementationBuilder
 
             if (proxyType is not null)
             {
-                
+                il.Emit(OpCodes.Ldarg, i);
             }
             else
             {
@@ -530,10 +495,8 @@ internal abstract class NativeImplementationBuilder
                     num++;
                 }
                 else
-                {
                     il.Emit(OpCodes.Ldarg, i);
-                }
-            } 
+            }
         }
     }
 
@@ -560,24 +523,20 @@ internal abstract class NativeImplementationBuilder
                 il.Emit(OpCodes.Brfalse, label);
                 il.Emit(OpCodes.Ldarg, i);
                 il.Emit(OpCodes.Ldloc, num + locoffset);
-                il.Emit(OpCodes.Call, gethandle);
+                il.Emit(OpCodes.Call, __gethandle);
                 il.Emit(OpCodes.Stind_I);
                 il.Emit(OpCodes.Br, label2);
                 il.MarkLabel(label);
                 il.Emit(OpCodes.Ldarg, i);
-                il.Emit(OpCodes.Ldsfld, intptrzero);
+                il.Emit(OpCodes.Ldsfld, __intptrzero);
                 il.Emit(OpCodes.Stind_I);
                 il.MarkLabel(label2);
                 num++;
             }
             else if (parameterType.IsArray && IsWrappedType(parameterType.GetElementType()))
-            {
                 num++;
-            }
             else if (parameterType == typeof(string))
-            {
                 num++;
-            }
         }
     }
 

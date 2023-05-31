@@ -8,30 +8,15 @@ namespace Builder;
 
 internal class NativeMethodBuilder : NativeImplementationBuilder
 {
-    private static MethodInfo creatensstring = typeof(NSString).GetMethod("op_Explicit", new Type[1] { typeof(string) });
-
-    private static MethodInfo convertstruct = typeof(Marshal).GetMethod("StructureToPtr", new Type[3]
+    static MethodInfo __creatensstring = typeof(NSString).GetMethod("op_Explicit", new Type[1] { typeof(string) });
+    static MethodInfo __convertstruct = typeof(Marshal).GetMethod("StructureToPtr", new Type[3]
     {
         typeof(object),
         typeof(IntPtr),
         typeof(bool)
     });
-
-    private static MethodInfo buildarray = typeof(NSArray).GetMethod("FromNSObjects", new Type[1] { typeof(NSObject[]) });
-
-    private static MethodInfo buildsarray = typeof(NSArray).GetMethod("FromStrings", new Type[1] { typeof(string[]) });
-
-    private MethodInfo minfo;
-
-    private Type type;
-
-    private Type rettype;
-
-    private bool isstret;
-
-    private bool _isProxy = false;
-
-    private ProtocolMemberAttribute? _protocolMemberAttribute;
+    static MethodInfo __buildarray = typeof(NSArray).GetMethod("FromNSObjects", new Type[1] { typeof(NSObject[]) });
+    static MethodInfo __buildsarray = typeof(NSArray).GetMethod("FromStrings", new Type[1] { typeof(string[]) });
 
     internal NativeMethodBuilder(MethodInfo minfo)
         : this(minfo, minfo.DeclaringType, (ExportAttribute)Attribute.GetCustomAttribute(minfo.GetBaseDefinition(), typeof(ExportAttribute)))
@@ -41,21 +26,19 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
     internal NativeMethodBuilder(MethodInfo minfo, Type type, ExportAttribute ea)
     {
         if (ea == null)
-        {
             throw new ArgumentException("MethodInfo does not have a export attribute");
-        }
+
         if (minfo.DeclaringType.IsGenericType)
-        {
             throw new ArgumentException("MethodInfo cannot be in a generic type");
-        }
+
         Parameters = minfo.GetParameters();
-        rettype = ConvertReturnType(minfo.ReturnType);
+        _returnType = ConvertReturnType(minfo.ReturnType);
         Selector = new Selector(ea.Selector ?? minfo.Name, alloc: true).Handle;
         Signature = $"{TypeConverter.ToNative(minfo.ReturnType)}@:";
-        ConvertParameters(Parameters, minfo.IsStatic, isstret);
-        DelegateType = CreateDelegateType(rettype, ParameterTypes);
-        this.minfo = minfo;
-        this.type = type;
+        ConvertParameters(Parameters, minfo.IsStatic, _isstret);
+        DelegateType = CreateDelegateType(_returnType, ParameterTypes);
+        _methodInfo = minfo;
+        _type = type;
     }
 
     internal NativeMethodBuilder(Type type, MethodInfo methodInfo, ProtocolMemberAttribute attribute)
@@ -76,18 +59,47 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
         _protocolMemberAttribute = attribute;
 
         Parameters = methodInfo.GetParameters();
-        rettype = ConvertReturnType(methodInfo.ReturnType);
+        _returnType = ConvertReturnType(methodInfo.ReturnType);
         Selector = new Selector(attribute.Selector ?? methodInfo.Name, alloc: true).Handle;
         Signature = $"{TypeConverter.ToNative(methodInfo.ReturnType)}@:";
-        ConvertParametersByRef(attribute.ParameterType, attribute.ParameterByRef, attribute.ParameterBlockProxy, attribute.IsStatic, isstret);
-        DelegateType = CreateDelegateType(rettype, ParameterTypes);
-        minfo = methodInfo;
-        this.type = type;
+        ConvertParametersByRef(attribute.ParameterType, attribute.ParameterByRef, attribute.ParameterBlockProxy, attribute.IsStatic, _isstret);
+        DelegateType = CreateDelegateType(_returnType, ParameterTypes);
+        _methodInfo = methodInfo;
+        _type = type;
     }
- 
+
+
+    private MethodInfo _methodInfo;
+    private Type _type;
+    private Type _returnType;
+    private bool _isstret;
+    private bool _isProxy = false;
+    private ProtocolMemberAttribute? _protocolMemberAttribute;
+
+    private Type ConvertReturnType(Type type)
+    {
+        if (type.IsValueType && !type.IsEnum && type.Assembly != typeof(object).Assembly && Marshal.SizeOf(type) > IntPtr.Size * 2)
+        {
+            _isstret = true;
+            return typeof(void);
+        }
+
+        if (type == typeof(string))
+            return typeof(NSString);
+
+        if (type.IsArray && IsWrappedType(type.GetElementType()))
+            return typeof(NSArray);
+
+        if (typeof(INativeObject).IsAssignableFrom(type) && !IsWrappedType(type))
+            return typeof(IntPtr);
+
+        return type;
+    }
+
     internal override Delegate CreateDelegate()
     {
-        DynamicMethod dynamicMethod = new DynamicMethod($"[{minfo.DeclaringType}:{minfo}]", rettype, ParameterTypes, module, skipVisibility: true);
+        DynamicMethod dynamicMethod = new DynamicMethod($"[{_methodInfo.DeclaringType}:{_methodInfo}]", _returnType, ParameterTypes, s_Module, skipVisibility: true);
+
         ILGenerator iLGenerator = dynamicMethod.GetILGenerator();
         DeclareLocals(iLGenerator);
 
@@ -96,74 +108,46 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
         else
             ConvertArguments(iLGenerator, 0);
 
-        if (!minfo.IsStatic)
+        if (!_methodInfo.IsStatic)
         {
-            iLGenerator.Emit(OpCodes.Ldarg, isstret ? 1 : 0);
-            iLGenerator.Emit(OpCodes.Castclass, type);
+            iLGenerator.Emit(OpCodes.Ldarg, _isstret ? 1 : 0);
+            iLGenerator.Emit(OpCodes.Castclass, _type);
         }
 
-        //if (_isProxy && _protocolMemberAttribute.ParameterBlockProxy is not null)
-        //    LoadArgumentsWithProxyTypes(iLGenerator, _protocolMemberAttribute.ParameterBlockProxy, 0);
-        //else
-            
-        LoadArguments(iLGenerator, 0);
-
-        if (minfo.IsVirtual)
-            iLGenerator.Emit(OpCodes.Callvirt, minfo);
+        if (_isProxy && _protocolMemberAttribute.ParameterBlockProxy is not null)
+            LoadArgumentsWithProxyTypes(iLGenerator, _protocolMemberAttribute.ParameterBlockProxy, 0);
         else
-            iLGenerator.Emit(OpCodes.Call, minfo);
+           LoadArguments(iLGenerator, 0);
+
+        if (_methodInfo.IsVirtual)
+            iLGenerator.Emit(OpCodes.Callvirt, _methodInfo);
+        else
+            iLGenerator.Emit(OpCodes.Call, _methodInfo);
 
         UpdateByRefArguments(iLGenerator, 0);
 
-        if (minfo.ReturnType == typeof(string))
+        // Return Type
+        Type returnType = _methodInfo.ReturnType;
+        if (returnType == typeof(string))
+            iLGenerator.Emit(OpCodes.Call, __creatensstring);
+        else if (returnType.IsArray && IsWrappedType(returnType.GetElementType()))
         {
-            iLGenerator.Emit(OpCodes.Call, creatensstring);
-        }
-        else if (minfo.ReturnType.IsArray && IsWrappedType(minfo.ReturnType.GetElementType()))
-        {
-            if (minfo.ReturnType.GetElementType() == typeof(string))
-            {
-                iLGenerator.Emit(OpCodes.Call, buildsarray);
-            }
+            if (returnType.GetElementType() == typeof(string))
+                iLGenerator.Emit(OpCodes.Call, __buildsarray);
             else
-            {
-                iLGenerator.Emit(OpCodes.Call, buildarray);
-            }
+                iLGenerator.Emit(OpCodes.Call, __buildarray);
         }
-        else if (typeof(INativeObject).IsAssignableFrom(minfo.ReturnType) && !IsWrappedType(minfo.ReturnType))
+        else if (typeof(INativeObject).IsAssignableFrom(returnType) && !IsWrappedType(returnType))
+            iLGenerator.Emit(OpCodes.Call, returnType.GetProperty("Handle").GetGetMethod());
+        else if (_isstret)
         {
-            iLGenerator.Emit(OpCodes.Call, minfo.ReturnType.GetProperty("Handle").GetGetMethod());
-        }
-        else if (isstret)
-        {
-            iLGenerator.Emit(OpCodes.Box, minfo.ReturnType);
+            iLGenerator.Emit(OpCodes.Box, returnType);
             iLGenerator.Emit(OpCodes.Ldarg, 0);
             iLGenerator.Emit(OpCodes.Ldc_I4, 0);
-            iLGenerator.Emit(OpCodes.Call, convertstruct);
+            iLGenerator.Emit(OpCodes.Call, __convertstruct);
         }
         iLGenerator.Emit(OpCodes.Ret);
         return dynamicMethod.CreateDelegate(DelegateType);
     }
 
-    private Type ConvertReturnType(Type type)
-    {
-        if (type.IsValueType && !type.IsEnum && type.Assembly != typeof(object).Assembly && Marshal.SizeOf(type) > IntPtr.Size * 2)
-        {
-            isstret = true;
-            return typeof(void);
-        }
-        if (type == typeof(string))
-        {
-            return typeof(NSString);
-        }
-        if (type.IsArray && IsWrappedType(type.GetElementType()))
-        {
-            return typeof(NSArray);
-        }
-        if (typeof(INativeObject).IsAssignableFrom(type) && !IsWrappedType(type))
-        {
-            return typeof(IntPtr);
-        }
-        return type;
-    }
 }

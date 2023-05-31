@@ -9,6 +9,27 @@ namespace ObjCRuntime;
 
 public static class Runtime
 {
+    static Runtime()
+    {
+        object_map = new Dictionary<IntPtr, WeakReference>();
+        intptr_ctor_cache = new();
+        lock_obj = new object();
+        selClass = Selector.GetHandle("class");
+        string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        if (!string.IsNullOrEmpty(baseDirectory))
+            baseDirectory = Path.Combine(baseDirectory, "..");
+        else
+        {
+            baseDirectory = Assembly.GetExecutingAssembly().Location;
+            if (string.IsNullOrEmpty(baseDirectory))
+                throw new InvalidOperationException("Cannot get base path of current app domain");
+
+            baseDirectory = Path.Combine(Path.GetDirectoryName(baseDirectory), "..");
+        }
+        ResourcesPath = Path.Combine(baseDirectory, "Resources");
+        FrameworksPath = Path.Combine(baseDirectory, "Frameworks");
+    }
+
     private static List<Assembly> assemblies;
 
     private static Dictionary<IntPtr, WeakReference> object_map;
@@ -22,30 +43,6 @@ public static class Runtime
     public static string FrameworksPath { get; set; }
 
     public static string ResourcesPath { get; set; }
-
-    static Runtime()
-    {
-        object_map = new Dictionary<IntPtr, WeakReference>();
-        intptr_ctor_cache = new();
-        lock_obj = new object();
-        selClass = Selector.GetHandle("class");
-        string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        if (!string.IsNullOrEmpty(baseDirectory))
-        {
-            baseDirectory = Path.Combine(baseDirectory, "..");
-        }
-        else
-        {
-            baseDirectory = Assembly.GetExecutingAssembly().Location;
-            if (string.IsNullOrEmpty(baseDirectory))
-            {
-                throw new InvalidOperationException("Cannot get base path of current app domain");
-            }
-            baseDirectory = Path.Combine(Path.GetDirectoryName(baseDirectory), "..");
-        }
-        ResourcesPath = Path.Combine(baseDirectory, "Resources");
-        FrameworksPath = Path.Combine(baseDirectory, "Frameworks");
-    }
 
     public static void RegisterEntryAssembly(Assembly entryAssembly)
     {
@@ -86,16 +83,16 @@ public static class Runtime
             }
             path = Path.Combine(path, text);
             if (Dlfcn.dlopen(path, 0) == IntPtr.Zero)
-            {
                 throw new Exception($"Unable to load required framework: '{requiredFrameworkAttribute.Name}'", new Exception(Dlfcn.dlerror()));
-            }
         }
         if (assemblies == null)
         {
             assemblies = new List<Assembly>();
             Class.Register(typeof(NSObject));
         }
+
         assemblies.Add(a);
+
         Type[] types = a.GetTypes();
         foreach (Type type in types)
         {
@@ -175,9 +172,7 @@ public static class Runtime
             {
                 NSObject nSObject = (NSObject)value.Target;
                 if (nSObject != null)
-                {
                     return nSObject;
-                }
             }
         }
         Type type = Class.Lookup(Messaging.intptr_objc_msgSend(ptr, selClass));
@@ -193,13 +188,10 @@ public static class Runtime
 
             object[] array = new object[1];
             if (intPtrConstructor.GetParameters()[0].ParameterType == typeof(IntPtr))
-            {
                 array[0] = ptr;
-            }
             else
-            {
                 array[0] = new NativeHandle(ptr);
-            }
+
             return (NSObject)intPtrConstructor.Invoke(array);
         }
         return new NSObject(ptr);
@@ -208,18 +200,15 @@ public static class Runtime
     public static void ConnectMethod(MethodInfo method, Selector selector)
     {
         if (method == null)
-        {
             throw new ArgumentNullException("method");
-        }
+
         if (selector == null)
-        {
             throw new ArgumentNullException("selector");
-        }
+
         Type declaringType = method.DeclaringType;
         if (!Class.IsCustomType(declaringType))
-        {
             throw new ArgumentException("Cannot late bind methods on core types");
-        }
+
         ExportAttribute ea = new ExportAttribute(selector.Name);
         Class @class = new Class(declaringType);
         Class.RegisterMethod(method, ea, declaringType, @class.Handle);
@@ -230,9 +219,7 @@ public static class Runtime
     internal static MethodInfo FindClosedMethod(Type closed_type, MethodBase open_method)
     {
         if (!open_method.ContainsGenericParameters)
-        {
             return (MethodInfo)open_method;
-        }
         Type type = closed_type;
         do
         {
@@ -245,12 +232,11 @@ public static class Runtime
         }
         while (type != null);
         MethodInfo[] methods = closed_type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+        
         foreach (MethodInfo methodInfo in methods)
         {
             if (methodInfo.MetadataToken == open_method.MetadataToken)
-            {
                 return methodInfo;
-            }
         }
         throw ErrorHelper.CreateError(8003, "Failed to find the closed generic method '{0}' on the type '{1}'.", open_method.Name, closed_type.FullName);
     }
