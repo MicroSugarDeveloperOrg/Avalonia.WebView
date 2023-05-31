@@ -197,6 +197,7 @@ public class Class : INativeObject
 				zero = objc_getClass("NSObject");
 			}
 			zero2 = objc_allocateClassPair(zero, name, IntPtr.Zero);
+
 			PropertyInfo[] properties = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 			foreach (PropertyInfo propertyInfo in properties)
 			{
@@ -226,6 +227,7 @@ public class Class : INativeObject
 				class_addMethod(zero2, nativeConstructorBuilder.Selector, nativeConstructorBuilder.Delegate, nativeConstructorBuilder.Signature);
 				method_wrappers.Add(nativeConstructorBuilder.Delegate);
 			}
+
 			ConstructorInfo[] constructors = type.GetConstructors(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 			foreach (ConstructorInfo constructorInfo in constructors)
 			{
@@ -236,6 +238,7 @@ public class Class : INativeObject
 					method_wrappers.Add(nativeConstructorBuilder2.Delegate);
 				}
 			}
+
 			objc_registerClassPair(zero2);
 			type_map[zero2] = type;
 			custom_types.Add(type, type);
@@ -299,12 +302,20 @@ public class Class : INativeObject
 	{
 		ExportAttribute exportAttribute = (ExportAttribute)Attribute.GetCustomAttribute(minfo.GetBaseDefinition(), typeof(ExportAttribute));
 		if (exportAttribute != null && (!minfo.IsVirtual || !(minfo.DeclaringType != type) || !(minfo.DeclaringType.Assembly == NSObject.MonoMacAssembly)))
-		{
-			RegisterMethod(minfo, exportAttribute, type, handle);
-		}
-	}
+            RegisterMethod(minfo, exportAttribute, type, handle);
+    }
 
-	private static void RegisterInterfaces(Type type, IntPtr handle)
+    internal static void RegisterMethod(MethodInfo minfo, ExportAttribute ea, Type type, IntPtr handle)
+    {
+        NativeMethodBuilder nativeMethodBuilder = new NativeMethodBuilder(minfo, type, ea);
+        class_addMethod(minfo.IsStatic ? object_getClass(handle) : handle, nativeMethodBuilder.Selector, GetFunctionPointer(minfo, nativeMethodBuilder.Delegate), nativeMethodBuilder.Signature);
+        lock (lock_obj)
+        {
+            method_wrappers.Add(nativeMethodBuilder.Delegate);
+        }
+    }
+
+    private static void RegisterInterfaces(Type type, IntPtr handle)
 	{
         Type[] interfaceTypes = type.GetInterfaces();
 		foreach (var interfaceType in interfaceTypes)
@@ -314,15 +325,108 @@ public class Class : INativeObject
 
 			var attributes = interfaceType.GetCustomAttributes<ProtocolMemberAttribute>();
 			foreach (var attribute in attributes)
-				RegisterInterface(type, handle, attribute);
+            {
+                if (attribute.IsProperty)
+                    RegisterInterfaceProperty(type, handle, attribute);
+                else
+                    RegisterInterfaceMethod(type, handle, attribute);
+            }
         }
     }
 
-	private static void RegisterInterface(Type type, IntPtr handle, ProtocolMemberAttribute attribute)
+    private static void RegisterInterfaceProperty(Type type, IntPtr handle, ProtocolMemberAttribute attribute)
+    {
+        if (!attribute.IsProperty)
+            return;
+
+        PropertyInfo? property = type.GetProperty(attribute.Name, BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        if (property is null)
+        {
+            if (!attribute.IsRequired)
+                return;
+
+            ThrowHelper.ThrowArgumentNullException(attribute.Name, "Property is null");
+        }
+
+        ConnectAttribute connectAttribute = (ConnectAttribute)Attribute.GetCustomAttribute(property, typeof(ConnectAttribute));
+        if (connectAttribute != null)
+        {
+            string name2 = connectAttribute.Name ?? property.Name;
+            class_addIvar(handle, name2, (IntPtr)Marshal.SizeOf(typeof(IntPtr)), (ushort)Math.Log(Marshal.SizeOf(typeof(IntPtr)), 2.0), "@");
+        }
+
+        if (property.PropertyType.IsGenericType || property.PropertyType.IsGenericTypeDefinition)
+            throw new ArgumentException($"Cannot export the property '{property.DeclaringType.FullName}.{property.Name}': it is generic.");
+
+
+        if (!string.IsNullOrWhiteSpace(attribute.GetterSelector))
+        {
+            MethodInfo getMethod = property.GetGetMethod(nonPublic: true);
+            if (getMethod is not null)
+            {
+                ExportAttribute? exportAttribute = attribute.ToGetter();
+                if (exportAttribute is not null)
+                    RegisterMethod(getMethod, exportAttribute, type, handle);
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(attribute.SetterSelector))
+        {
+            MethodInfo setMethod = property.GetSetMethod(nonPublic: true);
+            if (setMethod != null)
+            {
+                ExportAttribute? exportAttribute = attribute.ToSetter();
+                if (exportAttribute is not null)
+                    RegisterMethod(setMethod, exportAttribute, type, handle);
+            }
+        }
+
+        int count = 0;
+        objc_attribute_prop[] array = new objc_attribute_prop[3];
+        array[count++] = new objc_attribute_prop
+        {
+            name = "T",
+            value = TypeConverter.ToNative(property.PropertyType)
+        };
+
+        switch (attribute.ArgumentSemantic)
+        {
+            case ArgumentSemantic.Copy:
+                array[count++] = new objc_attribute_prop
+                {
+                    name = "C",
+                    value = ""
+                };
+                break;
+            case ArgumentSemantic.Retain:
+                array[count++] = new objc_attribute_prop
+                {
+                    name = "&",
+                    value = ""
+                };
+                break;
+        }
+        array[count++] = new objc_attribute_prop
+        {
+            name = "V",
+            value = attribute.Selector
+        };
+        class_addProperty(handle, attribute.Selector, array, count);
+    }
+
+    private static void RegisterInterfaceMethod(Type type, IntPtr handle, ProtocolMemberAttribute attribute)
 	{
+        if (attribute.IsProperty)
+            return;
+
         MethodInfo? methodInfo = type.GetMethod(attribute.Name, BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 		if (methodInfo is null)
-			return;
+        {
+            if (!attribute.IsRequired)
+                return;
+
+            ThrowHelper.ThrowArgumentNullException(attribute.Name, "Method is null");
+        }
 
 		NativeMethodBuilder nativeMethodBuilder = new NativeMethodBuilder(type, methodInfo, attribute);
         class_addMethod(methodInfo.IsStatic ? object_getClass(handle) : handle, nativeMethodBuilder.Selector, GetFunctionPointer(methodInfo, nativeMethodBuilder.Delegate), nativeMethodBuilder.Signature);
@@ -444,15 +548,6 @@ public class Class : INativeObject
 		return intPtr;
 	}
 
-	internal static void RegisterMethod(MethodInfo minfo, ExportAttribute ea, Type type, IntPtr handle)
-	{
-		NativeMethodBuilder nativeMethodBuilder = new NativeMethodBuilder(minfo, type, ea);
-		class_addMethod(minfo.IsStatic ? object_getClass(handle) : handle, nativeMethodBuilder.Selector, GetFunctionPointer(minfo, nativeMethodBuilder.Delegate), nativeMethodBuilder.Signature);
-		lock (lock_obj)
-		{
-			method_wrappers.Add(nativeMethodBuilder.Delegate);
-		}
-	}
 
 	[DllImport("libc", SetLastError = true)]
     internal static extern int mprotect(IntPtr addr, int len, int prot);

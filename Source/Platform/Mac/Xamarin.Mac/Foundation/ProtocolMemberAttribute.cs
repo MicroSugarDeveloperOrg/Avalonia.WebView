@@ -34,4 +34,27 @@ public sealed class ProtocolMemberAttribute : Attribute
     public string? SetterSelector { get; set; }
 
     public ArgumentSemantic ArgumentSemantic { get; set; }
+
+    public ExportAttribute? ToGetter()
+    {
+        if (!IsProperty)
+            return default;
+
+        if (string.IsNullOrWhiteSpace(GetterSelector))
+            return default;
+
+        return new ExportAttribute(GetterSelector, ArgumentSemantic);
+    }
+
+    public ExportAttribute? ToSetter()
+    {
+        if (!IsProperty)
+            return default;
+
+        if (string.IsNullOrWhiteSpace(SetterSelector))
+            return default;
+
+        return new ExportAttribute(SetterSelector, ArgumentSemantic);
+    }
+
 }

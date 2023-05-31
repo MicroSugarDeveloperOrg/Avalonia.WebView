@@ -72,15 +72,12 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
         rettype = ConvertReturnType(methodInfo.ReturnType);
         Selector = new Selector(attribute.Selector ?? methodInfo.Name, alloc: true).Handle;
         Signature = $"{TypeConverter.ToNative(methodInfo.ReturnType)}@:";
-        ConvertParametersByRef(attribute.ParameterType, attribute.ParameterByRef);
-        //ConvertParameters(Parameters, methodInfo.IsStatic, isstret);
-        //ParameterTypes = attribute.ParameterType;
-        //Signature += TypeConverter.ToNative(attribute.ParameterType);
+        ConvertParametersByRef(attribute.ParameterType, attribute.ParameterByRef, attribute.IsStatic, isstret);
         DelegateType = CreateDelegateType(rettype, ParameterTypes);
         minfo = methodInfo;
         this.type = type;
     }
-
+ 
     internal override Delegate CreateDelegate()
     {
         DynamicMethod dynamicMethod = new DynamicMethod($"[{minfo.DeclaringType}:{minfo}]", rettype, ParameterTypes, module, skipVisibility: true);

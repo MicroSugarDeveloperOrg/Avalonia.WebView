@@ -2,6 +2,7 @@ using ObjCRuntime;
 using System;
 using System.Reflection;
 using System.Text;
+using Xamarin.System;
 
 namespace Builder;
 
@@ -159,6 +160,28 @@ public static class TypeConverter
         if (type == typeof(Class))
         {
             return "#";
+        }
+        if (type == typeof(nfloat))
+        {
+            if (IntPtr.Size != 8)
+                return "f";
+            return "d";
+        }
+        if (type == typeof(IntPtr))
+        {
+            if (IntPtr.Size != 8)
+            {
+                return "i";
+            }
+            return "q";
+        }
+        if (type == typeof(UIntPtr))
+        {
+            if (IntPtr.Size != 8)
+            {
+                return "I";
+            }
+            return "Q";
         }
         if (typeof(INativeObject).IsAssignableFrom(type))
         {

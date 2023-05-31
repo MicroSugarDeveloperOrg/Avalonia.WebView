@@ -127,9 +127,8 @@ internal abstract class NativeImplementationBuilder
     protected bool IsWrappedType(Type type)
     {
         if (type == typeof(NSObject) || type.IsSubclassOf(typeof(NSObject)) || type == typeof(string))
-        {
             return true;
-        }
+
         return false;
     }
 
@@ -185,10 +184,45 @@ internal abstract class NativeImplementationBuilder
         }
     }
 
-    protected void ConvertParametersByRef(Type[] rawTypes, bool[] refTypes)
+    protected void ConvertParametersByRef(Type[] rawTypes, bool[] refTypes, bool isstatic, bool isstret)
     {
+        if (isstret)
+        {
+            ArgumentOffset = 3;
+            ParameterTypes = new Type[ArgumentOffset + rawTypes.Length];
+            ParameterTypes[0] = typeof(IntPtr);
+            ParameterTypes[1] = isstatic ? typeof(IntPtr) : typeof(NSObject);
+            ParameterTypes[2] = typeof(Selector);
+        }
+        else
+        {
+            ArgumentOffset = 2;
+            ParameterTypes = new Type[ArgumentOffset + rawTypes.Length];
+            ParameterTypes[0] = isstatic ? typeof(IntPtr) : typeof(NSObject);
+            ParameterTypes[1] = typeof(Selector);
+        }
 
+        for (int i = 0; i < rawTypes.Length; i++)
+        {
+            var parameterType = rawTypes[i];
+            var boolRef = refTypes[i];
+ 
+            if (parameterType is null)
+                continue;
 
+            if (boolRef && IsWrappedType(parameterType.GetElementType()))
+                ParameterTypes[i + ArgumentOffset] = typeof(IntPtr).MakeByRefType();
+            else if (parameterType.IsArray && IsWrappedType(parameterType.GetElementType()))
+                ParameterTypes[i + ArgumentOffset] = typeof(IntPtr);
+            else if (typeof(INativeObject).IsAssignableFrom(parameterType) && !IsWrappedType(parameterType))
+                ParameterTypes[i + ArgumentOffset] = typeof(IntPtr);
+            else if (parameterType == typeof(string))
+                ParameterTypes[i + ArgumentOffset] = typeof(NSString);
+            else
+                ParameterTypes[i + ArgumentOffset] = parameterType;
+
+            Signature += TypeConverter.ToNative(parameterType);
+        }
     }
 
     protected void DeclareLocals(ILGenerator il)
