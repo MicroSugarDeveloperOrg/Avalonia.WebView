@@ -1,6 +1,6 @@
 using System;
 
-namespace ObjCRuntime;
+namespace Xamarin.Utiles;
 
 public class MavericksAttribute : Attribute
 {

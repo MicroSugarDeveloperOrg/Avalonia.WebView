@@ -8,8 +8,8 @@
 
 	<ItemGroup>
 	  <PackageReference Include="System.Memory" />
-	  <PackageReference Include="System.Reflection.Emit"/>
-	  <PackageReference Include="System.Reflection.Emit.Lightweight"/>
+	  <PackageReference Include="System.Reflection.Emit" />
+	  <PackageReference Include="System.Reflection.Emit.Lightweight" />
 	</ItemGroup>
 
 </Project>

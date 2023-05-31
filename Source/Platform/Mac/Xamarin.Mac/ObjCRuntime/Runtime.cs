@@ -345,7 +345,6 @@ public static class Runtime
         return new NSObject(ptr) as T;
     }
 
-
     private static ConstructorInfo? GetIntPtrConstructor(Type type)
     {
         lock (intptr_ctor_cache)
