@@ -3,6 +3,7 @@ using ObjCRuntime;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
+using Xamarin.Utiles;
 
 namespace Builder;
 
@@ -180,11 +181,16 @@ internal abstract class NativeImplementationBuilder
             {
                 ParameterTypes[i + ArgumentOffset] = parameterType;
             }
+
+            var proxyAttribute = parameterInfo.GetCustomAttribute(typeof(BlockProxyAttribute));
+            if (proxyAttribute is not null && parameterType.IsSubclassOf(typeof(Delegate)))
+                ParameterTypes[i + ArgumentOffset] = typeof(NSAction);
+
             Signature += TypeConverter.ToNative(parameterType);
         }
     }
 
-    protected void ConvertParametersByRef(Type[] rawTypes, bool[] refTypes, bool isstatic, bool isstret)
+    protected void ConvertParametersByRef(Type[] rawTypes, bool[] refTypes, Type?[]? proxyTypes , bool isstatic, bool isstret)
     {
         if (isstret)
         {
@@ -206,7 +212,8 @@ internal abstract class NativeImplementationBuilder
         {
             var parameterType = rawTypes[i];
             var boolRef = refTypes[i];
- 
+            var proxyType = proxyTypes == null ? null : proxyTypes[i];
+  
             if (parameterType is null)
                 continue;
 
@@ -220,6 +227,9 @@ internal abstract class NativeImplementationBuilder
                 ParameterTypes[i + ArgumentOffset] = typeof(NSString);
             else
                 ParameterTypes[i + ArgumentOffset] = parameterType;
+
+            if (proxyType is not null && parameterType.IsSubclassOf(typeof(Delegate)))
+                ParameterTypes[i + ArgumentOffset] = typeof(NSAction);
 
             Signature += TypeConverter.ToNative(parameterType);
         }
