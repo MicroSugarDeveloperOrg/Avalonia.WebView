@@ -13,6 +13,9 @@ public abstract class TrampolineBlockBase
     [DllImport("/usr/lib/libobjc.dylib")]
     private static extern IntPtr _Block_copy(IntPtr ptr);
 
+    [DllImport("/usr/lib/libobjc.dylib")]
+    internal static extern void _Block_release(IntPtr block);
+
     protected unsafe TrampolineBlockBase(BlockLiteral* block)
     {
         blockPtr = _Block_copy((IntPtr)block);
@@ -20,11 +23,14 @@ public abstract class TrampolineBlockBase
 
     ~TrampolineBlockBase()
     {
-        //Runtime.ReleaseBlockOnMainThread(blockPtr);
+        _Block_release(blockPtr);
     }
 
     protected unsafe static object GetExistingManagedDelegate(IntPtr block)
     {
-        return null;
+        if (!BlockLiteral.IsManagedBlock(block))
+            return null;
+
+        return ((BlockLiteral*)(void*)block)->Target;
     }
 }

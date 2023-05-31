@@ -52,7 +52,7 @@ public class WKHttpCookieStore : NSObject
     }
 
     [Export("deleteCookie:completionHandler:")]
-    public unsafe virtual void DeleteCookie(NSHttpCookie cookie, [BlockProxy(typeof(NSAction))] Action? completionHandler)
+    public unsafe virtual void DeleteCookie(NSHttpCookie cookie, [BlockProxy(typeof(Trampolines.NIDAction))] Action? completionHandler)
     {
         if (cookie == null)
             throw new ArgumentNullException("cookie");
@@ -86,7 +86,7 @@ public class WKHttpCookieStore : NSObject
     }
 
     [Export("getAllCookies:")]
-    public unsafe virtual void GetAllCookies([BlockProxy(typeof(NSAction))] Action<NSHttpCookie[]> completionHandler)
+    public unsafe virtual void GetAllCookies([BlockProxy(typeof(Trampolines.NIDActionArity1V31))] Action<NSHttpCookie[]> completionHandler)
     {
         if (completionHandler == null)
             throw new ArgumentNullException("completionHandler");
@@ -125,7 +125,7 @@ public class WKHttpCookieStore : NSObject
     }
 
     [Export("setCookie:completionHandler:")]
-    public unsafe virtual void SetCookie(NSHttpCookie cookie, [BlockProxy(typeof(NSAction))] Action? completionHandler)
+    public unsafe virtual void SetCookie(NSHttpCookie cookie, [BlockProxy(typeof(Trampolines.NIDAction))] Action? completionHandler)
     {
         if (cookie == null)
             throw new ArgumentNullException("cookie");

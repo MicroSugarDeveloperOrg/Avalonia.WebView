@@ -124,7 +124,7 @@ public class WKWebsiteDataStore : NSObject
     }
  
     [Export("fetchDataRecordsOfTypes:completionHandler:")]
-    public unsafe virtual void FetchDataRecordsOfTypes(NSSet<NSString> dataTypes, [BlockProxy(typeof(NSAction))] Action<NSArray> completionHandler)
+    public unsafe virtual void FetchDataRecordsOfTypes(NSSet<NSString> dataTypes, [BlockProxy(typeof(Trampolines.NIDActionArity1V96))] Action<NSArray> completionHandler)
     {
         if (dataTypes == null)
         {
@@ -159,7 +159,7 @@ public class WKWebsiteDataStore : NSObject
     }
 
     [Export("removeDataOfTypes:forDataRecords:completionHandler:")]
-    public unsafe virtual void RemoveDataOfTypes(NSSet<NSString> dataTypes, WKWebsiteDataRecord[] dataRecords, [BlockProxy(typeof(NSAction))] Action completionHandler)
+    public unsafe virtual void RemoveDataOfTypes(NSSet<NSString> dataTypes, WKWebsiteDataRecord[] dataRecords, [BlockProxy(typeof(Trampolines.NIDAction))] Action completionHandler)
     {
         if (dataTypes == null)
         {
@@ -200,7 +200,7 @@ public class WKWebsiteDataStore : NSObject
     }
 
     [Export("removeDataOfTypes:modifiedSince:completionHandler:")]
-    public unsafe virtual void RemoveDataOfTypes(NSSet<NSString> websiteDataTypes, NSDate date, [BlockProxy(typeof(NSAction))] Action completionHandler)
+    public unsafe virtual void RemoveDataOfTypes(NSSet<NSString> websiteDataTypes, NSDate date, [BlockProxy(typeof(Trampolines.NIDAction))] Action completionHandler)
     {
         if (websiteDataTypes == null)
         {

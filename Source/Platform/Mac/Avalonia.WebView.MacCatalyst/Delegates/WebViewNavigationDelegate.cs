@@ -22,8 +22,6 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
 
     public override void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, Action<WKNavigationActionPolicy> decisionHandler)
     {
-        //base.DecidePolicy(webView, navigationAction, decisionHandler);
-
         var requestUrl = navigationAction.Request.Url;
         var uri = new Uri(requestUrl.ToString());
 

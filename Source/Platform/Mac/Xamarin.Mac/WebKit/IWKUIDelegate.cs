@@ -22,7 +22,7 @@ namespace WebKit;
     null,
     null,
     null,
-    typeof(Trampolines.DAction)
+    typeof(Trampolines.NIDAction)
 })]
 [ProtocolMember(IsRequired = false, IsProperty = false, IsStatic = false, Name = "RunJavaScriptConfirmPanel", Selector = "webView:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:completionHandler:", ParameterType = new Type[]
 {
@@ -35,7 +35,7 @@ namespace WebKit;
     null,
     null,
     null,
-    typeof(Trampolines.DActionArity1V0)
+    typeof(Trampolines.NIDActionArity1V2)
 })]
 [ProtocolMember(IsRequired = false, IsProperty = false, IsStatic = false, Name = "RunJavaScriptTextInputPanel", Selector = "webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:", ParameterType = new Type[]
 {
@@ -50,7 +50,7 @@ namespace WebKit;
     null,
     null,
     null,
-    typeof(Trampolines.DActionArity1V44)
+    typeof(Trampolines.NIDActionArity1V44)
 })]
 [ProtocolMember(IsRequired = false, IsProperty = false, IsStatic = false, Name = "RunOpenPanel", Selector = "webView:runOpenPanelWithParameters:initiatedByFrame:completionHandler:", ParameterType = new Type[]
 {
@@ -63,7 +63,7 @@ namespace WebKit;
     null,
     null,
     null,
-    typeof(Trampolines.DActionArity1V95)
+    typeof(Trampolines.NIDActionArity1V95)
 })]
 [ProtocolMember(IsRequired = false, IsProperty = false, IsStatic = false, Name = "DidClose", Selector = "webViewDidClose:", ParameterType = new Type[] { typeof(WKWebView) }, ParameterByRef = new bool[] { false })]
 

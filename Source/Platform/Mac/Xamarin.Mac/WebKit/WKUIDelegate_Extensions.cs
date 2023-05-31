@@ -30,7 +30,7 @@ public static class WKUIDelegate_Extensions
         return Runtime.GetNSObjectTx<WKWebView>(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(This.Handle, Selector.GetHandle("webView:createWebViewWithConfiguration:forNavigationAction:windowFeatures:"), webView.Handle, configuration.Handle, navigationAction.Handle, windowFeatures.Handle));
     }
 
-    public unsafe static void RunJavaScriptAlertPanel(this IWKUIDelegate This, WKWebView webView, string message, WKFrameInfo frame, [BlockProxy(typeof(NSAction))] Action completionHandler)
+    public unsafe static void RunJavaScriptAlertPanel(this IWKUIDelegate This, WKWebView webView, string message, WKFrameInfo frame, [BlockProxy(typeof(Trampolines.NIDAction))] Action completionHandler)
     {
         if (webView == null)
         {
@@ -57,7 +57,7 @@ public static class WKUIDelegate_Extensions
         ptr->CleanupBlock();
     }
 
-    public unsafe static void RunJavaScriptConfirmPanel(this IWKUIDelegate This, WKWebView webView, string message, WKFrameInfo frame, [BlockProxy(typeof(NSAction))] Action<bool> completionHandler)
+    public unsafe static void RunJavaScriptConfirmPanel(this IWKUIDelegate This, WKWebView webView, string message, WKFrameInfo frame, [BlockProxy(typeof(Trampolines.NIDActionArity1V2))] Action<bool> completionHandler)
     {
         if (webView == null)
         {
@@ -78,13 +78,13 @@ public static class WKUIDelegate_Extensions
         IntPtr intPtr = NSString.CreateNative(message);
         BlockLiteral blockLiteral = default(BlockLiteral);
         BlockLiteral* ptr = &blockLiteral;
-        blockLiteral.SetupBlock(Trampolines.SDActionArity1V0.Handler, completionHandler);
+        blockLiteral.SetupBlock(Trampolines.SDActionArity1V2.Handler, completionHandler);
         Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr(This.Handle, Selector.GetHandle("webView:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:completionHandler:"), webView.Handle, intPtr, frame.Handle, (IntPtr)ptr);
         NSString.ReleaseNative(intPtr);
         ptr->CleanupBlock();
     }
 
-    public unsafe static void RunJavaScriptTextInputPanel(this IWKUIDelegate This, WKWebView webView, string prompt, string? defaultText, WKFrameInfo frame, [BlockProxy(typeof(NSAction))] Action<string> completionHandler)
+    public unsafe static void RunJavaScriptTextInputPanel(this IWKUIDelegate This, WKWebView webView, string prompt, string? defaultText, WKFrameInfo frame, [BlockProxy(typeof(Trampolines.NIDActionArity1V44))] Action<string> completionHandler)
     {
         if (webView == null)
         {
@@ -113,7 +113,7 @@ public static class WKUIDelegate_Extensions
         ptr->CleanupBlock();
     }
 
-    public unsafe static void RunOpenPanel(this IWKUIDelegate This, WKWebView webView, WKOpenPanelParameters parameters, WKFrameInfo frame, [BlockProxy(typeof(NSAction))] Action<NSUrl[]> completionHandler)
+    public unsafe static void RunOpenPanel(this IWKUIDelegate This, WKWebView webView, WKOpenPanelParameters parameters, WKFrameInfo frame, [BlockProxy(typeof(Trampolines.NIDActionArity1V95))] Action<NSUrl[]> completionHandler)
     {
         if (webView == null)
         {

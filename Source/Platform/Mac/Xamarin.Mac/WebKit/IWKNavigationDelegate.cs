@@ -12,7 +12,7 @@ namespace WebKit;
 {
     null,
     null,
-    typeof(Trampolines.SDActionArity1V93)
+    typeof(Trampolines.NIDActionArity1V93)
 })]
 [ProtocolMember(IsRequired = false, IsProperty = false, IsStatic = false, Name = "DecidePolicy", Selector = "webView:decidePolicyForNavigationResponse:decisionHandler:", ParameterType = new Type[]
 {
@@ -23,7 +23,7 @@ namespace WebKit;
 {
     null,
     null,
-    typeof(Trampolines.SDActionArity1V94)
+    typeof(Trampolines.NIDActionArity1V94)
 })]
 [ProtocolMember(IsRequired = false, IsProperty = false, IsStatic = false, Name = "DecidePolicy", Selector = "webView:decidePolicyForNavigationAction:preferences:decisionHandler:", ParameterType = new Type[]
 {
@@ -36,7 +36,7 @@ namespace WebKit;
     null,
     null,
     null,
-    typeof(Trampolines.DActionArity2V85)
+    typeof(Trampolines.NIDActionArity2V85)
 })]
 [ProtocolMember(IsRequired = false, IsProperty = false, IsStatic = false, Name = "DidStartProvisionalNavigation", Selector = "webView:didStartProvisionalNavigation:", ParameterType = new Type[]
 {
@@ -79,7 +79,7 @@ namespace WebKit;
 {
     null,
     null,
-    typeof(Trampolines.DActionArity2V44)
+    typeof(Trampolines.NIDActionArity2V44)
 })]
 [ProtocolMember(IsRequired = false, IsProperty = false, IsStatic = false, Name = "ContentProcessDidTerminate", Selector = "webViewWebContentProcessDidTerminate:", ParameterType = new Type[] { typeof(WKWebView) }, ParameterByRef = new bool[] { false })]
 

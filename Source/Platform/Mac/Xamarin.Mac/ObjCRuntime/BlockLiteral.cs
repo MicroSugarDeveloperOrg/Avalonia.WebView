@@ -167,6 +167,14 @@ public struct BlockLiteral
         return result;
     }
 
+    public unsafe static bool IsManagedBlock(IntPtr block)
+    {
+        if (block == IntPtr.Zero)
+            throw new ArgumentNullException("block");
+
+        return false;
+    }
+
     public void CleanupBlock()
 	{
 		GCHandle.FromIntPtr(local_handle).Free();

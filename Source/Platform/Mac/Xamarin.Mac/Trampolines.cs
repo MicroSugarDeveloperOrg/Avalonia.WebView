@@ -10,17 +10,19 @@ using WebKit;
 
 internal static class Trampolines
 {
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<bool>))]
     internal delegate void DActionArity1V0(IntPtr block, IntPtr obj);
 
     internal static class SDActionArity1V0
     {
-        internal static readonly DActionArity1V0 Handler = TActionArity1V0;
+        internal static readonly DActionArity1V0 Handler = Invoke;
 
         [MonoPInvokeCallback(typeof(DActionArity1V0))]
-        private unsafe static void TActionArity1V0(IntPtr block, IntPtr obj)
+        private unsafe static void Invoke(IntPtr block, IntPtr obj)
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
-            ((Action<NSAnimationContext>)((BlockLiteral*)block)->Target)?.Invoke((NSAnimationContext)Runtime.GetNSObject(obj));
+            ((Action<NSAnimationContext>)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<NSAnimationContext>(obj));
         }
     }
 
@@ -490,6 +492,33 @@ internal static class Trampolines
         }
     }
 
+    internal sealed class NIDAction : TrampolineBlockBase
+    {
+        private DAction invoker;
+
+        public unsafe NIDAction(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DAction>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action action = (Action)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action(new NIDAction((BlockLiteral*)(void*)block).Invoke);
+        }
+
+        private void Invoke()
+        {
+            invoker(base.BlockPointer);
+        }
+    }
+
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(Action<NSHttpCookie[]>))]
     internal delegate void DActionArity1V31(IntPtr block, IntPtr obj);
@@ -506,6 +535,36 @@ internal static class Trampolines
         }
     }
 
+    internal sealed class NIDActionArity1V31 : TrampolineBlockBase
+    {
+        private DActionArity1V31 invoker;
+
+        public unsafe NIDActionArity1V31(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity1V31>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<NSHttpCookie[]>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action<NSHttpCookie[]> action = (Action<NSHttpCookie[]>)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action<NSHttpCookie[]>(new NIDActionArity1V31((BlockLiteral*)(void*)block).Invoke);
+        }
+
+        private void Invoke(NSHttpCookie[] obj)
+        {
+            NSArray nSArray = ((obj == null) ? null : NSArray.FromNSObjects(obj));
+            invoker(base.BlockPointer, nSArray?.Handle ?? IntPtr.Zero);
+            nSArray?.Dispose();
+        }
+    }
+
+
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(Action<NSArray>))]
     internal delegate void DActionArity1V96(IntPtr block, IntPtr obj);
@@ -519,6 +578,33 @@ internal static class Trampolines
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
             ((Action<NSArray>)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<NSArray>(obj));
+        }
+    }
+
+    internal sealed class NIDActionArity1V96 : TrampolineBlockBase
+    {
+        private DActionArity1V96 invoker;
+
+        public unsafe NIDActionArity1V96(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity1V96>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<NSArray>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action<NSArray> action = (Action<NSArray>)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action<NSArray>(new NIDActionArity1V96((BlockLiteral*)(void*)block).Invoke);
+        }
+
+        private void Invoke(NSArray obj)
+        {
+            invoker(base.BlockPointer, obj?.Handle ?? IntPtr.Zero);
         }
     }
 
@@ -539,6 +625,33 @@ internal static class Trampolines
         }
     }
 
+    internal sealed class NIDActionArity1V93 : TrampolineBlockBase
+    {
+        private DActionArity1V93 invoker;
+
+        public unsafe NIDActionArity1V93(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity1V93>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<WKNavigationActionPolicy>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action<WKNavigationActionPolicy> action = (Action<WKNavigationActionPolicy>)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action<WKNavigationActionPolicy>(new NIDActionArity1V93((BlockLiteral*)(void*)block).Invoke);
+        }
+
+        private void Invoke(WKNavigationActionPolicy obj)
+        {
+            invoker(base.BlockPointer, (nint)(long)obj);
+        }
+    }
+
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(Action<WKNavigationResponsePolicy>))]
     internal delegate void DActionArity1V94(IntPtr block, nint obj);
@@ -555,6 +668,34 @@ internal static class Trampolines
         }
     }
 
+    internal sealed class NIDActionArity1V94 : TrampolineBlockBase
+    {
+        private DActionArity1V94 invoker;
+
+        public unsafe NIDActionArity1V94(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity1V94>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<WKNavigationResponsePolicy>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action<WKNavigationResponsePolicy> action = (Action<WKNavigationResponsePolicy>)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action<WKNavigationResponsePolicy>(new NIDActionArity1V94((BlockLiteral*)(void*)block).Invoke);
+        }
+
+        private void Invoke(WKNavigationResponsePolicy obj)
+        {
+            invoker(base.BlockPointer, (nint)(long)obj);
+        }
+    }
+
+
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(Action<WKNavigationActionPolicy, WKWebpagePreferences>))]
     internal delegate void DActionArity2V85(IntPtr block, nint arg1, IntPtr arg2);
@@ -568,6 +709,33 @@ internal static class Trampolines
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
             ((Action<WKNavigationActionPolicy, WKWebpagePreferences>)((BlockLiteral*)block)->Target)?.Invoke((WKNavigationActionPolicy)(long)arg1, Runtime.GetNSObjectTx<WKWebpagePreferences>(arg2));
+        }
+    }
+
+    internal sealed class NIDActionArity2V85 : TrampolineBlockBase
+    {
+        private DActionArity2V85 invoker;
+
+        public unsafe NIDActionArity2V85(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity2V85>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<WKNavigationActionPolicy, WKWebpagePreferences>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action<WKNavigationActionPolicy, WKWebpagePreferences> action = (Action<WKNavigationActionPolicy, WKWebpagePreferences>)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action<WKNavigationActionPolicy, WKWebpagePreferences>(new NIDActionArity2V85((BlockLiteral*)(void*)block).Invoke);
+        }
+
+        private void Invoke(WKNavigationActionPolicy arg1, WKWebpagePreferences arg2)
+        {
+            invoker(base.BlockPointer, (nint)(long)arg1, arg2?.Handle ?? IntPtr.Zero);
         }
     }
 
@@ -587,6 +755,33 @@ internal static class Trampolines
         }
     }
 
+    internal sealed class NIDActionArity2V44 : TrampolineBlockBase
+    {
+        private DActionArity2V44 invoker;
+
+        public unsafe NIDActionArity2V44(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity2V44>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential> action = (Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential>)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential>(new NIDActionArity2V44((BlockLiteral*)(void*)block).Invoke);
+        }
+
+        private void Invoke(NSUrlSessionAuthChallengeDisposition arg1, NSUrlCredential arg2)
+        {
+            invoker(base.BlockPointer, (nint)(long)arg1, arg2?.Handle ?? IntPtr.Zero);
+        }
+    }
+
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(Action<string>))]
     internal delegate void DActionArity1V44(IntPtr block, IntPtr obj);
@@ -600,6 +795,35 @@ internal static class Trampolines
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
             ((Action<string>)((BlockLiteral*)block)->Target)?.Invoke(NSString.FromHandle(obj));
+        }
+    }
+
+    internal sealed class NIDActionArity1V44 : TrampolineBlockBase
+    {
+        private DActionArity1V44 invoker;
+
+        public unsafe NIDActionArity1V44(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity1V44>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<string>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action<string> action = (Action<string>)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action<string>(new NIDActionArity1V44((BlockLiteral*)(void*)block).Invoke);
+        }
+
+        private void Invoke(string obj)
+        {
+            IntPtr intPtr = NSString.CreateNative(obj);
+            invoker(base.BlockPointer, intPtr);
+            NSString.ReleaseNative(intPtr);
         }
     }
 
@@ -619,6 +843,34 @@ internal static class Trampolines
         }
     }
 
+    internal sealed class NIDActionArity1V95 : TrampolineBlockBase
+    {
+        private DActionArity1V95 invoker;
+
+        public unsafe NIDActionArity1V95(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity1V95>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<NSUrl[]>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action<NSUrl[]> action = (Action<NSUrl[]>)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action<NSUrl[]>(new NIDActionArity1V95((BlockLiteral*)(void*)block).Invoke);
+        }
+
+        private void Invoke(NSUrl[] obj)
+        {
+            NSArray nSArray = ((obj == null) ? null : NSArray.FromNSObjects(obj));
+            invoker(base.BlockPointer, nSArray?.Handle ?? IntPtr.Zero);
+            nSArray?.Dispose();
+        }
+    }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(JSContextExceptionHandler))]
@@ -682,6 +934,34 @@ internal static class Trampolines
         }
     }
 
+    internal sealed class NIDActionArity2V84 : TrampolineBlockBase
+    {
+        private DActionArity2V84 invoker;
+
+        public unsafe NIDActionArity2V84(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity2V84>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<WKContentRuleList, NSError>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action<WKContentRuleList, NSError> action = (Action<WKContentRuleList, NSError>)GetExistingManagedDelegate(block);
+            return action ?? new Action<WKContentRuleList, NSError>(new NIDActionArity2V84((BlockLiteral*)(void*)block).Invoke);
+        }
+
+        private void Invoke(WKContentRuleList arg1, NSError arg2)
+        {
+            invoker(base.BlockPointer, arg1?.Handle ?? IntPtr.Zero, arg2?.Handle ?? IntPtr.Zero);
+        }
+    }
+
+
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(Action<string[]>))]
     internal delegate void DActionArity1V1(IntPtr block, IntPtr obj);
@@ -695,6 +975,35 @@ internal static class Trampolines
         {
             BlockLiteral* ptr = (BlockLiteral*)(void*)block;
             ((Action<string[]>)((BlockLiteral*)block)->Target)?.Invoke(NSArray.StringArrayFromHandle(obj));
+        }
+    }
+
+    internal sealed class NIDActionArity1V1 : TrampolineBlockBase
+    {
+        private DActionArity1V1 invoker;
+
+        public unsafe NIDActionArity1V1(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity1V1>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<string[]>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action<string[]> action = (Action<string[]>)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action<string[]>(new NIDActionArity1V1((BlockLiteral*)(void*)block).Invoke);
+        }
+
+        private void Invoke(string[] obj)
+        {
+            NSArray nSArray = ((obj == null) ? null : NSArray.FromStrings(obj));
+            invoker(base.BlockPointer, nSArray?.Handle ?? IntPtr.Zero);
+            nSArray?.Dispose();
         }
     }
 
@@ -731,6 +1040,33 @@ internal static class Trampolines
         }
     }
 
+    internal sealed class NIDActionArity1V11 : TrampolineBlockBase
+    {
+        private DActionArity1V11 invoker;
+
+        public unsafe NIDActionArity1V11(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity1V11>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<NSError>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+                return null;
+
+            Action<NSError> action = (Action<NSError>)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action<NSError>(new NIDActionArity1V11((BlockLiteral*)(void*)block).Invoke);
+        }
+
+        private void Invoke(NSError obj)
+        {
+            invoker(base.BlockPointer, obj?.Handle ?? IntPtr.Zero);
+        }
+    }
+
+
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(WKJavascriptEvaluationResult))]
     internal delegate void DWKJavascriptEvaluationResult(IntPtr block, IntPtr result, IntPtr error);
@@ -747,6 +1083,32 @@ internal static class Trampolines
         }
     }
 
+    internal sealed class NIDWKJavascriptEvaluationResult : TrampolineBlockBase
+    {
+        private DWKJavascriptEvaluationResult invoker;
+
+        public unsafe NIDWKJavascriptEvaluationResult(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DWKJavascriptEvaluationResult>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static WKJavascriptEvaluationResult? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            WKJavascriptEvaluationResult wKJavascriptEvaluationResult = (WKJavascriptEvaluationResult)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return wKJavascriptEvaluationResult ?? new WKJavascriptEvaluationResult(new NIDWKJavascriptEvaluationResult((BlockLiteral*)(void*)block).Invoke);
+        }
+
+        private void Invoke(NSObject result, NSError error)
+        {
+            invoker(base.BlockPointer, result?.Handle ?? IntPtr.Zero, error?.Handle ?? IntPtr.Zero);
+        }
+    }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(Action<NSImage, NSError>))]
@@ -764,6 +1126,34 @@ internal static class Trampolines
         }
     }
 
+    internal sealed class NIDActionArity2V86 : TrampolineBlockBase
+    {
+        private DActionArity2V86 invoker;
+
+        public unsafe NIDActionArity2V86(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity2V86>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<NSImage, NSError>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action<NSImage, NSError> action = (Action<NSImage, NSError>)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action<NSImage, NSError>(new NIDActionArity2V86((BlockLiteral*)(void*)block).Invoke);
+        }
+
+        private void Invoke(NSImage arg1, NSError arg2)
+        {
+            invoker(base.BlockPointer, arg1?.Handle ?? IntPtr.Zero, arg2?.Handle ?? IntPtr.Zero);
+        }
+    }
+
+
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(Action<NSObject, NSError>))]
     internal delegate void DActionArity2V69(IntPtr block, IntPtr arg1, IntPtr arg2);
@@ -777,6 +1167,35 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr arg1, IntPtr arg2)
         {
             ((Action<NSObject, NSError>)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<NSObject>(arg1), Runtime.GetNSObjectTx<NSError>(arg2));
+        }
+    }
+
+    internal sealed class NIDActionArity2V69 : TrampolineBlockBase
+    {
+        private DActionArity2V69 invoker;
+
+        public unsafe NIDActionArity2V69(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity2V69>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<NSObject, NSError>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action<NSObject, NSError> action = (Action<NSObject, NSError>)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action<NSObject, NSError>(new NIDActionArity2V69((BlockLiteral*)block).Invoke);
+        }
+
+        private void Invoke(NSObject arg1, NSError arg2)
+        {
+            NativeHandle handle = arg1.GetHandle();
+            NativeHandle handle2 = arg2.GetHandle();
+            invoker(base.BlockPointer, handle, handle2);
         }
     }
 
@@ -796,6 +1215,36 @@ internal static class Trampolines
         }
     }
 
+    internal sealed class NIDActionArity2V16 : TrampolineBlockBase
+    {
+        private DActionArity2V16 invoker;
+
+        public unsafe NIDActionArity2V16(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity2V16>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<NSData, NSError>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action<NSData, NSError> action = (Action<NSData, NSError>)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action<NSData, NSError>(new NIDActionArity2V16((BlockLiteral*)block).Invoke);
+        }
+
+        private void Invoke(NSData arg1, NSError arg2)
+        {
+            NativeHandle handle = arg1.GetHandle();
+            NativeHandle handle2 = arg2.GetHandle();
+            invoker(base.BlockPointer, handle, handle2);
+        }
+    }
+
+
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(Action<WKFindResult>))]
     internal delegate void DActionArity1V256(IntPtr block, IntPtr obj);
@@ -809,6 +1258,77 @@ internal static class Trampolines
         private unsafe static void Invoke(IntPtr block, IntPtr obj)
         {
             ((Action<WKFindResult>)((BlockLiteral*)block)->Target)?.Invoke(Runtime.GetNSObjectTx<WKFindResult>(obj));
+        }
+    }
+
+    internal sealed class NIDActionArity1V256 : TrampolineBlockBase
+    {
+        private DActionArity1V256 invoker;
+
+        public unsafe NIDActionArity1V256(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity1V256>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<WKFindResult>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action<WKFindResult> action = (Action<WKFindResult>)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action<WKFindResult>(new NIDActionArity1V256((BlockLiteral*)block).Invoke);
+        }
+
+        private void Invoke(WKFindResult obj)
+        {
+            NativeHandle handle = obj.GetHandle();
+            invoker(base.BlockPointer, handle);
+        }
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UserDelegateType(typeof(Action<bool>))]
+    internal delegate void DActionArity1V2(IntPtr block, bool obj);
+
+    internal static class SDActionArity1V2
+    {
+        internal static readonly DActionArity1V2 Handler = Invoke;
+
+        [Preserve(Conditional = true)]
+        [MonoPInvokeCallback(typeof(DActionArity1V2))]
+        private unsafe static void Invoke(IntPtr block, bool obj)
+        {
+            ((Action<bool>)((BlockLiteral*)block)->Target)?.Invoke(obj);
+        }
+    }
+
+    internal sealed class NIDActionArity1V2 : TrampolineBlockBase
+    {
+        private DActionArity1V2 invoker;
+
+        public unsafe NIDActionArity1V2(BlockLiteral* block)
+            : base(block)
+        {
+            invoker = block->GetDelegateForBlock<DActionArity1V2>();
+        }
+
+        [Preserve(Conditional = true)]
+        public unsafe static Action<bool>? Create(IntPtr block)
+        {
+            if (block == IntPtr.Zero)
+            {
+                return null;
+            }
+            Action<bool> action = (Action<bool>)TrampolineBlockBase.GetExistingManagedDelegate(block);
+            return action ?? new Action<bool>(new NIDActionArity1V2((BlockLiteral*)block).Invoke);
+        }
+
+        private void Invoke(bool obj)
+        {
+            invoker(base.BlockPointer, obj);
         }
     }
 

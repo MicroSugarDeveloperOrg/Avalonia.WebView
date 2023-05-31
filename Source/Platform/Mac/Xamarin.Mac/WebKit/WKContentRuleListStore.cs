@@ -69,7 +69,7 @@ public class WKContentRuleListStore : NSObject
     }
 
     [Export("compileContentRuleListForIdentifier:encodedContentRuleList:completionHandler:")]
-    public unsafe virtual void CompileContentRuleList(string identifier, string encodedContentRuleList, [BlockProxy(typeof(NSAction))] Action<WKContentRuleList, NSError> completionHandler)
+    public unsafe virtual void CompileContentRuleList(string identifier, string encodedContentRuleList, [BlockProxy(typeof(Trampolines.NIDActionArity2V84))] Action<WKContentRuleList, NSError> completionHandler)
     {
         if (identifier == null)
         {
@@ -129,7 +129,7 @@ public class WKContentRuleListStore : NSObject
     }
 
     [Export("getAvailableContentRuleListIdentifiers:")]
-    public unsafe virtual void GetAvailableContentRuleListIdentifiers([BlockProxy(typeof(NSAction))] Action<string[]> callback)
+    public unsafe virtual void GetAvailableContentRuleListIdentifiers([BlockProxy(typeof(Trampolines.NIDActionArity1V1))] Action<string[]> callback)
     {
         if (callback == null)
         {
@@ -160,7 +160,7 @@ public class WKContentRuleListStore : NSObject
     }
 
     [Export("lookUpContentRuleListForIdentifier:completionHandler:")]
-    public unsafe virtual void LookUpContentRuleList(string identifier, [BlockProxy(typeof(NSAction))] Action<WKContentRuleList, NSError> completionHandler)
+    public unsafe virtual void LookUpContentRuleList(string identifier, [BlockProxy(typeof(Trampolines.NIDActionArity2V84))] Action<WKContentRuleList, NSError> completionHandler)
     {
         if (identifier == null)
         {
@@ -204,7 +204,7 @@ public class WKContentRuleListStore : NSObject
     }
 
     [Export("removeContentRuleListForIdentifier:completionHandler:")]
-    public unsafe virtual void RemoveContentRuleList(string identifier, [BlockProxy(typeof(NSAction))] Action<NSError> completionHandler)
+    public unsafe virtual void RemoveContentRuleList(string identifier, [BlockProxy(typeof(Trampolines.NIDActionArity1V11))] Action<NSError> completionHandler)
     {
         if (identifier == null)
         {
