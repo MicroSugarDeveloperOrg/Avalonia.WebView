@@ -228,8 +228,8 @@ internal abstract class NativeImplementationBuilder
             else
                 ParameterTypes[i + ArgumentOffset] = parameterType;
 
-            if (proxyType is not null && parameterType.IsSubclassOf(typeof(Delegate)))
-                ParameterTypes[i + ArgumentOffset] = typeof(NSAction);
+            //if (proxyType is not null && parameterType.IsSubclassOf(typeof(Delegate)))
+                //ParameterTypes[i + ArgumentOffset] = typeof(NSAction);
 
             Signature += TypeConverter.ToNative(parameterType);
         }

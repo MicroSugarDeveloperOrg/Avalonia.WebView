@@ -29,6 +29,10 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
 
     private bool isstret;
 
+    private bool _isProxy = false;
+
+    private ProtocolMemberAttribute? _protocolMemberAttribute;
+
     internal NativeMethodBuilder(MethodInfo minfo)
         : this(minfo, minfo.DeclaringType, (ExportAttribute)Attribute.GetCustomAttribute(minfo.GetBaseDefinition(), typeof(ExportAttribute)))
     {
@@ -67,6 +71,9 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
 
         if (methodInfo.DeclaringType.IsGenericType)
             throw new ArgumentException("MethodInfo cannot be in a generic type");
+
+        _isProxy = true;
+        _protocolMemberAttribute = attribute;
 
         Parameters = methodInfo.GetParameters();
         rettype = ConvertReturnType(methodInfo.ReturnType);
