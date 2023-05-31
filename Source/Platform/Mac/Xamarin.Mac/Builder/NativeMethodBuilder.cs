@@ -90,22 +90,31 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
         DynamicMethod dynamicMethod = new DynamicMethod($"[{minfo.DeclaringType}:{minfo}]", rettype, ParameterTypes, module, skipVisibility: true);
         ILGenerator iLGenerator = dynamicMethod.GetILGenerator();
         DeclareLocals(iLGenerator);
-        ConvertArguments(iLGenerator, 0);
+
+        if (_isProxy && _protocolMemberAttribute.ParameterBlockProxy is not null)
+            ConvertArgumentsWithProxyTypes(iLGenerator, _protocolMemberAttribute.ParameterBlockProxy, 0);
+        else
+            ConvertArguments(iLGenerator, 0);
+
         if (!minfo.IsStatic)
         {
             iLGenerator.Emit(OpCodes.Ldarg, isstret ? 1 : 0);
             iLGenerator.Emit(OpCodes.Castclass, type);
         }
+
+        //if (_isProxy && _protocolMemberAttribute.ParameterBlockProxy is not null)
+        //    LoadArgumentsWithProxyTypes(iLGenerator, _protocolMemberAttribute.ParameterBlockProxy, 0);
+        //else
+            
         LoadArguments(iLGenerator, 0);
+
         if (minfo.IsVirtual)
-        {
             iLGenerator.Emit(OpCodes.Callvirt, minfo);
-        }
         else
-        {
             iLGenerator.Emit(OpCodes.Call, minfo);
-        }
+
         UpdateByRefArguments(iLGenerator, 0);
+
         if (minfo.ReturnType == typeof(string))
         {
             iLGenerator.Emit(OpCodes.Call, creatensstring);

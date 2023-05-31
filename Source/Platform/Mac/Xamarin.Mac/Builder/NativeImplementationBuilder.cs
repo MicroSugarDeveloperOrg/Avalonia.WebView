@@ -334,6 +334,95 @@ internal abstract class NativeImplementationBuilder
         }
     }
 
+    protected void ConvertArgumentsWithProxyTypes(ILGenerator il, Type[] proxyTypes ,int locoffset)
+    {
+        int i = ArgumentOffset;
+        int num = 0;
+        for (; i < ParameterTypes.Length; i++)
+        {
+            var parameterInfo = Parameters[i - ArgumentOffset];
+            var parameterType = parameterInfo.ParameterType;
+            var proxyType = proxyTypes[i - ArgumentOffset];
+
+            if (parameterInfo is null)
+                continue;
+
+            if (parameterType is null)
+                continue;
+
+            if (proxyType is not null && parameterType.IsSubclassOf(typeof(Delegate)))
+            {
+                var createMethod = proxyType.GetMethod("Create", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[1] { typeof(IntPtr) }, null);
+                Label label = il.DefineLabel();
+                Label label2 = il.DefineLabel();
+                il.Emit(OpCodes.Ldarg, i);
+                il.Emit(OpCodes.Brfalse, label);
+                il.Emit(OpCodes.Ldarg, i);
+                il.Emit(OpCodes.Ldind_I);
+                il.Emit(OpCodes.Call, createMethod);
+                il.Emit(OpCodes.Br, label2);
+                il.MarkLabel(label);
+                il.Emit(OpCodes.Ldnull);
+                il.MarkLabel(label2);
+                il.Emit(OpCodes.Stloc, num + locoffset);
+                num++; 
+            }
+            else if (parameterType.IsByRef && Attribute.GetCustomAttribute(parameterInfo, typeof(OutAttribute)) == null && IsWrappedType(parameterType.GetElementType()))
+            {
+                Label label = il.DefineLabel();
+                Label label2 = il.DefineLabel();
+                il.Emit(OpCodes.Ldarg, i);
+                il.Emit(OpCodes.Brfalse, label);
+                il.Emit(OpCodes.Ldarg, i);
+                il.Emit(OpCodes.Ldind_I);
+                il.Emit(OpCodes.Call, getobject);
+                il.Emit(OpCodes.Br, label2);
+                il.MarkLabel(label);
+                il.Emit(OpCodes.Ldnull);
+                il.MarkLabel(label2);
+                il.Emit(OpCodes.Stloc, num + locoffset);
+                num++;
+            }
+            else if (parameterType.IsArray && IsWrappedType(parameterType.GetElementType()))
+            {
+                Label label3 = il.DefineLabel();
+                Label label4 = il.DefineLabel();
+                il.Emit(OpCodes.Ldarg, i);
+                il.Emit(OpCodes.Brfalse, label3);
+                il.Emit(OpCodes.Ldarg, i);
+                if (parameterType.GetElementType() == typeof(string))
+                {
+                    il.Emit(OpCodes.Call, convertsarray);
+                }
+                else
+                {
+                    il.Emit(OpCodes.Call, convertarray.MakeGenericMethod(parameterType.GetElementType()));
+                }
+                il.Emit(OpCodes.Br, label4);
+                il.MarkLabel(label3);
+                il.Emit(OpCodes.Ldnull);
+                il.MarkLabel(label4);
+                il.Emit(OpCodes.Stloc, num + locoffset);
+                num++;
+            }
+            else if (parameterType == typeof(string))
+            {
+                Label label5 = il.DefineLabel();
+                Label label6 = il.DefineLabel();
+                il.Emit(OpCodes.Ldarg, i);
+                il.Emit(OpCodes.Brfalse, label5);
+                il.Emit(OpCodes.Ldarg, i);
+                il.Emit(OpCodes.Call, convertstring);
+                il.Emit(OpCodes.Br, label6);
+                il.MarkLabel(label5);
+                il.Emit(OpCodes.Ldnull);
+                il.MarkLabel(label6);
+                il.Emit(OpCodes.Stloc, num + locoffset);
+                num++;
+            }
+        }
+    }
+
     protected void LoadArguments(ILGenerator il, int locoffset)
     {
         int i = ArgumentOffset;
@@ -388,6 +477,68 @@ internal abstract class NativeImplementationBuilder
         }
     }
 
+    protected void LoadArgumentsWithProxyTypes(ILGenerator il, Type[] proxyTypes ,int locoffset)
+    {
+        int i = ArgumentOffset;
+        int num = 0;
+        for (; i < ParameterTypes.Length; i++)
+        {
+            var parameterInfo = Parameters[i - ArgumentOffset];
+            var parameterType = parameterInfo.ParameterType;
+            var proxyType = proxyTypes[i - ArgumentOffset];
+
+            if (parameterInfo is null)
+                continue;
+
+            if (parameterType is null)
+                continue;
+
+            if (proxyType is not null)
+            {
+                
+            }
+            else
+            {
+                if (parameterType.IsInterface && typeof(INativeObject).IsAssignableFrom(parameterType))
+                {
+                    //此处需要获取对象的构造函数，由于这里使用了Interface所以大概率这里或抱错获取不到构造
+                    var protocolAttribute = parameterType.GetCustomAttribute<ProtocolAttribute>();
+                    if (protocolAttribute is null)
+                        continue;
+
+                    var wrapperType = protocolAttribute.WrapperType;
+                    var constructorInfo = wrapperType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[1] { typeof(IntPtr) }, null);
+                    il.Emit(OpCodes.Ldarg, i);
+                    il.Emit(OpCodes.Newobj, constructorInfo);
+                }
+                else if (parameterType.IsByRef && IsWrappedType(parameterType.GetElementType()))
+                {
+                    il.Emit(OpCodes.Ldloca_S, num + locoffset);
+                    num++;
+                }
+                else if (parameterType.IsArray && IsWrappedType(parameterType.GetElementType()))
+                {
+                    il.Emit(OpCodes.Ldloc, num + locoffset);
+                    num++;
+                }
+                else if (typeof(INativeObject).IsAssignableFrom(parameterType) && !IsWrappedType(parameterType))
+                {
+                    il.Emit(OpCodes.Ldarg, i);
+                    il.Emit(OpCodes.Newobj, parameterType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[1] { typeof(IntPtr) }, null));
+                }
+                else if (parameterType == typeof(string))
+                {
+                    il.Emit(OpCodes.Ldloc, num + locoffset);
+                    num++;
+                }
+                else
+                {
+                    il.Emit(OpCodes.Ldarg, i);
+                }
+            } 
+        }
+    }
+
     protected void UpdateByRefArguments(ILGenerator il, int locoffset)
     {
         int i = ArgumentOffset;
@@ -431,4 +582,6 @@ internal abstract class NativeImplementationBuilder
             }
         }
     }
+
+
 }
