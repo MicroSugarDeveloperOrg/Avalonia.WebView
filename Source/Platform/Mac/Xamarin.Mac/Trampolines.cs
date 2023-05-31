@@ -8,7 +8,7 @@ using JavaScriptCore;
 using ObjCRuntime;
 using WebKit;
 
-internal static class Trampolines
+public static class Trampolines
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(Action<bool>))]
@@ -625,7 +625,7 @@ internal static class Trampolines
         }
     }
 
-    internal sealed class NIDActionArity1V93 : TrampolineBlockBase
+    public sealed class NIDActionArity1V93 : TrampolineBlockBase
     {
         private DActionArity1V93 invoker;
 

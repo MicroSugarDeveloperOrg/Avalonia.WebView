@@ -206,7 +206,7 @@ internal abstract class NativeImplementationBuilder
                 ParameterTypes[i + ArgumentOffset] = parameterType;
 
             if (proxyType is not null && parameterType.IsSubclassOf(typeof(Delegate)))
-                ParameterTypes[i + ArgumentOffset] = proxyType;
+                ParameterTypes[i + ArgumentOffset] = typeof(IntPtr);
 
             Signature += TypeConverter.ToNative(parameterType);
         }
@@ -332,7 +332,7 @@ internal abstract class NativeImplementationBuilder
                 //il.Emit(OpCodes.Ldnull);
                 //il.MarkLabel(label2);
                 //il.Emit(OpCodes.Stloc, num + locoffset);
-                num++; 
+                //num++; 
             }
             else if (parameterType.IsByRef && Attribute.GetCustomAttribute(parameterInfo, typeof(OutAttribute)) == null && IsWrappedType(parameterType.GetElementType()))
             {
@@ -434,9 +434,7 @@ internal abstract class NativeImplementationBuilder
                 num++;
             }
             else
-            {
                 il.Emit(OpCodes.Ldarg, i);
-            }
         }
     }
 
@@ -458,7 +456,12 @@ internal abstract class NativeImplementationBuilder
 
             if (proxyType is not null)
             {
-                il.Emit(OpCodes.Ldarg, i);
+                //var createMethod = proxyType.GetMethod("Create", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[1] { typeof(IntPtr) }, null);
+                //if (createMethod is null)
+                    //continue;
+
+                //il.Emit(OpCodes.Ldarg, i);
+                //il.Emit(OpCodes.Call, createMethod);
             }
             else
             {
