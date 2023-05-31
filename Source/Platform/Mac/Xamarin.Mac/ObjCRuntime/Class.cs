@@ -419,7 +419,7 @@ public class Class : INativeObject
         if (attribute.IsProperty)
             return;
 
-        MethodInfo? methodInfo = type.GetMethod(attribute.Name, BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+        MethodInfo? methodInfo = type.GetMethod(attribute.Name, BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, attribute.ParameterType, null);
 		if (methodInfo is null)
         {
             if (!attribute.IsRequired)
