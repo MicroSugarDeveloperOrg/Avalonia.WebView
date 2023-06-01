@@ -189,6 +189,12 @@ internal abstract class NativeImplementationBuilder
 
     private void SetupParameterWithProxy(MethodBuilder builder, int index, Type t, Type? rawType , Type? proxyType)
     {
+        if (proxyType is null)
+        {
+            SetupParameter(builder, index, t);
+            return;
+        }
+
         ParameterBuilder parameterBuilder = builder.DefineParameter(index, ParameterAttributes.HasFieldMarshal, $"arg{index}");
         ConstructorInfo? constructor = typeof(MarshalAsAttribute).GetConstructor(new Type[1] { typeof(UnmanagedType) });
         FieldInfo field = typeof(MarshalAsAttribute).GetField("MarshalTypeRef");
