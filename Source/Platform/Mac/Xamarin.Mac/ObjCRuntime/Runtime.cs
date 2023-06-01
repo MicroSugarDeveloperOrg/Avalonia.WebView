@@ -370,41 +370,6 @@ public static class Runtime
         return null;
     }
 
-    private static void MissingCtor(IntPtr ptr, IntPtr klass, Type type, MissingCtorResolution resolution)
-    {
-        if (resolution == MissingCtorResolution.Ignore)
-        {
-            return;
-        }
-        if (klass == IntPtr.Zero)
-        {
-            klass = Class.GetClassForObject(ptr);
-        }
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.Append("Failed to marshal the Objective-C object 0x");
-        stringBuilder.Append(ptr.ToString("x"));
-        stringBuilder.Append(" (type: ");
-        stringBuilder.Append(new Class(klass).Name);
-        stringBuilder.Append("). Could not find an existing managed instance for this object, nor was it possible to create a new managed instance (because the type '");
-        stringBuilder.Append(type.FullName);
-        stringBuilder.Append("' does not have a constructor that takes ");
-        switch (resolution)
-        {
-            case MissingCtorResolution.ThrowConstructor1NotFound:
-                stringBuilder.Append("one NativeHandle argument");
-                break;
-            case MissingCtorResolution.ThrowConstructor2NotFound:
-                stringBuilder.Append("two (NativeHandle, bool) arguments");
-                break;
-        }
-        stringBuilder.Append(").");
-        throw ErrorHelper.CreateError(8027, stringBuilder.ToString());
-    }
-
-    internal static IntPtr AllocGCHandle(object? value, GCHandleType type = GCHandleType.Normal)
-    {
-        return GCHandle.ToIntPtr(GCHandle.Alloc(value, type));
-    }
 
     #endregion
 }

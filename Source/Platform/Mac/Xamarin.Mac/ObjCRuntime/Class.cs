@@ -25,54 +25,49 @@ public class Class : INativeObject
 		internal string value;
 	}
 
-	public static bool ThrowOnInitFailure = true;
+    public Class(string name)
+    {
+        handle = objc_getClass(name);
+        if (handle == IntPtr.Zero)
+        {
+            throw new ArgumentException($"name {name} is an unknown class", "name");
+        }
+    }
+
+    public Class(Type type)
+    {
+        handle = Register(type);
+    }
+
+    public Class(IntPtr handle)
+    {
+        this.handle = handle;
+    }
+
+
+    public static bool ThrowOnInitFailure = true;
 
 	private static Dictionary<IntPtr, Type> type_map = new Dictionary<IntPtr, Type>();
-
 	private static Dictionary<Type, Type> custom_types = new Dictionary<Type, Type>();
-
 	private static List<Delegate> method_wrappers = new List<Delegate>();
+    private static Dictionary<Type, Dictionary<IntPtr, Delegate>> __mapTypeDelegates = new();
 
 	private static object lock_obj = new object();
 
 	internal IntPtr handle;
-
 	private static IntPtr memory;
-
 	private static int size_left;
 
 	private static getFrameLengthDelegate getFrameLength = Selector.GetFrameLength;
 
 	private static IntPtr getFrameLengthPtr = Marshal.GetFunctionPointerForDelegate(getFrameLength);
-
 	private static addPropertyDelegate addProperty;
-
 	private static bool addPropertyInitialized;
 
+
 	public IntPtr Handle => handle;
-
 	public IntPtr SuperClass => class_getSuperclass(handle);
-
 	public string Name => Messaging.StringFromNativeUtf8(class_getName(handle));
-
-	public Class(string name)
-	{
-		handle = objc_getClass(name);
-		if (handle == IntPtr.Zero)
-		{
-			throw new ArgumentException($"name {name} is an unknown class", "name");
-		}
-	}
-
-	public Class(Type type)
-	{
-		handle = Register(type);
-	}
-
-	public Class(IntPtr handle)
-	{
-		this.handle = handle;
-	}
 
 	internal static Class Construct(IntPtr handle)
 	{
@@ -96,10 +91,9 @@ public class Class : INativeObject
 		bool is_wrapper = registerAttribute?.IsWrapper ?? false;
 		IntPtr intPtr = objc_getClass(name);
 		if (intPtr == IntPtr.Zero)
-		{
-			intPtr = Register(type, name, is_wrapper);
-		}
-		return intPtr;
+            intPtr = Register(type, name, is_wrapper);
+
+        return intPtr;
 	}
 
 	public static bool IsCustomType(Type type)
@@ -164,26 +158,23 @@ public class Class : INativeObject
 			if (zero2 != IntPtr.Zero)
 			{
 				if (!type_map.ContainsKey(zero2))
-				{
-					type_map[zero2] = type;
-				}
-				return zero2;
+                    type_map[zero2] = type;
+
+                return zero2;
 			}
+
 			if (objc_getProtocol(name) != IntPtr.Zero)
-			{
-				throw new ArgumentException("Attempting to register a class named: " + name + " which is a valid protocol");
-			}
-			if (is_wrapper)
-			{
-				return IntPtr.Zero;
-			}
-			Type baseType = type.BaseType;
+                throw new ArgumentException("Attempting to register a class named: " + name + " which is a valid protocol");
+
+            if (is_wrapper)
+                return IntPtr.Zero;
+
+            Type baseType = type.BaseType;
 			string text = null;
 			while (Attribute.IsDefined(baseType, typeof(ModelAttribute), inherit: false))
-			{
-				baseType = baseType.BaseType;
-			}
-			RegisterAttribute registerAttribute = (RegisterAttribute)Attribute.GetCustomAttribute(baseType, typeof(RegisterAttribute), inherit: false);
+                baseType = baseType.BaseType;
+
+            RegisterAttribute registerAttribute = (RegisterAttribute)Attribute.GetCustomAttribute(baseType, typeof(RegisterAttribute), inherit: false);
 			text = ((registerAttribute == null) ? baseType.FullName : (registerAttribute.Name ?? baseType.FullName));
 			zero = objc_getClass(text);
 			if (zero == IntPtr.Zero && baseType.Assembly != NSObject.MonoMacAssembly)
@@ -192,11 +183,11 @@ public class Class : INativeObject
 				Register(baseType, text, is_wrapper2);
 				zero = objc_getClass(text);
 			}
+
 			if (zero == IntPtr.Zero)
-			{
-				zero = objc_getClass("NSObject");
-			}
-			zero2 = objc_allocateClassPair(zero, name, IntPtr.Zero);
+                zero = objc_getClass("NSObject");
+
+            zero2 = objc_allocateClassPair(zero, name, IntPtr.Zero);
 
 			PropertyInfo[] properties = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 			foreach (PropertyInfo propertyInfo in properties)
@@ -220,11 +211,12 @@ public class Class : INativeObject
 			//遍历接口查看是否具有 protocol的接口
 			RegisterInterfaces(type, zero2);
  
+            //构造
             ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
 			if (constructor != null)
 			{
 				NativeConstructorBuilder nativeConstructorBuilder = new NativeConstructorBuilder(constructor);
-				class_addMethod(zero2, nativeConstructorBuilder.Selector, nativeConstructorBuilder.Delegate, nativeConstructorBuilder.Signature);
+				class_addMethod(zero2, nativeConstructorBuilder.SelectorHandle, nativeConstructorBuilder.Delegate, nativeConstructorBuilder.Signature);
 				method_wrappers.Add(nativeConstructorBuilder.Delegate);
 			}
 
@@ -234,7 +226,7 @@ public class Class : INativeObject
 				if ((ExportAttribute)Attribute.GetCustomAttribute(constructorInfo, typeof(ExportAttribute)) != null)
 				{
 					NativeConstructorBuilder nativeConstructorBuilder2 = new NativeConstructorBuilder(constructorInfo);
-					class_addMethod(zero2, nativeConstructorBuilder2.Selector, nativeConstructorBuilder2.Delegate, nativeConstructorBuilder2.Signature);
+					class_addMethod(zero2, nativeConstructorBuilder2.SelectorHandle, nativeConstructorBuilder2.Delegate, nativeConstructorBuilder2.Signature);
 					method_wrappers.Add(nativeConstructorBuilder2.Delegate);
 				}
 			}
@@ -308,10 +300,21 @@ public class Class : INativeObject
     internal static void RegisterMethod(MethodInfo minfo, ExportAttribute ea, Type type, IntPtr handle)
     {
         NativeMethodBuilder nativeMethodBuilder = new NativeMethodBuilder(minfo, type, ea);
-        class_addMethod(minfo.IsStatic ? object_getClass(handle) : handle, nativeMethodBuilder.Selector, GetFunctionPointer(minfo, nativeMethodBuilder.Delegate), nativeMethodBuilder.Signature);
+        class_addMethod(minfo.IsStatic ? object_getClass(handle) : handle, nativeMethodBuilder.SelectorHandle, GetFunctionPointer(minfo, nativeMethodBuilder.Delegate), nativeMethodBuilder.Signature);
         lock (lock_obj)
         {
             method_wrappers.Add(nativeMethodBuilder.Delegate);
+
+            var selectorHandle  = new Selector(ea.Selector ?? minfo.Name, alloc: true).Handle;
+
+            __mapTypeDelegates.TryGetValue(type, out var mapDelegate);
+            if (mapDelegate is null)
+            {
+                mapDelegate = new();
+                __mapTypeDelegates[type] = mapDelegate;
+            }
+
+            mapDelegate[selectorHandle] = nativeMethodBuilder.Delegate;
         }
     }
 
@@ -420,7 +423,7 @@ public class Class : INativeObject
             return;
 
         MethodInfo? methodInfo = type.GetMethod(attribute.Name, BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, attribute.ParameterType, null);
-		if (methodInfo is null)
+        if (methodInfo is null)
         {
             if (!attribute.IsRequired)
                 return;
@@ -428,10 +431,35 @@ public class Class : INativeObject
             ThrowHelper.ThrowArgumentNullException(attribute.Name, "Method is null");
         }
 
-		NativeMethodBuilder nativeMethodBuilder = new NativeMethodBuilder(type, methodInfo, attribute);
-        class_addMethod(methodInfo.IsStatic ? object_getClass(handle) : handle, nativeMethodBuilder.Selector, GetFunctionPointer(methodInfo, nativeMethodBuilder.Delegate), nativeMethodBuilder.Signature);
         lock (lock_obj)
+        {
+            var selectorHandle = new Selector(attribute.Selector ?? methodInfo.Name, alloc: true).Handle;
+            __mapTypeDelegates.TryGetValue(type, out var mapDelegate);
+            if (mapDelegate is not null)
+            {
+                mapDelegate.TryGetValue(selectorHandle, out var delegateHandle);
+                if (delegateHandle is not null)
+                    return;
+            }
+        }
+
+		NativeMethodBuilder nativeMethodBuilder = new NativeMethodBuilder(type, methodInfo, attribute);
+        class_addMethod(methodInfo.IsStatic ? object_getClass(handle) : handle, nativeMethodBuilder.SelectorHandle, GetFunctionPointer(methodInfo, nativeMethodBuilder.Delegate), nativeMethodBuilder.Signature);
+        lock (lock_obj)
+        {
             method_wrappers.Add(nativeMethodBuilder.Delegate);
+
+            var selectorHandle = new Selector(attribute.Selector ?? methodInfo.Name, alloc: true).Handle;
+
+            __mapTypeDelegates.TryGetValue(type, out var mapDelegate);
+            if (mapDelegate is null)
+            {
+                mapDelegate = new();
+                __mapTypeDelegates[type] = mapDelegate;
+            }
+
+            mapDelegate[selectorHandle] = nativeMethodBuilder.Delegate;
+        }
     }
 
     private static IntPtr AllocExecMemory(int size)
@@ -441,15 +469,13 @@ public class Class : INativeObject
 			size_left = 4096;
 			memory = Marshal.AllocHGlobal(size_left);
 			if (memory == IntPtr.Zero)
-			{
-				throw new Exception($"Could not allocate memory for specialized x86 floating point stret delegate thunk: {Marshal.GetLastWin32Error()}");
-			}
-			if (mprotect(memory, size_left, 7) != 0)
-			{
-				throw new Exception($"Could not make allocated memory for specialized x86 floating point stret delegate thunk code executable: {Marshal.GetLastWin32Error()}");
-			}
-		}
-		IntPtr result = memory;
+                throw new Exception($"Could not allocate memory for specialized x86 floating point stret delegate thunk: {Marshal.GetLastWin32Error()}");
+
+            if (mprotect(memory, size_left, 7) != 0)
+                throw new Exception($"Could not make allocated memory for specialized x86 floating point stret delegate thunk code executable: {Marshal.GetLastWin32Error()}");
+
+        }
+        IntPtr result = memory;
 		size_left -= size;
 		memory = new IntPtr(memory.ToInt32() + size);
 		return result;
@@ -468,57 +494,47 @@ public class Class : INativeObject
         return type;
     }
 
-
     private static bool TypeRequiresFloatingPointTrampoline(Type t)
 	{
 		if (IntPtr.Size != 4)
-		{
-			return false;
-		}
-		if (typeof(float) == t || typeof(double) == t)
-		{
-			return false;
-		}
-		if (!t.IsValueType || t.IsEnum)
-		{
-			return false;
-		}
-		if (Marshal.SizeOf(t) <= 8)
-		{
-			return false;
-		}
-		return TypeContainsFloatingPoint(t);
+            return false;
+
+        if (typeof(float) == t || typeof(double) == t)
+            return false;
+
+        if (!t.IsValueType || t.IsEnum)
+            return false;
+
+        if (Marshal.SizeOf(t) <= 8)
+            return false;
+
+        return TypeContainsFloatingPoint(t);
 	}
 
 	private static bool TypeContainsFloatingPoint(Type t)
 	{
 		if (!t.IsValueType || t.IsEnum || t.IsPrimitive)
-		{
-			return false;
-		}
-		FieldInfo[] fields = t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            return false;
+
+        FieldInfo[] fields = t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 		foreach (FieldInfo fieldInfo in fields)
 		{
 			if (fieldInfo.FieldType == typeof(double) || fieldInfo.FieldType == typeof(float))
-			{
-				return true;
-			}
-			if (!(fieldInfo.FieldType == t) && TypeContainsFloatingPoint(fieldInfo.FieldType))
-			{
-				return true;
-			}
-		}
-		return false;
+                return true;
+
+            if (!(fieldInfo.FieldType == t) && TypeContainsFloatingPoint(fieldInfo.FieldType))
+                return true;
+        }
+        return false;
 	}
 
 	private static IntPtr GetFunctionPointer(MethodInfo minfo, Delegate @delegate)
 	{
 		IntPtr functionPointerForDelegate = Marshal.GetFunctionPointerForDelegate(@delegate);
 		if (!TypeRequiresFloatingPointTrampoline(minfo.ReturnType))
-		{
-			return functionPointerForDelegate;
-		}
-		IntPtr intPtr = AllocExecMemory(83);
+            return functionPointerForDelegate;
+
+        IntPtr intPtr = AllocExecMemory(83);
 		IntPtr intPtr2 = new IntPtr(functionPointerForDelegate.ToInt32() - intPtr.ToInt32() - 70);
 		IntPtr intPtr3 = new IntPtr(getFrameLengthPtr.ToInt32() - intPtr.ToInt32() - 27);
 		byte[] bytes = BitConverter.GetBytes(intPtr2.ToInt32());
@@ -594,6 +610,8 @@ public class Class : INativeObject
 	[DllImport("/usr/lib/libobjc.dylib")]
 	internal static extern IntPtr class_getInstanceVariable(IntPtr cls, string name);
 
+
+
     internal static IntPtr class_addProperty(IntPtr cls, string name, objc_attribute_prop[] attributes, int count)
 	{
 		if (!addPropertyInitialized)
@@ -603,21 +621,19 @@ public class Class : INativeObject
 			{
 				IntPtr intPtr2 = Dlfcn.dlsym(intPtr, "class_addProperty");
 				if (intPtr2 != IntPtr.Zero)
-				{
-					addProperty = (addPropertyDelegate)Marshal.GetDelegateForFunctionPointer(intPtr2, typeof(addPropertyDelegate));
-				}
-			}
-			finally
+                    addProperty = (addPropertyDelegate)Marshal.GetDelegateForFunctionPointer(intPtr2, typeof(addPropertyDelegate));
+            }
+            finally
 			{
 				Dlfcn.dlclose(intPtr);
 			}
+
 			addPropertyInitialized = true;
 		}
 		if (addProperty == null)
-		{
-			return IntPtr.Zero;
-		}
-		return addProperty(cls, name, attributes, count);
+            return IntPtr.Zero;
+
+        return addProperty(cls, name, attributes, count);
 	}
 
     internal static IntPtr GetClassForObject(IntPtr obj)

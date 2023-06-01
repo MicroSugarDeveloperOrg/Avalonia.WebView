@@ -37,7 +37,7 @@ internal abstract class NativeImplementationBuilder
 
     internal int ArgumentOffset { get; set; }
 
-    internal IntPtr Selector { get; set; }
+    internal IntPtr SelectorHandle { get; set; }
 
     internal Type[] ParameterTypes { get; set; }
 
@@ -136,7 +136,7 @@ internal abstract class NativeImplementationBuilder
         if (t == typeof(Selector))
             return true;
 
-        if (t.IsSubclassOf(typeof(Delegate)) && proxyType is not null)
+        if (t==typeof(NSAction) && proxyType is not null)
             return true;
 
         return false;
@@ -233,9 +233,10 @@ internal abstract class NativeImplementationBuilder
             else
                 ParameterTypes[i + ArgumentOffset] = parameterType;
 
-            var proxyAttribute = parameterInfo.GetCustomAttribute(typeof(BlockProxyAttribute));
+            var proxyAttribute = parameterInfo.GetCustomAttribute<BlockProxyAttribute>();
             if (proxyAttribute is not null && parameterType.IsSubclassOf(typeof(Delegate)))
                 ParameterTypes[i + ArgumentOffset] = typeof(NSAction);
+                //ParameterTypes[i + ArgumentOffset] = proxyAttribute.Type;
 
             Signature += TypeConverter.ToNative(parameterType);
         }
@@ -279,8 +280,10 @@ internal abstract class NativeImplementationBuilder
             else
                 ParameterTypes[i + ArgumentOffset] = parameterType;
 
-            //if (proxyType is not null && parameterType.IsSubclassOf(typeof(Delegate)))
-                //ParameterTypes[i + ArgumentOffset] = typeof(IntPtr);
+            if (proxyType is not null && parameterType.IsSubclassOf(typeof(Delegate)))
+                ParameterTypes[i + ArgumentOffset] = typeof(NSAction);
+                //ParameterTypes[i + ArgumentOffset] = proxyType;
+            //ParameterTypes[i + ArgumentOffset] = typeof(NSAction);
 
             Signature += TypeConverter.ToNative(parameterType);
         }

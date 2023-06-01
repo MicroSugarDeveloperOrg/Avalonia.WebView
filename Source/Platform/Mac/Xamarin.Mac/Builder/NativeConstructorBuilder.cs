@@ -30,9 +30,9 @@ internal class NativeConstructorBuilder : NativeImplementationBuilder
             throw new ArgumentException("ConstructorInfo does not have a export attribute");
 
         if (exportAttribute == null)
-            Selector = __selInit;
+            SelectorHandle = __selInit;
         else
-            Selector = new Selector(exportAttribute.Selector, alloc: true).Handle;
+            SelectorHandle = new Selector(exportAttribute.Selector, alloc: true).Handle;
 
         Signature = "@@:";
         ConvertParameters(Parameters, isstatic: true, isstret: false);

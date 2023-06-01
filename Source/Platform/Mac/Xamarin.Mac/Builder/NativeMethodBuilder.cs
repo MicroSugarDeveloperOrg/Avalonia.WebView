@@ -31,14 +31,15 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
         if (minfo.DeclaringType.IsGenericType)
             throw new ArgumentException("MethodInfo cannot be in a generic type");
 
-        Parameters = minfo.GetParameters();
+        _methodInfo = minfo;
+        _type = type;
         _returnType = ConvertReturnType(minfo.ReturnType);
-        Selector = new Selector(ea.Selector ?? minfo.Name, alloc: true).Handle;
+
+        Parameters = minfo.GetParameters();
+        SelectorHandle = new Selector(ea.Selector ?? minfo.Name, alloc: true).Handle;
         Signature = $"{TypeConverter.ToNative(minfo.ReturnType)}@:";
         ConvertParameters(Parameters, minfo.IsStatic, _isstret);
         DelegateType = CreateDelegateType(_returnType, ParameterTypes);
-        _methodInfo = minfo;
-        _type = type;
     }
 
     internal NativeMethodBuilder(Type type, MethodInfo methodInfo, ProtocolMemberAttribute attribute)
@@ -58,23 +59,24 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
         _isProxy = true;
         _protocolMemberAttribute = attribute;
 
-        Parameters = methodInfo.GetParameters();
+        _methodInfo = methodInfo;
+        _type = type;
         _returnType = ConvertReturnType(methodInfo.ReturnType);
-        Selector = new Selector(attribute.Selector ?? methodInfo.Name, alloc: true).Handle;
+
+        SelectorHandle = new Selector(attribute.Selector ?? methodInfo.Name, alloc: true).Handle;
+        Parameters = methodInfo.GetParameters();
         Signature = $"{TypeConverter.ToNative(methodInfo.ReturnType)}@:";
         ConvertParametersByRef(attribute.ParameterType, attribute.ParameterByRef, attribute.ParameterBlockProxy, attribute.IsStatic, _isstret);
         DelegateType = CreateDelegateTypeWithProxy(_returnType, ParameterTypes, attribute.ParameterBlockProxy);
-        _methodInfo = methodInfo;
-        _type = type;
     }
 
 
-    private MethodInfo _methodInfo;
-    private Type _type;
-    private Type _returnType;
-    private bool _isstret;
-    private bool _isProxy = false;
-    private ProtocolMemberAttribute? _protocolMemberAttribute;
+    MethodInfo _methodInfo;
+    Type _type;
+    Type _returnType;
+    bool _isstret;
+    bool _isProxy = false;
+    ProtocolMemberAttribute? _protocolMemberAttribute;
 
     private Type ConvertReturnType(Type type)
     {
@@ -119,6 +121,7 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
         //else
            LoadArguments(iLGenerator, 0);
 
+        //IL µ÷ÓÃº¯Êý
         if (_methodInfo.IsVirtual)
             iLGenerator.Emit(OpCodes.Callvirt, _methodInfo);
         else
@@ -146,6 +149,7 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
             iLGenerator.Emit(OpCodes.Ldc_I4, 0);
             iLGenerator.Emit(OpCodes.Call, __convertstruct);
         }
+
         iLGenerator.Emit(OpCodes.Ret);
         return dynamicMethod.CreateDelegate(DelegateType);
     }

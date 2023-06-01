@@ -23,7 +23,13 @@ internal class ActionMarshaler<TAction, TActionProxy> : ICustomMarshaler where T
 
     public IntPtr MarshalManagedToNative(object ManagedObj)
     {
-       return Marshal.GetFunctionPointerForDelegate(ManagedObj);
+        if (ManagedObj is null)
+            return IntPtr.Zero;
+
+        if (ManagedObj is not Delegate)
+            throw new MarshalDirectiveException("This custom marshaler must be used on a Delegate derived type.");
+
+        return Marshal.GetFunctionPointerForDelegate(ManagedObj);
     }
 
     public object MarshalNativeToManaged(IntPtr pNativeData)
