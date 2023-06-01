@@ -75,15 +75,24 @@ internal abstract class NativeImplementationBuilder
         for (int i = 0; i < argument_types.Length; i++)
         {
             var argument_type = argument_types[i];
-            Type? proxyType = default;
             Type? rawType = default;
+            Type? proxyType = default;
 
             if (i >= ArgumentOffset)
             {
                 rawType = Parameters[i - ArgumentOffset].ParameterType;
-                var proxyAttribute = rawType.GetCustomAttribute<BlockProxyAttribute>();
-                if (proxyAttribute is not null && rawType.IsSubclassOf(typeof(Delegate)))
-                    proxyType = proxyAttribute.Type;
+                if (rawType.IsInterface)
+                {
+                    var protocolAttribute = rawType.GetCustomAttribute<ProtocolAttribute>();
+                    if (protocolAttribute is not null)
+                        proxyType = protocolAttribute.WrapperType;
+                }
+                else if(rawType.IsSubclassOf(typeof(Delegate)))
+                {
+                    var proxyAttribute = rawType.GetCustomAttribute<BlockProxyAttribute>();
+                    if (proxyAttribute is not null)
+                        proxyType = proxyAttribute.Type;
+                }
             }
 
             if (NeedsCustomMarshalerWithProxy(argument_type, rawType, proxyType))
@@ -115,7 +124,14 @@ internal abstract class NativeImplementationBuilder
             if (i >= ArgumentOffset)
             {
                 raw_type = Parameters[i - ArgumentOffset].ParameterType;
-                proxy_type = proxy_types == null ? null : proxy_types[i - ArgumentOffset];
+                if (raw_type.IsInterface)
+                {
+                    var protocolAttribute = raw_type.GetCustomAttribute<ProtocolAttribute>();
+                    if (protocolAttribute is not null)
+                        proxy_type = protocolAttribute.WrapperType;
+                }
+                else
+                    proxy_type = proxy_types == null ? null : proxy_types[i - ArgumentOffset];
             }
 
             if (NeedsCustomMarshalerWithProxy(argument_type, raw_type, proxy_type))
@@ -125,7 +141,6 @@ internal abstract class NativeImplementationBuilder
         methodBuilder.SetImplementationFlags(MethodImplAttributes.CodeTypeMask);
         return typeBuilder.CreateTypeInfo().AsType();
     }
-
 
     private bool NeedsCustomMarshaler(Type t)
     {
@@ -148,6 +163,9 @@ internal abstract class NativeImplementationBuilder
 
         if (rawType is null || proxyType is null)
             return false;
+
+        if (rawType.IsInterface && t.IsSubclassOf(typeof(INativeObject)))
+            return true;
 
         if (rawType.IsSubclassOf(typeof(Delegate)) && proxyType is not null)
             return true;
@@ -174,8 +192,11 @@ internal abstract class NativeImplementationBuilder
         if (t == typeof(Selector))
             return typeof(SelectorMarshaler);
 
+        if (rawType is not null && rawType.IsInterface && rawType.IsSubclassOf(typeof(INativeObject)) && proxyType is not null)
+            return typeof(InterfaceMarshaler<,>).MakeGenericType(rawType, proxyType);
+
         if (rawType is not null && proxyType is not null && rawType.IsSubclassOf(typeof(Delegate)))
-            return typeof(ActionMarshaler<,>).MakeGenericType(t, proxyType);
+            return typeof(ActionMarshaler<,>).MakeGenericType(rawType, proxyType);
 
         throw new ArgumentException("Cannot determine marshaler type for: " + t);
     }
@@ -191,12 +212,6 @@ internal abstract class NativeImplementationBuilder
 
     private void SetupParameterWithProxy(MethodBuilder builder, int index, Type t, Type? rawType , Type? proxyType)
     {
-        if (proxyType is null)
-        {
-            SetupParameter(builder, index, t);
-            return;
-        }
-
         ParameterBuilder parameterBuilder = builder.DefineParameter(index, ParameterAttributes.HasFieldMarshal, $"arg{index}");
         ConstructorInfo? constructor = typeof(MarshalAsAttribute).GetConstructor(new Type[1] { typeof(UnmanagedType) });
         FieldInfo field = typeof(MarshalAsAttribute).GetField("MarshalTypeRef");
@@ -229,6 +244,7 @@ internal abstract class NativeImplementationBuilder
             ParameterTypes[0] = isstatic ? typeof(IntPtr) : typeof(NSObject);
             ParameterTypes[1] = typeof(Selector);
         }
+
         for (int i = 0; i < Parameters.Length; i++)
         {
             var parameterInfo = Parameters[i];
@@ -250,58 +266,6 @@ internal abstract class NativeImplementationBuilder
                 ParameterTypes[i + ArgumentOffset] = typeof(NSString);
             else
                 ParameterTypes[i + ArgumentOffset] = parameterType;
-
-            //var proxyAttribute = parameterInfo.GetCustomAttribute<BlockProxyAttribute>();
-            //if (proxyAttribute is not null && parameterType.IsSubclassOf(typeof(Delegate)))
-                //ParameterTypes[i + ArgumentOffset] = typeof(NSAction);
-                //ParameterTypes[i + ArgumentOffset] = proxyAttribute.Type;
-
-            Signature += TypeConverter.ToNative(parameterType);
-        }
-    }
-
-    protected void ConvertParametersByRef(Type[] rawTypes, bool[] refTypes, Type?[]? proxyTypes , bool isstatic, bool isstret)
-    {
-        if (isstret)
-        {
-            ArgumentOffset = 3;
-            ParameterTypes = new Type[ArgumentOffset + rawTypes.Length];
-            ParameterTypes[0] = typeof(IntPtr);
-            ParameterTypes[1] = isstatic ? typeof(IntPtr) : typeof(NSObject);
-            ParameterTypes[2] = typeof(Selector);
-        }
-        else
-        {
-            ArgumentOffset = 2;
-            ParameterTypes = new Type[ArgumentOffset + rawTypes.Length];
-            ParameterTypes[0] = isstatic ? typeof(IntPtr) : typeof(NSObject);
-            ParameterTypes[1] = typeof(Selector);
-        }
-
-        for (int i = 0; i < rawTypes.Length; i++)
-        {
-            var parameterType = rawTypes[i];
-            var boolRef = refTypes[i];
-            var proxyType = proxyTypes == null ? null : proxyTypes[i];
-  
-            if (parameterType is null)
-                continue;
-
-            if (boolRef && IsWrappedType(parameterType.GetElementType()))
-                ParameterTypes[i + ArgumentOffset] = typeof(IntPtr).MakeByRefType();
-            else if (parameterType.IsArray && IsWrappedType(parameterType.GetElementType()))
-                ParameterTypes[i + ArgumentOffset] = typeof(IntPtr);
-            else if (typeof(INativeObject).IsAssignableFrom(parameterType) && !IsWrappedType(parameterType))
-                ParameterTypes[i + ArgumentOffset] = typeof(IntPtr);
-            else if (parameterType == typeof(string))
-                ParameterTypes[i + ArgumentOffset] = typeof(NSString);
-            else
-                ParameterTypes[i + ArgumentOffset] = parameterType;
-
-            //if (proxyType is not null && parameterType.IsSubclassOf(typeof(Delegate)))
-                //ParameterTypes[i + ArgumentOffset] = typeof(NSAction);
-                //ParameterTypes[i + ArgumentOffset] = proxyType;
-            //ParameterTypes[i + ArgumentOffset] = typeof(NSAction);
 
             Signature += TypeConverter.ToNative(parameterType);
         }
@@ -396,90 +360,6 @@ internal abstract class NativeImplementationBuilder
         }
     }
 
-    protected void ConvertArgumentsWithProxyTypes(ILGenerator il, Type[] proxyTypes ,int locoffset)
-    {
-        int i = ArgumentOffset;
-        int num = 0;
-        for (; i < ParameterTypes.Length; i++)
-        {
-            var parameterInfo = Parameters[i - ArgumentOffset];
-            var parameterType = parameterInfo.ParameterType;
-            var proxyType = proxyTypes[i - ArgumentOffset];
-
-            if (parameterInfo is null)
-                continue;
-
-            if (parameterType is null)
-                continue;
-
-            if (proxyType is not null && parameterType.IsSubclassOf(typeof(Delegate)))
-            {
-                //var createMethod = proxyType.GetMethod("Create", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[1] { typeof(IntPtr) }, null);
-                //
-                Label label = il.DefineLabel();
-                Label label2 = il.DefineLabel();
-                il.Emit(OpCodes.Ldarg, i);
-                il.Emit(OpCodes.Brfalse, label);
-                il.Emit(OpCodes.Ldarg, i);
-                il.Emit(OpCodes.Call, __getFunctionPointerForDelegate);
-                il.Emit(OpCodes.Br, label2);
-                il.MarkLabel(label);
-                il.Emit(OpCodes.Ldnull);
-                il.MarkLabel(label2);
-                il.Emit(OpCodes.Stloc, num + locoffset);
-                num++; 
-            }
-            else if (parameterType.IsByRef && Attribute.GetCustomAttribute(parameterInfo, typeof(OutAttribute)) == null && IsWrappedType(parameterType.GetElementType()))
-            {
-                Label label = il.DefineLabel();
-                Label label2 = il.DefineLabel();
-                il.Emit(OpCodes.Ldarg, i);
-                il.Emit(OpCodes.Brfalse, label);
-                il.Emit(OpCodes.Ldarg, i);
-                il.Emit(OpCodes.Ldind_I);
-                il.Emit(OpCodes.Call, __getobject);
-                il.Emit(OpCodes.Br, label2);
-                il.MarkLabel(label);
-                il.Emit(OpCodes.Ldnull);
-                il.MarkLabel(label2);
-                il.Emit(OpCodes.Stloc, num + locoffset);
-                num++;
-            }
-            else if (parameterType.IsArray && IsWrappedType(parameterType.GetElementType()))
-            {
-                Label label3 = il.DefineLabel();
-                Label label4 = il.DefineLabel();
-                il.Emit(OpCodes.Ldarg, i);
-                il.Emit(OpCodes.Brfalse, label3);
-                il.Emit(OpCodes.Ldarg, i);
-                if (parameterType.GetElementType() == typeof(string))
-                    il.Emit(OpCodes.Call, __convertsarray);
-                else
-                    il.Emit(OpCodes.Call, __convertarray.MakeGenericMethod(parameterType.GetElementType()));
-                il.Emit(OpCodes.Br, label4);
-                il.MarkLabel(label3);
-                il.Emit(OpCodes.Ldnull);
-                il.MarkLabel(label4);
-                il.Emit(OpCodes.Stloc, num + locoffset);
-                num++;
-            }
-            else if (parameterType == typeof(string))
-            {
-                Label label5 = il.DefineLabel();
-                Label label6 = il.DefineLabel();
-                il.Emit(OpCodes.Ldarg, i);
-                il.Emit(OpCodes.Brfalse, label5);
-                il.Emit(OpCodes.Ldarg, i);
-                il.Emit(OpCodes.Call, __convertstring);
-                il.Emit(OpCodes.Br, label6);
-                il.MarkLabel(label5);
-                il.Emit(OpCodes.Ldnull);
-                il.MarkLabel(label6);
-                il.Emit(OpCodes.Stloc, num + locoffset);
-                num++;
-            }
-        }
-    }
 
     protected void LoadArguments(ILGenerator il, int locoffset)
     {
@@ -496,19 +376,21 @@ internal abstract class NativeImplementationBuilder
             if (parameterType is null)
                 continue;
 
-            if (parameterType.IsInterface && typeof(INativeObject).IsAssignableFrom(parameterType))
-            {
-                //此处需要获取对象的构造函数，由于这里使用了Interface所以大概率这里或抱错获取不到构造
-                var protocolAttribute = parameterType.GetCustomAttribute<ProtocolAttribute>();
-                if (protocolAttribute is null)
-                    continue;
+            //if (parameterType.IsInterface && typeof(INativeObject).IsAssignableFrom(parameterType))
+            //{
+            //    //此处需要获取对象的构造函数，由于这里使用了Interface所以大概率这里或抱错获取不到构造
+            //    var protocolAttribute = parameterType.GetCustomAttribute<ProtocolAttribute>();
+            //    if (protocolAttribute is null)
+            //        continue;
 
-                var wrapperType = protocolAttribute.WrapperType;
-                var constructorInfo = wrapperType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[1] { typeof(IntPtr) }, null);
-                il.Emit(OpCodes.Ldarg, i);
-                il.Emit(OpCodes.Newobj, constructorInfo);
-            }
-            else if (parameterType.IsByRef && IsWrappedType(parameterType.GetElementType()))
+            //    var wrapperType = protocolAttribute.WrapperType;
+            //    var constructorInfo = wrapperType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[1] { typeof(IntPtr) }, null);
+            //    il.Emit(OpCodes.Ldarg, i);
+            //    il.Emit(OpCodes.Newobj, constructorInfo);
+            //}
+            //else
+
+           if (parameterType.IsByRef && IsWrappedType(parameterType.GetElementType()))
             {
                 il.Emit(OpCodes.Ldloca_S, num + locoffset);
                 num++;
@@ -530,71 +412,6 @@ internal abstract class NativeImplementationBuilder
             }
             else
                 il.Emit(OpCodes.Ldarg, i);
-        }
-    }
-
-    protected void LoadArgumentsWithProxyTypes(ILGenerator il, Type[] proxyTypes ,int locoffset)
-    {
-        int i = ArgumentOffset;
-        int num = 0;
-        for (; i < ParameterTypes.Length; i++)
-        {
-            var parameterInfo = Parameters[i - ArgumentOffset];
-            var parameterType = parameterInfo.ParameterType;
-            var proxyType = proxyTypes[i - ArgumentOffset];
-
-            if (parameterInfo is null)
-                continue;
-
-            if (parameterType is null)
-                continue;
-
-            if (proxyType is not null)
-            {
-                //var createMethod = proxyType.GetMethod("Create", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[1] { typeof(IntPtr) }, null);
-                //if (createMethod is null)
-                    //continue;
-
-                //il.Emit(OpCodes.Ldarg, i);
-                //il.Emit(OpCodes.Call, createMethod);
-            }
-            else
-            {
-                if (parameterType.IsInterface && typeof(INativeObject).IsAssignableFrom(parameterType))
-                {
-                    //此处需要获取对象的构造函数，由于这里使用了Interface所以大概率这里或抱错获取不到构造
-                    var protocolAttribute = parameterType.GetCustomAttribute<ProtocolAttribute>();
-                    if (protocolAttribute is null)
-                        continue;
-
-                    var wrapperType = protocolAttribute.WrapperType;
-                    var constructorInfo = wrapperType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[1] { typeof(IntPtr) }, null);
-                    il.Emit(OpCodes.Ldarg, i);
-                    il.Emit(OpCodes.Newobj, constructorInfo);
-                }
-                else if (parameterType.IsByRef && IsWrappedType(parameterType.GetElementType()))
-                {
-                    il.Emit(OpCodes.Ldloca_S, num + locoffset);
-                    num++;
-                }
-                else if (parameterType.IsArray && IsWrappedType(parameterType.GetElementType()))
-                {
-                    il.Emit(OpCodes.Ldloc, num + locoffset);
-                    num++;
-                }
-                else if (typeof(INativeObject).IsAssignableFrom(parameterType) && !IsWrappedType(parameterType))
-                {
-                    il.Emit(OpCodes.Ldarg, i);
-                    il.Emit(OpCodes.Newobj, parameterType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[1] { typeof(IntPtr) }, null));
-                }
-                else if (parameterType == typeof(string))
-                {
-                    il.Emit(OpCodes.Ldloc, num + locoffset);
-                    num++;
-                }
-                else
-                    il.Emit(OpCodes.Ldarg, i);
-            }
         }
     }
 

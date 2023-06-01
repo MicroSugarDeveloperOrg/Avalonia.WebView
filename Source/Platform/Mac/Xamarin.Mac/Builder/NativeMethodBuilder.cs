@@ -56,9 +56,6 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
         if (methodInfo.DeclaringType.IsGenericType)
             throw new ArgumentException("MethodInfo cannot be in a generic type");
 
-        _isProxy = true;
-        _protocolMemberAttribute = attribute;
-
         _methodInfo = methodInfo;
         _type = type;
         _returnType = ConvertReturnType(methodInfo.ReturnType);
@@ -66,7 +63,7 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
         SelectorHandle = new Selector(attribute.Selector ?? methodInfo.Name, alloc: true).Handle;
         Parameters = methodInfo.GetParameters();
         Signature = $"{TypeConverter.ToNative(methodInfo.ReturnType)}@:";
-        ConvertParametersByRef(attribute.ParameterType, attribute.ParameterByRef, attribute.ParameterBlockProxy, attribute.IsStatic, _isstret);
+        ConvertParameters(Parameters, attribute.IsStatic, _isstret);
         DelegateType = CreateDelegateTypeWithProxy(_returnType, ParameterTypes, attribute.ParameterBlockProxy);
     }
 
@@ -74,9 +71,7 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
     MethodInfo _methodInfo;
     Type _type;
     Type _returnType;
-    bool _isstret;
-    bool _isProxy = false;
-    ProtocolMemberAttribute? _protocolMemberAttribute;
+    bool _isstret; 
 
     private Type ConvertReturnType(Type type)
     {
@@ -105,10 +100,7 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
         ILGenerator iLGenerator = dynamicMethod.GetILGenerator();
         DeclareLocals(iLGenerator);
 
-        //if (_isProxy && _protocolMemberAttribute.ParameterBlockProxy is not null)
-            //ConvertArgumentsWithProxyTypes(iLGenerator, _protocolMemberAttribute.ParameterBlockProxy, 0);
-        //else
-            ConvertArguments(iLGenerator, 0);
+        ConvertArguments(iLGenerator, 0);
 
         if (!_methodInfo.IsStatic)
         {
@@ -116,12 +108,9 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
             iLGenerator.Emit(OpCodes.Castclass, _type);
         }
 
-        //if (_isProxy && _protocolMemberAttribute.ParameterBlockProxy is not null)
-            //LoadArgumentsWithProxyTypes(iLGenerator, _protocolMemberAttribute.ParameterBlockProxy, 0);
-        //else
-           LoadArguments(iLGenerator, 0);
+        LoadArguments(iLGenerator, 0);
 
-        //IL 调用函数
+        //IL 调用函数 c# 函数
         if (_methodInfo.IsVirtual)
             iLGenerator.Emit(OpCodes.Callvirt, _methodInfo);
         else
