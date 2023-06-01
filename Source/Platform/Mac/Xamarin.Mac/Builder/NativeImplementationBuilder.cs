@@ -16,6 +16,7 @@ internal abstract class NativeImplementationBuilder
         __convertstring = typeof(NSString).GetMethod("ToString", Type.EmptyTypes);
         __getobject = typeof(Runtime).GetMethod("GetNSObject", BindingFlags.Static | BindingFlags.Public);
         __gethandle = typeof(NSObject).GetMethod("get_Handle", BindingFlags.Instance | BindingFlags.Public);
+        __getFunctionPointerForDelegate = typeof(Marshal).GetMethod("GetFunctionPointerForDelegateInternal", BindingFlags.Static | BindingFlags.NonPublic);
         __intptrzero = typeof(IntPtr).GetField("Zero", BindingFlags.Static | BindingFlags.Public);
         s_Builder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName(Guid.NewGuid().ToString()), AssemblyBuilderAccess.Run);
         s_Module = s_Builder.DefineDynamicModule("Implementations");
@@ -29,6 +30,7 @@ internal abstract class NativeImplementationBuilder
     private static MethodInfo __convertstring;
     private static MethodInfo __getobject;
     private static MethodInfo __gethandle;
+    private static MethodInfo __getFunctionPointerForDelegate;
     private static FieldInfo __intptrzero;
 
     private Delegate _delegate;
@@ -73,8 +75,13 @@ internal abstract class NativeImplementationBuilder
         for (int i = 0; i < argument_types.Length; i++)
         {
             var argument_type = argument_types[i];
-            if (NeedsCustomMarshaler(argument_type))
-                SetupParameter(methodBuilder, i + 1, argument_type);
+            Type? proxyType = default;
+            var proxyAttribute = argument_type.GetCustomAttribute<BlockProxyAttribute>();
+            if (proxyAttribute is not null && argument_type.IsSubclassOf(typeof(Delegate)))
+                proxyType = proxyAttribute.Type;
+
+            if (NeedsCustomMarshalerWithProxy(argument_type, proxyType))
+                SetupParameterWithProxy(methodBuilder, i + 1, argument_type, proxyType);
         }
 
         methodBuilder.SetImplementationFlags(MethodImplAttributes.CodeTypeMask);
@@ -97,7 +104,9 @@ internal abstract class NativeImplementationBuilder
         for (int i = 0; i < argument_types.Length; i++)
         {
             var argument_type = argument_types[i];
-            var proxy_type = proxy_types == null ? null : proxy_types[i];
+            Type? proxy_type = default;
+            if (i >= ArgumentOffset)
+                proxy_type = proxy_types == null ? null : proxy_types[i - ArgumentOffset];
 
             if (NeedsCustomMarshalerWithProxy(argument_type, proxy_type))
                 SetupParameterWithProxy(methodBuilder, i + 1, argument_type, proxy_type);
@@ -170,16 +179,11 @@ internal abstract class NativeImplementationBuilder
 
     private void SetupParameterWithProxy(MethodBuilder builder, int index, Type t, Type? proxyType)
     {
-        if (proxyType is null)
-            SetupParameter(builder, index, t);
-        else
-        {
-            ParameterBuilder parameterBuilder = builder.DefineParameter(index, ParameterAttributes.HasFieldMarshal, $"arg{index}");
-            ConstructorInfo? constructor = typeof(MarshalAsAttribute).GetConstructor(new Type[1] { typeof(UnmanagedType) });
-            FieldInfo field = typeof(MarshalAsAttribute).GetField("MarshalTypeRef");
-            CustomAttributeBuilder customAttribute = new CustomAttributeBuilder(constructor, new object[1] { UnmanagedType.CustomMarshaler }, new FieldInfo[1] { field }, new object[1] { MarshalerForTypeWithProxy(t, proxyType) });
-            parameterBuilder.SetCustomAttribute(customAttribute);
-        }      
+        ParameterBuilder parameterBuilder = builder.DefineParameter(index, ParameterAttributes.HasFieldMarshal, $"arg{index}");
+        ConstructorInfo? constructor = typeof(MarshalAsAttribute).GetConstructor(new Type[1] { typeof(UnmanagedType) });
+        FieldInfo field = typeof(MarshalAsAttribute).GetField("MarshalTypeRef");
+        CustomAttributeBuilder customAttribute = new CustomAttributeBuilder(constructor, new object[1] { UnmanagedType.CustomMarshaler }, new FieldInfo[1] { field }, new object[1] { MarshalerForTypeWithProxy(t, proxyType) });
+        parameterBuilder.SetCustomAttribute(customAttribute);
     }
 
     protected bool IsWrappedType(Type type)
@@ -391,18 +395,18 @@ internal abstract class NativeImplementationBuilder
             {
                 //var createMethod = proxyType.GetMethod("Create", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[1] { typeof(IntPtr) }, null);
                 //
-                //Label label = il.DefineLabel();
-                //Label label2 = il.DefineLabel();
-                //il.Emit(OpCodes.Ldarg, i);
-                //il.Emit(OpCodes.Brfalse, label);
-                //il.Emit(OpCodes.Ldarg, i);
-                //il.Emit(OpCodes.Call, createMethod);
-                //il.Emit(OpCodes.Br, label2);
-                //il.MarkLabel(label);
-                //il.Emit(OpCodes.Ldnull);
-                //il.MarkLabel(label2);
-                //il.Emit(OpCodes.Stloc, num + locoffset);
-                //num++; 
+                Label label = il.DefineLabel();
+                Label label2 = il.DefineLabel();
+                il.Emit(OpCodes.Ldarg, i);
+                il.Emit(OpCodes.Brfalse, label);
+                il.Emit(OpCodes.Ldarg, i);
+                il.Emit(OpCodes.Call, __getFunctionPointerForDelegate);
+                il.Emit(OpCodes.Br, label2);
+                il.MarkLabel(label);
+                il.Emit(OpCodes.Ldnull);
+                il.MarkLabel(label2);
+                il.Emit(OpCodes.Stloc, num + locoffset);
+                num++; 
             }
             else if (parameterType.IsByRef && Attribute.GetCustomAttribute(parameterInfo, typeof(OutAttribute)) == null && IsWrappedType(parameterType.GetElementType()))
             {
