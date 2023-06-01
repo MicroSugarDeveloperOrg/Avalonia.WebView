@@ -1,5 +1,4 @@
 using ObjCRuntime;
-using System;
 using System.Reflection;
 using System.Text;
 using Xamarin.System;

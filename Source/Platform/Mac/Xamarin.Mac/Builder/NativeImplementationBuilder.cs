@@ -92,6 +92,20 @@ internal abstract class NativeImplementationBuilder
         return false;
     }
 
+    private bool NeedsCustomMarshalerWithProxy(Type t, Type? proxyType)
+    {
+        if (t == typeof(NSObject) || t.IsSubclassOf(typeof(NSObject)))
+            return true;
+
+        if (t == typeof(Selector))
+            return true;
+
+        if (t.IsSubclassOf(typeof(Delegate)) && proxyType is not null)
+            return true;
+
+        return false;
+    }
+
     private Type MarshalerForType(Type t)
     {
         if (t == typeof(NSObject) || t.IsSubclassOf(typeof(NSObject)))
@@ -110,6 +124,20 @@ internal abstract class NativeImplementationBuilder
         FieldInfo field = typeof(MarshalAsAttribute).GetField("MarshalTypeRef");
         CustomAttributeBuilder customAttribute = new CustomAttributeBuilder(constructor, new object[1] { UnmanagedType.CustomMarshaler }, new FieldInfo[1] { field }, new object[1] { MarshalerForType(t) });
         parameterBuilder.SetCustomAttribute(customAttribute);
+    }
+
+    private void SetupParameterWithProxy(MethodBuilder builder, int index, Type t, Type? proxyType)
+    {
+        if (proxyType is null)
+            SetupParameter(builder, index, t);
+        else
+        {
+            ParameterBuilder parameterBuilder = builder.DefineParameter(index, ParameterAttributes.HasFieldMarshal, $"arg{index}");
+            ConstructorInfo? constructor = typeof(MarshalAsAttribute).GetConstructor(new Type[1] { typeof(UnmanagedType) });
+            FieldInfo field = typeof(MarshalAsAttribute).GetField("MarshalTypeRef");
+            CustomAttributeBuilder customAttribute = new CustomAttributeBuilder(constructor, new object[1] { UnmanagedType.CustomMarshaler }, new FieldInfo[1] { field }, new object[1] { MarshalerForType(t) });
+            parameterBuilder.SetCustomAttribute(customAttribute);
+        }      
     }
 
     protected bool IsWrappedType(Type type)
