@@ -8,7 +8,7 @@ using JavaScriptCore;
 using ObjCRuntime;
 using WebKit;
 
-public static class Trampolines
+internal static class Trampolines
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [UserDelegateType(typeof(Action<bool>))]
