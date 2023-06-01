@@ -113,6 +113,11 @@ internal class LinuxApplication : ILinuxApplication
             var webView = new WebKitWebView();
             webView.Realize();
 
+            //window.
+
+
+            //window.TransientFor
+
             window.Add(webView);
             window.ShowAll();
             window.Present();

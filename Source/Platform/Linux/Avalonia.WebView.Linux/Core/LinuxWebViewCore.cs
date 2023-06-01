@@ -18,7 +18,8 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
 
         _hostWindow = gtkWrapper.Item1;
         _webView = gtkWrapper.Item2;
-        NativeHandler = gtkWrapper.Item3;
+        //NativeHandler = gtkWrapper.Item3;
+        _hostWindowX11Handle = gtkWrapper.Item3;
         RegisterEvents();
     }
 
@@ -29,6 +30,7 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
 
     readonly GWindow _hostWindow;
     readonly WebKitWebView _webView;
+    readonly IntPtr _hostWindowX11Handle;
     readonly ILinuxApplication _application;
     readonly ILinuxDispatcher _dispatcher; 
     readonly string _messageKeyWord;

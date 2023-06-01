@@ -1,4 +1,6 @@
-﻿namespace Avalonia.WebView.Linux.Core;
+﻿using Linux.WebView.Core.Extensions;
+
+namespace Avalonia.WebView.Linux.Core;
 
 unsafe partial class LinuxWebViewCore
 {
@@ -21,7 +23,15 @@ unsafe partial class LinuxWebViewCore
 
     private void Handler_PlatformHandlerChanged(object sender, EventArgs e)
     {
-
+        if (_handler.RefHandler.Handle != IntPtr.Zero)
+        {
+            NativeHandler = _handler.RefHandler.Handle;
+            _dispatcher.InvokeAsync(() =>
+            {
+                _hostWindow.SetParent(NativeHandler);
+            });
+            //_hwndTaskSource.SetResult(_handler.RefHandler.Handle);
+        }
     }
 
     void RegisterWebViewEvents(WebKit.WebView webView)

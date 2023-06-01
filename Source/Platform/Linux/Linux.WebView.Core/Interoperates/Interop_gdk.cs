@@ -23,8 +23,8 @@ public class Interop_gdk
     [DllImport(_Gdk)]
     public static extern nint gdk_x11_window_foreign_new_for_display(nint display, nint xid);
 
-    //[DllImport(_Gdk)]
-    //public static extern nint gdk_x11_window_get_xid(nint window);
+    [DllImport(_Gdk)]
+    public static extern nint gdk_x11_window_get_xid(nint window);
 
 
     [DllImport(_Gdk)]
@@ -36,5 +36,7 @@ public class Interop_gdk
     [DllImport(_Gdk)]
     public static extern void gdk_window_set_transient_for(nint window, nint parent);
 
-    //public static nint GetForeignWindow(nint display, nint xid) => gdk_x11_window_foreign_new_for_display(display, xid);
+    public static void SetWindowParent(nint gdkWindow, nint x11Window) => gdk_window_set_transient_for(gdkWindow, x11Window);
+
+    public static nint GetForeignWindow(nint display, nint xid) => gdk_x11_window_foreign_new_for_display(display, xid);
 }
