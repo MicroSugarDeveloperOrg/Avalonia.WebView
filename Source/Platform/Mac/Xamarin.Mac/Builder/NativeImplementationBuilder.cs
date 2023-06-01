@@ -81,8 +81,8 @@ internal abstract class NativeImplementationBuilder
             if (i >= ArgumentOffset)
             {
                 rawType = Parameters[i - ArgumentOffset].ParameterType;
-                var proxyAttribute = argument_type.GetCustomAttribute<BlockProxyAttribute>();
-                if (proxyAttribute is not null && argument_type.IsSubclassOf(typeof(Delegate)))
+                var proxyAttribute = rawType.GetCustomAttribute<BlockProxyAttribute>();
+                if (proxyAttribute is not null && rawType.IsSubclassOf(typeof(Delegate)))
                     proxyType = proxyAttribute.Type;
             }
 

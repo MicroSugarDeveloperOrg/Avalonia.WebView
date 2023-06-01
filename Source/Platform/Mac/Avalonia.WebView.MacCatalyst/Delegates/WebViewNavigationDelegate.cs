@@ -1,5 +1,5 @@
 ﻿namespace Avalonia.WebView.MacCatalyst.Delegates;
-internal class WebViewNavigationDelegate : WKNavigationDelegate
+internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
 {
     public WebViewNavigationDelegate(MacCatalystWebViewCore webViewCore, IVirtualWebViewControlCallBack callBack, WebScheme? webScheme)
     {
@@ -14,13 +14,13 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
     WKNavigation? _navigation;
     Uri? _currentUri;
 
-    public override void DidStartProvisionalNavigation(WKWebView webView, WKNavigation navigation)
+    public  void DidStartProvisionalNavigation(WKWebView webView, WKNavigation navigation)
     {
         //base.DidStartProvisionalNavigation(webView, navigation);
         _navigation = navigation;
     }
 
-    public override void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, Action<WKNavigationActionPolicy> decisionHandler)
+    public  void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, Action<WKNavigationActionPolicy> decisionHandler)
     {
         var action = Trampolines.NIDActionArity1V93.Create(Marshal.GetFunctionPointerForDelegate(decisionHandler));
 
@@ -59,7 +59,7 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
         //decisionHandler(WKNavigationActionPolicy.Allow);
     }
 
-    public override void DidReceiveServerRedirectForProvisionalNavigation(WKWebView webView, WKNavigation navigation)
+    public  void DidReceiveServerRedirectForProvisionalNavigation(WKWebView webView, WKNavigation navigation)
     {
         if (_currentUri?.Host == _webScheme?.AppAddress)
         {
@@ -77,21 +77,21 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
         //base.DidReceiveServerRedirectForProvisionalNavigation(webView, navigation);
     }
 
-    public override void DidFailNavigation(WKWebView webView, WKNavigation navigation, NSError error)
+    public  void DidFailNavigation(WKWebView webView, WKNavigation navigation, NSError error)
     {
         _currentUri = null;
         _navigation = null;
         //base.DidFailNavigation(webView, navigation, error);
     }
 
-    public override void DidFailProvisionalNavigation(WKWebView webView, WKNavigation navigation, NSError error)
+    public  void DidFailProvisionalNavigation(WKWebView webView, WKNavigation navigation, NSError error)
     {
         _currentUri = null;
         _navigation = null;
         //base.DidFailProvisionalNavigation(webView, navigation, error);
     }
 
-    public override void DidCommitNavigation(WKWebView webView, WKNavigation navigation)
+    public  void DidCommitNavigation(WKWebView webView, WKNavigation navigation)
     {
         if (_currentUri != null && _navigation == navigation)
         {
@@ -101,7 +101,7 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
         //base.DidCommitNavigation(webView, navigation);
     }
 
-    public override void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
+    public  void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
     {
         if (_currentUri != null && _navigation == navigation)
         {
