@@ -81,6 +81,33 @@ internal abstract class NativeImplementationBuilder
         return typeBuilder.CreateTypeInfo().AsType();
     }
 
+    protected Type CreateDelegateTypeWithProxy(Type return_type, Type[] argument_types, Type?[]? proxy_types)
+    {
+        TypeBuilder typeBuilder = s_Module.DefineType(Guid.NewGuid().ToString(), TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.AutoClass, typeof(MulticastDelegate));
+        typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, new Type[2]
+        {
+            typeof(object),
+            typeof(int)
+        }).SetImplementationFlags(MethodImplAttributes.CodeTypeMask);
+
+        MethodBuilder methodBuilder = typeBuilder.DefineMethod("Invoke", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig | MethodAttributes.VtableLayoutMask, return_type, argument_types);
+        if (NeedsCustomMarshaler(return_type))
+            SetupParameter(methodBuilder, 0, return_type);
+
+        for (int i = 0; i < argument_types.Length; i++)
+        {
+            var argument_type = argument_types[i];
+            var proxy_type = proxy_types == null ? null : proxy_types[i];
+
+            if (NeedsCustomMarshalerWithProxy(argument_type, proxy_type))
+                SetupParameterWithProxy(methodBuilder, i + 1, argument_type, proxy_type);
+        }
+
+        methodBuilder.SetImplementationFlags(MethodImplAttributes.CodeTypeMask);
+        return typeBuilder.CreateTypeInfo().AsType();
+    }
+
+
     private bool NeedsCustomMarshaler(Type t)
     {
         if (t == typeof(NSObject) || t.IsSubclassOf(typeof(NSObject)))
@@ -117,6 +144,21 @@ internal abstract class NativeImplementationBuilder
         throw new ArgumentException("Cannot determine marshaler type for: " + t);
     }
 
+    private Type MarshalerForTypeWithProxy(Type t, Type? proxy)
+    {
+        if (t == typeof(NSObject) || t.IsSubclassOf(typeof(NSObject)))
+            return typeof(NSObjectMarshaler<>).MakeGenericType(t);
+
+        if (t == typeof(Selector))
+            return typeof(SelectorMarshaler);
+
+        if (proxy is not null && t.IsSubclassOf(typeof(Delegate)))
+            return typeof(ActionMarshaler<,>).MakeGenericType(t, proxy);
+
+
+        throw new ArgumentException("Cannot determine marshaler type for: " + t);
+    }
+
     private void SetupParameter(MethodBuilder builder, int index, Type t)
     {
         ParameterBuilder parameterBuilder = builder.DefineParameter(index, ParameterAttributes.HasFieldMarshal, $"arg{index}");
@@ -135,7 +177,7 @@ internal abstract class NativeImplementationBuilder
             ParameterBuilder parameterBuilder = builder.DefineParameter(index, ParameterAttributes.HasFieldMarshal, $"arg{index}");
             ConstructorInfo? constructor = typeof(MarshalAsAttribute).GetConstructor(new Type[1] { typeof(UnmanagedType) });
             FieldInfo field = typeof(MarshalAsAttribute).GetField("MarshalTypeRef");
-            CustomAttributeBuilder customAttribute = new CustomAttributeBuilder(constructor, new object[1] { UnmanagedType.CustomMarshaler }, new FieldInfo[1] { field }, new object[1] { MarshalerForType(t) });
+            CustomAttributeBuilder customAttribute = new CustomAttributeBuilder(constructor, new object[1] { UnmanagedType.CustomMarshaler }, new FieldInfo[1] { field }, new object[1] { MarshalerForTypeWithProxy(t, proxyType) });
             parameterBuilder.SetCustomAttribute(customAttribute);
         }      
     }
@@ -233,8 +275,8 @@ internal abstract class NativeImplementationBuilder
             else
                 ParameterTypes[i + ArgumentOffset] = parameterType;
 
-            if (proxyType is not null && parameterType.IsSubclassOf(typeof(Delegate)))
-                ParameterTypes[i + ArgumentOffset] = typeof(IntPtr);
+            //if (proxyType is not null && parameterType.IsSubclassOf(typeof(Delegate)))
+                //ParameterTypes[i + ArgumentOffset] = typeof(IntPtr);
 
             Signature += TypeConverter.ToNative(parameterType);
         }

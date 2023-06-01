@@ -63,7 +63,7 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
         Selector = new Selector(attribute.Selector ?? methodInfo.Name, alloc: true).Handle;
         Signature = $"{TypeConverter.ToNative(methodInfo.ReturnType)}@:";
         ConvertParametersByRef(attribute.ParameterType, attribute.ParameterByRef, attribute.ParameterBlockProxy, attribute.IsStatic, _isstret);
-        DelegateType = CreateDelegateType(_returnType, ParameterTypes);
+        DelegateType = CreateDelegateTypeWithProxy(_returnType, ParameterTypes, attribute.ParameterBlockProxy);
         _methodInfo = methodInfo;
         _type = type;
     }
@@ -103,9 +103,9 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
         ILGenerator iLGenerator = dynamicMethod.GetILGenerator();
         DeclareLocals(iLGenerator);
 
-        if (_isProxy && _protocolMemberAttribute.ParameterBlockProxy is not null)
-            ConvertArgumentsWithProxyTypes(iLGenerator, _protocolMemberAttribute.ParameterBlockProxy, 0);
-        else
+        //if (_isProxy && _protocolMemberAttribute.ParameterBlockProxy is not null)
+            //ConvertArgumentsWithProxyTypes(iLGenerator, _protocolMemberAttribute.ParameterBlockProxy, 0);
+        //else
             ConvertArguments(iLGenerator, 0);
 
         if (!_methodInfo.IsStatic)
@@ -114,9 +114,9 @@ internal class NativeMethodBuilder : NativeImplementationBuilder
             iLGenerator.Emit(OpCodes.Castclass, _type);
         }
 
-        if (_isProxy && _protocolMemberAttribute.ParameterBlockProxy is not null)
-            LoadArgumentsWithProxyTypes(iLGenerator, _protocolMemberAttribute.ParameterBlockProxy, 0);
-        else
+        //if (_isProxy && _protocolMemberAttribute.ParameterBlockProxy is not null)
+            //LoadArgumentsWithProxyTypes(iLGenerator, _protocolMemberAttribute.ParameterBlockProxy, 0);
+        //else
            LoadArguments(iLGenerator, 0);
 
         if (_methodInfo.IsVirtual)
