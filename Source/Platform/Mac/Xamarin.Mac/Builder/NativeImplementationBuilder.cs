@@ -76,12 +76,18 @@ internal abstract class NativeImplementationBuilder
         {
             var argument_type = argument_types[i];
             Type? proxyType = default;
-            var proxyAttribute = argument_type.GetCustomAttribute<BlockProxyAttribute>();
-            if (proxyAttribute is not null && argument_type.IsSubclassOf(typeof(Delegate)))
-                proxyType = proxyAttribute.Type;
+            Type? rawType = default;
 
-            if (NeedsCustomMarshalerWithProxy(argument_type, proxyType))
-                SetupParameterWithProxy(methodBuilder, i + 1, argument_type, proxyType);
+            if (i >= ArgumentOffset)
+            {
+                rawType = Parameters[i - ArgumentOffset].ParameterType;
+                var proxyAttribute = argument_type.GetCustomAttribute<BlockProxyAttribute>();
+                if (proxyAttribute is not null && argument_type.IsSubclassOf(typeof(Delegate)))
+                    proxyType = proxyAttribute.Type;
+            }
+
+            if (NeedsCustomMarshalerWithProxy(argument_type, rawType, proxyType))
+                SetupParameterWithProxy(methodBuilder, i + 1, argument_type, rawType, proxyType);
         }
 
         methodBuilder.SetImplementationFlags(MethodImplAttributes.CodeTypeMask);
@@ -104,12 +110,16 @@ internal abstract class NativeImplementationBuilder
         for (int i = 0; i < argument_types.Length; i++)
         {
             var argument_type = argument_types[i];
+            Type? raw_type = default; 
             Type? proxy_type = default;
             if (i >= ArgumentOffset)
+            {
+                raw_type = Parameters[i - ArgumentOffset].ParameterType;
                 proxy_type = proxy_types == null ? null : proxy_types[i - ArgumentOffset];
+            }
 
-            if (NeedsCustomMarshalerWithProxy(argument_type, proxy_type))
-                SetupParameterWithProxy(methodBuilder, i + 1, argument_type, proxy_type);
+            if (NeedsCustomMarshalerWithProxy(argument_type, raw_type, proxy_type))
+                SetupParameterWithProxy(methodBuilder, i + 1, argument_type, raw_type, proxy_type);
         }
 
         methodBuilder.SetImplementationFlags(MethodImplAttributes.CodeTypeMask);
@@ -128,7 +138,7 @@ internal abstract class NativeImplementationBuilder
         return false;
     }
 
-    private bool NeedsCustomMarshalerWithProxy(Type t, Type? proxyType)
+    private bool NeedsCustomMarshalerWithProxy(Type t, Type? rawType, Type? proxyType)
     {
         if (t == typeof(NSObject) || t.IsSubclassOf(typeof(NSObject)))
             return true;
@@ -136,7 +146,7 @@ internal abstract class NativeImplementationBuilder
         if (t == typeof(Selector))
             return true;
 
-        if (t==typeof(NSAction) && proxyType is not null)
+        if (rawType.IsSubclassOf(typeof(Delegate)) && proxyType is not null)
             return true;
 
         return false;
@@ -177,12 +187,12 @@ internal abstract class NativeImplementationBuilder
         parameterBuilder.SetCustomAttribute(customAttribute);
     }
 
-    private void SetupParameterWithProxy(MethodBuilder builder, int index, Type t, Type? proxyType)
+    private void SetupParameterWithProxy(MethodBuilder builder, int index, Type t, Type? rawType , Type? proxyType)
     {
         ParameterBuilder parameterBuilder = builder.DefineParameter(index, ParameterAttributes.HasFieldMarshal, $"arg{index}");
         ConstructorInfo? constructor = typeof(MarshalAsAttribute).GetConstructor(new Type[1] { typeof(UnmanagedType) });
         FieldInfo field = typeof(MarshalAsAttribute).GetField("MarshalTypeRef");
-        CustomAttributeBuilder customAttribute = new CustomAttributeBuilder(constructor, new object[1] { UnmanagedType.CustomMarshaler }, new FieldInfo[1] { field }, new object[1] { MarshalerForTypeWithProxy(t, proxyType) });
+        CustomAttributeBuilder customAttribute = new CustomAttributeBuilder(constructor, new object[1] { UnmanagedType.CustomMarshaler }, new FieldInfo[1] { field }, new object[1] { MarshalerForTypeWithProxy(rawType, proxyType) });
         parameterBuilder.SetCustomAttribute(customAttribute);
     }
 
