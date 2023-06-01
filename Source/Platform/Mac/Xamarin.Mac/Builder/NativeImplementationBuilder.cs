@@ -146,6 +146,9 @@ internal abstract class NativeImplementationBuilder
         if (t == typeof(Selector))
             return true;
 
+        if (rawType is null || proxyType is null)
+            return false;
+
         if (rawType.IsSubclassOf(typeof(Delegate)) && proxyType is not null)
             return true;
 
@@ -163,7 +166,7 @@ internal abstract class NativeImplementationBuilder
         throw new ArgumentException("Cannot determine marshaler type for: " + t);
     }
 
-    private Type MarshalerForTypeWithProxy(Type t, Type? proxy)
+    private Type MarshalerForTypeWithProxy(Type t, Type? rawType , Type? proxyType)
     {
         if (t == typeof(NSObject) || t.IsSubclassOf(typeof(NSObject)))
             return typeof(NSObjectMarshaler<>).MakeGenericType(t);
@@ -171,9 +174,8 @@ internal abstract class NativeImplementationBuilder
         if (t == typeof(Selector))
             return typeof(SelectorMarshaler);
 
-        if (proxy is not null && t.IsSubclassOf(typeof(Delegate)))
-            return typeof(ActionMarshaler<,>).MakeGenericType(t, proxy);
-
+        if (rawType is not null && proxyType is not null && rawType.IsSubclassOf(typeof(Delegate)))
+            return typeof(ActionMarshaler<,>).MakeGenericType(t, proxyType);
 
         throw new ArgumentException("Cannot determine marshaler type for: " + t);
     }
@@ -198,7 +200,7 @@ internal abstract class NativeImplementationBuilder
         ParameterBuilder parameterBuilder = builder.DefineParameter(index, ParameterAttributes.HasFieldMarshal, $"arg{index}");
         ConstructorInfo? constructor = typeof(MarshalAsAttribute).GetConstructor(new Type[1] { typeof(UnmanagedType) });
         FieldInfo field = typeof(MarshalAsAttribute).GetField("MarshalTypeRef");
-        CustomAttributeBuilder customAttribute = new CustomAttributeBuilder(constructor, new object[1] { UnmanagedType.CustomMarshaler }, new FieldInfo[1] { field }, new object[1] { MarshalerForTypeWithProxy(rawType, proxyType) });
+        CustomAttributeBuilder customAttribute = new CustomAttributeBuilder(constructor, new object[1] { UnmanagedType.CustomMarshaler }, new FieldInfo[1] { field }, new object[1] { MarshalerForTypeWithProxy(t, rawType, proxyType) });
         parameterBuilder.SetCustomAttribute(customAttribute);
     }
 
