@@ -164,7 +164,7 @@ internal abstract class NativeImplementationBuilder
         if (rawType is null || proxyType is null)
             return false;
 
-        if (rawType.IsInterface && t.IsSubclassOf(typeof(INativeObject)))
+        if (rawType.IsInterface && typeof(INativeObject).IsAssignableFrom(rawType))
             return true;
 
         if (rawType.IsSubclassOf(typeof(Delegate)) && proxyType is not null)
@@ -192,7 +192,7 @@ internal abstract class NativeImplementationBuilder
         if (t == typeof(Selector))
             return typeof(SelectorMarshaler);
 
-        if (rawType is not null && rawType.IsInterface && rawType.IsSubclassOf(typeof(INativeObject)) && proxyType is not null)
+        if (rawType is not null && proxyType is not null && rawType.IsInterface && typeof(INativeObject).IsAssignableFrom(rawType))
             return typeof(InterfaceMarshaler<,>).MakeGenericType(rawType, proxyType);
 
         if (rawType is not null && proxyType is not null && rawType.IsSubclassOf(typeof(Delegate)))
@@ -260,7 +260,7 @@ internal abstract class NativeImplementationBuilder
                 ParameterTypes[i + ArgumentOffset] = typeof(IntPtr).MakeByRefType();
             else if (parameterType.IsArray && IsWrappedType(parameterType.GetElementType()))
                 ParameterTypes[i + ArgumentOffset] = typeof(IntPtr);
-            else if (typeof(INativeObject).IsAssignableFrom(parameterType) && !IsWrappedType(parameterType))
+            else if (typeof(INativeObject).IsAssignableFrom(parameterType) && !IsWrappedType(parameterType) && !parameterType.IsInterface)
                 ParameterTypes[i + ArgumentOffset] = typeof(IntPtr);
             else if (parameterType == typeof(string))
                 ParameterTypes[i + ArgumentOffset] = typeof(NSString);
@@ -400,7 +400,7 @@ internal abstract class NativeImplementationBuilder
                 il.Emit(OpCodes.Ldloc, num + locoffset);
                 num++;
             }
-            else if (typeof(INativeObject).IsAssignableFrom(parameterType) && !IsWrappedType(parameterType))
+            else if (typeof(INativeObject).IsAssignableFrom(parameterType) && !IsWrappedType(parameterType) && !parameterType.IsInterface)
             {
                 il.Emit(OpCodes.Ldarg, i);
                 il.Emit(OpCodes.Newobj, parameterType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[1] { typeof(IntPtr) }, null));

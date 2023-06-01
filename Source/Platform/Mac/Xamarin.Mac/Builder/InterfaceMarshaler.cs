@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace Builder;
 public class InterfaceMarshaler<IInterface, IInterfaceWrapper> : ICustomMarshaler where IInterfaceWrapper : IInterface
 {
-    private static SelectorMarshaler marshaler;
+    private static InterfaceMarshaler<IInterface, IInterfaceWrapper> marshaler;
 
     void ICustomMarshaler.CleanUpManagedData(object ManagedObj)
     {
@@ -40,7 +40,7 @@ public class InterfaceMarshaler<IInterface, IInterfaceWrapper> : ICustomMarshale
     public static ICustomMarshaler GetInstance(string cookie)
     {
         if (marshaler == null)
-            return marshaler = new SelectorMarshaler();
+            return marshaler = new InterfaceMarshaler<IInterface, IInterfaceWrapper> ();
 
         return marshaler;
     }
