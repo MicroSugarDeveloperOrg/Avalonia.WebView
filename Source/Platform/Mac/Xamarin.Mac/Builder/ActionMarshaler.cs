@@ -42,7 +42,7 @@ internal class ActionMarshaler<TAction, TActionProxy> : ICustomMarshaler where T
         if (createMethod is null)
             return default;
 
-        return createMethod.Invoke(pNativeData, null);
+        return createMethod.Invoke(null, new object[] { pNativeData });
     }
 
     public static ICustomMarshaler GetInstance(string cookie)

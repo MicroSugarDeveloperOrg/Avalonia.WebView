@@ -22,7 +22,7 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
 
     public  void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, Action<WKNavigationActionPolicy> decisionHandler)
     {
-        var action = Trampolines.NIDActionArity1V93.Create(Marshal.GetFunctionPointerForDelegate(decisionHandler));
+        //var action = Trampolines.NIDActionArity1V93.Create(Marshal.GetFunctionPointerForDelegate(decisionHandler));
 
         var requestUrl = navigationAction.Request.Url;
         var uri = new Uri(requestUrl.ToString());
@@ -47,16 +47,16 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
 
         if (strategy != UrlLoadingStrategy.OpenInWebView)
         {
-            action?.Invoke(WKNavigationActionPolicy.Cancel);
-            //decisionHandler(WKNavigationActionPolicy.Cancel);
+            //action?.Invoke(WKNavigationActionPolicy.Cancel);
+            decisionHandler(WKNavigationActionPolicy.Cancel);
             return;
         }
 
         if (navigationAction.TargetFrame!.MainFrame)
             _currentUri = requestUrl;
 
-        action?.Invoke(WKNavigationActionPolicy.Allow);
-        //decisionHandler(WKNavigationActionPolicy.Allow);
+        //action?.Invoke(WKNavigationActionPolicy.Allow);
+        decisionHandler(WKNavigationActionPolicy.Allow);
     }
 
     public  void DidReceiveServerRedirectForProvisionalNavigation(WKWebView webView, WKNavigation navigation)
