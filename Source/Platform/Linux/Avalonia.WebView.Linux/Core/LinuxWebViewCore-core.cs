@@ -7,15 +7,18 @@ unsafe partial class LinuxWebViewCore
 {
     Task PrepareBlazorWebViewStarting(IVirtualBlazorWebViewProvider? provider, WebKit.WebView webView)
     {
-        if (provider is null || WebView is null)
+        if (provider is null)
             return Task.CompletedTask;
 
         if (!provider.ResourceRequestedFilterProvider(this, out var filter))
             return Task.CompletedTask;
 
         _webScheme = filter;
-        var bRet = _dispatcher.InvokeAsync(() =>
+        var bRet = GtkInteropHelper.RunOnGlibThread(() =>
         {
+            if (webView is null)
+                return false;
+            
             webView.AddSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
             webView.Context.RegisterUriScheme(filter.Scheme, WebView_WebResourceRequest);
             webView.UserContentManager.RegisterScriptMessageHandler(_messageKeyWord);
@@ -27,6 +30,8 @@ unsafe partial class LinuxWebViewCore
                 webView.UserContentManager.AddScript(script);
                 script.Unref(); 
             }
+
+            return true;
         }).Result;
 
         _isBlazorWebView = true;
@@ -35,13 +40,14 @@ unsafe partial class LinuxWebViewCore
 
     void ClearBlazorWebViewCompleted(WebKit.WebView webView)
     {
-        if (WebView is null)
-            return;
-
-        var bRet = _dispatcher.InvokeAsync(() => 
+        var bRet =  GtkInteropHelper.RunOnGlibThread(() =>
         {
+            if (webView is null)
+                return false;
+            
             webView.UserContentManager.UnregisterScriptMessageHandler(_messageKeyWord);
             webView.RemoveSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
+            return true;
         }).Result;
   
         _isBlazorWebView = false;
@@ -95,7 +101,7 @@ unsafe partial class LinuxWebViewCore
         using var ms = new MemoryStream();
         response.Content.CopyTo(ms);
 
-        bRet = _dispatcher.InvokeAsync(() =>
+        bRet = GtkInteropHelper.RunOnGlibThread(() =>
         {
             var span = ms.GetBuffer().AsSpan();
             fixed (void* pBuffer = span)
@@ -103,6 +109,8 @@ unsafe partial class LinuxWebViewCore
                 using var inputStream = new GLib.InputStream(new IntPtr(pBuffer));
                 request.Finish(inputStream, span.Length, headerString);
             }
+
+            return true;
         }).Result;
     }
 

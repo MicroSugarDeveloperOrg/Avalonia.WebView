@@ -10,7 +10,7 @@
 		
 		<!--<Button Content="Baidu" Command="{Binding BaiduCommand}"/>-->
 		
-		<WebView Grid.Row="1" x:Name="PART_WebView" Url="https://www.bilibili.com"></WebView>
+		<WebView Grid.Row="1" x:Name="PART_WebView" Url="https://www.baidu.com"></WebView>
 
 	</Grid>
 </UserControl>

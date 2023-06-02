@@ -1,4 +1,6 @@
-﻿namespace AvaloniaWebView;
+﻿using Avalonia.Threading;
+
+namespace AvaloniaWebView;
 
 public sealed partial class  WebView : Control, IVirtualWebView<WebView>, IEmptyView, IWebViewEventHandler, IVirtualWebViewControlCallBack, IWebViewControl
 {
@@ -37,6 +39,15 @@ public sealed partial class  WebView : Control, IVirtualWebView<WebView>, IEmpty
             [!Border.CornerRadiusProperty] = this[!CornerRadiusProperty]
         };
         //Child = _partInnerContainer;
+
+        Loaded += (s, e) =>
+        {
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                _= Navigate(Url);
+                _= NavigateToString(HtmlContent);
+            });
+        };
     }
 
     readonly WebViewCreationProperties _creationProperties;

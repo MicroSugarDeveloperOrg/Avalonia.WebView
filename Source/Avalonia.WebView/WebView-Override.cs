@@ -1,4 +1,6 @@
-﻿namespace AvaloniaWebView;
+﻿using Avalonia.Threading;
+
+namespace AvaloniaWebView;
 
 partial class WebView
 {
@@ -43,9 +45,6 @@ partial class WebView
         Child = control;
         //_partInnerContainer.Child = control;
         _platformWebView = viewHandler.PlatformWebView;
-
-        await Navigate(Url);
-        await NavigateToString(HtmlContent);
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)

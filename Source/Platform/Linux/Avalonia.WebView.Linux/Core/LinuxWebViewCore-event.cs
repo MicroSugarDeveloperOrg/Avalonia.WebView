@@ -1,6 +1,4 @@
-﻿using Linux.WebView.Core.Extensions;
-
-namespace Avalonia.WebView.Linux.Core;
+﻿namespace Avalonia.WebView.Linux.Core;
 
 unsafe partial class LinuxWebViewCore
 {
@@ -36,13 +34,11 @@ unsafe partial class LinuxWebViewCore
 
     void RegisterWebViewEvents(WebKit.WebView webView)
     {
-        if (webView is null)
-            return;
-
-       var bRet =  _dispatcher.InvokeAsync(() =>
+        var bRet =  GtkInteropHelper.RunOnGlibThread(() =>
         {
             webView.UserMessageReceived += WebView_UserMessageReceived;
             //webView.UserContentManager.AddSignalHandler("script-message-received::webview", WebView_WebMessageReceived);
+            return true;
         }).Result;
     }
 
@@ -50,12 +46,10 @@ unsafe partial class LinuxWebViewCore
 
     void UnregisterWebViewEvents(WebKit.WebView webView)
     {
-        if (webView is null)
-            return;
-
-        var bRet = _dispatcher.InvokeAsync(() =>
+        var bRet =  GtkInteropHelper.RunOnGlibThread(() =>
         {
             webView.UserMessageReceived -= WebView_UserMessageReceived;
+            return true;
         }).Result;
     }
 }
