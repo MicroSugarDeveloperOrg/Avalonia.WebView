@@ -41,6 +41,11 @@
 		<GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 
+		<!-- This is for Android-->
+		<!--<AndroidPackageFormat>apk</AndroidPackageFormat>
+		<AndroidEnableProfiledAot>False</AndroidEnableProfiledAot>
+		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>-->
+
 		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
 	</PropertyGroup>
 
