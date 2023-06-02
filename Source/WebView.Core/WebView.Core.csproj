@@ -10,4 +10,11 @@
         <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions"/>
     </ItemGroup>
 
+    <ItemGroup Condition="'$(IsLinux)'=='true'">
+        <PackageReference Include="PolySharp">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>build; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup> 
+    
 </Project>
