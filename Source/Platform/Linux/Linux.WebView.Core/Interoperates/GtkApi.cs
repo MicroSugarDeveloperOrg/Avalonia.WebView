@@ -16,7 +16,7 @@ public delegate nint webkit_user_script_new_delegate(string script, WebKitUserCo
 public delegate void webkit_user_content_manager_add_script_delegate(nint userContentManagerInstance, nint script);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-public delegate bool webkit_user_content_manager_register_script_message_delegate(nint userContentManagerInstance, string name);
+public delegate bool webkit_user_content_manager_register_script_message_handler_delegate(nint userContentManagerInstance, string name);
 
 public class GtkApi
 {
@@ -29,7 +29,7 @@ public class GtkApi
 
         __webkit_user_script_new = LinuxApplicationManager.LoadDelegate<webkit_user_script_new_delegate>(gLibrary.Webkit, webkit_user_script_new)!;
         __webkit_user_content_manager_add_script = LinuxApplicationManager.LoadDelegate<webkit_user_content_manager_add_script_delegate>(gLibrary.Webkit, webkit_user_content_manager_add_script)!;
-        __webkit_user_content_manager_register_script_message = LinuxApplicationManager.LoadDelegate<webkit_user_content_manager_register_script_message_delegate>(gLibrary.Webkit, webkit_user_content_manager_register_script_message)!;
+        __webkit_user_content_manager_register_script_message_handler = LinuxApplicationManager.LoadDelegate<webkit_user_content_manager_register_script_message_handler_delegate>(gLibrary.Webkit, webkit_user_content_manager_register_script_message_handler)!;
     }
 
     private static string gdk_set_allowed_backends => nameof(gdk_set_allowed_backends);
@@ -39,7 +39,7 @@ public class GtkApi
 
     private static string webkit_user_script_new => nameof(webkit_user_script_new);
     private static string webkit_user_content_manager_add_script => nameof(webkit_user_content_manager_add_script);
-    private static string webkit_user_content_manager_register_script_message => nameof(webkit_user_content_manager_register_script_message);
+    private static string webkit_user_content_manager_register_script_message_handler => nameof(webkit_user_content_manager_register_script_message_handler);
 
     private static gdk_set_allowed_backends_delegate __gdk_set_allowed_backends;
     private static gdk_x11_window_get_xid_delegate __gdk_x11_window_get_xid;
@@ -48,7 +48,7 @@ public class GtkApi
 
     private static webkit_user_script_new_delegate __webkit_user_script_new;
     private static webkit_user_content_manager_add_script_delegate __webkit_user_content_manager_add_script;
-    private static webkit_user_content_manager_register_script_message_delegate __webkit_user_content_manager_register_script_message;
+    private static webkit_user_content_manager_register_script_message_handler_delegate __webkit_user_content_manager_register_script_message_handler;
 
     public static bool SetAllowedBackends(string backends)
     {
