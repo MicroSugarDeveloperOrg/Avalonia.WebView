@@ -17,16 +17,19 @@ unsafe partial class LinuxWebViewCore
         _webScheme = filter;
         var bRet = _dispatcher.InvokeAsync(() =>
         {
-            webView.AddSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
             webView.Context.RegisterUriScheme(filter.Scheme, WebView_WebResourceRequest);
-            webView.UserContentManager.RegisterScriptMessageHandler(_messageKeyWord);
 
             var script = GtkApi.CreateUserScript(BlazorScriptHelper.BlazorStartingScript);
-            if (script is not null)
-            {
-                webView.UserContentManager.AddScript(script.Value);
-                script.Value.Unref();
-            }
+            if (script is null)
+                return;
+
+            webView.UserContentManager.AddScript(script.Value);
+            script.Value.Unref();
+            webView.UserContentManager.AddSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
+            webView.UserContentManager.RegisterScriptMessageHandler(_messageKeyWord);
+
+
+           
 
         }).Result;
 
@@ -55,10 +58,10 @@ unsafe partial class LinuxWebViewCore
 
 
 
-    void WebView_WebMessageReceived(UserContentManager* pContentManagerm, JavascriptResult* pJsResult, IntPtr pArg)
+    void WebView_WebMessageReceived(nint pContentManagerm, nint pJsResult, nint pArg)
     {
-        var userConentManager = new UserContentManager((IntPtr)pContentManagerm);
-        var jsValue = JavascriptResult.New((IntPtr)pJsResult);
+        var userConentManager = new UserContentManager(pContentManagerm);
+        var jsValue = JavascriptResult.New(pJsResult);
 
         var message = new WebViewMessageReceivedEventArgs
         {
