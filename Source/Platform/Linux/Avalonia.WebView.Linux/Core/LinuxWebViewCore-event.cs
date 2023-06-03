@@ -31,7 +31,7 @@ unsafe partial class LinuxWebViewCore
 
         var bRet = _dispatcher.InvokeAsync(() =>
          {
-             webView.UserMessageReceived += WebView_UserMessageReceived;
+             //webView.UserMessageReceived += WebView_UserMessageReceived;
              //webView.UserContentManager.AddSignalHandler("script-message-received::webview", WebView_WebMessageReceived);
          }).Result;
     }
@@ -45,7 +45,7 @@ unsafe partial class LinuxWebViewCore
 
         var bRet = _dispatcher.InvokeAsync(() =>
         {
-            webView.UserMessageReceived -= WebView_UserMessageReceived;
+            //webView.UserMessageReceived -= WebView_UserMessageReceived;
         }).Result;
     }
 }

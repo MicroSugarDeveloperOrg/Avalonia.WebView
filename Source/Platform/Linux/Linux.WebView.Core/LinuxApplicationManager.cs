@@ -21,10 +21,10 @@ public class LinuxApplicationManager
     }
 
     private static Dictionary<gLibrary, string[]> _libraryDefinitions;
-    private static Dictionary<gLibrary, IntPtr> _libraries;
+    private static Dictionary<gLibrary, nint> _libraries;
     private static HashSet<gLibrary> _librariesNotFound;
 
-    static IntPtr Load(gLibrary library)
+    static nint Load(gLibrary library)
     {
         if (_libraries.TryGetValue(library, out var value))
             return value;
@@ -35,7 +35,7 @@ public class LinuxApplicationManager
         throw new DllNotFoundException(library.ToString() + ": " + string.Join(", ", _libraryDefinitions[library]));
     }
 
-    static bool TryGet(gLibrary library, out IntPtr ret)
+    static bool TryGet(gLibrary library, out nint ret)
     {
         ret = IntPtr.Zero;
         if (_libraries.TryGetValue(library, out ret))
@@ -80,6 +80,11 @@ public class LinuxApplicationManager
             return default;
 
         return LibraryLoader.LoadDelegate<T>(pFunction);
+    }
+
+    public static nint LoadFunction<T>(T @delegate)
+    {
+        return LibraryLoader.LoadFunction(@delegate);
     }
 
 }

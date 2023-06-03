@@ -1,4 +1,5 @@
-﻿using Linux.WebView.Core.Interoperates;
+﻿using Linux.WebView.Core;
+using Linux.WebView.Core.Interoperates;
 using WebKit;
 using WebViewCore.Helpers;
 
@@ -19,12 +20,18 @@ unsafe partial class LinuxWebViewCore
         {
             webView.Context.RegisterUriScheme(filter.Scheme, WebView_WebResourceRequest);
 
+            var userContentManager = webView.UserContentManager;
+
+
+
+
+            GtkApi.AddSignalConnect(userContentManager.Handle, $"script-message-received::{_messageKeyWord}", LinuxApplicationManager.LoadFunction(_userContentMessageReceived), IntPtr.Zero);
+            //webView.UserContentManager.AddSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
+            webView.UserContentManager.RegisterScriptMessageHandler(_messageKeyWord);
+
             var script = GtkApi.CreateUserScript(BlazorScriptHelper.BlazorStartingScript);
             if (script is null)
                 return;
-
-            webView.UserContentManager.AddSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
-            webView.UserContentManager.RegisterScriptMessageHandler(_messageKeyWord);
             webView.UserContentManager.AddScript(script.Value);
             script.Value.Unref();
 

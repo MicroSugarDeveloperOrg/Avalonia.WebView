@@ -20,6 +20,8 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
         _webView = gtkWrapper.Item2;
         NativeHandler = gtkWrapper.Item3;
         _hostWindowX11Handle = gtkWrapper.Item3;
+
+        _userContentMessageReceived = WebView_WebMessageReceived;
         RegisterEvents();
     }
 
@@ -27,6 +29,8 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
     {
         Dispose(disposing: false);
     }
+
+    delegate void void_nint_nint_nint(nint arg0, nint arg1, nint arg2);
 
     readonly GWindow _hostWindow;
     readonly WebKitWebView _webView;
@@ -39,6 +43,8 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
     readonly ViewHandler _handler;
     readonly WebViewCreationProperties _creationProperties;
     readonly string _dispatchMessageCallback = "__dispatchMessageCallback";
+
+    readonly void_nint_nint_nint _userContentMessageReceived;
 
     WebScheme? _webScheme;
 
