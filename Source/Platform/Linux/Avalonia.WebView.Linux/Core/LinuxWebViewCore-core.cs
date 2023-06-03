@@ -52,9 +52,12 @@ unsafe partial class LinuxWebViewCore
 
     }
 
-    void WebView_WebMessageReceived(nint contentManager, nint jsResult, nint arg)
+
+
+    void WebView_WebMessageReceived(UserContentManager* pContentManagerm, JavascriptResult* pJsResult, IntPtr pArg)
     {
-        var jsValue = JavascriptResult.New(jsResult);
+        var userConentManager = new UserContentManager((IntPtr)pContentManagerm);
+        var jsValue = JavascriptResult.New((IntPtr)pJsResult);
 
         var message = new WebViewMessageReceivedEventArgs
         {
