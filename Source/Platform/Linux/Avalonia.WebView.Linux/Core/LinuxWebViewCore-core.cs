@@ -23,10 +23,10 @@ unsafe partial class LinuxWebViewCore
             if (script is null)
                 return;
 
-            webView.UserContentManager.AddScript(script.Value);
-            script.Value.Unref();
             webView.UserContentManager.AddSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
             webView.UserContentManager.RegisterScriptMessageHandler(_messageKeyWord);
+            webView.UserContentManager.AddScript(script.Value);
+            script.Value.Unref();
 
 
            
