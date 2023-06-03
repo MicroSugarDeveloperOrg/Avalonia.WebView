@@ -40,14 +40,14 @@ public sealed partial class  WebView : Control, IVirtualWebView<WebView>, IEmpty
         };
         //Child = _partInnerContainer;
 
-        Loaded += (s, e) =>
-        {
-            Dispatcher.UIThread.InvokeAsync(() =>
-            {
-                _= Navigate(Url);
-                _= NavigateToString(HtmlContent);
-            });
-        };
+        //Loaded += (s, e) =>
+        //{
+        //    Dispatcher.UIThread.InvokeAsync(() =>
+        //    {
+        //        _= Navigate(Url);
+        //        _= NavigateToString(HtmlContent);
+        //    });
+        //};
     }
 
     readonly WebViewCreationProperties _creationProperties;
