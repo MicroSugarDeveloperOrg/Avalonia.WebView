@@ -15,15 +15,15 @@ unsafe partial class LinuxWebViewCore
             return Task.CompletedTask;
 
         _webScheme = filter;
+        var scriptHandle = Interop_webkit.webkit_user_script_new(BlazorScriptHelper.BlazorStartingScript, WebKitUserContentInjectedFrames.WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
+            WebKitUserScriptInjectionTime.WEBKIT_USER_SCRIPT_INJECT_AT_DOCUMENT_START,
+            null, null);
         var bRet = _dispatcher.InvokeAsync(() =>
         {
             webView.AddSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
             webView.Context.RegisterUriScheme(filter.Scheme, WebView_WebResourceRequest);
             webView.UserContentManager.RegisterScriptMessageHandler(_messageKeyWord);
-
-           var scriptHandle = Interop_webkit.webkit_user_script_new(BlazorScriptHelper.BlazorStartingScript, WebKitUserContentInjectedFrames.WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
-               WebKitUserScriptInjectionTime.WEBKIT_USER_SCRIPT_INJECT_AT_DOCUMENT_START,
-               null, null);
+        
             var script = UserScript.New(scriptHandle);
             webView.UserContentManager.AddScript(script);
             script.Unref();
