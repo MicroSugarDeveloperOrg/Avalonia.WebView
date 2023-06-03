@@ -7,8 +7,9 @@
              x:Class="SampleWebView.Views.MainView" >
 
 	<Grid RowDefinitions="50,*">
+
+		<!--<Button Content="Baidu" Command="{Binding BaiduCommand}"/>-->
 		
-		<Button Content="Baidu" Command="{Binding BaiduCommand}"/>
 		
 		<WebView Grid.Row="1" x:Name="PART_WebView" Url="https://www.bilibili.com"></WebView>
 
