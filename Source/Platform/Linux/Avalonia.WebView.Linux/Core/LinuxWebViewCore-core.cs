@@ -86,7 +86,7 @@ unsafe partial class LinuxWebViewCore
         var requestWrapper = new WebResourceRequest
         {
             RequestUri = request.Uri,
-            AllowFallbackOnHostPage = false,
+            AllowFallbackOnHostPage = true,
         };
 
         var bRet = _provider.PlatformWebViewResourceRequested(this, requestWrapper, out var response);
@@ -100,12 +100,9 @@ unsafe partial class LinuxWebViewCore
         using var ms = new MemoryStream();
         response.Content.CopyTo(ms);
 
-        bRet = _dispatcher.InvokeAsync(() =>
-        {
-            var pBuffer = GtkApi.MarshalToGLibInputStream(ms.GetBuffer(), ms.Length);
-            using var inputStream = new GLib.InputStream(pBuffer);
-            request.Finish(inputStream, ms.Length, headerString);
-        }).Result;
+        var pBuffer = GtkApi.MarshalToGLibInputStream(ms.GetBuffer(), ms.Length);
+        using var inputStream = new GLib.InputStream(pBuffer);
+        request.Finish(inputStream, ms.Length, headerString);
     }
 
 }
