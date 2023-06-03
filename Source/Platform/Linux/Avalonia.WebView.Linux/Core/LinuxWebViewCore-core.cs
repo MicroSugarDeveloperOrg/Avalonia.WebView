@@ -1,4 +1,5 @@
-﻿using WebKit;
+﻿using Linux.WebView.Core.Interoperates;
+using WebKit;
 using WebViewCore.Helpers;
 
 namespace Avalonia.WebView.Linux.Core;
@@ -20,13 +21,13 @@ unsafe partial class LinuxWebViewCore
             webView.Context.RegisterUriScheme(filter.Scheme, WebView_WebResourceRequest);
             webView.UserContentManager.RegisterScriptMessageHandler(_messageKeyWord);
 
-            var spanChar = BlazorScriptHelper.BlazorStartingScript.AsSpan();
-            fixed (void* pBuffer = spanChar)
-            {
-                var script = UserScript.New(new IntPtr(pBuffer));
-                webView.UserContentManager.AddScript(script);
-                script.Unref(); 
-            }
+           var scriptHandle = Interop_webkit.webkit_user_script_new(BlazorScriptHelper.BlazorStartingScript, WebKitUserContentInjectedFrames.WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
+               WebKitUserScriptInjectionTime.WEBKIT_USER_SCRIPT_INJECT_AT_DOCUMENT_START,
+               null, null);
+            var script = UserScript.New(scriptHandle);
+            webView.UserContentManager.AddScript(script);
+            script.Unref();
+
         }).Result;
 
         _isBlazorWebView = true;

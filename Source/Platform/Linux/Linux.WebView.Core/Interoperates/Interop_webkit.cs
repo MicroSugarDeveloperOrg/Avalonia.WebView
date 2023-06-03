@@ -12,7 +12,7 @@ public enum WebKitUserScriptInjectionTime
     WEBKIT_USER_SCRIPT_INJECT_AT_DOCUMENT_END = 1
 }
 
-internal static class Interop_webkit
+public static class Interop_webkit
 {
     const string _WebKit = "webkit";
 
