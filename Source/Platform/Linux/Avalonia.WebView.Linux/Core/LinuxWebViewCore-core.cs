@@ -23,20 +23,20 @@ unsafe partial class LinuxWebViewCore
             var userContentManager = webView.UserContentManager;
 
 
-            var script = GtkApi.CreateUserScript(BlazorScriptHelper.BlazorStartingScript);
-            if (script is null)
-                return;
-            webView.UserContentManager.AddScript(script.Value);
-            script.Value.Unref();
+            var script = GtkApi.CreateUserScriptx(BlazorScriptHelper.BlazorStartingScript);
+            GtkApi.AddScriptForUserContentManager(userContentManager.Handle, script);
+            //webView.UserContentManager.AddScript(script.Value);
+            //script.Value.Unref();
 
 
 
             GtkApi.AddSignalConnect(userContentManager.Handle, $"script-message-received::{_messageKeyWord}", LinuxApplicationManager.LoadFunction(_userContentMessageReceived), IntPtr.Zero);
+            GtkApi.RegisterScriptMessageHandler(userContentManager.Handle, _messageKeyWord);
             //webView.UserContentManager.AddSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
-            webView.UserContentManager.RegisterScriptMessageHandler(_messageKeyWord);
+            //webView.UserContentManager.RegisterScriptMessageHandler(_messageKeyWord);
 
 
-           
+
 
         }).Result;
 
