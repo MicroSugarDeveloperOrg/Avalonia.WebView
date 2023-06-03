@@ -1,4 +1,6 @@
-﻿namespace Linux.WebView.Core.Interoperates;
+﻿using static Linux.WebView.Core.LinuxApplicationManager;
+
+namespace Linux.WebView.Core.Interoperates;
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate void gdk_set_allowed_backends_delegate(Utf8Buffer backends);
@@ -10,7 +12,13 @@ public delegate nint gdk_x11_window_get_xid_delegate(nint widgetWindowHandle);
 public delegate ulong g_signal_connect_data_delegate(nint instance, string detailed_signal, nint c_handler, nint data, nint destroy_data, GConnectFlags connect_flags);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate nint g_memory_input_stream_new_from_data_delegate(byte[] data, uint length, nint destroy);
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate nint webkit_user_script_new_delegate(string script, WebKitUserContentInjectedFrames injected_frames, WebKitUserScriptInjectionTime injection_time, string? allow_list, string? block_list);
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate void webkit_user_script_unref_delegate(nint scriptHandle);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate void webkit_user_content_manager_add_script_delegate(nint userContentManagerInstance, nint script);
@@ -18,35 +26,43 @@ public delegate void webkit_user_content_manager_add_script_delegate(nint userCo
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate bool webkit_user_content_manager_register_script_message_handler_delegate(nint userContentManagerInstance, string name);
 
+
 public class GtkApi
 {
     static GtkApi()
     {
-        __gdk_set_allowed_backends = LinuxApplicationManager.LoadDelegate<gdk_set_allowed_backends_delegate>(gLibrary.Gdk, gdk_set_allowed_backends)!;
-        __gdk_x11_window_get_xid = LinuxApplicationManager.LoadDelegate<gdk_x11_window_get_xid_delegate>(gLibrary.Gdk, gdk_x11_window_get_xid)!;
+        __gdk_set_allowed_backends = LoadDelegate<gdk_set_allowed_backends_delegate>(gLibrary.Gdk, gdk_set_allowed_backends)!;
+        __gdk_x11_window_get_xid = LoadDelegate<gdk_x11_window_get_xid_delegate>(gLibrary.Gdk, gdk_x11_window_get_xid)!;
 
-        __g_signal_connect_data = LinuxApplicationManager.LoadDelegate<g_signal_connect_data_delegate>(gLibrary.Gtk, g_signal_connect_data)!;
+        __g_signal_connect_data = LoadDelegate<g_signal_connect_data_delegate>(gLibrary.Gtk, g_signal_connect_data)!;
+        __g_memory_input_stream_new_from_data = LoadDelegate<g_memory_input_stream_new_from_data_delegate>(gLibrary.Gtk, g_memory_input_stream_new_from_data)!;
 
-        __webkit_user_script_new = LinuxApplicationManager.LoadDelegate<webkit_user_script_new_delegate>(gLibrary.Webkit, webkit_user_script_new)!;
-        __webkit_user_content_manager_add_script = LinuxApplicationManager.LoadDelegate<webkit_user_content_manager_add_script_delegate>(gLibrary.Webkit, webkit_user_content_manager_add_script)!;
-        __webkit_user_content_manager_register_script_message_handler = LinuxApplicationManager.LoadDelegate<webkit_user_content_manager_register_script_message_handler_delegate>(gLibrary.Webkit, webkit_user_content_manager_register_script_message_handler)!;
+        __webkit_user_script_new = LoadDelegate<webkit_user_script_new_delegate>(gLibrary.Webkit, webkit_user_script_new)!;
+        __webkit_user_script_unref = LoadDelegate<webkit_user_script_unref_delegate>(gLibrary.Webkit, webkit_user_script_unref)!;
+        __webkit_user_content_manager_add_script = LoadDelegate<webkit_user_content_manager_add_script_delegate>(gLibrary.Webkit, webkit_user_content_manager_add_script)!;
+        __webkit_user_content_manager_register_script_message_handler = LoadDelegate<webkit_user_content_manager_register_script_message_handler_delegate>(gLibrary.Webkit, webkit_user_content_manager_register_script_message_handler)!;
     }
 
     private static string gdk_set_allowed_backends => nameof(gdk_set_allowed_backends);
     private static string gdk_x11_window_get_xid => nameof(gdk_x11_window_get_xid);
 
     private static string g_signal_connect_data => nameof(g_signal_connect_data);
+    private static string g_memory_input_stream_new_from_data => nameof(g_memory_input_stream_new_from_data);
 
     private static string webkit_user_script_new => nameof(webkit_user_script_new);
+    private static string webkit_user_script_unref => nameof(webkit_user_script_unref);
     private static string webkit_user_content_manager_add_script => nameof(webkit_user_content_manager_add_script);
     private static string webkit_user_content_manager_register_script_message_handler => nameof(webkit_user_content_manager_register_script_message_handler);
+ 
 
     private static gdk_set_allowed_backends_delegate __gdk_set_allowed_backends;
     private static gdk_x11_window_get_xid_delegate __gdk_x11_window_get_xid;
 
     private static g_signal_connect_data_delegate __g_signal_connect_data;
+    private static g_memory_input_stream_new_from_data_delegate __g_memory_input_stream_new_from_data;
 
     private static webkit_user_script_new_delegate __webkit_user_script_new;
+    private static webkit_user_script_unref_delegate __webkit_user_script_unref;
     private static webkit_user_content_manager_add_script_delegate __webkit_user_content_manager_add_script;
     private static webkit_user_content_manager_register_script_message_handler_delegate __webkit_user_content_manager_register_script_message_handler;
 
@@ -66,6 +82,21 @@ public class GtkApi
         }
         return true;
     }
+    public static nint GetWidgetXid(GWidget widget)
+    {
+        if (widget is null)
+            return 0;
+
+        return __gdk_x11_window_get_xid.Invoke(widget.Window.Handle);
+    }
+
+    public static ulong AddSignalConnect(nint instance, string detailed_signal, nint c_handler, nint data)
+    {
+       return __g_signal_connect_data.Invoke(instance, detailed_signal, c_handler, data, IntPtr.Zero, GConnectFlags.G_CONNECT_AFTER);
+    }
+
+    public static nint MarshalToGLibInputStream(byte[] data, uint length, nint destroy) => __g_memory_input_stream_new_from_data.Invoke(data, length, destroy);
+    public static nint MarshalToGLibInputStream(byte[] data, long length) => MarshalToGLibInputStream(data, (uint)length, IntPtr.Zero);
 
     public static UserScript? CreateUserScript(string script)
     {
@@ -91,20 +122,10 @@ public class GtkApi
                                                null, null);
     }
 
+    public static void ReleaseScript(nint scriptHandle) => __webkit_user_script_unref.Invoke(scriptHandle);
+
     public static void AddScriptForUserContentManager(nint userContentManager, nint script) => __webkit_user_content_manager_add_script.Invoke(userContentManager, script);
 
     public static bool RegisterScriptMessageHandler(nint userContentManager, string name) => __webkit_user_content_manager_register_script_message_handler.Invoke(userContentManager, name);
-
-    public static nint GetWidgetXid(GWidget widget)
-    {
-        if (widget is null)
-            return 0;
-
-        return __gdk_x11_window_get_xid.Invoke(widget.Window.Handle);
-    }
-
-    public static ulong AddSignalConnect(nint instance, string detailed_signal, nint c_handler, nint data)
-    {
-       return __g_signal_connect_data.Invoke(instance, detailed_signal, c_handler, data, IntPtr.Zero, GConnectFlags.G_CONNECT_AFTER);
-    }
+ 
 }

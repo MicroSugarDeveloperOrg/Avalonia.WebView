@@ -22,21 +22,12 @@ unsafe partial class LinuxWebViewCore
 
             var userContentManager = webView.UserContentManager;
 
-
             var script = GtkApi.CreateUserScriptx(BlazorScriptHelper.BlazorStartingScript);
             GtkApi.AddScriptForUserContentManager(userContentManager.Handle, script);
-            //webView.UserContentManager.AddScript(script.Value);
-            //script.Value.Unref();
-
-
+            GtkApi.ReleaseScript(script);
 
             GtkApi.AddSignalConnect(userContentManager.Handle, $"script-message-received::{_messageKeyWord}", LinuxApplicationManager.LoadFunction(_userContentMessageReceived), IntPtr.Zero);
             GtkApi.RegisterScriptMessageHandler(userContentManager.Handle, _messageKeyWord);
-            //webView.UserContentManager.AddSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
-            //webView.UserContentManager.RegisterScriptMessageHandler(_messageKeyWord);
-
-
-
 
         }).Result;
 
@@ -52,7 +43,7 @@ unsafe partial class LinuxWebViewCore
         var bRet = _dispatcher.InvokeAsync(() => 
         {
             webView.UserContentManager.UnregisterScriptMessageHandler(_messageKeyWord);
-            webView.RemoveSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
+            //webView.RemoveSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
         }).Result;
   
         _isBlazorWebView = false;
@@ -111,12 +102,9 @@ unsafe partial class LinuxWebViewCore
 
         bRet = _dispatcher.InvokeAsync(() =>
         {
-            var span = ms.GetBuffer().AsSpan();
-            fixed (void* pBuffer = span)
-            {
-                using var inputStream = new GLib.InputStream(new IntPtr(pBuffer));
-                request.Finish(inputStream, span.Length, headerString);
-            }
+            var pBuffer = GtkApi.MarshalToGLibInputStream(ms.GetBuffer(), ms.Length);
+            using var inputStream = new GLib.InputStream(pBuffer);
+            request.Finish(inputStream, ms.Length, headerString);
         }).Result;
     }
 
