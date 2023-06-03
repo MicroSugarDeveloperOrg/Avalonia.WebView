@@ -2,15 +2,5 @@
 
 public static class GtkWindowExtesnsions
 {
-    public static nint X11Handle(this Gtk.Window window) => Interop_gdk.gdk_x11_window_get_xid(window.Handle);
-
-    //public static nint X11Handle(this Gtk.Window window) => Interop_gdk_x11.gdk_x11_drawable_get_xid(window.Handle);
-
-    public static void SetParent(this Gtk.Window window, nint parent)
-    {
-        //var handle = Interop_gdk.GetForeignWindow(GDisplay.Default.Handle, parent);
-        //Interop_gdk.SetWindowParent(window.Handle, handle);
-
-        Interop_gdk.SetWindowParent(window.Handle, parent);
-    }
+    public static nint X11Handle(this Gtk.Widget widget) => Interop_gdk.gdk_x11_window_get_xid(widget.Window.Handle);
 }

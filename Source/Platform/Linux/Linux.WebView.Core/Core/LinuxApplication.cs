@@ -76,6 +76,7 @@ internal class LinuxApplication : ILinuxApplication
 
         _dispatcher.Stop();
         GApplication.Quit();
+        _appRunning?.Wait();
         return Task.CompletedTask;
     }
 
@@ -112,17 +113,10 @@ internal class LinuxApplication : ILinuxApplication
 
             var webView = new WebKitWebView();
             webView.Realize();
-
-            //window.
-
-
-            //window.TransientFor
-
             window.Add(webView);
             window.ShowAll();
             window.Present();
 
-            //return (window, webView, window.Handle);
             return (window, webView, window.X11Handle());
         });
     }

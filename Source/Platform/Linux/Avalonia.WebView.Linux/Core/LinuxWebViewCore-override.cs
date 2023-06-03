@@ -9,9 +9,9 @@ partial class LinuxWebViewCore
 
     object? IPlatformWebView.PlatformViewContext => this;
 
-    bool IWebViewControl.IsCanGoForward =>   GtkInteropHelper.RunOnGlibThread(WebView.CanGoForward).Result;
+    bool IWebViewControl.IsCanGoForward =>  _dispatcher.InvokeAsync(WebView.CanGoForward).Result;
 
-    bool IWebViewControl.IsCanGoBack =>  GtkInteropHelper.RunOnGlibThread(WebView.CanGoBack).Result;
+    bool IWebViewControl.IsCanGoBack => _dispatcher.InvokeAsync(WebView.CanGoBack).Result;
 
     async Task<bool> IPlatformWebView.Initialize()
     {
@@ -22,7 +22,7 @@ partial class LinuxWebViewCore
         {
             _callBack.PlatformWebViewCreating(this, new WebViewCreatingEventArgs());
 
-            var bRet =  GtkInteropHelper.RunOnGlibThread(() =>
+            var bRet = _dispatcher.InvokeAsync(() =>
             {
                 WebView.Settings.EnableDeveloperExtras = _creationProperties.AreDevToolEnabled;
                 WebView.Settings.AllowFileAccessFromFileUrls = true;
@@ -35,7 +35,6 @@ partial class LinuxWebViewCore
                 WebView.Settings.EnableMediaStream = true;
                 WebView.Settings.JavascriptCanAccessClipboard = true;
                 WebView.Settings.JavascriptCanOpenWindowsAutomatically = true;
-                return true;
             }).Result;
             
             RegisterWebViewEvents(WebView);
@@ -63,14 +62,12 @@ partial class LinuxWebViewCore
         var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(javaScript);
         var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
 
-        var bRet =  GtkInteropHelper.RunOnGlibThread(() =>
+        var bRet = _dispatcher.InvokeAsync(() =>
         {
             WebView.RunJavascript(script, default, (GLib.Object source_object, GLib.IAsyncResult res) =>
             {
         
             });
-
-            return true;
         }) .Result;
 
         return Task.FromResult<string?>(string.Empty);
@@ -78,7 +75,7 @@ partial class LinuxWebViewCore
 
     bool IWebViewControl.GoBack()
     {
-        return  GtkInteropHelper.RunOnGlibThread(() =>
+        return _dispatcher.InvokeAsync(() =>
         {
             if (!WebView.CanGoBack())
                 return false;
@@ -90,7 +87,7 @@ partial class LinuxWebViewCore
 
     bool IWebViewControl.GoForward()
     {
-        return  GtkInteropHelper.RunOnGlibThread(() =>
+        return _dispatcher.InvokeAsync(() =>
         {
             if (!WebView.CanGoForward())
                 return false;
@@ -106,11 +103,7 @@ partial class LinuxWebViewCore
         if (uri is null)
             return false;
 
-        return GtkInteropHelper.RunOnGlibThread(() =>
-        {
-            WebView.LoadUri(uri.AbsoluteUri);
-            return true;
-        }).Result;
+        return _dispatcher.InvokeAsync(() => WebView.LoadUri(uri.AbsoluteUri)).Result;
     }
 
     bool IWebViewControl.NavigateToString(string htmlContent)
@@ -118,11 +111,7 @@ partial class LinuxWebViewCore
         if (string.IsNullOrWhiteSpace(htmlContent))
             return false;
 
-       return GtkInteropHelper.RunOnGlibThread(() =>
-       {
-           WebView.LoadHtml(htmlContent);
-           return true;
-       }).Result;
+       return  _dispatcher.InvokeAsync(() => WebView.LoadHtml(htmlContent)).Result;
     }
 
     bool IWebViewControl.OpenDevToolsWindow()
@@ -138,13 +127,12 @@ partial class LinuxWebViewCore
         var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(webMessageAsJson);
         var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
 
-       return GtkInteropHelper.RunOnGlibThread(() =>
+       return _dispatcher.InvokeAsync(() =>
         {
             WebView.RunJavascript(script, default, (GLib.Object source_object, GLib.IAsyncResult res) =>
             {
 
             });
-            return true;
         }).Result;
  
     }
@@ -157,26 +145,17 @@ partial class LinuxWebViewCore
         var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(webMessageAsString);
         var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
 
-       return GtkInteropHelper.RunOnGlibThread(() =>
+       return _dispatcher.InvokeAsync(() =>
         {
             WebView.RunJavascript(script, default, (GLib.Object source_object, GLib.IAsyncResult res) =>
             {
 
             });
-            return true;
         }).Result; 
     }
 
-    bool IWebViewControl.Reload() => GtkInteropHelper.RunOnGlibThread(() =>
-    {
-        WebView.Reload();
-        return true;
-    }).Result;
-    bool IWebViewControl.Stop() => GtkInteropHelper.RunOnGlibThread(() =>
-    {
-        WebView.StopLoading();
-        return true;
-    }).Result;
+    bool IWebViewControl.Reload() =>  _dispatcher.InvokeAsync(WebView.Reload).Result;
+    bool IWebViewControl.Stop() => _dispatcher.InvokeAsync(WebView.StopLoading).Result;
 
     protected virtual void Dispose(bool disposing)
     {
@@ -190,11 +169,10 @@ partial class LinuxWebViewCore
                     UnregisterWebViewEvents(WebView);
                     UnregisterEvents();
 
-                    var ret = GtkInteropHelper.RunOnGlibThread(() =>
+                    var ret = _dispatcher.InvokeAsync(() =>
                     {
                         WebView.Dispose();
                         _hostWindow.Dispose();
-                        return true;
                     }).Result;
 
                 }
@@ -210,7 +188,6 @@ partial class LinuxWebViewCore
 
     void IDisposable.Dispose()
     {
-        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
     }
@@ -220,5 +197,4 @@ partial class LinuxWebViewCore
         ((IDisposable)this)?.Dispose();
         return new ValueTask();
     }
-   
 }

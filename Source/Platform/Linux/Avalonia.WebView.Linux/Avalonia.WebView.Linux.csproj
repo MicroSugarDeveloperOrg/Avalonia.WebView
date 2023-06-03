@@ -5,16 +5,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia" />
-		<PackageReference Include="Avalonia.X11" />
-		<PackageReference Include="GtkSharp" />
-		<PackageReference Include="WebkitGtkSharp" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
-		<!--<ProjectReference Include="..\Linux.WebView.Core\Linux.WebView.Core.csproj" />-->
+		<ProjectReference Include="..\Linux.WebView.Core\Linux.WebView.Core.csproj" />
 	</ItemGroup>
 
 </Project>
