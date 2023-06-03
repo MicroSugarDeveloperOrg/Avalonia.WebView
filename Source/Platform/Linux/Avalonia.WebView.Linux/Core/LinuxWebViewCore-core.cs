@@ -43,7 +43,7 @@ unsafe partial class LinuxWebViewCore
         var bRet = _dispatcher.InvokeAsync(() => 
         {
             webView.UserContentManager.UnregisterScriptMessageHandler(_messageKeyWord);
-            //webView.RemoveSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
+            webView.RemoveSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
         }).Result;
   
         _isBlazorWebView = false;
