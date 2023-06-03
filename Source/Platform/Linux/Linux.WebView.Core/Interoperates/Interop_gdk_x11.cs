@@ -1,6 +1,6 @@
 namespace Linux.WebView.Core.Interoperates;
 
-public class Interop_gdk_x11
+internal class Interop_gdk_x11
 {
     const string _Gdk_x11 = "libgdk-x11-2.0.so.0";
 

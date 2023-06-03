@@ -1,6 +1,6 @@
 ﻿namespace Linux.WebView.Core.Interoperates;
 
-public class Interop_gdk
+internal class Interop_gdk
 {
     //const string _Gdk = "gdk";
     const string _Gdk = "libgdk-3.so.0";

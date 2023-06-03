@@ -1,9 +1,11 @@
-﻿using Linux.WebView.Core.Extensions;
-
-namespace Linux.WebView.Core;
+﻿namespace Linux.WebView.Core;
 
 internal class LinuxApplication : ILinuxApplication
 {
+    static LinuxApplication()
+    {
+    }
+
     public LinuxApplication()
     {
         _dispatcher = new LinuxDispatcher();
@@ -13,6 +15,7 @@ internal class LinuxApplication : ILinuxApplication
     {
         Dispose(disposing: false);
     }
+
 
     readonly ILinuxDispatcher _dispatcher;
     Task? _appRunning;
@@ -36,7 +39,6 @@ internal class LinuxApplication : ILinuxApplication
 
     ILinuxDispatcher ILinuxApplication.Dispatcher => _dispatcher;
 
-
     Task<bool> ILinuxApplication.RunAsync(string? applicationName, string[]? args)
     {
         if (IsRunning)
@@ -45,15 +47,7 @@ internal class LinuxApplication : ILinuxApplication
         var tcs = new TaskCompletionSource<bool>();
         _appRunning = Task.Factory.StartNew(obj =>
         {
-            try
-            {
-                using var backends = new Utf8Buffer("x11");
-                Interop_gdk.gdk_set_allowed_backends(backends);
-            }
-            catch
-            {
-            }
-
+            GtkApi.SetAllowedBackends("x11");
             Environment.SetEnvironmentVariable("WAYLAND_DISPLAY", "/proc/fake-display-to-prevent-wayland-initialization-by-gtk3");
             GApplication.Init();
             _defaultDisplay = GDisplay.Default;
@@ -108,7 +102,7 @@ internal class LinuxApplication : ILinuxApplication
         if (!_isRunning) throw new InvalidOperationException(nameof(IsRunning));
         return _dispatcher.InvokeAsync(() =>
         {
-            var window = new GWindow("WebView.GTK.Window");  
+            var window = new GWindow("WebView.GTK.Window");
             window.DefaultSize = new GSize(1024, 768);
 
             var webView = new WebKitWebView();
@@ -120,4 +114,6 @@ internal class LinuxApplication : ILinuxApplication
             return (window, webView, window.X11Handle());
         });
     }
+
+
 }
