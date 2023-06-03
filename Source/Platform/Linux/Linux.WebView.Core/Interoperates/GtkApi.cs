@@ -93,7 +93,7 @@ public class GtkApi
 
     public static void AddScriptForUserContentManager(nint userContentManager, nint script) => __webkit_user_content_manager_add_script.Invoke(userContentManager, script);
 
-    public static bool RegisterScriptMessageHandler(nint userContentManager, string name) => __webkit_user_content_manager_register_script_message.Invoke(userContentManager, name);
+    public static bool RegisterScriptMessageHandler(nint userContentManager, string name) => __webkit_user_content_manager_register_script_message_handler.Invoke(userContentManager, name);
 
     public static nint GetWidgetXid(GWidget widget)
     {
