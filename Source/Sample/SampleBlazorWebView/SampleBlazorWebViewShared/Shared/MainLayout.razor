@@ -10,8 +10,20 @@
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
 
+        <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
         <article class="content px-4">
             @Body
         </article>
     </main>
 </div>
+
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
