@@ -109,7 +109,7 @@ internal class LinuxApplication : ILinuxApplication
             webView.Realize();
             window.Add(webView);
             window.ShowAll();
-            window.Present();
+            //window.Present();
 
             return (window, webView, window.X11Handle());
         });
