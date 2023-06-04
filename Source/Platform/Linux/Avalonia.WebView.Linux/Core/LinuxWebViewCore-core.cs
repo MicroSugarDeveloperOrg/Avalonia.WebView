@@ -18,7 +18,7 @@ unsafe partial class LinuxWebViewCore
         _webScheme = filter;
         var bRet = _dispatcher.InvokeAsync(() =>
         {
-            webView.Context.RegisterUriScheme("app", WebView_WebResourceRequest);
+            //webView.Context.RegisterUriScheme("app", WebView_WebResourceRequest);
             webView.Context.RegisterUriScheme(filter.Scheme, WebView_WebResourceRequest);
 
             var userContentManager = webView.UserContentManager;
