@@ -92,7 +92,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Linux.WebView.Core", "Sourc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.WebView.MacCatalyst", "Source\Platform\Mac\Avalonia.WebView.MacCatalyst\Avalonia.WebView.MacCatalyst.csproj", "{C196C208-3E95-4E3C-B0B3-47B3ABA74D69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Mac", "Source\Platform\Mac\Xamarin.Mac\Xamarin.Mac.csproj", "{E176F4E6-93C3-4E7B-A3CE-E8CE29F627E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Mac", "Source\Platform\Mac\Xamarin.Mac\Xamarin.Mac.csproj", "{E176F4E6-93C3-4E7B-A3CE-E8CE29F627E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.WebView.DesktopX", "Source\Platform\Desktop\Avalonia.WebView.DesktopX\Avalonia.WebView.DesktopX.csproj", "{F637CDDF-3319-4706-B9CF-6DBE9593FDF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -216,6 +218,10 @@ Global
 		{E176F4E6-93C3-4E7B-A3CE-E8CE29F627E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E176F4E6-93C3-4E7B-A3CE-E8CE29F627E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E176F4E6-93C3-4E7B-A3CE-E8CE29F627E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F637CDDF-3319-4706-B9CF-6DBE9593FDF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F637CDDF-3319-4706-B9CF-6DBE9593FDF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F637CDDF-3319-4706-B9CF-6DBE9593FDF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F637CDDF-3319-4706-B9CF-6DBE9593FDF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -252,6 +258,7 @@ Global
 		{A8FFBC52-132F-4161-9AFF-33E03704B932} = {46299C4E-04B1-4205-AC04-EF86ED23FFF2}
 		{C196C208-3E95-4E3C-B0B3-47B3ABA74D69} = {69A9B177-4720-4495-A6BA-028141036014}
 		{E176F4E6-93C3-4E7B-A3CE-E8CE29F627E6} = {69A9B177-4720-4495-A6BA-028141036014}
+		{F637CDDF-3319-4706-B9CF-6DBE9593FDF5} = {F8A28023-40F2-493A-9BE4-940A03E2F5FC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0921EC9A-CD2A-4912-BC79-11B67BBCBDF5}

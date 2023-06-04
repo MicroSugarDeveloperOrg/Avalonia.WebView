@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "SampleBlazorWebView.Desktop": {
+      "commandName": "Project"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "environmentVariables": {
+        "DISPLAY": "192.168.66.44:0.0",
+        "LIBGL_ALWAYS_INDIRECT": "1"
+      },
+      "distributionName": ""
+    }
+  }
+}

@@ -11,13 +11,13 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualBlazorWebViewPro
                                   IFileProvider fileProvider,
                                   JSComponentConfigurationStore jsComponents,
                                   string contentRootDirToAppRoot,
-                                  string hostPagePathWithinFileProvider)
-         : base(provider, dispatcher, appBaseUri, fileProvider, jsComponents, hostPagePathWithinFileProvider)
+                                  string hostPageRelativePath)
+         : base(provider, dispatcher, appBaseUri, fileProvider, jsComponents, hostPageRelativePath)
     {
         _blazorWebView = webview;
         _webViewControl = _blazorWebView;
         _contentRootDirPath = contentRootDirToAppRoot;
-        _hostPageRelativePath = hostPagePathWithinFileProvider;
+        _hostPageRelativePath = hostPageRelativePath;
         _appScheme = appScheme;
         _appHostAddress = appHostAddress;
         _appBaseUri = appBaseUri;

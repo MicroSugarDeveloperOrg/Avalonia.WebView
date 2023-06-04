@@ -22,7 +22,7 @@ unsafe partial class LinuxWebViewCore
 
             var userContentManager = webView.UserContentManager;
 
-            var script = GtkApi.CreateUserScriptx(BlazorScriptHelper.BlazorStartingScript);
+            var script = GtkApi.CreateUserScriptX(BlazorScriptHelper.BlazorStartingScript);
             GtkApi.AddScriptForUserContentManager(userContentManager.Handle, script);
             GtkApi.ReleaseScript(script);
 
@@ -37,7 +37,7 @@ unsafe partial class LinuxWebViewCore
 
     void ClearBlazorWebViewCompleted(WebKit.WebView webView)
     {
-        if (WebView is null)
+        if (webView is null)
             return;
 
         var bRet = _dispatcher.InvokeAsync(() => 
@@ -56,17 +56,24 @@ unsafe partial class LinuxWebViewCore
 
 
 
-    void WebView_WebMessageReceived(nint pContentManagerm, nint pJsResult, nint pArg)
+    void WebView_WebMessageReceived(nint pContentManager, nint pJsResult, nint pArg)
     {
-        var userConentManager = new UserContentManager(pContentManagerm);
-        var jsValue = JavascriptResult.New(pJsResult);
+        //var userContentManager = new UserContentManager(pContentManager);
+        //var jsValue = JavascriptResult.New(pJsResult);
+
+        if (_provider is null)
+            return;
+
+        var pJsStringValue = GtkApi.CreateJavaScriptResult(pJsResult);
+        if (!pJsStringValue.IsStringEx())
+            return;
 
         var message = new WebViewMessageReceivedEventArgs
         {
-            Message = jsValue.ToString(),
-            Source = new Uri("")
+            Message = pJsStringValue.ToStringEx(),
+            Source = _provider.BaseUri,
         };
-        jsValue.Unref();
+        GtkApi.ReleaseJavaScriptResult(pJsResult);
 
         _callBack.PlatformWebViewMessageReceived(this, message);
         _provider?.PlatformWebViewMessageReceived(this, message);
@@ -83,10 +90,11 @@ unsafe partial class LinuxWebViewCore
         if (request.Scheme != _webScheme.Scheme)
             return;
 
+        bool allowFallbackOnHostPage = request.Path == "/";
         var requestWrapper = new WebResourceRequest
         {
             RequestUri = request.Uri,
-            AllowFallbackOnHostPage = false,
+            AllowFallbackOnHostPage = allowFallbackOnHostPage,
         };
 
         var bRet = _provider.PlatformWebViewResourceRequested(this, requestWrapper, out var response);
@@ -100,12 +108,9 @@ unsafe partial class LinuxWebViewCore
         using var ms = new MemoryStream();
         response.Content.CopyTo(ms);
 
-        bRet = _dispatcher.InvokeAsync(() =>
-        {
-            var pBuffer = GtkApi.MarshalToGLibInputStream(ms.GetBuffer(), ms.Length);
-            using var inputStream = new GLib.InputStream(pBuffer);
-            request.Finish(inputStream, ms.Length, headerString);
-        }).Result;
+        var pBuffer = GtkApi.MarshalToGLibInputStream(ms.GetBuffer(), ms.Length);
+        using var inputStream = new GLib.InputStream(pBuffer);
+        request.Finish(inputStream, ms.Length, headerString);
     }
 
 }

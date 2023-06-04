@@ -26,8 +26,19 @@ public delegate void webkit_user_content_manager_add_script_delegate(nint userCo
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate bool webkit_user_content_manager_register_script_message_handler_delegate(nint userContentManagerInstance, string name);
 
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate nint webkit_javascript_result_get_js_value_delegate(nint jsResult);
 
-public class GtkApi
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate void webkit_javascript_result_unref_delegate(nint jsResult);
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate bool jsc_value_is_string_delegate(nint value);
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate nint jsc_value_to_string_delegate(nint value);
+
+public static class GtkApi
 {
     static GtkApi()
     {
@@ -41,6 +52,11 @@ public class GtkApi
         __webkit_user_script_unref = LoadDelegate<webkit_user_script_unref_delegate>(gLibrary.Webkit, webkit_user_script_unref)!;
         __webkit_user_content_manager_add_script = LoadDelegate<webkit_user_content_manager_add_script_delegate>(gLibrary.Webkit, webkit_user_content_manager_add_script)!;
         __webkit_user_content_manager_register_script_message_handler = LoadDelegate<webkit_user_content_manager_register_script_message_handler_delegate>(gLibrary.Webkit, webkit_user_content_manager_register_script_message_handler)!;
+        __webkit_javascript_result_get_js_value = LoadDelegate<webkit_javascript_result_get_js_value_delegate>(gLibrary.Webkit, webkit_javascript_result_get_js_value)!;
+        __webkit_javascript_result_unref = LoadDelegate<webkit_javascript_result_unref_delegate>(gLibrary.Webkit, webkit_javascript_result_unref)!;
+        __jsc_value_is_string = LoadDelegate<jsc_value_is_string_delegate>(gLibrary.Webkit, jsc_value_is_string)!;
+        __jsc_value_to_string = LoadDelegate<jsc_value_to_string_delegate>(gLibrary.Webkit, jsc_value_to_string)!;
+
     }
 
     private static string gdk_set_allowed_backends => nameof(gdk_set_allowed_backends);
@@ -53,7 +69,10 @@ public class GtkApi
     private static string webkit_user_script_unref => nameof(webkit_user_script_unref);
     private static string webkit_user_content_manager_add_script => nameof(webkit_user_content_manager_add_script);
     private static string webkit_user_content_manager_register_script_message_handler => nameof(webkit_user_content_manager_register_script_message_handler);
- 
+    private static string webkit_javascript_result_get_js_value => nameof(webkit_javascript_result_get_js_value);
+    private static string webkit_javascript_result_unref => nameof(webkit_javascript_result_unref);
+    private static string jsc_value_is_string => nameof(jsc_value_is_string);
+    private static string jsc_value_to_string => nameof(jsc_value_to_string);
 
     private static gdk_set_allowed_backends_delegate __gdk_set_allowed_backends;
     private static gdk_x11_window_get_xid_delegate __gdk_x11_window_get_xid;
@@ -65,6 +84,10 @@ public class GtkApi
     private static webkit_user_script_unref_delegate __webkit_user_script_unref;
     private static webkit_user_content_manager_add_script_delegate __webkit_user_content_manager_add_script;
     private static webkit_user_content_manager_register_script_message_handler_delegate __webkit_user_content_manager_register_script_message_handler;
+    private static webkit_javascript_result_get_js_value_delegate __webkit_javascript_result_get_js_value;
+    private static webkit_javascript_result_unref_delegate __webkit_javascript_result_unref;
+    private static jsc_value_is_string_delegate __jsc_value_is_string;
+    private static jsc_value_to_string_delegate __jsc_value_to_string;
 
     public static bool SetAllowedBackends(string backends)
     {
@@ -82,6 +105,7 @@ public class GtkApi
         }
         return true;
     }
+    
     public static nint GetWidgetXid(GWidget widget)
     {
         if (widget is null)
@@ -111,7 +135,7 @@ public class GtkApi
         return UserScript.New(scriptHandle);
     }
 
-    public static nint CreateUserScriptx(string script)
+    public static nint CreateUserScriptX(string script)
     {
         if (string.IsNullOrWhiteSpace(script))
             return default;
@@ -127,5 +151,22 @@ public class GtkApi
     public static void AddScriptForUserContentManager(nint userContentManager, nint script) => __webkit_user_content_manager_add_script.Invoke(userContentManager, script);
 
     public static bool RegisterScriptMessageHandler(nint userContentManager, string name) => __webkit_user_content_manager_register_script_message_handler.Invoke(userContentManager, name);
- 
+
+    public static nint CreateJavaScriptResult(nint jsResult) => __webkit_javascript_result_get_js_value.Invoke(jsResult);
+
+    public static void ReleaseJavaScriptResult(nint jsResult) => __webkit_javascript_result_unref.Invoke(jsResult);
+
+    public static bool IsString(nint value) => __jsc_value_is_string.Invoke(value);
+    public static bool IsStringEx(this nint value) => IsString(value);
+
+    public static nint ToString(nint value) => __jsc_value_to_string.Invoke(value);
+    public static string ToStringX(nint value)
+    {
+        var pString = ToString(value);
+        var stringValue = Marshal.PtrToStringAuto(pString);
+        Marshal.FreeHGlobal(pString);
+        return stringValue;
+    }
+    public static string ToStringEx(this nint value) => ToStringX(value);
+
 }
