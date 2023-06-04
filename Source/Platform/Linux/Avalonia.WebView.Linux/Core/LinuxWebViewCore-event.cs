@@ -28,14 +28,14 @@ unsafe partial class LinuxWebViewCore
     {
         if (webView is null)
             return;
-
+ 
         var bRet = _dispatcher.InvokeAsync(() =>
          {
-             //webView.UserMessageReceived += WebView_UserMessageReceived;
+             webView.PermissionRequest += WebView_PermissionRequest;
+             webView.UserMessageReceived += WebView_UserMessageReceived;
              //webView.UserContentManager.AddSignalHandler("script-message-received::webview", WebView_WebMessageReceived);
          }).Result;
     }
-
 
 
     void UnregisterWebViewEvents(WebKit.WebView webView)
@@ -45,7 +45,10 @@ unsafe partial class LinuxWebViewCore
 
         var bRet = _dispatcher.InvokeAsync(() =>
         {
-            //webView.UserMessageReceived -= WebView_UserMessageReceived;
+            webView.PermissionRequest -= WebView_PermissionRequest;
+            webView.UserMessageReceived -= WebView_UserMessageReceived;
         }).Result;
     }
+
+
 }

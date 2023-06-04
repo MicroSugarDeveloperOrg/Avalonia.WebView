@@ -48,7 +48,7 @@ public partial class MacCatalystWebViewCore : IPlatformWebView<MacCatalystWebVie
     readonly IVirtualWebViewControlCallBack _callBack;
     readonly ViewHandler _handler;
     readonly WebViewCreationProperties _creationProperties;
-    readonly string _filterKeyWord = "webwindowinterop";
+    readonly string _filterKeyWord = "webview";
     readonly string _dispatchMessageCallback = "__dispatchMessageCallback";
 
     bool _isBlazorWebView = false;

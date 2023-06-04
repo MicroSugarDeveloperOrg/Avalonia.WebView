@@ -18,6 +18,7 @@ unsafe partial class LinuxWebViewCore
         _webScheme = filter;
         var bRet = _dispatcher.InvokeAsync(() =>
         {
+            webView.Context.RegisterUriScheme("app", WebView_WebResourceRequest);
             webView.Context.RegisterUriScheme(filter.Scheme, WebView_WebResourceRequest);
 
             var userContentManager = webView.UserContentManager;
@@ -42,8 +43,8 @@ unsafe partial class LinuxWebViewCore
 
         var bRet = _dispatcher.InvokeAsync(() => 
         {
-            webView.UserContentManager.UnregisterScriptMessageHandler(_messageKeyWord);
-            webView.RemoveSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
+            //webView.UserContentManager.UnregisterScriptMessageHandler(_messageKeyWord);
+            //webView.RemoveSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
         }).Result;
   
         _isBlazorWebView = false;
@@ -52,6 +53,12 @@ unsafe partial class LinuxWebViewCore
     private void WebView_UserMessageReceived(object o, UserMessageReceivedArgs args)
     {
 
+    }
+
+
+    private void WebView_PermissionRequest(object o, WebKit.PermissionRequestArgs args)
+    {
+        args.Request.Allow();
     }
 
 
