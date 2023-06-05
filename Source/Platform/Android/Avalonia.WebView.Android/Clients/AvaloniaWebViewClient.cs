@@ -98,6 +98,9 @@ internal class AvaloniaWebViewClient : WebViewClient
             return false;
 
         _callBack.PlatformWebViewNavigationStarting(_webViewHandler, new WebViewUrlLoadingEventArg());
+
+       
+        _callBack.PlatformWebViewNewWindowRequest(_webViewHandler, new WebViewNewWindowEventArgs());
         var intent = Intent.ParseUri(uri.OriginalString, IntentUriType.Scheme);
         AndroidApplication.Context.StartActivity(intent);
 

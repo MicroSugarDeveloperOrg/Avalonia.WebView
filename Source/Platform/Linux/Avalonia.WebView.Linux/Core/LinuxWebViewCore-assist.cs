@@ -1,4 +1,6 @@
-﻿using WebKit;
+﻿using System.Diagnostics;
+using WebKit;
+using WebViewCore.Helpers;
 
 namespace Avalonia.WebView.Linux.Core;
 
@@ -25,8 +27,22 @@ partial class LinuxWebViewCore
         var webView = new WebKitWebView(pWebView);
         var policyDecision = new NavigationPolicyDecision(pPolicyDecision);
 
+        var navigationType = policyDecision.NavigationAction.NavigationType;
+        var uriString = policyDecision.NavigationAction.Request.Uri;
+        var uri = new Uri(uriString);
 
+        if (_webScheme?.BaseUri.IsBaseOf(uri) == true)
+            return true;
 
-        return true;
+        _callBack.PlatformWebViewNewWindowRequest(this, new WebViewNewWindowEventArgs());
+
+        if (type == PolicyDecisionType.NewWindowAction)
+            OpenUriHelper.OpenInProcess(uri);
+        else
+        {
+            webView.LoadUri(uriString);
+        }
+
+        return false;
     }
 }
