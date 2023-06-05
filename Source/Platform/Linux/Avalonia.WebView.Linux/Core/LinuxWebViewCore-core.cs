@@ -56,7 +56,7 @@ unsafe partial class LinuxWebViewCore
     }
 
 
-    private void WebView_PermissionRequest(object o, WebKit.PermissionRequestArgs args)
+    private void WebView_PermissionRequest(object o, PermissionRequestArgs args)
     {
         args.Request.Allow();
     }
@@ -64,6 +64,11 @@ unsafe partial class LinuxWebViewCore
     private void WebView_LinkClicked(nint webView, nint link)
     {
 
+    }
+
+    private void WebView_DecidePolicy(object o,  DecidePolicyArgs args)
+    {
+         
     }
 
     void WebView_WebMessageReceived(nint pContentManager, nint pJsResult, nint pArg)
