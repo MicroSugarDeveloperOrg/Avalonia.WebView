@@ -61,7 +61,10 @@ unsafe partial class LinuxWebViewCore
         args.Request.Allow();
     }
 
+    private void WebView_LinkClicked(nint webView, nint link)
+    {
 
+    }
 
     void WebView_WebMessageReceived(nint pContentManager, nint pJsResult, nint pArg)
     {

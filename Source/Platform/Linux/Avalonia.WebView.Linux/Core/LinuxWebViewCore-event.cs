@@ -31,6 +31,7 @@ unsafe partial class LinuxWebViewCore
  
         var bRet = _dispatcher.InvokeAsync(() =>
          {
+             webView.AddSignalHandler("link-clicked", WebView_LinkClicked);
              webView.PermissionRequest += WebView_PermissionRequest;
              webView.UserMessageReceived += WebView_UserMessageReceived;
              //webView.UserContentManager.AddSignalHandler("script-message-received::webview", WebView_WebMessageReceived);
@@ -45,6 +46,7 @@ unsafe partial class LinuxWebViewCore
 
         var bRet = _dispatcher.InvokeAsync(() =>
         {
+            webView.RemoveSignalHandler("link-clicked", WebView_LinkClicked);
             webView.PermissionRequest -= WebView_PermissionRequest;
             webView.UserMessageReceived -= WebView_UserMessageReceived;
         }).Result;
