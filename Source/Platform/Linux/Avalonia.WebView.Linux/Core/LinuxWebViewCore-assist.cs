@@ -59,11 +59,9 @@ partial class LinuxWebViewCore
                 policyDecision?.IgnorePolicyDecision();
                 return true; 
             case UrlLoadingStrategy.OpenInWebView:
-                //webView.LoadUri(uriString);
-                return false; 
-            case UrlLoadingStrategy.CancelLoad:
-                policyDecision?.IgnorePolicyDecision();
-                return true;
+                webView.LoadUri(uriString);
+                return true; 
+            case UrlLoadingStrategy.CancelLoad: 
             default:
                 break;
         }
