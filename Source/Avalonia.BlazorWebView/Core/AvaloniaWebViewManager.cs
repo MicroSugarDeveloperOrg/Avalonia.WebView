@@ -1,4 +1,6 @@
-﻿namespace AvaloniaBlazorWebView.Core;
+﻿using Toolkit.Shared;
+
+namespace AvaloniaBlazorWebView.Core;
 
 internal class AvaloniaWebViewManager : WebViewManager, IVirtualBlazorWebViewProvider
 {

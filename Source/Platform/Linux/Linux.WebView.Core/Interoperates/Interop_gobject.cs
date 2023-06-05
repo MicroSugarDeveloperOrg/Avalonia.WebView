@@ -9,8 +9,7 @@ internal class Interop_gobject
     private static extern void g_object_ref(nint instance);
 
     [DllImport(_GObject)]
-    private static extern ulong g_signal_connect_object(nint instance, Utf8Buffer signal,
-        nint handler, nint userData, int flags);
+    private static extern ulong g_signal_connect_object(nint instance, string signal, nint handler, nint userData, int flags);
 
     [DllImport(_GObject)]
     private static extern void g_object_unref(nint instance);

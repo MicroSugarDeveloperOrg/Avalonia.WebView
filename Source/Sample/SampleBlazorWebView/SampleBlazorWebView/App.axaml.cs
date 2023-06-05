@@ -20,7 +20,7 @@ public partial class App : Application
     {
         base.RegisterServices();
 
-        AvaloniaLocator.CurrentMutable.UseAvaloniaBlazorWebView(default, setting =>
+        AvaloniaBlazorWebViewBuilder.Initialize(default, setting =>
         {
             setting.ComponentType = typeof(AppWeb);
             setting.Selector = "#app";

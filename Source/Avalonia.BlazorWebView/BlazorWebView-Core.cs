@@ -1,4 +1,5 @@
 ﻿using AvaloniaBlazorWebView.Common;
+using Toolkit.Shared;
 using WebViewCore;
 
 namespace AvaloniaBlazorWebView;

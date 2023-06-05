@@ -1,23 +1,21 @@
-﻿using Avalonia.Threading;
-
-namespace AvaloniaWebView;
+﻿namespace AvaloniaWebView;
 
 partial class WebView
 {
-    //protected override Size MeasureOverride(Size availableSize)
-    //{
-    //    return LayoutHelper.MeasureChild(Child, availableSize, Padding, BorderThickness);
-    //}
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        return LayoutHelper.MeasureChild(Child, availableSize, Padding, BorderThickness);
+    }
 
-    //protected override Size ArrangeOverride(Size finalSize)
-    //{
-    //    return LayoutHelper.ArrangeChild(Child, finalSize, Padding, BorderThickness);
-    //}
+    protected override Size ArrangeOverride(Size finalSize)
+    {
+        return LayoutHelper.ArrangeChild(Child, finalSize, Padding, BorderThickness);
+    }
 
-    //public override void Render(DrawingContext context)
-    //{
-    //    _borderRenderHelper.Render(context, Bounds.Size, LayoutThickness, CornerRadius, Background, BorderBrush, BoxShadow);
-    //}
+    public override void Render(DrawingContext context)
+    {
+        _borderRenderHelper.Render(context, Bounds.Size, LayoutThickness, CornerRadius, Background, BorderBrush, BoxShadow);
+    }
 
     protected override async void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
@@ -42,8 +40,8 @@ partial class WebView
         var control = viewHandler.AttachableControl;
         if (control is null)
             return;
-        Child = control;
-        //_partInnerContainer.Child = control;
+        //Child = control;
+        _partInnerContainer.Child = control;
         _platformWebView = viewHandler.PlatformWebView;
 
         await Navigate(Url);

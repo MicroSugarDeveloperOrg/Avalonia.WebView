@@ -16,3 +16,6 @@ global using AvaloniaWebView.Core;
 global using AvaloniaWebView.Helpers;
 global using AvaloniaWebView.Shared;
 global using WebViewCore.Configurations;
+global using DryIoc;
+global using WebViewCore.Ioc;
+global using DryIoc.Shared.Extensions;

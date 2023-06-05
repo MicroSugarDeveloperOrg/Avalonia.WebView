@@ -3,7 +3,7 @@
 namespace Linux.WebView.Core.Interoperates;
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-public delegate void gdk_set_allowed_backends_delegate(Utf8Buffer backends);
+public delegate void gdk_set_allowed_backends_delegate(string backends);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate nint gdk_x11_window_get_xid_delegate(nint widgetWindowHandle);
@@ -94,10 +94,9 @@ public static class GtkApi
         if (string.IsNullOrWhiteSpace(backends))
             return false;
 
-        using var utf8Backends = new Utf8Buffer(backends);
         try
         {
-            __gdk_set_allowed_backends.Invoke(utf8Backends);
+            __gdk_set_allowed_backends.Invoke(backends);
         }
         catch (Exception)
         {
@@ -105,7 +104,7 @@ public static class GtkApi
         }
         return true;
     }
-    
+
     public static nint GetWidgetXid(GWidget widget)
     {
         if (widget is null)
@@ -116,7 +115,7 @@ public static class GtkApi
 
     public static ulong AddSignalConnect(nint instance, string detailed_signal, nint c_handler, nint data)
     {
-       return __g_signal_connect_data.Invoke(instance, detailed_signal, c_handler, data, IntPtr.Zero, GConnectFlags.G_CONNECT_AFTER);
+        return __g_signal_connect_data.Invoke(instance, detailed_signal, c_handler, data, IntPtr.Zero, GConnectFlags.G_CONNECT_AFTER);
     }
 
     public static nint MarshalToGLibInputStream(byte[] data, uint length, nint destroy) => __g_memory_input_stream_new_from_data.Invoke(data, length, destroy);
@@ -127,7 +126,7 @@ public static class GtkApi
         if (string.IsNullOrWhiteSpace(script))
             return default;
 
-        var scriptHandle = __webkit_user_script_new.Invoke(script, 
+        var scriptHandle = __webkit_user_script_new.Invoke(script,
                                                            WebKitUserContentInjectedFrames.WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
                                                            WebKitUserScriptInjectionTime.WEBKIT_USER_SCRIPT_INJECT_AT_DOCUMENT_START,
                                                            null, null);

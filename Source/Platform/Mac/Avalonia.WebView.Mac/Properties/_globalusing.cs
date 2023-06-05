@@ -17,3 +17,5 @@ global using WebViewCore.Events;
 global using WebViewCore.Models;
 global using Microsoft.Extensions.FileProviders;
 global using System.Reflection;
+global using DryIoc.Shared.Extensions;
+global using WebViewCore.Ioc;

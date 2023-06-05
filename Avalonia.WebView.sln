@@ -94,7 +94,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.WebView.MacCatalys
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Mac", "Source\Platform\Mac\Xamarin.Mac\Xamarin.Mac.csproj", "{E176F4E6-93C3-4E7B-A3CE-E8CE29F627E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.WebView.DesktopX", "Source\Platform\Desktop\Avalonia.WebView.DesktopX\Avalonia.WebView.DesktopX.csproj", "{F637CDDF-3319-4706-B9CF-6DBE9593FDF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.WebView.DesktopX", "Source\Platform\Desktop\Avalonia.WebView.DesktopX\Avalonia.WebView.DesktopX.csproj", "{F637CDDF-3319-4706-B9CF-6DBE9593FDF5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DryIoc.Shared", "Source\DryIoc.Shared\DryIoc.Shared.csproj", "{6E0DD714-D6CF-40B6-904B-006AD589B401}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolkit.Shared", "Source\Toolkit.Shared\Toolkit.Shared.csproj", "{60E47784-1D37-4D4B-A44A-A08D2F28F6B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -222,6 +226,14 @@ Global
 		{F637CDDF-3319-4706-B9CF-6DBE9593FDF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F637CDDF-3319-4706-B9CF-6DBE9593FDF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F637CDDF-3319-4706-B9CF-6DBE9593FDF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E0DD714-D6CF-40B6-904B-006AD589B401}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E0DD714-D6CF-40B6-904B-006AD589B401}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E0DD714-D6CF-40B6-904B-006AD589B401}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E0DD714-D6CF-40B6-904B-006AD589B401}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60E47784-1D37-4D4B-A44A-A08D2F28F6B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60E47784-1D37-4D4B-A44A-A08D2F28F6B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60E47784-1D37-4D4B-A44A-A08D2F28F6B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60E47784-1D37-4D4B-A44A-A08D2F28F6B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,6 +12,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
+		<ProjectReference Include="..\Toolkit.Shared\Toolkit.Shared.csproj" />
 	</ItemGroup>
 	
 </Project>

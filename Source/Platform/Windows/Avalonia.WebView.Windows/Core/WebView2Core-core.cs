@@ -177,6 +177,7 @@ partial class WebView2Core
         switch (newWindowEventArgs.UrlLoadingStrategy)
         {
             case UrlLoadingStrategy.OpenExternally:
+                e.Handled = true;
                 OpenUriHelper.OpenInProcess(uri);
                 break;
             case UrlLoadingStrategy.OpenInWebView:

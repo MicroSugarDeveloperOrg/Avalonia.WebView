@@ -12,19 +12,17 @@ internal class AndroidAssetFileProvider : IFileProvider
 
         _assetManager = assets;
         _assembly = assembly;
-        _assetLoader = AvaloniaLocator.Current.GetRequiredService<IAssetLoader>();
         _contentRootDir = contentRootDir;
 
     }
 
     readonly AssetManager _assetManager;
     readonly Assembly? _assembly;
-    readonly IAssetLoader _assetLoader;
     readonly string _contentRootDir;
 
     public IDirectoryContents GetDirectoryContents(string subpath) => new AndroidAssetDirectoryContents();
 
-    public IFileInfo GetFileInfo(string subpath) => new AndroidAssetFileInfo(_assetManager, _assetLoader, Path.Combine(_contentRootDir, subpath));
+    public IFileInfo GetFileInfo(string subpath) => new AndroidAssetFileInfo(_assetManager, Path.Combine(_contentRootDir, subpath));
 
     public IChangeToken Watch(string filter) => NullChangeToken.Singleton;
 
@@ -41,9 +39,8 @@ internal class AndroidAssetFileProvider : IFileProvider
 
     private sealed class AndroidAssetFileInfo : IFileInfo
     {
-        public AndroidAssetFileInfo(AssetManager assetManager, IAssetLoader assetLoader, string filePath)
+        public AndroidAssetFileInfo(AssetManager assetManager, string filePath)
         {
-            _assetLoader = assetLoader;
             _assetManager = assetManager;
             _filePath = filePath;
             Name = Path.GetFileName(filePath);
@@ -87,7 +84,6 @@ internal class AndroidAssetFileProvider : IFileProvider
             });
         }
 
-        readonly IAssetLoader _assetLoader;
         readonly AssetManager _assetManager;
         private readonly string _filePath;
         private readonly Lazy<bool> _lazyAssetExists;
@@ -100,7 +96,7 @@ internal class AndroidAssetFileProvider : IFileProvider
         public DateTimeOffset LastModified { get; } = DateTimeOffset.FromUnixTimeSeconds(0);
         public bool IsDirectory => false;
 
-        public Stream CreateReadStream() => _assetLoader.Open(new Uri(_filePath));
+        public Stream CreateReadStream() => AssetLoader.Open(new Uri(_filePath));
     }
 
 }

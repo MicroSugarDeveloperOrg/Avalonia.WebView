@@ -1,8 +1,6 @@
-﻿using Avalonia.Threading;
+﻿namespace AvaloniaWebView;
 
-namespace AvaloniaWebView;
-
-public sealed partial class  WebView : Control, IVirtualWebView<WebView>, IEmptyView, IWebViewEventHandler, IVirtualWebViewControlCallBack, IWebViewControl
+public sealed partial class WebView : Control, IVirtualWebView<WebView>, IEmptyView, IWebViewEventHandler, IVirtualWebViewControlCallBack, IWebViewControl
 {
     static WebView()
     {
@@ -20,10 +18,10 @@ public sealed partial class  WebView : Control, IVirtualWebView<WebView>, IEmpty
 
     public WebView(IServiceProvider? serviceProvider = default)
     {
-        var properties = AvaloniaLocator.Current.GetService<WebViewCreationProperties>();
+        var properties = WebViewLocator.s_ResolverContext.GetRequiredService<WebViewCreationProperties>();
         _creationProperties = properties ?? new WebViewCreationProperties();
 
-        _viewHandlerProvider = AvaloniaLocator.Current.GetRequiredService<IViewHandlerProvider>();
+        _viewHandlerProvider = WebViewLocator.s_ResolverContext.GetRequiredService<IViewHandlerProvider>();
         ClipToBounds = false;
 
         _partEmptyViewPresenter = new()
@@ -38,16 +36,7 @@ public sealed partial class  WebView : Control, IVirtualWebView<WebView>, IEmpty
             ClipToBounds = true,
             [!Border.CornerRadiusProperty] = this[!CornerRadiusProperty]
         };
-        //Child = _partInnerContainer;
-
-        //Loaded += (s, e) =>
-        //{
-        //    Dispatcher.UIThread.InvokeAsync(() =>
-        //    {
-        //        _= Navigate(Url);
-        //        _= NavigateToString(HtmlContent);
-        //    });
-        //};
+        Child = _partInnerContainer;
     }
 
     readonly WebViewCreationProperties _creationProperties;

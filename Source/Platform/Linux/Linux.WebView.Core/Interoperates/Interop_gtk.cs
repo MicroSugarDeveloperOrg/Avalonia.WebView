@@ -72,7 +72,7 @@ internal unsafe class Interop_gtk
     public delegate bool signal_dialog_response(nint gtkWidget, GtkResponseType response, nint userData);
 
     [DllImport(_Gtk)]
-    public static extern nint gtk_file_chooser_dialog_new(Utf8Buffer title, nint parent,
+    public static extern nint gtk_file_chooser_dialog_new(string title, nint parent,
         GtkFileChooserAction action, nint ignore);
 
     [DllImport(_Gtk)]
@@ -82,25 +82,25 @@ internal unsafe class Interop_gtk
     public static extern void gtk_file_chooser_set_do_overwrite_confirmation(nint chooser, bool do_overwrite_confirmation);
 
     [DllImport(_Gtk)]
-    public static extern void gtk_dialog_add_button(nint raw, Utf8Buffer button_text, GtkResponseType response_id);
+    public static extern void gtk_dialog_add_button(nint raw, string button_text, GtkResponseType response_id);
 
     [DllImport(_Gtk)]
     public static extern GSList* gtk_file_chooser_get_filenames(nint chooser);
 
     [DllImport(_Gtk)]
-    public static extern void gtk_file_chooser_set_filename(nint chooser, Utf8Buffer file);
+    public static extern void gtk_file_chooser_set_filename(nint chooser, string file);
 
     [DllImport(_Gtk)]
-    public static extern void gtk_file_chooser_set_current_name(nint chooser, Utf8Buffer file);
+    public static extern void gtk_file_chooser_set_current_name(nint chooser, string file);
 
     [DllImport(_Gtk)]
     public static extern nint gtk_file_filter_new();
 
     [DllImport(_Gtk)]
-    public static extern nint gtk_file_filter_set_name(nint filter, Utf8Buffer name);
+    public static extern nint gtk_file_filter_set_name(nint filter, string name);
 
     [DllImport(_Gtk)]
-    public static extern nint gtk_file_filter_add_pattern(nint filter, Utf8Buffer pattern);
+    public static extern nint gtk_file_filter_add_pattern(nint filter, string pattern);
 
     [DllImport(_Gtk)]
     public static extern nint gtk_file_chooser_add_filter(nint chooser, nint filter);
@@ -127,5 +127,5 @@ internal unsafe class Interop_gtk
     public static extern nint gtk_container_add(nint container, nint widget);
 
     [DllImport(_Gtk)]
-    public static extern nint gtk_application_new(Utf8Buffer appId, int flags);
+    public static extern nint gtk_application_new(string appId, int flags);
 }

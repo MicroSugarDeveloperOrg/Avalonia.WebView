@@ -39,3 +39,6 @@ global using WebViewCore.Events;
 global using WebViewCore.Helpers;
 global using Avalonia.WebView.Android.Common;
 global using System.Reflection;
+
+global using DryIoc.Shared.Extensions;
+global using WebViewCore.Ioc;

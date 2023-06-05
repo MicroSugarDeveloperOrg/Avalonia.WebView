@@ -20,3 +20,6 @@ global using System.Web;
 
 global using GWindow = Gtk.Window;
 global using WebKitWebView = WebKit.WebView;
+
+global using DryIoc.Shared.Extensions;
+global using WebViewCore.Ioc;

@@ -32,3 +32,5 @@ global using Avalonia.WebView.iOS.Delegates;
 global using WebViewCore.Events;
 global using System.Text.Encodings.Web;
 global using WebViewCore.Enums;
+global using DryIoc.Shared.Extensions;
+global using WebViewCore.Ioc;

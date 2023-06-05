@@ -132,10 +132,10 @@ partial class WebView
             case nameof(BorderThickness):
                 _layoutThickness = null;
                 break;
-                //case nameof(CornerRadius):
-                //    if (_borderVisual != null)
-                //        _borderVisual.CornerRadius = CornerRadius;
-                //    break;
+            //case nameof(CornerRadius):
+            //    if (_borderVisual != null)
+            //        _borderVisual.CornerRadius = CornerRadius;
+            //    break;
         }
     }
 

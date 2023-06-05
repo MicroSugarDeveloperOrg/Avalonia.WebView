@@ -20,3 +20,5 @@ global using WebViewCore.Events;
 global using Foundation;
 global using CoreGraphics;
 global using AppKit;
+global using DryIoc.Shared.Extensions;
+global using WebViewCore.Ioc;

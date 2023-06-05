@@ -46,8 +46,8 @@ partial class WebView2Core
 
         _handler.TryUpdateNativeControlPosition();
 
-        var keyboard = KeyboardDevice.Instance;
-        if (keyboard?.FocusedElement == _handler)
+        var focusElement = TopLevel.GetTopLevel(_handler)?.FocusManager?.GetFocusedElement();
+        if (focusElement == _handler)
             coreWebView2Controller.MoveFocus(CoreWebView2MoveFocusReason.Programmatic);
 
         coreWebView2Controller.IsVisible = _handler.IsVisible;
