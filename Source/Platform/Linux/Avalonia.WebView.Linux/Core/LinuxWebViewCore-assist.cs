@@ -28,7 +28,7 @@ partial class LinuxWebViewCore
         var policyDecision = new NavigationPolicyDecision(pPolicyDecision);
 
         var navigationType = policyDecision.NavigationAction.NavigationType;
-        var uriString = policyDecision.NavigationAction.Request.Uri;
+        var uriString = policyDecision.Request.Uri;
         var uri = new Uri(uriString);
 
         if (_webScheme?.BaseUri.IsBaseOf(uri) == true)
