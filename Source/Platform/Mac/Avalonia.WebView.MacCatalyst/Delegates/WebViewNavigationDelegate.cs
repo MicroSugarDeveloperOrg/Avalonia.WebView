@@ -6,10 +6,12 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
         _webViewCore = webViewCore;
         //_webView = _webViewCore.WebView;
         _webScheme = webScheme;
+        _callBack = callBack;
     }
     readonly MacCatalystWebViewCore _webViewCore;
     //readonly WKWebView _webView;
     readonly WebScheme? _webScheme;
+    readonly IVirtualWebViewControlCallBack _callBack;
 
     WKNavigation? _navigation;
     Uri? _currentUri;
@@ -27,6 +29,8 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
         var requestUrl = navigationAction.Request.Url;
         var uri = new Uri(requestUrl.ToString());
 
+        _callBack.PlatformWebViewNavigationStarting(_webViewCore, new WebViewUrlLoadingEventArg() { Url = uri });
+
         UrlLoadingStrategy strategy;
 
         if (navigationAction.TargetFrame is null)
@@ -39,15 +43,23 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
                 strategy = UrlLoadingStrategy.OpenInWebView;
         }
 
-        if (strategy == UrlLoadingStrategy.OpenExternally)
+        var newWindowEventArgs = new WebViewNewWindowEventArgs()
         {
+            Url = uri,
+            UrlLoadingStrategy = UrlLoadingStrategy.OpenInWebView
+        };
 
-            //Open use system  
+        if (!_callBack.PlatformWebViewNewWindowRequest(_webViewCore, newWindowEventArgs))
+        {
+            decisionHandler(WKNavigationActionPolicy.Cancel);
+            return;
         }
+
+        if (strategy == UrlLoadingStrategy.OpenExternally)
+            OpenUriHelper.OpenInProcess(uri);
 
         if (strategy != UrlLoadingStrategy.OpenInWebView)
         {
-            //action?.Invoke(WKNavigationActionPolicy.Cancel);
             decisionHandler(WKNavigationActionPolicy.Cancel);
             return;
         }
@@ -55,7 +67,6 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
         if (navigationAction.TargetFrame!.MainFrame)
             _currentUri = requestUrl;
 
-        //action?.Invoke(WKNavigationActionPolicy.Allow);
         decisionHandler(WKNavigationActionPolicy.Allow);
     }
 

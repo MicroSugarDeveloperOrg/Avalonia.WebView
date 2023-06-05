@@ -5,28 +5,27 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
     public WebViewNavigationDelegate(IosWebViewCore webViewCore, IVirtualWebViewControlCallBack callBack, WebScheme? webScheme)
     {
         _webViewCore = webViewCore;
-        //_webView = _webViewCore.WebView;
         _webScheme = webScheme;
+        _callBack = callBack;
     }
     readonly IosWebViewCore _webViewCore;
-    //readonly WKWebView _webView;
     readonly WebScheme? _webScheme;
+    readonly IVirtualWebViewControlCallBack _callBack;
 
     WKNavigation? _navigation;
     Uri? _currentUri;
 
     public override void DidStartProvisionalNavigation(WKWebView webView, WKNavigation navigation)
     {
-        //base.DidStartProvisionalNavigation(webView, navigation);
         _navigation = navigation;
     }
 
     public override void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, Action<WKNavigationActionPolicy> decisionHandler)
     {
-        //base.DecidePolicy(webView, navigationAction, decisionHandler);
-
         var requestUrl = navigationAction.Request.Url;
         var uri = new Uri(requestUrl.ToString());
+
+        _callBack.PlatformWebViewNavigationStarting(_webViewCore, new WebViewUrlLoadingEventArg() { Url = uri });
 
         UrlLoadingStrategy strategy;
 
@@ -40,9 +39,20 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
                 strategy = UrlLoadingStrategy.OpenInWebView;
         }
 
+        var newWindowEventArgs = new WebViewNewWindowEventArgs()
+        {
+            Url = uri,
+            UrlLoadingStrategy = UrlLoadingStrategy.OpenInWebView
+        };
+
+        if (!_callBack.PlatformWebViewNewWindowRequest(_webViewCore, newWindowEventArgs))
+        {
+            decisionHandler(WKNavigationActionPolicy.Cancel);
+            return;
+        }
+
         if (strategy == UrlLoadingStrategy.OpenExternally)
         {
-
 #pragma warning disable CA1422  // TODO: OpenUrl(...) has [UnsupportedOSPlatform("ios10.0")]
             UIApplication.SharedApplication.OpenUrl(requestUrl);
 #pragma warning restore CA1422 // 

@@ -1,4 +1,7 @@
 ﻿using System;
+using WebViewCore.Enums;
+using WebViewCore.Helpers;
+using WebViewCore.Models;
 
 namespace Avalonia.WebView.Windows.Core;
 
@@ -137,6 +140,7 @@ partial class WebView2Core
 
     private void CoreWebView2_NavigationStarting(object sender, CoreWebView2NavigationStartingEventArgs e)
     {
+        _callBack.PlatformWebViewNavigationStarting(this, new WebViewUrlLoadingEventArg() { Url = new Uri(e.Uri) });
     }
 
     private void CoreWebView2_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
@@ -153,6 +157,36 @@ partial class WebView2Core
 
     private void CoreWebView2_NewWindowRequested(object sender, CoreWebView2NewWindowRequestedEventArgs e)
     {
+        if (_provider is null)
+            return;
+
+        var urlLoadingStrategy = UrlLoadingStrategy.OpenExternally;
+        var uri = new Uri(e.Uri);
+        if (_provider.BaseUri.IsBaseOf(uri) == true)
+            urlLoadingStrategy = UrlLoadingStrategy.OpenInWebView;
+
+        var newWindowEventArgs = new WebViewNewWindowEventArgs()
+        {
+            Url = uri,
+            UrlLoadingStrategy = urlLoadingStrategy
+        };
+
+        if (!_callBack.PlatformWebViewNewWindowRequest(this, newWindowEventArgs))
+            return;
+
+        switch (newWindowEventArgs.UrlLoadingStrategy)
+        {
+            case UrlLoadingStrategy.OpenExternally:
+                OpenUriHelper.OpenInProcess(uri);
+                break;
+            case UrlLoadingStrategy.OpenInWebView:
+                e.NewWindow = CoreWebView2!;
+                break;
+            case UrlLoadingStrategy.CancelLoad:
+                break;
+            default:
+                break;
+        }
 
     }
 

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using WebKit;
+using WebViewCore.Enums;
 using WebViewCore.Helpers;
 
 namespace Avalonia.WebView.Linux.Core;
@@ -27,7 +28,6 @@ partial class LinuxWebViewCore
         var webView = new WebKitWebView(pWebView);
         var policyDecision = new NavigationPolicyDecision(pPolicyDecision);
 
-        //var navigationAction = policyDecision.NavigationAction;
 #pragma warning disable CS0612 // Type or member is obsolete
         var navigationRequest = policyDecision.Request;
 #pragma warning restore CS0612 // Type or member is obsolete
@@ -38,16 +38,32 @@ partial class LinuxWebViewCore
         var uriString = navigationRequest.Uri;
         var uri = new Uri(uriString);
 
+        _callBack.PlatformWebViewNavigationStarting(this, new WebViewUrlLoadingEventArg() { Url = uri });
+
         if (_webScheme?.BaseUri.IsBaseOf(uri) == true)
             return true;
 
-        _callBack.PlatformWebViewNewWindowRequest(this, new WebViewNewWindowEventArgs());
-
-        if (type == PolicyDecisionType.NewWindowAction)
-            OpenUriHelper.OpenInProcess(uri);
-        else
+        var newWindowEventArgs = new WebViewNewWindowEventArgs()
         {
-            webView.LoadUri(uriString);
+            Url = uri,
+            UrlLoadingStrategy = type == PolicyDecisionType.NewWindowAction ? UrlLoadingStrategy.OpenInWebView : UrlLoadingStrategy.OpenExternally
+        };
+
+        if (!_callBack.PlatformWebViewNewWindowRequest(this, newWindowEventArgs))
+            return false;
+
+        switch (newWindowEventArgs.UrlLoadingStrategy)
+        {
+            case UrlLoadingStrategy.OpenExternally:
+                OpenUriHelper.OpenInProcess(uri);
+                break;
+            case UrlLoadingStrategy.OpenInWebView:
+                webView.LoadUri(uriString);
+                break;
+            case UrlLoadingStrategy.CancelLoad:
+                break;
+            default:
+                break;
         }
 
         return false;

@@ -1,4 +1,6 @@
-﻿namespace Avalonia.WebView.Android.Clients;
+﻿using WebViewCore.Enums;
+
+namespace Avalonia.WebView.Android.Clients;
 
 [SupportedOSPlatform("android23.0")]
 internal class AvaloniaWebViewClient : WebViewClient
@@ -10,7 +12,7 @@ internal class AvaloniaWebViewClient : WebViewClient
         ArgumentNullException.ThrowIfNull(provider);
         ArgumentNullException.ThrowIfNull(webScheme);
         _callBack = callBack;
-        _webViewHandler = webViewHandler;
+        _webViewCore = webViewHandler;
         _provider = provider;
         _webView = webViewHandler.WebView;
         _webScheme = webScheme;
@@ -24,7 +26,7 @@ internal class AvaloniaWebViewClient : WebViewClient
         // because of these facts, we have to check all methods below for null field references and properties.
     }
 
-    readonly AndroidWebViewCore? _webViewHandler;
+    readonly AndroidWebViewCore? _webViewCore;
     readonly AndroidWebView? _webView;
     readonly IVirtualWebViewControlCallBack? _callBack;
     readonly IVirtualBlazorWebViewProvider? _provider;
@@ -57,7 +59,7 @@ internal class AvaloniaWebViewClient : WebViewClient
                 AllowFallbackOnHostPage = allowFallbackOnHostPage
             };
 
-            if (!_provider.PlatformWebViewResourceRequested(_webViewHandler, webRequest, out var webResponse))
+            if (!_provider.PlatformWebViewResourceRequested(_webViewCore, webRequest, out var webResponse))
                 return default;
 
             if (webResponse is null)
@@ -97,12 +99,31 @@ internal class AvaloniaWebViewClient : WebViewClient
         if (_callBack is null || !Uri.TryCreate(request?.Url?.ToString(), UriKind.RelativeOrAbsolute, out var uri))
             return false;
 
-        _callBack.PlatformWebViewNavigationStarting(_webViewHandler, new WebViewUrlLoadingEventArg());
+        _callBack.PlatformWebViewNavigationStarting(_webViewCore, new WebViewUrlLoadingEventArg() { Url = uri });
 
-       
-        _callBack.PlatformWebViewNewWindowRequest(_webViewHandler, new WebViewNewWindowEventArgs());
-        var intent = Intent.ParseUri(uri.OriginalString, IntentUriType.Scheme);
-        AndroidApplication.Context.StartActivity(intent);
+        var newWindowEventArgs = new WebViewNewWindowEventArgs()
+        {
+            Url = uri,
+            UrlLoadingStrategy = UrlLoadingStrategy.OpenInWebView
+        };
+
+        if (!_callBack.PlatformWebViewNewWindowRequest(_webViewCore, newWindowEventArgs))
+            return false;
+
+        switch (newWindowEventArgs.UrlLoadingStrategy)
+        {
+            case UrlLoadingStrategy.OpenExternally:
+                var intent = Intent.ParseUri(uri.OriginalString, IntentUriType.Scheme);
+                AndroidApplication.Context.StartActivity(intent);
+                break;
+            case UrlLoadingStrategy.OpenInWebView:
+                _webView?.LoadUrl(uri.OriginalString);
+                break;
+            case UrlLoadingStrategy.CancelLoad:            
+                break;
+            default:
+                break;
+        }
 
         return true;
     }
@@ -150,7 +171,7 @@ internal class AvaloniaWebViewClient : WebViewClient
             if (string.IsNullOrWhiteSpace(message))
                 return;
 
-              provider.PlatformWebViewMessageReceived(_webViewHandler, new WebViewMessageReceivedEventArgs() 
+              provider.PlatformWebViewMessageReceived(_webViewCore, new WebViewMessageReceivedEventArgs() 
               {
                   Source = _webScheme.BaseUri,
                   Message = message
