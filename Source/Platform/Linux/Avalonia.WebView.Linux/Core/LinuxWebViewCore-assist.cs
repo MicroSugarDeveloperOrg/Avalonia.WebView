@@ -60,7 +60,7 @@ partial class LinuxWebViewCore
                 return true; 
             case UrlLoadingStrategy.OpenInWebView:
                 //webView.LoadUri(uriString);
-                return true; 
+                return false; 
             case UrlLoadingStrategy.CancelLoad:
                 policyDecision?.IgnorePolicyDecision();
                 return true;
