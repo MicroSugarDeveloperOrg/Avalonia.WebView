@@ -66,6 +66,6 @@ partial class LinuxWebViewCore
                 break;
         }
 
-        return false;
+        return true;
     }
 }
