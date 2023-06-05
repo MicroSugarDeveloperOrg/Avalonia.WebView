@@ -7,7 +7,7 @@ namespace Avalonia.WebView.Linux.Core;
 
 unsafe partial class LinuxWebViewCore
 {
-    Task PrepareBlazorWebViewStarting(IVirtualBlazorWebViewProvider? provider, WebKit.WebView webView)
+    Task PrepareBlazorWebViewStarting(IVirtualBlazorWebViewProvider? provider, WebKitWebView webView)
     {
         if (provider is null || WebView is null)
             return Task.CompletedTask;
@@ -36,7 +36,7 @@ unsafe partial class LinuxWebViewCore
         return Task.CompletedTask;
     }
 
-    void ClearBlazorWebViewCompleted(WebKit.WebView webView)
+    void ClearBlazorWebViewCompleted(WebKitWebView webView)
     {
         if (webView is null)
             return;
@@ -48,32 +48,6 @@ unsafe partial class LinuxWebViewCore
         }).Result;
   
         _isBlazorWebView = false;
-    }
-
-    private void WebView_UserMessageReceived(object o, UserMessageReceivedArgs args)
-    {
-
-    }
-
-
-    private void WebView_PermissionRequest(object o, PermissionRequestArgs args)
-    {
-        args.Request.Allow();
-    }
-
-    private void WebView_LinkClicked(nint webView, nint link)
-    {
-
-    }
-
-    private void WebView_DecidePolicy(object o,  DecidePolicyArgs args)
-    {
-         
-    }
-
-    void WebView_DecidePolicy(nint pPolicyDecision, PolicyDecisionType type)
-    {
-
     }
 
     void WebView_WebMessageReceived(nint pContentManager, nint pJsResult, nint pArg)

@@ -33,7 +33,7 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
     }
 
     delegate void void_nint_nint_nint(nint arg0, nint arg1, nint arg2);
-    delegate void void_nint_policytype(nint arg0, PolicyDecisionType type);
+    delegate bool bool_nint_nint_policytype(nint arg0, nint arg1 , PolicyDecisionType type);
 
     readonly GWindow _hostWindow;
     readonly WebKitWebView _webView;
@@ -48,7 +48,7 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
     readonly string _dispatchMessageCallback = "__dispatchMessageCallback";
 
     readonly void_nint_nint_nint _userContentMessageReceived;
-    readonly void_nint_policytype _decidePolicyArgsChanged;
+    readonly bool_nint_nint_policytype _decidePolicyArgsChanged;
 
     WebScheme? _webScheme;
 
