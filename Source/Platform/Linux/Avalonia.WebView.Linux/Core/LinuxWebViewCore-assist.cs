@@ -27,8 +27,17 @@ partial class LinuxWebViewCore
         var webView = new WebKitWebView(pWebView);
         var policyDecision = new NavigationPolicyDecision(pPolicyDecision);
 
-        var navigationType = policyDecision.NavigationAction.NavigationType;
-        var uriString = policyDecision.Request.Uri;
+        var navigationAction = policyDecision.NavigationAction;
+#pragma warning disable CS0612 // Type or member is obsolete
+        var navigationRequest = policyDecision.Request;
+#pragma warning restore CS0612 // Type or member is obsolete
+        if (navigationRequest is null)
+            navigationRequest = navigationAction.Request;
+
+        if (navigationRequest is null)
+            return false;
+
+        var uriString = navigationRequest.Uri;
         var uri = new Uri(uriString);
 
         if (_webScheme?.BaseUri.IsBaseOf(uri) == true)
