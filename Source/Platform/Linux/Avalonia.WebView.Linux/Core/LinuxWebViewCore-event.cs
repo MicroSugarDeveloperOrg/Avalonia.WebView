@@ -1,4 +1,8 @@
-﻿namespace Avalonia.WebView.Linux.Core;
+﻿using Linux.WebView.Core.Interoperates;
+using Linux.WebView.Core;
+using WebKit;
+
+namespace Avalonia.WebView.Linux.Core;
 
 unsafe partial class LinuxWebViewCore
 {
@@ -30,8 +34,11 @@ unsafe partial class LinuxWebViewCore
             return;
  
         var bRet = _dispatcher.InvokeAsync(() =>
-         {
-             //webView.AddSignalHandler("link-clicked", WebView_LinkClicked);
+        {
+            //webView.AddSignalHandler("link-clicked", WebView_LinkClicked);
+
+             GtkApi.AddSignalConnect(webView.Handle, "decide-policy", LinuxApplicationManager.LoadFunction(_decidePolicyArgsChanged), IntPtr.Zero);
+
              webView.DecidePolicy += WebView_DecidePolicy;
              webView.PermissionRequest += WebView_PermissionRequest;
              webView.UserMessageReceived += WebView_UserMessageReceived;

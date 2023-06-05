@@ -1,4 +1,5 @@
 ﻿using Linux.WebView.Core;
+using WebKit;
 
 namespace Avalonia.WebView.Linux.Core;
 
@@ -22,6 +23,7 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
         _hostWindowX11Handle = gtkWrapper.Item3;
 
         _userContentMessageReceived = WebView_WebMessageReceived;
+        _decidePolicyArgsChanged = WebView_DecidePolicy;
         RegisterEvents();
     }
 
@@ -31,6 +33,7 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
     }
 
     delegate void void_nint_nint_nint(nint arg0, nint arg1, nint arg2);
+    delegate void void_nint_policytype(nint arg0, PolicyDecisionType type);
 
     readonly GWindow _hostWindow;
     readonly WebKitWebView _webView;
@@ -45,6 +48,7 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
     readonly string _dispatchMessageCallback = "__dispatchMessageCallback";
 
     readonly void_nint_nint_nint _userContentMessageReceived;
+    readonly void_nint_policytype _decidePolicyArgsChanged;
 
     WebScheme? _webScheme;
 

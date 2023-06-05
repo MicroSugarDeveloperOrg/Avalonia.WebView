@@ -71,6 +71,11 @@ unsafe partial class LinuxWebViewCore
          
     }
 
+    void WebView_DecidePolicy(nint pPolicyDecision, PolicyDecisionType type)
+    {
+
+    }
+
     void WebView_WebMessageReceived(nint pContentManager, nint pJsResult, nint pArg)
     {
         //var userContentManager = new UserContentManager(pContentManager);
