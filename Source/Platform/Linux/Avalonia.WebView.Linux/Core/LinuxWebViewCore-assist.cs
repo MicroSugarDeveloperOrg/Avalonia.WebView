@@ -66,6 +66,7 @@ partial class LinuxWebViewCore
                 return true;
             default:
                 break;
-        } 
+        }
+        return false;
     }
 }
