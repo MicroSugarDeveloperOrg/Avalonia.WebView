@@ -23,3 +23,7 @@ global using WebKitWebView = WebKit.WebView;
 
 global using DryIoc.Shared.Extensions;
 global using WebViewCore.Ioc;
+global using WebKit;
+global using WebViewCore.Enums;
+global using WebViewCore.Helpers;
+global using Linux.WebView.Core.Interoperates;

@@ -56,16 +56,17 @@ partial class LinuxWebViewCore
         {
             case UrlLoadingStrategy.OpenExternally:
                 OpenUriHelper.OpenInProcess(uri);
-                break;
+                policyDecision?.IgnorePolicyDecision();
+                return true; 
             case UrlLoadingStrategy.OpenInWebView:
-                webView.LoadUri(uriString);
-                break;
+                break; 
             case UrlLoadingStrategy.CancelLoad:
-                break;
+                policyDecision?.IgnorePolicyDecision();
+                return true;
             default:
                 break;
         }
 
-        return true;
+        return false;
     }
 }

@@ -38,6 +38,9 @@ public delegate bool jsc_value_is_string_delegate(nint value);
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate nint jsc_value_to_string_delegate(nint value);
 
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate void webkit_policy_decision_ignore_delegate(nint decision);
+
 public static class GtkApi
 {
     static GtkApi()
@@ -57,6 +60,8 @@ public static class GtkApi
         __jsc_value_is_string = LoadDelegate<jsc_value_is_string_delegate>(gLibrary.Webkit, jsc_value_is_string)!;
         __jsc_value_to_string = LoadDelegate<jsc_value_to_string_delegate>(gLibrary.Webkit, jsc_value_to_string)!;
 
+        __webkit_policy_decision_ignore = LoadDelegate<webkit_policy_decision_ignore_delegate>(gLibrary.Webkit, webkit_policy_decision_ignore)!;
+
     }
 
     private static string gdk_set_allowed_backends => nameof(gdk_set_allowed_backends);
@@ -73,6 +78,7 @@ public static class GtkApi
     private static string webkit_javascript_result_unref => nameof(webkit_javascript_result_unref);
     private static string jsc_value_is_string => nameof(jsc_value_is_string);
     private static string jsc_value_to_string => nameof(jsc_value_to_string);
+    private static string webkit_policy_decision_ignore => nameof(webkit_policy_decision_ignore);
 
     private static gdk_set_allowed_backends_delegate __gdk_set_allowed_backends;
     private static gdk_x11_window_get_xid_delegate __gdk_x11_window_get_xid;
@@ -88,6 +94,8 @@ public static class GtkApi
     private static webkit_javascript_result_unref_delegate __webkit_javascript_result_unref;
     private static jsc_value_is_string_delegate __jsc_value_is_string;
     private static jsc_value_to_string_delegate __jsc_value_to_string;
+    private static webkit_policy_decision_ignore_delegate __webkit_policy_decision_ignore;
+
 
     public static bool SetAllowedBackends(string backends)
     {
@@ -168,4 +176,6 @@ public static class GtkApi
     }
     public static string ToStringEx(this nint value) => ToStringX(value);
 
+    public static void IgnorePolicyDecision(nint decision) => __webkit_policy_decision_ignore.Invoke(decision);
+    public static void IgnorePolicyDecision(this PolicyDecision decision) => IgnorePolicyDecision(decision.Handle);
 }
