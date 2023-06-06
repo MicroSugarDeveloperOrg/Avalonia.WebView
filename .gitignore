@@ -402,3 +402,4 @@ FodyWeavers.xsd
 /.idea
 /_blazorwebview
 /_webview/netstandard2.0
+/_nuget

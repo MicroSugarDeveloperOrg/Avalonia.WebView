@@ -43,11 +43,11 @@ public partial class WebView2Core : IPlatformWebView<WebView2Core>
         private set => Volatile.Write(ref _isInitialized, value);
     }
 
-    bool _isdisposed = false;
+    bool _isDisposed = false;
     public bool IsDisposed
     {
-        get => Volatile.Read(ref _isdisposed);
-        private set => Volatile.Write(ref _isdisposed, value);
+        get => Volatile.Read(ref _isDisposed);
+        private set => Volatile.Write(ref _isDisposed, value);
     }
  
     CoreWebView2Environment? _coreWebView2Environment { get; set; }

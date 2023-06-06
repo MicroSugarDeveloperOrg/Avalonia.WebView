@@ -4,12 +4,36 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<PackageId>WebView.Avalonia.Linux</PackageId>
+		<Title>WebView.Avalonia.Linux</Title>
+	</PropertyGroup>
+
+	<Import Project="$(BuildToolsDirectory)Directory.Packages.targets" />
+
 	<ItemGroup>
+		<None Include="..\..\..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\..\..\Packages\webview@avalonia-logo.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
+		<ProjectReference Include="..\..\..\DryIoc.Shared\DryIoc.Shared.csproj" />
+		<ProjectReference Include="..\..\..\WebView.Core\WebView.Core.csproj" />
 		<ProjectReference Include="..\Linux.WebView.Core\Linux.WebView.Core.csproj" />
 	</ItemGroup>
 
