@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net7.0;net6.0</TargetFrameworks>
+		<OutputPath>$(RepositoryDirectory)_blazorwebview\</OutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageId>BlazorWebView.Avalonia</PackageId>
+		<Title>BlazorWebView.Avalonia</Title>
+	</PropertyGroup>
+
+	<Import Project="$(BuildToolsDirectory)Directory.Packages.targets" />
+
+	<ItemGroup>
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\Packages\webview@avalonia-logo.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Source\Avalonia.BlazorWebView\Avalonia.BlazorWebView.csproj" />
+	  <ProjectReference Include="..\..\Source\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
+	  <ProjectReference Include="..\..\Source\DryIoc.Shared\DryIoc.Shared.csproj" />
+	  <ProjectReference Include="..\..\Source\Toolkit.Shared\Toolkit.Shared.csproj" />
+	  <ProjectReference Include="..\..\Source\WebView.Core\WebView.Core.csproj" />
+	</ItemGroup>
+
+</Project>

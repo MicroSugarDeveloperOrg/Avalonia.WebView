@@ -400,3 +400,5 @@ FodyWeavers.xsd
 /Binary
 /.idea/.idea.Avalonia.WebView/.idea/indexLayout.xml
 /.idea
+/_blazorwebview
+/_webview/netstandard2.0
