@@ -11,15 +11,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="runtimes\win-arm64\native\WebView2Loader.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="runtimes\win-x64\native\WebView2Loader.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="runtimes\win-x86\native\WebView2Loader.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
+	  <None Update="runtimes\win-arm64\native\WebView2Loader.dll">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="runtimes\win-x64\native\WebView2Loader.dll">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="runtimes\win-x86\native\WebView2Loader.dll">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>

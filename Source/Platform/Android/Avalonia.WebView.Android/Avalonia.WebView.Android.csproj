@@ -4,12 +4,51 @@
 		<TargetFramework>net7.0-android</TargetFramework>
 	</PropertyGroup>
 
+	<Import Project="$(BuildToolsDirectory)Directory.Packages.targets" />
+	
 	<PropertyGroup>
 		<PackageId>WebView.Avalonia.Android</PackageId>
 		<Title>WebView.Avalonia.Android</Title>
+		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+		<TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);CopyTargetsForTfmSpecificContentInPackage</TargetsForTfmSpecificContentInPackage>
+		<TargetsForTfmSpecificDebugSymbolsInPackage>$(TargetsForTfmSpecificDebugSymbolsInPackage);CopyProjectReferencesSymbolsToPackage</TargetsForTfmSpecificDebugSymbolsInPackage>
 	</PropertyGroup>
 
-	<Import Project="$(BuildToolsDirectory)Directory.Packages.targets" />
+	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+		<ItemGroup>
+			<BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))">
+			</BuildOutputInPackage>
+		</ItemGroup>
+	</Target>
+
+	<Target Name="CopyTargetsForTfmSpecificContentInPackage">
+		<ItemGroup>
+			<TfmSpecificPackageFile Include="$(OutputPath)AvaloniaWebView.Shared.dll">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificPackageFile>
+			<TfmSpecificPackageFile Include="$(OutputPath)DryIoc.Shared.dll">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificPackageFile>
+			<TfmSpecificPackageFile Include="$(OutputPath)WebView.Core.dll">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificPackageFile>
+		</ItemGroup>
+	</Target>
+
+	<Target Name="CopyProjectReferencesSymbolsToPackage" DependsOnTargets="ResolveReferences">
+		<ItemGroup>
+			<SupposedSymbolFiles Include="@(ReferenceCopyLocalPaths->'%(OutputPath)%(Filename).pdb')" />
+			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)AvaloniaWebView.Shared.pdb">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificDebugSymbolsFile>
+			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)DryIoc.Shared.pdb">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificDebugSymbolsFile>
+			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)WebView.Core.pdb">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificDebugSymbolsFile>
+		</ItemGroup>
+	</Target>
 
 	<ItemGroup>
 		<None Include="..\..\..\..\README.md">
@@ -30,8 +69,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
-		<ProjectReference Include="..\..\..\DryIoc.Shared\DryIoc.Shared.csproj" />
-		<ProjectReference Include="..\..\..\WebView.Core\WebView.Core.csproj" />
+		<ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj">
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+		<ProjectReference Include="..\..\..\DryIoc.Shared\DryIoc.Shared.csproj" >
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+		<ProjectReference Include="..\..\..\WebView.Core\WebView.Core.csproj">
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
 	</ItemGroup>
 </Project>

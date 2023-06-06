@@ -1,16 +1,67 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net7.0;net6.0</TargetFrameworks>
 		<OutputPath>$(RepositoryDirectory)_blazorwebview\</OutputPath>
 	</PropertyGroup>
 
+	<Import Project="$(BuildToolsDirectory)Directory.Packages.targets" />
+
 	<PropertyGroup>
 		<PackageId>BlazorWebView.Avalonia</PackageId>
 		<Title>BlazorWebView.Avalonia</Title>
+		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+		<TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);CopyTargetsForTfmSpecificContentInPackage</TargetsForTfmSpecificContentInPackage>
+		<TargetsForTfmSpecificDebugSymbolsInPackage>$(TargetsForTfmSpecificDebugSymbolsInPackage);CopyProjectReferencesSymbolsToPackage</TargetsForTfmSpecificDebugSymbolsInPackage>
 	</PropertyGroup>
 
-	<Import Project="$(BuildToolsDirectory)Directory.Packages.targets" />
+	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+		<ItemGroup>
+			<BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))">
+			</BuildOutputInPackage>
+		</ItemGroup>
+	</Target>
+
+	<Target Name="CopyTargetsForTfmSpecificContentInPackage">
+		<ItemGroup>
+			<TfmSpecificPackageFile Include="$(OutputPath)Avalonia.BlazorWebView.dll">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificPackageFile>
+			<TfmSpecificPackageFile Include="$(OutputPath)AvaloniaWebView.Shared.dll">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificPackageFile>
+			<TfmSpecificPackageFile Include="$(OutputPath)DryIoc.Shared.dll">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificPackageFile>
+			<TfmSpecificPackageFile Include="$(OutputPath)Toolkit.Shared.dll">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificPackageFile>
+			<TfmSpecificPackageFile Include="$(OutputPath)WebView.Core.dll">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificPackageFile>
+		</ItemGroup>
+	</Target>
+
+	<Target Name="CopyProjectReferencesSymbolsToPackage" DependsOnTargets="ResolveReferences">
+		<ItemGroup>
+			<SupposedSymbolFiles Include="@(ReferenceCopyLocalPaths->'%(OutputPath)%(Filename).pdb')" />
+			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)Avalonia.BlazorWebView.pdb">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificDebugSymbolsFile>
+			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)AvaloniaWebView.Shared.pdb">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificDebugSymbolsFile>
+			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)DryIoc.Shared.pdb">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificDebugSymbolsFile>
+			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)Toolkit.Shared.pdb">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificDebugSymbolsFile>
+			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)WebView.Core.pdb">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+			</TfmSpecificDebugSymbolsFile>
+		</ItemGroup>
+	</Target>
 
 	<ItemGroup>
 		<None Include="..\..\README.md">
@@ -26,13 +77,27 @@
 		</None>
 	</ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Avalonia" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView" />
+	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Source\Avalonia.BlazorWebView\Avalonia.BlazorWebView.csproj" />
-	  <ProjectReference Include="..\..\Source\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
-	  <ProjectReference Include="..\..\Source\DryIoc.Shared\DryIoc.Shared.csproj" />
-	  <ProjectReference Include="..\..\Source\Toolkit.Shared\Toolkit.Shared.csproj" />
-	  <ProjectReference Include="..\..\Source\WebView.Core\WebView.Core.csproj" />
+		<ProjectReference Include="..\..\Source\Avalonia.BlazorWebView\Avalonia.BlazorWebView.csproj">
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+		<ProjectReference Include="..\..\Source\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" >
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+		<ProjectReference Include="..\..\Source\DryIoc.Shared\DryIoc.Shared.csproj" >
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+		<ProjectReference Include="..\..\Source\Toolkit.Shared\Toolkit.Shared.csproj" >
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+		<ProjectReference Include="..\..\Source\WebView.Core\WebView.Core.csproj" >
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
 	</ItemGroup>
 
 </Project>
