@@ -403,3 +403,4 @@ FodyWeavers.xsd
 /_blazorwebview
 /_webview/netstandard2.0
 /_nuget
+/Source/*.DS_Store
