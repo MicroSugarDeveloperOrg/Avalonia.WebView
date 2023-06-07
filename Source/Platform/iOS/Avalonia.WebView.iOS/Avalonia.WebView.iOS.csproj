@@ -9,9 +9,9 @@
 	<PropertyGroup>
 		<PackageId>WebView.Avalonia.iOS</PackageId>
 		<Title>WebView.Avalonia.iOS</Title>
-		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-		<TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);CopyTargetsForTfmSpecificContentInPackage</TargetsForTfmSpecificContentInPackage>
-		<TargetsForTfmSpecificDebugSymbolsInPackage>$(TargetsForTfmSpecificDebugSymbolsInPackage);CopyProjectReferencesSymbolsToPackage</TargetsForTfmSpecificDebugSymbolsInPackage>
+		<!--<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>-->
+		<!--<TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);CopyTargetsForTfmSpecificContentInPackage</TargetsForTfmSpecificContentInPackage>-->
+		<!--<TargetsForTfmSpecificDebugSymbolsInPackage>$(TargetsForTfmSpecificDebugSymbolsInPackage);CopyProjectReferencesSymbolsToPackage</TargetsForTfmSpecificDebugSymbolsInPackage>-->
 	</PropertyGroup>
 
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
@@ -25,12 +25,15 @@
 		<ItemGroup>
 			<TfmSpecificPackageFile Include="$(OutputPath)AvaloniaWebView.Shared.dll">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/</PackagePath>
 			</TfmSpecificPackageFile>
 			<TfmSpecificPackageFile Include="$(OutputPath)DryIoc.Shared.dll">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/</PackagePath>
 			</TfmSpecificPackageFile>
 			<TfmSpecificPackageFile Include="$(OutputPath)WebView.Core.dll">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/</PackagePath>
 			</TfmSpecificPackageFile>
 		</ItemGroup>
 	</Target>

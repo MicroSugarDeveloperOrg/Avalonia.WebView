@@ -10,9 +10,9 @@
 	<PropertyGroup>
 		<PackageId>BlazorWebView.Avalonia</PackageId>
 		<Title>BlazorWebView.Avalonia</Title>
-		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+		<!--<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>-->
 		<TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);CopyTargetsForTfmSpecificContentInPackage</TargetsForTfmSpecificContentInPackage>
-		<TargetsForTfmSpecificDebugSymbolsInPackage>$(TargetsForTfmSpecificDebugSymbolsInPackage);CopyProjectReferencesSymbolsToPackage</TargetsForTfmSpecificDebugSymbolsInPackage>
+		<!--<TargetsForTfmSpecificDebugSymbolsInPackage>$(TargetsForTfmSpecificDebugSymbolsInPackage);CopyProjectReferencesSymbolsToPackage</TargetsForTfmSpecificDebugSymbolsInPackage>-->
 	</PropertyGroup>
 
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
@@ -26,18 +26,23 @@
 		<ItemGroup>
 			<TfmSpecificPackageFile Include="$(OutputPath)Avalonia.BlazorWebView.dll">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
 			</TfmSpecificPackageFile>
 			<TfmSpecificPackageFile Include="$(OutputPath)AvaloniaWebView.Shared.dll">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
 			</TfmSpecificPackageFile>
 			<TfmSpecificPackageFile Include="$(OutputPath)DryIoc.Shared.dll">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
 			</TfmSpecificPackageFile>
 			<TfmSpecificPackageFile Include="$(OutputPath)Toolkit.Shared.dll">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
 			</TfmSpecificPackageFile>
 			<TfmSpecificPackageFile Include="$(OutputPath)WebView.Core.dll">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
 			</TfmSpecificPackageFile>
 		</ItemGroup>
 	</Target>

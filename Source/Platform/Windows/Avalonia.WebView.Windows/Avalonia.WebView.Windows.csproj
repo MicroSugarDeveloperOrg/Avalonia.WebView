@@ -9,14 +9,15 @@
 	<PropertyGroup>
 		<PackageId>WebView.Avalonia.Windows</PackageId>
 		<Title>WebView.Avalonia.Windows</Title>
-		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+		<!--<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>-->
 		<TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);CopyTargetsForTfmSpecificContentInPackage</TargetsForTfmSpecificContentInPackage>
-		<TargetsForTfmSpecificDebugSymbolsInPackage>$(TargetsForTfmSpecificDebugSymbolsInPackage);CopyProjectReferencesSymbolsToPackage</TargetsForTfmSpecificDebugSymbolsInPackage>
+		<!--<TargetsForTfmSpecificDebugSymbolsInPackage>$(TargetsForTfmSpecificDebugSymbolsInPackage);CopyProjectReferencesSymbolsToPackage</TargetsForTfmSpecificDebugSymbolsInPackage>-->
 	</PropertyGroup>
 
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
 		<ItemGroup>
-			<BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))">	 
+			<BuildOutputInPackage Include="$(OutputPath)runtimes/**">
+				<TargetPath>runtimes</TargetPath>
 			</BuildOutputInPackage>
 		</ItemGroup>
 	</Target>
@@ -24,20 +25,25 @@
 	<Target Name="CopyTargetsForTfmSpecificContentInPackage">
 		<ItemGroup>
 			<TfmSpecificPackageFile Include="$(OutputPath)runtimes/**">
-				<PackagePath>content/runtimes/</PackagePath>
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/runtimes/;runtimes</PackagePath>
 			</TfmSpecificPackageFile>
 			<TfmSpecificPackageFile Include="$(OutputPath)Microsoft.Web.WebView2.Core.dll">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
 			</TfmSpecificPackageFile>
-			<TfmSpecificPackageFile Include="$(OutputPath)AvaloniaWebView.Shared.dll">
+			<!--<TfmSpecificPackageFile Include="$(OutputPath)AvaloniaWebView.Shared.dll">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
 			</TfmSpecificPackageFile>
 			<TfmSpecificPackageFile Include="$(OutputPath)DryIoc.Shared.dll">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
 			</TfmSpecificPackageFile>
 			<TfmSpecificPackageFile Include="$(OutputPath)WebView.Core.dll">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
-			</TfmSpecificPackageFile>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
+			</TfmSpecificPackageFile>-->
 		</ItemGroup>
 	</Target>
  

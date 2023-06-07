@@ -5,7 +5,6 @@
     <Avalonia_I_Want_To_Use_Private_Apis_In_Nuget_Package_And_Promise_To_Pin_The_Exact_Avalonia_Version_In_Package_Dependency>true</Avalonia_I_Want_To_Use_Private_Apis_In_Nuget_Package_And_Promise_To_Pin_The_Exact_Avalonia_Version_In_Package_Dependency>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Avalonia" Version="[$(AvaloniaVersion)]" />
     <PackageVersion Include="GtkSharp" Version="3.24.24.95" />
     <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageVersion Include="Microsoft.Extensions.FileProviders.Abstractions" Version="7.0.0" />
@@ -18,25 +17,27 @@
     <PackageVersion Include="WebkitGtkSharp" Version="3.24.24.95" />
     <PackageVersion Include="XamarinMac" Version="1.0.0" />
     <PackageVersion Include="XamlNameReferenceGenerator" Version="1.5.1" />
+	  
+    <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
     <!--<PackageVersion Include="Avalonia.Web" Version="$(AvaloniaVersion)" />-->
-    <PackageVersion Include="Avalonia.iOS" Version="[$(AvaloniaVersion)]" />
-    <PackageVersion Include="Avalonia.X11" Version="[$(AvaloniaVersion)]" />
-    <PackageVersion Include="Avalonia.Android" Version="[$(AvaloniaVersion)]" />
-    <PackageVersion Include="Avalonia.Desktop" Version="[$(AvaloniaVersion)]" />
-    <PackageVersion Include="Avalonia.Native" Version="[$(AvaloniaVersion)]" />
-    <PackageVersion Include="Avalonia.Browser" Version="[$(AvaloniaVersion)]" />
-    <PackageVersion Include="Avalonia.Browser.Blazor" Version="[$(AvaloniaVersion)]" />
+    <PackageVersion Include="Avalonia.iOS" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.X11" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Native" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Browser.Blazor" Version="$(AvaloniaVersion)" />
     <!--<PackageVersion Include="Avalonia.Web.Blazor" Version="$(AvaloniaVersion)" />-->
-    <PackageVersion Include="Avalonia.Direct2D1" Version="[$(AvaloniaVersion)]" />
-    <PackageVersion Include="Avalonia.Headless.Vnc" Version="[$(AvaloniaVersion)]" />
-    <PackageVersion Include="Avalonia.ReactiveUI" Version="[$(AvaloniaVersion)]" />
-    <PackageVersion Include="Avalonia.Themes.Fluent" Version="[$(AvaloniaVersion)]" />
-    <PackageVersion Include="Avalonia.Themes.Simple" Version="[$(AvaloniaVersion)]" />
-    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="[$(AvaloniaVersion)]" />
-    <PackageVersion Include="Avalonia.Controls.ColorPicker" Version="[$(AvaloniaVersion)]" />
-    <PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="[$(AvaloniaVersion)]" />
-    <PackageVersion Include="Avalonia.Skia" Version="[$(AvaloniaVersion)]" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="[$(AvaloniaVersion)]" />
+    <PackageVersion Include="Avalonia.Direct2D1" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Headless.Vnc" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Themes.Simple" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Controls.ColorPicker" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="DryIoc" Version="5.4.0" />
