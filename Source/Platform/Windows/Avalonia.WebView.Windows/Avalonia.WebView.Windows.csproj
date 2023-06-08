@@ -82,6 +82,8 @@
 	<ItemGroup>
 		<PackageReference Include="Avalonia" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" />
+		<PackageReference Include="Microsoft.CSharp" />
+		<PackageReference Include="System.Numerics.Vectors" />
 	</ItemGroup>
 
 	<ItemGroup>

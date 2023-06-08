@@ -1,4 +1,6 @@
-﻿namespace Avalonia.WebView.Windows;
+﻿using Avalonia.WebView.Windows;
+
+namespace Avalonia.WebView.Desktop;
 public static class AppBuilderExtensions
 {
     public static AppBuilder UseWindowWebView(this AppBuilder appBuilder)

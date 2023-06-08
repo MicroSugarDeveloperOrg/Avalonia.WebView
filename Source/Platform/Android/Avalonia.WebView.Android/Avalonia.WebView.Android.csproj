@@ -9,49 +9,7 @@
 	<PropertyGroup>
 		<PackageId>WebView.Avalonia.Android</PackageId>
 		<Title>WebView.Avalonia.Android</Title>
-		<!--<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>-->
-		<!--<TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);CopyTargetsForTfmSpecificContentInPackage</TargetsForTfmSpecificContentInPackage>-->
-		<!--<TargetsForTfmSpecificDebugSymbolsInPackage>$(TargetsForTfmSpecificDebugSymbolsInPackage);CopyProjectReferencesSymbolsToPackage</TargetsForTfmSpecificDebugSymbolsInPackage>-->
 	</PropertyGroup>
-
-	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
-		<ItemGroup>
-			<BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))">
-			</BuildOutputInPackage>
-		</ItemGroup>
-	</Target>
-
-	<Target Name="CopyTargetsForTfmSpecificContentInPackage">
-		<ItemGroup>
-			<TfmSpecificPackageFile Include="$(OutputPath)AvaloniaWebView.Shared.dll">
-				<TargetFramework>$(TargetFramework)</TargetFramework>
-				<PackagePath>lib/</PackagePath>
-			</TfmSpecificPackageFile>
-			<TfmSpecificPackageFile Include="$(OutputPath)DryIoc.Shared.dll">
-				<TargetFramework>$(TargetFramework)</TargetFramework>
-				<PackagePath>lib/</PackagePath>
-			</TfmSpecificPackageFile>
-			<TfmSpecificPackageFile Include="$(OutputPath)WebView.Core.dll">
-				<TargetFramework>$(TargetFramework)</TargetFramework>
-				<PackagePath>lib/</PackagePath>
-			</TfmSpecificPackageFile>
-		</ItemGroup>
-	</Target>
-
-	<Target Name="CopyProjectReferencesSymbolsToPackage" DependsOnTargets="ResolveReferences">
-		<ItemGroup>
-			<SupposedSymbolFiles Include="@(ReferenceCopyLocalPaths->'%(OutputPath)%(Filename).pdb')" />
-			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)AvaloniaWebView.Shared.pdb">
-				<TargetFramework>$(TargetFramework)</TargetFramework>
-			</TfmSpecificDebugSymbolsFile>
-			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)DryIoc.Shared.pdb">
-				<TargetFramework>$(TargetFramework)</TargetFramework>
-			</TfmSpecificDebugSymbolsFile>
-			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)WebView.Core.pdb">
-				<TargetFramework>$(TargetFramework)</TargetFramework>
-			</TfmSpecificDebugSymbolsFile>
-		</ItemGroup>
-	</Target>
 
 	<ItemGroup>
 		<None Include="..\..\..\..\README.md">

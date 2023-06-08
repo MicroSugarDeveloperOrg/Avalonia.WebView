@@ -404,3 +404,4 @@ FodyWeavers.xsd
 /_webview/netstandard2.0
 /_nuget
 /Source/*.DS_Store
+/*.DS_Store

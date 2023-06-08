@@ -84,8 +84,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="Avalonia" />
+		<PackageReference Include="System.Buffers" />
 		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebView" />
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" />
 	</ItemGroup>
 
 	<ItemGroup>

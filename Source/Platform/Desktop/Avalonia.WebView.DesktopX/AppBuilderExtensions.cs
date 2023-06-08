@@ -1,12 +1,4 @@
-﻿#if __WINDOWS__
-using Avalonia.WebView.Windows;
-# elif __OSX__
-using Avalonia.WebView.MacCatalyst;
-//using Avalonia.WebView.Mac;
-# elif __LINUX__
-using Avalonia.WebView.Linux;
-#endif
-
+﻿using Avalonia.WebView.Desktop;
 
 namespace Avalonia.WebView.DesktopX;
 public static class AppBuilderExtensions

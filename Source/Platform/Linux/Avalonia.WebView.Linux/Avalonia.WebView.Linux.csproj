@@ -77,6 +77,8 @@
 	<ItemGroup>
 		<PackageReference Include="Avalonia" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" />
+		<PackageReference Include="GtkSharp" />
+		<PackageReference Include="WebkitGtkSharp" />
 	</ItemGroup>
 
 	<ItemGroup>

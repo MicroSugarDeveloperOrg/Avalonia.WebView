@@ -78,6 +78,9 @@
 		<PackageReference Include="Avalonia" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" />
 		<PackageReference Include="System.Text.Encodings.Web" />
+		<PackageReference Include="System.Memory" />
+		<PackageReference Include="System.Reflection.Emit" />
+		<PackageReference Include="System.Reflection.Emit.Lightweight" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,7 +1,4 @@
-﻿using Avalonia.WebView.Linux;
-using Avalonia.WebView.MacCatalyst;
-using Avalonia.WebView.Windows;
-using Toolkit.Shared;
+﻿using System.Runtime.InteropServices;
 
 namespace Avalonia.WebView.Desktop;
 
@@ -9,11 +6,11 @@ public static class AppBuilderExtensions
 {
     public static AppBuilder UseDesktopWebView(this AppBuilder builder)
     {
-        if (OperatingSystemEx.IsWindows())
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             builder.UseWindowWebView();
-        else if (OperatingSystemEx.IsMacOS())
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             builder.UseMacCatalystWebView();
-        else if (OperatingSystemEx.IsLinux())
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             builder.UseLinuxWebView();
 
         return builder;
