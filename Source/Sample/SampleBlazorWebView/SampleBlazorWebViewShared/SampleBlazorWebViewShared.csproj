@@ -10,6 +10,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Avalonia" />
+		<PackageReference Include="Masa.Blazor" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebView" />
 	</ItemGroup>
 
@@ -17,6 +18,13 @@
 		<Content Update="wwwroot\**">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
+
+		<!--<Content Update="wwwroot\i18n\**">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\nav\**">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>-->
 	</ItemGroup>
 	
 </Project>

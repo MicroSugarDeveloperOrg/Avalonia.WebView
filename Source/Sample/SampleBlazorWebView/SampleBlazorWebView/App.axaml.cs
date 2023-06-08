@@ -29,7 +29,16 @@ public partial class App : Application
             setting.ResourceAssembly = typeof(AppWeb).Assembly;
         }, inject =>
         {
-            inject.AddSingleton<WeatherForecastService>();
+            inject.AddMasaBlazor(builder =>
+            {
+                builder.ConfigureTheme(theme =>
+                {
+                    theme.Themes.Light.Primary = "#4318FF";
+                    theme.Themes.Light.Accent = "#4318FF";
+                });
+            }).AddI18nForServer("wwwroot/i18n");
+
+            inject.AddGlobalForServer();
         });
     }
 
