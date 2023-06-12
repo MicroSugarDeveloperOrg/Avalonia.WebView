@@ -7,7 +7,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="Avalonia" />
-		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" /> 
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces"/>
 	</ItemGroup>
 
 	<ItemGroup>

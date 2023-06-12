@@ -84,6 +84,7 @@
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" />
 		<PackageReference Include="Microsoft.CSharp" />
 		<PackageReference Include="System.Numerics.Vectors" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces"/>
 	</ItemGroup>
 
 	<ItemGroup>
