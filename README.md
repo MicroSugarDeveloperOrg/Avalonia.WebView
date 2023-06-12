@@ -1,9 +1,9 @@
 # Avalonia.WebView
 
 ## Develop
-* please use VisualStudio 2022 or greater or rider
-* use .net7 runtime (version 7.0.100 or greater)(if you want to use others, please modify the version in the global.json)
-* please setup workloads include Android, iOS, Wasm 
+* please install VisualStudio 2022 or greater or rider
+* use .net7 runtime (version 7.0.0 or greater)(if you want to use others, please modify the version in the global.json)
+* please setup workloads include Android, iOS, Wasm , MacOS
 * please open the long path support in Windows OS(https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry)
 
 ## How to use
@@ -12,7 +12,7 @@
 
        dotnet add package WebView.Avalonia
                     OR
-       dotnet add package WebView.Avalonia
+       dotnet add package BlazorWebView.Avalonia
 
 2. Add [WebView.Avalonia.Desktop][nuget] nuget package to your avaloniaui desktop project:
 
@@ -38,7 +38,7 @@
      {
         base.RegisterServices();
         
-        // if you use only WebView language  
+        // if you use only WebView  
         AvaloniaWebViewBuilder.Initialize(default);
 
         // Or
@@ -115,19 +115,24 @@ You can always download demo executable to play around with LocalizationManager
 
 ## Version compatibility
 
-| LocalizationManager.Avalonia Version | Avalonia Version |
-|:-------------------------------------|:-----------------|
-| 0.1.0-rc1.x                          | 11.0-rc1.x       |
+| WebView.Avalonia Version | Avalonia Version |
+|:-------------------------|:-----------------|
+| 0.1.0-rc1.x              | 11.0-rc1.x       |
 
 **NOTE**
 
-LocalizationManager.Avalonia is moving forward together with Avalonia preview versions now. So new feature/fixes are not backported to previous preview versions. If you need a feature/fix for outdated avalonia preview version, please raise an issue so we can do that for you. 
+WebView.Avalonia is moving forward together with Avalonia preview versions now. So new feature/fixes are not backported to previous preview versions. If you need a feature/fix for outdated avalonia preview version, please raise an issue so we can do that for you. 
 
 ## Credits
 
 [Avalonia](https://github.com/AvaloniaUI/Avalonia)
+
 [Maui](https://github.com/dotnet/maui)
+
 [Xamarin.MacIos](https://github.com/xamarin/xamarin-macios)
+
 [Microsoft.WebView2](https://github.com/MicrosoftEdge/WebView2Samples)
+
 [GTKSharp](https://github.com/GtkSharp/GtkSharp)
+
 [WebkitGtkSharp](https://github.com/GtkSharp/GtkSharp)
