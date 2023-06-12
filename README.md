@@ -98,11 +98,11 @@
 
 ## Description
 
-   > use webview2 for Windows (please install microsoft edge webview2)
+   > use Webview2 for Windows (please install Microsoft edge Webview2)
 
    > use WKWebView[Appkit] for MacOS (system in)
 
-   > use webkit webview for Linux (if not please install [sudo apt-get libwebkit2gtk-4-37])
+   > use Webkit Webview for Linux (if not please install [sudo apt-get libwebkit2gtk-4-37])
 
    > use Android.Webkit.WebView  for Android (this is in Microsoft-Android [net5.0-Android; net6.0-Android; net7.0-Android])
 
@@ -110,7 +110,7 @@
 
 ## Demo
 
-You can always download demo executable to play around with LocalizationManager
+You can always download demo executable to play around with WebView
   > https://github.com/MicroSugarDeveloperOrg/Avalonia.WebView.Sample
 
 ## Version compatibility
