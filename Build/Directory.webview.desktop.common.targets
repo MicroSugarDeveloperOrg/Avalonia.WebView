@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Project>
+	<Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk.Razor"/>
+
+	<PropertyGroup>
+		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+		<StaticWebAssetProjectMode>Root</StaticWebAssetProjectMode>
+		<CoreCompileDependsOn Condition="'$(PublishProtocol)' == 'ClickOnce' or '$(PublishProtocol)' == 'FileSystem'">$(CoreCompileDependsOn);StaticWebAssetsPrepareForRun</CoreCompileDependsOn>
+	</PropertyGroup>
+	<Target Name="_StaticWebAssetsComputeFilesToBuild" AfterTargets="GetCopyToOutputDirectoryItems" >
+		<ItemGroup>
+			<!-- Filter the static web assets foreign to the project and then add them to the list of resolved
+           files to publish.
+       -->
+			<_ExternalBuildStaticWebAsset Include="%(StaticWebAsset.FullPath)" Condition="'%(SourceType)' != ''">
+				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+				<TargetPath>$([MSBuild]::MakeRelative('$(MSBuildProjectDirectory)','$([MSBuild]::NormalizePath('wwwroot\%(BasePath)\%(RelativePath)'))'))</TargetPath>
+			</_ExternalBuildStaticWebAsset>
+			<!-- Remove any existing external static web asset that might have been added as part of the
+           regular publish pipeline. -->
+			<_SourceItemsToCopyToOutputDirectory Remove="@(_ExternalBuildStaticWebAsset)" />
+			<_SourceItemsToCopyToOutputDirectory Include="@(_ExternalBuildStaticWebAsset)" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="_RemoveStaticWebAssetsDevelopmentManifest" BeforeTargets="GetCopyToOutputDirectoryItems">
+		 <!--Remove the development manifest from the output since its not used and it will otherwise get incorrectly loaded in production.--> 
+		<ItemGroup>
+			<ContentWithTargetPath Remove="$(StaticWebAssetDevelopmentManifestPath)" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="AddStaticWebAssetsForClickOnce" AfterTargets="ComputeFilesToPublish" Condition="'$(PublishProtocol)' == 'ClickOnce'">
+		<ComputeStaticWebAssetsTargetPaths Assets="@(StaticWebAsset)" PathPrefix="wwwroot">
+			<Output TaskParameter="AssetsWithTargetPath" ItemName="_ClickOnceAssetCandidate" />
+		</ComputeStaticWebAssetsTargetPaths>
+		<ItemGroup>
+			<ContentWithTargetPath Include="@(_ClickOnceAssetCandidate)" KeepMetadata="TargetPath" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="AddStaticWebAssetsForAppXBundle" BeforeTargets="PublishItemsOutputGroup" Condition="'$(PublishProtocol)' == 'FileSystem'">
+		<ComputeStaticWebAssetsTargetPaths Assets="@(StaticWebAsset)" PathPrefix="wwwroot">
+			<Output TaskParameter="AssetsWithTargetPath" ItemName="_AppXBundleAssetCandidate" />
+		</ComputeStaticWebAssetsTargetPaths>
+		<ItemGroup>
+			<ResolvedFileToPublish Include="@(_AppXBundleAssetCandidate)" RelativePath="%(_AppXBundleAssetCandidate.TargetPath)" KeepMetadata="TargetPath" />
+		</ItemGroup>
+	</Target>
+
+</Project>

@@ -3,10 +3,13 @@
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
 	</PropertyGroup>
+	<Import Project="$(BuildToolsDirectory)Directory.webview.desktop.common.targets" />
 
 	<ItemGroup>
 		<AvaloniaResource Include="wwwroot\**" />
 	</ItemGroup>
+
+
 
 	<ItemGroup>
 		<PackageReference Include="Avalonia" />
