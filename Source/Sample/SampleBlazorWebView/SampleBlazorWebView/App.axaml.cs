@@ -25,7 +25,7 @@ public partial class App : Application
             setting.ComponentType = typeof(AppWeb);
             setting.Selector = "#app";
 
-            setting.IsAvaloniaResource = true;
+            //setting.IsAvaloniaResource = true;
             setting.ResourceAssembly = typeof(AppWeb).Assembly;
         }, inject =>
         {

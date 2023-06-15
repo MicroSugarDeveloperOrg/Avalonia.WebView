@@ -9,14 +9,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Build", ".Build", "{D24E6A
 		.gitignore = .gitignore
 		Build\Directory.build.common.props = Build\Directory.build.common.props
 		Build\Directory.build.common.targets = Build\Directory.build.common.targets
+		Build\Directory.build.operation.common.props = Build\Directory.build.operation.common.props
 		Directory.Build.props = Directory.Build.props
 		Directory.build.targets = Directory.build.targets
 		Directory.buildcpp.props = Directory.buildcpp.props
 		Directory.Packages.props = Directory.Packages.props
 		Build\Directory.Packages.targets = Build\Directory.Packages.targets
 		Build\Directory.webview.android.common.targets = Build\Directory.webview.android.common.targets
-		Build\Directory.webview.desktop.common.targets = Build\Directory.webview.desktop.common.targets
+		Build\Directory.webview.ios.common.targets = Build\Directory.webview.ios.common.targets
 		global.json = global.json
+		Build\Directory.webview.blazor.common.targets = Build\Directory.webview.blazor.common.targets
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection

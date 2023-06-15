@@ -42,4 +42,8 @@
 		</ProjectReference>
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="$(BuildToolsDirectory)Directory.webview.ios.common.targets" Pack="True" PackagePath="build\%(RecursiveDir)%(FileName)%(Extension)" />
+	</ItemGroup>
+
 </Project>

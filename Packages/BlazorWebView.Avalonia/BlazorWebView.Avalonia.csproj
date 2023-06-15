@@ -106,4 +106,8 @@
 		</ProjectReference>
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="$(BuildToolsDirectory)Directory.webview.blazor.common.targets" Pack="True" PackagePath="build\%(RecursiveDir)%(FileName)%(Extension)" />
+	</ItemGroup>
+
 </Project>

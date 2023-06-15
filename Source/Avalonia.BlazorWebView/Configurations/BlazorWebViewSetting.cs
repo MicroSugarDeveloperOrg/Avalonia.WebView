@@ -11,7 +11,7 @@ public class BlazorWebViewSetting
     /// <summary>
     /// 支持使用资源加载
     /// </summary>
-    public bool IsAvaloniaResource { get; set; }
+    //public bool IsAvaloniaResource { get; set; }
     public Assembly? ResourceAssembly { get; set; }
 
 }

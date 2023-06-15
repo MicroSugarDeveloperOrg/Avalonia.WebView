@@ -6,9 +6,9 @@
 	<PropertyGroup>
 		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
 		<StaticWebAssetProjectMode>Root</StaticWebAssetProjectMode>
-		<CoreCompileDependsOn Condition="'$(PublishProtocol)' == 'ClickOnce' or '$(PublishProtocol)' == 'FileSystem'">$(CoreCompileDependsOn);StaticWebAssetsPrepareForRun</CoreCompileDependsOn>
+		<!--<CoreCompileDependsOn Condition="'$(PublishProtocol)' == 'ClickOnce' or '$(PublishProtocol)' == 'FileSystem'">$(CoreCompileDependsOn);StaticWebAssetsPrepareForRun</CoreCompileDependsOn>-->
 	</PropertyGroup>
-	<Target Name="_StaticWebAssetsComputeFilesToBuild" AfterTargets="GetCopyToOutputDirectoryItems" >
+	<Target Name="_StaticWebAssetsComputeFilesToBuild" AfterTargets="GetCopyToOutputDirectoryItems" DependsOnTargets="ResolveProjectReferences" >
 		<ItemGroup>
 			<!-- Filter the static web assets foreign to the project and then add them to the list of resolved
            files to publish.
@@ -24,14 +24,14 @@
 		</ItemGroup>
 	</Target>
 
-	<Target Name="_RemoveStaticWebAssetsDevelopmentManifest" BeforeTargets="GetCopyToOutputDirectoryItems">
+	<Target Name="_RemoveStaticWebAssetsDevelopmentManifest" BeforeTargets="GetCopyToOutputDirectoryItems" DependsOnTargets="ResolveProjectReferences" >
 		 <!--Remove the development manifest from the output since its not used and it will otherwise get incorrectly loaded in production.--> 
 		<ItemGroup>
 			<ContentWithTargetPath Remove="$(StaticWebAssetDevelopmentManifestPath)" />
 		</ItemGroup>
 	</Target>
 
-	<Target Name="AddStaticWebAssetsForClickOnce" AfterTargets="ComputeFilesToPublish" Condition="'$(PublishProtocol)' == 'ClickOnce'">
+	<!--<Target Name="AddStaticWebAssetsForClickOnce" AfterTargets="ComputeFilesToPublish" Condition="'$(PublishProtocol)' == 'ClickOnce'">
 		<ComputeStaticWebAssetsTargetPaths Assets="@(StaticWebAsset)" PathPrefix="wwwroot">
 			<Output TaskParameter="AssetsWithTargetPath" ItemName="_ClickOnceAssetCandidate" />
 		</ComputeStaticWebAssetsTargetPaths>
@@ -47,6 +47,6 @@
 		<ItemGroup>
 			<ResolvedFileToPublish Include="@(_AppXBundleAssetCandidate)" RelativePath="%(_AppXBundleAssetCandidate.TargetPath)" KeepMetadata="TargetPath" />
 		</ItemGroup>
-	</Target>
+	</Target>-->
 
 </Project>

@@ -1,5 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <Project>
-	 
+	<Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk.Razor"/>
+	<PropertyGroup>
+		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+		<StaticWebAssetProjectMode>Root</StaticWebAssetProjectMode>
+	</PropertyGroup>
+	
+	<Target Name="_StaticWebAssetsComputeFilesToBuild" AfterTargets="GetCopyToOutputDirectoryItems" DependsOnTargets="ResolveProjectReferences" >
+		<ItemGroup>
+			<_ExternalBuildStaticWebAsset Include="%(StaticWebAsset.FullPath)" Condition="'%(SourceType)' != ''">
+				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+				<TargetPath>$([MSBuild]::MakeRelative('$(MSBuildProjectDirectory)','$([MSBuild]::NormalizePath('wwwroot\%(BasePath)\%(RelativePath)'))'))</TargetPath>
+			</_ExternalBuildStaticWebAsset>
+			<_SourceItemsToCopyToOutputDirectory Remove="@(_ExternalBuildStaticWebAsset)" />
+			<_SourceItemsToCopyToOutputDirectory Include="@(_ExternalBuildStaticWebAsset)" />
+		</ItemGroup>
+	</Target>
+
+	<!--<Target Name="ZipWWWRootPath" AfterTargets="_FindJavaStubFiles" BeforeTargets="_CreateBaseApk">
+		<ZipDirectory SourceDirectory="$(ProjectDir)$(OutputPath)wwwroot" DestinationFile="$(ProjectDir)Assets\wwwroot.zip" Overwrite="true" />
+	</Target>
+
+	<Target Name="_StaticWebAssetsUpdateAssetPaths" AfterTargets="_FindJavaStubFiles" BeforeTargets="_CreateBaseApk" DependsOnTargets="ZipWWWRootPath">
+		<ItemGroup>
+			<WWWRootZipStaticWebAsset Include="Assets\wwwroot.zip" />
+			<AndroidAsset Include="@(WWWRootZipStaticWebAsset)" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="DeleteAsset" AfterTargets="IncrementalClean" DependsOnTargets="ZipWWWRootPath">
+		<Delete Files="$(ProjectDir)Assets\wwwroot.zip" />
+	</Target>-->
+
+	<!--<Target Name="ConvertStaticWebAssetsToMauiAssets" BeforeTargets="GetMauiItems;ResizetizeCollectItems;_CollectBundleResources;_CollectHotRestartBundleResources;_CheckForContent" DependsOnTargets="ResolveProjectReferences;StaticWebAssetsPrepareForRun;StaticWebAssetsPrepareForPublish;LoadStaticWebAssetsPublishManifest">-->
+	<Target Name="_StaticWebAssetsUpdateAssetPaths" AfterTargets="_FindJavaStubFiles" BeforeTargets="_CreateBaseApk" DependsOnTargets="ResolveProjectReferences" >
+		<!--<ItemGroup>
+			<AndroidAsset Include="wwwroot"/>
+		</ItemGroup>-->
+ 
+	</Target>
+
+
+
+	<Target Name="_AdjustStaticWebAssetPathBaseWhenBuildingWithRid" BeforeTargets="ResolveStaticWebAssetsConfiguration" Condition="'$(_OuterIntermediateOutputPath)' != ''">
+		<PropertyGroup>
+			<_StaticWebAssetsManifestBase>$(_OuterIntermediateOutputPath)</_StaticWebAssetsManifestBase>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="_RemoveStaticWebAssetsDevelopmentManifest" BeforeTargets="GetCopyToOutputDirectoryItems">
+		<ItemGroup>
+			<ContentWithTargetPath Remove="$(StaticWebAssetDevelopmentManifestPath)" />
+		</ItemGroup>
+	</Target>
 </Project>
