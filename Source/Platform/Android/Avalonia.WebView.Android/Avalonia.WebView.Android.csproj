@@ -43,7 +43,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="$(BuildToolsDirectory)Directory.webview.android.common.targets" Pack="True" PackagePath="build\%(RecursiveDir)%(FileName)%(Extension)" />
+		<None Include="$(BuildToolsDirectory)Directory.webview.android.common.targets" Pack="True" PackagePath="build\" />
 	</ItemGroup>
 	
 </Project>
