@@ -405,3 +405,4 @@ FodyWeavers.xsd
 /_nuget
 /Source/*.DS_Store
 /*.DS_Store
+/_publish
