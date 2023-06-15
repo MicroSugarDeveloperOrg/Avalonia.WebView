@@ -35,4 +35,8 @@
 		<ProjectReference Include="..\..\Windows\Avalonia.WebView.Windows\Avalonia.WebView.Windows.csproj"/>
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="$(BuildToolsDirectory)Directory.webview.desktop.common.targets" Pack="True" PackagePath="build\%(RecursiveDir)%(FileName)%(Extension)" />
+	</ItemGroup>
+
 </Project>
