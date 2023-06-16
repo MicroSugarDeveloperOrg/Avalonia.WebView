@@ -107,7 +107,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="$(BuildToolsDirectory)Directory.webview.blazor.common.targets" Pack="True" PackagePath="build\" />
+		<None Include="$(BuildToolsDirectory)Directory.webview.blazor.common.targets" Pack="True" PackagePath="build\$(MSBuildProjectName)%(Extension)" />
 	</ItemGroup>
 
 </Project>

@@ -11,4 +11,9 @@
 		<ProjectReference Include="..\..\Windows\Avalonia.WebView.Windows\Avalonia.WebView.Windows.csproj" Condition="'$(IsWindows)'=='true'" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="$(BuildToolsDirectory)Directory.build.operation.common.props" Pack="True" PackagePath="build\$(MSBuildProjectName)%(Extension)" />
+		<None Include="$(BuildToolsDirectory)Directory.webview.desktop.common.targets" Pack="True" PackagePath="build\$(MSBuildProjectName)%(Extension)" />
+	</ItemGroup>
+
 </Project>
