@@ -1,11 +1,6 @@
-﻿using System.Diagnostics;
-using WebKit;
-using WebViewCore.Enums;
-using WebViewCore.Helpers;
+﻿namespace Avalonia.WebView.Linux.Core;
 
-namespace Avalonia.WebView.Linux.Core;
-
-partial class LinuxWebViewCore 
+partial class LinuxWebViewCore
 {
     private void WebView_UserMessageReceived(object o, UserMessageReceivedArgs args)
     {
@@ -27,7 +22,7 @@ partial class LinuxWebViewCore
     {
         if (type == PolicyDecisionType.Response)
             return true;
-        
+
         var policyDecision = new NavigationPolicyDecision(pPolicyDecision);
 
 #pragma warning disable CS0612 // Type or member is obsolete
@@ -42,9 +37,9 @@ partial class LinuxWebViewCore
 
         var uriString = navigationRequest.Uri;
         var uri = new Uri(uriString);
-        
+
         _callBack.PlatformWebViewNavigationStarting(this, new WebViewUrlLoadingEventArg() { Url = uri });
-        
+
         if (_webScheme?.BaseUri.IsBaseOf(uri) == true)
         {
             policyDecision.Use();
@@ -72,7 +67,7 @@ partial class LinuxWebViewCore
             case UrlLoadingStrategy.OpenInWebView:
                 policyDecision.Use();
                 break;
-            case UrlLoadingStrategy.CancelLoad: 
+            case UrlLoadingStrategy.CancelLoad:
             default:
                 policyDecision.Ignore();
                 return false;

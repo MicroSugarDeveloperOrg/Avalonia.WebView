@@ -29,12 +29,12 @@ partial class LinuxWebViewCore
                 WebView.Settings.AllowModalDialogs = true;
                 WebView.Settings.AllowTopNavigationToDataUrls = true;
                 WebView.Settings.AllowUniversalAccessFromFileUrls = true;
-                //WebView.Settings.EnableBackForwardNavigationGestures = true;
-                //WebView.Settings.EnableCaretBrowsing = true;
-                //WebView.Settings.EnableMediaCapabilities = true;
-                //WebView.Settings.EnableMediaStream = true;
-                //WebView.Settings.JavascriptCanAccessClipboard = true;
-                //WebView.Settings.JavascriptCanOpenWindowsAutomatically = true;
+                WebView.Settings.EnableBackForwardNavigationGestures = true;
+                WebView.Settings.EnableCaretBrowsing = true;
+                WebView.Settings.EnableMediaCapabilities = true;
+                WebView.Settings.EnableMediaStream = true;
+                WebView.Settings.JavascriptCanAccessClipboard = true;
+                WebView.Settings.JavascriptCanOpenWindowsAutomatically = true;
             }).Result;
             
             RegisterWebViewEvents(WebView);
