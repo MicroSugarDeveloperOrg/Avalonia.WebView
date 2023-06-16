@@ -36,7 +36,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="$(BuildToolsDirectory)Directory.webview.desktop.common.targets" Pack="True" PackagePath="build\$(MSBuildProjectName)%(Extension)" />
+		<None Include="$(BuildToolsDirectory)Directory.webview.desktop.common.targets" Pack="True" PackagePath="build\$(PackageId)%(Extension)" />
 	</ItemGroup>
 
 </Project>
