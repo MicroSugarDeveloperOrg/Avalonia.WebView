@@ -3,7 +3,7 @@
 namespace Avalonia.WebView.DesktopX;
 public static class AppBuilderExtensions
 {
-    public static AppBuilder UseDesktopWebView(this AppBuilder builder)
+    public static AppBuilder UseDesktopWebView(this AppBuilder builder, bool isWslDevelop = false)
     {
 #if __WINDOWS__
         builder.UseWindowWebView();
@@ -11,7 +11,7 @@ public static class AppBuilderExtensions
         builder.UseMacCatalystWebView();
         //builder.UseOSXWebView();
 #elif __LINUX__
-        builder.UseLinuxWebView();
+        builder.UseLinuxWebView(isWslDevelop);
 #endif
 
         return builder;

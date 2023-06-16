@@ -84,7 +84,8 @@ unsafe partial class LinuxWebViewCore
         if (request.Scheme != _webScheme.Scheme)
             return;
 
-        bool allowFallbackOnHostPage = request.Path == "/";
+        //bool allowFallbackOnHostPage = request.Path == "/";
+        var allowFallbackOnHostPage = _webScheme.BaseUri.IsBaseOfPage(request.Uri);
         var requestWrapper = new WebResourceRequest
         {
             RequestUri = request.Uri,

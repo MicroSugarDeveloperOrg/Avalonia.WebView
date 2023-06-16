@@ -19,5 +19,5 @@ internal class Program
             .UsePlatformDetect()
             .LogToTrace()
             .UseReactiveUI()
-            .UseDesktopWebView();
+            .UseDesktopWebView(true);
 }

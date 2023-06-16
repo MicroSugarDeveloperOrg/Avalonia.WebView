@@ -27,3 +27,4 @@ global using WebKit;
 global using WebViewCore.Enums;
 global using WebViewCore.Helpers;
 global using Linux.WebView.Core.Interoperates;
+global using WebViewCore.Extensions;
