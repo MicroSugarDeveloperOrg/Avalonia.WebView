@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFrameworks>net7.0</TargetFrameworks>
@@ -14,7 +14,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Platform\Desktop\Avalonia.WebView.DesktopX\Avalonia.WebView.DesktopX.csproj" />
+		<ProjectReference Include="..\..\..\Platform\Desktop\Avalonia.WebView.Desktop\Avalonia.WebView.Desktop.csproj" />
 		<ProjectReference Include="..\SampleBlazorWebView\SampleBlazorWebView.csproj" />
 	</ItemGroup>
 </Project>

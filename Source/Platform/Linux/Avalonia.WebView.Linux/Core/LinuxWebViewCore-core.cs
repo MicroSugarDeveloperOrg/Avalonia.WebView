@@ -1,7 +1,4 @@
 ﻿using Linux.WebView.Core;
-using Linux.WebView.Core.Interoperates;
-using WebKit;
-using WebViewCore.Helpers;
 
 namespace Avalonia.WebView.Linux.Core;
 
@@ -41,12 +38,12 @@ unsafe partial class LinuxWebViewCore
         if (webView is null)
             return;
 
-        var bRet = _dispatcher.InvokeAsync(() => 
+        var bRet = _dispatcher.InvokeAsync(() =>
         {
             //webView.UserContentManager.UnregisterScriptMessageHandler(_messageKeyWord);
             //webView.RemoveSignalHandler($"script-message-received::{_messageKeyWord}", WebView_WebMessageReceived);
         }).Result;
-  
+
         _isBlazorWebView = false;
     }
 
@@ -84,7 +81,8 @@ unsafe partial class LinuxWebViewCore
         if (request.Scheme != _webScheme.Scheme)
             return;
 
-        bool allowFallbackOnHostPage = request.Path == "/";
+        //bool allowFallbackOnHostPage = request.Path == "/";
+        var allowFallbackOnHostPage = _webScheme.BaseUri.IsBaseOfPage(request.Uri);
         var requestWrapper = new WebResourceRequest
         {
             RequestUri = request.Uri,

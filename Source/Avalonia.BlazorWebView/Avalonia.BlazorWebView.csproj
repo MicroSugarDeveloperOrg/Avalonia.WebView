@@ -4,10 +4,15 @@
 		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
 		<RootNamespace>AvaloniaBlazorWebView</RootNamespace>
 	</PropertyGroup>
-	
+ 
 	<ItemGroup>
 		<PackageReference Include="Avalonia" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebView" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>

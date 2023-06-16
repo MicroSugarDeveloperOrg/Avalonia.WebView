@@ -5,9 +5,12 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="Avalonia" />
-		<PackageReference Include="GtkSharp" />
-		<PackageReference Include="WebkitGtkSharp" /> 
+		<PackageReference Include="GtkSharp">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="WebkitGtkSharp">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
 	</ItemGroup>
 
 </Project>

@@ -1,15 +1,49 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0-ios;net7.0-ios</TargetFrameworks>
+		<TargetFrameworks>net6.0-ios16.0;net7.0-ios16.0</TargetFrameworks>
+	</PropertyGroup>
+
+	<Import Project="$(BuildToolsDirectory)Directory.Packages.targets" />
+	
+	<PropertyGroup>
+		<PackageId>WebView.Avalonia.iOS</PackageId>
+		<Title>WebView.Avalonia.iOS</Title>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia" />
+		<None Include="..\..\..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
+		<None Include="..\..\..\..\Packages\webview@avalonia-logo.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj">
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+		<ProjectReference Include="..\..\..\DryIoc.Shared\DryIoc.Shared.csproj" >
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+		<ProjectReference Include="..\..\..\WebView.Core\WebView.Core.csproj" >
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="$(BuildToolsDirectory)Directory.webview.ios.common.targets" Pack="True" PackagePath="build\$(PackageId)%(Extension)" />
 	</ItemGroup>
 
 </Project>

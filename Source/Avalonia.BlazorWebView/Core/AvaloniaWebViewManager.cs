@@ -1,6 +1,4 @@
-﻿using Toolkit.Shared;
-
-namespace AvaloniaBlazorWebView.Core;
+﻿namespace AvaloniaBlazorWebView.Core;
 
 internal class AvaloniaWebViewManager : WebViewManager, IVirtualBlazorWebViewProvider
 {
@@ -102,10 +100,7 @@ internal class AvaloniaWebViewManager : WebViewManager, IVirtualBlazorWebViewPro
             return false;
 
         //StaticContentHotReloadManager.TryReplaceResponseContent(_contentRootDirRelativePath, requestUri, ref statusCode, ref content, headers);
-        Stream contentStream = content;
-        if (OperatingSystemEx.IsDesktop())
-            contentStream = new AutoCloseOnReadCompleteStream(content);
-       
+        var contentStream = new AutoCloseOnReadCompleteStream(content);   
         response = new WebResourceResponse
         {
             StatusCode = statusCode,

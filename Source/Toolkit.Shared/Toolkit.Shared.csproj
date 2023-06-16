@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Buffers" />
+	  <PackageReference Include="System.Buffers">
+		  <PrivateAssets>all</PrivateAssets>
+	  </PackageReference>
   </ItemGroup>
 
 </Project>

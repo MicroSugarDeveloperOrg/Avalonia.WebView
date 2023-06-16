@@ -1,15 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0</TargetFrameworks> 
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+	</PropertyGroup>
+
+	<Import Project="$(BuildToolsDirectory)Directory.Packages.targets" />
+
+	<PropertyGroup>
+		<PackageId>WebView.Avalonia.Desktop</PackageId>
+		<Title>WebView.Avalonia.Desktop</Title> 
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Toolkit.Shared\Toolkit.Shared.csproj" />
+		<None Include="..\..\..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\..\..\Packages\webview@avalonia-logo.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\..\Linux\Avalonia.WebView.Linux\Avalonia.WebView.Linux.csproj" />
-		<!--<ProjectReference Include="..\..\Mac\Avalonia.WebView.Mac\Avalonia.WebView.Mac.csproj" Condition="'$(IsOSX)'=='true'" />-->
-		<ProjectReference Include="..\..\Mac\Avalonia.WebView.MacCatalyst\Avalonia.WebView.MacCatalyst.csproj" /> 
+		<ProjectReference Include="..\..\Mac\Avalonia.WebView.MacCatalyst\Avalonia.WebView.MacCatalyst.csproj" />
 		<ProjectReference Include="..\..\Windows\Avalonia.WebView.Windows\Avalonia.WebView.Windows.csproj" />
 	</ItemGroup>
-	
+
+	<ItemGroup>
+		<None Include="$(BuildToolsDirectory)Directory.webview.desktop.common.targets" Pack="True" PackagePath="build\$(PackageId)%(Extension)" />
+	</ItemGroup>
+
 </Project>

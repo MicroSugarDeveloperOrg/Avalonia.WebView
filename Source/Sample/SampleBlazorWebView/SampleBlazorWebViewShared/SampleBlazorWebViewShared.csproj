@@ -4,12 +4,11 @@
 		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<AvaloniaResource Include="wwwroot\**" />
-	</ItemGroup>
+	<Import Project="$(BuildToolsDirectory)Directory.webview.blazor.common.targets" />
 
 	<ItemGroup>
 		<PackageReference Include="Avalonia" />
+		<PackageReference Include="Masa.Blazor" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebView" />
 	</ItemGroup>
 

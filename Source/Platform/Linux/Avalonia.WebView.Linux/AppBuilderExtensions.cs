@@ -1,14 +1,15 @@
-﻿using Linux.WebView.Core;
+﻿using Avalonia.WebView.Linux;
+using Linux.WebView.Core;
 
-namespace Avalonia.WebView.Linux;
+namespace Avalonia.WebView.Desktop;
 
 public static class AppBuilderExtensions
 {
-    public static AppBuilder UseLinuxWebView(this AppBuilder builder)
+    public static AppBuilder UseLinuxWebView(this AppBuilder builder, bool isWslDevelop)
     {
         return builder.AfterPlatformServicesSetup(app =>
         {
-            WebViewLocator.s_Registrator.RegisterSingleton<ILinuxApplication>(() => LinuxApplicationBuilder.Build());
+            WebViewLocator.s_Registrator.RegisterSingleton<ILinuxApplication>(() => LinuxApplicationBuilder.Build(isWslDevelop));
             WebViewLocator.s_Registrator.RegisterSingleton<IViewHandlerProvider, ViewHandlerProvider>();
             WebViewLocator.s_Registrator.RegisterSingleton<IPlatformBlazorWebViewProvider, BlazorWebViewHandlerProvider>();
         });

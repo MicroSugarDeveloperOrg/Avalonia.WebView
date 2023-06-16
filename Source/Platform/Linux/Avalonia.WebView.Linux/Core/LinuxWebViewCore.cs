@@ -1,5 +1,4 @@
 ﻿using Linux.WebView.Core;
-using WebKit;
 
 namespace Avalonia.WebView.Linux.Core;
 
@@ -33,13 +32,13 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
     }
 
     delegate void void_nint_nint_nint(nint arg0, nint arg1, nint arg2);
-    delegate bool bool_nint_nint_policytype(nint arg0, nint arg1 , PolicyDecisionType type);
+    delegate bool bool_nint_nint_policytype(nint arg0, nint arg1, PolicyDecisionType type);
 
     readonly GWindow _hostWindow;
     readonly WebKitWebView _webView;
     readonly IntPtr _hostWindowX11Handle;
     readonly ILinuxApplication _application;
-    readonly ILinuxDispatcher _dispatcher; 
+    readonly ILinuxDispatcher _dispatcher;
     readonly string _messageKeyWord;
     readonly IVirtualBlazorWebViewProvider? _provider;
     readonly IVirtualWebViewControlCallBack _callBack;

@@ -1,6 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.ReactiveUI;
-using Avalonia.WebView.DesktopX;
+using Avalonia.WebView.Desktop;
 
 namespace SampleBlazorWebView.Desktop;
 
@@ -19,5 +19,5 @@ internal class Program
             .UsePlatformDetect()
             .LogToTrace()
             .UseReactiveUI()
-            .UseDesktopWebView();
+            .UseDesktopWebView(false);
 }

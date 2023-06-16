@@ -18,8 +18,6 @@ internal class BlazorScriptHelper
 		        }
 		    };
 
-
 		    Blazor.start();
-
 		""";
 }

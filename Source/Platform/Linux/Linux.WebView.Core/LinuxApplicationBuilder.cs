@@ -2,5 +2,5 @@
 
 public class LinuxApplicationBuilder
 {
-    public static ILinuxApplication Build() => new LinuxApplication();
+    public static ILinuxApplication Build(bool isWslDevelop) => new LinuxApplication(isWslDevelop);
 }

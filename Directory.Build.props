@@ -12,6 +12,7 @@
 	</PropertyGroup>
 
 	<Import Project="$(BuildToolsDirectory)Directory.build.common.props" />
+	<Import Project="$(BuildToolsDirectory)Directory.build.operation.common.props" />
 
 	<Choose>
 		<When Condition="'$(SourceLinkEnabled)' != 'false'">

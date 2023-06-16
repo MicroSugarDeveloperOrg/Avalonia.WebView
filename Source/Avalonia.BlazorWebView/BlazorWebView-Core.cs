@@ -44,12 +44,11 @@ partial class BlazorWebView
             contentRootDir = contentRootDirFullPath;
         }
 
-        IFileProvider fileProvider;
-        if (_setting.IsAvaloniaResource)
-            fileProvider = new AvaloniaResourceFileProvider(_setting.ResourceAssembly!, contentRootDir);
-        else
-            fileProvider = _platformBlazorWebViewProvider.CreateFileProvider(_setting.ResourceAssembly, contentRootDirFullPath);
-
+        //IFileProvider fileProvider;
+        //if (_setting.IsAvaloniaResource)
+        //    fileProvider = new AvaloniaResourceFileProvider(_setting.ResourceAssembly!, contentRootDir);
+        //else
+        var fileProvider = _platformBlazorWebViewProvider.CreateFileProvider(_setting.ResourceAssembly, contentRootDirFullPath);
         var webViewManager = new AvaloniaWebViewManager(this, _serviceProvider, _dispatcher, _appScheme, _appHostAddress, _baseUri, fileProvider, _jsComponents, contentRootDirFullPath, hostPageRelativePath);
         //StaticContentHotReloadManager.AttachToWebViewManagerIfEnabled(webviewManager);
 
