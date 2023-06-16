@@ -1,6 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.ReactiveUI;
-using Avalonia.WebView.DesktopX;
+using Avalonia.WebView.Desktop;
 
 namespace SampleBlazorWebView.Desktop;
 
