@@ -2,11 +2,11 @@
 
 partial class BlazorWebView
 {
-    public bool IsCanGoForward => _platformWebView?.IsCanGoForward ?? false;
+    bool IWebViewControl.IsCanGoForward => _platformWebView?.IsCanGoForward ?? false;
 
-    public bool IsCanGoBack => _platformWebView?.IsCanGoBack ?? false;
+    bool IWebViewControl.IsCanGoBack => _platformWebView?.IsCanGoBack ?? false;
 
-    public bool Navigate(Uri? uri)
+    bool IWebViewControl.Navigate(Uri? uri)
     {
         if (uri is null)
             return false;
@@ -17,7 +17,7 @@ partial class BlazorWebView
         return _platformWebView.Navigate(uri);
     }
 
-    public bool NavigateToString(string htmlContent)
+    bool IWebViewControl.NavigateToString(string htmlContent)
     {
         if (_platformWebView is null || !_platformWebView.IsInitialized)
             return false;
@@ -25,7 +25,7 @@ partial class BlazorWebView
         return _platformWebView.NavigateToString(htmlContent);
     }
 
-    public bool GoBack()
+    bool IWebViewControl.GoBack()
     {
         if (_platformWebView is null || !_platformWebView.IsInitialized)
             return false;
@@ -33,7 +33,7 @@ partial class BlazorWebView
         return _platformWebView.GoBack();
     }
 
-    public bool GoForward()
+    bool IWebViewControl.GoForward()
     {
         if (_platformWebView is null || !_platformWebView.IsInitialized)
             return false;
@@ -41,7 +41,7 @@ partial class BlazorWebView
         return _platformWebView.GoForward();
     }
 
-    public bool Stop()
+    bool IWebViewControl.Stop()
     {
         if (_platformWebView is null || !_platformWebView.IsInitialized)
             return false;
@@ -49,7 +49,7 @@ partial class BlazorWebView
         return _platformWebView.Stop();
     }
 
-    public bool Reload()
+    bool IWebViewControl.Reload()
     {
         if (_platformWebView is null || !_platformWebView.IsInitialized)
             return false;
@@ -57,7 +57,7 @@ partial class BlazorWebView
         return _platformWebView.Reload();
     }
 
-    public Task<string?> ExecuteScriptAsync(string javaScript)
+    Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
     {
         if (_platformWebView is null || !_platformWebView.IsInitialized)
             return Task.FromResult<string?>(default);
@@ -65,7 +65,7 @@ partial class BlazorWebView
         return _platformWebView.ExecuteScriptAsync(javaScript);
     }
 
-    public bool PostWebMessageAsJson(string webMessageAsJson, Uri? baseUri)
+    bool IWebViewControl.PostWebMessageAsJson(string webMessageAsJson, Uri? baseUri)
     {
         if (_platformWebView is null || !_platformWebView.IsInitialized)
             return false;
@@ -73,7 +73,7 @@ partial class BlazorWebView
         return _platformWebView.PostWebMessageAsString(webMessageAsJson, baseUri);
     }
 
-    public bool PostWebMessageAsString(string webMessageAsString, Uri? baseUri)
+    bool IWebViewControl.PostWebMessageAsString(string webMessageAsString, Uri? baseUri)
     {
         if (_platformWebView is null || !_platformWebView.IsInitialized)
             return false;
@@ -81,7 +81,7 @@ partial class BlazorWebView
         return _platformWebView.PostWebMessageAsString(webMessageAsString, baseUri);
     }
 
-    public bool OpenDevToolsWindow()
+    bool IWebViewControl.OpenDevToolsWindow()
     {
         if (_platformWebView is null || !_platformWebView.IsInitialized)
             return false;
