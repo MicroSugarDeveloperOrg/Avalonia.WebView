@@ -32,6 +32,6 @@ partial class WebView
     bool IVirtualWebViewControlCallBack.PlatformWebViewNewWindowRequest(object? sender, WebViewNewWindowEventArgs arg)
     {
         WebViewNewWindowRequested?.Invoke(sender, arg);
-        return false;
+        return true;
     }
 }

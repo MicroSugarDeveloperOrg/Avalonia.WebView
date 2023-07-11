@@ -14,6 +14,10 @@ public partial class MacCatalystWebViewCore : IPlatformWebView<MacCatalystWebVie
         _config = new WKWebViewConfiguration();
         _config.Preferences.SetValueForKey(NSObject.FromObject(_creationProperties.AreDevToolEnabled), new NSString("developerExtrasEnabled"));
 
+        _config.Preferences.JavaScriptEnabled = true;
+        _config.MediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypes.None;
+        _config.AllowsAirPlayForMediaPlayback = true;
+
         if (provider is not null)
         {
             if (provider.ResourceRequestedFilterProvider(this, out var filter))
@@ -28,8 +32,9 @@ public partial class MacCatalystWebViewCore : IPlatformWebView<MacCatalystWebVie
         }
 
         _webView = new WKWebView(CGRect.Empty, _config)
-        { 
-            AutoresizesSubviews = true
+        {
+            AutoresizesSubviews = true,
+            TranslatesAutoresizingMaskIntoConstraints = false,
         };
 
         NativeHandler = _webView.Handle;

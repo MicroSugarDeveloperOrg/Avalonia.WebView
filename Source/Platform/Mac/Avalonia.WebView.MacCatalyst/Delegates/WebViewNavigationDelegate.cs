@@ -7,11 +7,14 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
         //_webView = _webViewCore.WebView;
         _webScheme = webScheme;
         _callBack = callBack;
+        if (webScheme is null)
+            _isBlazor = false;
     }
     readonly MacCatalystWebViewCore _webViewCore;
     //readonly WKWebView _webView;
     readonly WebScheme? _webScheme;
     readonly IVirtualWebViewControlCallBack _callBack;
+    readonly bool _isBlazor = true;
 
     WKNavigation? _navigation;
     Uri? _currentUri;

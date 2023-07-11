@@ -7,10 +7,13 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
         _webViewCore = webViewCore;
         _webScheme = webScheme;
         _callBack = callBack;
+        if (webScheme is null)
+            _isBlazor = false;
     }
     readonly IosWebViewCore _webViewCore;
     readonly WebScheme? _webScheme;
     readonly IVirtualWebViewControlCallBack _callBack;
+    readonly bool _isBlazor = true;
 
     WKNavigation? _navigation;
     Uri? _currentUri;
