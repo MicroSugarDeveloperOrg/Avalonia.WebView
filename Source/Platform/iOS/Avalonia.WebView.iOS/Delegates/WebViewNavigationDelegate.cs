@@ -117,13 +117,18 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
 
     public override void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
     {
+        bool isSucceed = false;
         if (_currentUri != null && _navigation == navigation)
         {
             // TODO: Determine whether this is needed
             //_webView.HandleNavigationFinished(_currentUri);
             _currentUri = null;
             _navigation = null;
+            isSucceed = true;
         }
+
+        _callBack.PlatformWebViewNavigationCompleted(_webViewCore, new WebViewUrlLoadedEventArg() { IsSuccess = isSucceed, RawArgs = navigation });
+
         //base.DidFinishNavigation(webView, navigation);
     }
 }

@@ -20,8 +20,6 @@ partial class LinuxWebViewCore
 
         try
         {
-            _callBack.PlatformWebViewCreating(this, new WebViewCreatingEventArgs());
-
             var bRet = _dispatcher.InvokeAsync(() =>
             {
                 WebView.Settings.EnableDeveloperExtras = _creationProperties.AreDevToolEnabled;

@@ -5,4 +5,6 @@ public class WebViewNewWindowEventArgs : EventArgs
 {
     public Uri? Url { get; set; }
     public required UrlLoadingStrategy UrlLoadingStrategy { get; set; }
+
+    public object? RawArgs { get; set; }
 }

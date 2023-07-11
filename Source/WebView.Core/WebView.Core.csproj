@@ -9,7 +9,7 @@
 		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions"/>
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(IsLinux)'=='true'">

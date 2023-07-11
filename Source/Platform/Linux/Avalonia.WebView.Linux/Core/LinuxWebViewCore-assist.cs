@@ -38,40 +38,64 @@ partial class LinuxWebViewCore
         var uriString = navigationRequest.Uri;
         var uri = new Uri(uriString);
 
-        _callBack.PlatformWebViewNavigationStarting(this, new WebViewUrlLoadingEventArg() { Url = uri });
-
-        if (_webScheme?.BaseUri.IsBaseOf(uri) == true)
-        {
-            policyDecision.Use();
-            return true;
-        }
-
-        var newWindowEventArgs = new WebViewNewWindowEventArgs()
-        {
-            Url = uri,
-            UrlLoadingStrategy = type == PolicyDecisionType.NewWindowAction ? UrlLoadingStrategy.OpenInWebView : UrlLoadingStrategy.OpenExternally
+        WebViewUrlLoadingEventArg args = new () 
+        { 
+            Url = uri, 
+            RawArgs = policyDecision 
         };
 
-        if (!_callBack.PlatformWebViewNewWindowRequest(this, newWindowEventArgs))
-        {
-            policyDecision.Ignore();
-            return false;
-        }
+        bool isSucceed = false;
 
-        switch (newWindowEventArgs.UrlLoadingStrategy)
+        try
         {
-            case UrlLoadingStrategy.OpenExternally:
-                OpenUriHelper.OpenInProcess(uri);
-                policyDecision.Ignore();
-                break;
-            case UrlLoadingStrategy.OpenInWebView:
-                policyDecision.Use();
-                break;
-            case UrlLoadingStrategy.CancelLoad:
-            default:
+            _callBack.PlatformWebViewNavigationStarting(this, args);
+            if (args.Cancel)
+            {
                 policyDecision.Ignore();
                 return false;
+            }
+
+            if (_webScheme?.BaseUri.IsBaseOf(uri) == true)
+            {
+                policyDecision.Use();
+                isSucceed = true;
+                return true;
+            }
+
+            var newWindowEventArgs = new WebViewNewWindowEventArgs()
+            {
+                Url = uri,
+                UrlLoadingStrategy = type == PolicyDecisionType.NewWindowAction ? UrlLoadingStrategy.OpenInWebView : UrlLoadingStrategy.OpenExternally
+            };
+
+            if (!_callBack.PlatformWebViewNewWindowRequest(this, newWindowEventArgs))
+            {
+                policyDecision.Ignore();
+                return false;
+            }
+
+            switch (newWindowEventArgs.UrlLoadingStrategy)
+            {
+                case UrlLoadingStrategy.OpenExternally:
+                    OpenUriHelper.OpenInProcess(uri);
+                    policyDecision.Ignore();
+                    isSucceed = true;
+                    break;
+                case UrlLoadingStrategy.OpenInWebView:
+                    policyDecision.Use();
+                    isSucceed = true;
+                    break;
+                case UrlLoadingStrategy.CancelLoad:
+                default:
+                    policyDecision.Ignore();
+                    return false;
+            }
         }
+        catch (Exception)
+        {
+            isSucceed = false;
+        }
+        _callBack.PlatformWebViewNavigationCompleted(this, new WebViewUrlLoadedEventArg() { IsSuccess = isSucceed, RawArgs = policyDecision });
         return true;
     }
 }

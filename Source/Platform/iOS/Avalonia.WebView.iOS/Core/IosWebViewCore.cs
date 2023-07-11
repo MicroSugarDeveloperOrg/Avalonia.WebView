@@ -10,6 +10,8 @@ public partial class IosWebViewCore: IPlatformWebView<IosWebViewCore>
         _callBack = callback;
         _handler = handler;
         _creationProperties = webViewCreationProperties;
+
+        _callBack.PlatformWebViewCreating(this, new WebViewCreatingEventArgs());
         _config = new WKWebViewConfiguration();
         _config.Preferences.SetValueForKey(NSObject.FromObject(_creationProperties.AreDevToolEnabled), new NSString("developerExtrasEnabled"));
 
@@ -25,6 +27,8 @@ public partial class IosWebViewCore: IPlatformWebView<IosWebViewCore>
 
             _isBlazorWebView = true;
         }
+        else
+            _config.UserContentController.AddScriptMessageHandler(new WebViewScriptMessageHandler(default!, MessageReceived), _filterKeyWord);
 
         _webView = new WKWebView(CGRect.Empty, _config)
         {

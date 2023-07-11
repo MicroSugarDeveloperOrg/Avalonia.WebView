@@ -9,6 +9,7 @@ public partial class AndroidWebViewCore : IPlatformWebView<AndroidWebViewCore>
         _handler = handler;
         _creationProperties = webViewCreationProperties;
 
+        _callBack.PlatformWebViewCreating(this, new WebViewCreatingEventArgs());
         AndroidWebView.SetWebContentsDebuggingEnabled(webViewCreationProperties.AreDevToolEnabled);
 
         var parentContext = AndroidApplication.Context;

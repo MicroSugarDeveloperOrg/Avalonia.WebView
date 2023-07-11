@@ -13,6 +13,8 @@ public partial class LinuxWebViewCore : IPlatformWebView<LinuxWebViewCore>
         _handler = handler;
         _creationProperties = webViewCreationProperties;
 
+        _callBack.PlatformWebViewCreating(this, new WebViewCreatingEventArgs());
+
         _dispatcher = linuxApplication.Dispatcher;
         var gtkWrapper = linuxApplication.CreateWebView().Result;
 

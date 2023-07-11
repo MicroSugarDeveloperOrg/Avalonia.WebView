@@ -125,6 +125,7 @@ partial class WebView2Core
             Message = e.TryGetWebMessageAsString(),
             MessageAsJson = e.WebMessageAsJson,
             Source = new Uri(e.Source),
+            RawArgs = e,
         };
         _callBack.PlatformWebViewMessageReceived(this, message);
         _provider?.PlatformWebViewMessageReceived(this, message);
@@ -140,11 +141,18 @@ partial class WebView2Core
 
     private void CoreWebView2_NavigationStarting(object sender, CoreWebView2NavigationStartingEventArgs e)
     {
-        _callBack.PlatformWebViewNavigationStarting(this, new WebViewUrlLoadingEventArg() { Url = new Uri(e.Uri) });
+        WebViewUrlLoadingEventArg args = new()
+        {
+            Url = new Uri(e.Uri),
+            RawArgs = e
+        };
+        _callBack.PlatformWebViewNavigationStarting(this, args);
+        e.Cancel = args.Cancel;
     }
 
     private void CoreWebView2_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
     {
+        _callBack.PlatformWebViewNavigationCompleted(this, new WebViewUrlLoadedEventArg() { IsSuccess = e.IsSuccess, RawArgs = e });
     }
 
     private void CoreWebView2_HistoryChanged(object sender, object e)
@@ -157,18 +165,20 @@ partial class WebView2Core
 
     private void CoreWebView2_NewWindowRequested(object sender, CoreWebView2NewWindowRequestedEventArgs e)
     {
-        if (_provider is null)
-            return;
-
-        var urlLoadingStrategy = UrlLoadingStrategy.OpenExternally;
+        var urlLoadingStrategy = UrlLoadingStrategy.OpenInWebView;
         var uri = new Uri(e.Uri);
-        if (_provider.BaseUri.IsBaseOf(uri) == true)
-            urlLoadingStrategy = UrlLoadingStrategy.OpenInWebView;
+
+        if (_provider is not null)
+        {
+            if (_provider.BaseUri.IsBaseOf(uri) == true)
+                urlLoadingStrategy = UrlLoadingStrategy.OpenInWebView;
+        }
 
         var newWindowEventArgs = new WebViewNewWindowEventArgs()
         {
             Url = uri,
-            UrlLoadingStrategy = urlLoadingStrategy
+            UrlLoadingStrategy = urlLoadingStrategy,
+            RawArgs = e,
         };
 
         if (!_callBack.PlatformWebViewNewWindowRequest(this, newWindowEventArgs))
