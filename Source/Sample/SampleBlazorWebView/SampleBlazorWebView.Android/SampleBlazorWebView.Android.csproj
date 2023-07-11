@@ -20,12 +20,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia.Android"/>
-		<PackageReference Include="Xamarin.AndroidX.Core.SplashScreen"/>
+		<PackageReference Include="Avalonia.Android" />
+		<PackageReference Include="Xamarin.AndroidX.Core.SplashScreen" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\SampleBlazorWebView\SampleBlazorWebView.csproj" />
 		<ProjectReference Include="..\..\..\Platform\Android\Avalonia.WebView.Android\Avalonia.WebView.Android.csproj" />
+		<ProjectReference Include="..\SampleBlazorWebView\SampleBlazorWebView.csproj" />
 	</ItemGroup>
 </Project>
