@@ -38,6 +38,7 @@
 		<PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
 		<PackageVersion Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
 		<PackageVersion Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+		<PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.1" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageVersion Include="DryIoc" Version="5.4.0" />
