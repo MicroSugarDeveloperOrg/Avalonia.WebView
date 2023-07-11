@@ -18,12 +18,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia.Android"/>
-		<PackageReference Include="Xamarin.AndroidX.Core.SplashScreen"/>
+		<PackageReference Include="Avalonia.Android" />
+		<PackageReference Include="Xamarin.AndroidX.Core.SplashScreen" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\SampleWebView\SampleWebView.csproj" />
-		<ProjectReference Include="..\..\..\Platform\Android\Avalonia.WebView.Android\Avalonia.WebView.Android.csproj" />
+	  <ProjectReference Include="..\..\..\Platform\Android\Avalonia.WebView.Android\Avalonia.WebView.Android.csproj" />
+	  <ProjectReference Include="..\SampleWebView\SampleWebView.csproj" />
 	</ItemGroup>
 </Project>
