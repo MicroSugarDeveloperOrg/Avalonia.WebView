@@ -3,7 +3,7 @@
 		<!--Package-->
 		<PackageId Condition="'$(PackageId)' == ''">$(MSBuildProjectName)</PackageId>
 		<Title  Condition="'$(Title)' == ''">$(MSBuildProjectName)</Title>
-		<WebviewVersion>11.0.0</WebviewVersion>
+		<WebviewVersion>11.0.0.1</WebviewVersion>
 		<WebViewPackageOutputPath>$(RepositoryDirectory)_nuget\</WebViewPackageOutputPath>
 		<VersionPrefix>avalonia11.0.0</VersionPrefix>
 		<Authors>MicroSugarDeveloperOrg</Authors>
