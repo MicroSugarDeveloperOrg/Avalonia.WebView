@@ -106,7 +106,7 @@ internal class AvaloniaWebViewClient : WebViewClient
         var newWindowEventArgs = new WebViewNewWindowEventArgs()
         {
             Url = uri,
-            UrlLoadingStrategy = UrlLoadingStrategy.OpenInWebView
+            UrlLoadingStrategy = UrlRequestStrategy.OpenInWebView
         };
 
         if (!_callBack.PlatformWebViewNewWindowRequest(_webViewCore, newWindowEventArgs))
@@ -115,16 +115,17 @@ internal class AvaloniaWebViewClient : WebViewClient
         bool isSucceed = false;
         switch (newWindowEventArgs.UrlLoadingStrategy)
         {
-            case UrlLoadingStrategy.OpenExternally:
+            case UrlRequestStrategy.OpenExternally:
+            case UrlRequestStrategy.OpenInNewWindow:
                 var intent = Intent.ParseUri(uri.OriginalString, IntentUriType.Scheme);
                 AndroidApplication.Context.StartActivity(intent);
                 isSucceed = true;
                 break;
-            case UrlLoadingStrategy.OpenInWebView:
+            case UrlRequestStrategy.OpenInWebView:
                 _webView?.LoadUrl(uri.OriginalString);
                 isSucceed = true;
                 break;
-            case UrlLoadingStrategy.CancelLoad:            
+            case UrlRequestStrategy.CancelLoad:            
                 break;
             default:
                 break;

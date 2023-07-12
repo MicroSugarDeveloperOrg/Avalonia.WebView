@@ -44,22 +44,22 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
         if (args.Cancel)
             decisionHandler(WKNavigationActionPolicy.Cancel);
 
-        UrlLoadingStrategy strategy;
+        UrlRequestStrategy strategy;
 
         if (navigationAction.TargetFrame is null)
-            strategy = UrlLoadingStrategy.OpenExternally;
+            strategy = UrlRequestStrategy.OpenExternally;
         else
         {
             if (_webScheme is not null)
-                strategy = _webScheme.BaseUri.IsBaseOf(uri) ? UrlLoadingStrategy.OpenInWebView : UrlLoadingStrategy.OpenExternally;
+                strategy = _webScheme.BaseUri.IsBaseOf(uri) ? UrlRequestStrategy.OpenInWebView : UrlRequestStrategy.OpenExternally;
             else
-                strategy = UrlLoadingStrategy.OpenInWebView;
+                strategy = UrlRequestStrategy.OpenInWebView;
         }
 
         var newWindowEventArgs = new WebViewNewWindowEventArgs()
         {
             Url = uri,
-            UrlLoadingStrategy = UrlLoadingStrategy.OpenInWebView
+            UrlLoadingStrategy = UrlRequestStrategy.OpenInWebView
         };
 
         if (!_callBack.PlatformWebViewNewWindowRequest(_webViewCore, newWindowEventArgs))
@@ -68,10 +68,10 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
             return;
         }
 
-        if (strategy == UrlLoadingStrategy.OpenExternally)
+        if (strategy == UrlRequestStrategy.OpenExternally || strategy == UrlRequestStrategy.OpenInNewWindow)
             OpenUriHelper.OpenInProcess(uri);
 
-        if (strategy != UrlLoadingStrategy.OpenInWebView)
+        if (strategy != UrlRequestStrategy.OpenInWebView)
         {
             decisionHandler(WKNavigationActionPolicy.Cancel);
             return;

@@ -1,11 +1,12 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Controls.Platform;
 using Avalonia.Platform;
 using System.Runtime.InteropServices;
 using WebViewCore;
 
 namespace AvaloniaWebView.Shared.Handlers;
 
-public abstract class ViewHandler : NativeControlHost, IViewHandler, IPlatformHandle, IDisposable
+public abstract class ViewHandler : NativeControlHost, IViewHandler, INativeControlHostDestroyableControlHandle, IPlatformHandle, IDisposable
 {
     public ViewHandler()
     {
@@ -68,4 +69,6 @@ public abstract class ViewHandler : NativeControlHost, IViewHandler, IPlatformHa
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
     }
+
+    public void Destroy() => ((IDisposable)this).Dispose();
 }

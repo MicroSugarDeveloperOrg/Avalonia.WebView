@@ -165,13 +165,13 @@ partial class WebView2Core
 
     private void CoreWebView2_NewWindowRequested(object sender, CoreWebView2NewWindowRequestedEventArgs e)
     {
-        var urlLoadingStrategy = UrlLoadingStrategy.OpenInWebView;
+        var urlLoadingStrategy = UrlRequestStrategy.OpenInWebView;
         var uri = new Uri(e.Uri);
 
         if (_provider is not null)
         {
             if (_provider.BaseUri.IsBaseOf(uri) == true)
-                urlLoadingStrategy = UrlLoadingStrategy.OpenInWebView;
+                urlLoadingStrategy = UrlRequestStrategy.OpenInWebView;
         }
 
         var newWindowEventArgs = new WebViewNewWindowEventArgs()
@@ -186,15 +186,17 @@ partial class WebView2Core
 
         switch (newWindowEventArgs.UrlLoadingStrategy)
         {
-            case UrlLoadingStrategy.OpenExternally:
+            case UrlRequestStrategy.OpenExternally:
                 e.Handled = true;
                 OpenUriHelper.OpenInProcess(uri);
                 break;
-            case UrlLoadingStrategy.OpenInWebView:
+            case UrlRequestStrategy.OpenInWebView:
                 e.NewWindow = CoreWebView2!;
                 break;
-            case UrlLoadingStrategy.CancelLoad:
+            case UrlRequestStrategy.CancelLoad:
+                e.Handled = true;
                 break;
+            case UrlRequestStrategy.OpenInNewWindow:
             default:
                 break;
         }

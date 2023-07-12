@@ -65,7 +65,7 @@ partial class LinuxWebViewCore
             var newWindowEventArgs = new WebViewNewWindowEventArgs()
             {
                 Url = uri,
-                UrlLoadingStrategy = type == PolicyDecisionType.NewWindowAction ? UrlLoadingStrategy.OpenInWebView : UrlLoadingStrategy.OpenExternally
+                UrlLoadingStrategy = type == PolicyDecisionType.NewWindowAction ? UrlRequestStrategy.OpenInWebView : UrlRequestStrategy.OpenExternally
             };
 
             if (!_callBack.PlatformWebViewNewWindowRequest(this, newWindowEventArgs))
@@ -76,16 +76,17 @@ partial class LinuxWebViewCore
 
             switch (newWindowEventArgs.UrlLoadingStrategy)
             {
-                case UrlLoadingStrategy.OpenExternally:
+                case UrlRequestStrategy.OpenExternally:
+                case UrlRequestStrategy.OpenInNewWindow:
                     OpenUriHelper.OpenInProcess(uri);
                     policyDecision.Ignore();
                     isSucceed = true;
                     break;
-                case UrlLoadingStrategy.OpenInWebView:
+                case UrlRequestStrategy.OpenInWebView:
                     policyDecision.Use();
                     isSucceed = true;
                     break;
-                case UrlLoadingStrategy.CancelLoad:
+                case UrlRequestStrategy.CancelLoad:
                 default:
                     policyDecision.Ignore();
                     return false;
