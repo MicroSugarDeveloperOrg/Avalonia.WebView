@@ -22,6 +22,7 @@ partial class IosWebViewCore
         await PrepareBlazorWebViewStarting(_provider);
 
         IsInitialized = true;
+        _callBack.PlatformWebViewCreated(this, new WebViewCreatedEventArgs() { IsSucceed = true });
         return true;
     }
 

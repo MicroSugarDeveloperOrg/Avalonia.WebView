@@ -1,4 +1,6 @@
-﻿namespace Avalonia.WebView.MacCatalyst.Delegates;
+﻿using DryIoc;
+
+namespace Avalonia.WebView.MacCatalyst.Delegates;
 internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
 {
     public WebViewNavigationDelegate(MacCatalystWebViewCore webViewCore, IVirtualWebViewControlCallBack callBack, WebScheme? webScheme)
@@ -7,11 +9,14 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
         //_webView = _webViewCore.WebView;
         _webScheme = webScheme;
         _callBack = callBack;
+        if (webScheme is null)
+            _isBlazor = false;
     }
     readonly MacCatalystWebViewCore _webViewCore;
     //readonly WKWebView _webView;
     readonly WebScheme? _webScheme;
     readonly IVirtualWebViewControlCallBack _callBack;
+    readonly bool _isBlazor = true;
 
     WKNavigation? _navigation;
     Uri? _currentUri;
@@ -29,24 +34,32 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
         var requestUrl = navigationAction.Request.Url;
         var uri = new Uri(requestUrl.ToString());
 
-        _callBack.PlatformWebViewNavigationStarting(_webViewCore, new WebViewUrlLoadingEventArg() { Url = uri });
+        WebViewUrlLoadingEventArg args = new()
+        {
+            Url = uri,
+            RawArgs = navigationAction
+        };
 
-        UrlLoadingStrategy strategy;
+        _callBack.PlatformWebViewNavigationStarting(_webViewCore, args);
+        if (args.Cancel)
+            decisionHandler(WKNavigationActionPolicy.Cancel);
+
+        UrlRequestStrategy strategy;
 
         if (navigationAction.TargetFrame is null)
-            strategy = UrlLoadingStrategy.OpenExternally;
+            strategy = UrlRequestStrategy.OpenExternally;
         else
         {
             if (_webScheme is not null)
-                strategy = _webScheme.BaseUri.IsBaseOf(uri) ? UrlLoadingStrategy.OpenInWebView : UrlLoadingStrategy.OpenExternally;
+                strategy = _webScheme.BaseUri.IsBaseOf(uri) ? UrlRequestStrategy.OpenInWebView : UrlRequestStrategy.OpenExternally;
             else
-                strategy = UrlLoadingStrategy.OpenInWebView;
+                strategy = UrlRequestStrategy.OpenInWebView;
         }
 
         var newWindowEventArgs = new WebViewNewWindowEventArgs()
         {
             Url = uri,
-            UrlLoadingStrategy = UrlLoadingStrategy.OpenInWebView
+            UrlLoadingStrategy = UrlRequestStrategy.OpenInWebView
         };
 
         if (!_callBack.PlatformWebViewNewWindowRequest(_webViewCore, newWindowEventArgs))
@@ -55,10 +68,10 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
             return;
         }
 
-        if (strategy == UrlLoadingStrategy.OpenExternally)
+        if (strategy == UrlRequestStrategy.OpenExternally || strategy == UrlRequestStrategy.OpenInNewWindow)
             OpenUriHelper.OpenInProcess(uri);
 
-        if (strategy != UrlLoadingStrategy.OpenInWebView)
+        if (strategy != UrlRequestStrategy.OpenInWebView)
         {
             decisionHandler(WKNavigationActionPolicy.Cancel);
             return;
@@ -114,13 +127,18 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
 
     public  void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
     {
+        bool isSucceed = false;
         if (_currentUri != null && _navigation == navigation)
         {
             // TODO: Determine whether this is needed
             //_webView.HandleNavigationFinished(_currentUri);
             _currentUri = null;
             _navigation = null;
+            isSucceed = true;
         }
+
+        _callBack.PlatformWebViewNavigationCompleted(_webViewCore, new WebViewUrlLoadedEventArg() { IsSuccess = isSucceed, RawArgs = navigation });
+
         //base.DidFinishNavigation(webView, navigation);
     }
 }

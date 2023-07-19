@@ -1,70 +1,70 @@
 ﻿<Project>
-	<PropertyGroup>
-		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-		<AvaloniaVersion>11.0.0-rc1.1</AvaloniaVersion>
-		<Avalonia_I_Want_To_Use_Private_Apis_In_Nuget_Package_And_Promise_To_Pin_The_Exact_Avalonia_Version_In_Package_Dependency>true</Avalonia_I_Want_To_Use_Private_Apis_In_Nuget_Package_And_Promise_To_Pin_The_Exact_Avalonia_Version_In_Package_Dependency>
-	</PropertyGroup>
-	<ItemGroup>
-		<PackageVersion Include="GtkSharp" Version="3.24.24.95" />
-		<PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
-		<PackageVersion Include="Microsoft.Extensions.FileProviders.Abstractions" Version="7.0.0" />
-		<PackageVersion Include="Microsoft.Extensions.FileProviders.Physical" Version="7.0.0" />
-		<PackageVersion Include="Microsoft.Web.WebView2" Version="1.0.1829-prerelease" />
-		<PackageVersion Include="System.Buffers" Version="4.5.1" />
-		<PackageVersion Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
-		<PackageVersion Include="System.Text.Encodings.Web" Version="7.0.0" />
-		<PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
-		<PackageVersion Include="WebkitGtkSharp" Version="3.24.24.95" />
-		<PackageVersion Include="XamarinMac" Version="1.0.0" />
-		<PackageVersion Include="XamlNameReferenceGenerator" Version="1.5.1" />
-
-		<PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
-		<!--<PackageVersion Include="Avalonia.Web" Version="$(AvaloniaVersion)" />-->
-		<PackageVersion Include="Avalonia.iOS" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.X11" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Native" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Browser.Blazor" Version="$(AvaloniaVersion)" />
-		<!--<PackageVersion Include="Avalonia.Web.Blazor" Version="$(AvaloniaVersion)" />-->
-		<PackageVersion Include="Avalonia.Direct2D1" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Headless.Vnc" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Themes.Simple" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Controls.ColorPicker" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageVersion Include="DryIoc" Version="5.4.0" />
-		<PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
-		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4-beta1.22518.1" />
-		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" />
-		<PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
-		<PackageVersion Include="System.Memory" Version="4.5.5" />
-		<PackageVersion Include="System.Runtime" Version="4.3.1" />
-		<PackageVersion Include="System.Reflection.Emit.ILGeneration" Version="4.3.0" />
-		<PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
-		<PackageVersion Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
-		<PackageVersion Include="System.Numerics.Vectors" Version="4.5.0" />
-		<PackageVersion Include="System.ComponentModel.Annotations" Version="6.0.0-preview.4.21253.7" />
-		<PackageVersion Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageVersion Include="Masa.Blazor" Version="1.0.0-rc.2" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageVersion Include="PolySharp" Version="1.13.2" />
-		<PackageVersion Include="MonoMac.NetStandard" Version="0.0.4" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0' OR '$(TargetFramework)' == 'net7.0-windows'">
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebView" Version="7.0.5" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net6.0-windows'">
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebView" Version="6.0.16" />
-	</ItemGroup>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <AvaloniaVersion>11.0.0</AvaloniaVersion>
+    <Avalonia_I_Want_To_Use_Private_Apis_In_Nuget_Package_And_Promise_To_Pin_The_Exact_Avalonia_Version_In_Package_Dependency>true</Avalonia_I_Want_To_Use_Private_Apis_In_Nuget_Package_And_Promise_To_Pin_The_Exact_Avalonia_Version_In_Package_Dependency>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="GtkSharp" Version="3.24.24.95" />
+    <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageVersion Include="Microsoft.Extensions.FileProviders.Abstractions" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.FileProviders.Physical" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.Web.WebView2" Version="1.0.1823.32" />
+    <PackageVersion Include="System.Buffers" Version="4.5.1" />
+    <PackageVersion Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+    <PackageVersion Include="System.Text.Encodings.Web" Version="7.0.0" />
+    <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+    <PackageVersion Include="WebkitGtkSharp" Version="3.24.24.95" />
+    <PackageVersion Include="XamarinMac" Version="1.0.0" />
+    <PackageVersion Include="XamlNameReferenceGenerator" Version="1.5.1" />
+    <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
+    <!--<PackageVersion Include="Avalonia.Web" Version="$(AvaloniaVersion)" />-->
+    <PackageVersion Include="Avalonia.iOS" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.X11" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Native" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Browser.Blazor" Version="$(AvaloniaVersion)" />
+    <!--<PackageVersion Include="Avalonia.Web.Blazor" Version="$(AvaloniaVersion)" />-->
+    <PackageVersion Include="Avalonia.Direct2D1" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Headless.Vnc" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Themes.Simple" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Controls.ColorPicker" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="DryIoc" Version="5.4.1" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" />
+    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
+    <PackageVersion Include="System.Memory" Version="4.5.5" />
+    <PackageVersion Include="System.Runtime" Version="4.3.1" />
+    <PackageVersion Include="System.Reflection.Emit.ILGeneration" Version="4.3.0" />
+    <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
+    <PackageVersion Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
+    <PackageVersion Include="System.Numerics.Vectors" Version="4.5.0" />
+    <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageVersion Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="Masa.Blazor" Version="1.0.0-rc.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="PolySharp" Version="1.13.2" />
+    <PackageVersion Include="MonoMac.NetStandard" Version="0.0.4" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0' OR '$(TargetFramework)' == 'net7.0-windows'">
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebView" Version="7.0.9" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net6.0-windows'">
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebView" Version="6.0.16" />
+  </ItemGroup>
 </Project>

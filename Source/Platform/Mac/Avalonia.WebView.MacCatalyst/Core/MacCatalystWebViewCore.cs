@@ -1,6 +1,5 @@
 ﻿using Avalonia.WebView.MacCatalyst.Handlers;
 using Avalonia.WebView.MacCatalyst.Helpers;
-using CoreGraphics;
 
 namespace Avalonia.WebView.MacCatalyst.Core;
 public partial class MacCatalystWebViewCore : IPlatformWebView<MacCatalystWebViewCore>
@@ -11,8 +10,14 @@ public partial class MacCatalystWebViewCore : IPlatformWebView<MacCatalystWebVie
         _callBack = callback;
         _handler = handler;
         _creationProperties = webViewCreationProperties;
+
+        _callBack.PlatformWebViewCreating(this, new WebViewCreatingEventArgs());
         _config = new WKWebViewConfiguration();
         _config.Preferences.SetValueForKey(NSObject.FromObject(_creationProperties.AreDevToolEnabled), new NSString("developerExtrasEnabled"));
+
+        _config.Preferences.JavaScriptEnabled = true;
+        _config.MediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypes.None;
+        _config.AllowsAirPlayForMediaPlayback = true;
 
         if (provider is not null)
         {
@@ -26,14 +31,18 @@ public partial class MacCatalystWebViewCore : IPlatformWebView<MacCatalystWebVie
 
             _isBlazorWebView = true;
         }
+        else
+            _config.UserContentController.AddScriptMessageHandler(new WebViewScriptMessageHandler(default!, MessageReceived), _filterKeyWord);
 
         _webView = new WKWebView(CGRect.Empty, _config)
-        { 
-            AutoresizesSubviews = true
+        {
+            AutoresizesSubviews = true,
+            TranslatesAutoresizingMaskIntoConstraints = false,
         };
 
         NativeHandler = _webView.Handle;
         RegisterEvents();
+
     }
 
     ~MacCatalystWebViewCore()

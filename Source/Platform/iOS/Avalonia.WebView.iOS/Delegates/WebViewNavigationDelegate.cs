@@ -7,10 +7,13 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
         _webViewCore = webViewCore;
         _webScheme = webScheme;
         _callBack = callBack;
+        if (webScheme is null)
+            _isBlazor = false;
     }
     readonly IosWebViewCore _webViewCore;
     readonly WebScheme? _webScheme;
     readonly IVirtualWebViewControlCallBack _callBack;
+    readonly bool _isBlazor = true;
 
     WKNavigation? _navigation;
     Uri? _currentUri;
@@ -27,22 +30,22 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
 
         _callBack.PlatformWebViewNavigationStarting(_webViewCore, new WebViewUrlLoadingEventArg() { Url = uri });
 
-        UrlLoadingStrategy strategy;
+        UrlRequestStrategy strategy;
 
         if (navigationAction.TargetFrame is null)
-            strategy = UrlLoadingStrategy.OpenExternally;
+            strategy = UrlRequestStrategy.OpenExternally;
         else
         {
             if (_webScheme is not null)
-                strategy = _webScheme.BaseUri.IsBaseOf(uri) ? UrlLoadingStrategy.OpenInWebView : UrlLoadingStrategy.OpenExternally;
+                strategy = _webScheme.BaseUri.IsBaseOf(uri) ? UrlRequestStrategy.OpenInWebView : UrlRequestStrategy.OpenExternally;
             else
-                strategy = UrlLoadingStrategy.OpenInWebView;
+                strategy = UrlRequestStrategy.OpenInWebView;
         }
 
         var newWindowEventArgs = new WebViewNewWindowEventArgs()
         {
             Url = uri,
-            UrlLoadingStrategy = UrlLoadingStrategy.OpenInWebView
+            UrlLoadingStrategy = UrlRequestStrategy.OpenInWebView
         };
 
         if (!_callBack.PlatformWebViewNewWindowRequest(_webViewCore, newWindowEventArgs))
@@ -51,14 +54,14 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
             return;
         }
 
-        if (strategy == UrlLoadingStrategy.OpenExternally)
+        if (strategy == UrlRequestStrategy.OpenExternally || strategy ==  UrlRequestStrategy.OpenInNewWindow)
         {
 #pragma warning disable CA1422  // TODO: OpenUrl(...) has [UnsupportedOSPlatform("ios10.0")]
             UIApplication.SharedApplication.OpenUrl(requestUrl);
 #pragma warning restore CA1422 // 
         }
 
-        if (strategy != UrlLoadingStrategy.OpenInWebView)
+        if (strategy != UrlRequestStrategy.OpenInWebView)
         {
             decisionHandler(WKNavigationActionPolicy.Cancel);
             return;
@@ -114,13 +117,18 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
 
     public override void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
     {
+        bool isSucceed = false;
         if (_currentUri != null && _navigation == navigation)
         {
             // TODO: Determine whether this is needed
             //_webView.HandleNavigationFinished(_currentUri);
             _currentUri = null;
             _navigation = null;
+            isSucceed = true;
         }
+
+        _callBack.PlatformWebViewNavigationCompleted(_webViewCore, new WebViewUrlLoadedEventArg() { IsSuccess = isSucceed, RawArgs = navigation });
+
         //base.DidFinishNavigation(webView, navigation);
     }
 }

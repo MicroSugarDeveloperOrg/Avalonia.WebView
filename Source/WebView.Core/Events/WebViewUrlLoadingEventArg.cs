@@ -1,7 +1,9 @@
-﻿using WebViewCore.Enums;
-
-namespace WebViewCore.Events;
+﻿namespace WebViewCore.Events;
 public class WebViewUrlLoadingEventArg : EventArgs
 {
-    public Uri? Url { get; set; } 
+    public Uri? Url { get; set; }
+
+    public bool Cancel { get; set; }
+
+    public object? RawArgs { get; set; }
 }

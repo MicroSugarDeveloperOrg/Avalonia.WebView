@@ -1,6 +1,6 @@
 ﻿namespace WebViewCore.Enums;
 
-public enum UrlLoadingStrategy
+public enum UrlRequestStrategy
 {
     /// <summary>
     /// Allows loading URLs using an app determined by the system.
@@ -16,6 +16,15 @@ public enum UrlLoadingStrategy
     /// </para>
     /// </summary>
     OpenInWebView,
+
+    /// <summary>
+    /// Allows loading URLs within the Blazor WebView.
+    /// This is the default strategy for URLs with a host matching the app origin.
+    /// <para>
+    /// This strategy should not be used for external links unless you can ensure they are fully trusted.
+    /// </para>
+    /// </summary>
+    OpenInNewWindow,
 
     /// <summary>
     /// Cancels the current URL loading attempt.

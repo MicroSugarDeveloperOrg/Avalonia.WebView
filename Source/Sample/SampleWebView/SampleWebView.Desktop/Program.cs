@@ -17,7 +17,7 @@ internal class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .With(new X11PlatformOptions() { UseEGL = true})
+            .With(new X11PlatformOptions() {})
             .LogToTrace()
             .UseReactiveUI()
             .UseDesktopWebView();

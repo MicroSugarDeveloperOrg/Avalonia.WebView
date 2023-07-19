@@ -9,7 +9,6 @@ public class MainViewModel : ViewModelBase
     {
         BaiduCommand = ReactiveCommand.Create<object>(t =>
         {
-
             Url = new Uri("https://www.bilibili.com/");
             //Url = new Uri(" https://www.android.com/");
         });

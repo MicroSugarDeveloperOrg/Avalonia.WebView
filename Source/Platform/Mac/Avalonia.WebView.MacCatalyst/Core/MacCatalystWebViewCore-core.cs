@@ -16,6 +16,16 @@ partial class MacCatalystWebViewCore
 
     private void MessageReceived(Uri uri, string message)
     {
+        WebViewMessageReceivedEventArgs args = new()
+        {
+            Source = uri,
+            Message = message
+        };
+
+        if (args.Source is null && _webView.Url is not null)
+            args.Source = new Uri(_webView.Url.AbsoluteString);
+
+        _callBack?.PlatformWebViewMessageReceived(this, args);
         _provider?.PlatformWebViewMessageReceived(this, new WebViewMessageReceivedEventArgs() { Source = uri, Message = message });
     }
 }

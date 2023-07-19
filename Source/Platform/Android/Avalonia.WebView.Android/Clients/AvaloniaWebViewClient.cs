@@ -98,32 +98,40 @@ internal class AvaloniaWebViewClient : WebViewClient
     {
         if (_callBack is null || !Uri.TryCreate(request?.Url?.ToString(), UriKind.RelativeOrAbsolute, out var uri))
             return false;
-
-        _callBack.PlatformWebViewNavigationStarting(_webViewCore, new WebViewUrlLoadingEventArg() { Url = uri });
+        WebViewUrlLoadingEventArg args = new() { Url = uri, RawArgs = request };
+        _callBack.PlatformWebViewNavigationStarting(_webViewCore, args);
+        if (args.Cancel)
+            return false;
 
         var newWindowEventArgs = new WebViewNewWindowEventArgs()
         {
             Url = uri,
-            UrlLoadingStrategy = UrlLoadingStrategy.OpenInWebView
+            UrlLoadingStrategy = UrlRequestStrategy.OpenInWebView
         };
 
         if (!_callBack.PlatformWebViewNewWindowRequest(_webViewCore, newWindowEventArgs))
             return false;
 
+        bool isSucceed = false;
         switch (newWindowEventArgs.UrlLoadingStrategy)
         {
-            case UrlLoadingStrategy.OpenExternally:
+            case UrlRequestStrategy.OpenExternally:
+            case UrlRequestStrategy.OpenInNewWindow:
                 var intent = Intent.ParseUri(uri.OriginalString, IntentUriType.Scheme);
                 AndroidApplication.Context.StartActivity(intent);
+                isSucceed = true;
                 break;
-            case UrlLoadingStrategy.OpenInWebView:
+            case UrlRequestStrategy.OpenInWebView:
                 _webView?.LoadUrl(uri.OriginalString);
+                isSucceed = true;
                 break;
-            case UrlLoadingStrategy.CancelLoad:            
+            case UrlRequestStrategy.CancelLoad:            
                 break;
             default:
                 break;
         }
+
+        _callBack.PlatformWebViewNavigationCompleted(_webViewCore, new WebViewUrlLoadedEventArg() {IsSuccess = isSucceed });
 
         return true;
     }

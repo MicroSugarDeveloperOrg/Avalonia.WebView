@@ -72,6 +72,8 @@ partial class AndroidWebViewCore
             webView.SetWebChromeClient(_webChromeClient);
         }
         IsInitialized = true;
+        _callBack.PlatformWebViewCreated(this, new WebViewCreatedEventArgs { IsSucceed = true });
+
         return true;
     }
 

@@ -8,10 +8,12 @@
 
 	<Grid RowDefinitions="50,*">
 
-		<!--<Button Content="Baidu" Command="{Binding BaiduCommand}"/>-->
-		
-		
-		<WebView Grid.Row="1" x:Name="PART_WebView" Url="https://www.bilibili.com"></WebView>
+		<StackPanel Orientation="Horizontal" Spacing="10">
+			<Button x:Name="PART_Button" Content="Baidu" Command="{Binding BaiduCommand}"/>
+			<Button x:Name="PART_Button1" Content="IconFont" Command="{Binding IconFontCommand}"/>
+		</StackPanel>
+	
+		<WebView x:Name="PART_WebView" Grid.Row="1" Url="{Binding Url}"></WebView>
 
 	</Grid>
 </UserControl>

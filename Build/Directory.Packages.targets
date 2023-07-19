@@ -3,9 +3,9 @@
 		<!--Package-->
 		<PackageId Condition="'$(PackageId)' == ''">$(MSBuildProjectName)</PackageId>
 		<Title  Condition="'$(Title)' == ''">$(MSBuildProjectName)</Title>
-		<WebviewVersion>0.1.0-rc1.1.7</WebviewVersion>
+		<WebviewVersion>11.0.0.1</WebviewVersion>
 		<WebViewPackageOutputPath>$(RepositoryDirectory)_nuget\</WebViewPackageOutputPath>
-		<VersionPrefix>avalonia11p11.0.0-rc1.1</VersionPrefix>
+		<VersionPrefix>avalonia11.0.0</VersionPrefix>
 		<Authors>MicroSugarDeveloperOrg</Authors>
 		<Company>MicroSugarDeveloperOrg</Company>
 		<Description>This repository is a set of controls that will help you add webview control.</Description>
