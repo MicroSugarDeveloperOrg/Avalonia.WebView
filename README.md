@@ -1,5 +1,7 @@
 # Avalonia.WebView
 
+English| [简体中文](./README.zh-CN.md)
+
 ## Develop
 * please install VisualStudio 2022 or greater or rider
 * use .net7 runtime (version 7.0.0 or greater)(if you want to use others, please modify the version in the global.json)
