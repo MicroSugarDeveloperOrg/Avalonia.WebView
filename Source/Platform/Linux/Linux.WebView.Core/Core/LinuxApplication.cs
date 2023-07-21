@@ -21,6 +21,7 @@ internal class LinuxApplication : ILinuxApplication
     readonly ILinuxDispatcher _dispatcher;
     Task? _appRunning;
     GDisplay? _defaultDisplay;
+    GApplication? _application;
 
     bool _isRunning = false;
     public bool IsRunning
@@ -50,10 +51,13 @@ internal class LinuxApplication : ILinuxApplication
         {
             if (!_isWslDevelop)
                 GtkApi.SetAllowedBackends("x11,wayland,quartz,*");
-            
+
             Environment.SetEnvironmentVariable("WAYLAND_DISPLAY", "/proc/fake-display-to-prevent-wayland-initialization-by-gtk3");
             GApplication.Init();
             _defaultDisplay = GDisplay.Default;
+
+            _application = new("WebView.Application", GLib.ApplicationFlags.None);
+            _application.Register(GLib.Cancellable.Current);
 
             _dispatcher.Start();
             IsRunning = true;
@@ -70,6 +74,7 @@ internal class LinuxApplication : ILinuxApplication
         if (!IsRunning)
             return Task.CompletedTask;
 
+        _application = null;
         _dispatcher.Stop();
         GApplication.Quit();
         _appRunning?.Wait();
@@ -105,6 +110,7 @@ internal class LinuxApplication : ILinuxApplication
         return _dispatcher.InvokeAsync(() =>
         {
             var window = new GWindow(Gtk.WindowType.Toplevel);
+            _application?.AddWindow(window);
             window.Title = "WebView.Gtk.Window"; 
             //window.KeepAbove = true;
             //window.Halign = Gtk.Align.Fill;
