@@ -1,4 +1,5 @@
-﻿using static Linux.WebView.Core.LinuxApplicationManager;
+﻿using System.Runtime.CompilerServices;
+using static Linux.WebView.Core.LinuxApplicationManager;
 
 namespace Linux.WebView.Core.Interoperates;
 
@@ -6,7 +7,10 @@ namespace Linux.WebView.Core.Interoperates;
 public delegate IntPtr gdk_set_allowed_backends_delegate(string backends);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-public delegate nint gdk_x11_window_get_xid_delegate(nint widgetWindowHandle);
+public delegate nint gdk_x11_window_get_xid_delegate(nint gdkWindowHandle);
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate void gtk_widget_realize_delegate(nint widgetHandle);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate ulong g_signal_connect_data_delegate(nint instance, string detailed_signal, nint c_handler, nint data, nint destroy_data, GConnectFlags connect_flags);
@@ -48,6 +52,7 @@ public static class GtkApi
         __gdk_set_allowed_backends = LoadDelegate<gdk_set_allowed_backends_delegate>(gLibrary.Gdk, gdk_set_allowed_backends)!;
         __gdk_x11_window_get_xid = LoadDelegate<gdk_x11_window_get_xid_delegate>(gLibrary.Gdk, gdk_x11_window_get_xid)!;
 
+        __gtk_widget_realize_delegate = LoadDelegate<gtk_widget_realize_delegate>(gLibrary.Gtk, gtk_widget_realize)!;
         __g_signal_connect_data = LoadDelegate<g_signal_connect_data_delegate>(gLibrary.Gtk, g_signal_connect_data)!;
         __g_memory_input_stream_new_from_data = LoadDelegate<g_memory_input_stream_new_from_data_delegate>(gLibrary.Gtk, g_memory_input_stream_new_from_data)!;
 
@@ -65,6 +70,7 @@ public static class GtkApi
     }
 
     private static string gdk_set_allowed_backends => nameof(gdk_set_allowed_backends);
+    private static string gtk_widget_realize => nameof(gtk_widget_realize);
     private static string gdk_x11_window_get_xid => nameof(gdk_x11_window_get_xid);
 
     private static string g_signal_connect_data => nameof(g_signal_connect_data);
@@ -83,6 +89,7 @@ public static class GtkApi
     private static gdk_set_allowed_backends_delegate __gdk_set_allowed_backends;
     private static gdk_x11_window_get_xid_delegate __gdk_x11_window_get_xid;
 
+    private static gtk_widget_realize_delegate __gtk_widget_realize_delegate;
     private static g_signal_connect_data_delegate __g_signal_connect_data;
     private static g_memory_input_stream_new_from_data_delegate __g_memory_input_stream_new_from_data;
 
@@ -123,6 +130,14 @@ public static class GtkApi
             return 0;
 
         return __gdk_x11_window_get_xid.Invoke(widget.Window.Handle);
+    }
+
+    public static void WidgetRealize(GWidget widget)
+    {
+        if (widget is null)
+            return;
+
+        __gtk_widget_realize_delegate.Invoke(widget.Handle);
     }
 
     public static ulong AddSignalConnect(nint instance, string detailed_signal, nint c_handler, nint data)

@@ -18,6 +18,12 @@ internal class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect() 
+            .With(new X11PlatformOptions
+            {
+                EnableMultiTouch = true,
+                UseDBusMenu = true,
+                EnableIme = true
+            })
             .LogToTrace()  
             .UseReactiveUI()
             .UseAntDesignToolkit()
