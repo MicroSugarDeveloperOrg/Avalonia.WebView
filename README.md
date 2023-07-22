@@ -110,6 +110,14 @@ English| [简体中文](./README.zh-CN.md)
 
    > use WKWebView[UIKit] for iOS (this is in Microsoft-iOS [net5.0-ios; net6.0-ios; net7.0-ios])
 
+| Platform                 | Technologies           |
+|:-------------------------|:-----------------------|
+| Windows                  | WebView2               |
+| MacOS                    | WKWebView(Appkit)      |
+| Linux                    | Gtk3,WebKitGtk3        |
+| Android                  | Android.Webkit.WebView |
+| iOS                      | WKWebView(UIKit)       |
+
 ## Demo
 
 You can always download demo executable to play around with WebView
@@ -120,6 +128,7 @@ You can always download demo executable to play around with WebView
 | WebView.Avalonia Version | Avalonia Version |
 |:-------------------------|:-----------------|
 | 0.1.0-rc1.x              | 11.0-rc1.x       |
+| 11.0.x                   | 11.0.x           |
 
 **NOTE**
 

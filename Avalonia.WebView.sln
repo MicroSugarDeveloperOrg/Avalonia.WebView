@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Build", ".Build", "{D24E6A
 		Build\Directory.webview.blazor.common.targets = Build\Directory.webview.blazor.common.targets
 		LICENSE = LICENSE
 		README.md = README.md
+		README.zh-CN.md = README.zh-CN.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebView", "Source\Sample\SampleWebView\SampleWebView\SampleWebView.csproj", "{4661D90C-C373-4E13-B3C1-E6604281A20C}"
