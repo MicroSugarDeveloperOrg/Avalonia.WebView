@@ -31,7 +31,7 @@ internal class LinuxDispatcher : ILinuxDispatcher
         var task = new TaskCompletionSource<bool>();
         Task.Run(() =>
         {
-            Gtk.Application.Invoke((s, e) =>
+            GApplication.Invoke((s, e) =>
             {
                 action?.Invoke();
                 task.SetResult(true);
@@ -51,7 +51,7 @@ internal class LinuxDispatcher : ILinuxDispatcher
         var task = new TaskCompletionSource<bool>();
         Task.Run(() =>
         {
-            Gtk.Application.Invoke((s, e) =>
+            GApplication.Invoke((s, e) =>
             {
                 action?.Invoke(s, e);
                 task.SetResult(true);
@@ -71,7 +71,7 @@ internal class LinuxDispatcher : ILinuxDispatcher
         var task = new TaskCompletionSource<bool>();
         Task.Run(() =>
         {
-            Gtk.Application.Invoke(sender, args,(s, e) =>
+            GApplication.Invoke(sender, args,(s, e) =>
             {
                 action?.Invoke(s, e);
                 task.SetResult(true);
@@ -91,7 +91,7 @@ internal class LinuxDispatcher : ILinuxDispatcher
         var task = new TaskCompletionSource<T>();
         Task.Run(() =>
         {
-            Gtk.Application.Invoke((s, e) =>
+            GApplication.Invoke((s, e) =>
             {
                 var ret = func.Invoke();
                 task.SetResult(ret);
@@ -111,7 +111,7 @@ internal class LinuxDispatcher : ILinuxDispatcher
         var task = new TaskCompletionSource<T>();
         Task.Run(() =>
         {
-            Gtk.Application.Invoke((s, e) =>
+            GApplication.Invoke((s, e) =>
             {
                 var ret = func.Invoke(s, e);
                 task.SetResult(ret);
@@ -131,7 +131,7 @@ internal class LinuxDispatcher : ILinuxDispatcher
         var task = new TaskCompletionSource<T>();
         Task.Run(() =>
         {
-            Gtk.Application.Invoke(sender, args,(s, e) =>
+            GApplication.Invoke(sender, args,(s, e) =>
             {
                 var ret = func.Invoke(s, e);
                 task.SetResult(ret);

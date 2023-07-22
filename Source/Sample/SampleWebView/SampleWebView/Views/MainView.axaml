@@ -6,7 +6,6 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SampleWebView.Views.MainView" >
 
-	<Grid>
-		<WebView x:Name="PART_WebView" Grid.Row="1" Url="http://www.bilibili.com"></WebView>
-	</Grid>
+			<WebView x:Name="PART_WebView" Grid.Row="1" Url="http://www.bilibili.com"></WebView>
+
 </UserControl>

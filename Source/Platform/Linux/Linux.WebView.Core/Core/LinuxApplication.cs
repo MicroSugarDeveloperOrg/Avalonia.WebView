@@ -49,11 +49,11 @@ internal class LinuxApplication : ILinuxApplication
         var tcs = new TaskCompletionSource<bool>();
         _appRunning = Task.Factory.StartNew(obj =>
         {
+            Environment.SetEnvironmentVariable("WAYLAND_DISPLAY", "/proc/fake-display-to-prevent-wayland-initialization-by-gtk3");
             if (!_isWslDevelop)
                 GtkApi.SetAllowedBackends("x11,wayland,quartz,*");
-
-            Environment.SetEnvironmentVariable("WAYLAND_DISPLAY", "/proc/fake-display-to-prevent-wayland-initialization-by-gtk3");
-            GApplication.Init();
+                //GtkApi.SetAllowedBackends("x11");
+            GApplication.Init();   
             _defaultDisplay = GDisplay.Default;
 
             _application = new("WebView.Application", GLib.ApplicationFlags.None);
@@ -109,21 +109,12 @@ internal class LinuxApplication : ILinuxApplication
         if (!_isRunning) throw new InvalidOperationException(nameof(IsRunning));
         return _dispatcher.InvokeAsync(() =>
         {
-            var window = new GWindow(Gtk.WindowType.Toplevel);
+            GWindow window = new("WebView.Gtk.Window");
             _application?.AddWindow(window);
-            window.Title = "WebView.Gtk.Window"; 
-            //window.KeepAbove = true;
-            //window.Halign = Gtk.Align.Fill;
-            //window.Valign = Gtk.Align.Fill;
-            window.DefaultSize = new GSize(1920, 1080);
-
-            var webView = new WebKitWebView();
-            //webView.Valign = Gtk.Align.Fill;
-            //webView.Halign = Gtk.Align.Fill;
-            webView.Realize();
+            window.DefaultSize = new GSize(100,100); 
+            WebKitWebView webView = new(new Settings(){ EnableFullscreen = true});
             window.Add(webView);
             window.ShowAll();
-            //window.Present();
             return (window, webView, window.X11Handle());
         });
     }

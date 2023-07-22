@@ -12,7 +12,7 @@ public partial class MainView : UserControl
 
     private void PART_WebView_WebViewNewWindowRequested(object? sender, WebViewCore.Events.WebViewNewWindowEventArgs e)
     {
-        e.UrlLoadingStrategy = WebViewCore.Enums.UrlRequestStrategy.OpenInNewWindow;
+        e.UrlLoadingStrategy = WebViewCore.Enums.UrlRequestStrategy.OpenInWebView;
     }
 
     private void PART_Button_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
