@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFrameworks>net7.0-macos</TargetFrameworks>
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia.Desktop" />
+		<PackageReference Include="AntDesign.Toolkit" />
+	</ItemGroup>
+
+	<ItemGroup> 
+		<ProjectReference Include="..\..\..\Platform\Mac\Avalonia.WebView.Mac\Avalonia.WebView.Mac.csproj" />
+		<ProjectReference Include="..\SampleWebView\SampleWebView.csproj" />
+	</ItemGroup>
+</Project>
