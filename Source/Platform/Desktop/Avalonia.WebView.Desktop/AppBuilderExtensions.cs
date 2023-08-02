@@ -11,9 +11,8 @@ public static class AppBuilderExtensions
             builder.UseWindowWebView();
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             builder.UseLinuxWebView(isWslDevelop);
-#elif NET5_0_OR_GREATER
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            builder.UseOSXWebView();
+            builder.UseMacCatalystWebView();
 #endif
         return builder;
     }

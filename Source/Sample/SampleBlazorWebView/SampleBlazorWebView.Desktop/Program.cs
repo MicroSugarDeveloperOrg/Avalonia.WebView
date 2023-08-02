@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using AntDesign.Toolkit;
 using Avalonia.ReactiveUI;
-using Avalonia.WebView.Desktop;
+using Avalonia.WebView.DesktopX;
 
 namespace SampleBlazorWebView.Desktop;
 

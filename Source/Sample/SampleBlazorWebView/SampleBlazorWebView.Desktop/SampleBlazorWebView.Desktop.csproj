@@ -2,7 +2,6 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFrameworks>net7.0</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('OSX'))">$(TargetFrameworks);net7.0-macos</TargetFrameworks>
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 	</PropertyGroup>
 
@@ -16,7 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Platform\Desktop\Avalonia.WebView.Desktop\Avalonia.WebView.Desktop.csproj" />
+		<ProjectReference Include="..\..\..\Platform\Desktop\Avalonia.WebView.DesktopX\Avalonia.WebView.DesktopX.csproj" />
 		<ProjectReference Include="..\SampleBlazorWebView\SampleBlazorWebView.csproj" />
 	</ItemGroup>
 </Project>

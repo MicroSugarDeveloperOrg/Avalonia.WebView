@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net7.0-macos</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<!--<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('OSX'))">$(TargetFrameworks);net7.0-macos</TargetFrameworks>-->
 	</PropertyGroup>
 
@@ -31,9 +31,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'macos'" Include="..\..\Linux\Avalonia.WebView.Linux\Avalonia.WebView.Linux.csproj" />
-		<ProjectReference Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'macos'" Include="..\..\Mac\Avalonia.WebView.Mac\Avalonia.WebView.Mac.csproj" />
-		<ProjectReference Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'macos'" Include="..\..\Windows\Avalonia.WebView.Windows\Avalonia.WebView.Windows.csproj" />
+		<ProjectReference Include="..\..\Linux\Avalonia.WebView.Linux\Avalonia.WebView.Linux.csproj" />
+		<ProjectReference Include="..\..\Mac\Avalonia.WebView.MacCatalyst\Avalonia.WebView.MacCatalyst.csproj" /> 
+		<ProjectReference Include="..\..\Windows\Avalonia.WebView.Windows\Avalonia.WebView.Windows.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
