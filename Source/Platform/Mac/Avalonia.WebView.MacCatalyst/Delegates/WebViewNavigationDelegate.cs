@@ -59,7 +59,7 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
         var newWindowEventArgs = new WebViewNewWindowEventArgs()
         {
             Url = uri,
-            UrlLoadingStrategy = UrlRequestStrategy.OpenInWebView
+            UrlLoadingStrategy = strategy
         };
 
         if (!_callBack.PlatformWebViewNewWindowRequest(_webViewCore, newWindowEventArgs))
@@ -67,6 +67,7 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
             decisionHandler(WKNavigationActionPolicy.Cancel);
             return;
         }
+        strategy = newWindowEventArgs.UrlLoadingStrategy;
 
         if (strategy == UrlRequestStrategy.OpenExternally || strategy == UrlRequestStrategy.OpenInNewWindow)
             OpenUriHelper.OpenInProcess(uri);
@@ -77,7 +78,7 @@ internal class WebViewNavigationDelegate : NSObject, IWKNavigationDelegate
             return;
         }
 
-        if (navigationAction.TargetFrame!.MainFrame)
+        if (navigationAction.TargetFrame?.MainFrame == true)
             _currentUri = requestUrl;
 
         decisionHandler(WKNavigationActionPolicy.Allow);
