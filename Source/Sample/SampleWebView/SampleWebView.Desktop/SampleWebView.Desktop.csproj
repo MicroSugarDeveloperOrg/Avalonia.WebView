@@ -10,7 +10,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia.Desktop" />
+		<PackageReference Include="Avalonia.Desktop" /> 
+		<PackageReference Include="AntDesign.Toolkit" /> 
 	</ItemGroup>
 
 	<ItemGroup>

@@ -19,8 +19,10 @@ internal class LinuxApplication : ILinuxApplication
 
     private readonly bool _isWslDevelop;
     readonly ILinuxDispatcher _dispatcher;
-    Task? _appRunning;
+    //Task? _appRunning;
+    Thread? _appThread;
     GDisplay? _defaultDisplay;
+    GApplication? _application;
 
     bool _isRunning = false;
     public bool IsRunning
@@ -46,23 +48,59 @@ internal class LinuxApplication : ILinuxApplication
             return Task.FromResult(true);
 
         var tcs = new TaskCompletionSource<bool>();
-        _appRunning = Task.Factory.StartNew(obj =>
+        //_appRunning = Task.Factory.StartNew(obj =>
+        //{
+        //    Environment.SetEnvironmentVariable("WAYLAND_DISPLAY", "/proc/fake-display-to-prevent-wayland-initialization-by-gtk3");
+        //    if (!_isWslDevelop)
+        //        GtkApi.SetAllowedBackends("x11,wayland,quartz,*");
+        //        //GtkApi.SetAllowedBackends("x11");
+        //    GApplication.Init();   
+        //    _defaultDisplay = GDisplay.Default;
+//
+        //    _application = new("WebView.Application", GLib.ApplicationFlags.None);
+        //    _application.Register(GLib.Cancellable.Current);
+//
+        //    _dispatcher.Start();
+        //    IsRunning = true;
+//
+        //    tcs.SetResult(true);
+        //    GApplication.Run();
+        //}, TaskCreationOptions.LongRunning);
+//
+
+        _appThread = new Thread(()=> Run(tcs))
         {
-            if (!_isWslDevelop)
-                GtkApi.SetAllowedBackends("x11,wayland,quartz,*");
-            
-            Environment.SetEnvironmentVariable("WAYLAND_DISPLAY", "/proc/fake-display-to-prevent-wayland-initialization-by-gtk3");
-            GApplication.Init();
-            _defaultDisplay = GDisplay.Default;
-
-            _dispatcher.Start();
-            IsRunning = true;
-
-            tcs.SetResult(true);
-            GApplication.Run();
-        }, TaskCreationOptions.LongRunning);
+            Name = "GTK3WORKINGTHREAD",
+            IsBackground = true,
+        };
+        _appThread.Start();
 
         return tcs.Task;
+    }
+
+    void Run(TaskCompletionSource<bool> taskSource)
+    {
+        if (!_isWslDevelop)
+                GtkApi.SetAllowedBackends("x11");
+                //GtkApi.SetAllowedBackends("x11,wayland,quartz,*");
+        Environment.SetEnvironmentVariable("WAYLAND_DISPLAY", "/proc/fake-display-to-prevent-wayland-initialization-by-gtk3");
+
+        try
+        {
+            GApplication.Init();   
+            _application = new("WebView.Application", GLib.ApplicationFlags.None);
+            _application.Register(GLib.Cancellable.Current);
+            _dispatcher.Start();
+
+            _defaultDisplay = GDisplay.Default;
+            IsRunning = true;
+            taskSource.SetResult(true);
+            GApplication.Run();
+        }
+        catch
+        {
+            taskSource.SetResult(false);
+        }
     }
 
     Task ILinuxApplication.StopAsync()
@@ -70,9 +108,11 @@ internal class LinuxApplication : ILinuxApplication
         if (!IsRunning)
             return Task.CompletedTask;
 
+        _application = null;
         _dispatcher.Stop();
         GApplication.Quit();
-        _appRunning?.Wait();
+        _appThread?.Join();
+        //_appRunning?.Wait();
         return Task.CompletedTask;
     }
 
@@ -104,20 +144,13 @@ internal class LinuxApplication : ILinuxApplication
         if (!_isRunning) throw new InvalidOperationException(nameof(IsRunning));
         return _dispatcher.InvokeAsync(() =>
         {
-            var window = new GWindow(Gtk.WindowType.Toplevel);
-            window.Title = "WebView.Gtk.Window"; 
-            //window.KeepAbove = true;
-            //window.Halign = Gtk.Align.Fill;
-            //window.Valign = Gtk.Align.Fill;
-            window.DefaultSize = new GSize(1920, 1080);
-
-            var webView = new WebKitWebView();
-            //webView.Valign = Gtk.Align.Fill;
-            //webView.Halign = Gtk.Align.Fill;
-            webView.Realize();
+            GWindow window = new("WebView.Gtk.Window");
+            _application?.AddWindow(window);
+            window.KeepAbove = true;
+            //window.DefaultSize = new GSize(100,100); 
+            WebKitWebView webView = new(new Settings(){ EnableFullscreen = true}); 
             window.Add(webView);
             window.ShowAll();
-            //window.Present();
             return (window, webView, window.X11Handle());
         });
     }

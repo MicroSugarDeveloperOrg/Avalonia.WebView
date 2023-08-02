@@ -1,0 +1,6 @@
+{
+    "dotnet.defaultSolution": "Avalonia.WebView.sln",
+    "window.zoomLevel": 0,
+    "editor.mouseWheelZoom": true,
+    "editor.fontSize": 14
+}

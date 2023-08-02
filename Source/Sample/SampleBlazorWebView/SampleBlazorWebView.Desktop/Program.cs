@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using AntDesign.Toolkit;
 using Avalonia.ReactiveUI;
 using Avalonia.WebView.Desktop;
 
@@ -19,5 +20,6 @@ internal class Program
             .UsePlatformDetect()
             .LogToTrace()
             .UseReactiveUI()
+            .UseAntDesignToolkit()
             .UseDesktopWebView(false);
 }

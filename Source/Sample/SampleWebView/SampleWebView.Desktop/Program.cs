@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using AntDesign.Toolkit;
 using Avalonia.ReactiveUI;
 using Avalonia.WebView.DesktopX;
 
@@ -16,9 +17,15 @@ internal class Program
     // Avalonia configuration, don't remove; also used by visual designer.
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            .With(new X11PlatformOptions() {})
-            .LogToTrace()
+            .UsePlatformDetect() 
+            .With(new X11PlatformOptions
+            {
+                EnableMultiTouch = true,
+                UseDBusMenu = true,
+                EnableIme = true
+            })
+            .LogToTrace()  
             .UseReactiveUI()
+            .UseAntDesignToolkit()
             .UseDesktopWebView();
 }

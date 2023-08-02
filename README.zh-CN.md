@@ -1,4 +1,5 @@
 # Avalonia.WebView
+WebView for avalonia
 
 [English](./README.md)| 简体中文
 
@@ -110,6 +111,15 @@
 
    > 在 iOS 上使用 WKWebView[UIKit]（这是在 Microsoft-iOS 中的 [net5.0-ios; net6.0-ios; net7.0-ios]）
 
+| 平台                      | 技术                    |
+|:-------------------------|:-----------------------|
+| Windows                  | WebView2               |
+| MacOS                    | WKWebView(Appkit)      |
+| Linux                    | Gtk3,WebKitGtk3        |
+| Android                  | Android.Webkit.WebView |
+| iOS                      | WKWebView(UIKit)       |
+
+
 ## 演示
 
 您可以随时下载演示可执行文件来体验 WebView
@@ -117,9 +127,10 @@
 
 ## 版本兼容性
 
-| WebView.Avalonia 版本 | Avalonia 版本 |
+| WebView.Avalonia 版本     | Avalonia 版本 |
 |:-------------------------|:-----------------|
 | 0.1.0-rc1.x              | 11.0-rc1.x       |
+| 11.0.x                   | 11.0.x           |
 
 **注意**
 
