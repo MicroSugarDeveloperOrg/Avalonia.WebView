@@ -120,7 +120,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CEF", "CEF", "{B7E1BBDD-470
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.WebView.Cef", "Source\Platform\CEF\Avalonia.WebView.Cef\Avalonia.WebView.Cef.csproj", "{886DEC74-AAD6-4208-A82F-350D6F6AA697}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebView.Desktop.Mac", "Source\Sample\SampleWebView\SampleWebView.Desktop.Mac\SampleWebView.Desktop.Mac.csproj", "{2FA8E3FB-2F04-4C2E-B610-4495F8D786E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Mac.Aot", "Source\Platform\Mac\Xamarin.Mac.Aot\Xamarin.Mac.Aot.csproj", "{FF600328-B7A4-4EEE-90F2-EDD2275AA69E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -272,10 +272,10 @@ Global
 		{886DEC74-AAD6-4208-A82F-350D6F6AA697}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{886DEC74-AAD6-4208-A82F-350D6F6AA697}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{886DEC74-AAD6-4208-A82F-350D6F6AA697}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2FA8E3FB-2F04-4C2E-B610-4495F8D786E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FA8E3FB-2F04-4C2E-B610-4495F8D786E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2FA8E3FB-2F04-4C2E-B610-4495F8D786E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2FA8E3FB-2F04-4C2E-B610-4495F8D786E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF600328-B7A4-4EEE-90F2-EDD2275AA69E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF600328-B7A4-4EEE-90F2-EDD2275AA69E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF600328-B7A4-4EEE-90F2-EDD2275AA69E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF600328-B7A4-4EEE-90F2-EDD2275AA69E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -318,7 +318,7 @@ Global
 		{2D89E17D-5C06-4FCB-BE22-B961617EEEB3} = {F8A28023-40F2-493A-9BE4-940A03E2F5FC}
 		{B7E1BBDD-4702-4061-B983-588148C479D9} = {070755E7-E85D-4C99-A7A7-CFE543054D7C}
 		{886DEC74-AAD6-4208-A82F-350D6F6AA697} = {B7E1BBDD-4702-4061-B983-588148C479D9}
-		{2FA8E3FB-2F04-4C2E-B610-4495F8D786E7} = {83490912-3D02-4366-B645-BFAD4ED0AFE5}
+		{FF600328-B7A4-4EEE-90F2-EDD2275AA69E} = {69A9B177-4720-4495-A6BA-028141036014}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0921EC9A-CD2A-4912-BC79-11B67BBCBDF5}
