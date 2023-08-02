@@ -16,10 +16,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Build", ".Build", "{D24E6A
 		Directory.Packages.props = Directory.Packages.props
 		Build\Directory.Packages.targets = Build\Directory.Packages.targets
 		Build\Directory.webview.android.common.targets = Build\Directory.webview.android.common.targets
+		Build\Directory.webview.blazor.common.targets = Build\Directory.webview.blazor.common.targets
 		Build\Directory.webview.desktop.common.targets = Build\Directory.webview.desktop.common.targets
 		Build\Directory.webview.ios.common.targets = Build\Directory.webview.ios.common.targets
 		global.json = global.json
-		Build\Directory.webview.blazor.common.targets = Build\Directory.webview.blazor.common.targets
 		LICENSE = LICENSE
 		README.md = README.md
 		README.zh-CN.md = README.zh-CN.md
@@ -113,6 +113,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebView.Avalonia", "Packages\WebView.Avalonia\WebView.Avalonia.csproj", "{01486A20-FAEF-4458-9653-842EF9E6296A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWebView.Avalonia", "Packages\BlazorWebView.Avalonia\BlazorWebView.Avalonia.csproj", "{DBF2E1C0-7CDE-4469-A011-7D59E2A74193}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.WebView.DesktopTx", "Source\Platform\Desktop\Avalonia.WebView.DesktopTx\Avalonia.WebView.DesktopTx.csproj", "{2D89E17D-5C06-4FCB-BE22-B961617EEEB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CEF", "CEF", "{B7E1BBDD-4702-4061-B983-588148C479D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.WebView.Cef", "Source\Platform\CEF\Avalonia.WebView.Cef\Avalonia.WebView.Cef.csproj", "{886DEC74-AAD6-4208-A82F-350D6F6AA697}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -256,6 +262,14 @@ Global
 		{DBF2E1C0-7CDE-4469-A011-7D59E2A74193}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBF2E1C0-7CDE-4469-A011-7D59E2A74193}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBF2E1C0-7CDE-4469-A011-7D59E2A74193}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D89E17D-5C06-4FCB-BE22-B961617EEEB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D89E17D-5C06-4FCB-BE22-B961617EEEB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D89E17D-5C06-4FCB-BE22-B961617EEEB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D89E17D-5C06-4FCB-BE22-B961617EEEB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{886DEC74-AAD6-4208-A82F-350D6F6AA697}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{886DEC74-AAD6-4208-A82F-350D6F6AA697}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{886DEC74-AAD6-4208-A82F-350D6F6AA697}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{886DEC74-AAD6-4208-A82F-350D6F6AA697}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -295,6 +309,9 @@ Global
 		{F637CDDF-3319-4706-B9CF-6DBE9593FDF5} = {F8A28023-40F2-493A-9BE4-940A03E2F5FC}
 		{01486A20-FAEF-4458-9653-842EF9E6296A} = {0C1A9227-2CD9-475D-B0D0-F04FC5B4971B}
 		{DBF2E1C0-7CDE-4469-A011-7D59E2A74193} = {0C1A9227-2CD9-475D-B0D0-F04FC5B4971B}
+		{2D89E17D-5C06-4FCB-BE22-B961617EEEB3} = {F8A28023-40F2-493A-9BE4-940A03E2F5FC}
+		{B7E1BBDD-4702-4061-B983-588148C479D9} = {070755E7-E85D-4C99-A7A7-CFE543054D7C}
+		{886DEC74-AAD6-4208-A82F-350D6F6AA697} = {B7E1BBDD-4702-4061-B983-588148C479D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0921EC9A-CD2A-4912-BC79-11B67BBCBDF5}
