@@ -1,10 +1,27 @@
-﻿using System;
-namespace Avalonia.WebView.Mac.Delegates;
+﻿namespace Avalonia.WebView.Mac.Delegates;
 
-public class WebViewUIDelegate : WebUIDelegate
+internal class WebViewUIDelegate : WKUIDelegate
 {
-    public WebViewUIDelegate()
-    {
-    }
-}
 
+    public override void RunJavaScriptAlertPanel(WKWebView webView, string message, WKFrameInfo frame, Action completionHandler)
+    {
+
+    }
+
+    public override void RunJavaScriptConfirmPanel(WKWebView webView, string message, WKFrameInfo frame, Action<bool> completionHandler)
+    {
+
+    }
+
+    public override void RunJavaScriptTextInputPanel(WKWebView webView, string prompt, string? defaultText, WKFrameInfo frame, Action<string> completionHandler)
+    {
+
+    }
+
+    private static string GetJsAlertTitle(WKWebView webView)
+    {
+        return string.Empty;
+    }
+
+
+}

@@ -16,7 +16,6 @@ public class WebViewHandler : ViewHandler<IVirtualWebView, MacWebViewCore>
 
     protected override HandleRef CreatePlatformHandler(IPlatformHandle parent, Func<IPlatformHandle> createFromSystem)
     {
-        //var handler = createFromSystem.Invoke();
         return new HandleRef(this, _webViewCore.NativeHandler);
     }
 

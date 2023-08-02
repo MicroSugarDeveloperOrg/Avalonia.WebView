@@ -7,25 +7,7 @@ partial class MacWebViewCore
 {
     Task PrepareBlazorWebViewStarting(IVirtualBlazorWebViewProvider? provider)
     {
-        if (provider is null )
-            return Task.CompletedTask;
-
-        if (!provider.ResourceRequestedFilterProvider(this, out var filter))
-            return Task.CompletedTask;
-
-        MacosWebView.RegisterUrlSchemeAsLocal(filter.Scheme);
-
-        WebView.PolicyDelegate = new WebViewNavigationDelegate();
-        WebView.ResourceLoadDelegate = new WebViewResourceLoadDelegate();
-        WebView.FrameLoadDelegate = new WebViewFrameLoadDelegate(); 
-        //WebView.UIDelegate = new WebViewUIDelegate();
-        //NSHttpUrlResponse
-
-        var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(BlazorScriptHelper.BlazorStartingScript);
-        var result= WebView.StringByEvaluatingJavaScriptFromString(messageJSStringLiteral);
-        //var result1 = WebView.StringByEvaluatingJavaScriptFromString(BlazorScriptHelper.BlazorStaredScript);
-
-        _isBlazorWebView = true;
+        WebView.NavigationDelegate = new WebViewNavigationDelegate(this, _callBack, _filter);
         return Task.CompletedTask;
     }
 
@@ -34,6 +16,19 @@ partial class MacWebViewCore
         _isBlazorWebView = false;
     }
 
-    
+    private void MessageReceived(Uri uri, string message)
+    {
+        WebViewMessageReceivedEventArgs args = new()
+        {
+            Source = uri,
+            Message = message
+        };
+
+        if (args.Source is null && _webView.Url is not null && !string.IsNullOrWhiteSpace(_webView.Url.AbsoluteString))
+            args.Source = new Uri(_webView.Url.AbsoluteString);
+
+        _callBack?.PlatformWebViewMessageReceived(this, args);
+        _provider?.PlatformWebViewMessageReceived(this, new WebViewMessageReceivedEventArgs() { Source = uri, Message = message });
+    }
 
 }

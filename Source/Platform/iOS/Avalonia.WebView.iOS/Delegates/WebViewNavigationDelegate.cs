@@ -67,7 +67,7 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
             return;
         }
 
-        if (navigationAction.TargetFrame!.MainFrame)
+        if (navigationAction.TargetFrame?.MainFrame == true)
             _currentUri = requestUrl;
 
         decisionHandler(WKNavigationActionPolicy.Allow);
@@ -86,23 +86,18 @@ internal class WebViewNavigationDelegate : WKNavigationDelegate
                 webView.LoadRequest(request);
             }
         }
-
-        //else
-        //base.DidReceiveServerRedirectForProvisionalNavigation(webView, navigation);
     }
 
     public override void DidFailNavigation(WKWebView webView, WKNavigation navigation, NSError error)
     {
         _currentUri = null;
         _navigation = null;
-        //base.DidFailNavigation(webView, navigation, error);
     }
 
     public override void DidFailProvisionalNavigation(WKWebView webView, WKNavigation navigation, NSError error)
     {
         _currentUri = null;
         _navigation = null;
-        //base.DidFailProvisionalNavigation(webView, navigation, error);
     }
 
     public override void DidCommitNavigation(WKWebView webView, WKNavigation navigation)

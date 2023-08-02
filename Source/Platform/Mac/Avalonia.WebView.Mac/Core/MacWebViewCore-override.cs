@@ -1,65 +1,72 @@
-﻿using System.Web;
+﻿using System.Text.Encodings.Web;
 
 namespace Avalonia.WebView.Mac.Core;
 
 partial class MacWebViewCore
 {
-    public IntPtr NativeHandler { get; private set; }
     MacWebViewCore IPlatformWebView<MacWebViewCore>.PlatformView => this;
+    public IntPtr NativeHandler { get; private set; }
 
     bool IPlatformWebView.IsInitialized => IsInitialized;
 
     object? IPlatformWebView.PlatformViewContext => this;
 
-    bool IWebViewControl.IsCanGoForward => WebView.CanGoForward();
+    bool IWebViewControl.IsCanGoForward => WebView.CanGoForward;
 
-    bool IWebViewControl.IsCanGoBack => WebView.CanGoBack();
+    bool IWebViewControl.IsCanGoBack => WebView.CanGoBack;
 
     async Task<bool> IPlatformWebView.Initialize()
     {
         if (IsInitialized)
             return true;
- 
-        try
-        {
-            _callBack.PlatformWebViewCreating(this, new WebViewCreatingEventArgs());
-           
-            RegisterWebViewEvents(WebView);
-            WebView.Preferences.JavaEnabled = true;
-            WebView.Preferences.JavaScriptEnabled = true;
-            WebView.Preferences.JavaScriptCanOpenWindowsAutomatically = true;
-            //WebView.Preferences.PrivateBrowsingEnabled = true;
-            //WebView.Preferences.AllowAir
-            await PrepareBlazorWebViewStarting(_provider);
 
+        await PrepareBlazorWebViewStarting(_provider);
 
-            IsInitialized = true;
-            _callBack.PlatformWebViewCreated(this, new WebViewCreatedEventArgs { IsSucceed = true });
-            return true;
-        }
-        catch (Exception ex)
-        {
-            _callBack.PlatformWebViewCreated(this, new WebViewCreatedEventArgs { IsSucceed = false, Message = ex.ToString() });
-        }
-
-        return false;
+        IsInitialized = true;
+        _callBack.PlatformWebViewCreated(this, new WebViewCreatedEventArgs() { IsSucceed = true });
+        return true;
     }
 
     Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
     {
+        if (WebView is null)
+            return Task.FromResult<string?>(default);
+
         if (string.IsNullOrWhiteSpace(javaScript))
             return Task.FromResult<string?>(default);
 
-        var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(javaScript);
-        var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
+        string? resultString = default;
+        var messageJSStringLiteral = JavaScriptEncoder.Default.Encode(javaScript);
+        WebView.EvaluateJavaScript(javascript: $"{_dispatchMessageCallback}(\"{messageJSStringLiteral}\")",
+                                   completionHandler: (NSObject result, NSError error) =>
+                                   {
+                                       resultString = result.ToString();
+                                   });
 
-        var result = WebView.StringByEvaluatingJavaScriptFromString(script);
-        return Task.FromResult<string?>(result);
+        return Task.FromResult(resultString); ;
     }
 
-    bool IWebViewControl.GoBack() => WebView.GoBack();
+    bool IWebViewControl.GoBack()
+    {
+        if (WebView is null)
+            return false;
 
-    bool IWebViewControl.GoForward() => WebView.GoForward();
+        if (!WebView.CanGoBack)
+            return false;
+
+        return WebView.GoBack() == null ? false : true;
+    }
+
+    bool IWebViewControl.GoForward()
+    {
+        if (WebView is null)
+            return false;
+
+        if (!WebView.CanGoForward)
+            return false;
+
+        return WebView.GoForward() == null ? false : true;
+    }
 
     bool IWebViewControl.Navigate(Uri? uri)
     {
@@ -68,8 +75,8 @@ partial class MacWebViewCore
 
         using var nsUrl = new NSUrl(uri.AbsoluteUri);
         using var request = new NSUrlRequest(nsUrl);
-        WebView.MainFrame.LoadRequest(request);
-        return true;
+
+        return WebView.LoadRequest(request) == null ? false : true;
     }
 
     bool IWebViewControl.NavigateToString(string htmlContent)
@@ -77,14 +84,12 @@ partial class MacWebViewCore
         if (string.IsNullOrWhiteSpace(htmlContent))
             return false;
 
-        WebView.MainFrame.LoadHtmlString(htmlContent, default!);
-        return true; 
+        return WebView.LoadHtmlString(htmlContent, default!) == null ? false : true;
     }
 
     bool IWebViewControl.OpenDevToolsWindow()
     {
-        
-        return false;
+        return true;
     }
 
     bool IWebViewControl.PostWebMessageAsJson(string webMessageAsJson, Uri? baseUri)
@@ -92,12 +97,13 @@ partial class MacWebViewCore
         if (string.IsNullOrWhiteSpace(webMessageAsJson))
             return false;
 
-        var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(webMessageAsJson);
-        var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
+        var messageJSStringLiteral = JavaScriptEncoder.Default.Encode(webMessageAsJson);
+        WebView.EvaluateJavaScript(javascript: $"{_dispatchMessageCallback}(\"{messageJSStringLiteral}\")",
+                                   completionHandler: (NSObject result, NSError error) =>
+                                   {
 
-        WebView.WindowScriptObject.EvaluateWebScript(script);
+                                   });
         return true;
-
     }
 
     bool IWebViewControl.PostWebMessageAsString(string webMessageAsString, Uri? baseUri)
@@ -105,22 +111,30 @@ partial class MacWebViewCore
         if (string.IsNullOrWhiteSpace(webMessageAsString))
             return false;
 
-        var messageJSStringLiteral = HttpUtility.JavaScriptStringEncode(webMessageAsString);
-        var script = $"{_dispatchMessageCallback}((\"{messageJSStringLiteral}\"))";
+        var messageJSStringLiteral = JavaScriptEncoder.Default.Encode(webMessageAsString);
+        WebView.EvaluateJavaScript(javascript: $"{_dispatchMessageCallback}(\"{messageJSStringLiteral}\")",
+                                   completionHandler: (NSObject result, NSError error) =>
+                                   {
 
-        WebView.WindowScriptObject.EvaluateWebScript(script);
+                                   });
         return true;
     }
 
     bool IWebViewControl.Reload()
     {
-        WebView.MainFrame.Reload();
+        if (WebView is null)
+            return false;
+
+        WebView.Reload();
         return true;
     }
 
     bool IWebViewControl.Stop()
     {
-        WebView.MainFrame.StopLoading();
+        if (WebView is null)
+            return false;
+
+        WebView.StopLoading();
         return true;
     }
 
@@ -130,20 +144,13 @@ partial class MacWebViewCore
         {
             if (disposing)
             {
-                try
-                {
-                    ClearBlazorWebViewCompleted();
-                    UnregisterWebViewEvents(WebView);
-                    UnregisterEvents();
 
-                    WebView.Dispose();
-                    WebView = default!;
-                }
-                catch (Exception)
-                {
-
-                }
             }
+
+            ClearBlazorWebViewCompleted();
+            UnregisterEvents();
+            WebView.Dispose();
+            WebView = default!;
 
             IsDisposed = true;
         }

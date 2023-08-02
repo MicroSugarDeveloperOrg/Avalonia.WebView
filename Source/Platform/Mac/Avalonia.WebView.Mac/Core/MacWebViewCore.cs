@@ -1,4 +1,7 @@
-﻿namespace Avalonia.WebView.Mac.Core;
+﻿using Avalonia.WebView.Mac.Handlers;
+using Avalonia.WebView.Mac.Helpers;
+
+namespace Avalonia.WebView.Mac.Core;
 public partial class MacWebViewCore : IPlatformWebView<MacWebViewCore>
 {
     public MacWebViewCore(ViewHandler handler, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
@@ -8,7 +11,35 @@ public partial class MacWebViewCore : IPlatformWebView<MacWebViewCore>
         _handler = handler;
         _creationProperties = webViewCreationProperties;
 
-        _webView = new MacosWebView();
+        _callBack.PlatformWebViewCreating(this, new WebViewCreatingEventArgs());
+        _config = new WKWebViewConfiguration();
+        _config.Preferences.SetValueForKey(NSObject.FromObject(_creationProperties.AreDevToolEnabled), new NSString("developerExtrasEnabled"));
+
+        _config.Preferences.JavaScriptEnabled = true;
+        _config.MediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypes.None;
+        _config.AllowsAirPlayForMediaPlayback = true;
+
+        if (provider is not null)
+        {
+            if (provider.ResourceRequestedFilterProvider(this, out var filter))
+            {
+                _filter = filter;
+                _config.UserContentController.AddScriptMessageHandler(new WebViewScriptMessageHandler(filter.BaseUri, MessageReceived), _filterKeyWord);
+                _config.UserContentController.AddUserScript(new WKUserScript(new NSString(BlazorScriptHelper.BlazorStartingScript), WKUserScriptInjectionTime.AtDocumentEnd, true));
+                _config.SetUrlSchemeHandler(new SchemeHandler(this, provider, filter), urlScheme: filter.Scheme);
+            }
+
+            _isBlazorWebView = true;
+        }
+        else
+            _config.UserContentController.AddScriptMessageHandler(new WebViewScriptMessageHandler(default!, MessageReceived), _filterKeyWord);
+
+        _webView = new WKWebView(CGRect.Empty, _config)
+        {
+            AutoresizesSubviews = true,
+            TranslatesAutoresizingMaskIntoConstraints = false,
+        };
+
         NativeHandler = _webView.Handle;
         RegisterEvents();
     }
@@ -18,11 +49,14 @@ public partial class MacWebViewCore : IPlatformWebView<MacWebViewCore>
         Dispose(disposing: false);
     }
 
-    MacosWebView _webView;
+    WKWebView _webView;
+    readonly WebScheme? _filter;
+    readonly WKWebViewConfiguration _config;
     readonly IVirtualBlazorWebViewProvider? _provider;
     readonly IVirtualWebViewControlCallBack _callBack;
     readonly ViewHandler _handler;
     readonly WebViewCreationProperties _creationProperties;
+    readonly string _filterKeyWord = "webview";
     readonly string _dispatchMessageCallback = "__dispatchMessageCallback";
 
     bool _isBlazorWebView = false;
@@ -42,7 +76,7 @@ public partial class MacWebViewCore : IPlatformWebView<MacWebViewCore>
     }
 
 
-    public MacosWebView WebView
+    public WKWebView WebView
     {
         get => _webView;
         private set => _webView = value;
