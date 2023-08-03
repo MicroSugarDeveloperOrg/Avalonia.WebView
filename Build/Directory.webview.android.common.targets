@@ -39,6 +39,11 @@
  
 	</Target>
 
+	<Target Name="_StaticWebAssetsUpdateAssetPaths" AfterTargets="ResolvePackageAssets" BeforeTargets="CoreCompile">
+		<!--<ItemGroup>
+			<AvaloniaResource Include="wwwroot\**"/>
+		</ItemGroup>-->
+	</Target>
 
 
 	<Target Name="_AdjustStaticWebAssetPathBaseWhenBuildingWithRid" BeforeTargets="ResolveStaticWebAssetsConfiguration" Condition="'$(_OuterIntermediateOutputPath)' != ''">
