@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+
+		<AssemblyName>Xilium.CefGlue</AssemblyName>
+		<RootNamespace>Xilium.CefGlue</RootNamespace>
+		<Nullable>annotations</Nullable>
+
+		<Version>112.3.0</Version>
+		<IsPackable>true</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Interop\Base\cef_string_t.disabled.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Interop\Base\cef_string_t.disabled.cs" />
+	</ItemGroup>
+
+
+	<!-- Disabled Sources -->
+
+
+</Project>
