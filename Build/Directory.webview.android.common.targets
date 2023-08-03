@@ -33,18 +33,16 @@
 
 	<!--<Target Name="ConvertStaticWebAssetsToMauiAssets" BeforeTargets="GetMauiItems;ResizetizeCollectItems;_CollectBundleResources;_CollectHotRestartBundleResources;_CheckForContent" DependsOnTargets="ResolveProjectReferences;StaticWebAssetsPrepareForRun;StaticWebAssetsPrepareForPublish;LoadStaticWebAssetsPublishManifest">-->
 	<Target Name="_StaticWebAssetsUpdateAssetPaths" AfterTargets="_FindJavaStubFiles" BeforeTargets="_CreateBaseApk" DependsOnTargets="ResolveProjectReferences" >
-		<!--<ItemGroup>
-			<AndroidAsset Include="wwwroot"/>
-		</ItemGroup>-->
- 
+		<ItemGroup>
+			<AndroidAsset Include="wwwroot\**"/>
+		</ItemGroup>
 	</Target>
 
-	<Target Name="_StaticWebAssetsUpdateAssetPaths" AfterTargets="ResolvePackageAssets" BeforeTargets="CoreCompile">
+	<Target Name="_StaticBlazorContentsUpdateAvaloniaResource" AfterTargets="ResolvePackageAssets" BeforeTargets="CoreCompile">
 		<!--<ItemGroup>
 			<AvaloniaResource Include="wwwroot\**"/>
 		</ItemGroup>-->
 	</Target>
-
 
 	<Target Name="_AdjustStaticWebAssetPathBaseWhenBuildingWithRid" BeforeTargets="ResolveStaticWebAssetsConfiguration" Condition="'$(_OuterIntermediateOutputPath)' != ''">
 		<PropertyGroup>
