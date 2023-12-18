@@ -2,7 +2,7 @@
 // This file manually written from cef/include/internal/cef_types.h.
 // C API name: cef_chrome_page_action_icon_type_t.
 //
-namespace Xilium.CefGlue
+namespace CefGlue
 {
     using System;
 
@@ -37,5 +37,7 @@ namespace Xilium.CefGlue
         VirtualCardManualFallback,
         Zoom,
         SaveIban,
+        MandatoryReauth,
+        PriceInsights,
     }
 }

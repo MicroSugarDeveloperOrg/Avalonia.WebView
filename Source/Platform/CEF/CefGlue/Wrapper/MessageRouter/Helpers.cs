@@ -1,4 +1,4 @@
-﻿namespace Xilium.CefGlue.Wrapper
+﻿namespace CefGlue.Wrapper
 {
     using System;
     using System.Collections.Generic;

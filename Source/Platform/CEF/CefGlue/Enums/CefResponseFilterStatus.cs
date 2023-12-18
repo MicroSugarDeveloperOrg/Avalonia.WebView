@@ -2,7 +2,7 @@
 // This file manually written from cef/include/internal/cef_types.h.
 // C API name: cef_response_filter_status_t.
 //
-namespace Xilium.CefGlue
+namespace CefGlue
 {
     /// <summary>
     /// Return values for CefResponseFilter::Filter().

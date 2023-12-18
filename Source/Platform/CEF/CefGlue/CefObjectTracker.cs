@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Xilium.CefGlue
+namespace CefGlue
 {
     public static class CefObjectTracker
     {

@@ -3,11 +3,12 @@
 public class WebViewHandler : ViewHandler<IVirtualWebView, WebView2Core>
 {
     public WebViewHandler(IVirtualWebView virtualWebView, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
+         : base(webViewCreationProperties.KeepAlive)
     {
         var webView = new WebView2Core(this, callback, provider, webViewCreationProperties);
         PlatformWebView = webView;
         VirtualViewContext = virtualWebView;
-        PlatformViewContext = webView;
+        PlatformViewContext = webView; 
     }
 
     protected override HandleRef CreatePlatformHandler(IPlatformHandle parent, Func<IPlatformHandle> createFromSystem)

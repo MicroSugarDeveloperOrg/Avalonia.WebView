@@ -1,11 +1,11 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Diagnostics;
     using System.Runtime.InteropServices;
-    using Xilium.CefGlue.Interop;
+    using CefGlue.Interop;
 
     /// <summary>
     /// Class used to represent a web request. The methods of this class may be

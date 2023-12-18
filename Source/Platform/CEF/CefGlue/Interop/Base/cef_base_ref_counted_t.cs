@@ -1,4 +1,4 @@
-﻿namespace Xilium.CefGlue.Interop
+﻿namespace CefGlue.Interop
 {
     using System;
     using System.Runtime.InteropServices;

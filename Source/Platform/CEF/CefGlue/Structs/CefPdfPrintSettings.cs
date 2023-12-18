@@ -1,7 +1,7 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
     using System;
-    using Xilium.CefGlue.Interop;
+    using CefGlue.Interop;
 
     /// <summary>
     /// Structure representing PDF print settings. These values match the parameters
@@ -95,6 +95,11 @@
         /// </summary>
         public string FooterTemplate { get; set; }
 
+        /// <summary>
+        /// Set to true to generate tagged (accessible) PDF.
+        /// </summary>
+        public bool GenerateTaggedPdf { get; set; }
+
         internal unsafe cef_pdf_print_settings_t* ToNative()
         {
             var ptr = cef_pdf_print_settings_t.Alloc();
@@ -114,6 +119,7 @@
             ptr->display_header_footer = DisplayHeaderFooter ? 1 : 0;
             cef_string_t.Copy(HeaderTemplate, &ptr->header_template);
             cef_string_t.Copy(FooterTemplate, &ptr->footer_template);
+            ptr->generate_tagged_pdf = GenerateTaggedPdf ? 1 : 0;
 
             return ptr;
         }

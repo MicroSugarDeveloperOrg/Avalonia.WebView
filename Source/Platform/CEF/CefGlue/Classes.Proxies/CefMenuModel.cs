@@ -1,10 +1,10 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Runtime.InteropServices;
-    using Xilium.CefGlue.Interop;
+    using CefGlue.Interop;
 
     /// <summary>
     /// Supports creation and modification of menus. See cef_menu_id_t for the

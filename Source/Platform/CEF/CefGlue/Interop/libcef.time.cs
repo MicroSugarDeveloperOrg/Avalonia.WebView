@@ -4,7 +4,7 @@
 // See also:
 //   /Interop/Structs/cef_time_t.cs
 //
-namespace Xilium.CefGlue.Interop
+namespace CefGlue.Interop
 {
     using System;
     using System.Runtime.InteropServices;

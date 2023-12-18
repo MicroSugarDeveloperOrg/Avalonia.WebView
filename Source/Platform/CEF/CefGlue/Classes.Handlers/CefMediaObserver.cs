@@ -1,10 +1,10 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Runtime.InteropServices;
-    using Xilium.CefGlue.Interop;
+    using CefGlue.Interop;
 
     /// <summary>
     /// Implemented by the client to observe MediaRouter events and registered via

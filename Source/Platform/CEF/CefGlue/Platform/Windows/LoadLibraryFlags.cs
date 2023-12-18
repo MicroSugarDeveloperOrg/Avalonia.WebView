@@ -1,4 +1,4 @@
-﻿namespace Xilium.CefGlue.Platform.Windows
+﻿namespace CefGlue.Platform.Windows
 {
     using System;
     using System.Collections.Generic;

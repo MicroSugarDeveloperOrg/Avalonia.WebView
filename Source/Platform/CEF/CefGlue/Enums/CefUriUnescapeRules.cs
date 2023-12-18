@@ -2,7 +2,7 @@
 // This file manually written from cef/include/internal/cef_types.h.
 // C API name: cef_uri_unescape_rule_t.
 //
-namespace Xilium.CefGlue
+namespace CefGlue
 {
     using System;
 

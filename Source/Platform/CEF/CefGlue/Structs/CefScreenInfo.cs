@@ -1,7 +1,7 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
     using System;
-    using Xilium.CefGlue.Interop;
+    using CefGlue.Interop;
 
     /// <summary>
     /// Screen information used when window rendering is disabled. This structure is

@@ -1,9 +1,9 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using Xilium.CefGlue.Interop;
+    using CefGlue.Interop;
 
     public struct CefRectangle
     {

@@ -1,12 +1,12 @@
-﻿namespace Xilium.CefGlue.Platform
+﻿namespace CefGlue.Platform
 {
     using System;
     using System.Collections.Generic;
     using System.Text;
 
-    using Xilium.CefGlue;
-    using Xilium.CefGlue.Interop;
-    using Xilium.CefGlue.Platform.Windows;
+    using CefGlue;
+    using CefGlue.Interop;
+    using CefGlue.Platform.Windows;
 
     internal sealed unsafe class CefWindowInfoWindowsImpl : CefWindowInfo
     {

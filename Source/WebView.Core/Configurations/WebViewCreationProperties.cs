@@ -3,6 +3,8 @@
 namespace WebViewCore.Configurations;
 public class WebViewCreationProperties
 {
+    public bool KeepAlive {  get; set; }    
+
     public bool AreDevToolEnabled { get; set; } = true;
 
     public bool AreDefaultContextMenusEnabled { get; set; } = false;

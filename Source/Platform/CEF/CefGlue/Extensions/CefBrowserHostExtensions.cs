@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Xilium.CefGlue
+namespace CefGlue
 {
     public static class CefBrowserHostExtensions
     {

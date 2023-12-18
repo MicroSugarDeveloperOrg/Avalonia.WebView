@@ -3,6 +3,7 @@
 public class WebViewHandler : ViewHandler<IVirtualWebView, MacCatalystWebViewCore>
 {
     public WebViewHandler(IVirtualWebView virtualWebView, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
+         : base(webViewCreationProperties.KeepAlive)
     {
         var webView = new MacCatalystWebViewCore(this, callback, provider, webViewCreationProperties);
         _webViewCore = webView;

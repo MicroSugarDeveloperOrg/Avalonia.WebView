@@ -2,7 +2,7 @@
 // This file manually written from cef/include/internal/cef_types.h.
 // C API name: cef_chrome_toolbar_button_type_t.
 //
-namespace Xilium.CefGlue
+namespace CefGlue
 {
     using System;
 

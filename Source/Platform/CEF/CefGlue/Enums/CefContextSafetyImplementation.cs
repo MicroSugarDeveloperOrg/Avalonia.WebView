@@ -1,4 +1,4 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
     /// <summary>
     /// CEF offers two context safety implementations with different performance characteristics.

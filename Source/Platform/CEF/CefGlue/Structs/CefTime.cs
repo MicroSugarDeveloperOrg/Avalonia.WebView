@@ -1,11 +1,11 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
     using System;
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
     using System.Text;
 
-    using Xilium.CefGlue.Interop;
+    using CefGlue.Interop;
 
     /// <summary>
     /// Time information. Values should always be in UTC.

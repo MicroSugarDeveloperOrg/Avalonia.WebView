@@ -50,5 +50,6 @@ public sealed partial class WebView : Control, IVirtualWebView<WebView>, IEmptyV
     Thickness? _layoutThickness;
 
     IPlatformWebView? _platformWebView;
+    Control? _attachControl;
     public IPlatformWebView? PlatformWebView => _platformWebView;
 }

@@ -2,7 +2,7 @@
 // This file manually written from cef/include/base/internal/cef_net_error_list.h.
 // C API name: cef_errorcode_t.
 //
-namespace Xilium.CefGlue
+namespace CefGlue
 {
     /// <summary>
     /// Supported error code values.
@@ -1106,17 +1106,6 @@ namespace Xilium.CefGlue
         HTTP2_RST_STREAM_NO_ERROR_RECEIVED = -372,
 
         /// <summary>
-        /// The pushed stream claimed by the request is no longer available.
-        /// </summary>
-        HTTP2_PUSHED_STREAM_NOT_AVAILABLE = -373,
-
-        /// <summary>
-        /// A pushed stream was claimed and later reset by the server. When this happens,
-        /// the request should be retried.
-        /// </summary>
-        HTTP2_CLAIMED_PUSHED_STREAM_RESET_BY_SERVER = -374,
-
-        /// <summary>
         /// An HTTP transaction was retried too many times due for authentication or
         /// invalid certificates. This may be due to a bug in the net stack that would
         /// otherwise infinite loop, or if the server or proxy continually requests fresh
@@ -1128,17 +1117,6 @@ namespace Xilium.CefGlue
         /// Received an HTTP/2 frame on a closed stream.
         /// </summary>
         HTTP2_STREAM_CLOSED = -376,
-
-        /// <summary>
-        /// Client is refusing an HTTP/2 stream.
-        /// </summary>
-        HTTP2_CLIENT_REFUSED_STREAM = -377,
-
-        /// <summary>
-        /// A pushed HTTP/2 stream was claimed by a request based on matching URL and
-        /// request headers, but the pushed response headers do not match the request.
-        /// </summary>
-        HTTP2_PUSHED_RESPONSE_DOES_NOT_MATCH = -378,
 
         /// <summary>
         /// The server returned a non-2xx HTTP response code.
@@ -1420,6 +1398,11 @@ namespace Xilium.CefGlue
 
         // Error -715 was removed (CHANNEL_ID_IMPORT_FAILED)
 
+        /// <summary>
+        /// The certificate verifier configuration changed in some way.
+        /// </summary>
+        CERT_VERIFIER_CHANGED = -716,
+
         // DNS error codes.
 
         /// <summary>
@@ -1492,6 +1475,13 @@ namespace Xilium.CefGlue
         /// alpn values of supported protocols, but did not.
         /// </summary>
         DNS_NO_MATCHING_SUPPORTED_ALPN = -811,
+
+        /// <summary>
+        /// The compression dictionary cannot be loaded.
+        /// </summary>
+        DICTIONARY_LOAD_FAILED = -812,
+
+        // Error -813 was removed (DICTIONARY_ORIGIN_CHECK_FAILED)
 
         // CefGlue backward compatiblity.
         // Generally we prefer .NET naming rules, but will care about later.

@@ -1,7 +1,7 @@
 ﻿//
 // This file manually written from cef/include/internal/cef_string_list.h.
 //
-namespace Xilium.CefGlue.Interop
+namespace CefGlue.Interop
 {
     using System;
     using System.Runtime.InteropServices;

@@ -4,7 +4,7 @@
 //
 using System;
 
-namespace Xilium.CefGlue
+namespace CefGlue
 {
     /// <summary>
     /// Values indicating what state of the touch handle is set.

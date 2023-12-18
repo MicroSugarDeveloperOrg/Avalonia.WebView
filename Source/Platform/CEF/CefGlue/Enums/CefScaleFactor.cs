@@ -2,7 +2,7 @@
 // This file manually written from cef/include/internal/cef_types.h.
 // C API name: cef_scale_factor_t.
 //
-namespace Xilium.CefGlue
+namespace CefGlue
 {
     /// <summary>
     /// Supported UI scale factors for the platform. SCALE_FACTOR_NONE is used for

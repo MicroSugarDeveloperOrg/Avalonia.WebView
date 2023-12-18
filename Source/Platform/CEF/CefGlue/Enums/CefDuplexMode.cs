@@ -2,7 +2,7 @@
 // This file manually written from cef/include/internal/cef_types.h.
 // C API name: cef_duplex_mode_t.
 //
-namespace Xilium.CefGlue
+namespace CefGlue
 {
     /// <summary>
     /// Print job duplex mode values.

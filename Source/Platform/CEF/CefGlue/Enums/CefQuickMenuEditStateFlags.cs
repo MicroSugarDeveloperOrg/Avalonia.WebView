@@ -4,7 +4,7 @@
 //
 using System;
 
-namespace Xilium.CefGlue
+namespace CefGlue
 {
     /// <summary>
     /// Supported quick menu state bit flags.

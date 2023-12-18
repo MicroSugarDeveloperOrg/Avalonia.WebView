@@ -6,6 +6,22 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SampleWebView.Views.MainView" >
 
-			<WebView x:Name="PART_WebView" Grid.Row="1" Url="http://www.bilibili.com"></WebView>
-
+	<TabControl>
+		<TabItem Header="123" >
+			<TabItem.Content>
+				<WebView x:Name="PART_WebView" Grid.Row="1" KeepAlive="True" Url="http://www.bilibili.com"></WebView>
+			</TabItem.Content>
+		</TabItem>
+		<TabItem Header="123" >
+			<TabItem.Content>
+				<WebView  Grid.Row="1" KeepAlive="True" Url="http://www.bilibili.com"></WebView>
+			</TabItem.Content>
+		</TabItem>
+		<TabItem Header="123" >
+			<TabItem.Content>
+				<WebView Grid.Row="1" KeepAlive="True" Url="http://www.bilibili.com"></WebView>
+			</TabItem.Content>
+		</TabItem>
+	</TabControl>
+			
 </UserControl>

@@ -1,4 +1,4 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
     using System;
     using System.Collections.Generic;
@@ -6,8 +6,8 @@
     using System.Text;
     using System.Reflection;
     using System.Runtime.InteropServices;
-    using Xilium.CefGlue.Interop;
-    using Windows = Xilium.CefGlue.Platform.Windows;
+    using CefGlue.Interop;
+    using Windows = CefGlue.Platform.Windows;
 
     public sealed unsafe class CefMainArgs
     {

@@ -1,11 +1,11 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using Xilium.CefGlue.Interop;
-    using Xilium.CefGlue.Platform;
-    using Xilium.CefGlue.Platform.Windows;
+    using CefGlue.Interop;
+    using CefGlue.Platform;
+    using CefGlue.Platform.Windows;
 
     /// <summary>
     /// Class representing window information.

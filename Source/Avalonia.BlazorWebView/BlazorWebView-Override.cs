@@ -1,4 +1,6 @@
-﻿namespace AvaloniaBlazorWebView;
+﻿using Avalonia.LogicalTree;
+
+namespace AvaloniaBlazorWebView;
 
 partial class BlazorWebView  
 {
@@ -6,20 +8,37 @@ partial class BlazorWebView
     {
         base.OnAttachedToVisualTree(e);
 
-        await CreateWebViewManager();
+        if (_platformWebView is null)
+        {
+            await CreateWebViewManager();
 
-        if (_webviewManager is null)
-            return;
+            if (_webviewManager is null)
+                return;
 
-        _webviewManager.Navigate(_startAddress);
+            _webviewManager.Navigate(_startAddress);
+        }   
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
+        if (!KeepAlive)
+        {
+            Child = null;
+            _platformWebView?.Dispose();
+            _platformWebView = null;
+        }
+    }
+
+    protected override void OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromLogicalTree(e);
+        if (_attachControl is IDisposable disposable)
+            disposable.Dispose();
+
         Child = null;
+        _attachControl = null;
         _platformWebView?.Dispose();
         _platformWebView = null;
     }
-
 }

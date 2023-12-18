@@ -1,7 +1,7 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
     using System;
-    using Xilium.CefGlue.Interop;
+    using CefGlue.Interop;
     using System.Diagnostics;
 
     /// <summary>

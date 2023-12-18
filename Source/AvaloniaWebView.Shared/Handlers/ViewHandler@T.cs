@@ -16,11 +16,12 @@
 
 public abstract class ViewHandler<TVirtualViewContext, TPlatformViewContext> : ViewHandler where TVirtualViewContext:class where TPlatformViewContext : class
 {
-    public ViewHandler()
+    public ViewHandler(bool keepAlive)
     {
         HandleDescriptor = typeof(TPlatformViewContext).FullName;
+        KeepAlive = keepAlive;
     }
-
+ 
 #nullable disable
 
     public TPlatformViewContext PlatformViewContext { get => PlatformViewContextObject as TPlatformViewContext;  protected set => PlatformViewContextObject = value; }

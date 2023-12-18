@@ -1,1 +1,1 @@
-﻿global using Xilium.CefGlue;
+﻿global using CefGlue;

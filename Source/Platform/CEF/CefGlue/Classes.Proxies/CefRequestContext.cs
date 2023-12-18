@@ -1,11 +1,12 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Net.Mime;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
-    using Xilium.CefGlue.Interop;
+    using CefGlue.Interop;
 
     /// <summary>
     /// A request context provides request handling for a set of related browser
@@ -364,6 +365,110 @@
             var nCallback = callback != null ? callback.ToNative() : null;
             var nResult = cef_request_context_t.get_media_router(GetSelf(), nCallback);
             return CefMediaRouter.FromNative(nResult);
+        }
+
+        /// <summary>
+        /// Returns the current value for |content_type| that applies for the
+        /// specified URLs. If both URLs are empty the default value will be returned.
+        /// Returns nullptr if no value is configured. Must be called on the browser
+        /// process UI thread.
+        /// </summary>
+        public CefValue GetWebsiteSetting(string? requestingUrl,
+            string? topLevelUrl,
+            CefContentSettingTypes contentType)
+        {
+            fixed (char* requestingUrl_str = requestingUrl)
+            fixed (char* topLevelUrl_str = topLevelUrl)
+            {
+                var n_requestingUrl = new cef_string_t(requestingUrl_str, requestingUrl != null ? requestingUrl.Length : 0);
+                var n_topLevelUrl = new cef_string_t(topLevelUrl_str, topLevelUrl != null ? topLevelUrl.Length : 0);
+
+                var n_result = cef_request_context_t.get_website_setting(GetSelf(),
+                    &n_requestingUrl, &n_topLevelUrl, contentType);
+                return CefValue.FromNativeOrNull(n_result);
+            }
+        }
+
+        /// <summary>
+        /// Sets the current value for |content_type| for the specified URLs in the
+        /// default scope. If both URLs are empty, and the context is not incognito,
+        /// the default value will be set. Pass nullptr for |value| to remove the
+        /// default value for this content type.
+        /// WARNING: Incorrect usage of this method may cause instability or security
+        /// issues in Chromium. Make sure that you first understand the potential
+        /// impact of any changes to |content_type| by reviewing the related source
+        /// code in Chromium. For example, if you plan to modify
+        /// CEF_CONTENT_SETTING_TYPE_POPUPS, first review and understand the usage of
+        /// ContentSettingsType::POPUPS in Chromium:
+        /// https://source.chromium.org/search?q=ContentSettingsType::POPUPS
+        /// </summary>
+        public void SetWebsiteSetting(string? requestingUrl,
+            string? topLevelUrl,
+            CefContentSettingTypes contentType,
+            CefValue value)
+        {
+            fixed (char* requestingUrl_str = requestingUrl)
+            fixed (char* topLevelUrl_str = topLevelUrl)
+            {
+                var n_requestingUrl = new cef_string_t(requestingUrl_str, requestingUrl != null ? requestingUrl.Length : 0);
+                var n_topLevelUrl = new cef_string_t(topLevelUrl_str, topLevelUrl != null ? topLevelUrl.Length : 0);
+
+                cef_request_context_t.set_website_setting(GetSelf(),
+                    &n_requestingUrl, &n_topLevelUrl, contentType,
+                    value.ToNative());
+            }
+        }
+
+        /// <summary>
+        /// Returns the current value for |content_type| that applies for the
+        /// specified URLs. If both URLs are empty the default value will be returned.
+        /// Returns CEF_CONTENT_SETTING_VALUE_DEFAULT if no value is configured. Must
+        /// be called on the browser process UI thread.
+        /// </summary>
+        public CefContentSettingValues GetContentSetting(
+            string? requestingUrl, string? topLevelUrl,
+            CefContentSettingTypes contentType)
+        {
+            fixed (char* requestingUrl_str = requestingUrl)
+            fixed (char* topLevelUrl_str = topLevelUrl)
+            {
+                var n_requestingUrl = new cef_string_t(requestingUrl_str, requestingUrl != null ? requestingUrl.Length : 0);
+                var n_topLevelUrl = new cef_string_t(topLevelUrl_str, topLevelUrl != null ? topLevelUrl.Length : 0);
+
+                return cef_request_context_t.get_content_setting(GetSelf(),
+                    &n_requestingUrl, &n_topLevelUrl, contentType);
+            }
+        }
+
+        /// <summary>
+        /// Sets the current value for |content_type| for the specified URLs in the
+        /// default scope. If both URLs are empty, and the context is not incognito,
+        /// the default value will be set. Pass CEF_CONTENT_SETTING_VALUE_DEFAULT for
+        /// |value| to use the default value for this content type.
+        /// WARNING: Incorrect usage of this method may cause instability or security
+        /// issues in Chromium. Make sure that you first understand the potential
+        /// impact of any changes to |content_type| by reviewing the related source
+        /// code in Chromium. For example, if you plan to modify
+        /// CEF_CONTENT_SETTING_TYPE_POPUPS, first review and understand the usage of
+        /// ContentSettingsType::POPUPS in Chromium:
+        /// https://source.chromium.org/search?q=ContentSettingsType::POPUPS
+        /// </summary>
+        public void SetContentSetting(
+            string? requestingUrl,
+            string? topLevelUrl,
+            CefContentSettingTypes contentType,
+            CefContentSettingValues value)
+        {
+            fixed (char* requestingUrl_str = requestingUrl)
+            fixed (char* topLevelUrl_str = topLevelUrl)
+            {
+                var n_requestingUrl = new cef_string_t(requestingUrl_str, requestingUrl != null ? requestingUrl.Length : 0);
+                var n_topLevelUrl = new cef_string_t(topLevelUrl_str, topLevelUrl != null ? topLevelUrl.Length : 0);
+
+                cef_request_context_t.set_content_setting(GetSelf(),
+                    &n_requestingUrl, &n_topLevelUrl,
+                    contentType, value);
+            }
         }
     }
 }

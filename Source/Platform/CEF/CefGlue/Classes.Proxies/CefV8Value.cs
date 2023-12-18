@@ -1,4 +1,4 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +6,7 @@
     using System.Runtime.InteropServices;
     using System.Xml.Linq;
 
-    using Xilium.CefGlue.Interop;
+    using CefGlue.Interop;
 
     /// <summary>
     /// Class representing a V8 value handle. V8 handles can only be accessed from

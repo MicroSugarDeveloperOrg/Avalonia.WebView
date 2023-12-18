@@ -1,7 +1,7 @@
 ﻿using System;
-using Xilium.CefGlue.Interop;
+using CefGlue.Interop;
 
-namespace Xilium.CefGlue
+namespace CefGlue
 {
     /// <summary>
     /// Structure representing the audio parameters for setting up the audio

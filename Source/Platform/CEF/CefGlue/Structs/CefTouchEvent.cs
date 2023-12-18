@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Xilium.CefGlue.Interop;
+using CefGlue.Interop;
 
-namespace Xilium.CefGlue
+namespace CefGlue
 {
     /// <summary>
     /// Structure representing touch event information.

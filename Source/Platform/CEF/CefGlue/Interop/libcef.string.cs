@@ -11,7 +11,7 @@
 //   /Interop/Base/cef_string_t.cs
 //   /Interop/Base/cef_string_userfree.cs
 //
-namespace Xilium.CefGlue.Interop
+namespace CefGlue.Interop
 {
     using System;
     using System.Runtime.InteropServices;

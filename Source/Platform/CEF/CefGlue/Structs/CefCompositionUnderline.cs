@@ -1,6 +1,6 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
-    using Xilium.CefGlue.Interop;
+    using CefGlue.Interop;
 
     /// <summary>
     /// Structure representing IME composition underline information. This is a thin

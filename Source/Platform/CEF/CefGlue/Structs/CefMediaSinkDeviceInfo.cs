@@ -1,4 +1,4 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
     /// <summary>
     /// Device information for a MediaSink object.

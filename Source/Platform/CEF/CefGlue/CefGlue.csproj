@@ -3,24 +3,23 @@
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 
-		<AssemblyName>Xilium.CefGlue</AssemblyName>
-		<RootNamespace>Xilium.CefGlue</RootNamespace>
+		<AssemblyName>CefGlue</AssemblyName>
+		<RootNamespace>CefGlue</RootNamespace>
 		<Nullable>annotations</Nullable>
 
-		<Version>112.3.0</Version>
+		<Version>118.1.1</Version>
 		<IsPackable>true</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Interop\Base\cef_string_t.disabled.cs" />
+		<Compile Remove="Interop\Base\cef_string_t.disabled.cs" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="Interop\Base\cef_string_t.disabled.cs" />
-	</ItemGroup>
-
 
 	<!-- Disabled Sources -->
+	<ItemGroup>
+		<None Include="Interop\Base\cef_string_t.disabled.cs" />
+		<None Include="Wrapper\MessageRouter\ReadMe.txt" />
+	</ItemGroup>
 
-
+	
 </Project>

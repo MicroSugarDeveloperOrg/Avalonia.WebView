@@ -19,6 +19,7 @@ public abstract class ViewHandler : NativeControlHost, IViewHandler, INativeCont
     }
 
     private bool _disposedValue;
+    protected bool KeepAlive { get; set; }  
     public HandleRef RefHandler { get; private set; }
 
     //#nullable disable
@@ -37,16 +38,24 @@ public abstract class ViewHandler : NativeControlHost, IViewHandler, INativeCont
 
     protected override IPlatformHandle CreateNativeControlCore(IPlatformHandle parent)
     {
-        var nativeHandle = CreatePlatformHandler(parent, () => base.CreateNativeControlCore(parent));
-        RefHandler = nativeHandle;
-        PlatformHandlerChanged?.Invoke(this, EventArgs.Empty);
+        if (RefHandler.Handle == IntPtr.Zero)
+        {
+            var nativeHandle = CreatePlatformHandler(parent, () => base.CreateNativeControlCore(parent));
+            RefHandler = nativeHandle;
+            PlatformHandlerChanged?.Invoke(this, EventArgs.Empty);
+        }
+
         return this;
     }
 
     protected override void DestroyNativeControlCore(IPlatformHandle control)
     {
-        ((IDisposable)this).Dispose();
-        base.DestroyNativeControlCore(control);
+        if (!KeepAlive)
+        {
+            ((IDisposable)this).Dispose();
+            base.DestroyNativeControlCore(control);
+        }
+
     }
 
     protected abstract HandleRef CreatePlatformHandler(IPlatformHandle parent, Func<IPlatformHandle> createFromSystem);

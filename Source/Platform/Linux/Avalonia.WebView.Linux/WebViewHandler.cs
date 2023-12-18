@@ -6,6 +6,7 @@ namespace Avalonia.WebView.Linux;
 public class WebViewHandler : ViewHandler<IVirtualWebView, LinuxWebViewCore>
 {
     public WebViewHandler(ILinuxApplication linuxApplication, IVirtualWebView virtualWebView, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
+         : base(webViewCreationProperties.KeepAlive)
     {
         var webView = new LinuxWebViewCore(linuxApplication, this, callback, provider, webViewCreationProperties);
         _webViewCore = webView;

@@ -1,11 +1,11 @@
-﻿namespace Xilium.CefGlue.Wrapper
+﻿namespace CefGlue.Wrapper
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Text;
 
-    using BrowserInfoMap = CefBrowserInfoMap<long, Xilium.CefGlue.Wrapper.CefMessageRouterBrowserSide.QueryInfo>;
+    using BrowserInfoMap = CefBrowserInfoMap<long, CefGlue.Wrapper.CefMessageRouterBrowserSide.QueryInfo>;
 
     /// <summary>
     /// Implements the browser side of query routing. The methods of this class may

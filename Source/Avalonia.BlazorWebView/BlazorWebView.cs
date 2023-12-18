@@ -65,6 +65,7 @@ public sealed partial class BlazorWebView : Control, IVirtualWebView<BlazorWebVi
     bool _isDisposed = false;
     AvaloniaWebViewManager? _webviewManager;
 
+    Control? _attachControl;
     IPlatformWebView? _platformWebView;
     public IPlatformWebView? PlatformWebView => _platformWebView;
 }

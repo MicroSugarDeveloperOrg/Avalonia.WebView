@@ -1,11 +1,11 @@
-﻿namespace Xilium.CefGlue
+﻿namespace CefGlue
 {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Runtime.InteropServices;
     using System.Text;
-    using Xilium.CefGlue.Interop;
+    using CefGlue.Interop;
 
     public static unsafe class CefRuntime
     {
@@ -109,10 +109,10 @@
 
         private static void LoadLibraryWindows(string path)
         {
-            Xilium.CefGlue.Platform.Windows.NativeMethods.LoadLibraryEx(
+            CefGlue.Platform.Windows.NativeMethods.LoadLibraryEx(
                 System.IO.Path.Combine(path, "libcef.dll"),
                 IntPtr.Zero,
-                Xilium.CefGlue.Platform.Windows.LoadLibraryFlags.LOAD_WITH_ALTERED_SEARCH_PATH
+                CefGlue.Platform.Windows.LoadLibraryFlags.LOAD_WITH_ALTERED_SEARCH_PATH
                 );
         }
 
@@ -383,7 +383,7 @@
         /// the same-origin policy. Scripts hosted underneath the fully qualified
         /// |source_origin| URL (like http://www.example.com) will be allowed access to
         /// all resources hosted on the specified |target_protocol| and |target_domain|.
-        /// If |target_domain| is non-empty and |allow_target_subdomains| if false only
+        /// If |target_domain| is non-empty and |allow_target_subdomains| is false only
         /// exact domain matches will be allowed. If |target_domain| contains a top-
         /// level domain component (like "example.com") and |allow_target_subdomains| is
         /// true sub-domain matches will be allowed. If |target_domain| is empty and
