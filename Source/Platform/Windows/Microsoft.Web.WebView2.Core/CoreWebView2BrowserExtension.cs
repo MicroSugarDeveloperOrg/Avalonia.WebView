@@ -3,272 +3,231 @@
 // Decompiled with ICSharpCode.Decompiler 8.1.1.7464
 #endregion
 
+using System;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Microsoft.Web.WebView2.Core.Raw;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Drawing;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace Microsoft.Web.WebView2.Core;
 
-internal static class COMDotNetTypeConverter
+//
+// Summary:
+//     Browser extension installed on current profile.
+public class CoreWebView2BrowserExtension
 {
-    public static Rectangle RectangleCOMToNet(tagRECT rect)
-    {
-        int left = rect.left;
-        int top = rect.top;
-        int width = rect.right - rect.left;
-        int height = rect.bottom - rect.top;
-        return new Rectangle(left, top, width, height);
-    }
+    internal ICoreWebView2BrowserExtension _nativeICoreWebView2BrowserExtensionValue;
 
-    public static tagRECT RectangleNetToCOM(Rectangle dotNetRect)
-    {
-        tagRECT result = default(tagRECT);
-        result.top = dotNetRect.Top;
-        result.left = dotNetRect.Left;
-        result.right = dotNetRect.Right;
-        result.bottom = dotNetRect.Bottom;
-        return result;
-    }
+    internal object _rawNative;
 
-    public static List<CoreWebView2Cookie> CookieListCOMToNet(ICoreWebView2CookieList rawCookieList)
+    internal ICoreWebView2BrowserExtension _nativeICoreWebView2BrowserExtension
     {
-        List<CoreWebView2Cookie> list = new List<CoreWebView2Cookie>(Convert.ToInt32(rawCookieList.Count));
-        for (uint num = 0u; num < rawCookieList.Count; num++)
+        get
         {
-            list.Add(new CoreWebView2Cookie(rawCookieList.GetValueAtIndex(num)));
-        }
-
-        return list;
-    }
-
-    public static IReadOnlyList<CoreWebView2FrameInfo> CoreWebView2FrameInfoCollectionCOMToNet(ICoreWebView2FrameInfoCollection rawFrameInfoCollection)
-    {
-        if (rawFrameInfoCollection == null)
-        {
-            return null;
-        }
-
-        List<CoreWebView2FrameInfo> list = new List<CoreWebView2FrameInfo>();
-        ICoreWebView2FrameInfoCollectionIterator iterator = rawFrameInfoCollection.GetIterator();
-        while (iterator.HasCurrent != 0)
-        {
-            list.Add(new CoreWebView2FrameInfo(iterator.GetCurrent()));
-            iterator.MoveNext();
-        }
-
-        return new ReadOnlyCollection<CoreWebView2FrameInfo>(list);
-    }
-
-    public static Color ColorCOMToNet(COREWEBVIEW2_COLOR color)
-    {
-        return Color.FromArgb(color.A, color.R, color.G, color.B);
-    }
-
-    public static COREWEBVIEW2_COLOR ColorNetToCOM(Color dotNetColor)
-    {
-        COREWEBVIEW2_COLOR result = default(COREWEBVIEW2_COLOR);
-        result.A = dotNetColor.A;
-        result.R = dotNetColor.R;
-        result.G = dotNetColor.G;
-        result.B = dotNetColor.B;
-        return result;
-    }
-
-    public static Point PointCOMToNet(tagPOINT point)
-    {
-        return new Point(point.x, point.y);
-    }
-
-    public static tagPOINT PointNetToCOM(Point dotNetPoint)
-    {
-        tagPOINT result = default(tagPOINT);
-        result.x = Convert.ToInt32(dotNetPoint.X);
-        result.y = Convert.ToInt32(dotNetPoint.Y);
-        return result;
-    }
-
-    public static IReadOnlyList<CoreWebView2ClientCertificate> CoreWebView2ClientCertificateCollectionCOMToNet(ICoreWebView2ClientCertificateCollection rawClientCertificateCollection)
-    {
-        if (rawClientCertificateCollection == null)
-        {
-            return null;
-        }
-
-        List<CoreWebView2ClientCertificate> list = new List<CoreWebView2ClientCertificate>(Convert.ToInt32(rawClientCertificateCollection.Count));
-        for (uint num = 0u; num < rawClientCertificateCollection.Count; num++)
-        {
-            list.Add(new CoreWebView2ClientCertificate(rawClientCertificateCollection.GetValueAtIndex(num)));
-        }
-
-        return new ReadOnlyCollection<CoreWebView2ClientCertificate>(list);
-    }
-
-    public static IReadOnlyList<string> CoreWebView2StringCollectionCOMToNet(ICoreWebView2StringCollection rawStringCollection)
-    {
-        if (rawStringCollection == null)
-        {
-            return null;
-        }
-
-        List<string> list = new List<string>(Convert.ToInt32(rawStringCollection.Count));
-        for (uint num = 0u; num < rawStringCollection.Count; num++)
-        {
-            list.Add(rawStringCollection.GetValueAtIndex(num));
-        }
-
-        return new ReadOnlyCollection<string>(list);
-    }
-
-    public static IReadOnlyList<object> CoreWebView2ObjectCollectionViewCOMToNet(ICoreWebView2ObjectCollectionView rawObjectCollection)
-    {
-        if (rawObjectCollection == null)
-        {
-            return null;
-        }
-
-        List<object> list = new List<object>(Convert.ToInt32(rawObjectCollection.Count));
-        for (uint num = 0u; num < rawObjectCollection.Count; num++)
-        {
-            object obj = rawObjectCollection.GetValueAtIndex(num);
-            if (obj != null)
+            if (_nativeICoreWebView2BrowserExtensionValue == null)
             {
-                if (!(obj is ICoreWebView2File rawCoreWebView2File))
+                try
                 {
-                    continue;
+                    _nativeICoreWebView2BrowserExtensionValue = (ICoreWebView2BrowserExtension)_rawNative;
+                }
+                catch (Exception inner)
+                {
+                    throw new NotImplementedException("Unable to cast to Microsoft.Web.WebView2.Core.Raw.ICoreWebView2BrowserExtension.\nThis may happen if you are using an interface not supported by the version of the WebView2 Runtime you are using.\nFor instance, if you are using an experimental interface from an older SDK that has been modified or removed in a newer runtime.\nOr, if you are using a public interface from a newer SDK that wasn't implemented in an older runtime.\nFor more information about WebView2 versioning please visit the following: https://learn.microsoft.com/microsoft-edge/webview2/concepts/versioning", inner);
+                }
+            }
+
+            return _nativeICoreWebView2BrowserExtensionValue;
+        }
+        set
+        {
+            _nativeICoreWebView2BrowserExtensionValue = value;
+        }
+    }
+
+    //
+    // Summary:
+    //     This is the browser extension's ID. This is the same browser extension ID returned
+    //     by the browser extension API [chrome.runtime.id](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime/id).
+    //     Please see that documentation for more details on how the ID is generated. After
+    //     an extension is removed, calling Id will return the id of the extension that
+    //     is removed.
+    public string Id
+    {
+        get
+        {
+            try
+            {
+                return _nativeICoreWebView2BrowserExtension.Id;
+            }
+            catch (InvalidCastException ex)
+            {
+                if (ex.HResult == -2147467262)
+                {
+                    throw new InvalidOperationException("CoreWebView2 members can only be accessed from the UI thread.", ex);
                 }
 
-                obj = new CoreWebView2File(rawCoreWebView2File);
+                throw ex;
             }
-
-            list.Add(obj);
-        }
-
-        return new ReadOnlyCollection<object>(list);
-    }
-
-    public static IList<CoreWebView2ContextMenuItem> CoreWebView2ContextMenuItemCollectionCOMToNet(ICoreWebView2ContextMenuItemCollection rawContextMenuCollection)
-    {
-        if (rawContextMenuCollection == null)
-        {
-            return null;
-        }
-
-        List<CoreWebView2ContextMenuItem> list = new List<CoreWebView2ContextMenuItem>(Convert.ToInt32(rawContextMenuCollection.Count));
-        for (uint num = 0u; num < rawContextMenuCollection.Count; num++)
-        {
-            list.Add(new CoreWebView2ContextMenuItem(rawContextMenuCollection.GetValueAtIndex(num)));
-        }
-
-        ObservableCollection<CoreWebView2ContextMenuItem> collection = new ObservableCollection<CoreWebView2ContextMenuItem>(list);
-        collection.CollectionChanged += delegate (object sender, NotifyCollectionChangedEventArgs args)
-        {
-            switch (args.Action)
+            catch (COMException ex2)
             {
-                case NotifyCollectionChangedAction.Remove:
-                    rawContextMenuCollection.RemoveValueAtIndex((uint)args.OldStartingIndex);
-                    break;
-                case NotifyCollectionChangedAction.Add:
-                    rawContextMenuCollection.InsertValueAtIndex((uint)args.NewStartingIndex, ((CoreWebView2ContextMenuItem)args.NewItems[0])._nativeICoreWebView2ContextMenuItem);
-                    break;
-                case NotifyCollectionChangedAction.Replace:
-                    rawContextMenuCollection.RemoveValueAtIndex((uint)args.OldStartingIndex);
-                    rawContextMenuCollection.InsertValueAtIndex((uint)args.NewStartingIndex, ((CoreWebView2ContextMenuItem)args.NewItems[0])._nativeICoreWebView2ContextMenuItem);
-                    break;
-                case NotifyCollectionChangedAction.Move:
-                case NotifyCollectionChangedAction.Reset:
-                    {
-                        uint count = rawContextMenuCollection.Count;
-                        for (uint num2 = 0u; num2 < count; num2++)
-                        {
-                            rawContextMenuCollection.RemoveValueAtIndex(0u);
-                        }
+                if (ex2.HResult == -2147019873)
+                {
+                    throw new InvalidOperationException("CoreWebView2 members cannot be accessed after the WebView2 control is disposed.", ex2);
+                }
 
-                        for (int i = 0; i < collection.Count; i++)
-                        {
-                            rawContextMenuCollection.InsertValueAtIndex((uint)i, collection[i]._nativeICoreWebView2ContextMenuItem);
-                        }
-
-                        break;
-                    }
+                throw ex2;
             }
-        };
-        return collection;
+        }
     }
 
-    public static IReadOnlyList<CoreWebView2ProcessInfo> ProcessInfoCollectionCOMToNet(ICoreWebView2ProcessInfoCollection rawCoreWebView2ProcessInfoCollection)
+    //
+    // Summary:
+    //     This is the browser extension's name. This value is defined in this browser extension's
+    //     manifest.json file. If manifest.json define extension's localized name, this
+    //     value will be the localized version of the name. Please see [Manifest.json name](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/name)
+    //     for more details.
+    public string Name
     {
-        if (rawCoreWebView2ProcessInfoCollection == null)
+        get
         {
-            return null;
-        }
+            try
+            {
+                return _nativeICoreWebView2BrowserExtension.Name;
+            }
+            catch (InvalidCastException ex)
+            {
+                if (ex.HResult == -2147467262)
+                {
+                    throw new InvalidOperationException("CoreWebView2 members can only be accessed from the UI thread.", ex);
+                }
 
-        List<CoreWebView2ProcessInfo> list = new List<CoreWebView2ProcessInfo>(Convert.ToInt32(rawCoreWebView2ProcessInfoCollection.Count));
-        for (uint num = 0u; num < rawCoreWebView2ProcessInfoCollection.Count; num++)
-        {
-            list.Add(new CoreWebView2ProcessInfo(rawCoreWebView2ProcessInfoCollection.GetValueAtIndex(num)));
-        }
+                throw ex;
+            }
+            catch (COMException ex2)
+            {
+                if (ex2.HResult == -2147019873)
+                {
+                    throw new InvalidOperationException("CoreWebView2 members cannot be accessed after the WebView2 control is disposed.", ex2);
+                }
 
-        return new ReadOnlyCollection<CoreWebView2ProcessInfo>(list);
+                throw ex2;
+            }
+        }
     }
 
-    public static COMStreamWrapper StreamCOMToNet(IStream stream)
+    //
+    // Summary:
+    //     If IsEnabled is true then the Extension is enabled and running in WebView instances.
+    //     If it is false then the Extension is disabled and not running in WebView instances.
+    //     When a Extension is first installed, IsEnable are default to be true. IsEnabled
+    //     is persisted per profile. After an extension is removed, calling IsEnabled will
+    //     return the value at the time it was removed.
+    public bool IsEnabled
     {
-        if (stream == null)
+        get
         {
-            return null;
-        }
+            try
+            {
+                return _nativeICoreWebView2BrowserExtension.IsEnabled != 0;
+            }
+            catch (InvalidCastException ex)
+            {
+                if (ex.HResult == -2147467262)
+                {
+                    throw new InvalidOperationException("CoreWebView2 members can only be accessed from the UI thread.", ex);
+                }
 
-        return new COMStreamWrapper(stream);
+                throw ex;
+            }
+            catch (COMException ex2)
+            {
+                if (ex2.HResult == -2147019873)
+                {
+                    throw new InvalidOperationException("CoreWebView2 members cannot be accessed after the WebView2 control is disposed.", ex2);
+                }
+
+                throw ex2;
+            }
+        }
     }
 
-    public static IReadOnlyList<CoreWebView2PermissionSetting> CoreWebView2PermissionSettingCollectionViewCOMToNet(ICoreWebView2PermissionSettingCollectionView rawPermissionSettingCollectionView)
+    internal CoreWebView2BrowserExtension(object rawCoreWebView2BrowserExtension)
     {
-        if (rawPermissionSettingCollectionView == null)
-        {
-            return null;
-        }
-
-        List<CoreWebView2PermissionSetting> list = new List<CoreWebView2PermissionSetting>(Convert.ToInt32(rawPermissionSettingCollectionView.Count));
-        for (uint num = 0u; num < rawPermissionSettingCollectionView.Count; num++)
-        {
-            list.Add(new CoreWebView2PermissionSetting(rawPermissionSettingCollectionView.GetValueAtIndex(num)));
-        }
-
-        return new ReadOnlyCollection<CoreWebView2PermissionSetting>(list);
+        _rawNative = rawCoreWebView2BrowserExtension;
     }
 
-    public static IReadOnlyList<CoreWebView2BrowserExtension> BrowserExtensionListCOMToNet(ICoreWebView2BrowserExtensionList rawCoreWebView2BrowserExtensionList)
+    //
+    // Summary:
+    //     Removes this browser extension from its WebView2 Profile. The browser extension
+    //     is removed immediately including from all currently running HTML documents associated
+    //     with this WebView2 Profile. The removal is persisted and future uses of this
+    //     profile will not have this extension installed. After an extension is removed,
+    //     calling Remove again will cause an exception.
+    public async Task RemoveAsync()
     {
-        if (rawCoreWebView2BrowserExtensionList == null)
+        CoreWebView2BrowserExtensionRemoveCompletedHandler handler;
+        try
         {
-            return null;
+            handler = new CoreWebView2BrowserExtensionRemoveCompletedHandler();
+            _nativeICoreWebView2BrowserExtension.Remove(handler);
+        }
+        catch (InvalidCastException ex)
+        {
+            if (ex.HResult == -2147467262)
+            {
+                throw new InvalidOperationException("CoreWebView2 members can only be accessed from the UI thread.", ex);
+            }
+
+            throw ex;
+        }
+        catch (COMException ex2)
+        {
+            if (ex2.HResult == -2147019873)
+            {
+                throw new InvalidOperationException("CoreWebView2 members cannot be accessed after the WebView2 control is disposed.", ex2);
+            }
+
+            throw ex2;
         }
 
-        List<CoreWebView2BrowserExtension> list = new List<CoreWebView2BrowserExtension>(Convert.ToInt32(rawCoreWebView2BrowserExtensionList.Count));
-        for (uint num = 0u; num < rawCoreWebView2BrowserExtensionList.Count; num++)
-        {
-            list.Add(new CoreWebView2BrowserExtension(rawCoreWebView2BrowserExtensionList.GetValueAtIndex(num)));
-        }
-
-        return new ReadOnlyCollection<CoreWebView2BrowserExtension>(list);
+        await handler;
+        Marshal.ThrowExceptionForHR(handler.errCode);
     }
 
-    public static IReadOnlyList<CoreWebView2ProcessExtendedInfo> ProcessExtendedInfoCollectionCOMToNet(ICoreWebView2ProcessExtendedInfoCollection rawCoreWebView2ProcessExtendedInfoCollection)
+    //
+    // Summary:
+    //     Sets whether this browser extension is enabled or disabled. This change applies
+    //     immediately to the extension in all HTML documents in all WebView2s associated
+    //     with this profile. After an extension is removed, calling Enable will not change
+    //     the value of IsEnabled.
+    public async Task EnableAsync(bool IsEnabled)
     {
-        if (rawCoreWebView2ProcessExtendedInfoCollection == null)
+        CoreWebView2BrowserExtensionEnableCompletedHandler handler;
+        try
         {
-            return null;
+            handler = new CoreWebView2BrowserExtensionEnableCompletedHandler();
+            _nativeICoreWebView2BrowserExtension.Enable(IsEnabled ? 1 : 0, handler);
+        }
+        catch (InvalidCastException ex)
+        {
+            if (ex.HResult == -2147467262)
+            {
+                throw new InvalidOperationException("CoreWebView2 members can only be accessed from the UI thread.", ex);
+            }
+
+            throw ex;
+        }
+        catch (COMException ex2)
+        {
+            if (ex2.HResult == -2147019873)
+            {
+                throw new InvalidOperationException("CoreWebView2 members cannot be accessed after the WebView2 control is disposed.", ex2);
+            }
+
+            throw ex2;
         }
 
-        List<CoreWebView2ProcessExtendedInfo> list = new List<CoreWebView2ProcessExtendedInfo>(Convert.ToInt32(rawCoreWebView2ProcessExtendedInfoCollection.Count));
-        for (uint num = 0u; num < rawCoreWebView2ProcessExtendedInfoCollection.Count; num++)
-        {
-            list.Add(new CoreWebView2ProcessExtendedInfo(rawCoreWebView2ProcessExtendedInfoCollection.GetValueAtIndex(num)));
-        }
-
-        return new ReadOnlyCollection<CoreWebView2ProcessExtendedInfo>(list);
+        await handler;
+        Marshal.ThrowExceptionForHR(handler.errCode);
     }
 }
 #if false // Decompilation log
