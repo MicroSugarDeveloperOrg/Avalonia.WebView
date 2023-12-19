@@ -22,7 +22,8 @@ partial class BlazorWebView
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
-        if (!KeepAlive)
+        bool keepAlive = KeepAlive is null ? _creationProperties.KeepAlive : KeepAlive.Value;
+        if (!keepAlive)
         {
             Child = null;
             _platformWebView?.Dispose();

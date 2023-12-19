@@ -10,7 +10,7 @@
     <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageVersion Include="Microsoft.Extensions.FileProviders.Abstractions" Version="7.0.0" />
     <PackageVersion Include="Microsoft.Extensions.FileProviders.Physical" Version="7.0.0" />
-    <PackageVersion Include="Microsoft.Web.WebView2" Version="1.0.1823.32" />
+    <PackageVersion Include="Microsoft.Web.WebView2" Version="1.0.2210.55" />
     <PackageVersion Include="System.Buffers" Version="4.5.1" />
     <PackageVersion Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
     <PackageVersion Include="System.Text.Encodings.Web" Version="7.0.0" />

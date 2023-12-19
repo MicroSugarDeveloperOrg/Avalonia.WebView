@@ -11,8 +11,8 @@ partial class BlazorWebView
     private static readonly StyledProperty<Control?> ChildProperty =
             AvaloniaProperty.Register<BlazorWebView, Control?>(nameof(Child));
 
-    public static readonly StyledProperty<bool> KeepAliveProperty =
-            AvaloniaProperty.Register<BlazorWebView, bool>(nameof(KeepAlive), defaultValue: false);
+    public static readonly StyledProperty<bool?> KeepAliveProperty =
+            AvaloniaProperty.Register<BlazorWebView, bool?>(nameof(KeepAlive), defaultValue: default);
 
 
     [Content]
@@ -22,7 +22,7 @@ partial class BlazorWebView
         set => SetValue(ChildProperty, value);
     }
 
-    public bool KeepAlive
+    public bool? KeepAlive
     {
         get => GetValue(KeepAliveProperty);
         set => SetValue(KeepAliveProperty, value);

@@ -52,6 +52,7 @@ partial class BlazorWebView
 
         var viewHandler = _viewHandlerProvider.CreatePlatformWebViewHandler(this, this, webViewManager, config =>
         {
+            config.KeepAlive = KeepAlive is null ? _creationProperties.KeepAlive : KeepAlive.Value;
             config.AreDevToolEnabled = _creationProperties.AreDevToolEnabled;
             config.AreDefaultContextMenusEnabled = _creationProperties.AreDefaultContextMenusEnabled;
             config.IsStatusBarEnabled = _creationProperties.IsStatusBarEnabled;

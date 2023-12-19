@@ -191,9 +191,10 @@ partial class WebView2Core
                 OpenUriHelper.OpenInProcess(uri);
                 break;
             case UrlRequestStrategy.OpenInWebView:
-                //var deferral = e.GetDeferral();
+                var deferral = e.GetDeferral();
                 e.NewWindow = CoreWebView2!;
-                //deferral.Complete();
+                e.Handled = true;   
+                deferral.Complete();
                 //e.NewWindow = CoreWebView2!;
                 break;
             case UrlRequestStrategy.CancelLoad:

@@ -1,4 +1,5 @@
-﻿using Avalonia.LogicalTree;
+﻿using Avalonia.Controls;
+using Avalonia.LogicalTree;
 
 namespace AvaloniaWebView;
 
@@ -27,7 +28,7 @@ partial class WebView
         {
             var viewHandler = _viewHandlerProvider.CreatePlatformWebViewHandler(this, this, default, config =>
             {
-                config.KeepAlive = KeepAlive;
+                config.KeepAlive = KeepAlive is null ? _creationProperties.KeepAlive : KeepAlive.Value;
                 config.AreDevToolEnabled = _creationProperties.AreDevToolEnabled;
                 config.AreDefaultContextMenusEnabled = _creationProperties.AreDefaultContextMenusEnabled;
                 config.IsStatusBarEnabled = _creationProperties.IsStatusBarEnabled;
@@ -59,7 +60,8 @@ partial class WebView
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
-        if (!KeepAlive)
+        bool keepAlive = KeepAlive is null ? _creationProperties.KeepAlive : KeepAlive.Value;
+        if (!keepAlive)
         {
             Child = null;
             _platformWebView?.Dispose();
@@ -74,6 +76,7 @@ partial class WebView
         if (_attachControl is IDisposable disposable)
             disposable.Dispose();
 
+        _partInnerContainer.Child = null;
         Child = null;
         _attachControl = null;
         _platformWebView?.Dispose();

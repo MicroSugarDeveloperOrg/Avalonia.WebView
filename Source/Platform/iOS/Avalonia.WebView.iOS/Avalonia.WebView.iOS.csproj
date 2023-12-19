@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0-ios16.0;net7.0-ios16.0</TargetFrameworks>
+		<TargetFrameworks>net7.0-ios</TargetFrameworks>
 	</PropertyGroup>
 
 	<Import Project="$(BuildToolsDirectory)Directory.Packages.targets" />

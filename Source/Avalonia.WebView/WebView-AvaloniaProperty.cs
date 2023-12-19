@@ -38,8 +38,8 @@ partial class WebView
     public static readonly StyledProperty<IDataTemplate?> EmptyViewerTemplateProperty =
            AvaloniaProperty.Register<WebView, IDataTemplate?>(nameof(EmptyViewerTemplate));
 
-    public static readonly StyledProperty<bool> KeepAliveProperty =
-           AvaloniaProperty.Register<WebView, bool>(nameof(KeepAlive), defaultValue:false);
+    public static readonly StyledProperty<bool?> KeepAliveProperty =
+           AvaloniaProperty.Register<WebView, bool?>(nameof(KeepAlive), defaultValue:default);
 
 
     [Content]
@@ -105,7 +105,7 @@ partial class WebView
         set => SetValue(BoxShadowProperty, value);
     }
 
-    public bool KeepAlive
+    public bool? KeepAlive
     {
         get => GetValue(KeepAliveProperty);
         set => SetValue(KeepAliveProperty, value);  
