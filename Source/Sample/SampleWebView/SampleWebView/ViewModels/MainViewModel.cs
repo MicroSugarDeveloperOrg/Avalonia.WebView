@@ -1,5 +1,6 @@
 ﻿using ReactiveUI;
 using System.Reactive;
+using System.Runtime.InteropServices;
 
 namespace SampleWebView.ViewModels;
 

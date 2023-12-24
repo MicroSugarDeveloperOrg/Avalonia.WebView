@@ -26,4 +26,6 @@ public abstract class ViewHandler<TVirtualViewContext, TPlatformViewContext> : V
 
     public TPlatformViewContext PlatformViewContext { get => PlatformViewContextObject as TPlatformViewContext;  protected set => PlatformViewContextObject = value; }
     public TVirtualViewContext VirtualViewContext { get => VisualViewContextObject as TVirtualViewContext; protected set=> VisualViewContextObject = value; }
+
+#nullable enable
 }

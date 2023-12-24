@@ -1,7 +1,42 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
+
+	<Import Project="$(BuildToolsDirectory)Directory.Packages.targets" />
+
+	<PropertyGroup>
+		<PackageId>WebView.Avalonia.DesktopTx</PackageId>
+		<Title>WebView.Avalonia.DesktopTx</Title>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\..\..\Packages\webview@avalonia-logo.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\CEF\Avalonia.WebView.Cef\Avalonia.WebView.Cef.csproj">
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="$(BuildToolsDirectory)Directory.webview.desktop.common.targets" Pack="True" PackagePath="build\$(PackageId)%(Extension)" />
+	</ItemGroup>
 
 </Project>

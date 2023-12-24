@@ -6,7 +6,26 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\CefGlue\CefGlue.csproj" />
+		<PackageReference Include="Avalonia" />
+	</ItemGroup>
+
+	<ItemGroup>
+ 
+		<ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj">
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+
+		<ProjectReference Include="..\..\..\DryIoc.Shared\DryIoc.Shared.csproj">
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+
+		<ProjectReference Include="..\..\..\WebView.Core\WebView.Core.csproj">
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+ 
+		<ProjectReference Include="..\CefGlue\CefGlue.csproj">
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
 	</ItemGroup>
 
 </Project>
