@@ -8,5 +8,12 @@
         x:Class="SampleWebView.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="SampleWebView">
-        <views:MainView />
+	<TabControl x:Name="tabControl" TabStripPlacement="Top" >
+		<TabItem Header="Tab 1">
+			<views:MainView />
+		</TabItem>
+		<TabItem Header="Tab 2">
+			<views:MainView />
+		</TabItem>
+	</TabControl>
 </Window>

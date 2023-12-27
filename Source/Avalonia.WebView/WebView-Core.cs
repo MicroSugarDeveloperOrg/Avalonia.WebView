@@ -17,7 +17,15 @@ partial class WebView
                 return false;
         }
 
-        return _platformWebView.Navigate(uri);
+        if (_platformWebView is null)
+            return false;
+        try
+        {
+            return _platformWebView.Navigate(uri);
+        }catch (Exception ex)
+        {
+            return false;
+        }
     }
 
     async Task<bool> NavigateToString(string? htmlContent)
