@@ -11,7 +11,7 @@
 		<Title>WebView.Avalonia.MacCatalyst</Title>
 		<!--<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>-->
 		<TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);CopyTargetsForTfmSpecificContentInPackage</TargetsForTfmSpecificContentInPackage>
-		<!--<TargetsForTfmSpecificDebugSymbolsInPackage>$(TargetsForTfmSpecificDebugSymbolsInPackage);CopyProjectReferencesSymbolsToPackage</TargetsForTfmSpecificDebugSymbolsInPackage>-->
+		<TargetsForTfmSpecificDebugSymbolsInPackage>$(TargetsForTfmSpecificDebugSymbolsInPackage);CopyProjectReferencesSymbolsToPackage</TargetsForTfmSpecificDebugSymbolsInPackage>
 	</PropertyGroup>
 
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
@@ -47,15 +47,7 @@
 			<SupposedSymbolFiles Include="@(ReferenceCopyLocalPaths->'%(OutputPath)%(Filename).pdb')" />
 			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)Xamarin.Mac.pdb">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
-			</TfmSpecificDebugSymbolsFile>
-			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)AvaloniaWebView.Shared.pdb">
-				<TargetFramework>$(TargetFramework)</TargetFramework>
-			</TfmSpecificDebugSymbolsFile>
-			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)DryIoc.Shared.pdb">
-				<TargetFramework>$(TargetFramework)</TargetFramework>
-			</TfmSpecificDebugSymbolsFile>
-			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)WebView.Core.pdb">
-				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
 			</TfmSpecificDebugSymbolsFile>
 		</ItemGroup>
 	</Target>

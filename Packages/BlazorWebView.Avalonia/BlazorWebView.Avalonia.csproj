@@ -10,7 +10,7 @@
 	<PropertyGroup>
 		<!--<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>-->
 		<TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);CopyTargetsForTfmSpecificContentInPackage</TargetsForTfmSpecificContentInPackage>
-		<!--<TargetsForTfmSpecificDebugSymbolsInPackage>$(TargetsForTfmSpecificDebugSymbolsInPackage);CopyProjectReferencesSymbolsToPackage</TargetsForTfmSpecificDebugSymbolsInPackage>-->
+		<TargetsForTfmSpecificDebugSymbolsInPackage>$(TargetsForTfmSpecificDebugSymbolsInPackage);CopyProjectReferencesSymbolsToPackage</TargetsForTfmSpecificDebugSymbolsInPackage>
 	</PropertyGroup>
 
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
@@ -50,18 +50,23 @@
 			<SupposedSymbolFiles Include="@(ReferenceCopyLocalPaths->'%(OutputPath)%(Filename).pdb')" />
 			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)Avalonia.BlazorWebView.pdb">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
 			</TfmSpecificDebugSymbolsFile>
 			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)AvaloniaWebView.Shared.pdb">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
 			</TfmSpecificDebugSymbolsFile>
 			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)DryIoc.Shared.pdb">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
 			</TfmSpecificDebugSymbolsFile>
 			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)Toolkit.Shared.pdb">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
 			</TfmSpecificDebugSymbolsFile>
 			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)WebView.Core.pdb">
 				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
 			</TfmSpecificDebugSymbolsFile>
 		</ItemGroup>
 	</Target>

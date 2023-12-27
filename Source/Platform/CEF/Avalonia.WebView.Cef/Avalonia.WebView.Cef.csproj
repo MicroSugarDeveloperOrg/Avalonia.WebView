@@ -5,12 +5,64 @@
 		<RootNamespace>Avalonia.WebView</RootNamespace>
 	</PropertyGroup>
 
+	<Import Project="$(BuildToolsDirectory)Directory.Packages.targets" />
+
+	<PropertyGroup>
+		<PackageId>WebView.Avalonia.Cef</PackageId>
+		<Title>WebView.Avalonia.Cef</Title>
+	</PropertyGroup>
+	
+	<PropertyGroup>
+		<TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);CopyTargetsForTfmSpecificContentInPackage</TargetsForTfmSpecificContentInPackage>
+		<TargetsForTfmSpecificDebugSymbolsInPackage>$(TargetsForTfmSpecificDebugSymbolsInPackage);CopyProjectReferencesSymbolsToPackage</TargetsForTfmSpecificDebugSymbolsInPackage>
+	</PropertyGroup>
+
+	<Target Name="CopyTargetsForTfmSpecificContentInPackage">
+		<ItemGroup>
+			<TfmSpecificPackageFile Include="$(OutputPath)CefGlue.dll">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
+			</TfmSpecificPackageFile>
+			<TfmSpecificPackageFile Include="$(OutputPath)CefGlue.Adapter.dll">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
+			</TfmSpecificPackageFile>
+		</ItemGroup>
+	</Target>
+
+	<Target Name="CopyProjectReferencesSymbolsToPackage" DependsOnTargets="ResolveReferences">
+		<ItemGroup>
+			<SupposedSymbolFiles Include="@(ReferenceCopyLocalPaths->'%(OutputPath)%(Filename).pdb')" />
+			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)CefGlue.pdb">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
+			</TfmSpecificDebugSymbolsFile>
+			<TfmSpecificDebugSymbolsFile Include="$(OutputPath)CefGlue.Adapter.pdb">
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<PackagePath>lib/$(TargetFramework)/</PackagePath>
+			</TfmSpecificDebugSymbolsFile>
+		</ItemGroup>
+	</Target>
+
+	<ItemGroup>
+		<None Include="..\..\..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\..\..\Packages\webview@avalonia-logo.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Avalonia" />
 	</ItemGroup>
 
 	<ItemGroup>
- 
 		<ProjectReference Include="..\..\..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj">
 			<PrivateAssets>all</PrivateAssets>
 		</ProjectReference>
@@ -22,10 +74,12 @@
 		<ProjectReference Include="..\..\..\WebView.Core\WebView.Core.csproj">
 			<PrivateAssets>all</PrivateAssets>
 		</ProjectReference>
- 
-		<ProjectReference Include="..\CefGlue\CefGlue.csproj">
-			<PrivateAssets>all</PrivateAssets>
-		</ProjectReference>
+
+		<ProjectReference Include="..\CefGlue.Adapter\CefGlue.Adapter.csproj"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="$(BuildToolsDirectory)Directory.webview.desktop.common.targets" Pack="True" PackagePath="build\$(PackageId)%(Extension)" />
 	</ItemGroup>
 
 </Project>

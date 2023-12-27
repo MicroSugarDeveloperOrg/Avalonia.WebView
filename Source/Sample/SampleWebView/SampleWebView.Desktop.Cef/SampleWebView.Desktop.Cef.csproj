@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFrameworks>net7.0</TargetFrameworks>
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia.Desktop" /> 
+		<PackageReference Include="AntDesign.Toolkit" /> 
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Platform\CEF\Avalonia.WebView.Cef\Avalonia.WebView.Cef.csproj" />
+		<ProjectReference Include="..\SampleWebView\SampleWebView.csproj" />
+	</ItemGroup>
+</Project>

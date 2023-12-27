@@ -6,15 +6,11 @@ public partial class WebViewHandler : ViewHandlerTx<IVirtualWebView, CefWebViewC
     public WebViewHandler(IVirtualWebView virtualWebView, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
         : base(webViewCreationProperties.KeepAlive)
     {
-        CefWebViewCore webView = new();
+        CefWebViewCore webView = new(this, callback, provider, webViewCreationProperties);
         PlatformWebView = webView;
         VirtualViewContext = virtualWebView;
         PlatformViewContext = webView;
-
     }
-
-
-
 
     protected override void Disposing()
     {

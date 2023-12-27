@@ -13,12 +13,7 @@ partial class CefWebViewCore
 
     bool IWebViewControl.IsCanGoBack => throw new NotImplementedException();
 
-    void IDisposable.Dispose()
-    {
-        throw new NotImplementedException();
-    }
-
-    ValueTask IAsyncDisposable.DisposeAsync()
+    Task<bool> IPlatformWebView.Initialize()
     {
         throw new NotImplementedException();
     }
@@ -34,11 +29,6 @@ partial class CefWebViewCore
     }
 
     bool IWebViewControl.GoForward()
-    {
-        throw new NotImplementedException();
-    }
-
-    Task<bool> IPlatformWebView.Initialize()
     {
         throw new NotImplementedException();
     }
@@ -74,6 +64,16 @@ partial class CefWebViewCore
     }
 
     bool IWebViewControl.Stop()
+    {
+        throw new NotImplementedException();
+    }
+
+    void IDisposable.Dispose()
+    {
+        throw new NotImplementedException();
+    }
+
+    ValueTask IAsyncDisposable.DisposeAsync()
     {
         throw new NotImplementedException();
     }

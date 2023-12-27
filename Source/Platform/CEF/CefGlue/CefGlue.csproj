@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0</TargetFrameworks>
-
+		<!--<EnableDefaultItems>false</EnableDefaultItems>-->
 		<AssemblyName>CefGlue</AssemblyName>
 		<RootNamespace>CefGlue</RootNamespace>
 		<Nullable>annotations</Nullable>
