@@ -23,6 +23,11 @@ internal sealed class CefRenderHandlerAdapter : CefRenderHandler
         _render.GetViewRect(browser, out rect);
     }
 
+    protected override bool GetScreenPoint(CefBrowser browser, int viewX, int viewY, ref int screenX, ref int screenY)
+    {
+        return _render.GetScreenPoint(browser, viewX, viewY, ref screenX, ref screenY);
+    }
+
     protected override void OnAcceleratedPaint(CefBrowser browser, CefPaintElementType type, CefRectangle[] dirtyRects, IntPtr sharedHandle)
     {
         _render.OnAcceleratedPaint(browser, type, dirtyRects, sharedHandle);

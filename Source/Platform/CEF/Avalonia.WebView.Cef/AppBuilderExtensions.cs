@@ -16,39 +16,36 @@ public static class AppBuilderExtensions
         var args = Environment.GetCommandLineArgs();
         var mainArgs = new CefMainArgs(new string[] { });
         var cefApp = new CefAppAdapter(settings, null!);
-        var exitCode = CefRuntime.ExecuteProcess(mainArgs, cefApp, IntPtr.Zero);
-        if (exitCode == -1)
-        {
-            var cefSettings = new CefSettings
-            {
-                //BrowserSubprocessPath = settings.BroswerSubProcessPath,
-                ResourcesDirPath = settings.ResourcePath,
-                LocalesDirPath = settings.LocalesPath,
-                WindowlessRenderingEnabled = settings.WindowlessRenderingEnabled,
-                MultiThreadedMessageLoop = settings.MultiThreadedMessageLoop,
-                //WindowlessRenderingEnabled = true,
-                //MultiThreadedMessageLoop = true,
-                LogSeverity = CefLogSeverity.Verbose,
-                LogFile = "cef.log",
-            };
 
-            try
+        try
+        {
+            var exitCode = CefRuntime.ExecuteProcess(mainArgs, cefApp, IntPtr.Zero);
+            if (exitCode == -1)
             {
+                var cefSettings = new CefSettings
+                {
+                    //BrowserSubprocessPath = settings.BroswerSubProcessPath,
+                    //ResourcesDirPath = settings.ResourcePath,
+                    //LocalesDirPath = settings.LocalesPath,
+                    WindowlessRenderingEnabled = settings.WindowlessRenderingEnabled,
+                    MultiThreadedMessageLoop = settings.MultiThreadedMessageLoop,
+                    LogSeverity = CefLogSeverity.Verbose,
+                    LogFile = "cef.log",
+                };
+
                 CefRuntime.Initialize(mainArgs, cefSettings, cefApp, IntPtr.Zero);
             }
-            catch (Exception)
-            {
-                throw;
-            }
-
         }
-
+        catch (Exception)
+        {
+            throw;
+        }
+        
         appBuilder.AfterSetup(app =>
         {
             if (Application.Current?.ApplicationLifetime is IControlledApplicationLifetime applicationLifetime)
                 applicationLifetime.Exit += (s, e) => CefRuntime.Shutdown();
         });
-
 
         return appBuilder.AfterPlatformServicesSetup(app =>
         {
