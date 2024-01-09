@@ -131,6 +131,7 @@ partial class CefWebViewCore
         _cefClient = null;
         _cefBrowser?.Dispose();
         _cefBrowser = null;
+        _cefBrowserHost?.CloseBrowser();
         _cefBrowserHost?.Dispose();
         _cefBrowserHost = null;
 

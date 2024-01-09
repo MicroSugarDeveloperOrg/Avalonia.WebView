@@ -17,10 +17,14 @@ partial class CefWebViewCore
 
     bool IRenderHandler.GetScreenPoint(CefBrowser cefBrowser, int viewX, int viewY, ref int screenX, ref int screenY)
     {
-        var pixelPoint = _handler.PointToScreen(new Point(viewX, viewY));
+        PixelPoint pixelPoint = new();
+        _dispatcher.Invoke(() =>
+        {
+            pixelPoint = _handler.PointToScreen(new Point(viewX, viewY));
+        });
+
         screenX = pixelPoint.X;
         screenY = pixelPoint.Y;
-
         return true;
     }
 
@@ -47,6 +51,7 @@ partial class CefWebViewCore
             _cefBrowserHost = browser.GetHost();
         });
 
+        AppBuilderExtensions.__CefBroswerManager.AddHost(_cefBrowser!, _cefBrowserHost!);
         AttachViewHandlers();
         _cefBrowserHost?.WasResized();
 
@@ -58,7 +63,10 @@ partial class CefWebViewCore
 
     void ILifeSpanHandler.OnBeforeClose(CefBrowser browser)
     {
-        //throw new NotImplementedException();
+        AppBuilderExtensions.__CefBroswerManager.RemoveHost(_cefBrowser!,_cefBrowserHost!);
+
+        _cefBrowser = null;
+        _cefBrowserHost = null;
     }
 
     bool ILifeSpanHandler.OnBeforePopup(CefBrowser browser, CefFrame frame, string targetUrl, string targetFrameName, CefWindowOpenDisposition targetDisposition, bool userGesture, CefPopupFeatures popupFeatures, CefWindowInfo windowInfo, ref CefClient client, CefBrowserSettings settings, ref CefDictionaryValue extraInfo, ref bool noJavascriptAccess)

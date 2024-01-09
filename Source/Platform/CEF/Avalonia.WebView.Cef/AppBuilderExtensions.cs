@@ -5,6 +5,8 @@ using CefGlue.Adapter.Browser;
 namespace Avalonia.WebView;
 public static class AppBuilderExtensions
 {
+    internal static CefBroswerManager __CefBroswerManager { get; } = new CefBroswerManager();
+
     public static AppBuilder UseCefWebView(this AppBuilder appBuilder, Action<CefInitializeSettings>? configDelegate)
     {
         CefInitializeSettings settings = new();
@@ -27,7 +29,8 @@ public static class AppBuilderExtensions
                     //BrowserSubprocessPath = settings.BroswerSubProcessPath,
                     //ResourcesDirPath = settings.ResourcePath,
                     //LocalesDirPath = settings.LocalesPath,
-                    WindowlessRenderingEnabled = settings.WindowlessRenderingEnabled,
+                    //WindowlessRenderingEnabled = settings.WindowlessRenderingEnabled,
+                    WindowlessRenderingEnabled = true,
                     MultiThreadedMessageLoop = settings.MultiThreadedMessageLoop,
                     LogSeverity = CefLogSeverity.Verbose,
                     LogFile = "cef.log",
@@ -44,7 +47,13 @@ public static class AppBuilderExtensions
         appBuilder.AfterSetup(app =>
         {
             if (Application.Current?.ApplicationLifetime is IControlledApplicationLifetime applicationLifetime)
-                applicationLifetime.Exit += (s, e) => CefRuntime.Shutdown();
+                applicationLifetime.Exit += (s, e) => 
+                {
+                    CefRuntime.QuitMessageLoop();
+                    __CefBroswerManager.StopHosts();    
+                    Environment.Exit(0);
+                    CefRuntime.Shutdown();//目前该函数调用会阻塞退出 所以直接使用Environment.Exit(0) 来退出程序
+                };
         });
 
         return appBuilder.AfterPlatformServicesSetup(app =>
