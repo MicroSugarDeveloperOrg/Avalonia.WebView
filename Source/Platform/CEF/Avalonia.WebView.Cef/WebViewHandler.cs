@@ -1,4 +1,7 @@
-﻿using Avalonia.WebView.Core;
+﻿using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.WebView.Core;
+using Avalonia.WebView.Extensions;
 
 namespace Avalonia.WebView;
 public partial class WebViewHandler : ViewHandlerTx<IVirtualWebView, CefWebViewCore>
@@ -6,14 +9,26 @@ public partial class WebViewHandler : ViewHandlerTx<IVirtualWebView, CefWebViewC
     public WebViewHandler(IVirtualWebView virtualWebView, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
         : base(webViewCreationProperties.KeepAlive)
     {
-        CefWebViewCore webView = new(this, callback, provider, webViewCreationProperties);
+        Focusable = true;
+        _popup = new AvaloniaPopup()
+        {
+            PlacementTarget = this,
+            //Placement = PlacementMode.Re
+        };
+
+        CefWebViewCore webView = new(this, _popup, callback, provider, webViewCreationProperties);
+        _popup.SetViewHandlerControl(webView);
+
         _viewHandlerControl = webView;
         PlatformWebView = webView;
         VirtualViewContext = virtualWebView;
         PlatformViewContext = webView;
     }
 
+    readonly AvaloniaPopup _popup;
+    //readonly ToolTip _toolTip;
     IViewHandlerControl _viewHandlerControl;
+
 
     protected override void Disposing()
     {

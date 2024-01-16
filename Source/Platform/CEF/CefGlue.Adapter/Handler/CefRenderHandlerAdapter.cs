@@ -48,6 +48,11 @@ internal sealed class CefRenderHandlerAdapter : CefRenderHandler
         _render.OnPopupSize(browser, rect);
     }
 
+    protected override void OnPopupShow(CefBrowser browser, bool show)
+    {
+        _render.OnPopupShow(browser, show);
+    }
+
     protected override void OnScrollOffsetChanged(CefBrowser browser, double x, double y)
     {
         _render.OnScrollOffsetChanged(browser, x, y);

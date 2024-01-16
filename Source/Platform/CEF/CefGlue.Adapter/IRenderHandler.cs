@@ -9,5 +9,6 @@ public interface IRenderHandler
     void OnImeCompositionRangeChanged(CefBrowser browser, CefRange selectedRange, CefRectangle[] characterBounds);
     void OnPaint(CefBrowser browser, CefPaintElementType type, CefRectangle[] dirtyRects, IntPtr buffer, int width, int height);
     void OnPopupSize(CefBrowser browser, CefRectangle rect);
+    void OnPopupShow(CefBrowser browser, bool show);
     void OnScrollOffsetChanged(CefBrowser browser, double x, double y);
 }

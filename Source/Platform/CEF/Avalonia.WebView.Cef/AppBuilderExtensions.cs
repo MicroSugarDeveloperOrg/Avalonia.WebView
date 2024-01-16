@@ -16,7 +16,7 @@ public static class AppBuilderExtensions
         CefRuntime.Load(settings.CefLibPath!);
 
         var args = Environment.GetCommandLineArgs();
-        var mainArgs = new CefMainArgs(new string[] { });
+        var mainArgs = new CefMainArgs([]);
         var cefApp = new CefAppAdapter(settings, null!);
 
         try

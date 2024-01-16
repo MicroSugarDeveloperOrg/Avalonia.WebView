@@ -1,7 +1,7 @@
 ﻿using CefGlue.Adapter;
-using System;
 
 namespace Avalonia.WebView.Core;
+
 partial class CefWebViewCore
 {
     CefAccessibilityHandler IRenderHandler.GetAccessibilityHandler()
@@ -63,7 +63,7 @@ partial class CefWebViewCore
 
     void ILifeSpanHandler.OnBeforeClose(CefBrowser browser)
     {
-        AppBuilderExtensions.__CefBroswerManager.RemoveHost(_cefBrowser!,_cefBrowserHost!);
+        AppBuilderExtensions.__CefBroswerManager.RemoveHost(_cefBrowser!, _cefBrowserHost!);
 
         _cefBrowser = null;
         _cefBrowserHost = null;
@@ -71,8 +71,7 @@ partial class CefWebViewCore
 
     bool ILifeSpanHandler.OnBeforePopup(CefBrowser browser, CefFrame frame, string targetUrl, string targetFrameName, CefWindowOpenDisposition targetDisposition, bool userGesture, CefPopupFeatures popupFeatures, CefWindowInfo windowInfo, ref CefClient client, CefBrowserSettings settings, ref CefDictionaryValue extraInfo, ref bool noJavascriptAccess)
     {
-        return true;
-        //throw new NotImplementedException();
+        return false;
     }
 
     bool IJSDialogHandler.OnBeforeUnloadDialog(CefBrowser browser, string messageText, bool isReload, CefJSDialogCallback callback)
@@ -138,6 +137,11 @@ partial class CefWebViewCore
                 });
                 break;
             case CefPaintElementType.Popup:
+                _dispatcher.Invoke(() =>
+                {
+                    CreatePopupWritableBitmap(dirtyRects, buffer, width, height);
+                    _popup.InvalidateVisual();
+                });
                 break;
             default:
                 break;
@@ -146,11 +150,25 @@ partial class CefWebViewCore
 
     void IRenderHandler.OnPopupSize(CefBrowser browser, CefRectangle rect)
     {
+        _dispatcher.Invoke(() =>
+        {
+            _popup.Width = rect.Width;
+            _popup.Height = rect.Height;
+            _popup.HorizontalOffset = rect.X;
+            _popup.VerticalOffset = rect.Y;
+            //_popup.InvalidateVisual();
+        });
+    }
 
+    void IRenderHandler.OnPopupShow(CefBrowser browser, bool show)
+    {
+        _dispatcher.Invoke(() => _popup.IsOpen = show);
     }
 
     void IJSDialogHandler.OnResetDialogState(CefBrowser browser)
     {
+
+
 
     }
 
@@ -171,16 +189,15 @@ partial class CefWebViewCore
 
     bool IDisplayHandler.OnTooltip(CefBrowser browser, string text)
     {
+
+
         return true;
     }
 
     void CreateWriteableBitmap(CefRectangle[] dirtyRects, IntPtr buffer, int width, int height)
     {
         var dpi = _dpi;
-        //var dpi = _dpi * _dpiScaling;
-        //var bitmap = new WriteableBitmap(new PixelSize(width, height), new Vector(dpi, dpi), PixelFormat.Bgra8888, AlphaFormat.Opaque);      
         int stride = width * _bytePerPixel;
-        //int sourceBufferSize = stride * height;
 
         foreach (CefRectangle dirtyRect in dirtyRects)
         {
@@ -202,7 +219,22 @@ partial class CefWebViewCore
             _bitmap?.Dispose();
             _bitmap = bitmap;
         }
+    }
 
+    void CreatePopupWritableBitmap(CefRectangle[] dirtyRects, IntPtr buffer, int width, int height)
+    {
+        var dpi = _dpi;
+        int stride = width * _bytePerPixel;
 
+        foreach (CefRectangle dirtyRect in dirtyRects)
+        {
+            if (dirtyRect.Width == 0 || dirtyRect.Height == 0)
+                continue;
+
+            var bitmap = new WriteableBitmap(PixelFormat.Bgra8888, AlphaFormat.Opaque, buffer, new PixelSize(width, height), new Vector(dpi, dpi), stride);
+
+            _popupBitmap?.Dispose();
+            _popupBitmap = bitmap;
+        }
     }
 }

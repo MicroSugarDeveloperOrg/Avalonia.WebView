@@ -1,21 +1,20 @@
-﻿using Avalonia.Controls.Primitives;
-using DryIoc;
+﻿using Avalonia.WebView.Helpers;
 using System.Diagnostics;
-using static CefGlue.Wrapper.CefMessageRouterBrowserSide;
 
 namespace Avalonia.WebView.Core;
-partial class CefWebViewCore : IViewHandlerControl
+
+partial class CefWebViewCore : IViewHandlerControl, IPopupViewHandlerControl
 {
     IImage? IViewHandlerControl.DrawingImage() => _bitmap;
 
+    IImage? IPopupViewHandlerControl.PopupDrawingImage() => _popupBitmap;
+
     bool AttachViewHandlers()
     {
-        //
         var topLevel = TopLevel.GetTopLevel(_handler);
         if (topLevel is null)
             return false;
 
-        //_dpiScaling = 1;
         _dpiScaling = topLevel.RenderScaling;
         topLevel.ScalingChanged += TopLevel_ScalingChanged;
         topLevel.Closed += TopLevel_Closed;
@@ -24,9 +23,6 @@ partial class CefWebViewCore : IViewHandlerControl
         int height = (int)_handler.Bounds.Height;
         _width = width;
         _height = height;
-
-        _browserWidth = width * _dpiScaling;
-        _browserHeight = height * _dpiScaling;
 
         _handler.SizeChanged += Handler_SizeChanged;
 
@@ -37,7 +33,45 @@ partial class CefWebViewCore : IViewHandlerControl
         _handler.PointerReleased += Handler_PointerReleased;
         _handler.PointerExited += Handler_PointerExited;
         _handler.PointerWheelChanged += Handler_PointerWheelChanged;
+
         _handler.TextInput += Handler_TextInput;
+        _handler.KeyDown += Handler_KeyDown;
+        _handler.KeyUp += Handler_KeyUp;
+        //_disposable = InputElement.TextInputEvent.AddClassHandler<InputElement>((x, e) => 
+        //{
+        //    if (x != _handler)
+        //        return;
+        //
+        //    Handler_TextInput(x, e);
+        //}, RoutingStrategies.Bubble);
+
+        return true;
+    }
+
+    bool DetachViewHandlers()
+    {
+        var topLevel = TopLevel.GetTopLevel(_handler);
+        if (topLevel is null)
+            return false;
+
+        _dpiScaling = topLevel.RenderScaling;
+        topLevel.ScalingChanged -= TopLevel_ScalingChanged;
+        topLevel.Closed -= TopLevel_Closed;
+
+        _handler.SizeChanged -= Handler_SizeChanged;
+
+        _handler.GotFocus -= Handler_GotFocus;
+        _handler.LostFocus -= Handler_LostFocus;
+        _handler.PointerMoved -= Handler_PointerMoved;
+        _handler.PointerPressed -= Handler_PointerPressed;
+        _handler.PointerReleased -= Handler_PointerReleased;
+        _handler.PointerExited -= Handler_PointerExited;
+        _handler.PointerWheelChanged -= Handler_PointerWheelChanged;
+
+        _handler.TextInput -= Handler_TextInput;
+        _handler.KeyDown -= Handler_KeyDown;
+        _handler.KeyUp -= Handler_KeyUp;
+
         return true;
     }
 
@@ -74,7 +108,7 @@ partial class CefWebViewCore : IViewHandlerControl
             Y = (int)cursorPos.Y
         };
         var pointer = e.GetCurrentPoint(_handler);
-        mouseEvent.Modifiers = GetMouseModifiers(pointer.Properties);
+        mouseEvent.Modifiers = AsCefMouseModifiers(pointer.Properties);
 
         try
         {
@@ -96,8 +130,8 @@ partial class CefWebViewCore : IViewHandlerControl
             Y = (int)cursorPos.Y
         };
         var pointer = e.GetCurrentPoint(_handler);
-        mouseEvent.Modifiers = GetMouseModifiers(pointer.Properties);
-        var mouseType = GetMouseButtonType(pointer.Properties);
+        mouseEvent.Modifiers = AsCefMouseModifiers(pointer.Properties);
+        var mouseType = AsCefMouseButtonType(pointer.Properties);
 
         try
         {
@@ -107,6 +141,9 @@ partial class CefWebViewCore : IViewHandlerControl
         {
             Debug.WriteLine($"PointerPressed, {ex}");
         }
+
+        if (mouseType == CefMouseButtonType.Left)
+            e.Pointer.Capture(_handler);
     }
 
     private void Handler_PointerReleased(object sender, PointerReleasedEventArgs e)
@@ -119,8 +156,8 @@ partial class CefWebViewCore : IViewHandlerControl
             Y = (int)cursorPos.Y
         };
         var pointer = e.GetCurrentPoint(_handler);
-        mouseEvent.Modifiers = GetMouseModifiers(pointer.Properties);
-        var mouseType = GetMouseButtonType(pointer.Properties);
+        mouseEvent.Modifiers = AsCefMouseModifiers(pointer.Properties);
+        var mouseType = AsCefMouseButtonType(pointer.Properties);
 
         try
         {
@@ -130,6 +167,9 @@ partial class CefWebViewCore : IViewHandlerControl
         {
             Debug.WriteLine($"PointerReleased, {ex}");
         }
+
+        if (mouseType == CefMouseButtonType.Left)
+            e.Pointer.Capture(null);
     }
 
     private void Handler_PointerExited(object sender, PointerEventArgs e)
@@ -143,7 +183,7 @@ partial class CefWebViewCore : IViewHandlerControl
             };
 
             var pointer = e.GetCurrentPoint(_handler);
-            mouseEvent.Modifiers = GetMouseModifiers(pointer.Properties);
+            mouseEvent.Modifiers = AsCefMouseModifiers(pointer.Properties);
             _cefBrowserHost?.SendMouseMoveEvent(mouseEvent, true);
         }
         catch (Exception ex)
@@ -163,7 +203,9 @@ partial class CefWebViewCore : IViewHandlerControl
 
         try
         {
-            _cefBrowserHost?.SendMouseWheelEvent(mouseEvent, 0, (int)e.Delta.Y);
+            int x = (int)(e.Delta.X * _mouseDeltaScaling);
+            int y = (int)(e.Delta.Y * _mouseDeltaScaling);
+            _cefBrowserHost?.SendMouseWheelEvent(mouseEvent, x, y);
         }
         catch (Exception ex)
         {
@@ -173,8 +215,78 @@ partial class CefWebViewCore : IViewHandlerControl
 
     private void Handler_TextInput(object sender, TextInputEventArgs e)
     {
+        if (e.Text is null)
+            return;
+
+        foreach (var item in e.Text)
+        {
+            CefKeyEvent keyEvent = new CefKeyEvent()
+            {
+                EventType = CefKeyEventType.Char,
+                WindowsKeyCode = (int)item,
+            };
+            try
+            {
+                _cefBrowserHost?.SendKeyEvent(keyEvent);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"TextInput, {ex}");
+            }
+
+        }
     }
 
+    private void Handler_KeyUp(object sender, KeyEventArgs e)
+    {
+        if (_cefBrowserHost is null)
+            return;
+
+        var modifers = AsCefKeyboardModifiers(e.KeyModifiers);
+        CefKeyEvent keyEvent = new CefKeyEvent()
+        {
+            EventType = CefKeyEventType.KeyUp,
+            WindowsKeyCode = KeyboardHelper.VirtualKeyFromKey(e.Key),
+            NativeKeyCode = (int)modifers,
+            IsSystemKey = e.Key == Key.System,
+            Modifiers = modifers
+        };
+
+        try
+        {
+            _cefBrowserHost.SendKeyEvent(keyEvent);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"KeyUp, {ex}");
+        }
+    }
+    
+    private void Handler_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (_cefBrowserHost is null)
+            return;
+
+        var modifers = AsCefKeyboardModifiers(e.KeyModifiers);
+        CefKeyEvent keyEvent = new CefKeyEvent()
+        {
+            EventType = CefKeyEventType.RawKeyDown,
+            WindowsKeyCode = KeyboardHelper.VirtualKeyFromKey(e.Key),
+            NativeKeyCode = (int)modifers,
+            IsSystemKey = e.Key == Key.System,
+            Modifiers = modifers
+        };
+
+        try
+        {
+            _cefBrowserHost.SendKeyEvent(keyEvent);
+            Debug.WriteLine($"KeyDown,{e.Key}");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"KeyDown, {ex}");
+        }
+    }
 
     private void TopLevel_Closed(object sender, EventArgs e)
     {
@@ -193,9 +305,6 @@ partial class CefWebViewCore : IViewHandlerControl
         _width = width;
         _height = height;
 
-        _browserWidth = width * _dpiScaling;
-        _browserHeight = height * _dpiScaling;
-
         _cefBrowserHost?.WasResized();
     }
 
@@ -211,13 +320,25 @@ partial class CefWebViewCore : IViewHandlerControl
         _width = width;
         _height = height;
 
-        _browserWidth = width * _dpiScaling;
-        _browserHeight = height * _dpiScaling;
-
         _cefBrowserHost?.WasResized();
     }
 
-    CefEventFlags GetMouseModifiers(PointerPointProperties properties)
+    private void Handler_Loaded(object sender, RoutedEventArgs e)
+    {
+        var topLevel = TopLevel.GetTopLevel(_handler);
+        if (topLevel is null)
+            return;
+
+        var hWnd = topLevel.TryGetPlatformHandle()?.Handle;
+        if (hWnd is null)
+            return;
+        var windowInfo = CefWindowInfo.Create();
+        windowInfo.SetAsWindowless(hWnd.Value, true);
+
+        CefBrowserHost.CreateBrowser(windowInfo, _cefClient!, _settings!, "about:blank");
+    }
+
+    CefEventFlags AsCefMouseModifiers(PointerPointProperties properties)
     {
         CefEventFlags modifiers = new();
         if (properties.IsLeftButtonPressed)
@@ -232,7 +353,7 @@ partial class CefWebViewCore : IViewHandlerControl
         return modifiers;
     }
 
-    CefMouseButtonType GetMouseButtonType(PointerPointProperties properties)
+    CefMouseButtonType AsCefMouseButtonType(PointerPointProperties properties)
     {
         CefMouseButtonType type = CefMouseButtonType.Left;
         switch (properties.PointerUpdateKind)
@@ -271,4 +392,20 @@ partial class CefWebViewCore : IViewHandlerControl
 
         return type;
     }
+
+    CefEventFlags AsCefKeyboardModifiers(KeyModifiers keyModifiers)
+    {
+        CefEventFlags modifiers = new();
+        if (keyModifiers.HasFlag(KeyModifiers.Alt))
+            modifiers |= CefEventFlags.AltDown;
+
+        if (keyModifiers.HasFlag(KeyModifiers.Control))
+            modifiers |= CefEventFlags.ControlDown;
+
+        if (keyModifiers.HasFlag(KeyModifiers.Shift))
+            modifiers |= CefEventFlags.ShiftDown;
+
+        return modifiers;
+    }
+
 }

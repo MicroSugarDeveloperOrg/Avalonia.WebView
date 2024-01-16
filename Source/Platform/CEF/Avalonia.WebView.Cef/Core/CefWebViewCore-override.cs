@@ -1,21 +1,38 @@
-﻿using Avalonia.Controls.Platform;
-using CefGlue;
-using CefGlue.Adapter.Browser;
+﻿using CefGlue.Adapter.Browser;
 
 namespace Avalonia.WebView.Core;
-partial class CefWebViewCore  
+
+partial class CefWebViewCore
 {
     CefWebViewCore IPlatformWebView<CefWebViewCore>.PlatformView => throw new NotImplementedException();
 
     bool IPlatformWebView.IsInitialized => IsInitialized;
 
-    object? IPlatformWebView.PlatformViewContext => throw new NotImplementedException();
+    object? IPlatformWebView.PlatformViewContext => this;
 
-    IntPtr IPlatformWebView.NativeHandler => throw new NotImplementedException();
+    IntPtr IPlatformWebView.NativeHandler =>  IntPtr.Zero;  
 
-    bool IWebViewControl.IsCanGoForward => throw new NotImplementedException();
+    bool IWebViewControl.IsCanGoForward
+    {
+        get 
+        {
+            if (_cefBrowser is null)
+                return false;
 
-    bool IWebViewControl.IsCanGoBack => throw new NotImplementedException();
+            return _cefBrowser.CanGoForward;
+        }
+    }
+
+    bool IWebViewControl.IsCanGoBack
+    {
+        get
+        {
+            if (_cefBrowser is null)
+                return false;
+
+            return _cefBrowser.CanGoBack;   
+        }
+    }
 
     Task<bool> IPlatformWebView.Initialize()
     {
@@ -35,34 +52,22 @@ partial class CefWebViewCore
         return Task.FromResult(true);
     }
 
-    private void _handler_Loaded(object sender, RoutedEventArgs e)
-    {
-        var topLevel = TopLevel.GetTopLevel(_handler);
-        if (topLevel is null)
-            return;
-
-        var hWnd = topLevel.TryGetPlatformHandle()?.Handle;
-        if (hWnd is null)
-            return;
-        var windowInfo = CefWindowInfo.Create();
-        windowInfo.SetAsWindowless(hWnd.Value, true);
-
-        CefBrowserHost.CreateBrowser(windowInfo, _cefClient!, _settings!, "about:blank");
-    }
-
-    Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
-    {
-        throw new NotImplementedException();
-    }
-
     bool IWebViewControl.GoBack()
     {
-        throw new NotImplementedException();
+        if (_cefBrowser is null)
+            return false;
+
+        _cefBrowser.GoBack();
+        return true;
     }
 
     bool IWebViewControl.GoForward()
     {
-        throw new NotImplementedException();
+        if (_cefBrowser is null)
+            return false;
+
+        _cefBrowser.GoForward();
+        return true;
     }
 
     bool IWebViewControl.Navigate(Uri? uri)
@@ -80,10 +85,29 @@ partial class CefWebViewCore
 
     bool IWebViewControl.NavigateToString(string htmlContent)
     {
-        throw new NotImplementedException();
+        if (_cefBrowser is null)
+            return false;
+
+        if (string.IsNullOrWhiteSpace(htmlContent))
+            return false;
+
+
+        //_cefBrowser.GetMainFrame().LoadRequest(new CefRequest() { })
+
+        return true;
     }
 
     bool IWebViewControl.OpenDevToolsWindow()
+    {
+        if (_cefBrowserHost is null)
+            return false;
+
+        //_cefBrowserHost.ShowDevTools
+
+        return true;
+    }
+
+    Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
     {
         throw new NotImplementedException();
     }
@@ -100,12 +124,20 @@ partial class CefWebViewCore
 
     bool IWebViewControl.Reload()
     {
-        throw new NotImplementedException();
+        if (_cefBrowser is null)
+            return false;
+
+        _cefBrowser.Reload();
+        return true;
     }
 
     bool IWebViewControl.Stop()
     {
-        throw new NotImplementedException();
+        if (_cefBrowser is null)
+            return false;
+
+        _cefBrowser.StopLoad();
+        return true;
     }
 
     void IDisposable.Dispose()
@@ -117,7 +149,7 @@ partial class CefWebViewCore
     ValueTask IAsyncDisposable.DisposeAsync()
     {
         // throw new NotImplementedException();
-
+        Disposing();
         return new ValueTask();
     }
 
@@ -128,6 +160,8 @@ partial class CefWebViewCore
 
         IsDisposing = true;
 
+        DetachViewHandlers();
+
         _cefClient = null;
         _cefBrowser?.Dispose();
         _cefBrowser = null;
@@ -135,6 +169,6 @@ partial class CefWebViewCore
         _cefBrowserHost?.Dispose();
         _cefBrowserHost = null;
 
-        IsDisposed = true;  
+        IsDisposed = true;
     }
 }

@@ -5,3 +5,8 @@ public interface IViewHandlerControl
 {
     IImage? DrawingImage();
 }
+
+public interface IPopupViewHandlerControl
+{
+    IImage? PopupDrawingImage();
+}

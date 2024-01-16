@@ -1,9 +1,9 @@
-﻿
-
+﻿using Avalonia.Controls.Primitives;
 using Avalonia.Threading;
 using CefGlue.Adapter;
 
 namespace Avalonia.WebView.Core;
+
 public partial class CefWebViewCore : IPlatformWebView<CefWebViewCore>,
                                       ILifeSpanHandler,
                                       IDisplayHandler,
@@ -11,11 +11,16 @@ public partial class CefWebViewCore : IPlatformWebView<CefWebViewCore>,
                                       ILoadedHandler,
                                       IJSDialogHandler
 {
-    public CefWebViewCore(ViewHandlerTx handler, IVirtualWebViewControlCallBack callback, IVirtualBlazorWebViewProvider? provider, WebViewCreationProperties webViewCreationProperties)
+    public CefWebViewCore(ViewHandlerTx handler, 
+                          Popup popup, 
+                          IVirtualWebViewControlCallBack callback, 
+                          IVirtualBlazorWebViewProvider? provider, 
+                          WebViewCreationProperties webViewCreationProperties)
     {
         _dispatcher = Dispatcher.UIThread;
         _callBack = callback;
         _handler = handler;
+        _popup = popup;
         _creationProperties = webViewCreationProperties;
         _provider = provider;
     }
@@ -24,6 +29,7 @@ public partial class CefWebViewCore : IPlatformWebView<CefWebViewCore>,
     readonly IVirtualBlazorWebViewProvider? _provider;
     readonly IVirtualWebViewControlCallBack _callBack;
     readonly ViewHandlerTx _handler;
+    readonly Popup _popup;  
     readonly WebViewCreationProperties _creationProperties;
 
     CefBrowserSettings? _settings;
@@ -36,11 +42,9 @@ public partial class CefWebViewCore : IPlatformWebView<CefWebViewCore>,
 
     double _dpiScaling = 0;
     double _dpi = 96;
+    double _mouseDeltaScaling = 100;
 
     int _bytePerPixel = 4;
-
-    double _browserWidth = 0;
-    double _browserHeight = 0;
 
     bool _isInitialized = false;
     public bool IsInitialized
@@ -72,4 +76,5 @@ public partial class CefWebViewCore : IPlatformWebView<CefWebViewCore>,
 
     Uri? _uri;
     WriteableBitmap? _bitmap;
+    WriteableBitmap? _popupBitmap;
 }

@@ -75,7 +75,7 @@
 			<PrivateAssets>all</PrivateAssets>
 		</ProjectReference>
 
-		<ProjectReference Include="..\CefGlue.Adapter\CefGlue.Adapter.csproj"/>
+		<ProjectReference Include="..\CefGlue.Adapter\CefGlue.Adapter.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
