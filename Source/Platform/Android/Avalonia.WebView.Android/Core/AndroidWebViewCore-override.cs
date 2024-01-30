@@ -16,12 +16,12 @@ partial class AndroidWebViewCore
 
     Task<string?> IWebViewControl.ExecuteScriptAsync(string javaScript)
     {
-        _webView.EvaluateJavascript(javaScript, new JavaScriptValueCallback(result =>
-        {
-
-
-        }));
-        throw new NotImplementedException();
+        var cts = new TaskCompletionSource<string?>();
+        _webView.EvaluateJavascript(
+            javaScript,
+            new JavaScriptValueCallback(result => cts.TrySetResult(result?.ToString()))
+        );
+        return cts.Task;
     }
 
     bool IWebViewControl.GoBack()
@@ -66,7 +66,9 @@ partial class AndroidWebViewCore
         var bRet = await PrepareBlazorWebViewStarting(webView, _provider);
         if (!bRet)
         {
-            _webViewClient = new WebViewClient();
+#pragma warning disable CA1416 // Validate platform compatibility
+            _webViewClient = new AvaloniaWebViewClient(this, _callBack);
+#pragma warning restore CA1416 // Validate platform compatibility
             _webChromeClient = new WebChromeClient();
             webView.SetWebViewClient(_webViewClient);
             webView.SetWebChromeClient(_webChromeClient);

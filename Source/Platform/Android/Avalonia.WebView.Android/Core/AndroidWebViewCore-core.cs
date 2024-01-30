@@ -1,8 +1,13 @@
-﻿namespace Avalonia.WebView.Android.Core;
+﻿using Avalonia.WebView.Android.Clients.Blazor;
+
+namespace Avalonia.WebView.Android.Core;
 
 partial class AndroidWebViewCore
 {
-    Task<bool> PrepareBlazorWebViewStarting(AndroidWebView webView, IVirtualBlazorWebViewProvider? provider)
+    Task<bool> PrepareBlazorWebViewStarting(
+        AndroidWebView webView,
+        IVirtualBlazorWebViewProvider? provider
+    )
     {
         if (webView is null)
             return Task.FromResult(false);
@@ -13,8 +18,8 @@ partial class AndroidWebViewCore
         if (!provider.ResourceRequestedFilterProvider(this, out var filter))
             return Task.FromResult(false);
 
-        _webViewClient = new AvaloniaWebViewClient(this, _callBack, provider, filter);
-        _webChromeClient = new AvaloniaWebChromeClient(this);
+        _webViewClient = new AvaloniaBlazorWebViewClient(this, _callBack, provider, filter);
+        _webChromeClient = new AvaloniaBlazorWebChromeClient(this);
         webView.SetWebViewClient(_webViewClient);
         webView.SetWebChromeClient(_webChromeClient);
         _isBlazorWebView = true;
@@ -26,4 +31,3 @@ partial class AndroidWebViewCore
         _isBlazorWebView = false;
     }
 }
-
