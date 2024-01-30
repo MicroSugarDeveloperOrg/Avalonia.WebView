@@ -1,8 +1,8 @@
-﻿namespace Avalonia.WebView.Android.Clients;
+﻿namespace Avalonia.WebView.Android.Clients.Blazor;
 
-internal class AvaloniaWebChromeClient : WebChromeClient
+internal class AvaloniaBlazorWebChromeClient : WebChromeClient
 {
-    public AvaloniaWebChromeClient(AndroidWebViewCore androidWebViewCore)
+    public AvaloniaBlazorWebChromeClient(AndroidWebViewCore androidWebViewCore)
     {
         _androidWebViewCore = androidWebViewCore;
         var topLevel = androidWebViewCore.GetTopLevel();
@@ -15,7 +15,12 @@ internal class AvaloniaWebChromeClient : WebChromeClient
     readonly AndroidWebViewCore _androidWebViewCore;
     readonly TopLevel _topLevel;
 
-    public override bool OnCreateWindow(AndroidWebView? view, bool isDialog, bool isUserGesture, Message? resultMsg)
+    public override bool OnCreateWindow(
+        AndroidWebView? view,
+        bool isDialog,
+        bool isUserGesture,
+        Message? resultMsg
+    )
     {
         if (view?.Context is not null)
         {
@@ -28,7 +33,11 @@ internal class AvaloniaWebChromeClient : WebChromeClient
         return false;
     }
 
-    public override bool OnShowFileChooser(AndroidWebView? webView, IValueCallback? filePathCallback, FileChooserParams? fileChooserParams)
+    public override bool OnShowFileChooser(
+        AndroidWebView? webView,
+        IValueCallback? filePathCallback,
+        FileChooserParams? fileChooserParams
+    )
     {
         if (filePathCallback is null)
             return base.OnShowFileChooser(webView, filePathCallback, fileChooserParams);
@@ -37,7 +46,10 @@ internal class AvaloniaWebChromeClient : WebChromeClient
         return true;
     }
 
-    private async Task CallFilePickerAsync(IValueCallback filePathCallback, FileChooserParams? fileChooserParams)
+    private async Task CallFilePickerAsync(
+        IValueCallback filePathCallback,
+        FileChooserParams? fileChooserParams
+    )
     {
         var pickOptions = GetPickOptions(fileChooserParams);
         if (pickOptions is null)
@@ -76,7 +88,10 @@ internal class AvaloniaWebChromeClient : WebChromeClient
             return default;
 
         var acceptedFileTypes = fileChooserParams.GetAcceptTypes();
-        if (acceptedFileTypes is null || (acceptedFileTypes.Length == 1 && string.IsNullOrEmpty(acceptedFileTypes[0])))
+        if (
+            acceptedFileTypes is null
+            || (acceptedFileTypes.Length == 1 && string.IsNullOrEmpty(acceptedFileTypes[0]))
+        )
             return null;
 
         bool allowMultiple = fileChooserParams.Mode == ChromeFileChooserMode.OpenMultiple;
@@ -86,15 +101,14 @@ internal class AvaloniaWebChromeClient : WebChromeClient
             AllowMultiple = allowMultiple,
             FileTypeFilter = new List<FilePickerFileType>()
             {
-                 new FilePickerFileType("Accepted File")
-                 {
-                     Patterns = acceptedFileTypes,
-                     AppleUniformTypeIdentifiers = new string[1] { "public.accepted"},
-                     MimeTypes = new string[1] { "accepted/*" }
-                 }
+                new FilePickerFileType("Accepted File")
+                {
+                    Patterns = acceptedFileTypes,
+                    AppleUniformTypeIdentifiers = new string[1] { "public.accepted" },
+                    MimeTypes = new string[1] { "accepted/*" }
+                }
             }
         };
         return pickOptions;
     }
 }
-
