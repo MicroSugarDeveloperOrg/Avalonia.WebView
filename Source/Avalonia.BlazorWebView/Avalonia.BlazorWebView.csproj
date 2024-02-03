@@ -4,7 +4,50 @@
 		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
 		<RootNamespace>AvaloniaBlazorWebView</RootNamespace>
 	</PropertyGroup>
- 
+
+	<ItemGroup>
+		<Compile Remove="BlazorWebView-AvaloniaProperty.cs" />
+		<Compile Include="BlazorWebView-AvaloniaProperty.cs">
+			<DependentUpon>BlazorWebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+		<Compile Remove="BlazorWebView-Core.cs" />
+		<Compile Include="BlazorWebView-Core.cs">
+			<DependentUpon>BlazorWebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+		<Compile Remove="BlazorWebView-Events.cs" />
+		<Compile Include="BlazorWebView-Events.cs">
+			<DependentUpon>BlazorWebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+		<Compile Remove="BlazorWebView-Host-AvaloniaProperty.cs" />
+		<Compile Include="BlazorWebView-Host-AvaloniaProperty.cs">
+			<DependentUpon>BlazorWebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+		<Compile Remove="BlazorWebView-Override.cs" />
+		<Compile Include="BlazorWebView-Override.cs">
+			<DependentUpon>BlazorWebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+		<Compile Remove="BlazorWebView-VirtualView.cs" />
+		<Compile Include="BlazorWebView-VirtualView.cs">
+			<DependentUpon>BlazorWebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+		<Compile Remove="BlazorWebView-VirtualViewCallBack.cs" />
+		<Compile Include="BlazorWebView-VirtualViewCallBack.cs">
+			<DependentUpon>BlazorWebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+		<Compile Remove="BlazorWebView-WebViewControl.cs" />
+		<Compile Include="BlazorWebView-WebViewControl.cs">
+			<DependentUpon>BlazorWebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+	</ItemGroup>
+	
 	<ItemGroup>
 		<PackageReference Include="Avalonia" />
 		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces">

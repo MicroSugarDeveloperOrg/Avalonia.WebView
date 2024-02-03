@@ -6,6 +6,49 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Remove="WebView-AvaloniaProperty.cs" />
+		<Compile Include="WebView-AvaloniaProperty.cs">
+			<DependentUpon>WebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+		<Compile Remove="WebView-Core.cs" />
+		<Compile Include="WebView-Core.cs">
+			<DependentUpon>WebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+		<Compile Remove="WebView-Events.cs" />
+		<Compile Include="WebView-Events.cs">
+			<DependentUpon>WebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+		<Compile Remove="WebView-Host-AvaloniaProperty.cs" />
+		<Compile Include="WebView-Host-AvaloniaProperty.cs">
+			<DependentUpon>WebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+		<Compile Remove="WebView-Override.cs" />
+		<Compile Include="WebView-Override.cs">
+			<DependentUpon>WebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+		<Compile Remove="WebView-VirtualView.cs" />
+		<Compile Include="WebView-VirtualView.cs">
+			<DependentUpon>WebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+		<Compile Remove="WebView-VirtualViewCallBack.cs" />
+		<Compile Include="WebView-VirtualViewCallBack.cs">
+			<DependentUpon>WebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+		<Compile Remove="WebView-WebViewControl.cs" />
+		<Compile Include="WebView-WebViewControl.cs">
+			<DependentUpon>WebView.cs</DependentUpon>
+			<SubType>code</SubType>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Avalonia" />
 		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces">
 			<PrivateAssets>all</PrivateAssets>
@@ -16,7 +59,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
+		<ProjectReference Include="..\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj" />
 	</ItemGroup>
 
 </Project>
