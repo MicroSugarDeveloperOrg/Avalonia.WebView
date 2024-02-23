@@ -26,7 +26,7 @@ partial class WebView2Core
         return coreWebView2ControllerOptions;
     }
 
-    void SetEnvirmentDefaultBackground(Color color) => Environment.SetEnvironmentVariable("WEBVIEW2_DEFAULT_BACKGROUND_COLOR", color.Name);
+    void SetEnvirmentDefaultBackground(Color color) => Environment.SetEnvironmentVariable("WEBVIEW2_DEFAULT_BACKGROUND_COLOR", $"{color.A:X2}{color.R:X2}{color.G:X2}{color.B:X2}"););
 
     Task PrepareBlazorWebViewStarting(IVirtualBlazorWebViewProvider provider, CoreWebView2 coreWebView2)
     {
