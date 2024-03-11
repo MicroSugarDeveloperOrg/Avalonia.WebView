@@ -1,0 +1,92 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.BlazorWebView", "Source\Avalonia.BlazorWebView\Avalonia.BlazorWebView.csproj", "{D47A1438-4E2B-4A61-815D-8A2EDB47D514}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toolkit.Shared", "Source\Toolkit.Shared\Toolkit.Shared.csproj", "{99A2D144-D8F2-4204-B7C6-9154C98D1A7B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebView.Core", "Source\WebView.Core\WebView.Core.csproj", "{0B72D154-5EC8-4BCF-AEDC-BCCE1DFFBBDE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaWebView.Shared", "Source\AvaloniaWebView.Shared\AvaloniaWebView.Shared.csproj", "{ADF0CEC6-C86C-4EEB-9398-6177F6792027}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DryIoc.Shared", "Source\DryIoc.Shared\DryIoc.Shared.csproj", "{0ED302D9-7241-4783-B9A4-EF583AEEA3B4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{E3B2E038-BC0A-4DEA-B594-5E90AA518BDE}"
+	ProjectSection(SolutionItems) = preProject
+		Build\Directory.build.common.props = Build\Directory.build.common.props
+		Build\Directory.build.common.targets = Build\Directory.build.common.targets
+		Build\Directory.build.operation.common.props = Build\Directory.build.operation.common.props
+		Build\Directory.Packages.targets = Build\Directory.Packages.targets
+		Build\Directory.webview.android.common.targets = Build\Directory.webview.android.common.targets
+		Build\Directory.webview.blazor.common.targets = Build\Directory.webview.blazor.common.targets
+		Build\Directory.webview.desktop.common.targets = Build\Directory.webview.desktop.common.targets
+		Build\Directory.webview.ios.common.targets = Build\Directory.webview.ios.common.targets
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleBlazorWebViewShared", "Source\Sample\SampleBlazorWebView\SampleBlazorWebViewShared\SampleBlazorWebViewShared.csproj", "{5CB71B1F-00E7-417C-95F2-F41921ECDCE3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleBlazorWebView.Desktop", "Source\Sample\SampleBlazorWebView\SampleBlazorWebView.Desktop\SampleBlazorWebView.Desktop.csproj", "{7C8B44BF-E6E2-478C-8D22-D41B9D98946F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleBlazorWebView", "Source\Sample\SampleBlazorWebView\SampleBlazorWebView\SampleBlazorWebView.csproj", "{9D70E222-1273-4CD6-8B4C-C61536B64CCA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{F850083C-28E2-4EF5-9D0A-AF0FC3A2AD06}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.WebView.Desktop", "Source\Platform\Desktop\Avalonia.WebView.Desktop\Avalonia.WebView.Desktop.csproj", "{DEC777C9-6143-41FE-8B8E-6356B0AA4E3F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D47A1438-4E2B-4A61-815D-8A2EDB47D514}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D47A1438-4E2B-4A61-815D-8A2EDB47D514}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D47A1438-4E2B-4A61-815D-8A2EDB47D514}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D47A1438-4E2B-4A61-815D-8A2EDB47D514}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99A2D144-D8F2-4204-B7C6-9154C98D1A7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99A2D144-D8F2-4204-B7C6-9154C98D1A7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99A2D144-D8F2-4204-B7C6-9154C98D1A7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99A2D144-D8F2-4204-B7C6-9154C98D1A7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B72D154-5EC8-4BCF-AEDC-BCCE1DFFBBDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B72D154-5EC8-4BCF-AEDC-BCCE1DFFBBDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B72D154-5EC8-4BCF-AEDC-BCCE1DFFBBDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B72D154-5EC8-4BCF-AEDC-BCCE1DFFBBDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADF0CEC6-C86C-4EEB-9398-6177F6792027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADF0CEC6-C86C-4EEB-9398-6177F6792027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADF0CEC6-C86C-4EEB-9398-6177F6792027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADF0CEC6-C86C-4EEB-9398-6177F6792027}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ED302D9-7241-4783-B9A4-EF583AEEA3B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ED302D9-7241-4783-B9A4-EF583AEEA3B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ED302D9-7241-4783-B9A4-EF583AEEA3B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ED302D9-7241-4783-B9A4-EF583AEEA3B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CB71B1F-00E7-417C-95F2-F41921ECDCE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CB71B1F-00E7-417C-95F2-F41921ECDCE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CB71B1F-00E7-417C-95F2-F41921ECDCE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CB71B1F-00E7-417C-95F2-F41921ECDCE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C8B44BF-E6E2-478C-8D22-D41B9D98946F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C8B44BF-E6E2-478C-8D22-D41B9D98946F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C8B44BF-E6E2-478C-8D22-D41B9D98946F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C8B44BF-E6E2-478C-8D22-D41B9D98946F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D70E222-1273-4CD6-8B4C-C61536B64CCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D70E222-1273-4CD6-8B4C-C61536B64CCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D70E222-1273-4CD6-8B4C-C61536B64CCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D70E222-1273-4CD6-8B4C-C61536B64CCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEC777C9-6143-41FE-8B8E-6356B0AA4E3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEC777C9-6143-41FE-8B8E-6356B0AA4E3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEC777C9-6143-41FE-8B8E-6356B0AA4E3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEC777C9-6143-41FE-8B8E-6356B0AA4E3F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5CB71B1F-00E7-417C-95F2-F41921ECDCE3} = {F850083C-28E2-4EF5-9D0A-AF0FC3A2AD06}
+		{7C8B44BF-E6E2-478C-8D22-D41B9D98946F} = {F850083C-28E2-4EF5-9D0A-AF0FC3A2AD06}
+		{9D70E222-1273-4CD6-8B4C-C61536B64CCA} = {F850083C-28E2-4EF5-9D0A-AF0FC3A2AD06}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {172AFAED-AD23-46F5-AC6E-6FBE970A96F0}
+	EndGlobalSection
+EndGlobal
